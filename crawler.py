@@ -47,11 +47,12 @@ def crawler(queries):
     # Iterate over directories to see if the query is already processed or not,
     # directory name is the "query id.html" in the search engine folder
     processed_queries = {}
-    with open('data/crawled_queries.txt', 'r') as f:
-        search_engine = "google"
-        for line in f:
-            query_id = line.strip()
-            processed_queries[search_engine].add(query_id)
+    for search_engine in search_engines:
+        dir_path = f"data/{search_engine}"
+        if not os.path.exists(dir_path):
+            os.makedirs(dir_path)
+
+        processed_queries[search_engine] = set(os.listdir(dir_path))
         log.info(f"Total processed queries for {search_engine}: {len(processed_queries[search_engine])}")
 
     # Remove the processed queries from the list for search engine
