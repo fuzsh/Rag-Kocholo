@@ -4,6 +4,9 @@ import codecs
 
 from concurrent.futures import ThreadPoolExecutor
 
+from bs4 import BeautifulSoup
+from newspaper import Article
+
 from utils.proxy import Proxy
 from search_engine.utils import ProxyError
 from utils.loggers import LoggingConfigurator
@@ -91,6 +94,28 @@ def crawler(queries):
         log.warning("Start fetching new proxies...")
         # Change the proxy if the search engine blocks the IP
         proxies = proxy_manager.get_proxies()
+
+
+def _get_urls(soup, engine):
+    search_engine = engine.lower()
+    engine = search_engines_dict[search_engine]
+    return [result['url'] for result in engine.get_organic_results(soup)]
+
+
+def get_article_from_query(kg_id, search_engine):
+    for i in range(0, 4):
+        with open(f"data/{search_engine}/{kg_id}_{i}.html", 'r') as f:
+            soup = BeautifulSoup(f, 'html.parser')
+
+        urls = _get_urls(soup, search_engine)
+        for u_id, url in enumerate(urls):
+            article = Article(url, language='en')
+            article.download()
+            article.parse()
+            os.makedirs(f"docs/{kg_id}/all_docs", exist_ok=True)
+            with open(f"docs/{kg_id}/all_docs/query_{i}-link_{u_id}.txt", 'w') as f:
+                f.write(article.text)
+            log.info(f"Downloaded {url} for {kg_id}")
 
 
 if __name__ == "__main__":
