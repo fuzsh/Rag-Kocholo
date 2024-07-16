@@ -39,8 +39,8 @@ def crawler(queries):
     search_engines = ["google"]
 
     queries = [{
-        "id": key, "text": value, "se": search_engine
-    } for key, value in queries.items() for search_engine in search_engines]
+        "id": query['id'], "text": query['text'], "se": search_engine
+    } for query in queries for search_engine in search_engines]
 
     log.info(f"Total queries: {len(queries) // len(search_engines)}")
 

@@ -1,9 +1,9 @@
 import json
 
 from crawler import crawler
-from model import *
+# from model import *
 from data_loader import load_dataset
-from re_ranker import re_ranker
+# from re_ranker import re_ranker
 
 config = {
     "recreate_index": False,
@@ -13,7 +13,7 @@ config = {
 }
 
 if __name__ == '__main__':
-    init_llm()
+    # init_llm()
     kg, gt = load_dataset(dataset_name="FactBench")
 
     if config["fetch_documents"]:
@@ -27,7 +27,7 @@ if __name__ == '__main__':
             questions = [{"id": f"{identifier}_{q_id + 1}", "text": q['question']} for q_id, q in enumerate(questions)]
             questions.append({"id": f"{identifier}_0", "text": ' '.join(knowledge_graph[1])})
             queries.extend(questions)
-            print(queries)
+            # print(queries)
         # get the documents for the queries
         crawler(queries)
 
