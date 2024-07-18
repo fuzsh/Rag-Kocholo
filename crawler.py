@@ -18,6 +18,7 @@ from search_engine.engines import search_engines_dict
 log = LoggingConfigurator.get_logger(__name__)
 ua = UserAgent(os=['windows'], browsers=["chrome", "edge", "firefox"], platforms=["pc"])
 
+
 def search_query(query, proxies, retries=3):
     retries = retries
 
@@ -115,7 +116,7 @@ def fetch_url(url_data, identifier, i, retries=3):
 
         try:
             config = Configuration()
-            config.request_timeout = 10
+            config.request_timeout = 5
             config.fetch_images = False
             config.browser_user_agent = ua.random
 
@@ -149,19 +150,20 @@ def get_article_from_query(kg, search_engine="google"):
 
         steps = 10
         urls = _get_urls(soup, search_engine)
-        for j in range(0, len(urls), steps):
-            with ThreadPoolExecutor(max_workers=10) as executor:
-                thread_results = executor.map(
-                    fetch_url,
-                    urls[j:j + steps],
-                    [identifier] * len(urls[j:j + steps]),
-                    [i] * len(urls[j:j + steps])
-                )
-                # get the list of that failed
-                failed_urls = [query for query, status in zip(urls[i:i + steps], thread_results) if not status]
-                # add the failed urls to the list of urls to be processed
-                # urls.extend(failed_urls)
-                log.warning(f"Failed queries length is: {len(failed_urls)}")
+        for j in range(0, len(urls), 1):
+            fetch_url(urls[j], identifier, i, retries=1)
+            # with ThreadPoolExecutor(max_workers=10) as executor:
+            #     thread_results = executor.map(
+            #         fetch_url,
+            #         urls[j:j + steps],
+            #         [identifier] * len(urls[j:j + steps]),
+            #         [i] * len(urls[j:j + steps])
+            #     )
+            #     # get the list of that failed
+            #     failed_urls = [query for query, status in zip(urls[i:i + steps], thread_results) if not status]
+            #     # add the failed urls to the list of urls to be processed
+            #     # urls.extend(failed_urls)
+            #     log.warning(f"Failed queries length is: {len(failed_urls)}")
 
 
 if __name__ == "__main__":
