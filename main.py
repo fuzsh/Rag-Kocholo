@@ -1,6 +1,6 @@
 import json
 
-from crawler import crawler
+from crawler import crawler, get_article_from_query
 # from model import *
 from data_loader import load_dataset
 # from re_ranker import re_ranker
@@ -9,7 +9,8 @@ config = {
     "recreate_index": False,
     "create_sample_queries": False,
     "add_score": False,
-    "fetch_documents": True
+    "fetch_documents": False,
+    "get_urls": True
 }
 
 if __name__ == '__main__':
@@ -30,6 +31,10 @@ if __name__ == '__main__':
             # print(queries)
         # get the documents for the queries
         crawler(queries)
+
+    if config["get_urls"]:
+        for knowledge_graph in kg:
+            get_article_from_query(knowledge_graph)
 
     if config["create_sample_queries"]:
         for knowledge_graph in kg:

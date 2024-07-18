@@ -1,3 +1,4 @@
+import json
 import os
 import random
 import codecs
@@ -5,7 +6,9 @@ import codecs
 from concurrent.futures import ThreadPoolExecutor
 
 from bs4 import BeautifulSoup
+from fake_useragent import UserAgent
 from newspaper import Article
+from newspaper.configuration import Configuration
 
 from utils.proxy import Proxy
 from search_engine.utils import ProxyError
@@ -13,7 +16,7 @@ from utils.loggers import LoggingConfigurator
 from search_engine.engines import search_engines_dict
 
 log = LoggingConfigurator.get_logger(__name__)
-
+ua = UserAgent(os=['windows'], browsers=["chrome", "edge", "firefox"], platforms=["pc"])
 
 def search_query(query, proxies, retries=3):
     retries = retries
@@ -99,23 +102,66 @@ def crawler(queries):
 def _get_urls(soup, engine):
     search_engine = engine.lower()
     engine = search_engines_dict[search_engine]
-    return [result['url'] for result in engine.get_organic_results(soup)]
+    return [{"url": result['url'], "rank": res_id} for res_id, result in enumerate(engine().get_organic_results(soup))]
 
 
-def get_article_from_query(kg_id, search_engine):
-    for i in range(0, 4):
-        with open(f"data/{search_engine}/{kg_id}_{i}.html", 'r') as f:
-            soup = BeautifulSoup(f, 'html.parser')
+def fetch_url(url_data, identifier, i, retries=3):
+    retries = retries
+    while retries > 0:
+        # if file exists, skip
+        if os.path.exists(f"docs/{identifier}/all_docs/query_{i}-link_{url_data['rank']}.json"):
+            log.info(f"Skipping {url_data['url']} for {identifier}")
+            return True
 
-        urls = _get_urls(soup, search_engine)
-        for u_id, url in enumerate(urls):
-            article = Article(url, language='en')
+        try:
+            config = Configuration()
+            config.request_timeout = 10
+            config.fetch_images = False
+            config.browser_user_agent = ua.random
+
+            article = Article(url_data['url'], language='en', config=config)
             article.download()
             article.parse()
-            os.makedirs(f"docs/{kg_id}/all_docs", exist_ok=True)
-            with open(f"docs/{kg_id}/all_docs/query_{i}-link_{u_id}.txt", 'w') as f:
-                f.write(article.text)
-            log.info(f"Downloaded {url} for {kg_id}")
+
+            with open(f"docs/{identifier}/all_docs/query_{i}-link_{url_data['rank']}.json", 'w') as f:
+                json.dump({
+                    "id": f"{identifier}_{i}",
+                    "rank": url_data['rank'],
+                    "url": url_data['url'],
+                    "text": article.text
+                }, f, indent=4, ensure_ascii=False)
+
+            log.info(f"Downloaded {url_data['url']} for {identifier}")
+            return True
+        except Exception as e:
+            log.error(f"Error downloading {url_data['url']} for {identifier}", error=e)
+            retries -= 1
+    return False
+
+
+def get_article_from_query(kg, search_engine="google"):
+    identifier = kg[0]
+    for i in range(0, 4):
+        os.makedirs(f"docs/{identifier}/all_docs", exist_ok=True)
+
+        with open(f"data/{search_engine}/{identifier}_{i}.html", 'r') as f:
+            soup = BeautifulSoup(f, 'html.parser')
+
+        steps = 10
+        urls = _get_urls(soup, search_engine)
+        for j in range(0, len(urls), steps):
+            with ThreadPoolExecutor(max_workers=10) as executor:
+                thread_results = executor.map(
+                    fetch_url,
+                    urls[j:j + steps],
+                    [identifier] * len(urls[j:j + steps]),
+                    [i] * len(urls[j:j + steps])
+                )
+                # get the list of that failed
+                failed_urls = [query for query, status in zip(urls[i:i + steps], thread_results) if not status]
+                # add the failed urls to the list of urls to be processed
+                # urls.extend(failed_urls)
+                log.warning(f"Failed queries length is: {len(failed_urls)}")
 
 
 if __name__ == "__main__":
