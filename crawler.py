@@ -2,6 +2,7 @@ import json
 import os
 import random
 import codecs
+import shutil
 
 from concurrent.futures import ThreadPoolExecutor
 
@@ -106,20 +107,15 @@ def _get_urls(soup, engine):
     return [{"url": result['url'], "rank": res_id} for res_id, result in enumerate(engine().get_organic_results(soup))]
 
 
-def fetch_url(url_data, identifier, i, retries=3):
+def fetch_url(url_data, config, identifier, i, retries=3):
     retries = retries
     while retries > 0:
         # if file exists, skip
         if os.path.exists(f"docs/{identifier}/all_docs/query_{i}-link_{url_data['rank']}.json"):
             log.info(f"Skipping {url_data['url']} for {identifier}")
-            return True
+            # return True
 
         try:
-            config = Configuration()
-            config.request_timeout = 5
-            config.fetch_images = False
-            config.browser_user_agent = ua.random
-
             article = Article(url_data['url'], language='en', config=config)
             article.download()
             article.parse()
@@ -128,8 +124,7 @@ def fetch_url(url_data, identifier, i, retries=3):
                 json.dump({
                     "id": f"{identifier}_{i}",
                     "rank": url_data['rank'],
-                    "url": url_data['url'],
-                    "text": article.text
+                    "data": article.to_json()
                 }, f, indent=4, ensure_ascii=False)
 
             log.info(f"Downloaded {url_data['url']} for {identifier}")
@@ -142,7 +137,11 @@ def fetch_url(url_data, identifier, i, retries=3):
 
 def get_article_from_query(kg, search_engine="google"):
     identifier = kg[0]
+    config = Configuration()
+    config.request_timeout = 5
+    config.fetch_images = False
     for i in range(0, 4):
+        config.browser_user_agent = ua.random
         os.makedirs(f"docs/{identifier}/all_docs", exist_ok=True)
 
         with open(f"data/{search_engine}/{identifier}_{i}.html", 'r') as f:
@@ -151,7 +150,7 @@ def get_article_from_query(kg, search_engine="google"):
         steps = 10
         urls = _get_urls(soup, search_engine)
         for j in range(0, len(urls), 1):
-            fetch_url(urls[j], identifier, i, retries=1)
+            status = fetch_url(urls[j], config, identifier, i, retries=1)
             # with ThreadPoolExecutor(max_workers=10) as executor:
             #     thread_results = executor.map(
             #         fetch_url,
@@ -168,3 +167,16 @@ def get_article_from_query(kg, search_engine="google"):
 
 if __name__ == "__main__":
     pass
+
+# iterate over the directory to get the queries and remove all the folder name with all_docs
+import shutil
+import os
+for folder in os.listdir("docs"):
+    try:
+        for fo in os.listdir(f"docs/{folder}"):
+            if fo == "all_docs":
+                print(f"Removing {folder}")
+                shutil.rmtree(f"docs/{folder}/{fo}")
+    except Exception as e:
+        print(e)
+        continue
