@@ -4,14 +4,14 @@ model_name = "jinaai/jina-reranker-v1-turbo-en"
 model = CrossEncoder(model_name, trust_remote_code=True)
 
 
-def re_ranker(query, documents):
+def re_ranker(query, documents, return_documents=True):
     """
     Re-ranker function that takes a query and a list of documents
     and returns a list of documents with their scores.
     """
     return [
-        {'id': result['corpus_id'] + 1, 'score': float(result['score']), 'question': result['text']}
-        for result in model.rank(query, documents, return_documents=True)
+        {'id': result['corpus_id'] + 1, 'score': float(result['score']), 'question': result['text'] if return_documents else ''}
+        for result in model.rank(query, documents, return_documents=return_documents)
     ]
 
 
@@ -19,9 +19,9 @@ def sort_by_corpus_id(results):
     return sorted(results, key=lambda x: x['id'])
 
 
-def re_rank(query, documents):
+def re_rank(query, documents, return_documents=True):
     # Process the JSON data (e.g., perform some computation)
-    return sort_by_corpus_id(re_ranker(query, documents))
+    return sort_by_corpus_id(re_ranker(query, documents, return_documents=return_documents))
 
 
 if __name__ == "__main__":
