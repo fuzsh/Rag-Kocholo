@@ -113,7 +113,7 @@ def fetch_url(url_data, config, identifier, i, retries=3):
         # if file exists, skip
         if os.path.exists(f"docs/{identifier}/all_docs/query_{i}-link_{url_data['rank']}.json"):
             log.info(f"Skipping {url_data['url']} for {identifier}")
-            # return True
+            return True
 
         try:
             article = Article(url_data['url'], language='en', config=config)
@@ -124,7 +124,7 @@ def fetch_url(url_data, config, identifier, i, retries=3):
                 json.dump({
                     "id": f"{identifier}_{i}",
                     "rank": url_data['rank'],
-                    "data": article.to_json()
+                    "data": json.loads(article.to_json())
                 }, f, indent=4, ensure_ascii=False)
 
             log.info(f"Downloaded {url_data['url']} for {identifier}")
@@ -167,16 +167,3 @@ def get_article_from_query(kg, search_engine="google"):
 
 if __name__ == "__main__":
     pass
-
-# iterate over the directory to get the queries and remove all the folder name with all_docs
-import shutil
-import os
-for folder in os.listdir("docs"):
-    try:
-        for fo in os.listdir(f"docs/{folder}"):
-            if fo == "all_docs":
-                print(f"Removing {folder}")
-                shutil.rmtree(f"docs/{folder}/{fo}")
-    except Exception as e:
-        print(e)
-        continue
