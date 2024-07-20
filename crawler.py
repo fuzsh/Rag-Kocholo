@@ -175,7 +175,6 @@ def get_article_from_query(kg, search_engine="google"):
                     }, f, indent=4, ensure_ascii=False)
 
                 log.info(f"Downloaded {url['url']} for {identifier}")
-            break
             # for j in range(0, len(urls), 1):
             #     status = fetch_url(urls[j], config, identifier, i, retries=1)
             # with ThreadPoolExecutor(max_workers=10) as executor:
