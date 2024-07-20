@@ -136,6 +136,12 @@ def fetch_url(url_data, config, identifier, i, retries=3):
     return False
 
 
+def _get_url(urls, url):
+    for u in urls:
+        if u['url'] == url:
+            return u
+
+
 def get_article_from_query(kg, search_engine="google"):
     identifier = kg[0]
 
@@ -157,8 +163,10 @@ def get_article_from_query(kg, search_engine="google"):
                 soup = BeautifulSoup(f, 'html.parser')
 
             urls = _get_urls(soup, search_engine)
-            results = fetch_news([u['url'] for u in urls], threads=20)
-            for url, result in zip(urls, results):
+            results = fetch_news([Article(u['url'], language='en', config=config) for u in urls], threads=20)
+            log.info(f"Total urls: {len(urls)}, Total results: {len(results)}")
+            for result in results:
+                url = _get_url(urls, result.url)
                 with open(f"docs/{identifier}/all_docs/query_{i}-link_{url['rank']}.json", 'w') as f:
                     json.dump({
                         "id": f"{identifier}_{i}",
@@ -167,20 +175,21 @@ def get_article_from_query(kg, search_engine="google"):
                     }, f, indent=4, ensure_ascii=False)
 
                 log.info(f"Downloaded {url['url']} for {identifier}")
+            break
             # for j in range(0, len(urls), 1):
             #     status = fetch_url(urls[j], config, identifier, i, retries=1)
-                # with ThreadPoolExecutor(max_workers=10) as executor:
-                #     thread_results = executor.map(
-                #         fetch_url,
-                #         urls[j:j + steps],
-                #         [identifier] * len(urls[j:j + steps]),
-                #         [i] * len(urls[j:j + steps])
-                #     )
-                #     # get the list of that failed
-                #     failed_urls = [query for query, status in zip(urls[i:i + steps], thread_results) if not status]
-                #     # add the failed urls to the list of urls to be processed
-                #     # urls.extend(failed_urls)
-                #     log.warning(f"Failed queries length is: {len(failed_urls)}")
+            # with ThreadPoolExecutor(max_workers=10) as executor:
+            #     thread_results = executor.map(
+            #         fetch_url,
+            #         urls[j:j + steps],
+            #         [identifier] * len(urls[j:j + steps]),
+            #         [i] * len(urls[j:j + steps])
+            #     )
+            #     # get the list of that failed
+            #     failed_urls = [query for query, status in zip(urls[i:i + steps], thread_results) if not status]
+            #     # add the failed urls to the list of urls to be processed
+            #     # urls.extend(failed_urls)
+            #     log.warning(f"Failed queries length is: {len(failed_urls)}")
         except Exception as e:
             log.error(f"Error fetching urls for {identifier}", error=e)
             # shutil.rmtree(f"docs/{identifier}")
