@@ -184,8 +184,8 @@ def get_article_from_query(kg, search_engine="google"):
             urls = _get_urls(soup, search_engine)
 
             # APPROACH 2
-            rs = [grequests.get(u['url']) for u in urls]
-            for index, response in grequests.imap_enumerated(rs, size=20):
+            rs = [grequests.get(u['url'], timeout=3) for u in urls]
+            for index, response in grequests.imap_enumerated(rs, size=50):
                 if response.status_code == 200:
                     fetch_article(identifier, i, urls[index], response, config)
 
