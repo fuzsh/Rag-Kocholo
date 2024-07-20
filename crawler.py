@@ -145,7 +145,7 @@ def _get_url(urls, url):
 def fetch_article(identifier, question_id, url, response, config):
     try:
         if os.path.exists(f"docs/{identifier}/all_docs/query_{question_id}-link_{url['rank']}.json"):
-            log.warning(f"Skipping", identifier=identifier)
+            log.warning(f"Skipping", identifier=identifier, reason="file exists")
             return
 
         article = Article(url['url'], language='en', config=config)
@@ -191,6 +191,10 @@ def get_article_from_query(kg, search_engine="google"):
             rs = [grequests.get(u['url'], timeout=3) for u in urls]
             for index, response in grequests.imap_enumerated(rs, size=50):
                 if response and response.status_code == 200:
+                    content_type = response.headers.get('Content-Type', '').lower()
+                    if 'text/html' not in content_type.lower():
+                        log.warning("Skipping", identifier=identifier, reason="not html")
+                        continue
                     url = urls[index]
                     log.info(f"Download", identifier=identifier, url=url['url'], status="started")
                     fetch_article(identifier, i, url, response, config)
