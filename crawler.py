@@ -156,6 +156,7 @@ def get_article_from_query(kg, search_engine="google"):
     config = Configuration()
     config.request_timeout = 5
     config.fetch_images = False
+    config.memorize_articles = False
     for i in range(0, 4):
         try:
             config.browser_user_agent = ua.random
