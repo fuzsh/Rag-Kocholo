@@ -1,8 +1,8 @@
+import grequests
 import json
 import os
 import random
 import codecs
-import shutil
 
 from concurrent.futures import ThreadPoolExecutor
 
@@ -142,6 +142,24 @@ def _get_url(urls, url):
             return u
 
 
+def fetch_article(identifier, question_id, url, response, config):
+    try:
+        article = Article(url['url'], language='en', config=config)
+        article.download(input_html=response.text)
+        article.parse()
+
+        with open(f"docs/{identifier}/all_docs/query_{question_id}-link_{url['rank']}.json", 'w') as f:
+            json.dump({
+                "id": f"{identifier}_{question_id}",
+                "rank": url['rank'],
+                "data": json.loads(article.to_json())
+            }, f, indent=4, ensure_ascii=False)
+
+        log.info(f"Downloaded {url['url']} for {identifier}")
+    except Exception as e:
+        log.error(f"Error downloading {url['url']} for {identifier}", error=e)
+
+
 def get_article_from_query(kg, search_engine="google"):
     identifier = kg[0]
 
@@ -164,18 +182,26 @@ def get_article_from_query(kg, search_engine="google"):
                 soup = BeautifulSoup(f, 'html.parser')
 
             urls = _get_urls(soup, search_engine)
-            results = fetch_news([Article(u['url'], language='en', config=config) for u in urls], threads=20)
-            log.info(f"Total urls: {len(urls)}, Total results: {len(results)}")
-            for result in results:
-                url = _get_url(urls, result.url)
-                with open(f"docs/{identifier}/all_docs/query_{i}-link_{url['rank']}.json", 'w') as f:
-                    json.dump({
-                        "id": f"{identifier}_{i}",
-                        "rank": url['rank'],
-                        "data": json.loads(result.to_json())
-                    }, f, indent=4, ensure_ascii=False)
 
-                log.info(f"Downloaded {url['url']} for {identifier}")
+            # APPROACH 2
+            rs = [grequests.get(u['url']) for u in urls]
+            for index, response in grequests.imap_enumerated(rs, size=20):
+                if response.status_code == 200:
+                    fetch_article(identifier, i, urls[index], response, config)
+
+            # Approach 3
+            # results = fetch_news([Article(u['url'], language='en', config=config) for u in urls], threads=20)
+            # log.info(f"Total urls: {len(urls)}, Total results: {len(results)}")
+            # for result in results:
+            #     url = _get_url(urls, result.url)
+            #     with open(f"docs/{identifier}/all_docs/query_{i}-link_{url['rank']}.json", 'w') as f:
+            #         json.dump({
+            #             "id": f"{identifier}_{i}",
+            #             "rank": url['rank'],
+            #             "data": json.loads(result.to_json())
+            #         }, f, indent=4, ensure_ascii=False)
+            #
+            #     log.info(f"Downloaded {url['url']} for {identifier}")
             # for j in range(0, len(urls), 1):
             #     status = fetch_url(urls[j], config, identifier, i, retries=1)
             # with ThreadPoolExecutor(max_workers=10) as executor:
