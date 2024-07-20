@@ -159,7 +159,7 @@ def fetch_article(identifier, question_id, url, response, config):
                 "data": json.loads(article.to_json())
             }, f, indent=4, ensure_ascii=False)
 
-        log.info(f"Downloaded {url['url']} for {identifier}")
+        log.info(f"Download", identifier=identifier, url=url['url'][:10], status="success")
     except Exception as e:
         log.error(f"Error downloading {url['url']} for {identifier}", error=e)
 
@@ -191,7 +191,9 @@ def get_article_from_query(kg, search_engine="google"):
             rs = [grequests.get(u['url'], timeout=3) for u in urls]
             for index, response in grequests.imap_enumerated(rs, size=50):
                 if response.status_code == 200:
-                    fetch_article(identifier, i, urls[index], response, config)
+                    url = urls[index]
+                    log.info(f"Download", identifier=identifier, url=url['url'][:10], status="started")
+                    fetch_article(identifier, i, url, response, config)
 
             # Approach 3
             # results = fetch_news([Article(u['url'], language='en', config=config) for u in urls], threads=20)
