@@ -36,6 +36,7 @@ if __name__ == '__main__':
         for knowledge_graph in kg:
             get_article_from_query(knowledge_graph)
 
+
     if config["create_sample_queries"]:
         for knowledge_graph in kg:
             # this code doesn't work if the directory already exists and the sample queries are already created

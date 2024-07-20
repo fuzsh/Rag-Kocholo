@@ -10,6 +10,7 @@ from bs4 import BeautifulSoup
 from fake_useragent import UserAgent
 from newspaper import Article
 from newspaper.configuration import Configuration
+from newspaper.mthreading import fetch_news
 
 from utils.proxy import Proxy
 from search_engine.utils import ProxyError
@@ -137,32 +138,53 @@ def fetch_url(url_data, config, identifier, i, retries=3):
 
 def get_article_from_query(kg, search_engine="google"):
     identifier = kg[0]
+
+    os.makedirs(f"docs/{identifier}/all_docs", exist_ok=True)
+    # TODO: FIX - count the number of files in the directory, if it is greater than 100, skip | BULLSHIT IDEA
+    files = os.listdir(f"docs/{identifier}/all_docs")
+    files_length = len(files)
+    if files_length > 100:
+        log.info(f"Skipping {identifier} with {files_length} files")
+        return
+
     config = Configuration()
     config.request_timeout = 5
     config.fetch_images = False
     for i in range(0, 4):
-        config.browser_user_agent = ua.random
-        os.makedirs(f"docs/{identifier}/all_docs", exist_ok=True)
+        try:
+            config.browser_user_agent = ua.random
+            with open(f"data/{search_engine}/{identifier}_{i}.html", 'r') as f:
+                soup = BeautifulSoup(f, 'html.parser')
 
-        with open(f"data/{search_engine}/{identifier}_{i}.html", 'r') as f:
-            soup = BeautifulSoup(f, 'html.parser')
+            urls = _get_urls(soup, search_engine)
+            results = fetch_news([u['url'] for u in urls], threads=20)
+            for url, result in zip(urls, results):
+                with open(f"docs/{identifier}/all_docs/query_{i}-link_{url['rank']}.json", 'w') as f:
+                    json.dump({
+                        "id": f"{identifier}_{i}",
+                        "rank": url['rank'],
+                        "data": json.loads(result.to_json())
+                    }, f, indent=4, ensure_ascii=False)
 
-        steps = 10
-        urls = _get_urls(soup, search_engine)
-        for j in range(0, len(urls), 1):
-            status = fetch_url(urls[j], config, identifier, i, retries=1)
-            # with ThreadPoolExecutor(max_workers=10) as executor:
-            #     thread_results = executor.map(
-            #         fetch_url,
-            #         urls[j:j + steps],
-            #         [identifier] * len(urls[j:j + steps]),
-            #         [i] * len(urls[j:j + steps])
-            #     )
-            #     # get the list of that failed
-            #     failed_urls = [query for query, status in zip(urls[i:i + steps], thread_results) if not status]
-            #     # add the failed urls to the list of urls to be processed
-            #     # urls.extend(failed_urls)
-            #     log.warning(f"Failed queries length is: {len(failed_urls)}")
+                log.info(f"Downloaded {url['url']} for {identifier}")
+            # for j in range(0, len(urls), 1):
+            #     status = fetch_url(urls[j], config, identifier, i, retries=1)
+                # with ThreadPoolExecutor(max_workers=10) as executor:
+                #     thread_results = executor.map(
+                #         fetch_url,
+                #         urls[j:j + steps],
+                #         [identifier] * len(urls[j:j + steps]),
+                #         [i] * len(urls[j:j + steps])
+                #     )
+                #     # get the list of that failed
+                #     failed_urls = [query for query, status in zip(urls[i:i + steps], thread_results) if not status]
+                #     # add the failed urls to the list of urls to be processed
+                #     # urls.extend(failed_urls)
+                #     log.warning(f"Failed queries length is: {len(failed_urls)}")
+        except Exception as e:
+            log.error(f"Error fetching urls for {identifier}", error=e)
+            # shutil.rmtree(f"docs/{identifier}")
+            continue
 
 
 if __name__ == "__main__":
