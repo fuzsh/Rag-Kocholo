@@ -144,6 +144,10 @@ def _get_url(urls, url):
 
 def fetch_article(identifier, question_id, url, response, config):
     try:
+        if os.path.exists(f"docs/{identifier}/all_docs/query_{question_id}-link_{url['rank']}.json"):
+            log.info(f"Skipping {url['url']} for {identifier}")
+            return
+
         article = Article(url['url'], language='en', config=config)
         article.download(input_html=response.text)
         article.parse()
