@@ -3,7 +3,7 @@ import json
 import os
 import random
 import codecs
-
+import multiprocessing
 from concurrent.futures import ThreadPoolExecutor
 
 from bs4 import BeautifulSoup
@@ -202,14 +202,29 @@ def get_article_from_query(kg, search_engine="google"):
             # APPROACH 2
             rs = [grequests.get(u['url'], timeout=3) for u in urls]
             for index, response in grequests.imap_enumerated(rs, size=50):
-                if response and response.status_code == 200:
-                    url = urls[index]
-                    content_type = response.headers.get('Content-Type', '').lower()
-                    if 'text/html' not in content_type.lower():
-                        log.warning("Skipping", identifier=identifier, reason="not html", url=url['url'])
-                        continue
-                    log.info(f"Download", identifier=identifier, url=url['url'], status="started")
-                    fetch_article(identifier, i, url, response, config)
+                if response is None or response.status_code != 200:
+                    continue
+                url = urls[index]
+                if 'text/html' not in response.headers.get('Content-Type', '').lower():
+                    log.warning("Skipping", identifier=identifier, reason="not html", url=url['url'])
+                    continue
+                log.info(f"Download", identifier=identifier, url=url['url'], status="started")
+                # result_queue = multiprocessing.Queue()
+                process = multiprocessing.Process(
+                    target=fetch_article,
+                    args=(identifier, i, url, response, config)
+                )
+                process.start()
+                process.join(timeout=10)  # Timeout in seconds
+
+                if process.is_alive():
+                    process.terminate()
+                    process.join()
+                    log.warning(
+                        "Skipping", identifier=identifier, reason="Timeout occurred while processing the article.", url=url['url']
+                    )
+
+                # fetch_article(identifier, i, url, response, config)
 
             # Approach 3
             # results = fetch_news([Article(u['url'], language='en', config=config) for u in urls], threads=20)
