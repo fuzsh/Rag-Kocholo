@@ -1,0 +1,38 @@
+{
+    "id": "correct_subsidiary_00020_0",
+    "rank": 90,
+    "data": {
+        "url": "https://andrewwburns.com/2009/12/10/weird-toolbar-on-custom-document-library/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Weird toolbar on Custom Document Library",
+        "top_image": "https://andrewwburns.com/wp-content/uploads/2009/12/weird-view-basetype-32.png?w=300&h=151",
+        "meta_img": "https://andrewwburns.com/wp-content/uploads/2009/12/weird-view-basetype-32.png?w=300&h=151",
+        "images": [
+            "https://andrewwburns.com/wp-content/uploads/2009/12/weird-view-basetype-32.png?w=300&h=151",
+            "https://andrewwburns.com/wp-content/uploads/2009/12/spd-where-to-set-basetype-11.png?w=300&h=50",
+            "https://andrewwburns.com/wp-content/uploads/2009/12/schema-changes1.png?w=300&h=123",
+            "https://andrewwburns.com/wp-content/uploads/2009/12/normal-view-basetype-11.png?w=300&h=132",
+            "https://s2.wp.com/i/logo/wpcom-gray-white.png",
+            "https://s2.wp.com/i/logo/wpcom-gray-white.png",
+            "https://pixel.wp.com/b.gif?v=noscript"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Andy Burns"
+        ],
+        "publish_date": "2009-12-10T00:00:00",
+        "summary": "",
+        "meta_description": "I've been writing a custom document Library Definition. Well, I say I was writing - I actually created it in SharePoint, and used the Solution Generator in the Visual Studio Extensions for WSS3 to produce the CAML and .aspx files. Having done this, however, one of the views in my document library was a bit…",
+        "meta_lang": "en",
+        "meta_favicon": "https://s1.wp.com/i/favicon.ico",
+        "meta_site_name": "Andy Burns' Blog",
+        "canonical_link": "https://andrewwburns.com/2009/12/10/weird-toolbar-on-custom-document-library/",
+        "text": "I’ve been writing a custom document Library Definition. Well, I say I was writing – I actually created it in SharePoint, and used the Solution Generator in the Visual Studio Extensions for WSS3 to produce the CAML and .aspx files.\n\nHaving done this, however, one of the views in my document library was a bit strange. Somehow, for this one view, the ‘New’ and ‘Upload’ menus were missing:\n\nThey were there for other views, just not this one. After examining the CAML (which sounds like some sort of euphemism) I found that the problem seemed to relate to the BaseViewID for the view. I found this by changing the ListView web part with SharePoint Designer:\n\nIf you set this to another BaseViewID (it was originally 3), this menu items reappear. The value should be a different base view to an existing one – when I used ‘1’ I got the columns from the my custom list’s View with BaseViewID 1. So, the short of it is, use a unique number other than 3.\n\nHaving determined this, I changed my Scheme.xml for my custom library definition in the same way. It’s the Views defined in this file that are copied into the ListView web parts when the library is created.\n\nAnd testing shows:\n\nGreat, the menus are back.\n\nWhat is the BaseViewID though? Well, I’ve mentioned them before:\n\nPointing ListView Webparts at lists\n\nPointing the ListView WebPart at a particular view\n\nThe Summary Toolbar in a ListView Web Part\n\nThe documentation on BaseViewID doesn’t tell us a lot (not even in the documentation about the ListView web part in ONET.xml, or the SPView object), and there does seem to be a fair bit of confusion about it. From what I’ve been able to determine:\n\nThe BaseViewIDs in a List Definition’s schema.xml don’t have to be a sequential set – that is, only having IDs (0,1,7,11,22) defined is fine.\n\nBaseViewID 3 doesn’t have New or Upload menus.\n\nOthers have had the same problem with BaseViewID:3\n\nBaseViewID 3 on a Document Library seems to be the Explorer view – which I’d removed from my custom library definition before running Solution Generator."
+    }
+}

@@ -1,0 +1,37 @@
+{
+    "id": "correct_subsidiary_00020_1",
+    "rank": 42,
+    "data": {
+        "url": "https://pnp.github.io/sp-dev-fx-property-controls/controls/PropertyFieldFilePicker/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "PropertyFieldFilePicker",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://pnp.github.io/sp-dev-fx-property-controls/assets/pnp-spfx-controls.svg",
+            "https://pnp.github.io/sp-dev-fx-property-controls/assets/pnp-spfx-controls.svg",
+            "https://pnp.github.io/sp-dev-fx-property-controls/assets/FilePickerOverview.png",
+            "https://pnp.github.io/sp-dev-fx-property-controls/assets/FilePickerViews.gif",
+            "https://pnp.github.io/sp-dev-fx-property-controls/assets/FilePickerBreadcrumb.gif",
+            "https://pnp.github.io/sp-dev-fx-property-controls/assets/FilePickerPaging.gif",
+            "https://pnp.github.io/sp-dev-fx-property-controls/assets/filePicker.gif",
+            "https://telemetry.sharepointpnp.com/sp-dev-fx-property-controls/wiki/PropertyFieldFilePicker"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "../../assets/images/favicon.png",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "\n\nPropertyFieldFilePicker control¶\n\nFile picker control allows to browse and select a file from various places via the property pane. Currently supported locations\n\nRecent files - tab allows to select a file from recently modified files based on the search results.\n\nWeb search - tab uses Bing cognitive services to look for a file. (Only images)\n\nOneDrive - tab allows to select a file from the user's One Drive.\n\nSite document libraries - tab allows to select a file from the existing site document libraries.\n\nUpload - tab allows to upload a file from local drive.\n\nFrom a link - tab allows to paste a link to the document.\n\nOverview¶\n\nThe control supports all types of file, however it also allows to specify list of extensions for the files that are going to be looked displayed. Currently, only single file selection is supported.\n\nDifferent display types¶\n\nFile picker support 3 types of views : List, Compact list and Tiles. In case Tiles view is selected, the control shows the thumbnail of the file.\n\nBreadcrumb support¶\n\nThe control displays breadcrumb navigation that allows to easily switch folders or document libraries.\n\nPaged data load¶\n\nFile picker doesn't load all the files that exist in the folder. Instead, it allows to specify how many results are loaded in a batch, and executes paged requests when new data is required.\n\nPropertyFieldFilePicker example usage\n\nHow to use this control in your solutions¶\n\nCheck that you installed the @pnp/spfx-property-controls dependency. Check out The getting started page for more information about installing the dependency.\n\nImport the following modules to your webpart:\n\nimport{PropertyFieldFilePicker,IPropertyFieldFilePickerProps,IFilePickerResult}from\"@pnp/spfx-property-controls/lib/PropertyFieldFilePicker\";\n\nCreate a new property for your web part, for example:\n\nexportinterfaceIPropertyControlsTestWebPartProps{ filePickerResult:IFilePickerResult; }\n\nAdd the file picker property control to the groupFields of the web part property pane configuration:\n\nPropertyFieldFilePicker('filePicker',{ context:this.context, filePickerResult:this.properties.filePickerResult, onPropertyChange:this.onPropertyPaneFieldChanged.bind(this), properties:this.properties, onSave:(e:IFilePickerResult)=>{console.log(e);this.properties.filePickerResult=e;}, onChanged:(e:IFilePickerResult)=>{console.log(e);this.properties.filePickerResult=e;}, key:\"filePickerId\", buttonLabel:\"File Picker\", label:\"File Picker\", })\n\nImplementation¶\n\nThe PropertyFieldFilePicker control can be configured with the following properties:\n\nProperty Type Required Description properties any yes Parent web part properties, this object is used to update the property value. key string yes A unique key that indicates the identity of this control. context BaseComponentContext yes Current webpart context. onPropertyChange function yes Defines a onPropertyChange function to raise when the data gets changed. label string no Specifies the text describing the file picker. buttonLabel string no Specifies the label of the file picker button. buttonIcon string no In case it is provided the file picker will be rendered as an action button. onSave (filePickerResult: IFilePickerResult) => void yes Handler when the file has been selected and picker has been closed. onChange (filePickerResult: IFilePickerResult) => void no Handler when the file selection has been changed. onCancel () => void no Handler when the file picker panel has been closed without selection of a file. accepts string[] no Array of strings containing allowed files extensions. E.g. [\".gif\", \".jpg\", \".jpeg\", \".bmp\", \".dib\", \".tif\", \".tiff\", \".ico\", \".png\", \".jxr\", \".svg\"] required boolean no Sets the label to inform that the value is required. bingAPIKey string no Used to execute WebSearch. If not provided SearchTab will not be available. disabled boolean no Specifies if the picker button is disabled itemsCountQueryLimit number no Number of items to obtain when executing REST queries. Default 100. hideRecentTab boolean no Specifies if RecentTab should be hidden. hideWebSearchTab boolean no Specifies if WebSearchTab should be hidden. hideStockImages boolean no Specifies if StockImagesTab should be hidden. hideOrganisationalAssetTab boolean no Specifies if OrganisationalAssetTab should be hidden. hideOneDriveTab boolean no Specifies if OneDriveTab should be hidden. hideSiteFilesTab boolean no Specifies if SiteFilesTab should be hidden. hideLocalUploadTab boolean no Specifies if LocalUploadTab should be hidden. hideLinkUploadTab boolean no Specifies if LinkUploadTab should be hidden. storeLastActiveTab boolean no Specifies if last active tab will be stored after the Upload panel has been closed. Note: the value of selected tab is stored in the queryString hash. Default true defaultSelectedTab FilePickerTabType no Specify a tab to be selected by default. If not specified, it will default to \"RecentTab\". allowExternalLinks boolean no Specifies if external links should be allowed. checkIfFileExists boolean no When using file links, this property allows the user to choose if the control should check if the link point to a file that exists or not. includePageLibraries boolean no Specifies if site pages should be displayed.\n\ninterface IFilePickerResult\n\nThe value returned from the selected file object.\n\nValue Type Description fileName string File name of the result with the extension. fileNameWithoutExtension string File name of the result without the extension. fileAbsoluteUrl string Absolute URL of the file. Null in case of file upload. downloadFileContent () => Promise Function allows to download file content. Returns File object."
+    }
+}

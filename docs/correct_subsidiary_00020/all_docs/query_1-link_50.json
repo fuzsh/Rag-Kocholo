@@ -1,0 +1,51 @@
+{
+    "id": "correct_subsidiary_00020_1",
+    "rank": 50,
+    "data": {
+        "url": "https://blog.e-zest.com/visual-web-part-for-sharepoint-2016-large-files-upload-up-to-10-gb",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Visual Web Part for SharePoint 2016 - Large file(s) upload up to 10 GB",
+        "top_image": "https://blog.e-zest.com/hubfs/sneha-visual-web-part-for-sharepoint-2016-20170825.png",
+        "meta_img": "https://blog.e-zest.com/hubfs/sneha-visual-web-part-for-sharepoint-2016-20170825.png",
+        "images": [
+            "https://blog.e-zest.com/hubfs/images/Logos%20with%20Tagline/Corporate/SVG/e-Zest%20logo_An%20accion%20lab%20company_Colour.svg",
+            "https://blog.e-zest.com/hubfs/Elevating%20Product%20Engineering%20with%20AI%20and%20ML.jpg",
+            "https://blog.e-zest.com/hubfs/e-Zest%20%E2%80%93%20An%20Accion%20Labs%20Company%20-%20Gets%20Recognition%20as%20a%20Contender%20in%20the%20ISG%20Provider%20LensTM%20Study%20on%20Digital%20Engineering%20Services%202024.jpg",
+            "https://blog.e-zest.com/hubfs/blog-files/Digital%20Literacy%20Bus%20e-Zest.png",
+            "https://blog.e-zest.com/hubfs/icons/linkedin_icon_white.svg",
+            "https://blog.e-zest.com/hubfs/twitter-logo-silhouette%20(5).svg",
+            "https://blog.e-zest.com/hubfs/facebook-app-logo%20(4).svg",
+            "https://blog.e-zest.com/hubfs/instagram-logo%20(4).svg",
+            "https://blog.e-zest.com/hubfs/icons/youtube_icon_white.svg",
+            "https://blog.e-zest.com/hubfs/AA%20Assets/top%20button.svg",
+            "https://blog.e-zest.com/hs-fs/hubfs/sneha-visual-web-part-for-sharepoint-2016-20170825.png?width=741&name=sneha-visual-web-part-for-sharepoint-2016-20170825.png",
+            "https://blog.e-zest.com/hs-fs/hubfs/visual-web-part-1.png?width=660&name=visual-web-part-1.png",
+            "https://blog.e-zest.com/hs-fs/hubfs/visual-web-part-2.png?width=426&name=visual-web-part-2.png",
+            "https://blog.e-zest.com/hs-fs/hubfs/visual-web-part-3.png?width=673&name=visual-web-part-3.png",
+            "https://blog.e-zest.com/hubfs/blog-files/e-Zest-%20Tech%20Digest.png",
+            "https://blog.e-zest.com/hubfs/blog-files/Slide13.jpeg",
+            "https://blog.e-zest.com/hubfs/Slide11.jpeg",
+            "https://blog.e-zest.com/hubfs/blog-files/Building%20Modern%20Intranet%20on%20SharePoint%20in%20Office%20365-181228.png",
+            "https://blog.e-zest.com/hubfs/Tech%20digest%20week%2033.jpg",
+            "https://dc.ads.linkedin.com/collect/?pid=322361&fmt=gif"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Uday Gaikwad"
+        ],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "Existing version of SharePoint 2013 supports and allows to upload the files up to 2 GB. Now it is possible to upload larger files like more than 2 GB in SharePoint 2016. However, large file upload is not directly supported by OOTB (Out Of The Box), that we need to do some configuration on the farm. Let's, call it as prerequisite configurations.",
+        "meta_lang": "en",
+        "meta_favicon": "https://blog.e-zest.com/hubfs/images/sitefavicon.ico",
+        "meta_site_name": "",
+        "canonical_link": "https://blog.e-zest.com/visual-web-part-for-sharepoint-2016-large-files-upload-up-to-10-gb",
+        "text": "Existing version of SharePoint 2013 supports and allows to upload the files up to 2 GB. Now it is possible to upload larger files like more than 2 GB in SharePoint 2016. However, large file upload is not directly supported by OOTB (Out Of The Box), that we need to do some configuration on the farm. Let's, call it as prerequisite configurations.\n\nThese prerequisites are applicable to only SharePoint 2016 on premise farm. SharePoint online supports large file uploads by default so no need to do any changes in case of SharePoint online. In this blog, we have covered file upload with SharePoint Visual WebPart farm solution. In case of SharePoint online, provider hosted app model can be used. Let's have a look into high level information of the areas used for uploading large file.\n\nLarge file handling managed CSOM API's - StartUpload, ContinueUpload, and FinishUpload\n\nFor more information about this API and core logic you can refer below link:\n\nhttps://github.com/SharePoint/PnP/tree/dev/Samples/Core.LargeFileUpload#large-file-handling---option-3-startupload-continueupload-and-finishupload\n\nThese API's are introduced and applicable for SharePoint 2016 and SharePoint Online.\n\nIn this approach, large files are broken into the chunks and uploaded to the server. We have to define chunk size considering network bandwidth and standards. In our case, we have defined 2MB of chunk size for uploads. We can resume upload operation if it fails in case of any network disturbances, but for that we have to maintain the state of each and every uploaded chunk. However, retrying of failed chunks functionality has not been covered in this blog.\n\nIn order to handle all these chunks we have to write a handler or web service at the server side using managed CSOM file upload API's.\n\nIt is very important to select a file upload control that will help us to break the file in chunks and post it to the server for uploading. For this we have used blueimp file upload J-Query control. This is really good control and has lot of features like, progress bar, statistics of file upload operations, sequential and parallel uploads, single file upload, multi file upload, drag and drop, resume uploads, cancel uploads, retry failed chunk operations. Similarly there are lot of helpful features and good documentation on github.\n\nNow, we are going to see in detail each and every operation which are highlighted above. The use case is that we are going to create visual WebPart to upload large files in the SharePoint document library. It supports multi file upload, drag and drop and progress bar indicator. ADFS is configured for authentication.\n\nPrerequisite for SharePoint 2016 to enable large file upload\n\nYou can follow below blog written by Viorel Iftode for configuration to support large file uploads:\n\nhttps://www.vioreliftode.com/index.php/how-to-make-sharepoint-2016-not-fail-long-running-uploads-large-files/\n\nApart from the above configuration, we need to configure maximum file size for a web application as shown below in steps,\n\nIn Central Administration, in Application Management, click Manage Web Applications\n\nSelect the application (for example, SharePoint - 80)\n\nOn the Web Applications ribbon, click the down arrow on the General Settings button\n\nClick General Settings\n\nScroll to Maximum Upload Size\n\nSet the property to the same number, or larger as the Maximum Workbook Size in Excel Services\n\nClick OK\n\nAnd also I would suggest to perform large file upload operation in the OOTB document library to make sure everything is in place.\n\nEnable session state to maintain the state of each file chunk\n\nWe need to maintain state of each file chunk. It is not recommended to use session management in SharePoint, so this can be replaced with another state management methodology.\n\nYou can refer this blog to enable session on farm\n\nhttps://nikpatel.net/2012/02/12/enable-asp-net-session-state-on-sharepoint-2010-application/\n\nHandler to serve and upload chunk requests\n\nCore business logic resides into this handler, and it supports multiple file upload functionality.\n\nWe have used new SharePoint 2016 API's for file upload into this handler. The logic is to identify first chunk, middle chunk and last chunk to follow StartUpload, ContinueUpload, and FinishUpload execution.\n\nPlease note that in this demo we have handled only POST request. GET and DELETE can be added for further improvements and functionality.\n\nHow to write handler in SharePoint is not covered in this POC, you can refer below blog to about custom handler in SharePoint.\n\nhttps://tjendarta.wordpress.com/2014/07/31/create-custom-http-handler-in-sharepoint/\n\nIf you have ADFS authentication then, in that case, you need to create client context as per provided guidelines in the below blog\n\nhttps://mikesmode.wordpress.com/2016/08/14/using-csom-with-saml-authentication-adfs/\n\nPlease make sure that the token constants are modified according to your environment.\n\nIn case you are not having ADFS configured, then you can use client context creation directly as suggested in below link.\n\nhttps://msdn.microsoft.com/en-us/library/office/ee537538(v=office.14).aspx?cs-save-lang=1&cs-lang=csharp#code-snippet-1\n\nblueimp file upload J-Query\n\nWe have used blueimp file upload control for uploading files. For this POC, only few of features have been utilized from this control. This control has lot of features which can be explored by below link,\n\nhttps://github.com/blueimp/jQuery-File-Upload"
+    }
+}

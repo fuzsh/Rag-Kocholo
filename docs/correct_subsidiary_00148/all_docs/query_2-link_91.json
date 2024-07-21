@@ -1,0 +1,51 @@
+{
+    "id": "correct_subsidiary_00148_2",
+    "rank": 91,
+    "data": {
+        "url": "https://stackoverflow.com/questions/11773846/error-415-unsupported-media-type-post-not-reaching-rest-if-json-but-it-does-if",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Error 415 Unsupported Media Type: POST not reaching REST if JSON, but it does if XML",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://cdn.sstatic.net/Img/teams/overflowai.svg?v=d706fa76cdae",
+            "https://i.sstatic.net/KzenF.png?s=64",
+            "https://www.gravatar.com/avatar/34fbcd2a6db27c1e6d58c7d47cd0bc10?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/ade1c64e4575e07eea436705e9c5d039?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/f9137ae75ef7b9c4d587c90e5bdeb521?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/bf70ea9fe556605b0dde17adf494745f?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/207866aecc1f13c4d172207eff740e9a?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/47207ec5cd029222031626e8df83473d?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/e03c43b52351b77377d31d7cc54928ea?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/f9fdb8be460227579183801e112401d1?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/vyy89.png?s=64",
+            "https://www.gravatar.com/avatar/1e39e96c3bc86b11729944d6dc328393?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/d0f99315e7be97c486c561b061f1a45a?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://lh3.googleusercontent.com/-G_MwdE3s8_g/AAAAAAAAAAI/AAAAAAAAA6c/cY3i2SWsrkw/photo.jpg?sz=64",
+            "https://www.gravatar.com/avatar/4fc3a9d6d800b986906aebc902844133?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/34c45d319ceb8a68f08256db8a1f77a1?s=64&d=identicon&r=PG",
+            "https://lh5.googleusercontent.com/-oM5wdFSshZA/AAAAAAAAAAI/AAAAAAAAAAA/AAN31DX49J3AjdW72CXDh3woGnhAIJYOMQ/mo/photo.jpg?sz=64",
+            "https://www.gravatar.com/avatar/ec676ffb5f6f9a2a49b368e20fd18396?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/2NOJH.jpg?s=64",
+            "https://i.sstatic.net/F2Iv3.jpg?s=64",
+            "https://graph.facebook.com/1118243501892944/picture?type=large",
+            "https://stackoverflow.com/posts/11773846/ivc/758c?prg=0101864b-62c4-491f-868b-4734d953869a"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2012-08-02T08:39:21",
+        "summary": "",
+        "meta_description": "I am actually new to REST WS but really I don't get this 415 Unsupported Media Type. \n\nI am testing my REST with Poster on Firefox and the GET works fine for me, also the POST (when it's a applicat...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/11773846/error-415-unsupported-media-type-post-not-reaching-rest-if-json-but-it-does-if",
+        "text": "The issue is in the deserialization of the bean Customer. Your programs knows how to do it in XML, with JAXB as Daniel is writing, but most likely doesn't know how to do it in JSON.\n\nHere you have an example with Resteasy/Jackson http://www.mkyong.com/webservices/jax-rs/integrate-jackson-with-resteasy/\n\nThe same with Jersey: http://www.mkyong.com/webservices/jax-rs/json-example-with-jersey-jackson/\n\nJust in case this is helpful to others, here's my anecdote:\n\nI found this thread as a result of a problem I encountered while I was using Postman to send test data to my RESTEasy server, where- after a significant code change- I was getting nothing but 415 Unsupported Media Type errors.\n\nLong story short, I tore everything out, eventually I tried to run the trivial file upload example I knew worked; it didn't. That's when I realized that the problem was with my Postman request. I normally don't send any special headers, but in a previous test I had added a \"Content-Type\": \"application/json\" header. OF COURSE, I was trying to upload \"multipart/form-data.\" Removing it solved my issue.\n\nMoral: Check your headers before you blow up your world. ;)\n\nI had this issue and found that the problem was that I had not registered the JacksonFeature class:\n\n// Create JAX-RS application. final Application application = new ResourceConfig() ... .register(JacksonFeature.class);\n\nWithout doing this your application does not know how to convert the JSON to a java object.\n\nhttps://jersey.java.net/documentation/latest/media.html#json.jackson\n\nI had the same problem:\n\ncurl -v -H \"Content-Type: application/json\" -X PUT -d '{\"name\":\"json\",\"surname\":\"gson\",\"married\":true,\"age\":32,\"salary\":123,\"hasCar\":true,\"childs\":[\"serkan\",\"volkan\",\"aybars\"]}' XXXXXX/ponyo/UserModel/json\n\n* About to connect() to localhost port 8081 (#0) * Trying ::1... * Connection refused * Trying 127.0.0.1... * connected * Connected to localhost (127.0.0.1) port 8081 (#0) > PUT /ponyo/UserModel/json HTTP/1.1 > User-Agent: curl/7.28.1 > Host: localhost:8081 > Accept: */* > Content-Type: application/json > Content-Length: 121 > * upload completely sent off: 121 out of 121 bytes < HTTP/1.1 415 Unsupported Media Type < Content-Type: text/html; charset=iso-8859-1 < Date: Wed, 09 Apr 2014 13:55:43 GMT < Content-Length: 0 < * Connection #0 to host localhost left intact * Closing connection #0\n\nI resolved it by adding the dependency to pom.xml as follows. Please try it.\n\n<dependency> <groupId>com.owlike</groupId> <artifactId>genson</artifactId> <version>0.98</version> </dependency>\n\nI had the same issue, as it was giving error-415-unsupported-media-type while hitting post call using json while i already had the\n\n@Consumes(MediaType.APPLICATION_JSON)\n\nand request headers as in my restful web service using Jersey 2.0+\n\nAccept:application/json Content-Type:application/json\n\nI resolved this issue by adding following dependencies to my project\n\n<dependency> <groupId>org.glassfish.jersey.media</groupId> <artifactId>jersey-media-json-jackson</artifactId> <version>2.25</version> </dependency>\n\nthis will add following jars to your library :\n\njersey-media-json-jackson-2.25.jar\n\njersey-entity-filtering-2.25.jar\n\njackson-module-jaxb-annotations-2.8.4.jar\n\njackson-jaxrs-json-provider-2.8.4.jar\n\njackson-jaxrs-base-2.8.4.jar\n\nI hope it will works for others too as it did for me."
+    }
+}

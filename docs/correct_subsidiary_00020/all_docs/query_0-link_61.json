@@ -1,0 +1,41 @@
+{
+    "id": "correct_subsidiary_00020_0",
+    "rank": 61,
+    "data": {
+        "url": "https://serverfault.com/questions/185894/proxy-error-502-reason-error-reading-from-remote-server-with-apache-2-2-3-de",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Proxy Error 502 \"Reason: Error reading from remote server\" with Apache 2.2.3 (Debian) mod_proxy and Jetty 6.1.18",
+        "top_image": "https://cdn.sstatic.net/Sites/serverfault/Img/apple-touch-icon@2.png?v=9b1f48ae296b",
+        "meta_img": "https://cdn.sstatic.net/Sites/serverfault/Img/apple-touch-icon@2.png?v=9b1f48ae296b",
+        "images": [
+            "https://cdn.sstatic.net/Sites/serverfault/Img/logo.svg?v=43f5b6d5f65b",
+            "https://cdn.sstatic.net/Img/teams/overflowai.svg?v=d706fa76cdae",
+            "https://i.sstatic.net/LRWee.jpg?s=64",
+            "https://www.gravatar.com/avatar/f8f35c77486b4d44b055e4b820ce64ad?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/ML1tj.png?s=64",
+            "https://www.gravatar.com/avatar/f0c2706e53d8a63eed8c38672e88ad7f?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/4b78a914367c7fe93e90cc0ced005325?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/94b049ac2692df4007438573b6bdc536?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/Ubbj9.jpg?s=64",
+            "https://serverfault.com/posts/185894/ivc/758c?prg=d976c71d-b02f-492f-9f52-6905f84cb2fe"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Martin Martin"
+        ],
+        "publish_date": "2010-09-29T17:35:12",
+        "summary": "",
+        "meta_description": "Apache is receiving requests at port :80 and proxying them to Jetty at port :8080\n\nThe proxy server received an invalid response from an upstream server\nThe proxy server could not handle the reques...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/serverfault/Img/favicon.ico?v=18e9cc4f2aea",
+        "meta_site_name": "Server Fault",
+        "canonical_link": "https://serverfault.com/questions/185894/proxy-error-502-reason-error-reading-from-remote-server-with-apache-2-2-3-de",
+        "text": "Looking at the log, there's something that times out at 5 minutes (=300 seconds). That's a pretty long time to wait for a response. When you access the Jetty server directly, does this resource really take that long to produce a response?\n\nIf the five minutes really is within possible response times, you might try tweaking the ProxyTimeout configuration directive.\n\nDepending on your network set-up, it might well be that there's no reason to even try to use any keepalive system (is there a firewall between the app server and proxy which might be configured to drop sessions that are idle for too long?), but the ProxyTimeout would affect the behaviour of the proxy itself.\n\nIf the same proxy also serves other backends, it would be better to keep the current ProxyTimeout, and configure the timeout in the ProxyPass directive (see mod_proxy documentation).\n\nIf, however, the responses without the proxy are consistently something much less than the five minutes see here as the cut-off limit, then there might really be some odd interference between the proxy and app server, but you're not providing anything of value for identifying what it might be.\n\nIf the above solutions don't work, one thing you can try is to enable all your apache modules to make sure that there isn't some module you need that somehow got accidentally disabled.\n\nFor example, how I found the cause of my problem was to replace all instances of #LoadModule with LoadModule in all my Apache config files. Since that solved the problem for me, therefore I knew that my problem was not a missing \"KeepAlive\" directive argument, but rather, my problem was a missing dependency.\n\nBecause, remember, .so files are basically static libraries. Having a module enabled does not mean it will get used, but having one disabled does mean that it can't get used, and therefore, anything that depends on it will necessarily fail.\n\nNote: this answer has received some down-votes due to the fact that my initial answer seemed to suggest leaving all the modules enabled, forever. While you could theoretically do that without necessarily breaking anything, it's obviously not a best practice solution.\n\nSo, please understand, I am merely suggesting this as a troubleshooting step, not a final solution.\n\nAlso, please note: I use a special git project to track all of my local machine's apache config files. That way I can do these sorts of global search-and-replace operations in my apache config working directory, as a troubleshooting step. If enabling all modules succeeds, then try disabling them again one-by-one and restarting apache in between, until you find which module it is that needs to remain enabled. Once you've figured that out, then reset the repo back to its original state, and only enable that one module that needs to remain enabled.\n\nYou will also find that using git to track your apache config files cleans up those directories, since you won't be needing those old-fashioned .bak and .default files anymore."
+    }
+}

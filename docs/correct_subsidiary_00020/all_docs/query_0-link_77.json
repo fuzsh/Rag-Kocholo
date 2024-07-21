@@ -1,0 +1,46 @@
+{
+    "id": "correct_subsidiary_00020_0",
+    "rank": 77,
+    "data": {
+        "url": "https://nanddeepn.github.io/posts/2020-01-14-spfx-build-ms-teams-personal-app/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Build MS Teams Personal Apps in SPFx",
+        "top_image": "https://nanddeepn.github.io/media/2020-01-14-spfx-build-ms-teams-personal-app/08.png",
+        "meta_img": "https://nanddeepn.github.io/media/2020-01-14-spfx-build-ms-teams-personal-app/08.png",
+        "images": [
+            "https://nanddeepn.github.io/assets/images/profile_pic.jpg",
+            "https://nanddeepn.github.io/assets/images/MVP_Logo.png",
+            "https://nanddeepn.github.io/media/2020-01-14-spfx-build-ms-teams-personal-app/08.png",
+            "https://nanddeepn.github.io/media/2020-01-14-spfx-build-ms-teams-personal-app/01.png",
+            "https://nanddeepn.github.io/media/2020-01-14-spfx-build-ms-teams-personal-app/02.png",
+            "https://nanddeepn.github.io/media/2020-01-14-spfx-build-ms-teams-personal-app/03.png",
+            "https://nanddeepn.github.io/media/2020-01-14-spfx-build-ms-teams-personal-app/04.png",
+            "https://nanddeepn.github.io/media/2020-01-14-spfx-build-ms-teams-personal-app/05.png",
+            "https://nanddeepn.github.io/media/2020-01-14-spfx-build-ms-teams-personal-app/06.png",
+            "https://nanddeepn.github.io/media/2020-01-14-spfx-build-ms-teams-personal-app/07.png",
+            "https://nanddeepn.github.io/media/2020-01-14-spfx-build-ms-teams-personal-app/08.png",
+            "https://nanddeepn.github.io/media/2024-07-19-spo-sites-selected/01.png",
+            "https://nanddeepn.github.io/media/2024-07-05-restricted-sharepoint-search/01.png",
+            "https://nanddeepn.github.io/media/2024-06-27-m365-classified-listings-copilot/preview-teams.png",
+            "https://nanddeepn.github.io/media/2024-06-16-aoai-function-calling/04.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Nanddeep Nachan"
+        ],
+        "publish_date": "2020-01-14T00:00:00",
+        "summary": "",
+        "meta_description": "Overview",
+        "meta_lang": "en",
+        "meta_favicon": "",
+        "meta_site_name": "Nanddeep Nachan Blogs",
+        "canonical_link": "https://nanddeepn.github.io/posts/2020-01-14-spfx-build-ms-teams-personal-app/",
+        "text": "Overview\n\nSharePoint Framework v1.8 supported hosting SPFx web parts as a tab inside MS Teams. SPFx v1.10 now supports creating solutions in Microsoft Teams for building the personal app. Personal apps offer a view of your key application data from across teams and can either be acquired individually or deployed across Teams.\n\nIn this article, we will get an overview of the personal app and how to build it with SPFx.\n\nUpgrade to SPFx v1.10\n\nOn the command prompt, execute the below command to list out the outdated npm packages.\n\nUpgrade to SPFx v1.10 by running below command:\n\nOverview of Personal Apps in MS Teams\n\nA personal app is an app with a personal scope. As a developer, you can develop a version of your app that is built for the individual user. It can have a collection of tabs and a bot. A personal app is available from the personal app flyout.\n\nDevelop SPFx solution for MS Teams Personal App\n\nFollow the below steps to develop the SPFx solution.\n\nOpen a command prompt. Create a directory for the SPFx solution.\n\nmd spfx-ms-teams-personal-app\n\nNavigate to the directory.\n\ncd spfx-ms-teams-personal-app\n\nRun the Yeoman SharePoint Generator to create the solution.\n\nyo @microsoft/sharepoint\n\nYeoman generator will present you with the wizard by asking questions about the solution to be created.\n\nWhen prompted:\n\nAccept the default spfx-ms-teams-personal-app as your solution name, and then select Enter.\n\nSelect SharePoint Online only (latest), and then select Enter.\n\nSelect Use the current folder as the location for the files.\n\nSelect y to ensure that your web part is automatically deployed tenant-wide when it’s added to the tenant App Catalog.\n\nSelect N on the question if solution contains unique permissions.\n\nSelect WebPart as the client-side component type to be created.\n\nEnter MyTeamsPersonalApp for the web part name, and then select Enter.\n\nEnter the description of the web part.\n\nSelect No JavaScript framework to develop the web part.\n\nYeoman generator will perform the scaffolding process to generate the solution. The scaffolding process will take a significant amount of time.\n\nOnce the scaffolding process is completed, lock down the version of the project dependencies by running below command.\n\nnpm shrinkwrap\n\nOn the command prompt type below command to open the solution in the code editor of your choice.\n\nUpdate the web part manifest to make the SPFx web part available as a personal app in MS Teams.\n\nOpen manifest json file for the web part.\n\nModify the supportedHosts properties to include “TeamsPersonalApp”.\n\n{ \"$schema\": \"https://developer.microsoft.com/json-schemas/spfx/client-side-web-part-manifest.schema.json\", \"id\": \"0648ced7-f57d-40f3-b9ed-b4152d877b52\", \"alias\": \"MyTeamsPersonalAppWebPart\", \"componentType\": \"WebPart\", // The \"*\" signifies that the version should be taken from the package.json \"version\": \"*\", \"manifestVersion\": 2, // If true, the component can only be installed on sites where Custom Script is allowed. // Components that allow authors to embed arbitrary script code should set this to true. // https://support.office.com/en-us/article/Turn-scripting-capabilities-on-or-off-1f2c515f-5d7e-448a-9fd7-835da935584f \"requiresCustomScript\": false, \"supportedHosts\": [\"SharePointWebPart\", \"TeamsPersonalApp\"], \"preconfiguredEntries\": [{ \"groupId\": \"5c03119e-3074-46fd-976b-c60198311f70\", // Other \"group\": { \"default\": \"Other\" }, \"title\": { \"default\": \"MyTeamsPersonalApp\" }, \"description\": { \"default\": \"MyTeamsPersonalApp description\" }, \"officeFabricIconFontName\": \"Page\", \"properties\": { \"description\": \"MyTeamsPersonalApp\" } }] }\n\nOpen web part file at src\\webparts\\myTeamsPersonalApp\\MyTeamsPersonalAppWebPart.ts.\n\nUpdate the render method as below:\n\nPackage and deploy the web part to SharePoint\n\nExecute the below command to build bundle your solution.\n\ngulp bundle --ship\n\nExecute the below command to package your solution.\n\ngulp package-solution --ship\n\nThe output package (.sppkg) is available under the sharepoint/solution folder.\n\nUpload the package (.sppkg) to the SharePoint app catalog.\n\nEnsure that the Make this solution available to all sites in the organization option is selected, so that the web part can be used from the Microsoft Teams side.\n\nClick Deploy.\n\nSelect the spfx-ms-teams-personal-app package in the SharePoint tenant App Catalog and click the Sync to Teams button in the ribbon at the Files tab to make the web part available in Microsoft Teams.\n\nTest Personal App in MS Teams\n\nFollow the below steps to verify the SPFx web part appearing as Personal App in MS Teams.\n\nOpen MS Teams desktop application.\n\nClick Apps > Built for < tenant >.\n\nClick our app (MyTeamsPersoanlApp).\n\nClick Add.\n\nThe SPFx web part is added as a personal app.\n\nSummary\n\nA personal app in MS Teams is an app with a personal scope. SPFx v1.10 now supports creating solutions in Microsoft Teams for building the personal app. Personal apps offer a view of your key application data from across teams and can either be acquired individually or deployed across Teams."
+    }
+}

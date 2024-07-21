@@ -1,0 +1,48 @@
+{
+    "id": "correct_subsidiary_00020_1",
+    "rank": 28,
+    "data": {
+        "url": "https://siddharthvaghasia.com/upload-file-to-sharepoint-library-using-file-control-and-pnp-js-in-spfx-webpart/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Upload file to SharePoint library using File Control and PnP JS in SPFx webpart - Siddharth Vaghasia",
+        "top_image": "http://siddharthvaghasia.com/wp-content/uploads/2019/10/img_5da6b6d6af72e.png",
+        "meta_img": "http://siddharthvaghasia.com/wp-content/uploads/2019/10/img_5da6b6d6af72e.png",
+        "images": [
+            "http://siddharthvaghasia.com/wp-content/uploads/2019/10/img_5da6b6d6af72e.png",
+            "http://siddharthvaghasia.com/wp-content/uploads/2019/10/img_5da6b738f1198.png",
+            "https://siddharthvaghasia.com/wp-content/uploads/2020/10/MVP_Logo-300x121.png",
+            "https://stackexchange.com/users/flair/4997088.png",
+            "https://siddharthvaghasia.com/wp-content/plugins/xt-visitor-counter/styles/image/glass/3.gif",
+            "https://siddharthvaghasia.com/wp-content/plugins/xt-visitor-counter/styles/image/glass/3.gif",
+            "https://siddharthvaghasia.com/wp-content/plugins/xt-visitor-counter/styles/image/glass/0.gif",
+            "https://siddharthvaghasia.com/wp-content/plugins/xt-visitor-counter/styles/image/glass/0.gif",
+            "https://siddharthvaghasia.com/wp-content/plugins/xt-visitor-counter/styles/image/glass/3.gif",
+            "https://siddharthvaghasia.com/wp-content/plugins/xt-visitor-counter/styles/image/glass/4.gif",
+            "https://siddharthvaghasia.com/wp-content/plugins/xt-visitor-counter/counter/mvcvisit.png",
+            "https://siddharthvaghasia.com/wp-content/plugins/xt-visitor-counter/counter/mvcyesterday.png",
+            "https://siddharthvaghasia.com/wp-content/plugins/xt-visitor-counter/counter/mvcmonth.png",
+            "https://siddharthvaghasia.com/wp-content/plugins/xt-visitor-counter/counter/mvcyear.png",
+            "https://siddharthvaghasia.com/wp-content/plugins/xt-visitor-counter/counter/mvctotal.png",
+            "https://siddharthvaghasia.com/wp-content/plugins/xt-visitor-counter/counter/mvctoday.png",
+            "https://siddharthvaghasia.com/wp-content/plugins/xt-visitor-counter/counter/mvctotalviews.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Siddharth Vaghasia"
+        ],
+        "publish_date": "2019-10-16T06:24:18+00:00",
+        "summary": "",
+        "meta_description": "In this article, we will learn how to upload files to the SharePoint library using File Control and PnP JS",
+        "meta_lang": "en",
+        "meta_favicon": "",
+        "meta_site_name": "Siddharth Vaghasia | Independent Consultant",
+        "canonical_link": "https://siddharthvaghasia.com/upload-file-to-sharepoint-library-using-file-control-and-pnp-js-in-spfx-webpart/",
+        "text": "In this article, we will learn how to upload files to the SharePoint library using File Control and PnP JS in SPFx web parts.\n\nPre-requisites – You have created SPFx webpart created and Select react Framework.\n\nPlease note that this can be used using No Javascript framework or Vue.js. Only difference would be how you rendering your input control and getting context. That is a different story.\n\nWe would use SP PnP js library module for SPFx web part.\n\nInstall it in your SPFx solution using below command.\n\nnpm install @pnp/sp --save\n\nAdded import statement in webpartcomponent.tsx file\n\nimport { sp } from \"@pnp/sp\";\n\nBelow should be your render method.\n\npublic render(): React.ReactElement<ISpFxWebCamProps> { return ( <div className={ styles.maincontainer }> <input type=\"file\" ref={(elm) => { this._input = elm; }}></input> <p> <button onClick={() => this.uploadFileFromControl()} > Upload </button> </p> </div> ); }\n\nAdd our uploadFileFromControl method, please note here MyDocs is library name.\n\nprivate uploadFileFromControl(){ //Get the file from File DOM var files = this._input.files; var file = files[0]; //Upload a file to the SharePoint Library sp.web.getFolderByServerRelativeUrl(this.props.context.pageContext.web.serverRelativeUrl + \"/MyDocs\") .files.add(file.name, file, true) .then((data) =>{ alert(\"File uploaded sucessfully\"); }) .catch((error) =>{ alert(\"Error is uploading\"); }); }\n\nThat’s it, let us test this out.\n\nRun gulp serve and browse workbench.aspx from your SharePoint site.\n\nhttps://netflix.sharepoint.com/sites/strangerthings/_layouts/15/workbench.aspx\n\nSelect a file and click on upload.\n\nLet go to library to check if document is uploaded.\n\nThanks for reading..Happy coding..!!!\n\n(Visited 12,537 times, 1 visits today)"
+    }
+}

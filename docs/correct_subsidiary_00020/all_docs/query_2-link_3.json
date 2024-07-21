@@ -1,0 +1,38 @@
+{
+    "id": "correct_subsidiary_00020_2",
+    "rank": 3,
+    "data": {
+        "url": "https://sharepoint.stackexchange.com/questions/246295/make-sharepoint-list-partly-confidential",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Make SharePoint list partly confidential",
+        "top_image": "https://cdn.sstatic.net/Sites/sharepoint/Img/apple-touch-icon@2.png?v=24cd69cddbd9",
+        "meta_img": "https://cdn.sstatic.net/Sites/sharepoint/Img/apple-touch-icon@2.png?v=24cd69cddbd9",
+        "images": [
+            "https://cdn.sstatic.net/Sites/sharepoint/Img/logo.svg?v=50360996ab47",
+            "https://cdn.sstatic.net/Img/teams/overflowai.svg?v=d706fa76cdae",
+            "https://www.gravatar.com/avatar/bc066477641d0c9237747ae8dff64e1b?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/f87c4d8e13f76dcb51bf4b75a17b3ed1?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/LB78O.png",
+            "https://i.sstatic.net/qtcrV.png",
+            "https://i.sstatic.net/X3NdC.png",
+            "https://lh3.googleusercontent.com/-OLPpLIvvSh4/AAAAAAAAAAI/AAAAAAAAAr0/s9I8xS0uT8c/photo.jpg?sz=64",
+            "https://sharepoint.stackexchange.com/posts/246295/ivc/758c?prg=625d84f5-3911-43a7-9967-ad530db4d40b"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2018-08-01T08:56:00",
+        "summary": "",
+        "meta_description": "There is monthly confidential data I want to collect from my firm's subsidiaries through a SharePoint list, directly connected to my workfiles (Excel, Power Bi and related PPT). The existing ShareP...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/sharepoint/Img/favicon.ico?v=05a95023199c",
+        "meta_site_name": "SharePoint Stack Exchange",
+        "canonical_link": "https://sharepoint.stackexchange.com/questions/246295/make-sharepoint-list-partly-confidential",
+        "text": "Use the built-in Security Trimming\n\nIf you have properly segmented your users into SharePoint and/or Domain Groups the solution should be relatively straightforward.\n\nIt appears to me you have a development environment of some kind and at least one test account or a co-worker you’re testing with. And that you are not a beginner vis a vis SharePoint.\n\nThis is a little bit simplified, but accurate: In the SharePoint databases, each securable page element (or list/library item) has a security mask associated with it. Each user also has a security mask. With Each Pageload each of those securable page elements’ security are evaluated.\n\nThis security mask is exactly what it sounds like - a mask. If a user has the requisite permissions to at least view that item, the ‘mask’ is lifted - they can see that item. Otherwise, the item appears in the UI. If the user has a link, and does not have at least view access to the item, they will get the Request Access page for that item.\n\nThis concept is replicated completely throughout the SharePoint Farm. Search results are masked from the end user if they do not have the permissions at least view them.\n\nIn SharePoint world there is no ‘Deny’ security attribute, so if a user does not have any permissions to an object, it is the equivalent to a Deny: they need to request access.\n\nAnswer: Do Not be afraid of breaking permission inheritance - even at the file level. If you’re doing what I think you’re doing, you have source excel files feeding into at least one other excel file. This method may generate a sync error or something if your all your user segments have access to the top level consumer Excel file, but only their own viewable data will be present for them.\n\nHere is a very simple example of what the implications of security trimming are:\n\nUser 1 has View Access to all 3 customer service sites\n\nUser 2 has View Access to the customer service site and the customer service records center\n\nUser 3 has view Access to only the Customer Service site and the Customer Service Department Site.\n\nUser 1: User 2: User 3:\n\nI hope this helps you."
+    }
+}
