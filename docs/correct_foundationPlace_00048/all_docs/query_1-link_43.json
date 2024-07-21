@@ -1,0 +1,34 @@
+{
+    "id": "correct_foundationPlace_00048_1",
+    "rank": 43,
+    "data": {
+        "url": "https://sourceforge.net/p/gull/mailman/message/3816421/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Re: [Seagull-users] Diameter Grouped AVP & external data file",
+        "top_image": "https://a.fsdn.com/con/img/sandiego/logo-180x180.png",
+        "meta_img": "https://a.fsdn.com/con/img/sandiego/logo-180x180.png",
+        "images": [
+            "https://a.fsdn.com/con/images/sandiego/sf-logo-full.svg",
+            "https://a.fsdn.com/con/images/sandiego/sf-logo-full.svg",
+            "https://a.fsdn.com/con/images/sandiego/sf-logo-full.svg",
+            "https://a.fsdn.com/con/images/sandiego/github-sync.png",
+            "https://a.fsdn.com/con/images/sandiego/sf-logo-full.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "https://a.fsdn.com/con/img/sandiego/logo-180x180.png",
+        "meta_site_name": "",
+        "canonical_link": "https://sourceforge.net/p/gull/mailman/message/3816421/",
+        "text": "Hi Mads, Thanks for the information. One question - did you also have to modify the= Subscription-Id type from 'Grouped' to 'OctetString' in your dictionary? = This was also suggested in the wiki tip but when I modified my dictionary I= and tried to run I got an immediate error. Thanks Again, Fran ________________________________ From: Mads Skovgaard [mailto:mad...@in...] Sent: Thursday, September 27, 2007 7:50 AM To: Fran Maruca; gul...@li... Subject: RE: [Seagull-users] Diameter Grouped AVP & external data file Hi Fran, I have used a csv file similar to this for Subscription-Id-Data substitutio= n with success: \"string\" ; \"0x000001c24000000c00000001000001bc4000000f3130303030303000\" ; \"0x000001c24000000c00000001000001bc4000000f3130303030303100\" ; \"0x000001c24000000c00000001000001bc4000000f3130303030303200\" ; \"0x000001c24000000c00000001000001bc4000000f3130303030303300\" ; \"0x000001c24000000c00000001000001bc4000000f3130303030303400\" ; And a scenario action like this: <action> <!-- For each new call, increment the session-ID counter --> <inc-counter name=3D\"HbH-counter\"> </inc-counter> <inc-counter name=3D\"EtE-counter\"> </inc-counter> <inc-counter name=3D\"session-counter\"> </inc-counter> <set-value name=3D\"HbH-id\" format=3D\"$(HbH-counter)\"></set-value> <set-value name=3D\"EtE-id\" format=3D\"$(EtE-counter)\"></set-value> <set-value name=3D\"Session-Id\" format=3D\".;1096298391;$(session-counter)\"></set-value> <restore-from-external field=3D\"0\" entity=3D\"Subscription-Id\" begin= =3D\"0\" end=3D\"28\"></restore-from-external> </action> Seagull then uses 1000000 - 1000004 as Subscription-Id-Data. Hope this is helpful. Regards, Mads Skovgaard Test Engineer - System Test ISEB Foundation Certified Intec Telecom Systems Denmark A/S Tel: +45 7012 2500 Fax: +45 7012 2501 Email: mad...@in...<mailto:mads.skovgaard@intecbilling.c= om> From: gul...@li... [mailto:gull-users-bounces@l= ists.sourceforge.net] On Behalf Of Fran Maruca Sent: 26. september 2007 19:51 To: gul...@li... Subject: [Seagull-users] Diameter Grouped AVP & external data file Hi, I'm currently trying to use an external data file with Diamter. Specifical= ly I'd like to replace the Subscription-Id-Data avp which is part of the Su= bscription-Id grouped avp. After many failed attempts trying to get this t= o work I followed the example on the associated wiki page which details thi= s very scenario. However when I modify my dictionary to substitute \"OctetS= tring\" for \"Grouped\" in relation to the Subscription-Id avp as suggested I = get the error \"value is mandatory for [avp] definition\" when I try to run. I'm currently running version 1.6.0 of Seagull. Any help would be apprecia= ted. Thanks, Fran This e-mail and any attachments are confidential and may also be legally privileged and/or copyright material of Intec Telecom Systems PLC (or its affiliated companies). If you are not an intended or authorised recipient of this e-mail or have received it in error, please delete it immediately and notify the sender by e-mail. In such a case, reading, reproducing, printing or further dissemination of this e-mail or its contents is strictl= y prohibited and may be unlawful. Intec Telecom Systems PLC does not represent or warrant that an attachment hereto is free from computer viruses or other defects. The opinions expressed in this e-mail and any attachments may be those of the author and are not necessarily those of Intec Telecom Systems PLC."
+    }
+}
