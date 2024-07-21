@@ -21,6 +21,17 @@ log = LoggingConfigurator.get_logger(__name__)
 ua = UserAgent(os=['windows'], browsers=["chrome", "edge", "firefox"], platforms=["pc"])
 
 
+def should_avoid(url, avoid_extensions):
+    extension = os.path.splitext(url)[1]
+    return extension.lower() in avoid_extensions
+
+
+# List of file extensions to avoid
+avoid_extensions = [
+    '.cfm', '.jsp', '.cgi', '.exe', '.bat', '.cmd', '.sh', '.pl', '.py', '.rb'
+]
+
+
 def search_query(query, proxies, retries=3):
     retries = retries
 
@@ -186,6 +197,7 @@ def get_article_from_query(kg, search_engine="google"):
                 soup = BeautifulSoup(f, 'html.parser')
 
             urls = _get_urls(soup, search_engine)
+            urls = [url for url in urls if not should_avoid(url['url'], avoid_extensions)]
 
             # APPROACH 2
             rs = [grequests.get(u['url'], timeout=3) for u in urls]
