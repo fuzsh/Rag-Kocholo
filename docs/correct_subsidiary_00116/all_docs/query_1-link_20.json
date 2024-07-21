@@ -1,0 +1,50 @@
+{
+    "id": "correct_subsidiary_00116_1",
+    "rank": 20,
+    "data": {
+        "url": "https://community.meraki.com/t5/Switching/Set-NTP-server-options/m-p/19627",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Set NTP server options?",
+        "top_image": "https://community.meraki.com/t5/image/serverpage/image-id/23014iD254E0BC42417716?v=v2",
+        "meta_img": "https://community.meraki.com/t5/image/serverpage/image-id/23014iD254E0BC42417716?v=v2",
+        "images": [
+            "https://community.meraki.com/html/@D39985C0862554A771938656323D2245/assets/2020-07-logo.svg",
+            "https://community.meraki.com/t5/image/serverpage/image-id/3013i32DECDA94B04C8BA/image-dimensions/40x40/image-coordinates/0%2C0%2C400%2C400/constrain-image/false?v=v2",
+            "https://community.meraki.com/t5/image/serverpage/image-id/1971i9D80CDFB3FC8F039/image-dimensions/40x40/image-coordinates/0%2C0%2C564%2C564/constrain-image/false?v=v2",
+            "https://community.meraki.com/t5/image/serverpage/image-id/3013i32DECDA94B04C8BA/image-dimensions/40x40/image-coordinates/0%2C0%2C400%2C400/constrain-image/false?v=v2",
+            "https://community.meraki.com/t5/image/serverpage/image-id/4120i2FBEA65231E4FDE0/image-dimensions/40x40/image-coordinates/443%2C86%2C2456%2C2099/constrain-image/false?v=v2",
+            "https://community.meraki.com/t5/image/serverpage/image-id/1971i9D80CDFB3FC8F039/image-dimensions/40x40/image-coordinates/0%2C0%2C564%2C564/constrain-image/false?v=v2",
+            "https://community.meraki.com/t5/image/serverpage/image-id/3013i32DECDA94B04C8BA/image-dimensions/40x40/image-coordinates/0%2C0%2C400%2C400/constrain-image/false?v=v2",
+            "https://community.meraki.com/t5/image/serverpage/image-id/574iEC4051B93E3A6218/image-dimensions/40x40/image-coordinates/27%2C6%2C362%2C341/constrain-image/false?v=v2",
+            "https://community.meraki.com/html/@55312F624A83C698CF2C6A4867A2384D/rank_icons/meraki-employee.png",
+            "https://community.meraki.com/t5/image/serverpage/avatar-name/saturn/avatar-theme/candy/avatar-collection/Space/avatar-display-size/message/version/2?xdesc=1.0",
+            "https://community.meraki.com/t5/image/serverpage/image-id/14765i36EDABC034A4437A/image-dimensions/40x40/image-coordinates/0%2C0%2C600%2C600/constrain-image/false?v=v2",
+            "https://community.meraki.com/t5/image/serverpage/image-id/3013i32DECDA94B04C8BA/image-dimensions/40x40/image-coordinates/0%2C0%2C400%2C400/constrain-image/false?v=v2",
+            "https://community.meraki.com/t5/image/serverpage/image-id/28924iFFF60992F5633156/image-dimensions/40x40/image-coordinates/291%2C136%2C825%2C670/constrain-image/false?v=v2",
+            "https://community.meraki.com/t5/image/serverpage/image-id/23014iD254E0BC42417716/image-size/medium?v=v2&px=400",
+            "https://community.meraki.com/t5/image/serverpage/image-id/23016iEFF1039BD9EADE61/image-size/medium?v=v2&px=400",
+            "https://community.meraki.com/t5/image/serverpage/image-id/23015i5E72300BCB7A6B9C/image-size/medium?v=v2&px=400",
+            "https://community.meraki.com/skins/images/14FBF630671C93FD881BB4AA06F5A255/responsive_peak/images/icon_anonymous_message.png",
+            "https://community.meraki.com/skins/images/13053B3DF42A2931F87F219F8D3E0FD6/responsive_peak/images/powered_by_khoros.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "community.meraki.com",
+            "user-id"
+        ],
+        "publish_date": "2018-05-21T13:32:47.338000+00:00",
+        "summary": "",
+        "meta_description": "I have 2 NTP servers - Stratum 1. Why can't Merak use my time server(s) to sync off of?",
+        "meta_lang": "en",
+        "meta_favicon": "https://community.meraki.com/html/@386F22B023EF8D95DF505128BEE7BAAA/assets/favicon.ico",
+        "meta_site_name": "",
+        "canonical_link": "https://community.meraki.com/t5/Switching/Set-NTP-server-options/m-p/19627#M1560",
+        "text": "Adam, NTP via DHCP is mostly not functional. Many companies simply fail to implement that part of the standard on their equipment. There are also a few viruses that utilize NTP injection through DHCP offers. Again its not to make the Meraki an NTP server. I want Meraki to use my NTP servers for accurate time sync.\n\n@King-of-Lag in most/all recent firmware versions, NTP actually happens over the mtunnel connections that all Meraki devices make back to their cloud controllers. Only if there's no response for some reason, they would then leverage public NTP servers. See your point though, and it's a good one, especially at large scale. Still, when NTP is happening via mtunnel (let's say 99.999% of the time) it's all part of that very lightweight (roughly 1Kbps on average) control plane connection. I'd still discuss it with your Meraki or Meraki Partner contacts and have them check if there's an FR in the system already, and if not perhaps create one.\n\n@sbcoms for every Meraki network (a Meraki network is essentially a container for all the devices at a site/location) you specify the Timezone, all the reporting for that Meraki network is then shown in that Timezone. The configured Timezone for a site is also used when setting schedules for SSIDs, etc., so that you don’t need try and do any conversions.\n\nSpankym, I would want to use my NTP service because its local. it has higher reliability and lower latency. Its also a stratum 1 and not a 2 or 3 like some of them on the NTP.org options or time.google.com. Mine also support PTP services for higher accuracy, so why not use them?\n\nAlso since I have thousands of devices already pulling NTP, I want to limit as much as possible any more use of my WAN connection than what is needed. When you get into larger networks, security and bandwidth conservation become a necessity for hosted or remote accessible service offerings so that bandwidth, buffer packet rates, and system resources remain optimal."
+    }
+}

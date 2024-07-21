@@ -1,0 +1,36 @@
+{
+    "id": "correct_subsidiary_00116_1",
+    "rank": 23,
+    "data": {
+        "url": "https://networkengineering.stackexchange.com/questions/32473/ntp-synchronization-issue-with-cisco-ise",
+        "read_more_link": "",
+        "language": "en",
+        "title": "NTP synchronization issue with Cisco ISE",
+        "top_image": "https://cdn.sstatic.net/Sites/networkengineering/Img/apple-touch-icon@2.png?v=2ae76539f625",
+        "meta_img": "https://cdn.sstatic.net/Sites/networkengineering/Img/apple-touch-icon@2.png?v=2ae76539f625",
+        "images": [
+            "https://cdn.sstatic.net/Sites/networkengineering/Img/logo.svg?v=ecc4997c4794",
+            "https://cdn.sstatic.net/Img/teams/overflowai.svg?v=d706fa76cdae",
+            "https://www.gravatar.com/avatar/ba9e2bb16fd59ef912af2fc9186b9098?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/4d5bded8ba4ade62074641de57ab6406?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/jQsNL.png?s=64",
+            "https://www.gravatar.com/avatar/ca7d1ec85211dadf057070597d604e4d?s=64&d=identicon&r=PG",
+            "https://networkengineering.stackexchange.com/posts/32473/ivc/b10d?prg=6353dfd4-77ee-4739-8275-0297d1c07983"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2016-06-22T15:08:11",
+        "summary": "",
+        "meta_description": "We have a Cisco ISE 2.0 in our lab doing some 802.1X testing. To have synchonized times, we use an NTP server in the same subnet as the ISE to sync all the components (stratum 3, based on Bluecat",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/networkengineering/Img/favicon.ico?v=c898b778f3c6",
+        "meta_site_name": "Network Engineering Stack Exchange",
+        "canonical_link": "https://networkengineering.stackexchange.com/questions/32473/ntp-synchronization-issue-with-cisco-ise",
+        "text": "NTP is choosing to use the local time source because it has deemed it \"better\" (or more trustworthy) than the other sources you have configured. The stratum is only one piece of information NTP will use in determining it's source.\n\nIn your case, the other two servers have significantly (in NTP's view) different times the the currently set time and the jitter value for those two servers is extreme to say the least. Based on this information, NTP is choosing to continue using the local time source over the servers you have configured.\n\nFirst, set up your own time server (or servers) on the local network and configure it to synchronize with reliable time sources (don't use ntp pool servers). For instance, Hurricane Electric maintains several NTP servers for public use. While they do offer three, I advise you find reliable sources from multiple organizations. This is fairly easy using a Linux platform or you can use your router as you mentioned (although this will put more load on your router).\n\nNow, configure ISE and other devices to synchronize with your local time source. As long as your local time sources have no issues getting to it's sources, this time should get chosen over the local clock."
+    }
+}

@@ -1,0 +1,34 @@
+{
+    "id": "correct_subsidiary_00116_1",
+    "rank": 47,
+    "data": {
+        "url": "https://serverfault.com/questions/446425/cisco-switch-ntp-client-clock-is-unsynchronized-stratum-16-no-reference-clock",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Cisco Switch NTP client Clock is unsynchronized, stratum 16, no reference clock",
+        "top_image": "https://cdn.sstatic.net/Sites/serverfault/Img/apple-touch-icon@2.png?v=9b1f48ae296b",
+        "meta_img": "https://cdn.sstatic.net/Sites/serverfault/Img/apple-touch-icon@2.png?v=9b1f48ae296b",
+        "images": [
+            "https://cdn.sstatic.net/Sites/serverfault/Img/logo.svg?v=43f5b6d5f65b",
+            "https://cdn.sstatic.net/Img/teams/overflowai.svg?v=d706fa76cdae",
+            "https://www.gravatar.com/avatar/7ddd1287e32a3008b747ba82526dba4a?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/168656cdb1567e34641d90f021330e85?s=64&d=identicon&r=PG",
+            "https://serverfault.com/posts/446425/ivc/b10d?prg=2ccf4298-bcd0-46ec-98bd-53dd27bcb498"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2012-11-07T19:04:50",
+        "summary": "",
+        "meta_description": "I am trying to configure a cisco switch as a ntp client, however I cannot get past the show ntp status of Clock is unsynchronized, stratum 16, no reference clock. I've tried setting the clock close...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/serverfault/Img/favicon.ico?v=18e9cc4f2aea",
+        "meta_site_name": "Server Fault",
+        "canonical_link": "https://serverfault.com/questions/446425/cisco-switch-ntp-client-clock-is-unsynchronized-stratum-16-no-reference-clock",
+        "text": "I am trying to configure a cisco switch as a ntp client, however I cannot get past the show ntp status of Clock is unsynchronized, stratum 16, no reference clock. I've tried setting the clock close to the UTC time, but i still don't show time synced. First I thought it was due to a bug I was reading about regarding Win32Timeservice, or something like that, however I confirmed that this is a NTPD server (10.0.0.8) running on Unix.\n\nHere is running-config\n\nntp server 10.0.0.8\n\nHere is show ntp status\n\nClock is unsynchronized, stratum 16, no reference clock nominal freq is 119.2092 Hz, actual freq is 119.2092 Hz, precision is 2**17 reference time is 00000000.00000000 (00:00:00.000 UTC Mon Jan 1 1900) clock offset is 0.0000 msec, root delay is 0.00 msec root dispersion is 0.00 msec, peer dispersion is 0.00 msec\n\nHere is show ntp associations:\n\naddress ref clock st when poll reach delay offset disp ~10.0.0.8 73.0.0.84 16 11 128 377 1.8 24018. 4.7 * master (synced), # master (unsynced), + selected, - candidate, ~ configured\n\nHere is show ntp associatsions detail:\n\n10.0.0.8 configured, insane, invalid, stratum 16 ref ID 73.78.73.84, time D4452E2F.F4727CEA (18:59:59.954 UTC Wed Nov 7 2012) our mode active, peer mode active, our poll intvl 512, peer poll intvl 256 root delay 0.00 msec, root disp 8.65, reach 377, sync dist 13.535 delay 1.45 msec, offset 24014.6042 msec, dispersion 4.17 precision 2**20, version 3 org time D4452E2F.F472894E (18:59:59.954 UTC Wed Nov 7 2012) rcv time D4452E17.F0E5117A (18:59:35.940 UTC Wed Nov 7 2012) xmt time D4452E17.F083A829 (18:59:35.939 UTC Wed Nov 7 2012) filtdelay = 1.45 2.44 1.80 1.71 1.91 1.72 1.31 2.37 filtoffset = 24014.6 24016.5 24018.8 24021.3 24023.6 24026.1 24028.7 24030.7 filterror = 0.02 0.99 1.79 2.76 3.74 4.71 5.69 6.67\n\nHere is my debug ntp\n\n1d03h: NTP: xmit packet to 10.0.0.8: 1d03h: leap 3, mode 1, version 3, stratum 0, ppoll 64 1d03h: rtdel 0000 (0.000), rtdsp 10001 (1000.015), refid 00000000 (0.0.0.0) 1d03h: ref 00000000.00000000 (00:00:00.000 UTC Mon Jan 1 1900) 1d03h: org D4452CBB.F7C546BE (18:53:47.967 UTC Wed Nov 7 2012) 1d03h: rec D4452CA3.F093A140 (18:53:23.939 UTC Wed Nov 7 2012) 1d03h: xmt D4452CE3.F082CDCD (18:54:27.939 UTC Wed Nov 7 2012) 1d03h: NTP: rcv packet from 10.0.0.8 to 10.0.0.30 on Vlan20: 1d03h: leap 0, mode 1, version 3, stratum 0, ppoll 64 1d03h: rtdel 0000 (0.000), rtdsp 0108 (4.028), refid 494E4954 (73.78.73.84) 1d03h: ref D4452CFB.F76D2086 (18:54:51.966 UTC Wed Nov 7 2012) 1d03h: org D4452CE3.F082CDCD (18:54:27.939 UTC Wed Nov 7 2012) 1d03h: rec D4452CFB.F76B8A2C (18:54:51.966 UTC Wed Nov 7 2012) 1d03h: xmt D4452CFB.F76D2DB1 (18:54:51.966 UTC Wed Nov 7 2012) 1d03h: inp D4452CE3.F0F5FBCA (18:54:27.941 UTC Wed Nov 7 2012)\n\nI'm not really sure whwere to go to from here. I know under show ntp associations detail if insane or invalid or stratum 16 is in there the cisco switch won't sync time.\n\nHere is the ntp.conf"
+    }
+}

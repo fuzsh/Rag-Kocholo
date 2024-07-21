@@ -1,0 +1,43 @@
+{
+    "id": "correct_subsidiary_00116_1",
+    "rank": 93,
+    "data": {
+        "url": "https://community.cisco.com/t5/contact-center/icm-servers-keep-falling-back-one-hour/td-p/1311241",
+        "read_more_link": "",
+        "language": "en",
+        "title": "ICM servers keep falling back one hour",
+        "top_image": "https://community.cisco.com/html/assets/ciscooglogo.png",
+        "meta_img": "https://community.cisco.com/html/assets/ciscooglogo.png",
+        "images": [
+            "https://community.cisco.com/t5/image/serverpage/avatar-name/default_icon/avatar-theme/candy/avatar-collection/Cisco_Default/avatar-display-size/profile/version/2?xdesc=1.0",
+            "https://community.cisco.com/html/@E1D9E5099E7D8FD73DECA4D3FF50F455/rank_icons/rank-1.png",
+            "https://community.cisco.com/legacyfs/online/legacy/2/2/2/91222-profile_image_350",
+            "https://community.cisco.com/html/@6B9987C79AC75D031A1DADB7914148F7/rank_icons/rank-4.png",
+            "https://community.cisco.com/t5/image/serverpage/avatar-name/default_icon/avatar-theme/candy/avatar-collection/Cisco_Default/avatar-display-size/profile/version/2?xdesc=1.0",
+            "https://community.cisco.com/html/@FACBEAFF73221B2714A649E91FB50156/rank_icons/rank-10.png",
+            "https://community.cisco.com/t5/image/serverpage/avatar-name/default_icon/avatar-theme/candy/avatar-collection/Cisco_Default/avatar-display-size/profile/version/2?xdesc=1.0",
+            "https://community.cisco.com/html/@E1D9E5099E7D8FD73DECA4D3FF50F455/rank_icons/rank-1.png",
+            "https://community.cisco.com/t5/image/serverpage/avatar-name/default_icon/avatar-theme/candy/avatar-collection/Cisco_Default/avatar-display-size/profile/version/2?xdesc=1.0",
+            "https://community.cisco.com/html/@FACBEAFF73221B2714A649E91FB50156/rank_icons/rank-10.png",
+            "https://community.cisco.com/skins/images/BA6DA6BF75838CD50E67419C9FB4EDC6/responsive_peak/images/icon_anonymous_message.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "community.cisco.com",
+            "user-id"
+        ],
+        "publish_date": "2009-10-27T14:17:01+00:00",
+        "summary": "",
+        "meta_description": "Roggers, PG and AW keep going back an hour. We have manually changed the time to correct this issue but sit there and watch it fallback an hour again. Has anyone seen this issue? Currently running ICM 7.2(1)",
+        "meta_lang": "en",
+        "meta_favicon": "https://community.cisco.com/html/@D17C385B8A505F8125C5E271F02ACC75/rank_icons/ciscologo-square_16x16.png",
+        "meta_site_name": "",
+        "canonical_link": "https://community.cisco.com/t5/contact-center/icm-servers-keep-falling-back-one-hour/td-p/1311241",
+        "text": "Sounds like you have NTP (network time..) synchronization. This is managed by your Call Manager.\n\nhere is some info from one of the guides:\n\nThe Disable ICM time synchronization checkbox in the MDS and DMP Properties dialogaffects time synchronization between systems. Since the Windows operating system uses itsown integrated time service--making it unnecessary for the ICM to perform a separate timesynchronization--the box is checked by default. The ICM software documentation states thatyou should accept this default, except in cases where the PG is configured as a workgroupmachine (that is, not a domain).\n\nPlease rate helpful posts.\n\nThanks,\n\nBaseer.\n\nNTP is not, in general, managed by Call Manager.\n\nIn most enterprises it's managed by a Stratum 2 NTP source - generally a router or a Unix box. Normally there are several of these - three is better than 2. Some large enterprises have their own Stratum 1 source, external clock and all - but that's big bickies.\n\nThe conventional ICM implementation is to point the PDC emulator on the ICM DC (typically the secondary DC where the FSMO roles have been moved) at the Stratum 2 box. That provides the NTP source for the domain. All members of the domain get their time synchronization from the DC.\n\nYou are correct about disabling ICM time sync. On boxes not in the domain (CVP, Media Stores, PGs) point the NTP source directly at the Stratum 2.\n\nRegards,\n\nGeoff"
+    }
+}

@@ -1,0 +1,37 @@
+{
+    "id": "correct_subsidiary_00116_1",
+    "rank": 49,
+    "data": {
+        "url": "https://networkengineering.stackexchange.com/questions/29976/ntp-architecture-questions",
+        "read_more_link": "",
+        "language": "en",
+        "title": "NTP architecture questions",
+        "top_image": "https://cdn.sstatic.net/Sites/networkengineering/Img/apple-touch-icon@2.png?v=2ae76539f625",
+        "meta_img": "https://cdn.sstatic.net/Sites/networkengineering/Img/apple-touch-icon@2.png?v=2ae76539f625",
+        "images": [
+            "https://cdn.sstatic.net/Sites/networkengineering/Img/logo.svg?v=ecc4997c4794",
+            "https://cdn.sstatic.net/Img/teams/overflowai.svg?v=d706fa76cdae",
+            "https://i.sstatic.net/jQsNL.png?s=64",
+            "https://www.gravatar.com/avatar/6e7e7e96faf6f96ae0f34fbc787389a8?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/jQsNL.png?s=64",
+            "https://i.sstatic.net/jQsNL.png?s=64",
+            "https://www.gravatar.com/avatar/c005e6bd86ecce60df3ee77034a45bda?s=64&d=identicon&r=PG",
+            "https://networkengineering.stackexchange.com/posts/29976/ivc/b10d?prg=0deead35-095f-4596-b419-9739c91a3117"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2016-04-26T20:09:22",
+        "summary": "",
+        "meta_description": "I have a question about NTP. We want to setup our core switches as NTP master for our network.\n\nWe have three data centers.\r\nSite A : Two Nexus as core\nSite B : two Nexus as core\nSite C : two 6800 ...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/networkengineering/Img/favicon.ico?v=c898b778f3c6",
+        "meta_site_name": "Network Engineering Stack Exchange",
+        "canonical_link": "https://networkengineering.stackexchange.com/questions/29976/ntp-architecture-questions",
+        "text": "Unless you have a very good NTP source, you should set up your NTP servers as clients of low-stratum NTP servers elsewhere (e.g. Internet). You can, and probably should, use multiple, external servers as NTP servers for your NTP servers, but not as peers since the low-stratum NTP servers will not actually peer with you (peers should be at the same stratum).\n\nYou could set up your servers at the various sites as peers, but this may add more complexity, latency, and prove unnecessary if they are getting their time from the same external servers. You probably do want to do this with your NTP servers within a single site.\n\nIf your core switches are true core switches (not routing, just dedicated to high-speed switching), you probably don't want to burden them with NTP requests from every device at a site. You should use the distribution routers/switches for NTP servers. The end-devices on each VLAN would get their time from the server dedicated for the VLAN on which they are addressed. The VLAN NTP servers could be the distribution or access switches for the VLAN.\n\nI might be running an older code train that doesn't support this but I think if you go an do some checking you will find that Cisco Nexus devices will not act as an NTP server.\n\nThat being said, you would probably benefit greatly from looking at (3) devices that does some form of Stratum 1 (GPS, CDMA/GSM, Rubidum crystal oscillator, radio, etc). With 3 devices or more, you end up with quorum which is ideal for maintaining very synchronized time.\n\nIf costs are a great barrier, there are some Open Source type projects."
+    }
+}

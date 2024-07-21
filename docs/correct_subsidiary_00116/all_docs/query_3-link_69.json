@@ -1,0 +1,36 @@
+{
+    "id": "correct_subsidiary_00116_3",
+    "rank": 69,
+    "data": {
+        "url": "https://serverfault.com/questions/591325/both-my-ntp-servers-are-marked-as-falsetickers-in-the-status",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Both my ntp servers are marked as falsetickers in the status",
+        "top_image": "https://cdn.sstatic.net/Sites/serverfault/Img/apple-touch-icon@2.png?v=9b1f48ae296b",
+        "meta_img": "https://cdn.sstatic.net/Sites/serverfault/Img/apple-touch-icon@2.png?v=9b1f48ae296b",
+        "images": [
+            "https://cdn.sstatic.net/Sites/serverfault/Img/logo.svg?v=43f5b6d5f65b",
+            "https://cdn.sstatic.net/Img/teams/overflowai.svg?v=d706fa76cdae",
+            "https://www.gravatar.com/avatar/d10981e46b870350b7d4c64840ae51ef?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/17a97c46bf172b51d312029f7e3d96b8?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/d10981e46b870350b7d4c64840ae51ef?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/99ed4843b8c0043c976a1bb823d853ef?s=64&d=identicon&r=PG",
+            "https://serverfault.com/posts/591325/ivc/b10d?prg=12d3eee2-672a-45e4-9947-bc979da6b173"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2014-04-25T13:03:24",
+        "summary": "",
+        "meta_description": "I have a linux box, set up with two ntp servers to sync. \nThis box in case, was extremely out of sync (61 seconds) before it was forced sync.\nThe following outputs are 1 hour after this sync.\nWhen",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/serverfault/Img/favicon.ico?v=18e9cc4f2aea",
+        "meta_site_name": "Server Fault",
+        "canonical_link": "https://serverfault.com/questions/591325/both-my-ntp-servers-are-marked-as-falsetickers-in-the-status",
+        "text": "Your two upstream servers both claim to be stratum-1 servers - that is, the highest class of time source that is able to speak NTP, one to which an absolute time source (such as an atomic clock, or a GPS receiver) is directly attached - but their clocks are different from each other (that is, your offset from each server (how far away your clock is from its, when you receive its signal) is much more than the observed propagation delay (how long it takes to get a time signal from each server)).\n\nFaced with two servers who both claim to be authoritative but are telling different times, ntpd is quite reasonably saying that it can't decide between them and it will regard them both as charlatans.\n\nIt now looks like, left to itself, ntpd has decided after an hour that it prefers one to the other, and agreed to sync to it. Good for it.\n\nThe basic problem here is that the upstreams are between them saying something which cannot possibly be true. If you only want a rough time, list only one of them in your ntp.conf, and you'll sync to that much more quickly. If you want an exact time, contact the admins of the servers, and ask them why their clocks differ, and where each of them is getting its time source.\n\nEdit: if I were to guess, I'd say that both of them are wrong - my guess is they've both been configured to treat their internal clocks, or some similarly insufficiently-accurate time source, as stratum-0. They may also have been configured to take time from internet servers, but since they've been told that they have an absolutely-accurate clock attached, they're preferring that time, and advertising as stratum-1 in consequence.\n\nA man with one watch knows what time it is. A man with two watches is never sure.\n\nYou need to add another server so that ntpd can break the tie between two clocks. Of all the possible numbers of server associations, two clocks is the worst setup. It does not matter if third server is stratum 2 or stratum 3, you just need to give ntpd a chance to discern who is the falseticker.\n\nPS\n\nYou do not need to redact your RFC1918 addresses. In fact it makes it harder to answer when you redact them like this. It would be better if you switched which octets you redacted: xxx.xxx.1.1 and xxx.xxx.1.2. Atleast that way it is easy to refer to one or the other. But most importantly there is really no need to redact 1918 addresses."
+    }
+}
