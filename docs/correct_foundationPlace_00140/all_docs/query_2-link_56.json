@@ -1,0 +1,47 @@
+{
+    "id": "correct_foundationPlace_00140_2",
+    "rank": 56,
+    "data": {
+        "url": "http://www.maxtblog.com/2012/03/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "March 2012 – Max Trinidad – The PowerShell Front",
+        "top_image": "http://www.maxtblog.com/wp-content/uploads/2012/03/BTStask_3-27-2012-3-29-02-PM1.png",
+        "meta_img": "",
+        "images": [
+            "http://www.maxtblog.com/wp-content/uploads/2012/03/xmlPowerShellscript.png",
+            "http://www.maxtblog.com/wp-content/uploads/2012/03/xmlSSISscriptTask1.png",
+            "http://www.maxtblog.com/wp-content/uploads/2012/03/SSIS_PowerShell_ScriptTask01.png",
+            "http://www.maxtblog.com/wp-content/uploads/2012/03/SSIS_PowerShell_ScriptTask022.png",
+            "http://www.maxtblog.com/wp-content/uploads/2012/03/BTStask_3-27-2012-3-29-02-PM1.png",
+            "http://www.maxtblog.com/wp-content/uploads/2012/03/PowerShellQueryvsTSQLComparison.png",
+            "http://www.maxtblog.com/wp-content/uploads/2016/01/SAPIEN_h_logo.jpg",
+            "https://www.sqlshack.com/wp-content/uploads/2018/09/Top-30-2018-400px.png",
+            "https://blog-cdn.feedspot.com/wp-content/uploads/2017/04/powershell-50-transparent_216px.png",
+            "http://www.maxtblog.com/wp-content/uploads/2015/08/pluralsight.jpg",
+            "http://cdn.oreillystatic.com/images/sitewide-headers/logo02.gif",
+            "http://www.condusiv.com/images/Condusiv-Technologies-logo.png",
+            "http://www.devart.com/images/logo/devart_logo.png",
+            "http://www.maxtblog.com/wp-content/uploads/2015/09/PowerShellOrgChapterLogo.jpg",
+            "http://www.maxtblog.com/wp-content/uploads/2015/08/DownloadVS2015a.jpg",
+            "http://www.maxtblog.com/wp-content/uploads/2015/08/Channel9a.jpg",
+            "http://www.maxtblog.com/wp-content/uploads/2015/08/MSVirtualAcada.jpg",
+            "http://www.maxtblog.com/wp-content/uploads/2015/08/GeekDuck.jpg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2012-03-31T13:55:57+00:00",
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "For many years, I’ve been a PowerShell enthusiast exposed to Network\n\nInfrastructure and SQL Server technologies. Now I’ve become a BizTalk\n\nnewbie. And, with my responsibility as a BizTalk Developer, and I attended a BizTalk Server class online. For my surprise, in one of the modules, instructor talked about a PowerShell Shell script . I just hope the script hasn’t scare anyone attending the course.\n\nPowerShell is much easier, and fun work once you start using it. Try to ignore using cmd.exe, and start using PowerShell. Try it!! For example try to execute the BTStask.exe command.\n\nThe following sample will save the output console results to a PowerShell variable:\n\n[sourcecode language=”powershell”]\n\n$myBTStask = BTStask.exe ListApps\n\n$myBTStask\n\n[/sourcecode]\n\nNotice I’ve create my variable “$MyBTStask”, and now I can extract some information stored in it. For example, I only want to list all application information:\n\n[sourcecode language=”powershell”]\n\n$MyBTStask | where{$_ -match ‘-Appl’}\n\n[/sourcecode]\n\nNow, you can evolved in this simple script into something more sophisticated.\n\nI’m always looking for ways to help me be productive in my work environment. So, I found a couple following CodePlex projects, and PowerShell was included:\n\nBizTalk 2010 Web Console: http://abdulrafaysbiztalk.wordpress.com/\n\nPowerShell BizTalk provider: http://psbiztalk.codeplex.com/\n\nAnd, there’s more codeplex BizTalk project out there. Also, there’s some very thorough BizTalk Training Kits available from Microsoft, include Videos, Labs, and Virtual machines. But you will to use Microsoft Hyper-V Virtualization Technology:\n\nBizTalk Server 2010 Developer Training Kit: http://www.microsoft.com/download/en/details.aspx?id=14865\n\nBizTalk Server 2010 Administrator Training Kit: http://www.microsoft.com/download/en/details.aspx?id=27148\n\nBizTalk Server 2010 ESB Training Kit: http://www.microsoft.com/download/en/details.aspx?id=27151\n\nSo, in my case I use my laptop with Windows 8 Server w/Hyper-V 3.0 and it works GREAT!!\n\nNow, I’m used to work with SQL Server so it makes sanse to me to explore the possibilities of using PowerShell to help with my BizTalk Administration. So, I can check for my Biztalk table in my SQL Server local instance in the following way:\n\n[sourcecode language=”powershell”]\n\n## – Listing your local Databases:\n\n[System.Reflection.Assembly]::loadwithPartialName(\"Microsoft.SQLServer.SMO\")\n\n$MySQL = New-Object(‘Microsoft.SqlServer.Management.SMO.Server’)\n\n$MySQL.Databases | Select Name, owner, Size | Ft -auto\n\n[/sourcecode]\n\nAlso, I could list all my SQL Agent jobs with the following generic PowerShell script:\n\n[sourcecode language=”powershell”]\n\n## – Listing your SQL Agent jobs:\n\n[System.Reflection.Assembly]::loadwithPartialName(\"Microsoft.SQLServer.SMO\")\n\n$MySQL = New-Object(‘Microsoft.SqlServer.Management.SMO.Server’)\n\n$MySQL.JobServer.Jobs | Select name, isenabled, lastrundate, lastRunOutcome | ft -auto\n\n[/sourcecode]\n\nAs you can see, these little simple oneliners you can give lots of information about your Biztalk box. This is all executed on your box which might bring the question: Can I do execute PowerShell script in another BizTalk box? And the answer is: YES!! But it all depends if your IT organization will allow it.\n\nKeep in mind, you need to have the proper permissions to allow you to access these SQL server box. In the meantime, if you have your on Virtual Machine, at least you can practice show management how they can benefit from using PowerShell.\n\nHappy PowerShelling!!"
+    }
+}
