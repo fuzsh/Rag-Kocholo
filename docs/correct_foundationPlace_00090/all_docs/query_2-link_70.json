@@ -1,0 +1,36 @@
+{
+    "id": "correct_foundationPlace_00090_2",
+    "rank": 70,
+    "data": {
+        "url": "https://stackoverflow.com/questions/29259043/importing-numpy-package-into-abaqus-6-10-python-environment",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Importing numpy package into ABAQUS 6.10 Python environment",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://cdn.sstatic.net/Img/teams/overflowai.svg?v=d706fa76cdae",
+            "https://www.gravatar.com/avatar/0385aa6b210dd48dfaded33df5c9a842?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/a007be5a61f6aa8f3e85ae2fc18dd66e?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/172087e8403fc9f64a976820bf0aff4b?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/5e7df1d51660a7dd65bb2e7f46eca915?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/29259043/ivc/1588?prg=487937f9-e95a-43cf-bdfa-b4ac1a02dd88",
+            "https://stackoverflow.com/js-false.gif"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2015-03-25T14:52:31",
+        "summary": "",
+        "meta_description": "I have not been successful at importing numpy package to ABAQUS Python environment from previous discussions on this similar problem.\n\nI am working on Microsoft Windows 7 (64-bit). I have installed",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/29259043/importing-numpy-package-into-abaqus-6-10-python-environment",
+        "text": "Honestly, the 32-bit version of numpy will not work with a 64-bit version of Python. Therefore, the error is quite expected. Even if Abaqus were to use a 32-bit version, I would strongly advise not to copy and paste the directory of the library.\n\ndim_voly answer is an easy way to get around this problem, but here are some instructions if you really want to use numpy inside Abaqus\n\nThis link explains quite clearly how to install numpy. You will need to include the Abaqus Python directory in the PATH environmental variable. Once pip is installed, it should be easy to install numpy and any other library you need.\n\nI am currently using Abaqus 6.13 which already comes installed with numpy. Thus, upgrading your software can also be a viable solution.\n\nHope this helps\n\nI had trouble importing anything into the Abaqus python environment. The workaround I used was to generate the .py script using a main .py script. So all the calculations are done and pasted in as text into a template .py script. Then later the main script calls abaqus to run the python script.\n\nI generally found that the python version within Abaqus is behind the mainstream python version and doing anything remotely out of the ordinary doesn't work as it depends on Simulia to update things. I use too many custom packages as well.\n\nIn any case you end up wanting a master python script to set up high level things like folders and reading in data from tables. And if you're running a script to build a model, I don't doubt that you're doing a parametric study so your loops for that can be in the main script.\n\nWhat also sometimes works for passing data into the abaqus .py file is setting up a struct or class and saving it using pickle. As far as I recall pickle works and is importable as long as the class does not contain any custom imports."
+    }
+}

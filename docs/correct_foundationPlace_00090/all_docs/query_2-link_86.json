@@ -1,0 +1,43 @@
+{
+    "id": "correct_foundationPlace_00090_2",
+    "rank": 86,
+    "data": {
+        "url": "https://forums.autodesk.com/t5/helius-pfa-forum-read-only/adjusting-abaqus-environment-file-to-increase-abaqus-viewer-font/td-p/4677029",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Adjusting-Abaqus-Environment-File-To-Increase-Abaqus-Viewer-Font-Size",
+        "top_image": "https://forums.autodesk.com/t5/image/serverpage/image-id/73117iBD599571AAFF333D?v=v2",
+        "meta_img": "https://forums.autodesk.com/t5/image/serverpage/image-id/73117iBD599571AAFF333D?v=v2",
+        "images": [
+            "https://forums.autodesk.com/html/@E3EF46B230710BF938EDB3C46A0BE159/assets/machine-translation-info-icon.png",
+            "https://akn.unifiedprofile.autodesk.com/com.autodesk.storage.public.production/oxygen/STAHJCPAABMQ/profilepictures/x120.jpg?r=0",
+            "https://forums.autodesk.com/html/@EA371A9DAF7A54A6A36FF28C7325BA2E/rank_icons/alumni.png",
+            "http://images.autodesk.com/flashassets/staticassets/images/autodesk_logo_signature.png",
+            "https://akn.unifiedprofile.autodesk.com/com.autodesk.storage.public.production/oxygen/STAHJCPAABMQ/profilepictures/x120.jpg?r=0",
+            "https://forums.autodesk.com/html/@EA371A9DAF7A54A6A36FF28C7325BA2E/rank_icons/alumni.png",
+            "https://forums.autodesk.com/t5/image/serverpage/image-id/73117iBD599571AAFF333D/image-size/original?v=mpbl-1&px=-1",
+            "http://images.autodesk.com/flashassets/staticassets/images/autodesk_logo_signature.png",
+            "https://forums.autodesk.com/skins/images/52774CBEDC0A297DC3DE7A08FD7BFE64/responsive_peak/images/icon_anonymous_message.png",
+            "https://forums.autodesk.com/t5/image/serverpage/image-id/1383253i9E0524ED60E3BA04/image-size/large?v=v2&px=999",
+            "https://forums.autodesk.com/t5/image/serverpage/image-id/1383268i93C59FE60D75CDE9/image-size/large?v=v2&px=999"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "forums.autodesk.com",
+            "user-id"
+        ],
+        "publish_date": "2013-12-06T02:38:33.915000+00:00",
+        "summary": "",
+        "meta_description": "This was originally posted by Dan Milligan, but I wanted to take the opportunity to recreate this post so we can expand on some of the functionality",
+        "meta_lang": "en",
+        "meta_favicon": "https://damassets.autodesk.net/content/dam/autodesk/logos/autodesk-symbol-32x32.svg",
+        "meta_site_name": "Autodesk Community",
+        "canonical_link": "https://forums.autodesk.com/t5/helius-pfa-forum-read-only/adjusting-abaqus-environment-file-to-increase-abaqus-viewer-font/td-p/4677029",
+        "text": "This was originally posted by Dan Milligan, but I wanted to take the opportunity to recreate this post so we can expand on some of the functionality for some of our Autodesk Simulation Composite Analysis users.\n\nThis week I will take a short break from the composites related content I have been writing about over the past few weeks to address an issue that has become slightly annoying with the latest releases of Abaqus/Viewer. In the most recent versions of Abaqus/Viewer (6.10-x and up I believe) the default font size for the legend and the title/state blocks is so small that it is almost unreadable (even for my relatively young eyes...). Inside of Abaqus/Viewer, adjusting the font size is very simple:\n\nClick on \"Viewport\" in the top Menu Bar\n\nSelect \"Viewport Annotation Options\"\n\nClick on either the \"Legend\", \"Title Block\", or \"State Block\" tabs\n\nClick on the \"Set Font...\" button to adjust the font\n\nYou can even change all 3 at once by checking on the \"Legend\", \"Title Block\", or \"State Block\" check boxes under the \"Apply To\" heading\n\nHowever, doing this process each time you open Viewer is rather annoying. To automatically set the font size to a larger size each time view opens, you can modify the Abaqus environment file. For those that do not know what this is, it is a text file called \"abaqus_v6.env\" that is located in the Site folder of the Abaqus install directory (typically C:\\SIMULIA\\Abaqus\\6.11-1\\site or something similar). The following 5 lines can be added to the bottom of the environment file so that the font size is larger by default. I have found size 12 to be adequate and the following lines reflect that (however a larger number can be entered):\n\ndef onCaeStartup():\n\nsession.viewports['Viewport: 1'].viewportAnnotationOptions.setValues(\n\nlegendFont='-*-verdana-medium-r-normal-*-*-120-*-*-p-*-*-*',\n\ntitleFont='-*-verdana-medium-r-normal-*-*-120-*-*-p-*-*-*',\n\nstateFont='-*-verdana-medium-r-normal-*-*-120-*-*-p-*-*-*')\n\nTry to copy and paste the lines exactly like they are shown above, but if it is not possible, make sure the spacing (especially the indentation) and content is correct. If these lines are entered incorrectly, Abaqus/Viewer may not start up correctly. Don't worry though, you can't screw anything up. If you are having problems and just can figure out what is being input incorrectly, you can simply delete the above lines and everything will be fine. For the super paranoid, simply make a backup copy of your environment file before trying this...\n\nWith the def onCaeStarup(): line, many other default settings can be adjusted so that your Abaqus 'environment' is set up just the way you like. Section 17.19 in the Abaqus Scripting Reference Manual provides many other Viewport Annotation Options commands and by opening your Abaqus replay (.rpy) file after you perform a series of adjustments in Viewer, you can view additional commands that set up your Viewer experience."
+    }
+}

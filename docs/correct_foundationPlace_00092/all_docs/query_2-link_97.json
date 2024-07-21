@@ -1,0 +1,38 @@
+{
+    "id": "correct_foundationPlace_00092_2",
+    "rank": 97,
+    "data": {
+        "url": "https://superuser.com/questions/1791373/location-of-wsl-home-directory-in-windows",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Location of WSL $Home directory (in Windows)",
+        "top_image": "https://cdn.sstatic.net/Sites/superuser/Img/apple-touch-icon@2.png?v=e869e4459439",
+        "meta_img": "https://cdn.sstatic.net/Sites/superuser/Img/apple-touch-icon@2.png?v=e869e4459439",
+        "images": [
+            "https://cdn.sstatic.net/Sites/superuser/Img/logo.svg?v=4bc8a703ebac",
+            "https://cdn.sstatic.net/Img/teams/overflowai.svg?v=d706fa76cdae",
+            "https://i.sstatic.net/ROzYK.jpg",
+            "https://i.sstatic.net/Bw9ah.jpg?s=64",
+            "https://i.sstatic.net/TEntY.jpg",
+            "https://i.sstatic.net/Bw9ah.jpg?s=64",
+            "https://www.gravatar.com/avatar/ccfd70bcf7841c1cde0aa0d3e283402d?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/f6e922a2cb7e2da59286f27b162aaca5?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://superuser.com/posts/1791373/ivc/1588?prg=2f5fc78e-f232-4774-a511-d314c7e489a1"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2023-06-25T18:04:58",
+        "summary": "",
+        "meta_description": "What is the location of the $HOME directory in Windows (WSL v2)?\ni.e. What address can I type in Windows Explorer to get to the $HOME directory in my WSL installation.\n... I created a test folder and",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/superuser/Img/favicon.ico?v=4852d6fb3f5d",
+        "meta_site_name": "Super User",
+        "canonical_link": "https://superuser.com/questions/1791373/location-of-wsl-home-directory-in-windows",
+        "text": "With WSL2 you're working in a virtual machine – the entire Linux environment is a VM running on Hyper-V, with a .vhdx image storing its Ext4-formatted disk (including all of the files at /home).\n\nThe image is located in some subdirectory of ~\\AppData\\Local\\Packages, depending on which distribution you have installed (each of them is a separate \"app\"). See How to manage WSL disk space for more details.\n\nNote that while you can attach a .vhdx directly in Windows, it still won't understand the Ext4 filesystem.\n\nFor WSL1, the Linux filesystem was stored as individual files in a rootfs directory (at the same location under AppData). However, the files are not meant to be accessed directly as they have hidden attributes storing the Linux-specific metadata (e.g. Linux file permissions); directly editing the files could lose the extended attributes.\n\nNot sure if this helps your case. In my WSL1 instance the Linux folders are listed in a new \"Linux\" section of Windows Explorer. Clicking on the different installation instance names to explore or try dir with UNC path something like:\n\ndir \\\\wsl.localhost\\Ubuntu-20.04\\home\\youruserid\n\nIn explorer, just find the folder you want and \"Copy Path\" will provide the UNC path to same which you can paste into a Windows command prompt."
+    }
+}

@@ -1,0 +1,33 @@
+{
+    "id": "correct_foundationPlace_00092_2",
+    "rank": 96,
+    "data": {
+        "url": "https://prefix.dev/docs/mamba/environments",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Environments - Mamba",
+        "top_image": "https://prefix.dev/social-preview.jpg",
+        "meta_img": "https://prefix.dev/social-preview.jpg",
+        "images": [
+            "https://prefix.dev/assets/icons/discord-mark-white.svg",
+            "https://prefix.dev/assets/icons/discord-mark-black.svg",
+            "https://prefix.dev/assets/icons/discord-mark-white.svg",
+            "https://prefix.dev/assets/icons/discord-mark-black.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "prefix.dev – solving software package management",
+        "meta_lang": "",
+        "meta_favicon": "/favicon/favicon.ico",
+        "meta_site_name": "prefix.dev",
+        "canonical_link": "https://prefix.dev",
+        "text": "Software environments are just files from multiple packages linked into a given folder (we also like to call it \"prefix\"). The mamba software environments largely follow the layout of a regular \"unix\"-root on Linux and macOS and have some modifications to the unix-root on Windows.\n\nThe base environment\n\nThe mamba package manager always comes with a \"base\" environment. The \"base\" environment serves two purposes: first, it contains all necessary dependencies (such as Python) for the mamba package manager to function. And secondly, it is the folder on the disk where two special folders are created: the pkgs and the envs directories.\n\nMicromamba (the evolution of the mamba package manager) comes as a single binary. That means, it does not need a base environment for any dependencies. The base environment simply exists as a default location for the two special folders (pkgs and envs).\n\nThe envs folder\n\nAll named environments live in the envs folder. If a new environment is created using micromamba create -n myenv, a new subfolder under the envs directory with the name myenv is created. If you use the default \"base\" environment with micromamba which is ~/micromamba, then the myenv folder will be located under ~/micromamba/envs/myenv.\n\nThe pkgs folder\n\nAll packages are downloaded and extracted in the pkgs folder. They are then usually hard-linked into the environment. A hardlink has the advantage that the actual file only exists once on the filesystem (and only takes up space once on the disk).\n\nCreating an environment\n\nAn environment can be created with the micromamba create command. The packages that should be used for the creation of the environment can be supplied on the command line (e.g. micromamba create -n myenv \"numpy>1.20\" xtensor eigen)\n\nAnother way of specifying the packages that should go into an environment is with a simple YAML file. The YAML environments file has 3 fields:\n\nTo use a file like this, the -f argument needs to be used: micromamba create -f environment.yml.\n\nExporting and sharing environments\n\nOften, you want to share or export environments. There are multiple ways to do this:\n\nmicromamba env export --explicit\n\nmicromamba env export\n\nconda-lock\n\nThe two micromamba environment exports differ slightly: explicitly exported environments hard-code the exact version of a package and URL to retrieve the package from. This has the advantage that the environment is exactly recreated from the exact same sources. The disadvantage is that the environment generally only works on the same operating system from which it was exported (since the operating system is hard-coded in the URL).\n\nA benefit of explicit environments is that mamba does not need to retrieve the repodata files, which can save bandwidth and download time. Additionally, the solver is not invoked at all.\n\nThe --explicit environment export format is a simple text file that lists the URLs to retrieve the files from:\n\nNon-explicit exported environments do not specify exact URLs. They do specify packages with their version number and build string in a simple YAML environment file, e.g.:\n\nHowever, to install this environment, the package manager needs to fetch the repodata.json and resolve the environment with the solver. Additionally, also these environment files are not portable between operating system since the buildstring usually encodes the operating system as well.\n\nconda-lock"
+    }
+}
