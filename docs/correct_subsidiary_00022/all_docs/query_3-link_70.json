@@ -1,0 +1,42 @@
+{
+    "id": "correct_subsidiary_00022_3",
+    "rank": 70,
+    "data": {
+        "url": "https://community.spiceworks.com/t/dell-equallogic-san-cluster-load-balance-or-failover-how-do-i-know/597564",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Dell Equallogic SAN cluster - load balance or failover - how do I know?",
+        "top_image": "https://global.discourse-cdn.com/spiceworks/original/1X/7a73606d7df2f794c4789897e49693fb3c471b23.png",
+        "meta_img": "https://global.discourse-cdn.com/spiceworks/original/1X/7a73606d7df2f794c4789897e49693fb3c471b23.png",
+        "images": [
+            "https://secure.intelligence52.com/795141.png",
+            "https://global.discourse-cdn.com/spiceworks/original/4X/1/9/c/19c17cfc3670ef484887ed13fabf5151bcd261a1.jpeg",
+            "https://sea1.discourse-cdn.com/spiceworks/user_avatar/community.spiceworks.com/joey7328/48/60483_2.png",
+            "https://sea1.discourse-cdn.com/spiceworks/user_avatar/community.spiceworks.com/samuel-dell/48/760209_2.png",
+            "https://sea1.discourse-cdn.com/spiceworks/user_avatar/community.spiceworks.com/johnnicholson/48/10568_2.png",
+            "https://zdbb.net/l/z0WVjCBSEeGLoxIxOQVEwQ/"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "data-storage",
+            "question"
+        ],
+        "tags": null,
+        "authors": [
+            "samuel-dell (Samuel (Dell))",
+            "roygould (RoyG)",
+            "johnnicholson (StorageNinja)",
+            "kooler-starwind (KOOLER (StarWind))",
+            "glomo (The Glorious Morris)"
+        ],
+        "publish_date": "2017-08-03T09:40:52+00:00",
+        "summary": "",
+        "meta_description": "Hi, \nI have inherited 4 Dell Equallogic SAN’s which are configured in a cluster as one big pool. \nThey are currently serving a Hyper-V cluster, and without doing anything drastic, I’m trying to figure out what will happe&hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://global.discourse-cdn.com/spiceworks/optimized/1X/a254df83358a951c43ed6ee756b5e0011a8d58bc_2_32x32.png",
+        "meta_site_name": "Spiceworks Community",
+        "canonical_link": "https://community.spiceworks.com/t/dell-equallogic-san-cluster-load-balance-or-failover-how-do-i-know/597564",
+        "text": "Hi,\n\nI have inherited 4 Dell Equallogic SAN’s which are configured in a cluster as one big pool.\n\nThey are currently serving a Hyper-V cluster, and without doing anything drastic, I’m trying to figure out what will happen if I switch off one (or more) of the SAN nodes.\n\nI don’t know enough about them to understand if this cluster has any failover, or if its literally just pooling the disks into the volumes.\n\nWill/should it carry on serving Hyper-V seamlessly, or will/should I see problems? How can I tell?\n\nPlease, no comments about the why’s of using this system - I’m actually trying to build a case for removing them - in particular why this particular setup introduces high levels of risk!\n\nThanks in advance…\n\nHere’s a whitepaper that should help if you want to take a look, relevant information begins on page 3:\n\nIn a nutshell, if you have one storage pool with multiple members you cannot remove one member with losing access to the data in the pool. If one of your members does power off you should be able to power-on only the affected member but I have seen in my environment where a total reboot is necessary.\n\nAlso, since you’re inheriting this setup- in a multi-array setup you’ll want to make sure MPIO is enabled on all of your hosts and initiators or you will need to disable the capacity load balancer until you can. You can view helpful connectivity errors in Monitoring within Group Manager for troubleshooting.\n\nThe long and the short of the whitepaper in terms of resillience is you want to ensure the free space on any node in the cluster can handle the amount of used space on any SINGLE node in the cluster.\n\nWorst case as a pool, if one device fails miserably (ie: the RAID volume has gone critical), then it should start evacuating the data from the critical device to the other devices in the pool, assuming those other devices have enough free space to handle the one device failing over to them.\n\nYou can tell if those devices are in a pool by Group/Storage Pools and seeing what devices are in what pool and you can see how that pool is now split on those devices.\n\nCorrect, and as long as each member has multiple controllers, and a properly setup raid configuration, then chances of any single unit failing in such a way that the pool can’t recover is rare. Very rare. Short of a fire.\n\nWhich leads into replication. You should really be replicating your volumes offsite somewhere as a backup. Considering the cost is all baked into the Equallogic licensing, if you have a EQL you can replicate to offsite, then this further reduces this risk.\n\nHello RoyG,\n\nWith Equallogic systems when you have multiple Equallogic in the same pool, then all of the Equallogic’s own part of the data that is being stored in the pool.\n\nIf you are wanting to remove an Equallogic from the pool, then you will need to first evict that member from the pool. Now when a member is evicted from the pool, all the volumes that are on that member will be removed from that member. What you need to make sure of before you evict any member, is to make sure there is enough free space with the remaining members of the pool to handle all the volumes.\n\nWhat is the high levels of risk that you think you have with running your setup in this way?\n\nPlease let us know if you have any other questions.\n\nHi Samuel,\n\nFirstly, the comment was intentionally provocative (sorry). I’ve read more than once in this community about speculative risks of a dual controller array and that it is still considered a single point of failure (to which I know nothing).\n\nSecondly, we recently performed a firmware upgrade on all of our arrays. We suffered two outages. The first was a complete school-boy mistake on our part - the controller rebooted into the secondary which (for some reason) did not have network connectivity - one was out completely, the other was in but not “clicked in”. The second was a mystery, as eth0 appeared to be having a problem - but this caused an issue with our Hyper-V cluster, and for some reason was not covered by the other three perfectly fine connections in the controller. Dell support had no answer, they still have out logs, and we had to manually fail back to the other controller.\n\nSo we have concerns, some of which stem from the fact that none of us here are qualified to manage the array, but some around the reliability of the product - which may be a configuration issue, or may be a real problem. I guess the simple fact is that we dont need a SAN, and we dont need or want the complexity that it brings… unless I determine that it is the best option for our needs (which I wont go into, already covered on another thread).\n\nFrom what I can ascertain in the other replies, the answer is yes - if we do suffer a node outage (assuming we’ve hit the perfect storm that means both controllers fail) and we do not replicate to another SAN, then we are in trouble."
+    }
+}

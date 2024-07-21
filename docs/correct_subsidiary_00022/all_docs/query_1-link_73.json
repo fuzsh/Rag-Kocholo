@@ -1,0 +1,36 @@
+{
+    "id": "correct_subsidiary_00022_1",
+    "rank": 73,
+    "data": {
+        "url": "https://serverfault.com/questions/827102/about-equallogic-dell-storages-controller-replacement-active-passive",
+        "read_more_link": "",
+        "language": "en",
+        "title": "About Equallogic Dell storages controller replacement ? Active /Passive",
+        "top_image": "https://cdn.sstatic.net/Sites/serverfault/Img/apple-touch-icon@2.png?v=9b1f48ae296b",
+        "meta_img": "https://cdn.sstatic.net/Sites/serverfault/Img/apple-touch-icon@2.png?v=9b1f48ae296b",
+        "images": [
+            "https://cdn.sstatic.net/Sites/serverfault/Img/logo.svg?v=43f5b6d5f65b",
+            "https://cdn.sstatic.net/Img/teams/overflowai.svg?v=d706fa76cdae",
+            "https://i.sstatic.net/hE4Yi.png?s=64",
+            "https://lh3.googleusercontent.com/-IweGOAUZpaY/AAAAAAAAAAI/AAAAAAAAADk/nOHLa-edFmY/photo.jpg?sz=64",
+            "https://i.sstatic.net/d4ksg.png?s=64",
+            "https://i.sstatic.net/hE4Yi.png?s=64",
+            "https://serverfault.com/posts/827102/ivc/e73b?prg=082a60d8-320b-48c5-a8f3-00502d6d4f8c"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2017-01-18T18:14:21",
+        "summary": "",
+        "meta_description": "Regarding Dell Equallogic storage arrays, is it possible to replace the active controller module despite the fact that it's processing volume I/O? If not, what should I do before replacing it?",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/serverfault/Img/favicon.ico?v=18e9cc4f2aea",
+        "meta_site_name": "Server Fault",
+        "canonical_link": "https://serverfault.com/questions/827102/about-equallogic-dell-storages-controller-replacement-active-passive",
+        "text": "You move no LUN.\n\nThe way it work is the passive will activate and the active become passive. The IP is the same, so the gear connect to the new active, the problem you can face is a bad failover in case of a bad configuration, thus your hypervisor can lost access to the SAN temporaly. Its the problem you can face.\n\nTo switch to the passive controller manually the easiest way is to unplug the rj45 from the active controller, the passive (still plugged) will take the load from there.\n\nIts actually a good test before putting a equalogic into production.\n\nTo move LUN its not when the active/passive controler do balance. Its when you have a failover equalogic SAN configuration. When the active SAN fail, the passive SAN automaticly take the load, but when the failed SAN is ready to rebecome online you need to redirect to a new iscsi target to retarget the correct active SAN. As you can see its not your case."
+    }
+}
