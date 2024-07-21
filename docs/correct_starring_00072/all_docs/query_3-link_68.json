@@ -1,0 +1,34 @@
+{
+    "id": "correct_starring_00072_3",
+    "rank": 68,
+    "data": {
+        "url": "https://stackoverflow.com/questions/56054147/problem-extracting-youtube-search-results",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Problem extracting Youtube search results",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://cdn.sstatic.net/Img/teams/overflowai.svg?v=d706fa76cdae",
+            "https://i.sstatic.net/aLdcn.png?s=64",
+            "https://i.sstatic.net/RXEXZ.png",
+            "https://www.gravatar.com/avatar/3941572bba94e9242fa9281b20edc347?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://stackoverflow.com/posts/56054147/ivc/d109?prg=0506fce6-e104-445a-98c3-0fcbacec272a"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2019-05-09T07:21:11",
+        "summary": "",
+        "meta_description": "I am new to Python and have learned basis of Web Scraping with bs4. here i tried to extract all the links of Youtube search results , it doesn't work like on other sites. i analyzed the search result",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/56054147/problem-extracting-youtube-search-results",
+        "text": "All this trouble to get YouTube search result data is just a waste of time and effort.\n\nWhy not try out these options\n\nYouTube Data API\n\nSelenium + Headless chrome\n\nThat being said, for the first 20 results, you can get the data from the JavaScript content in the source. The answer to that is given below.\n\nAfter about 1 hr of making sense of the resulting json, it still fails for some queries.YouTube is a very complicated site. The response may vary based on location, browser, search query etc.\n\nWe are extracting the data from this script tag in the source.\n\nCode:\n\nfrom bs4 import BeautifulSoup as bs import requests import re import json headers={ 'User-Agent':'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36' } name=input(\"Enter video name: \") url='https://www.youtube.com/results?search_query=hello'+name searched=requests.get(url,headers=headers) soup=bs(searched.text,'html.parser') aid=soup.find('script',string=re.compile('ytInitialData')) extracted_josn_text=aid.text.split(';')[0].replace('window[\"ytInitialData\"] =','').strip() video_results=json.loads(extracted_josn_text) #print(item_section=video_results[\"contents\"][\"twoColumnSearchResultsRenderer\"][\"primaryContents\"][\"sectionListRenderer\"][\"contents\"][1]) item_section=video_results[\"contents\"][\"twoColumnSearchResultsRenderer\"][\"primaryContents\"][\"sectionListRenderer\"][\"contents\"][0][\"itemSectionRenderer\"][\"contents\"] for item in item_section: try: video_info=item[\"videoRenderer\"] title=video_info[\"title\"][\"simpleText\"] url=video_info[\"navigationEndpoint\"][\"commandMetadata\"][\"webCommandMetadata\"][\"url\"] print('Title:',title) print('Url:',url, end=\"\\n----------\\n\") except KeyError: pass\n\nOutput:\n\nEnter video name: hello Title: New Punjabi Songs 2017-Hello Hello(Ful Song)-Prince Narula-Yuvika Chaudhary-Latest Punjabi Song 2017 Url: /watch?v=mv326-zVpAQ ---------- Title: Alan Walker - The Spectre Url: /watch?v=wJnBTPUQS5A ---------- Title: Hello Hello (Full HD) - Rajvir Jawanda | MixSingh | Josan Bros | New Punjabi Songs 2018 Url: /watch?v=xydupjQSj44 ---------- Title: Bachchan - Hello Hello - Kannada Movie Full Song Video | Sudeep | Bhavana | V Harikrishna Url: /watch?v=oLMMgoug4Uk ---------- Title: Hello Hello latest 2017 16 june punjabi song Url: /watch?v=MqCSsPXw8QU ---------- Title: 👋 Hello Hello 👋 | + More Kids Songs | Super Simple Songs Url: /watch?v=saDkICxEdgY ---------- Title: 'Gallan Goodiyaan' Full VIDEO Song | Dil Dhadakne Do | T-Series Url: /watch?v=jCEdTq3j-0U ---------- Title: Hello Hello Gippy Grewal Feat. Dr. Zeus Full Song HD | Latest Punjabi Song 2013 Url: /watch?v=IRW2O4QZhgs ---------- Title: Hello Hello | Pataakha | Malaika Arora | Vishal Bhardwaj & Rekha Bhardwaj | Gulzar | Ganesh Acharya Url: /watch?v=RxBAitQLSLA ---------- Title: Hello Hello (Lyrical Audio) Prince Narula ft. Yuvika Chaudhary | Punjabi Lyrical Audio 2017 | WHM Url: /watch?v=v8VIsIvhDoQ ---------- Title: Hello Hello Full Video Song || Bhale Bhale Magadivoi || Nani, Lavanya Tripathi Url: /watch?v=y3FI02OO_kU ---------- Title: Hello hello gaad bahe dhufee na egaa (new comedy hhhhhh) Url: /watch?v=DuRrcTo4rgg ---------- Title: Proper Patola - Official Video | Namaste England | Arjun | Parineeti | Badshah | Diljit | Aastha Url: /watch?v=YmXJp4RtBCM ---------- Title: Official Video: Nikle Currant Song | Jassi Gill | Neha Kakkar | Sukh-E Muzical Doctorz | Jaani Url: /watch?v=uBaqgt5V0mU ---------- Title: Insane (Full Song) Sukhe - Jaani - Arvindr Khaira - White Hill Music - Latest Punjabi Song 2018 Url: /watch?v=mKpPhVVF8So ---------- Title: Radha bole HELLO HELLO-cartoon song mix with step up 2 Url: /watch?v=TFCTgNCzrck ---------- Title: Hello Song | CoCoMelon Nursery Rhymes & Kids Songs Url: /watch?v=fxVMqaViVaA ---------- Title: Bachchan - Hello Hello Unplugged Version | Sudeep | Bhavana | V Harikrishna Url: /watch?v=lvH3kTGJeEQ ---------- Title: Hello Hello! Can You Clap Your Hands? | Original Kids Song | Super Simple Songs Url: /watch?v=fN1Cyr0ZK9M ----------\n\nOne last thing that you can try out is to emulate the API used by youtube itself\n\nie. POST request to\n\nhttps://www.youtube.com/results?search_query=yoursearchtext"
+    }
+}
