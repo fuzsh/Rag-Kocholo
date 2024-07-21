@@ -1,0 +1,35 @@
+{
+    "id": "correct_foundationPlace_00040_3",
+    "rank": 74,
+    "data": {
+        "url": "https://stackoverflow.com/questions/13918374/java-email-exception-server-is-not-trusted",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Java email - Exception Server is not trusted",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://cdn.sstatic.net/Img/teams/overflowai.svg?v=d706fa76cdae",
+            "https://www.gravatar.com/avatar/b7aca4091da4483fe0ea77f27f6b6482?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/277f356b34eae0cd054d138b0de70ce9?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/STK7N.jpg?s=64",
+            "https://www.gravatar.com/avatar/48d4c93f13c4c3aed819aaf2a4afe992?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/13918374/ivc/d689?prg=48294715-4bb1-4732-bf1e-4b61c4328864"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2012-12-17T16:50:39",
+        "summary": "",
+        "meta_description": "I'm using apache commons mail to send emails. Unfortunately I'm getting following Exception:\n\norg.apache.commons.mail.EmailException: Sending the email to the following server failed : mail.xxx.com...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/13918374/java-email-exception-server-is-not-trusted",
+        "text": "I'm using apache commons mail to send emails. Unfortunately I'm getting following Exception:\n\norg.apache.commons.mail.EmailException: Sending the email to the following server failed : mail.xxx.com:25 at org.apache.commons.mail.Email.sendMimeMessage(Email.java:1242) at org.apache.commons.mail.Email.send(Email.java:1267) at com.xxx.UserBean.sendMail(UserBean.java:92) at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57) at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) . . . Caused by: javax.mail.MessagingException: Could not convert socket to TLS; nested exception is: java.io.IOException: Server is not trusted: mail.xxx.com at com.sun.mail.smtp.SMTPTransport.startTLS(SMTPTransport.java:1880) at com.sun.mail.smtp.SMTPTransport.protocolConnect(SMTPTransport.java:648) at javax.mail.Service.connect(Service.java:317) at javax.mail.Service.connect(Service.java:176) at javax.mail.Service.connect(Service.java:125) at javax.mail.Transport.send0(Transport.java:194) at javax.mail.Transport.send(Transport.java:124) at org.apache.commons.mail.Email.sendMimeMessage(Email.java:1232) ... 85 more Caused by: java.io.IOException: Server is not trusted: mail.xxx.com at com.sun.mail.util.SocketFetcher.startTLS(SocketFetcher.java:443) at com.sun.mail.smtp.SMTPTransport.startTLS(SMTPTransport.java:1875) ... 92 more\n\nAnd here is my java code:\n\npublic void sendMail(){ try { SimpleEmail mail = new SimpleEmail(); mail.setTLS(true); mail.setAuthenticator(new DefaultAuthenticator(\"user\",\"xyxyxyxy\")); mail.setHostName(\"mail.xxx.com\"); mail.getMailSession().getProperties().put(\"mail.smtps.auth\", true); mail.getMailSession().getProperties().put(\"mail.debug\", true); mail.getMailSession().getProperties().put(\"mail.smtps.port\", \"587\"); mail.getMailSession().getProperties().put(\"mail.smtp.starttls.enable\", true); mail.getMailSession().getProperties().put(\"mail.smtp.ssl.trust\", \"smtpserver\"); mail.addTo(\"[email protected]\", \"user\"); mail.setFrom(\"[email protected]\"); mail.setSubject(\"Bla Bla\"); mail.setMsg(\"Bla Bla again\"); mail.send(); } catch (Exception ex) { logger.info(\"Senden der Email ist gescheitert!\", ex); } }\n\nI've already read many threads and tried many hints. I'm stuck here! I should mention that I'm able to send emails with another method using \"javax.mail\". But I'd like to move to apache.\n\nI'm thankful for any help."
+    }
+}

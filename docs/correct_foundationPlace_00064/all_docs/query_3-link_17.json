@@ -1,0 +1,48 @@
+{
+    "id": "correct_foundationPlace_00064_3",
+    "rank": 17,
+    "data": {
+        "url": "https://blog.jetbrains.com/blog/2021/05/20/big-data-world-part-3-building-data-pipelines/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Big Data World, Part 3: Building Data Pipelines",
+        "top_image": "https://resources.jetbrains.com/storage/products/jetbrains/img/meta/preview.png",
+        "meta_img": "https://resources.jetbrains.com/storage/products/jetbrains/img/meta/preview.png",
+        "images": [
+            "https://blog.jetbrains.com/wp-content/uploads/2024/06/JETBRAINS-Blog.svg",
+            "https://blog.jetbrains.com/wp-content/uploads/2020/07/JetBrains.svg",
+            "https://secure.gravatar.com/avatar/1e26003ded6623e122a0ae5a390e0b3a?s=200&r=g",
+            "https://lh3.googleusercontent.com/-MOI0bGvBizlBi9KTKii-JDKoiTn9VdfUJgLYmWZSvR7Afnm8MpLLXfOO6hOa0yeFiCqvb9zgRod3dD0gbYNT80B-KNwjN2eQUlpsiQN4q_VrpEACY80ihNEK0u29zGG6gisXh4x",
+            "https://lh5.googleusercontent.com/FlCR1ke0GYqpzhTtC1k6kMCgHfFdbNjEqnkeEq8a0IobY19F9ghNVZuEX8SJWWRhrmhtT18ntLM0FinjZ6rsBVuuvJTyBFD-nb7SLPoIAENblt_sqMTQV4O_XVYZ5zDgk17GReSm",
+            "https://lh5.googleusercontent.com/h4Cv8rl8XVY8_n83amUSM-qDJ7qJksn-SPvjjHOgrOcdXNJ1JcrGARRam6-H07mZ_DA34ECZu_70Y-RcyaDbtbYec7FCTzP9bkYTCAwtQm2m6usy_25QzzpT-xt7VgLozojdd5ej",
+            "https://lh5.googleusercontent.com/suPDdeMQQoWaA_eDkEDPX9Ammamr5kl7gwQD6cVLfZV4f-pAAMaRttu2xe4tVygghLZv2A_wUX7xRZRuTwcMx0Sfn8OssFOHXV_MH6sL6mIYEzLTQNT2yylUBagYgokIgs9EFklX",
+            "https://lh6.googleusercontent.com/RXh_QpHX7cUPk9tc4MHKVbLhwP4lvglOyYKaYYijUvi9jc4JRq9DZO7x9EM-grrYlVGsCdCpRrCSIwpzCzzI0dLwYcQdMbjD21gMU0FLsdtJT5tMNsFItYMXPTLlF-6sZdPJZU9N",
+            "https://blog.jetbrains.com/wp-content/themes/jetbrains/assets/img/img-form.svg",
+            "https://blog.jetbrains.com/wp-content/uploads/2021/06/bdw6.png",
+            "https://secure.gravatar.com/avatar/1e26003ded6623e122a0ae5a390e0b3a?s=50&r=g",
+            "https://blog.jetbrains.com/wp-content/uploads/2021/06/bdw5.png",
+            "https://secure.gravatar.com/avatar/1e26003ded6623e122a0ae5a390e0b3a?s=50&r=g",
+            "https://blog.jetbrains.com/wp-content/uploads/2021/05/bdw4.png",
+            "https://secure.gravatar.com/avatar/1e26003ded6623e122a0ae5a390e0b3a?s=50&r=g",
+            "https://blog.jetbrains.com/wp-content/uploads/2021/05/DSGN-10947_blog-post-on-big-data-2.png",
+            "https://secure.gravatar.com/avatar/1e26003ded6623e122a0ae5a390e0b3a?s=50&r=g"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Pasha Finkelshteyn"
+        ],
+        "publish_date": "2021-05-20T00:00:00",
+        "summary": "",
+        "meta_description": "This is the third part of our ongoing series on Big Data, how we see it, and how we build products for it. In this installment, we’ll cover the first responsibility of the data engineer: building pipelines.",
+        "meta_lang": "en",
+        "meta_favicon": "https://blog.jetbrains.com/wp-content/themes/jetbrains/assets/img/favicons/favicon.ico",
+        "meta_site_name": "The JetBrains Blog",
+        "canonical_link": "https://blog.jetbrains.com/blog/2021/05/20/big-data-world-part-3-building-data-pipelines/",
+        "text": "Big Data Tools\n\nThis is the third part of our ongoing series on Big Data, how we see it, and how we build products for it. In this installment, we’ll cover the first responsibility of the data engineer: building pipelines.\n\nRelated posts:\n\nBig Data World: Part 1. Definitions.\n\nBig Data World: Part 2. Roles.\n\nThis article\n\nBig Data World: Part 4. Architecture\n\nBig Data World, Part 5: CAP Theorem\n\nTable of contents:\n\nWhat a pipeline is\n\nOrchestrators\n\nETL Tools\n\nBatch vs stream processing\n\nApache NiFi\n\nConclusion\n\nAs we discussed in the previous part, data engineers are responsible for transferring data and for the architecture of DWH, among other things. This sounds quite simple. But in reality, the best way to accomplish these tasks is not always obvious.\n\nWhat a pipeline is\n\nTo a certain extent, everything in development may be represented as a data pipeline. In backend development, it may look like this:\n\nThis looks like ETL (Extract, Transform, Load), right? We’re not extracting anything, but the meaning is the same!\n\nAnd our usual CI pipelines (simplified) look like this:\n\nAnd considered in this way, a CI server is an ETL tool too, of course.\n\nBut in data engineering, things become lots more complex. There are lots of sources, lots of sinks (places where we put our data), lots of complex transformations, and lots of data. Just imagine having dozens of operational databases, a clickstream from your site coming through Kafka, hundreds of reports, OLAP cubes, and A/B experiments. Imagine, as well, having to store all the data in several ways, starting with raw data and ending with a layer of aggregated, cleaned, verified data suitable for building reports.\n\nYou can already hear the sound of the data engineer’s baton knocking as they prepare to conduct this orchestra. Indeed, all these processes need to be orchestrated by data engineers, and just as an orchestra is composed of a variety of instrumentalists – the process of transferring data requires distinct pipelines.\n\nThere actually are two levels of pipelines: in orchestrators and in ETL tools.\n\nOrchestrators\n\nThese pipelines are being united into entities, called DAGs (directed acyclic graphs). DAGs can look like the one below, but they can also be much more complex:\n\nThis is why one of the main instruments in a data engineer’s toolbox is an orchestrator – it makes building complex pipelines relatively simple.\n\nThe most popular orchestrators are Apache Airflow, Luigi, Apache NiFi, and Azkaban. They all do basically the same thing: they launch tools in the required order, performing retries if something goes wrong.\n\nNow let’s consider the lower level of pipeline-building\n\nAs we’ve mentioned, orchestrators usually just call other tools – typically tools for building more localized ETL pipelines. ETL tools are particularly interesting because they often operate with DAGs, as well.\n\nFor example, Apache Spark is one of the most popular ETL tools (despite it being a general-purpose distributed computations engine). One of the popular usage patterns is to move data from one place to another (from sources to sinks), transforming this data on the way, and this work may also be represented as a DAG:\n\nHere we can see that there are 2 inputs, 1 output, and multiple intermediate processing stages, including operations we are all familiar with, like “join”. Also, on this graph, we can see how data flows through nodes, along with the amount of data processed and the time each node takes.\n\nThese DAGs can be very complex, and they are usually more complex than the ones orchestrators operate on. So, in some sense, data engineers orchestrate orchestrators working with pipelines of pipelines.\n\nBatch vs stream processing\n\nGenerally speaking, ETL tools may work in 1 of 2 ways: either batch or stream processing.\n\nWith batch processing, a task is run one time, gets some data, processes it, and then shuts down. With stream processing the process is run continually, obtaining data as soon as it appears in the source.\n\nPresented in this way, it may seem like stream processing should always be used with streaming sources, like Kafka. Surprisingly, this is not necessarily the case. One popular exception to this rule is relational databases. There are 2 ways to extract data from them. The first, more popular, and obvious way is to read all the required data from the database in one batch. But it is also possible to stream changes from the database using special tools, for example, Debezium.\n\nApache NiFi\n\nYou may be getting the impression that there are two distinct worlds: the world of orchestrators and the world of ETL tools. And then there is the distinction between stream and batch processing, as well. But in reality, there is actually an outlier. Apache NiFi is an orchestrator and ETL tool at the same time. It can also work in both batch and streaming modes (with some limitations, of course).\n\nApache NiFi was created by the NSA in 2006 (and was initially named NiagaraFiles), and it was designed with the goal of making it possible for non-programmers to write data pipelines. In 2014 it was transferred to Apache Software Foundation as a part of the NSA’s technology transfer program.\n\nBut the goal remains the same: allow users who are not particularly technical to create complex data pipelines. And it really works. Of course, a system like this has its own limitations, and users may need to implement things that aren’t supported by NiFi out of the box. That’s fine, Apache NiFi is built in an extensible way, so developers can implement the modules that a customer needs, and these modules can be reused everywhere.\n\nConclusion\n\nBuilding pipelines is a complex task that is both analytical and technical. However, it is the only way to give our customers (internal and external) access to the data they need in the form they prefer.\n\nPipelines are generally built with the help of orchestrators, which call other ETL tools, but sometimes the whole pipeline may be built with a single tool like Apache NiFi."
+    }
+}

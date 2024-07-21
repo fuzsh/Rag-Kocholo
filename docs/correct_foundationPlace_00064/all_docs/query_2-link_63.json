@@ -1,0 +1,33 @@
+{
+    "id": "correct_foundationPlace_00064_2",
+    "rank": 63,
+    "data": {
+        "url": "https://www.php.net/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "PHP: Hypertext Preprocessor",
+        "top_image": "https://www.php.net/images/meta-image.png",
+        "meta_img": "https://www.php.net/images/meta-image.png",
+        "images": [
+            "https://www.php.net/images/logos/php-logo.svg",
+            "https://www.php.net/images/php8/logo_php8_3.svg",
+            "https://www.php.net/images/logos/php-logo-white.svg",
+            "https://www.php.net/images/to-top@2x.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2024-07-18T13:30:46+00:00",
+        "summary": "",
+        "meta_description": "PHP is a popular general-purpose scripting language that powers everything from your blog to the most popular websites in the world.",
+        "meta_lang": "en",
+        "meta_favicon": "https://www.php.net/favicon.svg?v=2",
+        "meta_site_name": "",
+        "canonical_link": "https://www.php.net/index.php",
+        "text": "The PHP team is pleased to announce the second testing release of PHP 8.4.0, Alpha 2. This continues the PHP 8.4 release cycle, the rough outline of which is specified in the PHP Wiki.\n\nFor source downloads of PHP 8.4.0 Alpha 2 please visit the download page.\n\nPlease carefully test this version and report any issues found in the bug reporting system.\n\nPlease DO NOT use this version in production, it is an early test version.\n\nFor more information on the new features and other changes, you can read the NEWS file, or the UPGRADING file for a complete list of upgrading notes. These files can also be found in the release archive.\n\nThe next release will be Alpha 3, planned for 1 Aug 2024.\n\nThe signatures for the release can be found in the manifest or on the QA site.\n\nThank you for helping us make PHP better.\n\nThe PHP team is pleased to announce the first testing release of PHP 8.4.0, Alpha 1. This starts the PHP 8.4 release cycle, the rough outline of which is specified in the PHP Wiki.\n\nFor source downloads of PHP 8.4.0 Alpha 1 please visit the download page.\n\nPlease carefully test this version and report any issues found using the bug tracking system.\n\nPlease DO NOT use this version in production, it is an early test version.\n\nFor more information on the new features and other changes, you can read the NEWS file, or the UPGRADING file for a complete list of upgrading notes. These files can also be found in the release archive.\n\nThe next release will be Alpha 2, planned for 18 Jul 2024.\n\nThe signatures for the release can be found in the manifest or on the QA site.\n\nThank you for helping us make PHP better.\n\nEDIT 2024-04-25: Clarified when a PHP application is vulnerable to this bug.\n\nRecently, a bug in glibc version 2.39 and older (CVE-2024-2961) was uncovered where a buffer overflow in character set conversions to the ISO-2022-CN-EXT character set can result in remote code execution.\n\nThis specific buffer overflow in glibc is exploitable through PHP, which exposes the iconv functionality of glibc to do character set conversions via the iconv extension. Although the bug is exploitable in the context of the PHP Engine, the bug is not in PHP. It is also not directly exploitable remotely.\n\nThe bug is exploitable, if and only if, the PHP application calls iconv functions or filters with user-supplied character sets.\n\nApplications are not vulnerable if:\n\nGlibc security updates from the distribution have been installed.\n\nOr the iconv extension is not loaded.\n\nOr the vulnerable character set has been removed from gconv-modules-extra.conf.\n\nOr the application passes only specifically allowed character sets to iconv.\n\nMoreover, when using a user-supplied character set, it is good practice for applications to accept only specific charsets that have been explicitly allowed by the application. One example of how this can be done is by using an allow-list and the array_search() function to check the encoding before passing it to iconv. For example: array_search($charset, $allowed_list, true)\n\nThere are numerous reports online with titles like \"Mitigating the iconv Vulnerability for PHP (CVE-2024-2961)\" or \"PHP Under Attack\". These titles are misleading as this is not a bug in PHP itself.\n\nIf your PHP application is vulnerable, we first recommend to check if your Linux distribution has already published patched variants of glibc. Debian, CentOS, and others, have already done so, and please upgrade as soon as possible.\n\nOnce an update is available in glibc, updating that package on your Linux machine will be enough to alleviate the issue. You do not need to update PHP, as glibc is a dynamically linked library.\n\nIf your Linux distribution has not published a patched version of glibc, there is no fix for this issue. However, there exists a workaround described in GLIBC Vulnerability on Servers Serving PHP which explains a way on how to remove the problematic character set from glibc. Perform this procedure for every gconv-modules-extra.conf file that is available on your system.\n\nPHP users on Windows are not affected.\n\nTherefore, a new version of PHP will not be released for this vulnerability."
+    }
+}
