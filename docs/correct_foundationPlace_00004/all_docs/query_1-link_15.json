@@ -1,0 +1,36 @@
+{
+    "id": "correct_foundationPlace_00004_1",
+    "rank": 15,
+    "data": {
+        "url": "https://stackoverflow.com/questions/38551759/disable-clickability-on-foundation-accordion",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Disable clickability on foundation accordion",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://cdn.sstatic.net/Img/teams/overflowai.svg?v=d706fa76cdae",
+            "https://i.sstatic.net/EMdXx.png",
+            "https://www.gravatar.com/avatar/a29d596b0af040d7def18d1801340a8b?s=64&d=identicon&r=PG",
+            "https://graph.facebook.com/100003953877598/picture?type=large",
+            "https://www.gravatar.com/avatar/a29d596b0af040d7def18d1801340a8b?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/abbb98534ad25cae61e183de42fdf562?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/38551759/ivc/1648?prg=69b402cf-0ea7-4606-8053-b64f08d5f3c3"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2016-07-24T11:59:35",
+        "summary": "",
+        "meta_description": "I have a foundation accordion something like this.\r\n&lt;ul class=\"accordion\" data-accordion&gt;\n  &lt;li class=\"accordion-navigation\"&gt;\n    &lt;a href=\"#panel1a\"&gt;Accordion 1&lt;/a&gt;\n    &lt;...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/38551759/disable-clickability-on-foundation-accordion",
+        "text": "I would also like to be able to disable accordion items, but was not able to find an official way to do this. With a simple edit of the foundation library (I know it's not ideal...) however I was able to make this work.\n\nI'm using this solution in combination with AngularJS, which requires the disabled check to take place on each user interaction instead of on init.\n\nThe first step is to add the css class 'disabled' to the li.accordion-item's that need to be disabled.\n\n<ul class=\"accordion\" data-accordion=\"true\" role=\"tablist\"> <li class=\"accordion-item disabled\"> <!-- The tab title needs role=\"tab\", an href, a unique ID, and aria-controls. --> <a href=\"#panel7d\" role=\"tab\" class=\"accordion-title\" id=\"panel7d-heading\" aria-controls=\"panel7d\">Panel title</a> <!-- The content pane needs an ID that matches the above href, role=\"tabpanel\", data-tab-content, and aria-labelledby. --> <div id=\"panel7d\" class=\"accordion-content\" role=\"tabpanel\" data-tab-content=\"true\" aria-labelledby=\"panel7d-heading\"> <!-- tab content --> </div> </li> </ul>\n\nThen a simple modification of the foundation.js library is sufficient to disable the carrousel item.\n\n_createClass(Accordion, [ // Other functions { key : 'down', value : function down($target, firstTime) { var _this2 = this; // ADD THIS CHECK TO BE ABLE TO DISABLE THE ACCORDION ITEM // Check if the parent accordion-item is disabled. If so, return from this function. if ($target.parent().hasClass('disabled')) { return; } // The rest of the function body } } // Other functions ])\n\nDisclaimer: In my setup the user is not able to toggle the accordion 'up' or control the accordion with keys. If your solution does, than you might need to add this check in some other sections of the foundation library as well."
+    }
+}

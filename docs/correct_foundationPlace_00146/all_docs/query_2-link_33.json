@@ -1,0 +1,30 @@
+{
+    "id": "correct_foundationPlace_00146_2",
+    "rank": 33,
+    "data": {
+        "url": "https://help.fortinet.com/fsiem/5-2-6_ESCG_HTML/FortiSIEM/User-guide/IBM-Internet-Security-Series-Proventia-Configuration_88454157.htm",
+        "read_more_link": "",
+        "language": "en",
+        "title": "IBM Internet Security Series Proventia",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://help.fortinet.com/fsiem/5-2-6_ESCG_HTML/Resources/Images/HTML5-v2/SocialMedia.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "../../Resources/Images/favicon.ico",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "What is Discovered and Monitored\n\nConfiguration\n\nWhat is Discovered and Monitored\n\nProtocolInformation DiscoveredMetrics Collected SNMP Traps\n\nEvent Types\n\nIn ADMIN > Device Support > Event, search for \"proventia\" in the Device Type and Description column to see the event types associated with this device.\n\nRules\n\nThere are no predefined rules for this device.\n\nReports\n\nThere are no predefined reports for this device.\n\nConfiguration\n\nSNMP Trap\n\nFortiSIEM receives SNMP traps from IBM/ISS Proventia IPS appliances that are sent by IBM/ISS SiteProtector Management Console. You must first configure IBM/ISS Proventia to send alerts to IBM/ISS SiteProtector, then configure IBM/ISS SiteProtector to send those alerts as SNMP traps to FortiSIEM.\n\nConfigure IBM/ISS Proventia Appliances to Send SNMP Notifications to IBM/ISS SiteProtector Management Console\n\nLog in to the IBM Proventia IPS web interface.\n\nClick Manage System Settings > SiteProtector Management.\n\nClick and select Register withSiteProtector.\n\nClick and select Local Settings Override SiteProtector Group Settings.\n\nSpecify the Group, Heartbeat Interval, and Logging Level.\n\nConfigure these settings:\n\nSettingDescriptionAuthentication LevelUse the default first-time trust.Agent Manager NameEnter the Agent Manager name exactly as it appears in SiteProtector. This setting is case-sensitive.Agent Manager AddressEnter the Agent Manager's IP address.Agent Manager PortUse the default value 3995.User NameIf the appliance has to log into an account access the Agent Manager, enter the user name for that account here.User PasswordClick Set Password, enter and confirm the password, and then click OK.Use Proxy SettingsIf the appliance has to go through a proxy to access the Agent Manager, select the Use Proxy Settings option, and then enter the Proxy Server Address and Proxy Server Port.\n\nDefine FortiSIEM as a Response Object for SNMP Traps\n\nLog in to IBM SiteProtector console.\n\nGo to Grouping > Site Management > Central Responses > Edit settings.\n\nSelect Response Objects > SNMP.\n\nClick Add.\n\nEnter a Name for your FortiSIEM virtual appliance.\n\nFor Manager, enter the IP address of your virtual appliance.\n\nFor Community, enter public.\n\nClick OK.\n\nDefine a Response Rule to Forward SNMP Traps to FortiSIEM\n\nGo to Response Rules.\n\nClick Add.\n\nSelect Enabled.\n\nEnter a Name and Comment for the response rule.\n\nIn the Responses tab, select SNMP.\n\nSelect Enabled for the response object that represents your FortiSIEM virtual appliance.\n\nClick OK.\n\nRefining Rules for Specific IP Addresses\n\nBy default, a rule matches on any source or destination IP addresses.\n\nTo refine the rule to match on a specific source IP address, select the rule, click Edit, and then select the Source tab.\n\nSelect Use specific source addresses to restrict the rule based on IP address of the source.\n\nIf you set this option, set the Mode to specify that the rule should either be From or Not From the IP address.\n\nClick Add to define one or more IP addresses.\n\nSettings for Access Credentials\n\nSet these Access Method Definition values to allow FortiSIEM to communicate with your device.\n\nSetting Value Name <set name> Device Type IBM ISS Proventia Access Protocol See Access Credentials Port See Access Credentials Password config See Password Configuration\n\nSample SNMP trap\n\n2013-02-07 16:52:18 100.0.0.218(via UDP: [192.168.64.218]:55545) TRAP, SNMP v1, community public SNMPv2-SMI::enterprises.2499 Enterprise Specific Trap (4) Uptime: 0:00:00.15 SNMPv2-SMI::enterprises.2499.1.1.2.1.1.1.1.1 = STRING: \"SiteProtector_Central_Response (Response1)\" SNMPv2-SMI::enterprises.2499.1.1.2.1.1.1.1.2 = STRING: \"16:52:18 2013-02-07\" SNMPv2-SMI::enterprises.2499.1.1.2.1.1.1.1.3 = STRING: \"6\" SNMPv2-SMI::enterprises.2499.1.1.2.1.1.1.1.4 = STRING: \"100.0.0.216\" SNMPv2-SMI::enterprises.2499.1.1.2.1.1.1.1.5 = STRING: \"100.0.0.218\" SNMPv2-SMI::enterprises.2499.1.1.2.1.1.1.1.6 = \"\" SNMPv2-SMI::enterprises.2499.1.1.2.1.1.1.1.7 = \"\" SNMPv2-SMI::enterprises.2499.1.1.2.1.1.1.1.8 = STRING: \"48879\" SNMPv2-SMI::enterprises.2499.1.1.2.1.1.1.1.9 = STRING: \"80\" SNMPv2-SMI::enterprises.2499.1.1.2.1.1.1.1.10 = STRING: \"DISPLAY=WithoutRaw:0,BLOCK=Default:0\" SNMPv2-SMI::enterprises.2499.1.1.2.1.1.1.1.11 = STRING: \" SensorName: IBM-IPS ObjectName: 80 DestinationAddress: 100.0.0.218 AlertName: HTTP_OracleAdmin_Web_Interface AlertTarget: 100.0.0.218 AlertCount: 1 VulnStatus: Simulated block (blocking not enabled) AlertDateTime: 16:52:17 2013-02-07 ObjectType: Target Port SourceAddress: 100.0.0.216 SensorAddress: 192.168.64.15\""
+    }
+}

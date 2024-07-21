@@ -1,0 +1,38 @@
+{
+    "id": "correct_foundationPlace_00004_3",
+    "rank": 84,
+    "data": {
+        "url": "https://discourse.webflow.com/t/need-a-notification-solution/37933",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Need a notification solution",
+        "top_image": "https://global.discourse-cdn.com/webflow1/optimized/3X/c/4/c4079e90d35d51ca8333b7343a681fb8d0f3ccfe_2_1024x761.png",
+        "meta_img": "https://global.discourse-cdn.com/webflow1/optimized/3X/c/4/c4079e90d35d51ca8333b7343a681fb8d0f3ccfe_2_1024x761.png",
+        "images": [
+            "https://global.discourse-cdn.com/webflow1/optimized/3X/c/4/c4079e90d35d51ca8333b7343a681fb8d0f3ccfe_2_672x500.png",
+            "https://emoji.discourse-cdn.com/apple/confused.png?v=12",
+            "https://emoji.discourse-cdn.com/apple/confused.png?v=12",
+            "https://emoji.discourse-cdn.com/apple/confused.png?v=12",
+            "https://global.discourse-cdn.com/webflow1/optimized/3X/0/2/02f2a5cf4d777c387f64da95f5335e82ba1f0700_2_690x463.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "system (system) Closed",
+            "Revolution (Revolution)",
+            "samliew (webflowexpert.com)"
+        ],
+        "publish_date": "2017-01-19T21:09:42+00:00",
+        "summary": "",
+        "meta_description": "I need to design some sort of notification that will come up when a link is clicked, informing the user they are leaving the original site and opening a third-party site.  This would come up on multiple links on the same&hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://global.discourse-cdn.com/webflow1/optimized/4X/5/1/0/51031619028f7bbc7a63c259f67678de83c0b4bd_2_32x32.png",
+        "meta_site_name": "Forum | Webflow",
+        "canonical_link": "https://discourse.webflow.com/t/need-a-notification-solution/37933",
+        "text": "I need to design some sort of notification that will come up when a link is clicked, informing the user they are leaving the original site and opening a third-party site. This would come up on multiple links on the same page, on different pages on the site. I’ve tried using the modal windows but they either void out the link’s clickability or when I create multiple windows they won’t work together on the same page. A single window won’t work because if I add “continue” to the window, there is only one hyperlink available. I wish I could make an “alt tag” box appear over each link to just let the user know they are leaving the site but that isn’t working.\n\nAny suggestions?\n\nHere is an example of what I need (the modal that I’ve implemented…)\n\nThanks in advance for any ideas!\n\nTracy\n\nHere is my public share link: LINK\n\n(how to access public share link)\n\nNot sure why multi-modals would not solve this issue.\n\nYou can create a different modal for each link.\n\n10 links… 10 modals… 10 different destinations.\n\nThe biggest problem is managing 10 modals.\n\n(IMO) The cleaner solution is to JQuery or JS.\n\nWith JQuery or JS\n\nyou can manipulate the click so that it passes a parameter to the 1 modal.\n\nBase on the parameter… a specific message is display along with it’s associated link.\n\nSo basically… if users clicks link 1… JS processes the request and fills a variable with a preselected paragraph for link 1.\n\nObviously… the JQuery route is harder… but it’s do-able.\n\nAnd it’s much cleaner.\n\n@bart is pretty is this kinda of stuff. I think @waldo is also.\n\nI created 2 modals and they didn’t want to work on the same page (using the Modal Wrapper video tutorial x’s 2) so then I kept the wrapper and tried creating just different div blocks…they wouldn’t work either.\n\nEach time the modal cancels out the hyper-link associated with the original images and text links. I am just having a heck of a time.\n\nI could use JQuery or JavaScript but aren’t we limited on code characters for custom code? I have to do this to A LOT of pages…a LOT of links. Plus I already have other scripts and custom code for other aspects of the site, already on certain pages. I was hoping to use a pre-built webflow solution but maybe I just won’t be able to do that.\n\nThanks for the suggestions…I may just have to go that route, somehow!\n\nDid you use a different ID for each modal ?\n\nAs for the limit… yes there is a limit. Not sure how much text you have to display.\n\nWhat I was thinking about was (as an example)\n\nlink1… calls js script - passes “1”…\n\njs script determined what text to display and what the destination url is.\n\njs then dom’s the on-form modal and changes the inside html value of a preset div already in the modal.\n\njs then doms the preset link in the modal as well.\n\nYes - You could have a problem if the text is large… but you are basically just changing the value inside the div with js.\n\nIf the text is too large… you setup multiple divs that js would manipulate.\n\nYou could hide what whatever (using js) that were not needed…\n\nI did this along with a database a while back.\n\nBasically… each link called ajax a call to a database this was then then written into a modal\n\nthen the modal lit up.\n\nI was able to get it to work and have the checkbox removed with this code:\n\n<script>\n\nWebflow.push(function() {\n\n$(‘a’).each(function() {\n\nif (this.href !== “#” && this.href.indexOf(‘/’) !== 0 && this.href.indexOf(location.hostname) === -1) {\n\n$(this).attr(‘target’, ‘_blank’)\n\n.click(function() { return confirm(‘NOTICE: You are leaving our website and will enter a website maintained by a third party. We are providing a link to the third party website solely as a convenience to you, because we believe that website may provide useful content. We are not, by referring or linking to the third party website, incorporating its contents into our own website. We do not endorse or guarantee, and we disclaim any responsibility for: the content, products or services offered on that website, its performance or interaction with your computer, its security and privacy policies and practices, and any consequences that may result from visiting that website. By clicking OK, you acknowledge this statement.’);\n\n});\n\n}\n\n});\n\n});\n\nBut because Webflow requires documents to be stored outside of their servers, the links to PDFs are all getting the notifications I’d like to exclude that URL from getting the notification so the PDF access seems a little more seemless. Plus I have another “external” URL that I need to exclude because it is going to a parent company.\n\nAnyone have ideas on what that code should be to exclude a URL or two?\n\nThanks! I’m making good strides thanks to the community support!!"
+    }
+}
