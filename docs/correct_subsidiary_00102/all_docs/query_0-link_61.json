@@ -1,0 +1,41 @@
+{
+    "id": "correct_subsidiary_00102_0",
+    "rank": 61,
+    "data": {
+        "url": "https://www.swapsupport.com/articles/finding-the-figures-equity-elimination-and-contribution-in-oracle-hfm",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Finding the figures; equity elimination and contribution in Oracle HFM",
+        "top_image": "https://www.swapsupport.com/hubfs/Kronkelweg.jpg",
+        "meta_img": "https://www.swapsupport.com/hubfs/Kronkelweg.jpg",
+        "images": [
+            "https://www.swapsupport.com/hubfs/Logo_blauw_SWAP.svg",
+            "https://www.swapsupport.com/hubfs/Logo_SWAP_wit.svg",
+            "https://www.swapsupport.com/hubfs/Logo_blauw_SWAP.svg",
+            "https://www.swapsupport.com/hs-fs/hubfs/SwapSupport_August_2021/Images/Kronkelweg.jpg?width=1100&height=550&name=Kronkelweg.jpg",
+            "https://www.swapsupport.com/hs-fs/hubfs/SwapSupport_August_2021/Images/Afbeelding1-1.png?width=975&height=246&name=Afbeelding1-1.png",
+            "https://www.swapsupport.com/hs-fs/hubfs/SwapSupport_August_2021/Images/Afbeelding2.png?width=495&height=109&name=Afbeelding2.png",
+            "https://www.swapsupport.com/hs-fs/hubfs/SwapSupport_August_2021/Images/Afbeelding3.png?width=975&height=259&name=Afbeelding3.png",
+            "https://www.swapsupport.com/hs-fs/hubfs/SwapSupport_August_2021/Images/Afbeelding4.png?width=481&height=206&name=Afbeelding4.png",
+            "https://www.swapsupport.com/hs-fs/hubfs/SwapSupport_August_2021/Images/Afbeelding5.png?width=975&height=248&name=Afbeelding5.png",
+            "https://www.swapsupport.com/hs-fs/hubfs/SwapSupport_August_2021/Images/Afbeelding6.png?width=975&height=218&name=Afbeelding6.png",
+            "https://www.swapsupport.com/hs-fs/hubfs/CTA_Webinar_EPM_toolselection.jpg?width=556&height=663&name=CTA_Webinar_EPM_toolselection.jpg",
+            "https://www.swapsupport.com/hs-fs/hubfs/raw_assets/public/Act3%20child/images/teamviewer.png?width=30&height=30&name=teamviewer.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "Let's take a look at the equity elimination and contribution in Oracle HFM.  How does the consolidation process work?",
+        "meta_lang": "en",
+        "meta_favicon": "https://www.swapsupport.com/hubfs/Beeldmerk_blauw_SWAP-1.svg",
+        "meta_site_name": "",
+        "canonical_link": "https://www.swapsupport.com/articles/finding-the-figures-equity-elimination-and-contribution-in-oracle-hfm",
+        "text": "How exactly is a consolidation achieved? And how are equity elimination and contribution triggered? In short, how does the consolidation process find its way within Oracle HFM? In this blog, we take a look at the equity elimination and contribution.\n\nLet’s take a fairly simple organization structure with two subsidiaries (Europe_Sub and USA_Sub), a Holding and the consolidation entity. We’ll have a look at:\n\nEquity elimination on subsidiary level\n\nEquity elimination on holding level\n\nResult on consolidated level\n\nWhere to look if issues occur\n\nOur start situation is shown in the print screen below. For this blog, we’ll focus on the equity accounts and the participation in subsidiary account ‘Financial Fixed Assets’. Good to know: we are using Equity Pick up in HFM, which means that the figures calculated for the Equity Pick Up are stored on the member ‘EPU’ in a custom dimension (data source). Our total amount is stored on ‘Total EPU’, which is nothing more than ‘Input amount’ + ‘EPU amount’.\n\nOur starting situation:\n\nOwnership:\n\nEquity elimination on subsidiary level in Oracle HFM\n\nAssuming we have ran the consolidation, let’s take a look at the equity elimination of the subsidiary Europe_Sub, see next screenshot. From the Value dimension, we choose [Entity Currency], [Elimination] and [Contribution]. On [Entity Currency] we see the input, on the next column the figures which are eliminated and the plug account, while the last column shows the amount which is ‘contributed’ to the Holding. As you can see the accounts L710, L720 and L730 are eliminated for 100%, this results in a contribution of ‘0’. The total amount which is eliminated is posted against the plug account L770.\n\nSo, what triggered this? Most likely the accounts which are eliminated for equity are marked in the metadata, in our example with ‘EQELIM’ in the user defined 1 field:\n\nFrom the consolidation rules, which execute the equity elimination, this mark ‘EQELIM’ is picked up and the appropriate accounts are eliminated according to the ownership. Closely followed by the elimination rule that sums up the amounts eliminated and posts this on the plug account. A small remark; if minority is the case, the eliminated equity amounts are divided by the plug account and a minority account according [PMIN] from the ownership table.\n\nWe have eliminated the subsidiary equity Europe_Sub, in the exact same way the USA_Sub is eliminated. We will continue to the elimination of the equity on the holding.\n\nEquity elimination on holding level in Oracle HFM\n\nFor the equity elimination on Holding level we ‘re looking at the EPU data source, because in our example the EPU amounts are calculated by the consolidation rules and posted on the EPU data source. Please read our blog ‘How Equity Pick Up works in HFM’ for more details regarding Equity Pick Up.\n\nOn holding level, the account A300-Financial fixed assets (aka participation in subsidiaries) is eliminated as it is posted against the subsidiaries ICP. This results in a contribution of ‘0’. The contra entry on [Elimination] is made against the L770 – Equity Plug Account, which is marked as the plug account of A300-Financial Fixed Assets in the metadata.\n\nResult on consolidated level in Oracle HFM\n\nAfter these steps, L770 – Equity Pick Up Account, is even. The result on consolidated level (L770 – Equity Plug Account = 0) is:\n\nWhere to look if issues occur during the Equity Pick Up in Oracle HFM\n\nA frequently occurring issue in Oracle Hyperion Financial Management (HFM) is to do with the Equity Plug Account. Sometimes, this account doesn’t equal zero on Holding level. This can be caused by various reasons:\n\nThe consolidation [method] in the ownership is incorrect\n\nEquity of subsidiary is not equal to participations in subsidiaries on the holding\n\nIf you are using Equity Pick Up in HFM; the EPU share is different from Ownership\n\nThe path of consolidation in Oracle HFM\n\nConsolidation processes in Oracle Hyperion Financial Management (HFM) are actually quite logical. The equity elimination and contribution are triggered by clearly defined actions. Once you know these steps, you can easily search for the causes of data issues. This way, you can correct or even prevent issues.\n\nDo you want to get even more out of your Oracle applications? Discover our support for Oracle and our EPM support services."
+    }
+}

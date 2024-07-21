@@ -1,0 +1,28 @@
+{
+    "id": "correct_subsidiary_00138_3",
+    "rank": 63,
+    "data": {
+        "url": "https://www.kb.cert.org/vuls/id/997481",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Cryptographic libraries and applications do not adequately defend against timing attacks",
+        "top_image": "",
+        "meta_img": "",
+        "images": [],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "Cryptographic libraries and applications do not adequately defend against timing attacks",
+        "meta_lang": "",
+        "meta_favicon": "https://kb.cert.org/static-bigvince-prod-kb-eb/vincepub/images/favicon.ico",
+        "meta_site_name": "",
+        "canonical_link": "https://www.kb.cert.org",
+        "text": "David Brumley and Dan Boneh, researchers at Stanford University, have written a paper that demonstrates a practical attack that can be used to extract private keys from vulnerable RSA applications. Using statistical techniques and carefully measuring the amount of time required to complete an RSA operation, an attacker can recover one of the factors (q) of the RSA key. The timing differences examined in the paper are based on whether an extra Mongtomery reduction is performed (section 2.3) and whether Karatsuba (recursive) or \"normal\" multiplication is used (section 2.4). With the public key and the factor q, the attacker can compute the private key. As noted in the VMM/attestation example in section 4 of the paper, applications that perform RSA encryption (signing) operations may also be vulnerable if the attacker can control the data to be signed.\n\nSimilar types of timing attacks are discussed in CERT Advisory CA-1998-07, a paper by Daniel Bleichenbacher et al., and a paper by Paul Kocher.\n\nThe Brumley and Boneh paper documents a set of experiments using currently available hardware to attack three different OpenSSL-based RSA decryption applications: a simple RSA decryption oracle, Apache/mod_ssl, and Stunnel. Under optimal conditions, a 1024-bit RSA private key was extracted in approximately two hours using ~350,000 guesses. In the context of an SSL/TLS handshake, the guesses take the form of the premaster secret (client key exchange message), and the guesses may appear to a web server as completed TCP connections and failed attempts to set up SSL/TLS sessions. The experiments were conducted both interprocess on a single machine and on a high-speed, closed network that does not accurately reflect the network conditions found on the Internet. The attack could, however, be feasible on a network with a low variance in latency such as a LAN, corporate/campus network, or Internet2/Abilene. The attack could also work against an SSL/TLS enabled web server to which the attacker has local access, such as a shared server in a co-location facility. The paper also notes that interprocess attacks against Virtual Machines (VM) running on the same physical computer could yield RSA secrets held by a trusted VM, such as a TCPA/Palladium system.\n\nThe experiments focus on RSA software implementations, OpenSSL in particular. The paper states that \"most crypto acceleration cards also implement defenses against the timing attack. Consequently, network servers using these accelerator cards are not vulnerable.\" Any applications that perform RSA private key operations may be vulnerable: SSL/TLS-enabled network services, IPsec, Secure Shell (SSH1, ssh-agent), TCPA/Palladium, and smart cards are some examples of such applications. For specific vendor information, see the Systems Affected section below.\n\nThe paper recommends a defense called \"RSA blinding\" that introduces an additional random component to the RSA calculation and makes timing information unusable to attackers. It appears that many cryptographic libraries and applications either do not implement RSA blinding or do not make use of it when it is available. RSA blinding does incur a slight performance penalty. Although the OpenSSL library used in the experiments does implement RSA blinding, it is not enabled by default. Many applications that use OpenSSL, including Apache mod_ssl, do not use RSA blinding, and are therefore vulnerable to this attack."
+    }
+}

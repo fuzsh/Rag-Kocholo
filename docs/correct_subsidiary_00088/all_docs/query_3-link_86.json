@@ -1,0 +1,36 @@
+{
+    "id": "correct_subsidiary_00088_3",
+    "rank": 86,
+    "data": {
+        "url": "https://www.usenix.org.uk/content/yahoo_mbox.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "yahoo! groups archive extraction",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://www.paypal.com/en_GB/i/scr/pixel.gif",
+            "https://www.usenix.org.uk/content/pictures/1x1.gif"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "yahoo",
+            "group",
+            "mbox",
+            "archive",
+            "export",
+            "headers"
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "how to extract yahoo groups archives",
+        "meta_lang": "",
+        "meta_favicon": "",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "Some time ago the first thing I did when I sat down at the computer after college was read through egroups mail. Yahoo! bought this and named it YahooGroups. I hardly noticed. Earlier this year (or late last year, I don't remember when) Yahoo! decided to scrap their formatted view of mail and replace it with some junk view. This probably doesn't effect 90% of their users, but if you're using YahooGroups for programming (see their c-prog group) then your formatted view of source code is rubbished.\n\nIf you're using a mail client you may not notice if the content is set as text/plain. If you want to view the message in YahooGroups NEO interface then good luck.\n\nSo, somewhere between 2006-2011 I lost all my mail archives, \"who cares\" I thought. Well, now I care because I contributed to some groups during this time and I may wish to take a look at what I posted and when just because my memory isn't what it used to be. Sometimes I forget the difference between left/right inner/outer SQL joins, I hardly use them now.\n\nSo, there was a program named yahoo2mbox which did extract archives from the older format interface, but that's broken now and the author doesn't want to fix that. \"Can't be that hard\" methinks. So with some sh, perl and formail I've solved the issue. Well, if partial headers (email addresses extracted by Yahoo!) is ok, then we're all good. I spent a lot of time trying to sort this mess out, seems that at certain points the SSL termination at groups.yahoo.com tries to endlessly renegotiate when I'm sending it headers with openssl s_client. Could just be me.\n\nSee code/yahoo_mbox for the scripts. Simply, the script can be used as:\n\n$ mkdir -p group_name && cd group_name\n\nAs you wont want to explode the messages into your current working directory (possibly ~/Downloads?).\n\n$ sh ../script -s 60000 -e 60010 -g linux\n\nThis will create a bunch of message_N files where N is the message number.\n\n$ for i in $( seq 60000 60010 ) ; do \\ cat message_${i} \\ | perl decode.pl \\ | formail >> mbox_linux\n\nThe above will then loop over the message files, sending them through the decode script to extract the message out of the JSON data structure. Then use another library to convert the HTML encoded angle brackets and quotation marks. Then using formail to rewrite the output to mbox form.\n\nSo, you'll need to download script, and decode. If you're on debian you'll need the libjson-perl package and formail, which is part of procmail. These scripts are tiny but they're using huge pieces of work from other people. Yahoo! went above and beyond at hiding the original mail from the end user. It's obfuscation+1.\n\nNow you may use a mail reader, such as mutt to view your mbox file (other mail clients are available too, but mutt sucks less).\n\n$ mutt -R -f mbox_linux\n\nTip! You can gzip the mbox file on debian, the mutt binary is patched to understand gzip mbox files.\n\nfaq\n\nthrottling\n\nYes, they throttle access. If you start getting HTML responses with error \"999\", they're not going to let you have further data. I switched to IPv6 and then had access, I think the access is restored automatically, it seems to be working again for me today over IPv4. I reached this magical limit with a single second of sleep in the loop and 2500 page accesses. I've got three IP addresses to play with, I can just socks the access, perhaps use tor too.\n\nhow did i find out the magic url\n\nWell, Yahoo! helped me. In looking to find out which email address was associated with my Yahoo! account I accidentally logged into my Yahoo! flickr account and couldn't find the email associations. I went and clicked on the wrong thing which took me to a fancy profile page. This. Took. Sixteen. Seconds. To. Load. I kid you not. So, I did the sensible thing to see if the problem was this end or their end using the Firefox Web-Developer network tool. Sure enough, DNS resolution was milliseconds, connect() was milliseconds, but the data response was 16 seconds. Problem at their end. I left the developer tool running and went to their groups page to see again if there was anything I could do over there (still not realised I'm using the wrong account you see).\n\nWhen looking at the message files, I see that there's a 'View source' option. So I clicked it. It's a bit of a web 2.0 thing, the whole page didn't reload, but the magic javascript went and fetched a new object to repaint some of the page with. This object was named digits. There was a whole bunch of other cookie data that was going down the wire. Incidentally, their SSL wants to renegotiate on the Cookie: header for some reason which breaks things.\n\nSo, once the object is returned, I find that it contains all sorts of goodies, that was all I needed, well, almost. With some perl JSON libraries I turned the data into a structure, with HTML::Strip I removed the junk. Thanks guys, if your pages loaded more timely I'd not have stumbled upon this.\n\nLast thing, please, please, please offer me a job, doesn't have to be full-time, I can work weekends, just let me sort out your problems before there's an exodus of users."
+    }
+}
