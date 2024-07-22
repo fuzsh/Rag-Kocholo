@@ -1,0 +1,35 @@
+{
+    "id": "correct_subsidiary_00031_2",
+    "rank": 24,
+    "data": {
+        "url": "https://community.cisco.com/t5/networking-knowledge-base/issue-in-the-configuration-of-cisco-sfs-3001-topspin-90-switch/ta-p/3122171",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Issue in the Configuration of Cisco SFS 3001 (TopSpin 90) Switch:",
+        "top_image": "https://community.cisco.com/html/assets/ciscooglogo.png",
+        "meta_img": "https://community.cisco.com/html/assets/ciscooglogo.png",
+        "images": [
+            "https://community.cisco.com/t5/image/serverpage/avatar-name/default_icon/avatar-theme/candy/avatar-collection/Cisco_Default/avatar-display-size/profile/version/2?xdesc=1.0",
+            "https://community.cisco.com/html/@E1D9E5099E7D8FD73DECA4D3FF50F455/rank_icons/rank-1.png",
+            "https://community.cisco.com/legacyfs/online/legacy/5/3/0/2035-3%20Partitions%20on%20TopSpin.JPG"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "community.cisco.com",
+            "user-id"
+        ],
+        "publish_date": "2009-11-20T14:36:20+00:00",
+        "summary": "",
+        "meta_description": "I have been busting myself for the last 7 days and trying to configre the above switch, but it does not seem to be working: My Switch has the following hardware - 1. 6 Port Ethernet Gateway Switch, and 12 Port IB Switch. The switch is running the",
+        "meta_lang": "en",
+        "meta_favicon": "https://community.cisco.com/html/@D17C385B8A505F8125C5E271F02ACC75/rank_icons/ciscologo-square_16x16.png",
+        "meta_site_name": "",
+        "canonical_link": "https://community.cisco.com/t5/networking-knowledge-base/issue-in-the-configuration-of-cisco-sfs-3001-topspin-90-switch/ta-p/3122171",
+        "text": "I have been busting myself for the last 7 days and trying to configre the above switch, but it does not seem to be working: My Switch has the following hardware - 1. 6 Port Ethernet Gateway Switch, and 12 Port IB Switch. The switch is running the IOS \"system-version : Topspin-90 TopspinOS 2.8.0 releng #164 09/09/2007 05\".\n\nI have been trying to achieve the following Scenario: In my network, I have 3 Networks 10.0.10.0 / 24, 10.0.20.0 / 24, and 10.0.30.0 /24. I am trying to achieve the communication among these three networks and trying to allow the communication out. I have been using ENGateway port 1 as the port which I have been configuring and the internal IB port 2 for the gateway. I understand the VLAN concept in the normal switching and routing environment, but here it seems to be all not showing and signs of success. Please see the following diagram that I have been trying to make it work.\n\nenable\n\nconfigure terminal\n\nbridge-group 1 subnet-prefix 10.0.30.0 24\n\nbridge-group 1 subnet-prefix 10.0.20.0 24\n\nbridge-group 1 subnet-prefix 10.0.10.0 24\n\nbridge-group 1 ib-next-hop 10.0.30.1 next-hop-mask 255.255.255.0\n\nbridge-group 1 ib-next-hop 10.0.20.1 next-hop-mask 255.255.255.0\n\nbridge-group 1 ib-next-hop 10.0.10.1 next-hop-mask 255.255.255.0\n\ninterface ethernet 2/1\n\nbridge-group 1\n\ninterface gateway 2\n\nbridge-group 1\n\nexit\n\nAbove are the commands that I am issuing on the SFS 3001: (This is how the documentation is describing): Please let me know what part I am missing:\n\nWhat I did not understand is that which interface is getting configured with the Gateway IP address, or if its all virtual. Under normal circumstances on a layer 3 switch we would create a Vlan interface, and assign it an ip address, enable the interface and enable the routing and that is it. Then we define the physical ports on the switch to belong to this VLan.\n\nIn this scenario, when I am not using Vlan, then how it is happening, for all these 3 subnets. Now If I do define the VLAN-Tag with the default partion (If I can), then how do the ports on the switch get assigned to that specific Vlan-Tag (I mean, if its Vlan-10, then how do I define, that which ports on the switch belong to this Vlan-10).\n\nPlease any help from your end would be appreciated, I have invested more than enough time, and I truly need to see some results flowing down.\n\nRegards,\n\nDhhruv Arya"
+    }
+}

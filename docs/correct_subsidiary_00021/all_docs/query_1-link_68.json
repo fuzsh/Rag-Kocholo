@@ -1,0 +1,30 @@
+{
+    "id": "correct_subsidiary_00021_1",
+    "rank": 68,
+    "data": {
+        "url": "https://adsm.org/lists/html/ADSM-L/2004-08/msg00515.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Informix onbar process hangs and poor backup performance",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://adsm.org/images_common/adsm.gif"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "",
+        "meta_favicon": "",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "Hi all Environment: AIX version 5.2 on IBM pSeries 670 partitioned with 6 processors for this node DWH (datawarehouse as client for TSM) TSM Storage agent version 5.2.1.x backing up to TSM server on IBM p630 also running AIX 5.2 Informix version 9.31 64bit TDP for informix version 5.2 IBM LTO 3584 tape library with 8 drives FC connected to TSM serevr and Storage agent server We have recently experienced the following problem when backing up Informix to TSM via lanfree: Backup throughput times are very erratic, anything between 7 hours (normal) TO 24HRS. What we have discovered is that informix is starting the backup and running 4 sessions to 4 tape drives but after awhile (and only sometimes) the backup changes to one stream when this happens then we find that informix still has four onbar_d process running (these are the processes that are forked when an onbar backup is kicked off) but only one of these streams is actually backing up data to TSM. There are no errors reported on either TSM, AIX or Informix ( I have checked dsierror.log, actlog, bar_actlog etc) these process also utilise a large amount of CPU (above 80%). These processes initially backup data but when the backup completes the process does not, this results in informix not starting additional process since the bar_max_backup parameter in onconfig is set to 4 .... So we have three rogue process, one process actually performing a backup stream and single streaming of more than 1.5TB of data. Sometimes these rogue processes vary between 1 and 4 i.e. 1,2 or 3 rogue processes. My assessment is that there is some form of miscommunication between onbar, TSM TDP (API) and the TSM Storage agent and that when the backup has completed onbar does not know and continues the process but does not send data. The strange thing is that when this server had it own TSM server locally installed and was connected to 6 Magstart 3575 tape drives this would not happen but since changing t to lanfree this has started, so my gut feel is that it is somehow connected to the storage agent. Has anyone seen this or shed some light on what may be happening. Any help appreciated.. Kind Regards Marc Layne Faritec Services Delivery and Software Solutions Manager Tel: +27 21 762 9702 Fax: +27 21 762 9737 Cell: + 27 82 416 9086 Website: www.faritec.com E-mail: mlayne AT faritec DOT com DISCLAIMER: This message may contain information which is confidential, private or privileged in nature. If you are not the intended recipient, you may not peruse, use, disseminate, distribute or copy this message or file which is attached to this message. If you have received this message in error, please notify the sender immediately by e-mail, facsimile or telephone and thereafter return and/or destroy the original message. Any views of this communication are those of the sender except where the sender specifically states them to be those of Faritec (Holdings) Limited (Faritec) and/or any of its subsidiaries including (but not limited to) Faritec Enterprise Solutions (Proprietary) Limited, Faritec Strategic IT Services (Proprietary) Limited, Faritec Contracting (Proprietary) Limited, Ebis and/or any of its subsidiaries. Please note that the recipient must scan this e-mail and any attached files for viruses and the like. While we do everything possible to protect information from viruses, Faritec accepts no liability of whatever nature for any loss, liability, damage or expense resulting directly or indirectly from the access and/or downloading of any files which are attached to this e-mail message."
+    }
+}
