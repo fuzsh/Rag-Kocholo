@@ -1,0 +1,42 @@
+{
+    "id": "correct_starring_00071_3",
+    "rank": 67,
+    "data": {
+        "url": "https://spinque.com/blog/graph-ranking-part-1/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Graph Ranking",
+        "top_image": "https://spinque.com/img/logo.png",
+        "meta_img": "https://spinque.com/img/logo.png",
+        "images": [
+            "https://spinque.com/img/menu-24px.svg",
+            "https://spinque.com/img/logo_full.svg",
+            "https://spinque.com/img/blog/graph-ranking-part-1/relevance-is-everywhere.png",
+            "https://spinque.com/img/blog/graph-ranking-part-1/imdb-knowledge-graph.png",
+            "https://spinque.com/img/blog/graph-ranking-part-1/spinque-desk-filter-by-class-dialog.png",
+            "https://spinque.com/img/blog/graph-ranking-part-1/spinque-desk-filter-by-class-results.png",
+            "https://spinque.com/img/blog/graph-ranking-part-1/spinque-desk-rank-by-double-dialog.png",
+            "https://spinque.com/img/blog/graph-ranking-part-1/spinque-desk-rank-by-double-results.png",
+            "https://spinque.com/img/blog/graph-ranking-part-1/microscope.png",
+            "https://spinque.com/img/logo-white.svg",
+            "https://spinque.com/img/logo-footer.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Spinque B.V"
+        ],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "Integrate your data into a knowledge graph, design search solutions tailored to your needs and deploy them as APIs.",
+        "meta_lang": "en",
+        "meta_favicon": "/img/logo.svg",
+        "meta_site_name": "",
+        "canonical_link": "https://www.spinque.com/",
+        "text": "Posted on 26/04/2021 by Roberto Cornacchia\n\nWhen accessing information on the Web we are continuously interacting with systems that try to determine what is relevant for us. When we use a service to watch a movie or series it suggests what we should watch next. When we listen to music we receive recommendations of other songs that we might like. When we use a Web search engine it shows us the results that help us answer questions within the context of a particular time and place. When we check our social network we see the posts that are most interesting to us.\n\nAll these services use some form of relevance to determine what they present to us and what order they present it in. To compute relevance, they use a variety of (user) data and combine a multitude of metrics within their algorithms. In summary, effective notions of relevance have become an essential element for the success of service providers on the Web.\n\nAnother key ingredient adopted by the big players on the Web is in the way that they organize their data. Knowledge graphs have become a critical way for enterprises to structure their data. In particular, knowledge graphs help with the integration of data from different sources. Which in turn allows more and different types of data to be utilized when computing relevance.\n\nSpinque helps enterprises to provide relevant results to their users. To do so, we construct a knowledge graph of the data within an enterprise, and when needed enrich it with external knowledge. Together with the enterprise's domain experts, we study the search tasks of their users and determine the appropriate notions of relevance.\n\nUsers are more than accustomed to consuming lists of results that are ranked by their relevance to a query. Somewhat intuitively, they also understand that exploiting the connections existing among data points can enable new and interesting ways of defining what is relevant. For example, we easily accept the idea that our favourite social network shows more information about people whose interests are similar.\n\nExploring how the concepts of relevance and ranking can be modeled and used within knowledge graphs is the topic of this series of posts: Graph Ranking.\n\nIMDB sample as a Graph\n\nIn the following, we are going to use a small sample of data coming from IMDB, turn it into a knowledge graph, and explore a number of increasingly complex ranking scenarios with the help of Spinque Desk, our search design framework.\n\nWe constructed a graph out of two CSV datasets that are publicly available on Kaggle:\n\nIMDB Spoiler Dataset: a subset of 1572 movies for which a review containing spoilers was identified. We are not particularly interested in spoilers here: we selected this dataset because it was a clean sample of data.\n\nIMDB Dataset: Basic information about movies: title, average rating, genre, plot summary, etc.\n\nThe resulting graph is extremely simple. It depicts a situation where a user writes one or more reviews and a movie has one or more reviews.\n\nUnranked movies\n\nOnce the graph is ready (preparing the graph is not detailed in this post), let's design our first ranking strategy. We want to start from the simplest possible ranking: retrieving all movies, without any ranking. Technically, this can be seen as a form or ranking where the ranking function returns the same constant value for all inputs.\n\nIn terms of our knowledge graph, all we need to do is to select the sub-graph containing only nodes representing movies.\n\nWe have named the graph 'spoilers'. We use the block Filter by Class to select only those nodes with type http://imdb.com/Movie.\n\nClicking on the TRUE output pin of the filter block retrieves all nodes that satisfy the condition class = http://imdb.com/Movie.\n\nThe right panel gives us a simple preview of the nodes selected. The main properties of each movie are displayed, along with their probability of relevance. Trivially, they all have probability 1.0, as defined when creating the graph from raw data.\n\nRanking movies by ratings\n\nThe first actual ranking that we perform is based on the average ratings already present in the data at hand. These ratings are floating point numbers ranging from 0 to 10. To rank movies on them, we use block Rank by Double, which we apply directly on the output of the sub-graph of movies from the previous section.\n\nThe block is configured with a node Property (rating in our case) and a query Value. For each node in input, the value of the specified property is compared against the query value. The result of this comparison determines the score assigned to each node, and eventually its probability of relevance in the final ranking. Note from the screenshot that we have configured Value to be instantiated with the value of query parameter rating.\n\nTo simulate user input, we prepare a Testset with a few ratings to compare to. We click on the CLOSE output pin of the ranking block to rank movies by how close they are to the given rating. The screenshot shows the result of choosing 0 as input value. That is, we asked to see the most disliked movies on top of our ranking.\n\nThe light-blue curve on top of the result preview gives an idea of the probability (of relevance) distribution over the result set.\n\nIn the first post of this blog mini-serie about graph ranking we introduced a well-known domain and some simple ways of defining relevance and ranking over graph nodes within Spinque Desk."
+    }
+}

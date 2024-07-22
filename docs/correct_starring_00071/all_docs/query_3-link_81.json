@@ -1,0 +1,50 @@
+{
+    "id": "correct_starring_00071_3",
+    "rank": 81,
+    "data": {
+        "url": "https://neo4j.com/docs/getting-started/appendix/tutorials/guide-cypher-basics/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Tutorial: Getting Started with Cypher",
+        "top_image": "https://dist.neo4j.com/wp-content/uploads/20210423062553/neo4j-social-share-21.png",
+        "meta_img": "https://dist.neo4j.com/wp-content/uploads/20210423062553/neo4j-social-share-21.png",
+        "images": [
+            "https://dist.neo4j.com/wp-content/uploads/20230926084108/Logo_FullColor_RGB_TransBG.svg",
+            "https://neo4j.com/docs/getting-started/_images/EnableMultiStatement.png",
+            "https://neo4j.com/docs/getting-started/_images/AfterLoadMovieGraph.png",
+            "https://neo4j.com/docs/getting-started/_images/AfterLoadMovieGraphTable.png",
+            "https://neo4j.com/docs/getting-started/_images/findTom.png",
+            "https://neo4j.com/docs/getting-started/_images/findTomTable.png",
+            "https://neo4j.com/docs/getting-started/_images/findCloudAtlas.png",
+            "https://neo4j.com/docs/getting-started/_images/findCloudAtlasTable.png",
+            "https://neo4j.com/docs/getting-started/_images/findTenPeople.png",
+            "https://neo4j.com/docs/getting-started/_images/findNinetiesMovies.png",
+            "https://neo4j.com/docs/getting-started/_images/findTomHanksMovies.png",
+            "https://neo4j.com/docs/getting-started/_images/ConnectResultNodesSetting.png",
+            "https://neo4j.com/docs/getting-started/_images/findTomHanksMoviesTable.png",
+            "https://neo4j.com/docs/getting-started/_images/DirectorsCloudAtlas.png",
+            "https://neo4j.com/docs/getting-started/_images/TomsCoActors.png",
+            "https://neo4j.com/docs/getting-started/_images/TomsCoActorsTable.png",
+            "https://neo4j.com/docs/getting-started/_images/CloudAtlasRelationships.png",
+            "https://neo4j.com/docs/getting-started/_images/ThreeDegreesKevinBacon.png",
+            "https://neo4j.com/docs/getting-started/_images/KevinBaconToMegRyan.png",
+            "https://neo4j.com/docs/getting-started/_images/DetachDelete.png",
+            "https://neo4j.com/docs/getting-started/_images/ZeroNodes.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "This tutorial explains the basic concepts of Cypher, Neo4j's query language, including how to create and query graphs.",
+        "meta_lang": "en",
+        "meta_favicon": "https://neo4j.com/wp-content/themes/neo4jweb/favicon.ico",
+        "meta_site_name": "Neo4j Graph Data Platform",
+        "canonical_link": "https://neo4j.com/docs/getting-started/appendix/tutorials/guide-cypher-basics/",
+        "text": "The Movie Graph is a mini graph application containing actors and directors that are related through the movies they’ve collaborated on.\n\nIt is helpful if you run the queries and Cypher code to create data as you follow this tutorial.\n\nThis tutorial will show you how to:\n\nCreate: Insert movie data into the graph.\n\nFind: Retrieve individual movies and actors.\n\nQuery: Find patterns in the graph.\n\nSolve: Answer some questions about the graph.\n\nCreate and start a new Neo4j database.\n\nCreate a blank sandbox at https://sandbox.neo4j.com or..\n\nCreate a new database in Neo4j Desktop:\n\nCreate a new project.\n\nAdd a database to the project.\n\nStart the database.\n\nOpen Neo4j Browser.\n\nSet the browser settings to allow multi-statements:\n\nEnter :guide movie-graph in the query pane and click the \"Play\" button on the right. A new window opens below the query pane with the browser guide.\n\nGo to page 2 of the browser guide.\n\nClick on the Cypher code block which will bring it into the query pane and click the \"Play\" button.\n\nThis is what you should see in Neo4j Browser after loading the movie graph:\n\nThis is the graph view of some of the data returned.\n\nIf you want to see the table view of the data returned, you click the table icon on the left:\n\nHow you view the results will also depend on the data returned. If the query returns nodes, then you can view the data as a graph. If the query returns property values, you can only view the data as a table.\n\nIf you need help:\n\n:help cypher\n\nNext, you will learn about queries for finding individual nodes.\n\nLook at every query example\n\nRun the query with the play button\n\nNotice the syntax pattern\n\nTry looking for other movies or actors\n\nIf you need help with syntax:\n\n:help MATCH, :help WHERE, and :help RETURN\n\nFind the movie titled \"Cloud Atlas\"…​\n\nHere we filter the query a different way where we specify the value in the node specification, rather than using a WHERE clause.\n\nCopy and paste this code into the query pane and execute it:\n\nMATCH (cloudAtlas:Movie {title: \"Cloud Atlas\"}) RETURN cloudAtlas\n\nHere is the result of this query:\n\nAnd here is the table view:\n\nFind 10 people…​\n\nNext we want to find the names of 10 people in the graph. This code finds all Person nodes in the graph but just returns the name property value for 10 of them.\n\nCopy and paste this code into the query pane and execute it:\n\nMATCH (people:Person) RETURN people.name LIMIT 10\n\nHere is the result of this query:\n\nFor this query, property values are returned and you can only view the results as a table.\n\nFind movies released in the 1990s…​\n\nHere is a query where we specify a range of values for selecting the Movie nodes to retrieve. Then we return the titles of these Movie nodes.\n\nCopy and paste this code into the query pane and execute it:\n\nMATCH (nineties:Movie) WHERE nineties.released > 1990 AND nineties.released < 2000 RETURN nineties.title\n\nHere is the result of this query:\n\nYou’ve heard of the classic \"Six Degrees of Kevin Bacon\"? That is, find all people who are up to 6 hops away from Kevin Bacon in the graph. This is simply a shortest path query called the \"Bacon Path\". To perform this type of query, you need to specify:\n\nVariable length patterns: variable length relationships\n\nBuilt-in shortestPath() algorithm: shortestPath\n\nMovies and actors up to three hops away from Kevin Bacon\n\nIn our first query, we want to find all movies and/or people who are up to 3 hops away from Kevin Bacon in the graph.\n\nCopy and paste this code into the query pane and execute it:\n\nMATCH (bacon:Person {name:\"Kevin Bacon\"})-[*1..3]-(hollywood) RETURN DISTINCT bacon, hollywood\n\nHere is the result of this query:\n\nFind the Bacon Path to Meg Ryan\n\nWhat is the shortest path between Kevin Bacon and Meg Ryan in the graph? In this Cypher, we are returning the path that includes nodes and relationships.\n\nCopy and paste this code into the query pane and execute it:\n\nMATCH p=shortestPath( (bacon:Person {name:\"Kevin Bacon\"})-[*]-(meg:Person {name:\"Meg Ryan\"}) ) RETURN p\n\nBefore you execute the query, you will see a warning that a relationship of '*' could take a long time to execute. Our movie graph is small, so you can ignore this warning.\n\nHere is the result of this query:\n\nWhen you’re done experimenting, you can remove the movie data set.\n\nNodes can’t be deleted if relationships to them exist.\n\nDelete both nodes and relationships together.\n\nThis will remove all nodes and relationships in the graph!\n\nCopy and paste this code into the query pane and execute it:\n\nMATCH (n) DETACH DELETE n\n\nHere is the result of this query:\n\nNotice that although the database information in the left panel shows no nodes or relationships in the graph, the property key names remain."
+    }
+}
