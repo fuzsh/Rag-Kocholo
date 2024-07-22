@@ -1,0 +1,38 @@
+{
+    "id": "correct_foundationPlace_00113_2",
+    "rank": 74,
+    "data": {
+        "url": "https://stackoverflow.com/questions/45583358/open-link-at-top-of-page",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Open <Link> at top of page",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://cdn.sstatic.net/Img/teams/overflowai.svg?v=d706fa76cdae",
+            "https://www.gravatar.com/avatar/9fd0a344cd2f53baa7919212a701da50?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/c23de6ec78c93883242498c33f15be96?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/a171f3cf222efb7dc207b57c730e59b8?s=64&d=identicon&r=PG",
+            "https://graph.facebook.com/594691142/picture?type=large",
+            "https://www.gravatar.com/avatar/727444d754eda172672193813131bd7c?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://lh5.googleusercontent.com/-XgX9kcBMxnE/AAAAAAAAAAI/AAAAAAAAAAA/AAnnY7qZq3eW5C5phxgaUdkiCzqMCvZdOg/mo/photo.jpg?sz=64",
+            "https://i.sstatic.net/JSuRY.jpg?s=64",
+            "https://stackoverflow.com/posts/45583358/ivc/24f9?prg=468358bf-4794-47c3-a304-581f99e5f1d3"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2017-08-09T06:43:45",
+        "summary": "",
+        "meta_description": "I'm using React Router 4 and when I use &lt;Link&gt; the new page doesn't open at the top of the page. Do I need to tell &lt;Link&gt; something specific?\n\n&lt;Link to=\"/mypage\"&gt;My Page&lt;/Link&gt;",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/45583358/open-link-at-top-of-page",
+        "text": "I know my answer might be similar as previous but I just want to help those who are using React Hooks and might come across this question/answers...\n\nuseLayoutEffect(() => { window.scrollTo(0, 0) });\n\nBasically, what I mean is that, add window.scrollTo(0, 0) inside the useLayoutEffect and will work fine.\n\nI found a pretty solid answer for this in the answer to a similar question. It worked for me anyway so I thought I would share.\n\nFor your situation, in the component for \"/mypage\" add window.scrollTo(0, 0); to the componentDidMount function. Something like this:\n\nimport ... export default class MyPage extends Component { constructor(props) { super(props); this.state = { ... }; } componentDidMount() { window.scrollTo(0, 0); } render() { return ( ... ) } }\n\nThe Link component will handle navigating to the new path and once the new component is mounted, it will automatically scroll to the top.\n\nSo I found one pretty cool fix for this. Basically you will need to create a wrapper component (it will wrap Route) that will be responsible only for scrolling to the top. You will then need to use the wrapper instead of route in your router than. The complete solution is here: react-router scroll to top on every transition\n\nScroll down to where it says: For react-router v4\n\nP.S. make sure you have the object-rest-spread configured in your .babelrc. Here is a link for that:\n\nhttps://babeljs.io/docs/plugins/transform-object-rest-spread/\n\nv6: if you don't want to use a side effect you can do something like this\n\n// ScrollLink.ts import React from 'react'; import {Link, LinkProps} from \"react-router-dom\"; const ScrollLink = React.forwardRef<HTMLAnchorElement, LinkProps>((props, ref) => { return <Link {...props} ref={ref} onClick={() => window.scrollTo(0, 0)}/> }); export default ScrollLink;\n\nand then use ScrollLink wherever you want to scroll on click\n\nTo go back to the What I did is when my Compoenent inside my BrowserRouter Updates I send it back to the top with the window props like this :\n\nRoot.jsx :\n\n... <BrowserRouter onUpdate={() => window.scrollTo(0, 0)} > <Switch> <Route exact path={path.LOGIN} render={Login} /> <Route exact path={path.SIGNUP} render={Signup} /> <Route path={path.HOMEPAGE} render={() => <HomePageRouter />} /> </Switch> </BrowserRouter> ...\n\nAnd Then in my HomePageRouter\n\nclass HomePageRouter extends Component { componentDidUpdate() { window.scrollTo(0, 0); } render() { return ( <div className='bm-page-wrapper' > <NavBar activeItem={this.props.menu.activeItem} toggle={this.props.menu.toggle} lang={this.props.lang} /> <Switch > <Route exact path={path.HOMEPAGE} render={() => <Homepage lang={this.props.lang} />} /> <Route path={path.ABOUT} render={() => <About lang={this.props.lang} />} /> <Route path={path.CONTACT} render={() => <Contact lang={this.props.lang} />} /> <Route render={() => <NotFound lang={this.props.lang} />} /> </Switch> <Footer lang={this.props.lang} /> </div> ); } }\n\nSo any path that I go in my HomePageRouter component, it will detect a route update and will cause it to re render. I would recommand using some sub Router so you don't have to add componentDidUpdate(){...} on every component !\n\nHopes it helps !"
+    }
+}
