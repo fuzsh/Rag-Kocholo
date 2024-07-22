@@ -1,0 +1,30 @@
+{
+    "id": "correct_subsidiary_00143_3",
+    "rank": 24,
+    "data": {
+        "url": "https://download.oracle.com/berkeley-db/docs/je/2.0.90/java/com/sleepycat/je/Environment.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Environment (Sleepycat Software, Inc.",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://download.oracle.com/berkeley-db/docs/je/2.0.90/java/resources/inherit.gif"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "com.sleepycat.je.Environment class"
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "",
+        "meta_favicon": "",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "The Environment.close method closes the Berkeley DB environment.\n\nWhen the last environment handle is closed, allocated resources are freed, and daemon threads are stopped, even if they are performing work. For example, if the cleaner is still cleaning the log, it will be stopped at the next reasonable opportunity and perform no more cleaning operations.\n\nThe Environment handle should not be closed while any other handle that refers to it is not yet closed; for example, database environment handles must not be closed while database handles remain open, or transactions in the environment have not yet committed or aborted. Specifically, this includes Database, Cursor and Transaction handles.\n\nIn multithreaded applications, only a single thread should call Environment.close. Other callers will see a DatabaseException complaining that the handle is already closed.\n\nAfter Environment.close has been called, regardless of its return, the Berkeley DB environment handle may not be accessed again.\n\nThrows:\n\nDatabaseException - if a failure occurs.\n\nSynchronously invoke database environment log cleaning. This method is called periodically by the cleaner daemon thread.\n\nZero or more log files will be cleaned as necessary to bring the disk space utilization of the environment above the configured minimum utilization threshold. The threshold is determined by the je.cleaner.minUtilization configuration setting.\n\nNote that cleanLog does not perform the complete task of cleaning a log file. Eviction and checkpointing migrate records that are marked by the cleaner, and a full checkpoint is necessary following cleaning before cleaned files will be deleted (or renamed). Checkpoints normally occur periodically and when the environment is closed.\n\nThis is an optional action for the application since this activity is, by default, handled by a database environment owned background thread.\n\nThere are two intended use cases for the cleanLog method. The first case is where the application wishes to disable the built-in cleaner thread. To replace the functionality of the cleaner thread, the application should call cleanLog periodically.\n\nIn the second use case, \"batch cleaning\", the application disables the cleaner thread for maximum performance during active periods, and calls cleanLog during periods when the application is quiescent or less active than usual. If the cleaner has a large number of files to clean, cleanLog may stop without reaching the target utilization; to ensure that the target utilization is reached, cleanLog should be called in a loop until it returns zero. And to complete the work of cleaning, a checkpoint is necessary. An example of performing batch cleaning follows.\n\nEnvironment env; boolean anyCleaned = false; while (env.cleanLog() > 0) { anyCleaned = true; } if (anyCleaned) { CheckpointConfig force = new CheckpointConfig(); force.setForce(true); env.checkpoint(force); }\n\nReturns:\n\nThe number of log files that were cleaned, and that will be deleted (or renamed) when a qualifying checkpoint occurs.\n\nThrows:\n\nDatabaseException - if a failure occurs."
+    }
+}
