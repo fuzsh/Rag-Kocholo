@@ -1,0 +1,38 @@
+{
+    "id": "correct_subsidiary_00127_1",
+    "rank": 57,
+    "data": {
+        "url": "https://stackoverflow.com/questions/68910807/cannot-access-resource-files-in-javafx-16-when-module-info-java-file-exists",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Cannot access Resource files in JavaFX 16 when module-info.java file exists",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://cdn.sstatic.net/Img/teams/overflowai.svg?v=d706fa76cdae",
+            "https://i.sstatic.net/rdExT.png",
+            "https://i.sstatic.net/TeYyw.png",
+            "https://i.sstatic.net/akABM.jpg?s=64",
+            "https://www.gravatar.com/avatar/e8e6e627b4b90ec816c5c7aa04cbcc26?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/0f96b67d37b84ebbc683ff5691c96261?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://stackoverflow.com/posts/68910807/ivc/45b8?prg=ad32670c-d539-43c2-952f-3ad1013f86d0"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Michael Sims"
+        ],
+        "publish_date": "2021-08-24T16:18:59",
+        "summary": "",
+        "meta_description": "I just started using Java 16 and can't seem to figure out why I am unable to access resource files. I went through some troubleshooting to narrow down at least where I seem to be having a problem.\n...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/68910807/cannot-access-resource-files-in-javafx-16-when-module-info-java-file-exists",
+        "text": "I just started using Java 16 and can't seem to figure out why I am unable to access resource files. I went through some troubleshooting to narrow down at least where I seem to be having a problem.\n\nI'm using IntelliJ IDEA 2021.2 Build #IU-212.4746.92\n\nI created a new project and I chose JavaFX with OpenJDK 16.\n\nIt then creates the project with three main files, an Application class, a Controller class, and a FXML file. Once I create the project, I go into the POM file and I chose version 16 of javaFX-controls and javafx-fxml and I tell it to get the latest version of the other libraries it adds automatically into the POM file.\n\nI also copy two folders from a different project into the resources folder - all copy and pasting is done within IntelliJ.\n\nWhen I run the application that it put there (called HellpApplication), it works fine. And that application uses class.getResource to grab the fxml file and again ... it works just fine. However, when I try to run this class:\n\nimport java.io.*; import java.net.URISyntaxException; import java.net.URL; import java.nio.charset.StandardCharsets; import java.nio.file.Files; import java.util.List; public class FileResourcesUtils { public static void main(String[] args) throws URISyntaxException { FileResourcesUtils app = new FileResourcesUtils(); String fileName = \"StyleSheets/AnchorPane.css\"; System.out.println(\"getResourceAsStream : \" + fileName); InputStream is = app.getFileFromResourceAsStream(fileName); printInputStream(is); System.out.println(\"\\ngetResource : \" + fileName); File file = app.getFileFromResource(fileName); printFile(file); } private InputStream getFileFromResourceAsStream(String fileName) { ClassLoader classLoader = getClass().getClassLoader(); InputStream inputStream = classLoader.getResourceAsStream(fileName); if (inputStream == null) { throw new IllegalArgumentException(\"file not found! \" + fileName); } else return inputStream; } private File getFileFromResource(String fileName) throws URISyntaxException{ ClassLoader classLoader = getClass().getClassLoader(); URL resource = classLoader.getResource(fileName); if (resource == null) { throw new IllegalArgumentException(\"file not found! \" + fileName); } else return new File(resource.toURI());} private static void printInputStream(InputStream is) { try (InputStreamReader streamReader = new InputStreamReader(is, StandardCharsets.UTF_8); BufferedReader reader = new BufferedReader(streamReader) ) { String line; while ((line = reader.readLine()) != null) System.out.println(line); } catch (IOException e) {e.printStackTrace();} } private static void printFile(File file) { List<String> lines; try { lines = Files.readAllLines(file.toPath(), StandardCharsets.UTF_8); lines.forEach(System.out::println); } catch (IOException e) {e.printStackTrace();} } }\n\nIt throws this error:\n\ngetResourceAsStream : StyleSheets/AnchorPane.css Exception in thread \"main\" java.lang.IllegalArgumentException: file not found! StyleSheets/AnchorPane.css at com.simtechdata.test/com.simtechdata.test.FileResourcesUtils.getFileFromResourceAsStream(FileResourcesUtils.java:27) at com.simtechdata.test/com.simtechdata.test.FileResourcesUtils.main(FileResourcesUtils.java:16)\n\nThen, THE ONLY THING I HAVE TO DO ... is DELETE module-info.java, then that class runs perfectly! HOWEVER, without module-info.java there, I cannot run any FX code...\n\nHere is module-info.java:\n\nmodule com.simtechdata.test { requires javafx.controls; requires javafx.fxml; opens com.simtechdata.test to javafx.fxml; exports com.simtechdata.test; }\n\nWhy did I use this class? Because I'm having the exact same problem trying to access resource files in my JavaFX application and this class was the easiest way for me to demonstrate the problem and show that it is specifically connected to the module-info file. When I run my own JavaFX code, it works just fine, until I try to access a resource file like a style sheet to throw onto a control.\n\nWhat I would like to know is ... what sort of magic trick do I need to do in order to be able to access resource files from my JavaFX 16 application? What am I missing?\n\nI'vr tried all of these different ways of getting to the resource file, but each one gives the same error:\n\nString CSS_ANCHOR_PANE = this.getClass().getResource(\"StyleSheets/AnchorPane.css\").toExternalForm(); String CSS_ANCHOR_PANE = ClassName.getClass().getResource(\"StyleSheets/AnchorPane.css\").toExternalForm(); ClassLoader resource = ClassLoader.getSystemClassLoader(); String CSS_ANCHOR_PANE = resource.getResource(\"StyleSheets/AnchorPane.css\").toExternalForm(); Class<?> resource = this.getClass(); String CSS_ANCHOR_PANE = resource.getResource(\"StyleSheets/AnchorPane.css\").toExternalForm();\n\nAnd here is a screenshot of the resource folder tree:\n\nAny ideas?"
+    }
+}

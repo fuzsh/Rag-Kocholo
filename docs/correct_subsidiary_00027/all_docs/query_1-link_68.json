@@ -1,0 +1,33 @@
+{
+    "id": "correct_subsidiary_00027_1",
+    "rank": 68,
+    "data": {
+        "url": "https://retrocomputing.stackexchange.com/questions/11149/how-did-the-zip-chip-and-rocketchip-accelerators-work-for-the-apple-ii",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How did the Zip Chip and RocketChip accelerators work for the Apple II?",
+        "top_image": "https://cdn.sstatic.net/Sites/retrocomputing/Img/apple-touch-icon@2.png?v=6b27f39a6023",
+        "meta_img": "https://cdn.sstatic.net/Sites/retrocomputing/Img/apple-touch-icon@2.png?v=6b27f39a6023",
+        "images": [
+            "https://cdn.sstatic.net/Img/teams/overflowai.svg?v=d706fa76cdae",
+            "https://i.sstatic.net/e4XB0.png?s=64",
+            "https://lh3.googleusercontent.com/-yspgfz81fFw/AAAAAAAAAAI/AAAAAAAAD5o/7CFgAMaSHSE/photo.jpg?sz=64",
+            "https://retrocomputing.stackexchange.com/posts/11149/ivc/45b8?prg=bcda590e-244f-49e4-8282-d35924bb59d9"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2019-05-29T17:16:34",
+        "summary": "",
+        "meta_description": "Though there is already a similar question on the site, this one is more specific to these chips and their technical implementation.\n\nThere were two accelerators for the Apple II series that were d...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/retrocomputing/Img/favicon.ico?v=9b6f1e4fd156",
+        "meta_site_name": "Retrocomputing Stack Exchange",
+        "canonical_link": "https://retrocomputing.stackexchange.com/questions/11149/how-did-the-zip-chip-and-rocketchip-accelerators-work-for-the-apple-ii",
+        "text": "I'm curious how these chips actually worked. Similarities [...]\n\nThey are so similar, that Zip Technologies even won the case against Rocket-Chips manufacturer Bits & Pieces. Just, the manual doesn't tell a lot about the inner workings. Only that it's a \"technological marvel\" with the equivalent of \"350 integrated logic chips\" and \"hundrets of tiny gold wires connecting all of the internal parts\"\n\nWhat I'm curious about is if it was simply a faster clock cadence with a MMU to know where to slow down?\n\nThat wouldn't bring much, as most 6502 cycles are memory cycles, so no speed up without any cache.\n\nIn case of Zip/Rocket-Chip it has been an 8 KiB tagged cache realized with two 6264 (alike) RAM chips. One as 8 KiB Cache, the other providing a tag byte for each location.\n\nEasy to see when looking at the last page of the IIc+ schematics. Apple licenced the Zip-Chip for the IIc+, but changed the design to use standard, of the shelf, RAMs, putting all logic into a gate array.\n\nWhat about speed of RAM on the motherboard?\n\nStayed as before. Every access was synced and slowed down to motherboard speed. The speedup was only as long as data was read and the data to be read was within the cache.\n\nThe hardware was basically (*1) an 8 KiB RAM storing bytewise data plus an equally sized tag RAM. 8 KiB means 13 bit address. So the tag RAM stored the upper 3 bit of any address plus a flag if the data is valid or not.\n\nThe handling logic was rather straight forward cache implementation.\n\nAddress presented during a cycle (*2) checked against exclusions.\n\nIf it was an excluded address (slowed down) the CPU was synced with main RAM and the access was performed\n\nIf not, direction was checked\n\nIf it was a write the CPU was synchronized and data was written into main RAM and cache at the same time, as well as A13..A15 into tag RAM.\n\nIf it was a read, the tag RAM was checked at the corresponding address (A0..A12)\n\nIf the tag fitted (A13..A15 equal and valid) the entry was handed to the CPU, cycle finished at set speed (4 MHz).\n\nOn non-fit, the CPU was synchronized and slowed, data was read from RAM simultaneous to CPU and cache, tag is updated.\n\nDone.\n\nAs a result worst case is a CPU fully synchronized with main memory, effectively running at 1 MHz. Whenever a byte gets used twice a speedup may happen - i.e. as soon as more than one consecutive memory access (like executing a two byte instruction) happens. Any code will run during first pass at 1 MHz and later at up to 4 MHz\n\nSpeedup resulted mostly from the fact that vast majority of all memory cycles a 6502 issues are for reading code and code is usually repeated. Data is even in best case (only ZP access) below 1/3rd - in real situations it'll considerable less than 20%. More of 2/3rd thereof usually read cycles, resulting in less than 10% of all cycles being writes.\n\nSo as long as the majority of executed code (and often used data) fits into 8 Kib (*3), speedup will be quite close to the speed selected (4 MHz). For most software it will work much like shadowing on an Apple IIgs. A bit slower on first execution but speed up wenn the cache is loaded - and slowed for any writes.\n\nWas the video \"interrupt\" simply pulling the /RDY line as per a motherboard clock and thus the speed of the actual CPU didn't matter?\n\nVideo did run from the motherboard memory (during the second half, as before).\n\n*1 - This will be very basic, not going into each detail.\n\n*2 - Each and every cycle on a 6502 is a memory cycle.\n\n*3 - doesn't have much aliasing issues."
+    }
+}
