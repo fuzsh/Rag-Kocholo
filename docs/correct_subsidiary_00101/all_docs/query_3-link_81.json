@@ -1,0 +1,39 @@
+{
+    "id": "correct_subsidiary_00101_3",
+    "rank": 81,
+    "data": {
+        "url": "https://security.stackexchange.com/questions/202282/is-the-root-certificate-issued-from-one-certificate-authority-is-same-for-all-th",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Is the root certificate issued from one Certificate Authority is same for all the requesting organisation?",
+        "top_image": "https://cdn.sstatic.net/Sites/security/Img/apple-touch-icon@2.png?v=497726d850f9",
+        "meta_img": "https://cdn.sstatic.net/Sites/security/Img/apple-touch-icon@2.png?v=497726d850f9",
+        "images": [
+            "https://cdn.sstatic.net/Sites/security/Img/logo.svg?v=f9d04c44487b",
+            "https://cdn.sstatic.net/Img/teams/overflowai.svg?v=d706fa76cdae",
+            "https://i.sstatic.net/lOnBA.png?s=64",
+            "https://www.gravatar.com/avatar/2e814c6b5e0dd56c34931b48c5621269?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/mGvxE.png",
+            "https://i.sstatic.net/XqdZF.png",
+            "https://www.gravatar.com/avatar/a007be5a61f6aa8f3e85ae2fc18dd66e?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/fiTiC.png?s=64",
+            "https://i.sstatic.net/lOnBA.png?s=64",
+            "https://security.stackexchange.com/posts/202282/ivc/44f8?prg=2c8ca91f-9c4e-47d3-9e10-1b0a28fb4942"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2019-01-27T14:09:27",
+        "summary": "",
+        "meta_description": "Let me please explain the question a bit more through an example:\r\nThere are lots of companies who have their certificates signed by Verisign (or any CA). I understand that Verisign signs these certs",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/security/Img/favicon.ico?v=54cb45853e3c",
+        "meta_site_name": "Information Security Stack Exchange",
+        "canonical_link": "https://security.stackexchange.com/questions/202282/is-the-root-certificate-issued-from-one-certificate-authority-is-same-for-all-th",
+        "text": "Yes, your understanding is correct, and it highlights some of the odd behaviour of how PKI (Public Key Infrastracture) works.\n\nI will summarize your questions:\n\nWill Verisign's root certificate be the same for all companies that it signs certificates for?\n\nIf two different companies get their certificates from Verisign, do they share a root CA?\n\nAnswer: It depends what product you buy from them.\n\nAccording to Symantec SSL's (formerly Verisign) page \"Buy or Renew SSL & TLS Certificates\", they offer a number of different types of certificates:\n\nMost of these will be issued off Symantec / Verisign's public CA. As you mention in your 3rd question, if you host a public website, then you want your site to be trusted by Firefox, Chrome, Safari, etc.\n\nThe \"Internal Network\" option is a bit different; Symantec offers something called \"Symantec Private Certificate Authority\" in which you get your own dedicated CA hierarchy. This means your company's users will need to install your root cert into their browsers / OSes, but you get more control over the format of your certificates, and most importantly your internal certs won't be published in the Certificate Transparency logs.\n\nAs a SSL site owner, if I get my certificate signed by Verisign, do I need to share that with my clients? Most of the browsers come with pre-installed root cert from popular CA like Verisign.\n\nAnswer: Correct.\n\nThat is the entire reason that publicly-trusted CAs exist: the certificate served by your webserver will chain to a root CA that the browser already trusts.\n\nSummary\n\nIn general, all certificates issued by Verisign / Symantec will chain up to one of their publicly trusted root CAs, however Symantec does offer a Private Certificate Authority service, so some companies that get their internal network certificates from Symantec may in fact have their own private dedicated root CA (which is hosted / managed by Symantec).\n\nIn the scenarios you describe, Verisign is the sole Certificate Authority, they have one public/private key pair, and they have one self-signed certificate attesting to that key.\n\nTheir certificate has an attribute on it that identifies it as a valid \"issuer\", which allows it to be used to sign other certificate requests, but that doesn't make it trusted.\n\nBeing \"self-signed\" is what makes it a root certificate, but that doesn't make it trusted.\n\nVerisign went through an approval process to become a trusted certificate issuer, ensuring their practices for issuing certificates are trustworthy; once they did, a copy of their root certificate was placed in the various operating systems and browsers in their \"trusted root stores\". This is what makes their root certificate trusted.\n\nLet's say Org-1 wants their web site to have a trusted certificate, so they order one from Verisign and install it on their server. The certificate is signed by Verisign, but it is not a root certificate as it's not self-signed.\n\nOrg-1's certificate does not have the \"issuer\" flag on it. That prevents Org-1 from issuing other certificates in the name of Org-2. Verisign does not set the \"issuer\" flag on certificates it signs for organizations, because that would violate their terms as a trusted issuer.\n\nIf Org-1 wishes to issue their own certificates for their own internal use, they must stand up their own Public Key Infrastructure (PKI) to do so, creating their own internal Certificate Authority. They will create their own self-signed root certificate and mark it as an issuer, and they can then distribute it to all of their computers. By placing a copy in each of their computers' trusted root stores, all the certificates they issue internally will be trusted by their computers, but this will not make their internal CA certificate trusted by external organizations.\n\nNote that Org-1 can contract with Verisign (or other vendor) to perform their certificate management functions; but that just means Verisign is operating a private PKI on their behalf. Verisign will create a unique issuing certificate just for Org-1 that is not universally trusted by other organizations; it will have to be distributed by Org-1 and placed in each computer's trusted root store, just as if Org-1 had done it themselves.\n\nThis trusted root certificate is the same for all computers in Org-1, but is a different certificate than Verisign's publicly trusted root certificate.\n\nTo answer your question 3, because Verisign's certificate is distributed by OS and browser vendors already populated in their trusted root stores, it's already trusted so no, you don't have to have the client do anything extra to trust a certificate signed by Verisign.\n\nAlso note that you should not expect external clients to install your internal CA into their trusted root store. That would be an extreme security risk for them. If you need external clients to trust one of your server's certificates, have it signed by an authority they already trust, such as Verisign."
+    }
+}

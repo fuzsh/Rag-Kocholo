@@ -1,0 +1,30 @@
+{
+    "id": "correct_subsidiary_00101_3",
+    "rank": 85,
+    "data": {
+        "url": "http://www.phreedom.org/blog/2009/verisign-and-responsible-disclosure/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Verisign and responsible disclosure",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "http://www.phreedom.org/images/feed.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "In a recent post on his company blog, Verisign's vice president of marketing Tim Callan commented on the disclosure of our MD5 collision attack:\n\nVeriSign did not receive any of [the] information ahead of the actual presentation, rendering it impossible for us to begin work on mitigating this issue prior to this morning.\n\nI feel that this statement is inaccurate. Not only did we contact Verisign before our presentation to let them know about our research, we also strongly advised them to stop using MD5 as soon as possible and were given a chance to review their mitigation plans. I hope that Tim Callan's post is a result of a simple miscommunication between the technical people at Verisign their marketing department.\n\nTo help clarify this issue, in this post I will provide some background information about the disclosure of our work, as well as the exact timeline of our communication with the affected certificate authorities.\n\nProtecting Internet users\n\nFrom the very beginning of this project, all members of our team agreed that we needed to disclose this vulnerability without putting any users at risk. There were two main goals we set out to achieve: first, to prevent our rogue CA certificate from being abused; and second, to ensure that nobody else can repeat this attack before the affected CAs get a chance to fix the problem.\n\nWe took the following steps to prevent abuse of our rogue CA certificate:\n\nWe did not release the private key for our rogue CA.\n\nWe set the expiration date of the rogue CA certificate to August 2004, ensuring that even if the private key falls into the wrong hands, it will be useless against people who have their system date set correctly.\n\nWe contacted the major browser vendors (Microsoft and Mozilla) to offer them a chance to explicitly blacklist our certificate if they felt that the past expiration date is not effective enough.\n\nTo make sure that our work could not be repeated by malicious attackers, we did not release the MD5 collision finding software necessary to do the attack. In addition, we chose to delay the publication of the improved collision finding techniques we had to develop for this project. Our team was confident that the R&D investment required to repeat our attack without access to this information would be prohibitive and the affected CAs would have enough time to stop using MD5 before the attack could be repeated.\n\nNotifying the affected certificate authorities\n\nSince we had already taken steps to ensure that the attack could not be easily repeated, notifying the affected certificate authorities before our presentation was not required in order to protect Internet users. A more important consideration was to ensure that we could present our work at the Chaos Computer Congress without interference. In the last year we have seen multiple cases in which companies have used legal threats in an attempt to silence security researchers and prevent the release of information that exposes their security failures. The most prominent examples include the lawsuit against Dutch researchers who showed fatal security flaws in the MIFARE transit cards and the restraining order that led to the cancelation of a talk about vulnerabilities in the fare collection system of the Boston subway.\n\nSince the affected CAs did not have a significant track record of responding to public security vulnerabiltiies in their systems, we could not be confident that they wouldn't overreact and attempt to stop or delay our presentation through legal or other means. It was this feeling of uncertainty that led to our decision to avoid direct contact with them and to obtain Non-Disclosure Agreements from the browser vendors we contacted.\n\nRecognizing the significance of the issue, Microsoft offered to act as a intermediary and contact the affected CAs on our behalf without revealing our names or the date of our presentation. Their proposal was reviewed by our team as well as our lawyers and on Dec 23 we agreed to go ahead with it:\n\nThe same day Microsoft contacted Verisign and informed them about our research. Verisign understood the severity of the issue and began working on it:\n\nI was happy to help Verisign by providing extra information about the SSL123 certificate in question. I also gave Microsoft permission to contact the other affected CA:\n\nOn Dec 24, Microsoft requested permission to release more information to the CAs:\n\nI promptly agreed to the proposed statement, with some minor edits:\n\nOn Dec 29, Verisign confirmed that they are planning to stop using MD5 by the end of January.\n\nOnly 5 hours after our presentation, Verisign stopped using MD5 for all new RapidSSL certificates, successfully eliminating this vulnerability.\n\nCryptographic algorithms can become broken overnight, so it is important for CAs to demonstrate the ability to react quickly to such issues. I'm happy with the reponse from Verisign and the other affected CAs. Based on our experience with them, I would not hesitate to work with them directly on any vulnerabilties I might discover in the future."
+    }
+}

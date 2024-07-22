@@ -1,0 +1,38 @@
+{
+    "id": "correct_subsidiary_00095_2",
+    "rank": 58,
+    "data": {
+        "url": "https://unix.stackexchange.com/questions/93334/why-cant-certain-programs-like-readlink-take-input-from-a-pipe",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Why can't certain programs (like readlink) take input from a pipe?",
+        "top_image": "https://cdn.sstatic.net/Sites/unix/Img/apple-touch-icon@2.png?v=32fb07f7ce26",
+        "meta_img": "https://cdn.sstatic.net/Sites/unix/Img/apple-touch-icon@2.png?v=32fb07f7ce26",
+        "images": [
+            "https://cdn.sstatic.net/Sites/unix/Img/logo.svg?v=eb6eb2b9e73c",
+            "https://cdn.sstatic.net/Img/teams/overflowai.svg?v=d706fa76cdae",
+            "https://www.gravatar.com/avatar/0646fe9ddfc9005bad11ea9736db5a15?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/a007be5a61f6aa8f3e85ae2fc18dd66e?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/B5cTn.png?s=64",
+            "https://www.gravatar.com/avatar/634b2c724303eb3fff66aae5019841a1?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/jIn5Z.jpg?s=64",
+            "https://i.sstatic.net/6fMZI.png?s=64",
+            "https://unix.stackexchange.com/posts/93334/ivc/8439?prg=681150eb-0bca-45e3-bd6e-77cb658e19fa"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2013-10-02T19:07:02",
+        "summary": "",
+        "meta_description": "I have a symbolic link to a script in my $PATH whose file I wanted to edit.  I forgot the filepath, so I tried to do the following:\n\n$ which my_script_link | readlink\r\nI expected that to output the",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/unix/Img/favicon.ico?v=fb86ccabb921",
+        "meta_site_name": "Unix & Linux Stack Exchange",
+        "canonical_link": "https://unix.stackexchange.com/questions/93334/why-cant-certain-programs-like-readlink-take-input-from-a-pipe",
+        "text": "Simply put, because the program is not written to do so. It is up to the programmers to decide if their software can read from STDIN or if it requires an input file. In the case of readlink, its man page states (emphasis mine):\n\nreadlink - print resolved symbolic links or canonical file names\n\nSYNOPSIS\n\nreadlink [OPTION]... FILE...\n\nAs a general rule, programs that take input from STDIN are designed to somehow parse that input. When you pipe data to readlink it receives a text stream and has no idea what to do with it since it only deals with files and not their contents. The same is true for programs like ls or cd or cp etc. Only programs that deal with text/data streams can accept input from a pipe.\n\nWhether a program takes its input from stdin or as command line arguments is up to the designer. Both approaches have their merits. For programs that operate strictly on files, however, it's usually more convenient to pass the filenames as command line arguments rather than through stdin.\n\nThe most obvious reason is that the common case, that of just running a program on a file, is easier to type: readlink file instead of echo file | readlink.\n\nA subtler issue is correctness. The problem is that when filenames are passed through stdin, the program needs to be able to distinguish one filename from another. Often, this is done by assuming the filenames are separated by whitespace or newlines, but this is incorrect since filenames can include whitespace. A better way is to separate the filenames with null bytes, but it can be inconvenient to generate a list of files separated by nulls.\n\nPassing filenames on the command line avoids this problem because the shell handles all the parsing and quoting for the program. You can type touch $'foo\\nbar' and touch correctly sees this as one filename containing a newline, without having to handle any special parsing or quoting itself.\n\nAll that being said, if you'd like to pass files through stdin for a particular program, you can. This is what xargs is for. xargs lets you take a program that only accepts arguments on the command line, and instead make it take its arguments through stdin.\n\nIn other words, it lets you do this: which my_script | xargs readlink.\n\nIf you wanted to always make readlink work this way, you could make an alias: alias readlink=\"xargs readlink\". That would allow you to type which my_script | readlink, as you originally wanted."
+    }
+}
