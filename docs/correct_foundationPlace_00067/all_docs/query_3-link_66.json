@@ -1,0 +1,28 @@
+{
+    "id": "correct_foundationPlace_00067_3",
+    "rank": 66,
+    "data": {
+        "url": "https://www.elastic.co/guide/en/elasticsearch/reference/current/tune-for-disk-usage.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Tune for disk usage",
+        "top_image": "https://static-www.elastic.co/v3/assets/bltefdd0b53724fa2ce/blt280217a63b82a734/6202d3378b1f312528798412/elastic-logo.svg",
+        "meta_img": "https://static-www.elastic.co/v3/assets/bltefdd0b53724fa2ce/blt280217a63b82a734/6202d3378b1f312528798412/elastic-logo.svg",
+        "images": [],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "/apple-icon-57x57.png",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "Disable the features you do not neededit\n\nBy default, Elasticsearch indexes and adds doc values to most fields so that they can be searched and aggregated out of the box. For instance, if you have a numeric field called foo that you need to run histograms on but that you never need to filter on, you can safely disable indexing on this field in your mappings:\n\nresponse = client.indices.create( index: 'index', body: { mappings: { properties: { foo: { type: 'integer', index: false } } } } ) puts response\n\nPUT index { \"mappings\": { \"properties\": { \"foo\": { \"type\": \"integer\", \"index\": false } } } }\n\ntext fields store normalization factors in the index to facilitate document scoring. If you only need matching capabilities on a text field but do not care about the produced scores, you can use the match_only_text type instead. This field type saves significant space by dropping scoring and positional information.\n\nDon’t use default dynamic string mappingsedit\n\nThe default dynamic string mappings will index string fields both as text and keyword. This is wasteful if you only need one of them. Typically an id field will only need to be indexed as a keyword while a body field will only need to be indexed as a text field.\n\nThis can be disabled by either configuring explicit mappings on string fields or setting up dynamic templates that will map string fields as either text or keyword.\n\nFor instance, here is a template that can be used in order to only map string fields as keyword:\n\nresponse = client.indices.create( index: 'index', body: { mappings: { dynamic_templates: [ { strings: { match_mapping_type: 'string', mapping: { type: 'keyword' } } } ] } } ) puts response\n\nPUT index { \"mappings\": { \"dynamic_templates\": [ { \"strings\": { \"match_mapping_type\": \"string\", \"mapping\": { \"type\": \"keyword\" } } } ] } }\n\nWatch your shard sizeedit\n\nLarger shards are going to be more efficient at storing data. To increase the size of your shards, you can decrease the number of primary shards in an index by creating indices with fewer primary shards, creating fewer indices (e.g. by leveraging the Rollover API), or modifying an existing index using the Shrink API.\n\nKeep in mind that large shard sizes come with drawbacks, such as long full recovery times.\n\nDisable _sourceedit\n\nThe _source field stores the original JSON body of the document. If you don’t need access to it you can disable it. However, APIs that needs access to _source such as update, highlight and reindex won’t work.\n\nUse best_compressionedit\n\nThe _source and stored fields can easily take a non negligible amount of disk space. They can be compressed more aggressively by using the best_compression codec.\n\nForce mergeedit\n\nIndices in Elasticsearch are stored in one or more shards. Each shard is a Lucene index and made up of one or more segments - the actual files on disk. Larger segments are more efficient for storing data.\n\nThe force merge API can be used to reduce the number of segments per shard. In many cases, the number of segments can be reduced to one per shard by setting max_num_segments=1.\n\nShrink indexedit\n\nThe shrink API allows you to reduce the number of shards in an index. Together with the force merge API above, this can significantly reduce the number of shards and segments of an index.\n\nUse the smallest numeric type that is sufficientedit\n\nThe type that you pick for numeric data can have a significant impact on disk usage. In particular, integers should be stored using an integer type (byte, short, integer or long) and floating points should either be stored in a scaled_float if appropriate or in the smallest type that fits the use-case: using float over double, or half_float over float will help save storage.\n\nUse index sorting to colocate similar documentsedit\n\nWhen Elasticsearch stores _source, it compresses multiple documents at once in order to improve the overall compression ratio. For instance it is very common that documents share the same field names, and quite common that they share some field values, especially on fields that have a low cardinality or a zipfian distribution.\n\nBy default documents are compressed together in the order that they are added to the index. If you enabled index sorting then instead they are compressed in sorted order. Sorting documents with similar structure, fields, and values together should improve the compression ratio.\n\nPut fields in the same order in documentsedit\n\nDue to the fact that multiple documents are compressed together into blocks, it is more likely to find longer duplicate strings in those _source documents if fields always occur in the same order.\n\nRoll up historical dataedit"
+    }
+}

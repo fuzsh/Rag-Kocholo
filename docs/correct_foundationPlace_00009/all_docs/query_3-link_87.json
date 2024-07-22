@@ -1,0 +1,31 @@
+{
+    "id": "correct_foundationPlace_00009_3",
+    "rank": 87,
+    "data": {
+        "url": "https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/abstract",
+        "read_more_link": "",
+        "language": "en",
+        "title": "abstract keyword - C# reference",
+        "top_image": "https://learn.microsoft.com/dotnet/media/logo_csharp.png",
+        "meta_img": "https://learn.microsoft.com/dotnet/media/logo_csharp.png",
+        "images": [
+            "https://learn.microsoft.com/media/logos/logo_net.svg",
+            "https://learn.microsoft.com/media/logos/logo_net.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2021-09-15T07:34:00+00:00",
+        "summary": "",
+        "meta_description": "abstract - C# Reference",
+        "meta_lang": "en",
+        "meta_favicon": "",
+        "meta_site_name": "",
+        "canonical_link": "https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/abstract",
+        "text": "abstract (C# Reference)\n\nThe abstract modifier indicates that the thing being modified has a missing or incomplete implementation. The abstract modifier can be used with classes, methods, properties, indexers, and events. Use the abstract modifier in a class declaration to indicate that a class is intended only to be a base class of other classes, not instantiated on its own. Members marked as abstract must be implemented by non-abstract classes that derive from the abstract class.\n\nExample 1\n\nIn this example, the class Square must provide an implementation of GetArea because it derives from Shape:\n\nabstract class Shape { public abstract int GetArea(); } class Square : Shape { private int _side; public Square(int n) => _side = n; // GetArea method is required to avoid a compile-time error. public override int GetArea() => _side * _side; static void Main() { var sq = new Square(12); Console.WriteLine($\"Area of the square = {sq.GetArea()}\"); } } // Output: Area of the square = 144\n\nAbstract classes have the following features:\n\nAn abstract class cannot be instantiated.\n\nAn abstract class may contain abstract methods and accessors.\n\nIt is not possible to modify an abstract class with the sealed modifier because the two modifiers have opposite meanings. The sealed modifier prevents a class from being inherited and the abstract modifier requires a class to be inherited.\n\nA non-abstract class derived from an abstract class must include actual implementations of all inherited abstract methods and accessors.\n\nUse the abstract modifier in a method or property declaration to indicate that the method or property does not contain implementation.\n\nAbstract methods have the following features:\n\nAn abstract method is implicitly a virtual method.\n\nAbstract method declarations are only permitted in abstract classes.\n\nBecause an abstract method declaration provides no actual implementation, there is no method body; the method declaration simply ends with a semicolon and there are no curly braces ({ }) following the signature. For example:\n\npublic abstract void MyMethod();\n\nThe implementation is provided by a method override, which is a member of a non-abstract class.\n\nIt is an error to use the static or virtual modifiers in an abstract method declaration.\n\nAbstract properties behave like abstract methods, except for the differences in declaration and invocation syntax.\n\nIt is an error to use the abstract modifier on a static property.\n\nAn abstract inherited property can be overridden in a derived class by including a property declaration that uses the override modifier.\n\nFor more information about abstract classes, see Abstract and Sealed Classes and Class Members.\n\nAn abstract class must provide implementation for all interface members.\n\nAn abstract class that implements an interface might map the interface methods onto abstract methods. For example:\n\ninterface I { void M(); } abstract class C : I { public abstract void M(); }\n\nExample 2\n\nIn this example, the class DerivedClass is derived from an abstract class BaseClass. The abstract class contains an abstract method, AbstractMethod, and two abstract properties, X and Y.\n\n// Abstract class abstract class BaseClass { protected int _x = 100; protected int _y = 150; // Abstract method public abstract void AbstractMethod(); // Abstract properties public abstract int X { get; } public abstract int Y { get; } } class DerivedClass : BaseClass { public override void AbstractMethod() { _x++; _y++; } public override int X // overriding property { get { return _x + 10; } } public override int Y // overriding property { get { return _y + 10; } } static void Main() { var o = new DerivedClass(); o.AbstractMethod(); Console.WriteLine($\"x = {o.X}, y = {o.Y}\"); } } // Output: x = 111, y = 161\n\nIn the preceding example, if you attempt to instantiate the abstract class by using a statement like this:\n\nBaseClass bc = new BaseClass(); // Error\n\nYou will get an error saying that the compiler cannot create an instance of the abstract class 'BaseClass'.\n\nC# Language Specification\n\nFor more information, see the C# Language Specification. The language specification is the definitive source for C# syntax and usage.\n\nSee also"
+    }
+}
