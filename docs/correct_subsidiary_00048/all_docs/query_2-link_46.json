@@ -1,0 +1,52 @@
+{
+    "id": "correct_subsidiary_00048_2",
+    "rank": 46,
+    "data": {
+        "url": "https://stackoverflow.com/questions/26455756/how-can-i-run-android-emulator-for-intel-x86-atom-without-hardware-acceleration",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How can I run Android emulator for Intel x86 Atom without hardware acceleration on Windows 8 for API 21 and 19?",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://cdn.sstatic.net/Img/teams/teams-promo.svg?v=e507948b81bf",
+            "https://cdn.sstatic.net/Img/teams/overflowai.svg?v=d706fa76cdae",
+            "https://i.sstatic.net/UhYfd.jpg?s=64",
+            "https://www.gravatar.com/avatar/c76cf51f5747ed53c5b6d9075a32ebf3?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/fc7874685a8897860552e01c1e269265?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/AvXHZ.jpg?s=64",
+            "https://www.gravatar.com/avatar/a007be5a61f6aa8f3e85ae2fc18dd66e?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/6ab4b2c3ad170e766634ab37ba0364b2?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/xNJBg.png",
+            "https://www.gravatar.com/avatar/a007be5a61f6aa8f3e85ae2fc18dd66e?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/f0f284b16deee8c9f96114b903104ced?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/q5U6s.jpg?s=64",
+            "https://graph.facebook.com/10206508081845216/picture?type=large",
+            "https://graph.facebook.com/542162035924213/picture?type=large",
+            "https://i.sstatic.net/wDnd8.png?s=64",
+            "https://www.gravatar.com/avatar/7b448c992b435b4d57c6b82844672995?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/fd014788e13e135c37b06da9369d22fc?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/1f2d14e57da1a1d74f47aa6fd31aa2b8?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/da74f8fe8fa2e93b36d9209250a43fdf?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/568f7b0a3d278fb963212bced637ba48?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/09bc55f121d628bac08be1e08ffa6217?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/bfd70671bd680633845f6918bbc79187?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/26455756/ivc/e67b?prg=b930b142-d711-4dca-a3cb-244fc39ce5cc"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2014-10-19T21:45:51",
+        "summary": "",
+        "meta_description": "I have not enabled Hyper V or hardware acceleration and don't want to either.\n\nIs there any way that I can start android emulator for Intel x86 Atom Without hardware acceleration on Windows 8 \n\nI h...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/26455756/how-can-i-run-android-emulator-for-intel-x86-atom-without-hardware-acceleration",
+        "text": "In current AVD manager you can't. You just have the opportunity to use ARM images which will not need hardware virtualization.\n\nTo run ARM images:\n\nOpen AVD manager.\n\nCreate a new 'Virtual Device' OR right click an existing image and select 'Duplicate'\n\nChoose arm* instead of x86/x64.\n\nContinue with the wizard.\n\nRun!\n\nAlthough this is the available solution but still a slow one !!\n\nYou can still force the use of the soft x86 emulator by running it from the command line and using the -no-accel option, i.e. from the SDK/tools directory:\n\nemulator -avd AVD_NAME -memory 768 -no-accel -gpu on\n\nBUT this still won't work with the current (V24) SDK, because the current x86 system images crash the soft x86 emulator :-(\n\nThe only way I got this working again was to downgrade the SDK tools to V22.3 from here: http://dl-ssl.google.com/android/repository/tools_r22.3-windows.zip and to buld an AVD using a downgraded system image, for instance https://dl-ssl.google.com/android/repository/sys-img/android/sysimg_x86-17_r02.zip. (So this is no help if you need to test on more recent versions of Android).\n\nGoogle have moved on to an updated version of their emulator based on a more recent version of qemu, and provide binaries for arm and mips emulators, but have omitted to ship the x86 equivalent (there is no emulator-ranchu-x86.exe and emulator64-ranchu-x86.exe). If they did so, or if someone else went to the trouble of setting up and compiling their emulator source with the \"x86\" flag on, then _x86 soft emulation could conceivably be made to work again.\n\nShort Answer: No. Until recently(about 1 month ago), you could do that but with the latest updates, it is not possible. (see Update to Android SDK Tools 23.0.5 and avd doesn't start).\n\nI was doing something similar: Doing development in a virtual machine and hence couldn't use the Hardware acceleration features as they are available only in the host machine. I was using Intel x86 images with Use Host GPU option; as they were much faster than the ARM version even without hardware acceleration. But then, after this update, my emulator AVDs which were working earlier are no longer starting with the same exact error message. Also, both genymotion and Xamarin Android emulators can't be used as they also need hardware acceleration(they are actually VMs which use Hardware acceleration for speed, and hence can't be run inside another VM).\n\nI have found this solution but haven't tried it yet. The basic idea is that to still develop inside a VM; but for testing connect to an Emulator running on the host machine(and this Emulator VM can now use the hardware acceleration feature).\n\nyes is possible to run your android emulator without have a hardware accelerator. In fact to do that, you need to open your android virtual device. When you reached to system image configure, it suggest you which version of android image you want to use. Whatever version of android system image that you select,you need to make sure that,ABI is armeabi-v7a and, you target is System image ameabi-v7a with google APIs. And then complete the rest of task and check out your emulator."
+    }
+}

@@ -1,0 +1,35 @@
+{
+    "id": "correct_subsidiary_00142_2",
+    "rank": 72,
+    "data": {
+        "url": "https://cs.stackexchange.com/questions/132787/prove-that-npnp-sigma-2",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Prove that ${NP}^{NP}=\\Sigma_2$",
+        "top_image": "https://cdn.sstatic.net/Sites/cs/Img/apple-touch-icon@2.png?v=324a3e0c2b03",
+        "meta_img": "https://cdn.sstatic.net/Sites/cs/Img/apple-touch-icon@2.png?v=324a3e0c2b03",
+        "images": [
+            "https://cdn.sstatic.net/Sites/cs/Img/logo.svg?v=27188323e9e9",
+            "https://cdn.sstatic.net/Img/teams/overflowai.svg?v=d706fa76cdae",
+            "https://i.sstatic.net/nWodo.jpg?s=64",
+            "https://www.gravatar.com/avatar/4029afdddcec72a6b5c8385b3605bc60?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/nWodo.jpg?s=64",
+            "https://cs.stackexchange.com/posts/132787/ivc/e67b?prg=bcb82775-a935-45b2-9f8a-d6f14062c564"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2020-11-29T13:53:19",
+        "summary": "",
+        "meta_description": "I've head the lecture today and we saw this theorem:\n\n$\\mathsf{NP}^{\\mathsf{NP}}=\\Sigma_2$\n\nBut without a proof.\nHere are the definitions I use:\nA language $L$ belongs to $\\Sigma_k$ if there is a",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/cs/Img/favicon.ico?v=0c1f5fd7a5e4",
+        "meta_site_name": "Computer Science Stack Exchange",
+        "canonical_link": "https://cs.stackexchange.com/questions/132787/prove-that-npnp-sigma-2",
+        "text": "Suppose first that $L \\in \\Sigma_2^P$. Then there exists a machine $T(x,y,z)$, running in time $\\mathit{poly}(|x|)$, such that $$ x \\in L \\Leftrightarrow \\exists y \\forall z \\, M(x,y,z) = T $$ Using the reduction in Cook's theorem, given $x,y$, we can express $\\exists z \\, M(x,y,z) = T$ as a SAT instance. Therefore given a SAT oracle, we can verify that $y$ satisfies $\\forall z \\, M(x,y,z)$. This shows that $L \\in \\mathsf{NP}^{\\mathsf{NP}}$.\n\nIn the other direction, suppose that $L \\in \\mathsf{NP}^{\\mathsf{NP}} = \\mathsf{NP}^{\\mathsf{SAT}}$. There is thus an oracle Turing machine $M(x,y)$, running in time $\\mathit{poly}(|x|)$, such that $$ x \\in L \\Leftrightarrow \\exists y \\, M^{\\mathsf{SAT}}(x,y) = T. $$ (The notation $M^{\\mathsf{SAT}}$ means running $M$ with a SAT oracle.)\n\nHow can we tell that $M^{\\mathsf{SAT}}(x,y) = T$ without access to a SAT oracle? The idea is to \"guess\" the answer of every SAT query, and prove the necessary information to verify this answer. Suppose that $M$ queries $q \\stackrel?\\in \\mathsf{SAT}$. If $q \\in \\mathsf{SAT}$ then we can provide a witness for it, namely a satisfying assignment. If $q \\notin \\mathsf{SAT}$ then we know that every assignment does not satisfy $q$.\n\nAccordingly, we construct a machine $M'(x,y',z')$ in the following way. The witness $y'$ consists of the original witness $y$, together with the following information: the number of SAT queries performed by $M$; for each SAT query $q_i$, the answer $b_i$; for each positive answer, the corresponding satisfying assignment $a_i$. The \"cowitness\" $z'$ consists of an assignment $a_i$ for each negative answer to a SAT query.\n\nThe machine $M'$ acts simulates $M$. Whenever $M$ makes a SAT query $q_i$, it determines the answer from $y'$. If $b_i = T$, it verifies that $a_i$ is a satisfying assignment for $q_i$. If $b_i = F$, it verifies that $a_i$ is not a satisfying assignment for $q_i$. The new machine $M'$ accepts if all verifications succeed, and additionally $M$ accepts.\n\nThis shows that $L \\in \\Sigma_2$, completing the proof of your statement."
+    }
+}

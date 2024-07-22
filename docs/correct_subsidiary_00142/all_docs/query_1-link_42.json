@@ -1,0 +1,36 @@
+{
+    "id": "correct_subsidiary_00142_1",
+    "rank": 42,
+    "data": {
+        "url": "https://stackoverflow.com/questions/49171540/how-to-prevent-sql-injection-when-the-statement-has-a-dynamic-table-name",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How to prevent SQL injection when the statement has a dynamic table name?",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://cdn.sstatic.net/Img/teams/overflowai.svg?v=d706fa76cdae",
+            "https://www.gravatar.com/avatar/8fa9c84cc514986c2d0b1c016fdf63d1?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/579b58072937a718317e020c891de635?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/52a25fd6dc5ff0036f931e0bb83cfd90?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/6665878d41d42307eb53e9fae311a471?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/C8UVi.jpg?s=64",
+            "https://stackoverflow.com/posts/49171540/ivc/e67b?prg=2830f8d5-7c9c-4fe9-b3bd-db13590d9a28"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2018-03-08T11:02:52",
+        "summary": "",
+        "meta_description": "I am having code something like this.\n\n   final PreparedStatement stmt = connection\n                .prepareStatement(\"delete from \" + fullTableName\n                    + \" where name= ?\");\n   stmt.",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/49171540/how-to-prevent-sql-injection-when-the-statement-has-a-dynamic-table-name",
+        "text": "JDBC, sort of unfortunately, does not allow you to make the table name a bound variable inside statements. (It has its reasons for this).\n\nSo you can not write, or achieve this kind of functionnality :\n\nconnection.prepareStatement(\"SELECT * FROM ? where id=?\", \"TUSERS\", 123);\n\nAnd have TUSER be bound to the table name of the statement.\n\nTherefore, your only safe way forward is to validate the user input. The safest way, though, is not to validate it and allow user-input go through the DB, because from a security point of view, you can always count on a user being smarter than your validation. Never trust a dynamic, user generated String, concatenated inside your statement.\n\nSo what is a safe validation pattern ?\n\nPattern 1 : prebuild safe queries\n\n1) Create all your valid statements once and for all, in code.\n\nMap<String, String> statementByTableName = new HashMap<>(); statementByTableName.put(\"table_1\", \"DELETE FROM table_1 where name= ?\"); statementByTableName.put(\"table_2\", \"DELETE FROM table_2 where name= ?\");\n\nIf need be, this creation itself can be made dynamic, with a select * from ALL_TABLES; statement. ALL_TABLES will return all the tables your SQL user has access to, and you can also get the table name, and schema name from this.\n\n2) Select the statement inside the map\n\nString unsafeUserContent = ... String safeStatement = statementByTableName.get(usafeUserContent); conn.prepareStatement(safeStatement, name);\n\nSee how the unsafeUserContent variable never reaches the DB.\n\n3) Make some kind of policy, or unit test, that checks that all you statementByTableName are valid against your schemas for future evolutions of it, and that no table is missing.\n\nPattern 2 : double check\n\nYou can 1) validate that the user input is indeed a table name, using an injection free query (I'm typing pseudo sql code here, you'd have to adapt it to make it work cause I have no Oracle instance to actually check it works) :\n\nselect * FROM (select schema_name || '.' || table_name as fullName FROM all_tables) WHERE fullName = ?\n\nAnd bind your fullName as a prepared statement variable here. If you have a result, then it is a valid table name. Then you can use this result to build a safe query.\n\nPattern 3\n\nIt's sort of a mix between 1 and 2. You create a table that is named, e.g., \"TABLES_ALLOWED_FOR_DELETION\", and you statically populate it with all tables that are fit for deletion.\n\nThen you make your validation step be\n\nconn.prepareStatement(SELECT safe_table_name FROM TABLES_ALLOWED_FOR_DELETION WHERE table_name = ?\", unsafeDynamicString);\n\nIf this has a result, then you execute the safe_table_name. For extra safety, this table should not be writable by the standard application user.\n\nI somehow feel the first pattern is better."
+    }
+}

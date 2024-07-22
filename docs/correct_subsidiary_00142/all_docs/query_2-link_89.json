@@ -1,0 +1,37 @@
+{
+    "id": "correct_subsidiary_00142_2",
+    "rank": 89,
+    "data": {
+        "url": "https://stackoverflow.com/questions/73974685/oracle-apex-how-to-link-an-item-in-a-normal-page-to-an-item-on-a-modal-page",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Oracle Apex: how to link an item in a normal page to an item on a modal page",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://cdn.sstatic.net/Img/teams/overflowai.svg?v=d706fa76cdae",
+            "https://lh3.googleusercontent.com/a-/ACNPEu_SwJEcAVRGtCt9YDvQb5kfZJ-pV8obQUWAOhPhGw=k-s64",
+            "https://i.sstatic.net/Lep4A.png",
+            "https://i.sstatic.net/iDx2c.png",
+            "https://i.sstatic.net/RmIqt.jpg?s=64",
+            "https://www.gravatar.com/avatar/c275a8c8120726bedf987ffcb761e53b?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://stackoverflow.com/posts/73974685/ivc/e67b?prg=b65ec0a6-d2e4-49bb-87ff-5fb6860d223a",
+            "https://stackoverflow.com/js-false.gif"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2022-10-06T13:29:25",
+        "summary": "",
+        "meta_description": "This is my issue: I have a text field item in a normal page (P7_PRODUCT), in this page there is a button that opens a modal page and, in the modal page there is another text field item (P7_PRODUCT)...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/73974685/oracle-apex-how-to-link-an-item-in-a-normal-page-to-an-item-on-a-modal-page",
+        "text": "A good blog to read is this one, by John Snyders from the apex development team. As he explains, it's not advised to branch to a modal dialog - instead you should link to it.\n\nHere is an example based on techniques described in [this] (https://jeffkemponoracle.com/2022/02/reusable-region-as-a-modal-page/) blog.\n\nI have 2 pages: Page 108 (normal page) and page 109 (modal page). Page 108 has a region (Region 1) with page item P108_NEW and a button called TO_MODAL. Page 109 has page item P109_NEW. When a user enters a value in P108_NEW and clicks the button, page 109 should open with the value from P108_NEW shown in P109_NEW.\n\nThe technique generates the url of the modal page and then redirects to it.\n\nGive the region on page 108 a static id: \"region1\". This is used if you want to create a dynamic action on close of the dialog.\n\nCreate a new hidden item on page 108 (P108_URL_TO_MODAL1) to hold the value of the modal page url. Source type: Expression, source:\n\napex_page.get_url( p_page => 109, p_triggering_element => '$(''#region1'')' )\n\nMake sure to set \"Used\" to \"Always, replacing any existing value in session state\".\n\nCreate a dynamic action on click of button on page 108.\n\nAdd an action to the dynamic action of type pl/sql to set the value on page 109.\n\nAction 1: Execute Server-side Code, Pl/SQL Code:\n\n:P109_NEW := :P108_NEW;\n\nValues to submit: P108_NEW\n\nAction 2: Execute Javascript code:\n\napex.navigation.redirect(\"&P108_URL_TO_MODAL1.\");\n\nThis should be it."
+    }
+}
