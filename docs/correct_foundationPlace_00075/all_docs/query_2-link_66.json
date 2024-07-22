@@ -1,0 +1,30 @@
+{
+    "id": "correct_foundationPlace_00075_2",
+    "rank": 66,
+    "data": {
+        "url": "https://filibeto.org/unix/hp-ux/lib/cluster/veritas-sf-ha-docs/docsets/vxsf/html/scripts_vxsf252_73563.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Script to Start Replica Sybase ASE Database",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://filibeto.org/unix/hp-ux/lib/cluster/veritas-sf-ha-docs/docsets/vxsf/html/images/vxsymbol.gif"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "",
+        "meta_favicon": "",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "#!/bin/ksh\n\n#\n\n# script: startdb.sh <list_of_database_volumes>\n\n#\n\n# Sample script to recover and start replica Sybase ASE database.\n\n# Import the snapshot volume disk group.\n\nvxdg import $snapvoldg\n\n# Mount the snapshot volumes (the mount points must already exist).\n\nfor i in $*\n\ndo\n\nfsck -F vxfs /dev/vx/rdsk/$snapvoldg/snap_$i\n\nmount -F vxfs /dev/vx/dsk/$snapvoldg/snap_$i ${rep_mnt_point}/$i\n\ndone\n\n# Start the replica database.\n\n# Specify the -q option if you specified the \"for external dump\"\n\n# clause when you quiesced the primary database.\n\n# See the Sybase ASE 12.5 documentation for more information.\n\n/sybase/ASE-12_5/bin/dataserver \\\n\n[-q] \\\n\n-sdatabase_name \\\n\n-d /sybevm/master \\\n\n-e /sybase/ASE-12_5/install/dbasename.log \\\n\n-M /sybase\n\n# Online the database. Load the transaction log dump and\n\n# specify \"for standby_access\" if you used the -q option\n\n# with the dataserver command.\n\nisql -Usa -Ppassword -SFMR <<!\n\n[load transaction from dump_device with standby_access\n\ngo]\n\nonline database database_name [for standby_access]\n\ngo\n\nquit\n\n!"
+    }
+}

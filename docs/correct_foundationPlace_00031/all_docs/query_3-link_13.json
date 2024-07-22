@@ -1,0 +1,28 @@
+{
+    "id": "correct_foundationPlace_00031_3",
+    "rank": 13,
+    "data": {
+        "url": "https://github.com/kantega/docker-puppet",
+        "read_more_link": "",
+        "language": "en",
+        "title": "puppet: Containerized setup of Puppet",
+        "top_image": "https://opengraph.githubassets.com/806b06c206ee53f31abf2ec82b614a57f2ba9e706f836ed8b18e8a2eb484425c/kantega/docker-puppet",
+        "meta_img": "https://opengraph.githubassets.com/806b06c206ee53f31abf2ec82b614a57f2ba9e706f836ed8b18e8a2eb484425c/kantega/docker-puppet",
+        "images": [],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "Containerized setup of Puppet. Contribute to kantega/docker-puppet development by creating an account on GitHub.",
+        "meta_lang": "en",
+        "meta_favicon": "https://github.com/fluidicon.png",
+        "meta_site_name": "GitHub",
+        "canonical_link": "https://github.com/kantega/docker-puppet",
+        "text": "Docker compose setup of the Puppet server stack\n\nMost of this setup works out of the box, but there are some limitations/issues to get PuppetDB automatically up and running.\n\nStart by copying the environment-template to .env and set the versions you want to use/build, postgres password, puppetserver hostname (should be set to what agents will be using), etc.\n\nFurther, edit docker-compose.yaml and ensure that the ssl folder volume mount for the puppetdb service is commented out\n\nThen, optionally (otherwise, comment it out in docker-compose.yaml), build the Puppetboard application:\n\nBack in the folder where you checked out puppet, start the stack with:\n\nThis will create and start postgres, puppet, puppetdb and puppetboard. Puppetdb will create certificates and act as though it were a puppet agent, and wait for the puppetserver to sign its CSR. So, while the containers is running, exec into the puppetserver and sign the puppetdb cert.\n\nIf you're tailing the logs, you'll see that puppetdb (eventually) continues its setup and starts the puppetdb service. At this point, the stack works, but the certificates for puppetdb isn't persistent, so copy out puppetdb's certs with:\n\nNow, edit docker-compose.yaml again and comment in the ssl cert volume mount for puppetdb:\n\nAnd, finally, reboot the whole stack to ensure that it's working as expected:\n\nSetup according to https://github.com/voxpupuli/hiera-eyaml It basically boils down to:\n\ninstall the eyaml package (included in the Dockerfile)\n\nCreate the keys with eyaml createkeys\n\nStart encrypting secrets described in https://github.com/voxpupuli/hiera-eyaml#basic-usage\n\nFirst, install the latest Puppet yum repo (here Puppet6 on CentOS/RedHat7):\n\nInstall the Puppet agent package\n\nTell the client where to find the Puppet Server and which environment it should join\n\nBefore you do a \"puppet-run\", ensure that you have a hostname --fqdn following the DNS name scheme used for your organization. You can change hostname with e.g.\n\nYou can also specify a certname equal to or different from $(hostname --fqdn) in puppet.conf with certname=\n\nDo the first puppet run, creating the certificates for this server:\n\nAt this stage, the certificates created is up for signing at the Puppet server. Log into the Puppet server and sign this certificate, e.g:\n\nAt this stage, the relationship between the Puppet server and the agent is established. Back on the Puppet agent (postgres01.prod.oslo.example.com), do another puppet run\n\nYou should now see text flying across the screen with a bunch of Puppet-specific config but also the configuration you have defined for this host in your environment.\n\nWith policy based autosigning, incomming CSRs can be signed based on logic in an executable, e.g. bash For the puppetserver, set the $AUTOSIGN environment variable to the path to the script and volume mount this script in docker-compose. The script could look something like:"
+    }
+}
