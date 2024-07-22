@@ -1,0 +1,40 @@
+{
+    "id": "correct_publicationDate_00119_2",
+    "rank": 18,
+    "data": {
+        "url": "https://community.qlik.com/t5/QlikView-App-Dev/Rename-Null-Value-Using-A-Calculated-Dimension/td-p/447043",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Solved: Rename Null Value Using A Calculated Dimension",
+        "top_image": "https://community.qlik.com/html/assets/qlik-logo1.png",
+        "meta_img": "https://community.qlik.com/html/assets/qlik-logo1.png",
+        "images": [
+            "https://community.qlik.com/html/assets/qlik-logo-new.svg",
+            "https://community.qlik.com/skins/images/A0B8FD78FDE9D32DD832C7A605F0F3FE/responsive_peak/images/icon_anonymous_message.png",
+            "https://community.qlik.com/t5/image/serverpage/image-id/367i8979DB5629627528/image-dimensions/50x50/constrain-image/false?v=v2",
+            "https://community.qlik.com/html/@6375DF0CA1C8344EF7192489B8AA8FAC/rank_icons/Community_Gamification-Ranking-Icons_16x16-MVP.png",
+            "https://community.qlik.com/t5/image/serverpage/image-id/367i8979DB5629627528/image-dimensions/50x50/constrain-image/false?v=v2",
+            "https://community.qlik.com/html/@6375DF0CA1C8344EF7192489B8AA8FAC/rank_icons/Community_Gamification-Ranking-Icons_16x16-MVP.png",
+            "https://community.qlik.com/skins/images/A0B8FD78FDE9D32DD832C7A605F0F3FE/responsive_peak/images/icon_anonymous_message.png",
+            "https://community.qlik.com/legacyfs/online/avatars/a156153_20140501_180103.png",
+            "https://community.qlik.com/html/@1559B466A3D72A78BEDF1BDA27A3842C/assets/Community_Gamification-Ranking-Icons_16x16-Luminary-Alumni%20(002).png",
+            "https://community.qlik.com/skins/images/A0B8FD78FDE9D32DD832C7A605F0F3FE/responsive_peak/images/icon_anonymous_message.png",
+            "https://www.adasitecompliance.com/img/APolicy.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2013-04-11T19:26:42.675000+00:00",
+        "summary": "",
+        "meta_description": "Solved: In a straight table, how do I replace '-' for null value with the word 'Unlisted'? Example: Current output Dimension     Revenue - 447043",
+        "meta_lang": "en",
+        "meta_favicon": "https://community.qlik.com/html/@C0F5D3F647A7CDEC19BE35D6A4BA1F39/assets/favicon2024.ico",
+        "meta_site_name": "",
+        "canonical_link": "https://community.qlik.com/t5/QlikView-App-Dev/Rename-Null-Value-Using-A-Calculated-Dimension/td-p/447043",
+        "text": "In a straight table, how do I replace '-' for null value with the word 'Unlisted'?\n\nExample:\n\nCurrent output\n\nDimension Revenue\n\nJohn $20\n\nBrian $100\n\nFred $45\n\n- $5\n\nProposed output\n\nDimension Revenue\n\nJohn $20\n\nBrian $100\n\nFred $45\n\nUnlisted $5\n\nTry if(len(trim(Dimension))=0,'Unlisted',Dimension)\n\nBut it's better to do this in the script. That will give better performance in the charts. And nulls cannot be selected so replacing nulls with real values if possible is always a good idea.\n\ntalk is cheap, supply exceeds demand\n\nTry if(len(trim(Dimension))=0,'Unlisted',Dimension)\n\nBut it's better to do this in the script. That will give better performance in the charts. And nulls cannot be selected so replacing nulls with real values if possible is always a good idea.\n\ntalk is cheap, supply exceeds demand\n\nI agree with Gysbert, probably better to move this to the import script. This would also work on import:\n\nif(isnull(Dimension),'Unlisted',Dimension) as Dimension\n\nBest,\n\nMatt\n\nHi,\n\nIf you need this in all the charts then you should do this in script itself, because the calculated dimension has performance issues. As matt suggested do this in the script by using\n\nLOAD\n\n*,\n\nIf(IsNull(DimensionName), 'Unlisted', DimensionName) AS DimensionName\n\nFROM Source;\n\nHope this helps you.\n\nRegards,\n\nJagan."
+    }
+}

@@ -1,0 +1,47 @@
+{
+    "id": "correct_publicationDate_00119_2",
+    "rank": 12,
+    "data": {
+        "url": "https://community.qlik.com/t5/QlikView-App-Dev/Set-Analysis-for-Null-and-Not-Null-Values/td-p/922102",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Solved: Set Analysis for Null and Not Null Values",
+        "top_image": "https://community.qlik.com/html/assets/qlik-logo1.png",
+        "meta_img": "https://community.qlik.com/html/assets/qlik-logo1.png",
+        "images": [
+            "https://community.qlik.com/html/assets/qlik-logo-new.svg",
+            "https://community.qlik.com/skins/images/EE964D3DE32CDC0B989654697B7D7890/responsive_peak/images/icon_anonymous_message.png",
+            "https://community.qlik.com/legacyfs/online/avatars/a215757_BIPB%20Headshot%20Set%203%20Web-5.png",
+            "https://community.qlik.com/html/@51B827BCC597FC0908692AE742EC0125/rank_icons/Community_Gamification-Ranking-Icons_16x16-Master.png",
+            "https://community.qlik.com/t5/image/serverpage/avatar-name/music/avatar-theme/candy/avatar-collection/hobbies/avatar-display-size/message/version/2?xdesc=1.0",
+            "https://community.qlik.com/html/@51B827BCC597FC0908692AE742EC0125/rank_icons/Community_Gamification-Ranking-Icons_16x16-Master.png",
+            "https://community.qlik.com/skins/images/EE964D3DE32CDC0B989654697B7D7890/responsive_peak/images/icon_anonymous_message.png",
+            "https://community.qlik.com/skins/images/EE964D3DE32CDC0B989654697B7D7890/responsive_peak/images/icon_anonymous_message.png",
+            "https://community.qlik.com/skins/images/EE964D3DE32CDC0B989654697B7D7890/responsive_peak/images/icon_anonymous_message.png",
+            "https://community.qlik.com/skins/images/EE964D3DE32CDC0B989654697B7D7890/responsive_peak/images/icon_anonymous_message.png",
+            "https://community.qlik.com/t5/image/serverpage/avatar-name/music/avatar-theme/candy/avatar-collection/hobbies/avatar-display-size/message/version/2?xdesc=1.0",
+            "https://community.qlik.com/html/@51B827BCC597FC0908692AE742EC0125/rank_icons/Community_Gamification-Ranking-Icons_16x16-Master.png",
+            "https://community.qlik.com/skins/images/EE964D3DE32CDC0B989654697B7D7890/responsive_peak/images/icon_anonymous_message.png",
+            "https://community.qlik.com/skins/images/EE964D3DE32CDC0B989654697B7D7890/responsive_peak/images/icon_anonymous_message.png",
+            "https://community.qlik.com/legacyfs/online/avatars/a2425_4TG4OZREE4O0.jpg",
+            "https://community.qlik.com/html/@EB2E38D48DFFE77551B583102F650204/rank_icons/Community_Gamification-Ranking-Icons_16x16-Partner.png",
+            "https://community.qlik.com/skins/images/EE964D3DE32CDC0B989654697B7D7890/responsive_peak/images/icon_anonymous_message.png",
+            "https://www.adasitecompliance.com/img/APolicy.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2015-07-30T12:48:51.285000+00:00",
+        "summary": "",
+        "meta_description": "Solved: Hi, I'm trying to create a text object indicating the number of unassigned, open tickets. When I try to use this formula, I think that the $- - 922102",
+        "meta_lang": "en",
+        "meta_favicon": "https://community.qlik.com/html/@C0F5D3F647A7CDEC19BE35D6A4BA1F39/assets/favicon2024.ico",
+        "meta_site_name": "",
+        "canonical_link": "https://community.qlik.com/t5/QlikView-App-Dev/Set-Analysis-for-Null-and-Not-Null-Values/td-p/922102",
+        "text": "Hi,\n\nI'm trying to create a text object indicating the number of unassigned, open tickets. When I try to use this formula, I think that the $- part of the set analysis is applying to both conditions that I've set, because the number is wildly inaccurate.\n\n=count({$-<actorname={'*'}, Status={'Open'}>} RequestID)\n\nAnother way I tried to do this was by subtracting the number of tickets with an open and not null actorname value from the total count of open tickets, but when I validated my data, I found that it wasn't working either. For that, I used this formula:\n\n=count({<Status={'Open'}>} RequestID)-count({<actorname={'*'}, Status={'Open'}>} RequestID)\n\nIs there a way to get the count of tickets with null actorname values which also have a status of 'Open'?\n\nThanks\n\nyou may be not having exactly null in your data base some time its blank. use len() function .\n\nSo use if(len(actorname)>0,count({$<Status={'Open'}>}RequestID))\n\nThanks\n\nBKC\n\nWell nulls will never be part of the current selection, so you needs something like this:\n\n=count({1<actorname -= {'*'}, Status={'Open'}>} RequestID)\n\nor this:\n\n=count({1<actorname -= {'*'}> * $<Status={'Open'}>} RequestID)\n\nIf these do not work, I suggest you post your application or at least a sample illustrating the problem.\n\nLogic will get you from a to b. Imagination will take you everywhere. - A Einstein"
+    }
+}

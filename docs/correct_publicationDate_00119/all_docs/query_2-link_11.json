@@ -1,0 +1,47 @@
+{
+    "id": "correct_publicationDate_00119_2",
+    "rank": 11,
+    "data": {
+        "url": "https://stackoverflow.com/questions/46915002/argument-of-type-string-null-is-not-assignable-to-parameter-of-type-string",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Argument of type 'string | null' is not assignable to parameter of type 'string'. Type 'null' is not assignable to type 'string'",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://cdn.sstatic.net/Img/teams/overflowai.svg?v=d706fa76cdae",
+            "https://i.sstatic.net/6Mele.png?s=64",
+            "https://i.sstatic.net/GgEzg.jpg?s=64",
+            "https://www.gravatar.com/avatar/0167bade38130f13a5fc468c10388d9d?s=64&d=identicon&r=PG",
+            "https://lh4.googleusercontent.com/-V5edQYVbhAI/AAAAAAAAAAI/AAAAAAAAAFE/KYI4PHv2cS8/photo.jpg?sz=64",
+            "https://lh6.googleusercontent.com/-3NkMVRdzPcw/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuclnB_HzHAtwXKSIXZKN8DZCXJGx7A/photo.jpg?sz=64",
+            "https://i.sstatic.net/PFZb8.jpg?s=64",
+            "https://i.sstatic.net/hCIR6.png?s=64",
+            "https://lh3.googleusercontent.com/a-/AOh14GhM_tviFVtQKv7cmDP0Xay3Ilgua5T6f8HSEZkz2A=k-s64",
+            "https://www.gravatar.com/avatar/6cf96dc1017feb555a75dd34c176823a?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/7a8a01336f84fcfe581837b37b6aa919?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/FbG3O.jpg?s=64",
+            "https://www.gravatar.com/avatar/2e2410eb535a968163c31d2247773ac3?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/7068f7ec22079967d0e0ff41a6dd1d97?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://lh3.googleusercontent.com/a-/AOh14GgoTJegcJWo5OlWX9MpjoRy_qTe6lANEpB2jKER3Q=k-s64",
+            "https://i.sstatic.net/89nkw.jpg?s=64",
+            "https://www.gravatar.com/avatar/53fdbf7a6c3bf6f62121cad59051115e?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/46915002/ivc/b5b8?prg=31a49ec2-e379-4de8-89ed-071149124b7e"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2017-10-24T15:55:39",
+        "summary": "",
+        "meta_description": "I have a dotnetcore 20 and angular4 project that I am trying to create a userService and get the user to my home component. The backend works just fine but the service doesn't. The problem is on",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/46915002/argument-of-type-string-null-is-not-assignable-to-parameter-of-type-string",
+        "text": "Type 'string | null' is not assignable to type 'string'. Type 'null' is not assignable to type 'string'.\n\nexport class TodoComponent implements OnInit { loacalitems!: string; todos!: Todo[]; constructor() { this.loacalitems = localStorage.getItem(\"todos\"); }\n\nbecause localStorage.getItem() return string or null solve this problem any variable this type error is define variable\n\nlocalitems!: string | null;\n\nthis variable holds to type values string or null. then write logic\n\nShort hande if else\n\nthis.todos = this.localitems !== null ? JSON.parse(this.localitems) : [];\n\nif-else\n\nif(this.localitems !== null){ // item not null code this.todos = JSON.parse(this.localitems) }else{ // item is null code this.todos = [] }\n\nA few different answers on here recommend the non-null assertion operator !, or using as string, or (worse) as any (shudder) to type-cast the result for localStorage.getItem(key).\n\nIt's important to note that in TypeScript - there is no such thing as a \"type conversion.\" In fact, there is no such thing as a \"type\" in general. TypeScript is really just syntactic sugar on top of JavaScript to support some loose compile-time illusory \"type\"-checking. When tsc is done with your code, all you're left with is plain ol' JavaScript with all the type annotations stripped away. This is why things like as and any are dangerous - they allow you to accomplish dumb things like:\n\nconst x: number = 5; const y: string = x as any; console.log(y); // oops - y is not a string, but the TS compiler thinks it is.\n\nConstructs like ! and as (and any in any sense) are really just instuctions to the TS compiler that state:\n\nHey Mr. TypeScript compiler - I realize that you think you know some things, but you can take what you think you know, and you can vigorously shove it right up your ol' chocolate-whiz-way. Pucker up, buttercup.\"\n\nSometimes when the TS compiler complains, it's doing so for a good reason. We should consider listening instead of resorting to language constructs that effectively turn off the compiler to prevent it from doing what we perceive as \"whining.\"\n\nRelying on things like JSON.parse(localStorage.getItem('currentUser')!) or JSON.parse(localStorage.getItem('currentUser') as string) is a rather bold and risky assertion that currentUser will always and forever return a string value that's actually parsable JSON to some specific TS interface we expect on the guarantee that our app will start blowing smoke in production if it doesn't. This is a bad assumption to make.\n\nI would greatly encourage folks encountering this scenario to embrace the use of the unknown type, use the myriad type-guards available, and please wrap up things prone to unpredictable side-effects like JSON.parse in try...catch error handling such as:\n\n// mock up some storage value and a model interface localStorage.setItem('currentUser', '{ \"userName\": \"jtest\", \"displayName\": \"Joe Test\" }'); interface User { userName: string; displayName?: string; } // typeguard to use on whatever unpredictable garbage JSON.parse might return const isUser = (maybeUser: unknown): maybeUser is User => maybeUser instanceof Object && 'userName' in maybeUser && typeof maybeUser.userName === 'string'; // get the current user, falling back to 'undefined' if anything blows up function retrieveCurrentUser(): User | undefined { let user: User | undefined; try { const storageValue = localStorage.getItem('currentUser'); if (typeof storageValue === 'string') { const maybeUser: unknown = JSON.parse(storageValue); if (isUser(maybeUser)) user = maybeUser; } } catch { // some graceful handling of JSON.parse failing here or // otherwise unable to recover the user from local storage. } return user; } console.log(retrieveCurrentUser());"
+    }
+}
