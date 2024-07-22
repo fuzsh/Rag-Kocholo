@@ -1,0 +1,37 @@
+{
+    "id": "correct_foundationPlace_00063_1",
+    "rank": 57,
+    "data": {
+        "url": "https://docs.databricks.com/en/sql/language-manual/functions/avg.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "avg aggregate function",
+        "top_image": "https://www.databricks.com/wp-content/uploads/2020/04/og-databricks.png",
+        "meta_img": "https://www.databricks.com/wp-content/uploads/2020/04/og-databricks.png",
+        "images": [
+            "https://docs.databricks.com/en/_static/small-scale-lockup-full-color-rgb.svg",
+            "https://docs.databricks.com/en/_static/small-scale-lockup-full-color-rgb.svg",
+            "https://docs.databricks.com/en/_static/icons/globe.png",
+            "https://docs.databricks.com/en/_static/icons/aws.svg",
+            "https://docs.databricks.com/en/_static/icons/azure.svg",
+            "https://docs.databricks.com/en/_static/icons/gcp.svg",
+            "https://docs.databricks.com/en/_images/check.png",
+            "https://docs.databricks.com/en/_images/check.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "Learn the syntax of the avg function of the SQL language in Databricks SQL and Databricks Runtime.",
+        "meta_lang": "en",
+        "meta_favicon": "../../../_static/favicon.ico",
+        "meta_site_name": "",
+        "canonical_link": "https://docs.databricks.com/en/sql/language-manual/functions/avg.html",
+        "text": "Applies to: Databricks SQL Databricks Runtime\n\nReturns the mean calculated from values of a group. This function is a synonym for mean aggregate function.\n\nSyntax\n\navg( [ALL | DISTINCT] expr) [FILTER ( WHERE cond ) ]\n\nThis function can also be invoked as a window function using the OVER clause.\n\nArguments\n\nexpr: An expression that evaluates to a numeric or an interval.\n\ncond: An optional boolean expression filtering the rows used for aggregation.\n\nReturns\n\nThe result type is computed as for the arguments:\n\nDECIMAL(p, s): The result type is a` DECIMAL(p + 4, s + 4)`. If the maximum precision for DECIMAL is reached the increase in scale will be limited to avoid loss of significant digits.\n\nyear-month interval: The result is an INTERVAL YEAR TO MONTH.\n\nday-time interval: The result is an INTERVAL DAY TO SECOND.\n\nIn all other cases the result is a DOUBLE.\n\nNulls within the group are ignored. If a group is empty or consists only of nulls, the result is NULL.\n\nIf DISTINCT is specified the average is computed after duplicates have been removed.\n\nIf the result overflows the result type, Databricks raises an ARITHMETIC_OVERFLOW error. To return a NULL instead use try_avg.\n\nWarning\n\nIn Databricks Runtime, if spark.sql.ansi.enabled is false, an overflow returns NULL instead of an error.\n\nExamples\n\n>SELECTavg(col)FROMVALUES(1),(2),(3)AStab(col); 2.0 >SELECTavg(DISTINCTcol)FROMVALUES(1),(1),(2)AStab(col); 1.5 >SELECTavg(col)FROMVALUES(1),(2),(NULL)AStab(col); 1.5 >SELECTavg(col)FROMVALUES(INTERVAL'1'YEAR),(INTERVAL'2'YEAR)AStab(col); 1-6 -- Overflow results in NULL for try_avg() >SELECTtry_avg(col)FROMVALUES(5e37::DECIMAL(38,0)),(5e37::DECIMAL(38,0))AStab(col); NULL -- Overflow causes error for avg() in ANSI mode. >SELECTavg(col)FROMVALUES(5e37::DECIMAL(38,0)),(5e37::DECIMAL(38,0))AStab(col); Error:CANNOT_CHANGE_DECIMAL_PRECISION"
+    }
+}
