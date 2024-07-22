@@ -1,0 +1,37 @@
+{
+    "id": "correct_subsidiary_00149_3",
+    "rank": 39,
+    "data": {
+        "url": "https://stackoverflow.com/questions/1042331/oracle-does-a-10g-oracle-client-work-with-an-11g-server",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Oracle: Does a 10g oracle client work with an 11g server?",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://cdn.sstatic.net/Img/teams/overflowai.svg?v=d706fa76cdae",
+            "https://www.gravatar.com/avatar/a007be5a61f6aa8f3e85ae2fc18dd66e?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/a333869fa8934ab32efb4e78e7c1dff1?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/9a2a72ac983719d6f490b89719f19496?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/4e8adce2b7792eaceb60f51aa63459f5?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/704059cbc133091c94d2b21852fe0b5c?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/78443a5e15a3ec39a90f3a480ba9a713?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/1042331/ivc/41f8?prg=d2f1bf2a-f2e6-4077-be26-f742e2f198f8"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2009-06-25T05:35:05",
+        "summary": "",
+        "meta_description": "This is the reciprocal to this question. Currently, I am trying to use the instant client for Mac, version 10.2. There's no 11g version for Mac, as of now, based on this page(you have to click into...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/1042331/oracle-does-a-10g-oracle-client-work-with-an-11g-server",
+        "text": "I would certainly say it should. The SQL*Net protocol it uses is essentially unchanged. Here's an example of me connecting an Oracle 9 to an Oracle 10 server.\n\noracle@cammi:~$ sqlplus \"urs/urs@THANOS_URS\"\n\nSQL*Plus: Release 9.2.0.8.0 - Production on Thu Jun 25 05:55:57 2009\n\nCopyright (c) 1982, 2002, Oracle Corporation. All rights reserved.\n\nConnected to: Oracle Database 10g Enterprise Edition Release 10.2.0.4.0 - 64bit Production With the Partitioning, Data Mining and Real Application Testing options\n\nAccording to the guys at \"http://www.experts-exchange.com/\"...\n\n11 can talk to 11,10,9 10 can talk to 11,10,9,8 9 can talk to 11,10,9,8,7 8 can talk to 10,9,8,7 7 can talk to 9,8,7\n\nAccording to Oracle forums, this is defined in Metalink DocID 207303.1, which provides a comprehensive client/ server compatibility matrix. I don't have Metalink access sadly, so I can't confirm this.\n\nIf you are having connection troubles, I suggest you start with the Oracle alert log on your server machine. To find the location of your oracle alert log:\n\nSQL> select value from v$parameter where name = 'background_dump_dest';\n\nAlso, you'll probably get something useful out of enabling listener tracing:\n\n$ lsnrctl LSNRCTL> set trc_level ADMIN\n\nThe trace file on my Solaris Oracle 10 install is found in:\n\n$ORACLE_HOME/network/trace/listener.trc\n\nYou can view it directly or use the trcasst program to \"format\" it. Note that ALL of this is on the server, not your client side.\n\nHope this helps."
+    }
+}

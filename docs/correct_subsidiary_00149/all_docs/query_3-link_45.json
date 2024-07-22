@@ -1,0 +1,30 @@
+{
+    "id": "correct_subsidiary_00149_3",
+    "rank": 45,
+    "data": {
+        "url": "https://docs.oracle.com/en/cloud/saas/transportation/24b/otmol/properties/glog/server.property.htm",
+        "read_more_link": "",
+        "language": "en",
+        "title": "glog.server Properties",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://docs.oracle.com/en/cloud/saas/transportation/24b/otmol/assets/images/feedback.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2024-03-05T19:06:30+00:00",
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "",
+        "meta_favicon": "",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "Set to TRUE to enable data type associations to propagate all agent variables from the parent agent to the child object. The default is false because any existing DIRECT SQL UPDATE's dependent on $gid being the parent need to be rewritten. When this property is active, the system assumes that $gid is the child and $parent is the parent.\n\nDefault is true.\n\nThis is a domain-specific property that determines whether a given business number generator (BNG) rule should use a simple Oracle RDBMS sequence in place of the synchronized business number generator. Sicne this is domain specific there is not a default.\n\nIf this property is found, the number is generated via Oracle RDBMS Sequence.\n\nNote that maximum length restrictions on data fields is checked even for Oracle RDBMS Sequences. If the property is not found, the Business Number Generator checks for a cross-domain property: glog.server.bngenerator.oracleSequence.xid.<BN Rule XID>=<oracle sequence>\n\nThis is the cross-domain property that the system checks for if the glog.server.bngenerator.oracleSequence.gid.<BN Rule GID>=<oracle sequence> is not found.\n\nNote that BNG XIDs are usually of the form: <rule mnemonic>.DEFAULT. E.g. the rule to generate monitor agent XIDs is: MONITOR_AGENT_XID.DEFAULT.\n\nSince these are Oracle Transportation Management properties, you can embed spaces in the rule GID/XID by enclosing the property key in double quotes:\n\n\" glog.server.bngenerator.oracleSequence.xid.MY BNG.DEFAULT\"= my_sequence\n\nThis property limits the number of primary keys (PKs) that can come in as an input to be further filtered by the derived data filters. The default value is 500.Â When derived data needs to be determined on multiple PKs, performance may become an issue. An exception is thrown when this condition fails: \"Exceeded Calculated Data Filterable Pks Limit\"\n\nDetermines how often the following event is published: \"partial shipment group mod event (Event: SHIPMENT GROUP - MODIFIED)\" (for actions Add Partial Shipments to Shipment Group and Remove Partial Shipment from Shipment Group).\n\nIf false (default), publish the partial shipment group mod event (Event: SHIPMENT GROUP - MODIFIED) only once per action and not per each partial shipment added to/removed from the shipment group. If you want this event to be published for each partial shipment added/removed, set this property to true.\n\nTransaction mediation supports blocking across Integration Transmissions using a global process group designation. When set to true, a transmission, which has a ProcessGrouping in the TransmissionHeader, defined with a ProcessGroupOwner and the ProcessGroupOwner is not itself specified as a ProcessGrouping within the Transmission, then the ProcessGroupOwner (or Parent Group) will be setup as a global process group which will block on all transactions in the process group. For example, if the only ProcessGrouping in the transmission is defined as below:\n\n<ProcessGrouping>\n\n<ProcessGroup>MYGROUP.48785</ProcessGroup>\n\n<ProcessGroupOwner>48785</ProcessGroupOwner>\n\n<InSequence>Y</InSequence>\n\n</ProcessGrouping>\n\nthen all transactions across transmissions that are designated in MYGROUP.48785 ProcessGroup will be sequenced globally.\n\nSet to true to enable the functionality.\n\nWhen the property is set to false:\n\nIf you provide only pickup time, the pickup time is set to the shipment start time and on the first stop's estimated arrival time.\n\nIf you provide only dropoff time, the dropoff time updates the last stop's estimated arrival time.Â\n\nIf you provide both pickup and dropoff time, the pickup date is set to the shipment start time and on the first stop's estimated arrival time. The dropoff time updates the last stop's estimated arrival and departure times.Â\n\nNote:Â The rest of the times on this stop and other stops will not be recalculated.\n\nÂ\n\nWhen the property is set to true:\n\nIf you provide only pickup time, the pickup time is set to the shipment start time and on the first stop's estimated arrival and departure times.Â\n\nIf you provide only dropoff time, the dropoff time updates the last stop's estimated arrival and departure times.Â\n\nIf you provide both pickup and dropoff time, the pickup time is set to the shipment start time and on the first stop's estimated arrival and departure times. The dropoff time updates the last stop's estimated arrival and departure times.Â\n\nNote:Â The shipment is re-driven to update the time on the rest of the stops. If both pickup and dropoff time is provided, the shipment is re-driven after updating the last stop estimated arrival time."
+    }
+}
