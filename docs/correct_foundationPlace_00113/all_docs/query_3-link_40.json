@@ -1,0 +1,42 @@
+{
+    "id": "correct_foundationPlace_00113_3",
+    "rank": 40,
+    "data": {
+        "url": "https://plaid.com/docs/link/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Link",
+        "top_image": "https://plaid.com/assets/img/social-card-landscape.jpg",
+        "meta_img": "https://plaid.com/assets/img/social-card-landscape.jpg",
+        "images": [
+            "https://plaid.com/_next/image?url=/assets/img/navbar/logo.svg&w=1920&q=75",
+            "https://plaid.com/_next/image?url=/assets/img/navbar/logo.svg&w=1920&q=75",
+            "https://plaid.com/_next/image?url=/assets/img/docs/bill-happy.png&w=1920&q=75",
+            "https://plaid.com/_next/image?url=/assets/img/docs/docs-link-overview.png&w=1920&q=75",
+            "https://plaid.com/_next/image?url=/assets/img/docs/link-tokens/link-token-row-1.png&w=1920&q=75",
+            "https://plaid.com/_next/image?url=/assets/img/docs/link-tokens/link-token-row-2.png&w=1920&q=75",
+            "https://plaid.com/_next/image?url=/assets/img/docs/link-tokens/link-token-row-3.png&w=1920&q=75",
+            "https://plaid.com/_next/image?url=/assets/img/docs/link-tokens/link-token-row-4.png&w=1920&q=75",
+            "https://plaid.com/_next/image?url=/assets/img/docs/link-tokens/link-token-row-5.png&w=1920&q=75",
+            "https://plaid.com/_next/image?url=/assets/img/icons/icon-social-github.svg&w=1920&q=75",
+            "https://plaid.com/_next/image?url=/assets/img/icons/icon-social-stack-overflow.svg&w=1920&q=75",
+            "https://plaid.com/_next/image?url=/assets/img/icons/icon-social-youtube-black.svg&w=1920&q=75",
+            "https://plaid.com/_next/image?url=/assets/img/icons/discord-footer.svg&w=1920&q=75"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "Use Plaid Link to connect to your users' financial accounts with the Plaid API. Link handles credential validation, MFA, errors, and more.",
+        "meta_lang": "en",
+        "meta_favicon": "/assets/img/favicons/apple-touch-icon.png",
+        "meta_site_name": "",
+        "canonical_link": "https://plaid.com/docs/link/",
+        "text": "Introduction to Link\n\nPlaid Link is the client-side component that your users will interact with in order to link their accounts to Plaid and allow you to access their accounts via the Plaid API.\n\nPlaid Link will handle credential validation, multi-factor authentication, and error handling for each institution that Plaid supports. Link is supported via SDKs for all modern browsers and platforms, including web, iOS, Android, as well as via React Native, along with community-supported wrappers for Flutter, Angular, and Vue.\n\nFor webview-based integrations or integrations that don't have a frontend, Plaid also provides a drop-in Hosted Link integration mode.\n\nTo try Link, see Plaid Link Demo.\n\nLink is the only available method for connecting accounts in Production and is mandatory for all Plaid integrations. In the Sandbox test environment, Link can optionally be bypassed for testing purposes via /sandbox/public_token/create.\n\nLink flow overview\n\nThe diagram below shows a model of how Link is used to obtain a public_token, which can then be exchanged for an access_token, which is used to authenticate requests to the Plaid API.\n\nIn code, this flow is initiated by creating a link_token and using it to initialize Link. The link_token can be configured with the Plaid products you will be using and the countries you will need to support. Once the user has logged in via Link, Link will issue a callback containing a public_token, which can be exchanged for an access_token via /item/public_token/exchange.\n\nInitializing Link\n\nLink is initialized by passing the link_token to Link. The exact implementation details for passing the link_token will vary by platform. For detailed instructions, see the page for your specific platform: web, iOS, Android, React Native or mobile webview.\n\nFor recommendations on configuring the link_token for your use case, see Choosing how to initialize products.\n\nSupporting OAuth\n\nSome institutions use an OAuth authentication flow, in which Plaid Link redirects the end user to their bank's website or mobile app to authenticate. To learn how to connect to an institution that uses OAuth, see the OAuth guide.\n\nCustomizing Link\n\nYou can customize parts of Link's flow, including some text elements, the institution select view, and the background color, and enable additional features like the Account Select view straight from the Dashboard. You can preview your changes in realtime and then publish them instantly once you're ready to go live. For more details, see Link customization.\n\nTo help you take advantage of the options available for customizing and configuring Link, Plaid offers a best practices guide with recommendations for how to initialize and configure Link within your app.\n\nLink's appearance will also automatically change if the institution selected is not in a healthy state. For more details, see Institution status in Link.\n\nReturning user flows\n\nThe returning user flow allows you to enable a faster Plaid Link experience for your users who already use Plaid. To learn more, see Returning user experience.\n\nError-handling flows\n\nIf your application will access an Item on a recurring basis, rather than just once, it should support update mode. Update mode allows you to refresh an Item if it enters an error state, such as when a user changes their password or MFA information. For more information, see Updating an Item.\n\nIt's also recommended to have special handling for when a user attempts to link the same Item twice. Requesting access tokens for duplicate Items can lead to higher bills and end-user confusion. To learn more, see preventing duplicate Items.\n\nOccasionally, Link itself can enter an error state if the user takes over 30 minutes to complete the Link process. For information on handling this flow, see Handling invalid Link tokens.\n\nOptimizing Link conversion\n\nHow you configure Link can have a huge impact on the percentage of users who successfully complete the Link flow. To ensure you're maximizing conversion, see Best practices for Link conversion.\n\nLink token migration\n\nPrior to July 2020, Link was initialized using a public key instead of a link_token. If you are an existing Plaid developer using a Plaid public key, it is recommended that you migrate to a link_token-based implementation as soon as possible, using the instructions in the Link token migration guide. For those who are not yet ready to migrate, instructions on maintaining a legacy integration can be found in the legacy integration guide.\n\nTroubleshooting\n\nSince all your users will go through Link, it's important to build as robust an integration as possible. For details on dealing with common problems, see the Troubleshooting section.\n\nLink updates\n\nPlaid periodically updates Link to add new functionality and improve conversion. These changes will be automatically deployed. Any test suites and business logic in your app should be robust to the possibility of changes to the user-facing Link flow.\n\nUsers of Plaid's SDKs for React, React Native, iOS, and Android should regularly update to ensure support for the latest client platforms and Plaid functionality."
+    }
+}

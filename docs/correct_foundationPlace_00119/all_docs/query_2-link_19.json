@@ -1,0 +1,37 @@
+{
+    "id": "correct_foundationPlace_00119_2",
+    "rank": 19,
+    "data": {
+        "url": "https://stackoverflow.com/questions/32426249/aws-s3-bucket-with-multiple-regions",
+        "read_more_link": "",
+        "language": "en",
+        "title": "AWS S3 Bucket with Multiple Regions",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://cdn.sstatic.net/Img/teams/teams-promo.svg?v=e507948b81bf",
+            "https://cdn.sstatic.net/Img/teams/overflowai.svg?v=d706fa76cdae",
+            "https://i.sstatic.net/lbf2i.png?s=64",
+            "https://www.gravatar.com/avatar/8648256cc53b261c5e1d266380a256fc?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/xItNy.jpg?s=64",
+            "https://www.gravatar.com/avatar/b5dff4a495ba3018bf1b3285ff599b30?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/kp3nc.jpg?s=64",
+            "https://stackoverflow.com/posts/32426249/ivc/b5eb?prg=d587b3c9-7f8e-4875-bbd2-1593c5ce3028"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2015-09-06T17:22:21",
+        "summary": "",
+        "meta_description": "I have an AWS S3 bucket which is set for the US Standard region but I want it to work in Singapore too. I have researched but could not find a way for the same bucket to work i multiple regions.\nIt...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/32426249/aws-s3-bucket-with-multiple-regions",
+        "text": "An S3 bucket exists in one region, not in multiple regions, but you can access that bucket from anywhere.\n\nNow, while you can access a US Standard bucket quite happily from Singapore, the latency will be high so you might want to consider using CloudFront as a CDN.\n\nAWS Solutions has lanuched new solution to all replication across regions.\n\nFor example, you can create objects in Oregon, rename them in Singapore, and delete them in Dublin, and the changes are replicated to all other regions. This solution is designed for workloads that can tolerate lost events and variations in replication speed. You can find more information here https://aws.amazon.com/solutions/multi-region-asynchronous-object-replication-solution/\n\nNow the S3 have new service feature called Multi Region Access Point which allows to have distributed and synced S3 buckets across the globe.\n\nThe documentation tells that it does not work together with Cloudfront, but it is possible to make it work with Edge Lambda.\n\nDemo Applications to illustrate how it works - here\n\nIf you are using nodejs then look into @aws-sdk/signature-v4-crt for signing the request.\n\nconst CrtSignerV4 = require(\"@aws-sdk/signature-v4-crt\").CrtSignerV4; module.exports.signer = async (data) => { const { AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_SESSION_TOKEN } = process.env; const sigv4 = new CrtSignerV4({ region: \"*\", credentials: credentials, signingAlgorithm: 1, }); const { method, region, service, headers, pathname, protocol, hostname } = data; return sigv4.sign( { service: service, region: region, method: method, hostname: hostname, path: pathname, protocol: protocol, headers: headers, }, { signingService: service, } ); };\n\nFor the aws-cdk, at the moment it does not have L2 constructs. Therefore use:\n\nconst accessPoint = new core.aws_s3.CfnMultiRegionAccessPoint( this, \"AccessPoint\", { regions: [ { bucket: `bucket-${account}-eu-central-1`, }, { bucket: `bucket-${account}-eu-north-1`, }, ], name: \"access-point\", } );\n\nGotchas with cloudfront:\n\nIf you are not using legacy caching in behavior then you need to override the Host header with origin.\n\nWith Signed you manually need to add Host header to signable headers (python code does it automatically)"
+    }
+}
