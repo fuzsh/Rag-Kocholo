@@ -1,0 +1,46 @@
+{
+    "id": "correct_subsidiary_00116_2",
+    "rank": 7,
+    "data": {
+        "url": "https://community.cisco.com/t5/other-network-architecture-subjects/ntp-peer/td-p/3746375",
+        "read_more_link": "",
+        "language": "en",
+        "title": "NTP Peer",
+        "top_image": "https://community.cisco.com/t5/image/serverpage/image-id/24079i0EED225A0BE3A2DE?v=v2",
+        "meta_img": "https://community.cisco.com/t5/image/serverpage/image-id/24079i0EED225A0BE3A2DE?v=v2",
+        "images": [
+            "https://community.cisco.com/t5/image/serverpage/avatar-name/default_icon/avatar-theme/candy/avatar-collection/Cisco_Default/avatar-display-size/profile/version/2?xdesc=1.0",
+            "https://community.cisco.com/html/@E1D9E5099E7D8FD73DECA4D3FF50F455/rank_icons/rank-1.png",
+            "https://images.youracclaim.com/images/838c1e62-78d4-4214-a51e-f136beabf891/CCIE_Enterprise_large.png",
+            "https://images.youracclaim.com/images/1823c8d9-8794-4116-bdf8-c8bb2f65c3ce/cisco_ccie_routing.png",
+            "https://community.cisco.com/t5/image/serverpage/image-id/24079i0EED225A0BE3A2DE/image-size/large?v=v2&px=999",
+            "https://community.cisco.com/t5/image/serverpage/avatar-name/default_icon/avatar-theme/candy/avatar-collection/Cisco_Default/avatar-display-size/profile/version/2?xdesc=1.0",
+            "https://community.cisco.com/html/@E1D9E5099E7D8FD73DECA4D3FF50F455/rank_icons/rank-1.png",
+            "https://community.cisco.com/t5/image/serverpage/image-id/140095i5758A6AACF27CCEA/image-dimensions/150x150/constrain-image/false?v=v2",
+            "https://community.cisco.com/html/@29935DE0E2C08B7268F96145ACD55BBC/badge_icons/CiscoCommunityBadges_2023_HallOfFame_14x14.png",
+            "https://community.cisco.com/t5/image/serverpage/avatar-name/default_icon/avatar-theme/candy/avatar-collection/Cisco_Default/avatar-display-size/profile/version/2?xdesc=1.0",
+            "https://community.cisco.com/html/@E1D9E5099E7D8FD73DECA4D3FF50F455/rank_icons/rank-1.png",
+            "https://images.youracclaim.com/images/838c1e62-78d4-4214-a51e-f136beabf891/CCIE_Enterprise_large.png",
+            "https://images.youracclaim.com/images/1823c8d9-8794-4116-bdf8-c8bb2f65c3ce/cisco_ccie_routing.png",
+            "https://community.cisco.com/skins/images/FE25C590BD13FCCE68E3F3193A81E259/responsive_peak/images/icon_anonymous_message.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "community.cisco.com",
+            "user-id"
+        ],
+        "publish_date": "2018-11-14T09:35:24.961000+00:00",
+        "summary": "",
+        "meta_description": "is this solution acceptable ? Core 1 and Core 2 configured to be in peer to peer relationship so the time will be same in the two cores because the both peers may attempt to learn time from the other and each peer may offer its time to the other.",
+        "meta_lang": "en",
+        "meta_favicon": "https://community.cisco.com/html/@D17C385B8A505F8125C5E271F02ACC75/rank_icons/ciscologo-square_16x16.png",
+        "meta_site_name": "",
+        "canonical_link": "https://community.cisco.com/t5/other-network-architecture-subjects/ntp-peer/td-p/3746375",
+        "text": "is this solution acceptable ?\n\nCore 1 and Core 2 configured to be in peer to peer relationship so the time will be same in the two cores because the both peers may attempt to learn time from the other and each peer may offer its time to the other.\n\nusing the IP of the direct interface between the core1 and every Distribution switch for NTP configuration same with core 2 so if the direct fiber connections between core1 and any Distribution switch come down the Distribution will use Core 2 as a secondary NTP server (decreased NTP traffic in the network )\n\nand Distribution 1 and Distribution 2 have a peer relationship in every area so if one of the two Distribution lose the connections with the cores it will synchronized with the other Distribution switch .\n\nHi,\n\nPlease see this thread:\n\ncores-distribution-switch-as-ntp-server\n\nYou should aim for at least three NTP servers in each stratum for reliable NTP. In this case I would set all switches to use three separate sources from the ntp.org pool (so 15 in total) and get the switches to peer with each other. This way you get a large number of sources and your switches will arbitrate between themselves. If you lose your Internet connection, the switches will be stable as a group and if one has a bad internal clock it will be held in place by the others. Additionally, if a switch reboots, its clock will be declared insane until it is synced to the arbitrated time.\n\nHope this helps,\n\nDave\n\nThanks for your replay but i suppose that the network not connected to internet and the time is configured manually in the two cores\n\n- Already the distribution switch is sync with Cores\n\n-And also Access switches is Sync with Distribution switches"
+    }
+}

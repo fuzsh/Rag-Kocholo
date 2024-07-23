@@ -1,0 +1,41 @@
+{
+    "id": "correct_subsidiary_00116_2",
+    "rank": 4,
+    "data": {
+        "url": "https://community.cisco.com/t5/network-management/maximum-ntp-connections/td-p/3717514",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Maximum NTP connections",
+        "top_image": "https://community.cisco.com/html/assets/ciscooglogo.png",
+        "meta_img": "https://community.cisco.com/html/assets/ciscooglogo.png",
+        "images": [
+            "https://community.cisco.com/t5/image/serverpage/avatar-name/default_icon/avatar-theme/candy/avatar-collection/Cisco_Default/avatar-display-size/profile/version/2?xdesc=1.0",
+            "https://community.cisco.com/html/@E1D9E5099E7D8FD73DECA4D3FF50F455/rank_icons/rank-1.png",
+            "https://community.cisco.com/legacyfs/online/avatars/a16245_1.png",
+            "https://community.cisco.com/html/@E1D9E5099E7D8FD73DECA4D3FF50F455/rank_icons/rank-1.png",
+            "https://images.youracclaim.com/images/07f70c56-f067-458e-bbe5-736f055f0cce/CCNP_Enterprise_large.png",
+            "https://images.youracclaim.com/images/cd769843-4907-4d1a-9702-0512eb87ae6e/cisco_ccnp_security.png",
+            "https://community.cisco.com/t5/image/serverpage/avatar-name/default_icon/avatar-theme/candy/avatar-collection/Cisco_Default/avatar-display-size/profile/version/2?xdesc=1.0",
+            "https://community.cisco.com/html/@F42F87F8D20562B8654C3884A333EA0D/rank_icons/rank-3.png",
+            "https://community.cisco.com/skins/images/0A6C6E98B4D1A4B3C1815579BD1B5BC5/responsive_peak/images/icon_anonymous_message.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "community.cisco.com",
+            "user-id"
+        ],
+        "publish_date": "2018-10-02T15:08:28.870000+00:00",
+        "summary": "",
+        "meta_description": "Hello Team - I wish to deploy an ISR4321 router to sit in my main DC between my NTP source sat upstream in my Management network and devices connected downstream in my network which do not have direct connection to my management network. In this",
+        "meta_lang": "en",
+        "meta_favicon": "https://community.cisco.com/html/@D17C385B8A505F8125C5E271F02ACC75/rank_icons/ciscologo-square_16x16.png",
+        "meta_site_name": "",
+        "canonical_link": "https://community.cisco.com/t5/network-management/maximum-ntp-connections/td-p/3717514",
+        "text": "Hello Team - I wish to deploy an ISR4321 router to sit in my main DC between my NTP source sat upstream in my Management network and devices connected downstream in my network which do not have direct connection to my management network.\n\nIn this example, could I ...\n\na) configure the ISR4321 to be an NTP client of the upstream NTP server AND be the authoritative NTP source for downstream clients (using the 'router#ntp master' command)?\n\nb) configure the ISR4321 as an NTP client of the upstream NTP server then configure the downstream devices as NTP clients of the ISR4321?\n\nAnother question is - What is the maximum number of supported Clients that can be supported by an ISR4321 running as an NTP Server?\n\nThank you,\n\nHello,\n\nBoth NTP scenarios described would work.\n\nntp master allows your router to use it's internal clock as a reference time source if no higher stratum sources are available. You do need to be careful with this as if your set a higher stratum number (e.g. ntp master 2) and your configured NTP server is a lower stratum your routers internal clock will take precedence and can cause significant drift.\n\nI normally would configure mutiple upstream ntp servers on the ISR and not use the ntp master command in a single site/type of scenario.\n\nIn a larger scenario, I have used multiple ISRs as ntp peers with each other and GPS (Stratum 0) as the reference source for them. In the event of a GPS failure, the peering kept the time for drifting as much until our GPS came back.\n\nTo service clients the ISRs had a loopback interface with a dedicated /32 which we anycasted throughout our network, so in the event of a device or link failure, clients would be automatically rerouted to the next closest ISR acting as an NTP server. This may be appropriate for your scenario, particularly if you have multiple DCs which need to be in sync.\n\nI've never really seen any stats on amount of clients supported on current hardware, but like any feature you turn on, it is best to monitor the impact on resources for your environment (https://www.cisco.com/c/en/us/support/docs/availability/high-availability/19643-ntpm.html), but in practice I found it can scale to 5K+ clients without seeing any significant CPU load on our routers, time drift or synchronization issues on the client side."
+    }
+}

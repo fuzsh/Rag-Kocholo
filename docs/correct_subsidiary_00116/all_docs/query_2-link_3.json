@@ -1,0 +1,44 @@
+{
+    "id": "correct_subsidiary_00116_2",
+    "rank": 3,
+    "data": {
+        "url": "https://community.cisco.com/t5/switching/ntp-master-command/td-p/1313705",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Solved: NTP Master Command",
+        "top_image": "https://community.cisco.com/html/assets/ciscooglogo.png",
+        "meta_img": "https://community.cisco.com/html/assets/ciscooglogo.png",
+        "images": [
+            "https://community.cisco.com/t5/image/serverpage/avatar-name/default_icon/avatar-theme/candy/avatar-collection/Cisco_Default/avatar-display-size/profile/version/2?xdesc=1.0",
+            "https://community.cisco.com/html/@E1D9E5099E7D8FD73DECA4D3FF50F455/rank_icons/rank-1.png",
+            "https://community.cisco.com/legacyfs/online/legacy/5/6/6/123665-profile_image_500",
+            "https://community.cisco.com/html/@29935DE0E2C08B7268F96145ACD55BBC/badge_icons/CiscoCommunityBadges_2023_HallOfFame_14x14.png",
+            "https://community.cisco.com/legacyfs/online/legacy/5/6/6/123665-profile_image_500",
+            "https://community.cisco.com/html/@29935DE0E2C08B7268F96145ACD55BBC/badge_icons/CiscoCommunityBadges_2023_HallOfFame_14x14.png",
+            "https://community.cisco.com/legacyfs/online/photo/img_20150826_225104.jpg",
+            "https://community.cisco.com/html/@2AABEAF69AB30CB19D57F93674E957AD/badge_icons/CiscoCommunityBadges_2023_VipAlumni_14x14.png",
+            "https://community.cisco.com/legacyfs/online/photo/inderjeet.jpg",
+            "https://community.cisco.com/html/@E1D9E5099E7D8FD73DECA4D3FF50F455/rank_icons/rank-1.png",
+            "https://community.cisco.com/skins/images/BA6DA6BF75838CD50E67419C9FB4EDC6/responsive_peak/images/icon_anonymous_message.png",
+            "https://community.cisco.com/t5/image/serverpage/image-id/211890i03C9028909753762/image-size/large?v=v2&px=999"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "community.cisco.com",
+            "user-id"
+        ],
+        "publish_date": "2009-12-03T16:49:26+00:00",
+        "summary": "",
+        "meta_description": "Solved: Currently i am deploying a network wide NTP set up. All works fine but we have some confusion over the use of &quot; NTP master &quot; If we do not include the NTP master command on the catalyst cores the NTP set-up does exactly what we",
+        "meta_lang": "en",
+        "meta_favicon": "https://community.cisco.com/html/@D17C385B8A505F8125C5E271F02ACC75/rank_icons/ciscologo-square_16x16.png",
+        "meta_site_name": "",
+        "canonical_link": "https://community.cisco.com/t5/switching/ntp-master-command/td-p/1313705",
+        "text": "Currently i am deploying a network wide NTP set up. All works fine but we have some confusion over the use of \" NTP master \"\n\nIf we do not include the NTP master command on the catalyst cores the NTP set-up does exactly what we expect.\n\nWhen we add NTP master on the core catalyst switches with a high startum ( ntp master 5 for example ) we see that the cores seems to flick between the internal clock on 127.x.x.x and the actual main NTP source server on the network - even though the stratum value of this server is lower ( ie stratum 3 )\n\nthan the actual core NTP master 5 .....\n\nIs this normal behaviour ? does the catalst core look at all the clocks and decide its the best time source regardless of stratum value ?? does it occasionally look at clocks and then decide that the server is sometimes the best source ( when we do sh ntp associations the NTP master seems to change from the core switch to the true NTP master server and then back again ) ?\n\nOr should we simply not bother with the NTP master command - I understand ( maybe mistakenly ) that the master command just means that the cat will use itself as master when it loses connection to the main NTP server ?\n\nConfused !\n\nany help gladly appreciated.\n\nHi,\n\nHope the following brief about NTP stratum can solve your problem.\n\nIn the world of NTP, stratum levels define the distance from the reference clock. A reference clock is a stratum-0 device that is assumed to be accurate and has lttle or no delay associated with it.\n\nA server that is directly connected to a stratum-0 device is called a stratum-1 server. This includes all time servers with built-in stratum-0 devices, such as the EndRun Time Servers, and also those with direct links to stratum-0 devices such as over an RS-232 connection or via an IRIG-B time code.\n\nThe basic definition of a stratum-1 time server is that it be directly linked (not over a network path) to a reliable source of UTC time such as GPS, WWV, or CDMA transmissions. A stratum-1 time server acts as a primary network time standard.\n\nA stratum-2 server is connected to the stratum-1 server OVER A NETWORK PATH. Thus, a stratum-2 server gets its time via NTP packet requests from a stratum-1 server. A stratum-3 server gets its time via NTP packet requests from a stratum-2 server, and so on.\n\nRegards\n\nGanesh.H"
+    }
+}

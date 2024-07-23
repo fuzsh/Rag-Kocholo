@@ -1,0 +1,36 @@
+{
+    "id": "correct_subsidiary_00116_3",
+    "rank": 34,
+    "data": {
+        "url": "https://networkengineering.stackexchange.com/questions/28099/how-stable-are-clocks-in-network-equipment",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How stable are clocks in network equipment",
+        "top_image": "https://cdn.sstatic.net/Sites/networkengineering/Img/apple-touch-icon@2.png?v=2ae76539f625",
+        "meta_img": "https://cdn.sstatic.net/Sites/networkengineering/Img/apple-touch-icon@2.png?v=2ae76539f625",
+        "images": [
+            "https://cdn.sstatic.net/Sites/networkengineering/Img/logo.svg?v=ecc4997c4794",
+            "https://cdn.sstatic.net/Img/teams/overflowai.svg?v=d706fa76cdae",
+            "https://www.gravatar.com/avatar/6befeb00c5693016428b87fb62fc7bae?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/91809e6e23e4235ce16378f90765768e?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/00787a09c9726b2074f2bb786f88162c?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/jQsNL.png?s=64",
+            "https://networkengineering.stackexchange.com/posts/28099/ivc/24aa?prg=3a63c172-c781-41da-910a-ae2a731b2793"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2016-02-23T19:34:10",
+        "summary": "",
+        "meta_description": "Most high end network equipment (switches and routers) can act as a NTP-server for hosts in the network, but I cant find any information on how stable these are. Does anyone have any information or",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/networkengineering/Img/favicon.ico?v=c898b778f3c6",
+        "meta_site_name": "Network Engineering Stack Exchange",
+        "canonical_link": "https://networkengineering.stackexchange.com/questions/28099/how-stable-are-clocks-in-network-equipment",
+        "text": "I have no clue about the internal clock stability, but it doesn't matter much since you absolutely want those devices to be be synchronized, i.e. be NTP clients of a trusted source.\n\nThis is the only way to ensure that logs (or snmp traps or whatever monitoring you use) are consistent among the devices, to allow a good interpretation.\n\nOf course there should be no significant deviation between two NTP update. I have no real data about this but I never saw this problem arise with properly configured devices.\n\nClocks of network devices usually DO NOT have high-quality oscillators. Because those oscillators are expensive hardware.\n\nIf all you need is to distribute wall clock time through NTP (with millisecond precision) , they might suffice.\n\nIf you need high accuracy for services like TDM over packet, you will likely need either SyncE or PTP (precision time protocol), for sub-microsecond precision, and clock sources with high-accuracy oscillator (as you said, specific hardware).\n\nThe answer to your question depends on the level of accuracy which you need. For network logs and PCs/servers running normal applications, it is more than accurate enough. Very precise applications may require a dedicated GPS clock in the device.\n\nThe show ntp status command on Cisco devices gives you a lot of information.\n\nClock is synchronized, stratum 3, reference is 149.125.221.49 nominal freq is 250.0000 Hz, actual freq is 249.9981 Hz, precision is 2**21 ntp uptime is 6979200 (1/100 of seconds), resolution is 4016 reference time is DA773F8B.E3CD5B84 (14:28:59.889 CST Tue Feb 23 2016) clock offset is -0.3724 msec, root delay is 18.04 msec root dispersion is 7.97 msec, peer dispersion is 0.14 msec loopfilter state is 'CTRL' (Normal Controlled Loop), drift is 0.000007535 s/s system poll interval is 1024, last update was 248 sec ago."
+    }
+}

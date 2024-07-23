@@ -1,0 +1,41 @@
+{
+    "id": "correct_subsidiary_00116_1",
+    "rank": 63,
+    "data": {
+        "url": "https://community.cisco.com/t5/other-network-architecture-subjects/ntp-configuration/td-p/41246",
+        "read_more_link": "",
+        "language": "en",
+        "title": "NTP configuration",
+        "top_image": "https://community.cisco.com/html/assets/ciscooglogo.png",
+        "meta_img": "https://community.cisco.com/html/assets/ciscooglogo.png",
+        "images": [
+            "https://community.cisco.com/t5/image/serverpage/avatar-name/default_icon/avatar-theme/candy/avatar-collection/Cisco_Default/avatar-display-size/profile/version/2?xdesc=1.0",
+            "https://community.cisco.com/html/@E1D9E5099E7D8FD73DECA4D3FF50F455/rank_icons/rank-1.png",
+            "https://community.cisco.com/t5/image/serverpage/avatar-name/default_icon/avatar-theme/candy/avatar-collection/Cisco_Default/avatar-display-size/profile/version/2?xdesc=1.0",
+            "https://community.cisco.com/html/@F42F87F8D20562B8654C3884A333EA0D/rank_icons/rank-3.png",
+            "https://community.cisco.com/t5/image/serverpage/avatar-name/default_icon/avatar-theme/candy/avatar-collection/Cisco_Default/avatar-display-size/profile/version/2?xdesc=1.0",
+            "https://community.cisco.com/html/@E1D9E5099E7D8FD73DECA4D3FF50F455/rank_icons/rank-1.png",
+            "https://community.cisco.com/legacyfs/online/legacy/4/8/4/110484-profile_image_500",
+            "https://community.cisco.com/html/@B2A4946D498FC535C084904363ACA0EE/rank_icons/rank-7.png",
+            "https://community.cisco.com/skins/images/0A6C6E98B4D1A4B3C1815579BD1B5BC5/responsive_peak/images/icon_anonymous_message.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "community.cisco.com",
+            "user-id"
+        ],
+        "publish_date": "2002-07-04T18:48:53+00:00",
+        "summary": "",
+        "meta_description": "Hi All Just wondering If anyone could give me pointers on NTP configuration. What I want to do is have two routers at our central site pointing to ntp servers on the web. I then want most other routers and switches on the wan getting there time from",
+        "meta_lang": "en",
+        "meta_favicon": "https://community.cisco.com/html/@D17C385B8A505F8125C5E271F02ACC75/rank_icons/ciscologo-square_16x16.png",
+        "meta_site_name": "",
+        "canonical_link": "https://community.cisco.com/t5/other-network-architecture-subjects/ntp-configuration/td-p/41246",
+        "text": "Hi All\n\nJust wondering If anyone could give me pointers on NTP configuration. What I want to do is have two routers at our central site pointing to ntp servers on the web. I then want most other routers and switches on the wan getting there time from one of the routers at the central site. This seems to work ok with the\n\n\"ntp peer\" statement on the routers at the central site to the ntp servers on the web and the\n\n\"ntp server\" statement on the routers across the wan that need to retreive the time from the routers at the central site.\n\nIs this the right way to go about this or is there a better way. There is an exception to what i have said and this is where it falls down a little, one of the remote sites is a bit of a hub with spokes and I need this to retreive the time from the routers at the central site but also act as an ntp server for the spoke sites.\n\nAny design suggestions would be appreciated\n\nBest regards\n\nYou have the right idea using a hierarchy to distribute time information around your network. It's a good idea to reduce load on your links to the Internet and to reduce load on the public NTP servers, which are shared community resources.\n\nI would suggest using 'ntp server' to the public NTP servers. Pick two stratum 2 public NTP servers (you don't need to use stratum 1 servers, and they're already heavily loaded). Set one router to use one as a server, and set your other router to use the other. If they're high-end platforms (7200, 7500, etc) with battery-backed calendars, configure 'ntp update-calendar'. If they have calendars, it might also be appropriate to set 'ntp master 3' to enforce that the router will always provide stratum 3 NTP services even if they lose sync with the clocks on the public Internet.\n\nConfigure 'ntp peer' between your two central site routers. This allows them to synchronize with each other, increasing their mutual stability and helping to work out jitter that creeps in from one source or another. Don't use 'ntp peer' unless the relationship is truly a peer one, versus a master/slave relationship that you'll be using for the rest of your network.\n\nNow you have two central routers providing a solid and stable stratum 3 time source (see the URL provided in this thread to explain the stratum concept if you're not clear on how it works). Configure the remainder of your WAN sites with two NTP server statements, pointing to both of the central routers. This provides them redundancy and stability should one of them be unavailable.\n\nYou mention you have another downstream hub site. You can configure another level of hierarchy into the network by having its downstreams use it for an NTP server, and having the downstream hub itself use the central routers as NTP servers. However, unless you are severely constrained for bandwidth and have more than 3 or 5 sites hanging off that hub, this is likely an increase in complexity for little benefit. I would advise you to have all sites on your network sync from the central routers unless your network is quite large."
+    }
+}

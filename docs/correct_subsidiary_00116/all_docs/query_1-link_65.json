@@ -1,0 +1,37 @@
+{
+    "id": "correct_subsidiary_00116_1",
+    "rank": 65,
+    "data": {
+        "url": "https://community.fortinet.com/t5/FortiGate/Technical-Tip-Configuring-a-FortiGate-unit-as-a-NTP-server/ta-p/190313",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Technical Tip: Configuring a FortiGate unit as a N...",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://community.fortinet.com/t5/image/serverpage/avatar-name/bus/avatar-theme/candy/avatar-collection/transit/avatar-display-size/message/version/2?xdesc=1.0",
+            "https://community.fortinet.com/html/@EF1B7C4C7C58D1E740F99E83CD8767F5/rank_icons/fortinet-employee-rank-icon.svg",
+            "https://community.fortinet.com/legacyfs/online/images/kb_16222_1.png",
+            "https://community.fortinet.com/t5/image/serverpage/avatar-name/bus/avatar-theme/candy/avatar-collection/transit/avatar-display-size/message/version/2?xdesc=1.0",
+            "https://community.fortinet.com/html/assets/logo_v2.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "community.fortinet.com",
+            "user-id"
+        ],
+        "publish_date": "2019-09-23T14:51:49.843000+00:00",
+        "summary": "",
+        "meta_description": "how to configure FortiGate as NTP server.SolutionFortiGate can be used as authoritative NTP source for other clients. In our setup, &#39;port1&#39; is...",
+        "meta_lang": "en",
+        "meta_favicon": "https://community.fortinet.com/html/@8972BC546BD31AB16BECA16D7565FCA0/assets/favicon.ico",
+        "meta_site_name": "",
+        "canonical_link": "https://community.fortinet.com/t5/FortiGate/Technical-Tip-Configuring-a-FortiGate-unit-as-a-NTP-server/ta-p/190313",
+        "text": "Andreas77_FTNT\n\nStaff\n\nArticle Id 190313\n\nDescription\n\nThis article describes how to configure FortiGate as NTP server.\n\nSolution\n\nFortiGate can be used as authoritative NTP source for other clients.\n\nIn our setup, 'port1' is the interface connected to internet and 'port2' the LAN interface (where clients are connected).\n\nThe first step is to make sure the local time configuration is correct:\n\n- Configure the correct time zone\n\n- Select the servers that FortiGate will use to synchronize its own time\n\n- Sync interval\n\n1) Standard NTP configuration\n\nBelow is an example of configuration which uses:\n\n- Time Zone GMT+1\n\n- FortiGuard servers to synchronize (default)\n\n- Synchronize the time every 30 minutes\n\n2) Custom NTP configuration\n\nOne can also configure custom NTP servers that the FortiGate will use to synchronize its own time.\n\nThis is only configurable from the CLI:\n\n#config system ntp\n\nset ntpsync enable\n\nset type custom\n\nconfig ntpserver\n\nedit 1\n\nset server \"ntpserver.local\"\n\nnext\n\nend\n\nset server-mode enable\n\nset interface \"port2\"\n\nend\n\n“ntpserver.local” has to be replaced with correct NTP server (IP address or hostname). If the hostname is used, the DNS resolution has to be working from the FortiGate.\n\n3) Quick troubleshooting\n\nOnce this is configured, the client NTP has to be configured with the IP address of the FortiGate port2 interface.\n\nIt is possible to verify the synchronization status from the FortiGate using “diag sys ntp status”.\n\nBelow is an example using FortiGuard servers as NTP source:\n\n#VM01_LAB # diag sys ntp status\n\nsynchronized: yes, ntpsync: enabled, server-mode: enabled\n\nipv4 server(ntp2.fortiguard.com) 208.91.114.23 -- reachable(0xff) S:3 T:54\n\nserver-version=4, stratum=1\n\nreference time is e12361d5.f27e0322 -- UTC Wed Sep 11 12:06:45 2019\n\nclock offset is -0.001569 sec, root delay is 0.000000 sec\n\nroot dispersion is 0.010269 sec, peer dispersion is 19 msec\n\nipv4 server(ntp1.fortiguard.com) 208.91.115.123 -- reachable(0xff) S:3 T:54 selected\n\nserver-version=4, stratum=1\n\nreference time is e12361d4.4f8b22a5 -- UTC Wed Sep 11 12:06:44 2019\n\nclock offset is -0.000652 sec, root delay is 0.000000 sec\n\nroot dispersion is 0.010284 sec, peer dispersion is 8 msec\n\nipv4 server(ntp2.fortiguard.com) 208.91.113.71 -- reachable(0xff) S:3 T:54\n\nserver-version=4, stratum=2\n\nreference time is e12361d6.4caf57ab -- UTC Wed Sep 11 12:06:46 2019\n\nclock offset is -0.004814 sec, root delay is 0.000137 sec\n\nroot dispersion is 0.011154 sec, peer dispersion is 3 msec\n\nipv4 server(ntp1.fortiguard.com) 208.91.113.70 -- reachable(0xff) S:3 T:54\n\nserver-version=4, stratum=2\n\nreference time is e123617b.c98e2059 -- UTC Wed Sep 11 12:05:15 2019\n\nclock offset is -0.005106 sec, root delay is 0.000122 sec\n\nroot dispersion is 0.013382 sec, peer dispersion is 6 msec"
+    }
+}

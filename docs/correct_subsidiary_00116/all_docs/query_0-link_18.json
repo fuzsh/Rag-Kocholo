@@ -1,0 +1,39 @@
+{
+    "id": "correct_subsidiary_00116_0",
+    "rank": 18,
+    "data": {
+        "url": "https://live.paloaltonetworks.com/t5/general-topics/active-passive-pa-with-dual-isp-in-ebgp-and-private-owned-24-asn/td-p/453932",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Active/Passive PA with Dual ISP in eBGP and private owned /24 ASN",
+        "top_image": "https://live.paloaltonetworks.com/html/@B09EB55777348FEBBB51B90839A41B20/assets/PAN_Logo_White.png",
+        "meta_img": "",
+        "images": [
+            "https://live.paloaltonetworks.com/html/@3ED993240B214CCB84957D8890090F3C/assets/PANW_Red_BW.png",
+            "https://live.paloaltonetworks.com/html/@E5AF36E8ADFF42398AB32C75C8A2488A/assets/LC-logo-BW.png",
+            "https://live.paloaltonetworks.com/t5/image/serverpage/avatar-name/video/avatar-theme/candy/avatar-collection/tech/avatar-display-size/message/version/2?xdesc=1.0",
+            "https://live.paloaltonetworks.com/t5/image/serverpage/avatar-name/sports/avatar-theme/candy/avatar-collection/hobbies/avatar-display-size/message/version/2?xdesc=1.0",
+            "https://live.paloaltonetworks.com/skins/images/6A16B16A5B646F1744D8F9D391970C9C/responsive_peak/images/icon_anonymous_message.png",
+            "https://live.paloaltonetworks.com/html/@B09EB55777348FEBBB51B90839A41B20/assets/PAN_Logo_White.png",
+            "https://live.paloaltonetworks.com/html/assets/Khoros-awards-2022-2.jpg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "live.paloaltonetworks.com",
+            "user-id"
+        ],
+        "publish_date": "2021-12-17T13:26:05.886000+00:00",
+        "summary": "",
+        "meta_description": "Hi, Looking for some guidance on our setup. I am looking to establish pure ISP failover without having to take action on my / my team's - 453932",
+        "meta_lang": "en",
+        "meta_favicon": "https://live.paloaltonetworks.com/html/@AF88D457713207EDCC5EEBCB342CACE0/assets/favicon.ico",
+        "meta_site_name": "",
+        "canonical_link": "https://live.paloaltonetworks.com/t5/general-topics/active-passive-pa-with-dual-isp-in-ebgp-and-private-owned-24-asn/td-p/453932",
+        "text": "Hi,\n\nLooking for some guidance on our setup. I am looking to establish pure ISP failover without having to take action on my / my team's side. Presently when there is an outage, we need to do manual intervention to get connectivity back up.\n\nHere is an overview of our network, internet facing.\n\nISP A (/30) -> Cisco ASR Router 1 (I control) (/24 ASN eBGP established to ISP A) WAN Interface -> ASR Router (LAN Interface - Public IP in same /24) -> DMZ Switch Stack (VLAN 5 - WAN Facing)\n\nISP B (/30) -> Cisco ASR Router 2 (I control) (/24 ASN eBGP established to ISP B) WAN Interface -> ASR Router (LAN Interface - Public IP in same /24) -> DMZ Switch Stack (VLAN 5 - WAN Facing)\n\nISP A = 1Gb\n\nISP B = 500Mb\n\nCisco Router 1 - No prepend, default route to ISP carrier\n\nCisco Router 2 - Prepend, default route to ISP carrier + ip route x.x.x.x /24 null0\n\n*** (I have found if I take away the prepend and null0 loopback, packets going out cannot route back in)\n\nPA 3020 x2 (Active/Passive) (E1/1) -> DMZ Switch Stack (VLAN 5)\n\nE1/1 - WAN IP in the same /24 block above\n\nNAT from the PA is dynamic-ip-and-port with the E1/1 Interface IP from untrust to trust zone\n\nNo PBF but x1 VR in default route, with traffic going to Cisco Router 1 LAN IP for next hop\n\n- I have tried putting in route monitoring in the VR default route to the Cisco Router 2 LAN IP, removing the prepend on Cisco Router 2 and null route and internet stops working from behind the PA.\n\nWhen ISP A goes down, we need to remove the prepend and remove the null route, change the route manually on PA and clear NAT sessions. Not ideal ...\n\nCan anyone offer any suggestions or thoughts on how to improve the setup? Changing setup, connections, hardware, etc... is all open and fine."
+    }
+}

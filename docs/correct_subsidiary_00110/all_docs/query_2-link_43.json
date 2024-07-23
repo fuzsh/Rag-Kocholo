@@ -1,0 +1,35 @@
+{
+    "id": "correct_subsidiary_00110_2",
+    "rank": 43,
+    "data": {
+        "url": "https://stackoverflow.com/questions/7773430/adding-testcase-results-to-quality-center-run-from-a-outside-python-script",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Adding testcase results to Quality Center Run from a outside Python Script",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://cdn.sstatic.net/Img/teams/overflowai.svg?v=d706fa76cdae",
+            "https://www.gravatar.com/avatar/7fa6c1e534f989270b9b88dc55dee0bf?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/a007be5a61f6aa8f3e85ae2fc18dd66e?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/c11c60c7e6d29cb4b87f3c0a3b692181?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/7fa6c1e534f989270b9b88dc55dee0bf?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/7773430/ivc/24aa?prg=7f6aaae7-7d96-489d-8f75-0d50a6e70592"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2011-10-14T20:51:17",
+        "summary": "",
+        "meta_description": "I want to try to add all the step details - Expected, Actual, Status, \netc. to a QC Run for a testcase of a TestSet from a Python Script \nliving outside the Quality Center. \nI have come till here (...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/7773430/adding-testcase-results-to-quality-center-run-from-a-outside-python-script",
+        "text": "I want to try to add all the step details - Expected, Actual, Status, etc. to a QC Run for a testcase of a TestSet from a Python Script living outside the Quality Center. I have come till here (code given below) and I don't know how to add Step Expected and Step Actual Result. If anyone knows how do it, please help me out!! Please, I don't want any QTP solutions. Thanks, Code-\n\n# Script name - add_tsrun.py # C:\\Python27\\python.exe # This script lives locally on a Windows machine that has - Python 2.7, Win32 installed, IE8 # Dependencies on Windows Machine - Python 2.7, PythonWin32 installed, IE8, a QC Account, connectivity to QCServer import win32com.client, os tdc = win32com.client.Dispatch(\"TDApiOle80.TDConnection\") tdc.InitConnection('http://QCSERVER:8080/qcbin') tdc.Login('USERNAME', 'PASSWORD') tdc.Connect('DOMAIN_NAME', 'PROJECT') tsFolder = tdc.TestSetTreeManager.NodeByPath('Root\\\\test_me\\\\sub_folder') tsList = tsFolder.FindTestSets('testset1') ts_object = tsList.Item(1) ts_dir = os.path.dirname('testset1') ts_name = os.path.basename('testset1') tsFolder = tdc.TestSetTreeManager.NodeByPath(ts_dir) tsList = tsFolder.FindTestSets(ts_name) ts_object = tsList.Item(1) TSTestFact = ts_object.TSTestFactory TestSetTestsList = TSTestFact.NewList(\"\") ts_instance = TestSetTestsList.Item(1) newItem = ts_instance.RunFactory.AddItem(None) # newItem == Run Object newItem.Status = 'No Run' newItem.Name = 'Run 03' newItem.Post() newItem.CopyDesignSteps() # Copy Design Steps newItem.Post() steps = newItem.StepFactory.NewList(\"\") step1 = steps[0] step1.Status = \"Not Completed\" step1.post() ## How do I change the Actual Result?? ## I can access the Actual, Expected Result by doing this, but not change it step1.Field('ST_ACTUAL') = 'My actual result' # This works in VB, not python as its a Syntax error!! Traceback ( File \"<interactive input>\", line 1 SyntaxError: can't assign to function call\n\nHope this helps you guys out there. If you know the answer to set the Actual Result, please help me out and let me know. Thanks, Amit"
+    }
+}
