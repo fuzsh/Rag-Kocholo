@@ -1,0 +1,31 @@
+{
+    "id": "wrong_mix_domainrange_foundationPlace_00104_3",
+    "rank": 42,
+    "data": {
+        "url": "https://www.eclipse.org/lists/platform-swt-dev/msg05309.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "dev] Table cell tooltip problem",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://www.eclipse.org/eclipse.org-common/themes/solstice/public/images/logo/eclipse-foundation-white-orange.svg",
+            "https://www.eclipse.org/eclipse.org-common/themes/solstice/public/images/logo/eclipse-foundation-white-orange.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "",
+        "meta_favicon": "",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "[Date Prev][Date Next][Thread Prev][Thread Next][Date Index][Thread Index] [List Home]\n\n[platform-swt-dev] Table cell tooltip problem\n\nFrom: Alexander Saar <alexander.saar@xxxxxxxxxxxxxx>\n\nDate: Mon, 19 Mar 2007 18:07:49 +0100\n\nDelivered-to: platform-swt-dev@xxxxxxxxxxx\n\nList-archive: <https://dev.eclipse.org/mailman/listinfo/platform-swt-dev>\n\nList-help: <mailto:platform-swt-dev-request@eclipse.org?subject=help>\n\nList-subscribe: <https://dev.eclipse.org/mailman/listinfo/platform-swt-dev>, <mailto:platform-swt-dev-request@eclipse.org?subject=subscribe>\n\nList-unsubscribe: <https://dev.eclipse.org/mailman/listinfo/platform-swt-dev>, <mailto:platform-swt-dev-request@eclipse.org?subject=unsubscribe>\n\nOrganization: Mindqarry GmbH\n\nUser-agent: Thunderbird 1.5.0.10 (Windows/20070221)\n\nHi everbody, I have a question regarding the tooltip support for table cells.\n\nI recently updated to SWT 3.3M5 and tried the new tooltip feature for table cells. Following the API docs, I created a CellLabelProvider with support for tooltips and added it to a ViewerColumn:\n\n// create table viewer taskTableViewer = new TableViewer(table); // create columns TableColumn titleCol = new TableColumn(table, SWT.NONE); titleCol.setResizable(false); titleCol.setWidth(100); titleCol.setText(\"Title\"); TableViewerColumn vCol = new TableViewerColumn(taskTableViewer, titleCol); vCol.setLabelProvider(new TaskTableLabelProvider()); taskTableViewer.setColumnPart(vCol, 0);\n\nAfter starting my application, I didn't get any output in my table. After some debugging, I found out that the getColumnText() method is never called. (same holds true for getColumnImage()).\n\nAfter that I tried to add the label provider additionally to my TableViewer. TaskTableLabelProvider provider = new TaskTableLabelProvider(); taskTableViewer.setLabelProvider(provider);\n\nThis results in having the original cell text display. If I hover over the cell, an empty tooltip gets display. Again I started the debugger and found out, that a default instance of CellLabelProvider is called (wich returns null) by the framework and not my specialized implementation.\n\nAny hint what I did wrong or how I can fix this problem? Best regards, Alex\n\nbegin:vcard fn:Alexander Saar n:Saar;Alexander org:Mindquarry GmbH;Mindquarry Software Development adr:;;August-Bebel-Str. 88;Potsdam;Brandenburg;14482;Germany email;internet:alexander.saar@xxxxxxxxxxxxxx title:Chief Technology Officer tel;work:+49 (0)331 97992-223 tel;cell:+49 (0)177 5985437 x-mozilla-html:FALSE url:http://www.mindquarry.com version:2.1 end:vcard\n\nFollow-Ups:\n\nRe: [platform-swt-dev] Table cell tooltip problem\n\nFrom: Tom Schindl"
+    }
+}
