@@ -1,0 +1,34 @@
+{
+    "id": "correct_foundationPlace_00033_1",
+    "rank": 42,
+    "data": {
+        "url": "https://stackoverflow.com/questions/44033482/marklogic-pass-empty-node-to-xquery-function",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Marklogic pass empty node to xquery function",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://cdn.sstatic.net/Img/teams/overflowai.svg?v=d706fa76cdae",
+            "https://i.sstatic.net/Te6t0.jpg?s=64",
+            "https://www.gravatar.com/avatar/9224acc8f0f1fab453f8f6ef36ffbad4?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/1ae9b05545660e084ae3c3c65ef5a75a?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://stackoverflow.com/posts/44033482/ivc/b4ab?prg=3d26d3cd-b8cb-49af-91ac-97058684271b"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2017-05-17T19:40:35",
+        "summary": "",
+        "meta_description": "This is a trivial simplification of my attempt to develop a function in the MarkLogic XQuery manager. The function I am trying to write must be capable of receiving a null node as input. I've been ...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/44033482/marklogic-pass-empty-node-to-xquery-function",
+        "text": "Your problem is that your function expects exactly a single node() and not an empty-sequence()(which is what you're providing by calling your function like this: local:x( () ))\n\nAn empty sequence can't be cast to a node. If you want to provide a function that expects zero or one nodes you can do it like this:\n\ndeclare function local:x($i as node()?) as xs:string* { let $x := \"1\" return $x (: Also instead of doing the above you could also simply return the string directly by simply typing it out: \"1\" :) };\n\nThe question mark is the key here:\n\nSome functions accept a single value or the empty sequence as an argument and some may return a single value or the empty sequence. This is indicated in the function signature by following the parameter or return type name with a question mark: \"?\", indicating that either a single value or the empty sequence must appear.\n\n(Taken from W3C)\n\nOne thing you should be aware about is that an empty sequence is not the same as e.g. an empty text node!\n\nlet $emptySeq := () (:This actually has no value at all:) let $emptyText := text {} (:This simply is an empty node, but it is still a node!:) return (fn:empty($emptySeq), fn:empty($emptyText))"
+    }
+}
