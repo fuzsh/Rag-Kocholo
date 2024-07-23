@@ -1,0 +1,30 @@
+{
+    "id": "correct_subsidiary_00117_2",
+    "rank": 21,
+    "data": {
+        "url": "https://community.freepbx.org/t/spectra-link-8002-wont-work/6253",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Spectra Link 8002 won't work",
+        "top_image": "https://community.freepbx.org/uploads/default/original/3X/f/9/f9cda61f46fd4dd3e4bc1599c786ae17d7de5b48.png",
+        "meta_img": "https://community.freepbx.org/uploads/default/original/3X/f/9/f9cda61f46fd4dd3e4bc1599c786ae17d7de5b48.png",
+        "images": [
+            "https://community.freepbx.org/images/emoji/twitter/slight_smile.png?v=5"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2009-05-26T23:02:29+00:00",
+        "summary": "",
+        "meta_description": "Does anyone know how to get the Spectra Link 8002 WiFi phone to work on Elastix or Trixbox. I&#39;ve done everything by the book from Polycom, but I always get &quot; no sip user file&quot; on the phone and then it reboots, however th&hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://community.freepbx.org/uploads/default/optimized/3X/0/4/047a3ab6d41370c87b4892a74aa2ef2a81b7f623_2_32x32.png",
+        "meta_site_name": "FreePBX Community Forums",
+        "canonical_link": "https://community.freepbx.org/t/spectra-link-8002-wont-work/6253",
+        "text": "Does anyone know how to get the Spectra Link 8002 WiFi phone to work on Elastix or Trixbox. I’ve done everything by the book from Polycom, but I always get \" no sip user file\" on the phone and then it reboots, however the correct files are in the TFTPBOOT folder in my box.\n\nThe machine was built with a download from Elastix, and then upgraded using yum update.\n\nThe current asterisk version is 1.4.24\n\nThe free pbx version is 2.5.1.5\n\nThe Elastix version is 1.5.2-2\n\nThe files for the spectralink phone are 130.007\n\nWell you are now contradicting what you said above “but I always get 'no sip user file” on the phone’ This would mean that the phone is asking for a file that it is NOT getting. either because it is asking for one that you don’t have or it is asking for a file from another source.\n\nSo based on you last statement you have that now working sorry I tried to provide info based on the state that you published.\n\nSo now at the asterisk cli after the phone is booted type: sip show peers\n\nand review the list. Is the extension for the phone listed?\n\nYou should get a list something like this:\n\nName/username Host Dyn Nat ACL Port Status 789/789 (Unspecified) D N 0 Unmonitored 141 (Unspecified) D N 0 UNKNOWN 148/148 172.18.1.86 D N 5060 OK (1 ms) 145/145 172.18.1.116 D 5060 Unmonitored\n\nExtension 789 is a phone that used to be online and now is not anymore (has not been in several weeks).\n\nExtension 141 was configured but has never been connected to.\n\nExtensions 148 and 145 are both registered, connected and functioning just fine.\n\nSorry, you’re right about that, I did get from no sip user file to getting the phone to actually end up at an idle screen, and it did get the file, but it shows up just as your example extension 141 after “sip show peers”, so, it acts like it got what it needs, I can even go change the name in the sip_9303.cfg file that’s in my tftpboot folder on elastix and it will change the display of the phone. But I can’t make a call, and can’t see it actually register.\n\nok if it shows as my extension 141 then that phone has NOT communicated or registered with the server and asterisk. So while it might have gotten what was needed from the TFTP server to boot up it’s not communicating and registering with the server and the asterisk processes properly.\n\nSo you might not be providing everything needed to register with the server or providing the proper information (user name and password).\n\nMost configurations need to know a few simple things.\n\nusername\n\npassword secret\n\nregistrar server\n\nregistrar server port\n\npossibly\n\nproxy server\n\nProxy server port\n\nSo it’s time to triple check those values as something is wrong and again you’ve not provided needed information for review so we can’t comment. 2. I have not worked with that phone so I can’t help but if you are patient maybe somebody else can, or the next place is to talk to the manufacture for some help as they would know the phone better then anybody.\n\nDear Dwayne,\n\nI just received my Polycom 8002 yesterday and have spent several hours setting it up so I have most likely seen most of the messages that you have seen.\n\nPlease verify that your Access Point has the WMM (Wi-Fi Multimedia) option somewhere under WLAN settings, SSID settings and that it is activated. I have seen several posts from other users confirming that Polycom requires WMM and it’s not optional.\n\nThe next hurdle was to input twice without error the passphrase which was a feat in itself the way Polycom displayed what was input. Hopefully you can test without that feature to ensure first that the unit works on your system.\n\nMine started to work correctly once I activated WMM."
+    }
+}

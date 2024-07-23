@@ -1,0 +1,52 @@
+{
+    "id": "correct_subsidiary_00117_0",
+    "rank": 90,
+    "data": {
+        "url": "https://blog.michaelfmcnamara.com/2008/08/what-does-watchdog-timeout-mean-on-nortel-wireless-phones/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "What does \"watchdog timeout\" mean on Nortel wireless phones?",
+        "top_image": "http://blog.michaelfmcnamara.com/wp-content/uploads/2008/08/wlan-handset-2210-600x400-thumb.jpg",
+        "meta_img": "http://blog.michaelfmcnamara.com/wp-content/uploads/2008/08/wlan-handset-2210-600x400-thumb.jpg",
+        "images": [
+            "http://blog.michaelfmcnamara.com/wp-content/uploads/2008/08/wlan-handset-2210-600x400-thumb.jpg",
+            "https://secure.gravatar.com/avatar/dc01008372bc9724e81a060b76438f9f?s=96&d=monsterid&r=pg",
+            "https://secure.gravatar.com/avatar/3b69fd83848edee128d9a81d960306ba?s=96&d=monsterid&r=pg",
+            "https://secure.gravatar.com/avatar/dc01008372bc9724e81a060b76438f9f?s=96&d=monsterid&r=pg",
+            "https://secure.gravatar.com/avatar/0bcc34019dd1817a577840cecab87186?s=96&d=monsterid&r=pg",
+            "https://secure.gravatar.com/avatar/3b69fd83848edee128d9a81d960306ba?s=96&d=monsterid&r=pg",
+            "https://secure.gravatar.com/avatar/02ce32d6f0d455061b4bd1c48eb511f8?s=96&d=monsterid&r=pg",
+            "https://secure.gravatar.com/avatar/85e6d087a9640d3f2d0becc2dc5fa117?s=96&d=monsterid&r=pg",
+            "https://secure.gravatar.com/avatar/3b69fd83848edee128d9a81d960306ba?s=96&d=monsterid&r=pg",
+            "https://secure.gravatar.com/avatar/85e6d087a9640d3f2d0becc2dc5fa117?s=96&d=monsterid&r=pg",
+            "https://www.michaelfmcnamara.com/images/twitter_32.png",
+            "https://www.michaelfmcnamara.com/images/linkedin_32.png",
+            "https://www.michaelfmcnamara.com/images/skype_32.png",
+            "https://www.michaelfmcnamara.com/images/rss_32x32.png",
+            "https://blog.michaelfmcnamara.com/88x31.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Michael McNamara",
+            "Wim Coenen says",
+            "Michael McNamara says",
+            "Ray Jenkins says",
+            "Vince says",
+            "Richard Springman says",
+            "Richard says"
+        ],
+        "publish_date": "2008-08-06T22:00:32-04:00",
+        "summary": "",
+        "meta_description": "I've been working with Motorola and Nortel for over the past 9 months troubleshooting an issue that was causing the Nortel wireless phones (2210, 2211, 6120, 61",
+        "meta_lang": "en",
+        "meta_favicon": "https://blog.michaelfmcnamara.com/wp-content/themes/eleven40-pro/images/favicon.ico",
+        "meta_site_name": "",
+        "canonical_link": "https://blog.michaelfmcnamara.com/2008/08/what-does-watchdog-timeout-mean-on-nortel-wireless-phones/",
+        "text": "I’ve been working with Motorola and Nortel for over the past 9 months troubleshooting an issue that was causing the Nortel wireless phones (2210, 2211, 6120, 6140) to reset while the phone was idle. We eventually traced the problem to a buffer overload issue on the AP300 due to the extreme chattiness of the Spectralink Voice Priority (SVP) and UNIStim protocols and the prolonged power save polling (1.5 seconds) of the Nortel wireless phones. Motorola just released v1.2.0.0 and v3.2.0.0 software for the RFS7000 and WS5100 respectively that resolves this problem by increasing the buffer space on the AP300 allocated per (voice) mobile units. Thanks to Nortel and Motorola for their diligent work in tracking down this “needle in a haystack”.\n\nIt was a challenge to understand all the different heartbeats, timeouts and protocols that were in play between the handset and the Nortel 2245 wireless gateway and ultimately the Nortel Succession Signaling Server. With any Nortel IP phone running a UNIStim protocol there is a watchdog timer on the phone that counts down from 200 seconds. The watchdog timer must be reset by a watchdog reset (heartbeat) message that gets sent out from the Nortel Succession Signaling Server. This watchdog reset gets sent every 30 seconds. If a handset, remember now any Nortel IP handset that is running a UNIStim protocol such as the i2002, i2004, 1120e, 1140e, 1150e, 2210, 2211, 6120 and 6140 misses too many of these heartbeats the phone will reset itself usually displaying the message “watchdog timeout” indicating that the watchdog timer has reached zero and the phone is attempting to recover from the problem by resetting itself. With the Nortel 2210, 2211, 6120 and 6140 you also have the SVP heartbeats and timeouts to worry about.\n\nIf you have some IP phones that are generating “watchdog timeout” message your probably loosing packets somewhere in your network. With that said I would advise anyone with such a problem to immediately contact their voice reseller and make sure their Succession Call Server and Signaling Server have the latest and greatest DEP (patches) list. Once that’s complete you’ll need to go about the task of isolating the possible locations where you could be dropping packets. If it’s a wired IP phone then the problem is much easier to troubleshoot and isolate. If it’s a wireless phone then you’ll have a few extra steps. You’ll obviously need to make sure that you have QoS (DiffServ) up and working within your environment and you’ll need to make sure that you have SVP support enabled on your wireless infrastructure. SpectraLink (recently acquired by Polycom) actually has a library of documents to help customers configure their wireless infrastructure properly to support the SpectraLink handsets.\n\nCheers!\n\nCorrection: August 19, 2008\n\nThe watch dog interval is actually 200 seconds long and not 120 seconds as originally posted.\n\nUpdate: August 24, 2008\n\nIt would seem that this article has generated a lot of interest including several inquiries by Nortel. So I thought I would try to add some additional explanation to help more clearly describe the problems and experiences I’ve had the Nortel 2211 and 2210 wireless handsets. I won’t rewrite the original because I don’t think there is anything wrong with it, other than perhaps missing some attention to the specific details.\n\nThe Motorola WS5100 v3.x and RFS7000 v1.1 was technically broken for anyone using the Nortel 2211/2210/6120/6140 wireless handsets. The phones would often reset while idle, because of a buffering issue on the Motorola AP300 access port. These problems have been resolved (as far as my testing indicates) in the Motorola WS5100 v3.2 and RFS7000 v1.2 software release. Through our troubleshooting of this problem we learned a great deal about the Spectralink Voice Priority protocol and the UNIStim protocol. In short the Nortel wireless handsets will go into PSP (Power Save Polling) for approximately 1.5 seconds, during that time the wireless handset turns off it’s radio to help save power and preserve the battery life. The problem occurs while the phone is idle because of the PSP mode, this is why no problems are ever reported while the phone is off-hook and actively being used. While the wireless handset is in PSP mode the wireless network is responsible for buffering any packets that are sent to the handset. The SVP protocol and UNIStim protocol can generate a lot of packets causing the wireless network to discard some packets while the phone is in PSP mode. These discarded packets can, depending entirely on the timing, cause the phone to either reset or the phone to be unregistered from the Succession Signaling server.\n\nI’ve been asked by quite a few people what can be done to help alleviate any potential issues?\n\nThe wireless infrastructure should be configured to support the SVP protocol\n\nQoS (DiffServ) should be set to “Trusted” on every Ethernet switch port that will be used to connect the different equipment (Succession Signaling Server, Succession Voice Gateway Media Card, 2245, wireless infrastructure)\n\nDesign the wireless infrastructure so there is at least -60 dB of signal available and no more than 7 wireless handsets connected to a single access point/access port.\n\nWith all that said Nortel has literally just released v97.072 software for the Nortel 2211/2210 wireless handsets. While the release notes don’t seem to indicate any changes that are specific to “watchdog” issues it might be worth giving it a shot.\n\nCheers!"
+    }
+}
