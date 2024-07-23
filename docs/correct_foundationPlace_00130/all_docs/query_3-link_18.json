@@ -1,0 +1,38 @@
+{
+    "id": "correct_foundationPlace_00130_3",
+    "rank": 18,
+    "data": {
+        "url": "https://medium.com/fabcoding/swift-navigation-app-chooser-d6af551a838",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Swift — Navigation App Chooser — Prompt the user to choose app to open Map Directions",
+        "top_image": "https://miro.medium.com/v2/resize:fit:563/0*QJ1ALgBTuKceuOEe.jpg",
+        "meta_img": "https://miro.medium.com/v2/resize:fit:563/0*QJ1ALgBTuKceuOEe.jpg",
+        "images": [
+            "https://miro.medium.com/v2/resize:fill:64:64/1*dmbNkD5D-u45r44go_cf0g.png",
+            "https://miro.medium.com/v2/resize:fill:88:88/1*2Wz_h_BN6879KTW-8emVFw.jpeg",
+            "https://miro.medium.com/v2/resize:fill:48:48/1*dllS5DDnsCCKE8GoqFJQDA.png",
+            "https://miro.medium.com/v2/resize:fill:144:144/1*2Wz_h_BN6879KTW-8emVFw.jpeg",
+            "https://miro.medium.com/v2/resize:fill:64:64/1*dllS5DDnsCCKE8GoqFJQDA.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Zeba Rahman",
+            "medium.com",
+            "@rahman.zeba"
+        ],
+        "publish_date": "2020-04-21T13:52:22+00:00",
+        "summary": "",
+        "meta_description": "This solution prompts the user to choose from the available navigation apps in the user’s iPhone, and then opens the chosen app for direction towards the given location. Then in your ViewController…",
+        "meta_lang": "en",
+        "meta_favicon": "https://miro.medium.com/v2/1*m-R_BkNf1Qjr1YbyOIJY2w.png",
+        "meta_site_name": "Medium",
+        "canonical_link": "http://fabcoding.com/swift-navigation-app-chooser/",
+        "text": "This solution prompts the user to choose from the available navigation apps in the user’s iPhone, and then opens the chosen app for direction towards the given location.\n\nCreate a new Swift file named DirectionsOpts.swift and paste this entire code.\n\nimport Foundation\n\nimport UIKit\n\nimport CoreLocation\n\nimport MapKit\n\npublic enum DirectionsOpts {\n\ncase AppleMaps\n\ncase GoogleMaps\n\ncase Navigon\n\ncase Waze\n\npublic var appname: String {\n\nswitch self {\n\ncase .AppleMaps:\n\nreturn \"Apple Maps\"\n\ncase .GoogleMaps:\n\nreturn \"Google Maps\"\n\ncase .Navigon:\n\nreturn \"Navigon\"\n\ncase .Waze:\n\nreturn \"Waze\"\n\n}\n\n}\n\npublic var baseUrl: String {\n\nswitch self {\n\ncase .AppleMaps:\n\nreturn \"http://maps.apple.com\"\n\ncase .GoogleMaps:\n\nreturn \"comgooglemaps://\"\n\ncase .Navigon:\n\nreturn \"navigon://\"\n\ncase .Waze:\n\nreturn \"waze://\"\n\n}\n\n}\n\npublic static let allApps: [DirectionsOpts] = [.AppleMaps, .GoogleMaps, .Navigon, .Waze]\n\npublic static var availableApps: [DirectionsOpts] {\n\nreturn self.allApps.filter { app in app.available }\n\n}\n\npublic var url: URL? {\n\nreturn URL(string: self.baseUrl)\n\n}\n\npublic var available: Bool {\n\nguard let url = self.url else {\n\nreturn false\n\n}\n\nreturn UIApplication.shared.canOpenURL(url)\n\n}\n\npublic func directionsUrlString(coordinate: CLLocationCoordinate2D, name: String = \"Destination\") -> String {\n\nvar urlString = self.baseUrl\n\nswitch self {\n\ncase .AppleMaps:\n\nurlString.append(\"?q=\\(coordinate.latitude),\\(coordinate.longitude)=d&t=h\")\n\ncase .GoogleMaps:\n\nurlString.append(\"?saddr=&daddr=\\(coordinate.latitude),\\(coordinate.longitude)&directionsmode=driving\")\n\ncase .Navigon:\n\nurlString.append(\"coordinate/\\(name)/\\(coordinate.longitude)/\\(coordinate.latitude)\")\n\ncase .Waze:\n\nurlString.append(\"?ll=\\(coordinate.latitude),\\(coordinate.longitude)&navigate=yes\")\n\n}\n\nlet urlwithPercentEscapes =\n\nurlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? urlString\n\nreturn urlwithPercentEscapes\n\n}\n\npublic func directionsUrl(coordinate: CLLocationCoordinate2D, name: String = \"Destination\") -> URL? {\n\nlet urlString = self.directionsUrlString(coordinate: coordinate, name: name)\n\nreturn URL(string: urlString)\n\n}\n\n//open the app\n\npublic func openWithDirections(coordinate: CLLocationCoordinate2D,\n\nname: String = \"Destination\",\n\ncompletion: ((Bool) -> Swift.Void)? = nil) {\n\n// Apple Maps can be opened differently than other navigation apps\n\nif self == .AppleMaps {\n\nlet mapItem = MKMapItem(placemark: MKPlacemark(coordinate: coordinate, addressDictionary:nil))\n\nmapItem.name = name\n\nlet success = mapItem.openInMaps(launchOptions:\n\n[MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeDriving])\n\ncompletion?(success)\n\n}\n\nguard let url = self.directionsUrl(coordinate: coordinate, name: name) else {\n\ncompletion?(false)\n\nreturn\n\n}\n\n// open the app with appropriate method for your target iOS version\n\nif #available(iOS 10.0, *) {\n\nUIApplication.shared.open(url, options: [:], completionHandler: {\n\n(success) in\n\nprint(\"Open \\(url.absoluteString): \\(success)\")\n\ncompletion?(success)\n\n})\n\n} else {\n\nlet success = UIApplication.shared.openURL(url)\n\ncompletion?(success)\n\n}\n\n}\n\n// present available apps\n\npublic static func directionsAlertController(coordinate: CLLocationCoordinate2D,\n\nname: String = \"Destination\",\n\ntitle: String = \"Directions Using\",\n\nmessage: String? = nil,\n\ncompletion: ((Bool) -> ())? = nil)\n\n-> UIAlertController {\n\nlet directionsAlertView = UIAlertController(title: title,\n\nmessage: nil,\n\npreferredStyle: .actionSheet)\n\nfor navigationApp in DirectionsOpts.availableApps {\n\nlet action = UIAlertAction(title: navigationApp.appname,\n\nstyle: UIAlertAction.Style.default,\n\nhandler: { action in\n\nnavigationApp.openWithDirections(coordinate: coordinate,\n\nname: name,\n\ncompletion: completion)\n\n})\n\ndirectionsAlertView.addAction(action)\n\n}\n\nlet cancelAction = UIAlertAction(title: \"Dismiss\",\n\nstyle: UIAlertAction.Style.cancel,\n\nhandler: { action in completion?(false) })\n\ndirectionsAlertView.addAction(cancelAction)\n\nreturn directionsAlertView\n\n}\n\n}\n\nThen in your ViewController, write this function, while passing the destination coordinates in the argument.\n\nfunc navigateTo(coords: CLLocationCoordinate2D) {\n\nlet nav = DirectionOpts.directionsAlertController(coordinate: coords, name: \"Destination\", title: \"Navigate to Destination\", message: \"Any message\") { com in\n\n//completion\n\n}\n\nself.present(nav, animated: true, completion: nil)\n\n}\n\n…"
+    }
+}
