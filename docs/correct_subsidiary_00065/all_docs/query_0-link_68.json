@@ -1,0 +1,35 @@
+{
+    "id": "correct_subsidiary_00065_0",
+    "rank": 68,
+    "data": {
+        "url": "https://serverfault.com/questions/923086/boot-linux-in-uefi-on-a-lsi-card-using-grub2",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Boot Linux in UEFI on a LSI card using GRUB2",
+        "top_image": "https://cdn.sstatic.net/Sites/serverfault/Img/apple-touch-icon@2.png?v=9b1f48ae296b",
+        "meta_img": "https://cdn.sstatic.net/Sites/serverfault/Img/apple-touch-icon@2.png?v=9b1f48ae296b",
+        "images": [
+            "https://cdn.sstatic.net/Sites/serverfault/Img/logo.svg?v=43f5b6d5f65b",
+            "https://cdn.sstatic.net/Img/teams/overflowai.svg?v=d706fa76cdae",
+            "https://www.gravatar.com/avatar/8171348e26549c118dfc12bf9bb214a0?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/e53b94932919573b6f0c55250d735434?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/3a1b7d00d51625c7fa72089ed77e801e?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://serverfault.com/posts/923086/ivc/45eb?prg=52a3ce21-3e0c-4632-bb75-605eb390dc61"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2018-07-22T23:40:55",
+        "summary": "",
+        "meta_description": "Before this question is marked as a duplicate of 'Just installed LSI 9211; no drives showing up to Linux' or anything similar:\nNo. My problem was with the UEFI firmware being unable to boot from th...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/serverfault/Img/favicon.ico?v=18e9cc4f2aea",
+        "meta_site_name": "Server Fault",
+        "canonical_link": "https://serverfault.com/questions/923086/boot-linux-in-uefi-on-a-lsi-card-using-grub2",
+        "text": "Apparently the card has two pieces of firmware in it: one for the card itself, and another for the system it's installed in. The second one is normally a BIOS extension, but you'd need it to be an UEFI-compatible driver instead.\n\nIt might be possible to flash the UEFI driver to the card in place of the BIOS extension, or just load it as a separate UEFI driver file from your primary M.2 SSD.\n\nSince LSI was bought by Broadcom, and then Broadcom by Avago, support for old LSI controllers can now be kind of uncertain. But after a bit of searches on Broadcom support pages, I found some promising-looking packages:\n\nThis might be the package you need.\n\nIf you want to flash the driver onto the card permanently, you'll also need the flash tool.\n\nApparently the FreeNAS users and other hobbyists prefer to switch the other firmware on the card from the IR version (hardware RAID) to IT version (straightforward disk controller useful for software RAID).\n\nHere's one link describing the procedure. (Sorry it's in Finnish, but it has good screenshots that might be helpful anyway.)\n\nAccording to some reports, you may need to downgrade that firmware to the P7 level first to do that. So, two more packages:\n\nAn old P7 firmware package for the card itself.\n\nThe apparently-latest P20 firmware package for the card itself."
+    }
+}

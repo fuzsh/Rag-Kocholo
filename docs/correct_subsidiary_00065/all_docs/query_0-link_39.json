@@ -1,0 +1,37 @@
+{
+    "id": "correct_subsidiary_00065_0",
+    "rank": 39,
+    "data": {
+        "url": "https://communities.vmware.com/t5/ESXi-Discussions/No-persistent-storage-found/td-p/2716063",
+        "read_more_link": "",
+        "language": "en",
+        "title": "No persistent storage found",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://higherlogicdownload.s3.amazonaws.com/BROADCOM/d85cb088-3276-4a37-9f81-a7fb3f2ae78d/UploadedImages/Broadcom.png",
+            "https://d2x5ku95bkycr3.cloudfront.net/App_Themes/Common/images/profile/0_50.png",
+            "https://d2x5ku95bkycr3.cloudfront.net/App_Themes/Common/images/profile/0_50.png",
+            "https://d2x5ku95bkycr3.cloudfront.net/App_Themes/Common/images/profile/0_50.png",
+            "https://d2x5ku95bkycr3.cloudfront.net/App_Themes/Common/images/profile/0_200.png",
+            "https://d2x5ku95bkycr3.cloudfront.net/App_Themes/Common/images/profile/0_200.png",
+            "https://d2x5ku95bkycr3.cloudfront.net/App_Themes/Common/images/profile/0_200.png",
+            "https://d2x5ku95bkycr3.cloudfront.net/img/loading.gif"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "Hello - Not sure if this is a complicated issue or not.. but here's what I did.I have a server where the CD rom no longer works, so I popped my two drives out o",
+        "meta_lang": "en",
+        "meta_favicon": "https://higherlogicdownload.s3.amazonaws.com/BROADCOM/4d01d5b1-ad11-4b09-96c1-3bcabb013aa2/UploadedImages/favicon.png",
+        "meta_site_name": "",
+        "canonical_link": "https://community.broadcom.com/vmware-cloud-foundation/discussion/no-persistent-storage-found",
+        "text": "Hello - Not sure if this is a complicated issue or not.. but here's what I did.\n\nI have a server where the CD rom no longer works, so I popped my two drives out of that server and placed it into a server with similar hardware and a working CD drive..and installed ESXi 5.5. Everything seemed ok, so I then placed the drives BACK into the original server since I was now able to have ESXi on it, but when I joined it into Vcenter 5.5, the storage seemed messed up. When I tried to add a VM, it threw up some errors and then when I checked the storage in the configuration, it gave me a \"no persistent storage found\" error and told me to add it. When I did, it gave me an error that it could not create a partition.\n\nWill the method I explained above not work for ESXi 5.5? Both servers have very similar hardware. They are both IBM X3550s\n\nThe issue in this case is likely, that the custom megaraid-sas vib - required for your RAID controller - is replaced by the update:\n\n2015-03-20T11:37:40Z esxupdate: imageprofile: DEBUG: VIB LSI_bootbank_scsi-megaraid-sas_6.606.06.00-1OEM.500.0.0.472560 is being removed from ImageProfile ESXi-Customizer\n\n2015-03-20T11:37:40Z esxupdate: imageprofile: INFO: Adding VIB VMware_bootbank_misc-drivers_5.5.0-2.54.2403361 to ImageProfile ESXi-Customizer\n\nWhat you need to do is to ensure that either the driver is not replaced (i.e. only install the required vibs, which might be difficult), or - after installing the patch, and before rebooting the host - replace the megaraid-sas driver again with the required one.\n\nThe latest driver can e found at https://my.vmware.com/web/vmware/details?downloadGroup=DT-ESXI55-LSI-SCSI-MEGARAID-SAS-66081100-1OEM&productId=353"
+    }
+}
