@@ -1,0 +1,40 @@
+{
+    "id": "wrong_mix_random_subsidiary_00083_2",
+    "rank": 41,
+    "data": {
+        "url": "https://stackoverflow.com/questions/977648/filter-sql-query-by-a-unique-set-of-column-values-regardless-of-their-order",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Filter SQL query by a unique set of column values, regardless of their order",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://i.sstatic.net/mUn1X.png?s=64",
+            "https://i.sstatic.net/CrVFH.png?s=64",
+            "https://www.gravatar.com/avatar/3aba25b000f425286bf2ffec3043851d?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/0cd2347c3a22d8a9e84d7e8998325b8a?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/iavmP.jpg?s=64",
+            "https://i.sstatic.net/iavmP.jpg?s=64",
+            "https://www.gravatar.com/avatar/2b355ea5815381ada69392453ae48dfd?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/9db8f865b1d5f3e3978b37e7a3480cc4?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/fd1f8df5c8b4f2753544f34e132e2dc3?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/PpuPF.jpg?s=64",
+            "https://stackoverflow.com/posts/977648/ivc/845a?prg=a6a926a5-0b62-443a-af87-339aa9e9e8b6"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2009-06-10T19:24:45",
+        "summary": "",
+        "meta_description": "I have a table in Oracle containing two columns that I'd like to query for records containing a unique combination of values, regardless of the order of those values. For example, if I have the fol...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/977648/filter-sql-query-by-a-unique-set-of-column-values-regardless-of-their-order",
+        "text": "Untested:\n\nselect least(person_1,person_2) , greatest(person_1,person_2) from relationships group by least(person_1,person_2) , greatest(person_1,person_2)\n\nTo prevent such double entries, you can add a unique index, using the same idea (tested!):\n\nSQL> create table relationships 2 ( person_1 number not null 3 , person_2 number not null 4 , relationship number not null 5 , constraint pk_relationships primary key (person_1, person_2) 6 ) 7 / Table created. SQL> create unique index ui_relationships on relationships(least(person_1,person_2),greatest(person_1,person_2)) 2 / Index created. SQL> insert into relationships values (1,2,0) 2 / 1 row created. SQL> insert into relationships values (1,3,0) 2 / 1 row created. SQL> insert into relationships values (2,1,0) 2 / insert into relationships values (2,1,0) * ERROR at line 1: ORA-00001: unique constraint (RWIJK.UI_RELATIONSHIPS) violated\n\nRegards, Rob.\n\nYou should create a constraint on your Relationships table so that the numeric person_1 value must be less than the numeric person_2 value.\n\ncreate table RELATIONSHIPS ( PERSON_1 number not null, PERSON_2 number not null, RELATIONSHIP number not null, constraint PK_RELATIONSHIPS primary key (PERSON_1, PERSON_2), constraint UNIQ_RELATIONSHIPS CHECK (PERSON_1 < PERSON_2) );\n\nThat way you can be sure that (2,1) can never be inserted -- it would have to be (1,2). Then your PRIMARY KEY constraint will prevent duplicates.\n\nPS: I see Marc Gravell has answered more quickly than I have, with a similar solution.\n\nThere's some uncertainty as to whether you want to prevent duplicates from being inserted into the database. You might just want to fetch unique pairs, while preserving the duplicates.\n\nSo here's an alternative solution for the latter case, querying unique pairs even if duplicates exist:\n\nSELECT r1.* FROM Relationships r1 LEFT OUTER JOIN Relationships r2 ON (r1.person_1 = r2.person_2 AND r1.person_2 = r2.person_1) WHERE r1.person_1 < r1.person_2 OR r2.person_1 IS NULL;\n\nSo if there is a matching row with the id's reversed, there's a rule for which one the query should prefer (the one with id's in numerical order).\n\nIf there is no matching row, then r2 will be NULL (this is the way outer join works), so just use whatever is found in r1 in that case.\n\nNo need to use GROUP BY or DISTINCT, because there can only be zero or one matching rows.\n\nTrying this in MySQL, I get the following optimization plan:\n\n+----+-------------+-------+--------+---------------+---------+---------+-----------------------------------+------+--------------------------+ | id | select_type | table | type | possible_keys | key | key_len | ref | rows | Extra | +----+-------------+-------+--------+---------------+---------+---------+-----------------------------------+------+--------------------------+ | 1 | SIMPLE | r1 | ALL | NULL | NULL | NULL | NULL | 2 | | | 1 | SIMPLE | r2 | eq_ref | PRIMARY | PRIMARY | 8 | test.r1.person_2,test.r1.person_1 | 1 | Using where; Using index | +----+-------------+-------+--------+---------------+---------+---------+-----------------------------------+------+--------------------------+\n\nThis seems to be a reasonably good use of indexes.\n\nPossibly the simplest solution (that does not require alteration of data structure or creation of triggers) is to create a set of results without the duplicate entries, and add one of the duplicate entries to that set.\n\nwould look something like:\n\nselect * from relationships where rowid not in (select a.rowid from relationships a,relationships b where a.person_1=b.person_2 and a.person_2=b.person_1) union all select * from relationships where rowid in (select a.rowid from relationships a,relationships b where a.person_1=b.person_2 and a.person_2=b.person_1 and a.person_1>a.person_2)\n\nBut usually I never create a table without a one-column primary key."
+    }
+}
