@@ -1,0 +1,44 @@
+{
+    "id": "wrong_mix_domainrange_subsidiary_00093_3",
+    "rank": 4,
+    "data": {
+        "url": "https://live.paloaltonetworks.com/t5/general-topics/inbound-ssl-inspection-with-mis-matched-certificates-or-ssl/td-p/33492",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Inbound SSL Inspection with mis-matched certificates (or SSL handoff)",
+        "top_image": "https://live.paloaltonetworks.com/html/@B09EB55777348FEBBB51B90839A41B20/assets/PAN_Logo_White.png",
+        "meta_img": "",
+        "images": [
+            "https://live.paloaltonetworks.com/html/@3ED993240B214CCB84957D8890090F3C/assets/PANW_Red_BW.png",
+            "https://live.paloaltonetworks.com/html/@E5AF36E8ADFF42398AB32C75C8A2488A/assets/LC-logo-BW.png",
+            "https://live.paloaltonetworks.com/legacyfs/online/a2801_0.png",
+            "https://live.paloaltonetworks.com/legacyfs/online/a5036_technophile01.png",
+            "https://live.paloaltonetworks.com/legacyfs/online/a4181_greg-crop.png",
+            "https://live.paloaltonetworks.com/legacyfs/online/a2801_0.png",
+            "https://live.paloaltonetworks.com/legacyfs/online/a4181_greg-crop.png",
+            "https://live.paloaltonetworks.com/legacyfs/online/a5036_technophile01.png",
+            "https://live.paloaltonetworks.com/legacyfs/online/a2801_0.png",
+            "https://live.paloaltonetworks.com/skins/images/00DEC0561D94E486B9907A4A0D182AE2/responsive_peak/images/icon_anonymous_message.png",
+            "https://live.paloaltonetworks.com/html/@B09EB55777348FEBBB51B90839A41B20/assets/PAN_Logo_White.png",
+            "https://live.paloaltonetworks.com/html/assets/Khoros-awards-2022-2.jpg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "live.paloaltonetworks.com",
+            "user-id"
+        ],
+        "publish_date": "2013-01-25T15:33:36.676000+00:00",
+        "summary": "",
+        "meta_description": "Solved: Hi, I'm kind of expecting a no to this question, but I noticed whilst setting up inbound SSL inspection for a client the other day - 33492",
+        "meta_lang": "en",
+        "meta_favicon": "https://live.paloaltonetworks.com/html/@AF88D457713207EDCC5EEBCB342CACE0/assets/favicon.ico",
+        "meta_site_name": "",
+        "canonical_link": "https://live.paloaltonetworks.com/t5/general-topics/inbound-ssl-inspection-with-mis-matched-certificates-or-ssl/td-p/33492",
+        "text": "Hi,\n\nI'm kind of expecting a no to this question, but I noticed whilst setting up inbound SSL inspection for a client the other day that if the Cert on the Palo Alto and the cert on the SSL web server do not match then the firewall will refuse to decrypt the traffic and just pass it though as SSL using the server certificate.\n\nIt would be great to be able to use a different cert on the Palo for a variety of reasons, number on being for Exchange client access servers, often my clients are using internally signed SSL certs for the CAS but want to use a standard SSL cert from the likes of godaddy/verisign/etc externally. They do this because SAN certs can be pricey and it the verification processes with the CA's are more stringent for SAN certs which can be a pain.\n\nDid I miss something in the certificate policy that stopped this working or is it by design?\n\nLikewise it would be handy to be able to do SSL handoff on the palo and allow HTTP between the firewall and the server internally and SSL out to the rest of the world. I doubt this is possible though.\n\nThanks for reading, any feedback gratefully received.\n\nFor inbound decryption the firewall does not act as a proxy for the SSL session, so there is only one session between the client and the web server. This configuration is similar to taking a capture of the SSL session and then manually decrypting it with the certificate's private key. The firewall simply decrypts each packet and performs decryption, then the original packet received is transmitted to the host.\n\nIn a proxy configuration there are two distinct SSL sessions, a client to firewall, and firewall to server segment. The feature you are looking for might be closer to the behavior of the current outbound/proxy decryption except being able to control the certificate offered by the firewall to the client.\n\nView solution in original post\n\nWhen you create your SSL Decryption policy for inbound inspection, you can specify the certificate. If you are asking whether you can create multiple policies that will send multiple certificates based on what the client is requesting, the answer to that is no. While technically feasible, it would require that the client send the server_name extension in the Client Hello packet - something that is not required.\n\nI would recommend requesting that from your account team as a feature enhancement. I would phrase it as \"add a feature to select a certificate based on the server_name extension in the Client Hello packet\".\n\nBeyond that, a wildcard certificate from a CA might be a middle ground between a single name and a SAN cert. But if you do have clients using multiple domains, the only other option would be adding additional IPs to your external interface, changing DNS to reflect those IPs for the different domains, and then having different SSL inbound inspection rules based on those IPs.\n\nHope this helps!\n\nGreg\n\nHi Greg,\n\nThank you very much for your reply and I'm sorry the the lateness of mine!\n\nWe're not looking to offer different certs based on the client request just one that isnt identical to the cert on the internal server.. for example\n\nwebmail.mycompany.com >>>>>> webmail.mycompany.local\n\nSSL Cert on PAN Internally signed Cert on Exchange / Web Server\n\nCurrently my understanding is that unless the certificates are identical on both the PAN and internal server decryption will not happen.\n\nI hope that makes sense.. I'll reproduce this ASAP to show the exact errors that occur in the system log.\n\nFor inbound decryption the firewall does not act as a proxy for the SSL session, so there is only one session between the client and the web server. This configuration is similar to taking a capture of the SSL session and then manually decrypting it with the certificate's private key. The firewall simply decrypts each packet and performs decryption, then the original packet received is transmitted to the host.\n\nIn a proxy configuration there are two distinct SSL sessions, a client to firewall, and firewall to server segment. The feature you are looking for might be closer to the behavior of the current outbound/proxy decryption except being able to control the certificate offered by the firewall to the client."
+    }
+}
