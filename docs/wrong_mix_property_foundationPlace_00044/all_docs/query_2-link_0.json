@@ -1,0 +1,36 @@
+{
+    "id": "wrong_mix_property_foundationPlace_00044_2",
+    "rank": 0,
+    "data": {
+        "url": "https://help.qlik.com/en-US/qlikview/May2024/Subsystems/Client/Content/QV_QlikView/Scripting/ScriptRegularStatements/Star.htm",
+        "read_more_link": "",
+        "language": "en",
+        "title": "QlikView Help",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://help.qlik.com/img/logos/Qlik-Help-2024.svg",
+            "https://help.qlik.com/img/logos/Qlik-Help-2024.svg",
+            "https://help.qlik.com/img/nav/close-white.svg",
+            "https://help.qlik.com/img/social/twitter-2024.svg",
+            "https://help.qlik.com/img/social/linkedin-2024.svg",
+            "https://help.qlik.com/img/social/fb-2024.svg",
+            "https://help.qlik.com/img/icons/closeme.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "/favicon.png?v=cYBi6b1DQtYtcF7OSPc3EOSLLSqQ-A6E_gjO45eigZw",
+        "meta_site_name": "",
+        "canonical_link": "https://help.qlik.com/en-US/qlikview/May2024/Subsystems/Client/Content/QV_QlikView/Scripting/ScriptRegularStatements/Star.htm",
+        "text": "Leave your feedback here\n\nStar\n\nThe string used for representing the set of all the values of a field in the database can be set through the star statement. It affects the subsequent LOAD and SELECT statements.\n\nSyntax:\n\nStar is[ string ]\n\nArguments:\n\nStar is arguments Argument Description\n\nThe Star is statement is not recommended for use in the data part of the script (under Section Application) if section access is used. The star character is however fully supported for the protected fields in the Section Access part of the script. In this case you do not need to use the explicit Star is statement since this is always implicit in section access.\n\nLimitations\n\nYou cannot use the star character with key fields; that is, fields that link tables.\n\nYou cannot use the star character with any fields affected by the Unqualify statement as this can affect fields that link tables.\n\nYou cannot use the star character with non-logical tables, for example, info-load tables or mapping-load tables.\n\nWhen the star character is used in a reducing field (a field that links to the data) in section access , it represents the values listed in this field in section access. It does not represent other values that may exist in the data but are not listed in section access.\n\nYou cannot use the star character with fields affected by any form of data reduction outside the Section Access area.\n\nExample:\n\nThe example below is an extract of a data load script featuring section access.\n\nStar is *;\n\nSection Access;\n\nLOAD * INLINE [\n\nACCESS, USERID, PASSWORD, OMIT\n\nADMIN, ADMIN, ADMIN,\n\nUSER, USER1, U1, SALES\n\nUSER, USER2, U2, WAREHOUSE\n\nUSER, USER3, U3, EMPLOYEES\n\nUSER, USER4, U4, SALES\n\nUSER, USER4, U4, WAREHOUSE\n\nUSER, USER5, U5, *\n\n];\n\nSection Application;\n\nLOAD * INLINE [\n\nSALES, WAREHOUSE, EMPLOYEES, ORDERS\n\n1, 2, 3, 4\n\n];\n\nThe following applies:\n\nThe Star sign is *.\n\nThe user USER1 is not able to see the field SALES.\n\nThe user USER2 is not able to see the field WAREHOUSE .\n\nThe user USER3 cannot see the field EMPLOYEES.\n\nThe user USER4 is added twice to the solution to OMIT two fields for this user, SALES and WAREHOUSE.\n\nThe USER5 has a “*” added which means that all listed fields in OMIT are unavailable. The star sign * means all listed values, not all values of the field.\n\nThe user USER5 cannot see the fields SALES, WAREHOUSE and EMPLOYEES but this user can see the field ORDERS.\n\nDid this page help you?\n\nIf you find any issues with this page or its content – a typo, a missing step, or a technical error – let us know how we can improve!"
+    }
+}

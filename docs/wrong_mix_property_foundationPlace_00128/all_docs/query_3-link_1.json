@@ -1,0 +1,30 @@
+{
+    "id": "wrong_mix_property_foundationPlace_00128_3",
+    "rank": 1,
+    "data": {
+        "url": "https://documentation.nokia.com/sr/24-3/7750-sr/books/services-overview/configuring-global-service-entities-with-cli.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Configuring global service entities with CLI",
+        "top_image": "https://documentation.nokia.com/sr/24-3/favicon-32x32.ico",
+        "meta_img": "https://documentation.nokia.com/sr/24-3/favicon-32x32.ico",
+        "images": [
+            "https://documentation.nokia.com/sr/24-3/nokia_logo.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "This section provides information to create subscriber (customer) accounts and configure Service Distribution Points (SDPs) using the command line interface. The Nokia service model uses logical ...",
+        "meta_lang": "en",
+        "meta_favicon": "../../../favicon-32x32.ico",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "Use the following command to configure an SDP with mixed LSP mode of operation:\n\nMD-CLI\n\nconfigure service sdp delivery-type mpls mixed-lsp-mode\n\nclassic CLI\n\nconfigure service sdp mpls mixed-lsp-mode\n\nThe primary is backed up by the secondary. Two combinations are possible: primary of RSVP is backed up by LDP and primary of LDP is backed up by 8277 BGP.\n\nThe no form of this command disables the mixed LSP mode of operation. The user first has to remove one of the LSP types from the SDP configuration or the command fails.\n\nThe user can also configure the time the service manager must wait before it must revert the SDP to a higher priority LSP type when one becomes available by using the following command:\n\nMD-CLI\n\nconfigure service sdp delivery-type mpls mixed-lsp-mode revert-time\n\nclassic CLI\n\nconfigure service sdp mpls mixed-lsp-mode revert-time\n\nA special value of the timer dictates that the SDP must never revert to another higher priority LSP type unless the currently active LSP type is down:\n\nMD-CLI\n\nconfigure service sdp delivery-type mpls mixed-lsp-mode revert-time never\n\nclassic CLI\n\nconfigure service sdp mpls mixed-lsp-mode revert-time infinite\n\nThe BGP LSP type is allowed. The bgp-tunnel command can be configured under the SDP with the lsp or ldp commands.\n\nThe mixed LSP SDP allows for a maximum of two LSP types to be configured within an SDP. A primary LSP type and a backup LSP type. An RSVP primary LSP type can be backed up by an LDP LSP type.\n\nAn LDP LSP can be configured as a primary LSP type which can then be backed up by a BGP LSP type.\n\nAt any time, the service manager programs only one type of LSP in the line card that activates it to forward service packets according to the following priority order:\n\nWith RSVP or LDP SDP, the service manager programs the NHLFEs for the active LSP type preferring the RSVP LSP type over the LDP LSP type. If no RSVP LSP is configured or all configured RSVP LSPs go down, the service manager reprograms the line card with the LDP LSP if available. If not, the SDP goes operationally down.\n\nWhen a higher priority type LSP becomes available, the service manager reverts back to this LSP at the expiry of the revert time timer or the failure of the currently active LSP, whichever comes first. The service manager then re-programs the line card accordingly.\n\nThe SDP reverts to the highest priority type LSP only if the currently active LSP failed when the following commands were configured:\n\nMD-CLI\n\nconfigure service sdp delivery-type mpls mixed-lsp-mode revert-time never\n\nclassic CLI\n\nconfigure service sdp mpls mixed-lsp-mode revert-time infinite\n\nIf the value of the revert-time timer is changed, it takes effect only at the next use of the timer. Any timer which is outstanding at the time of the change is restarted with the new value.\n\nIf class based forwarding is enabled for this SDP, the forwarding of the packets over the RSVP LSPs is based on the FC of the packet as in current implementation. When the SDP activates the LDP LSP type, then packets are forwarded over the LDP ECMP paths using the regular hash routine.\n\nWith LDP/BGP SDP, the service manager prefers the LDP LSP type over the BGP LSP type. The service manager re-programs the line card with the BGP LSP if available otherwise it brings down the SDP operationally.\n\nThe following are differences in behavior between the LDP/BGP SDP and the RSVP/LDP SDP. For a specific /32 prefix, only a single route exists in the routing table: the IGP route or the BGP route. Therefore, either the LDP FEC or the BGP labeled route is active at any time. The impact of this is that the tunnel table needs to be re-programmed each time a route is deactivated and the other is activated. Furthermore, the SDP revert-time cannot be used because there is no situation where both LSP types are active for the same /32 prefix.\n\nRSVP LSP type\n\nUp to 16 RSVP LSPs can be entered by the user and programmed by the service manager in ingress line card to load balance service packets. This is the highest priority LSP type\n\nLDP LSP type\n\nOne LDP FEC programmed by service manager but ingress line card can use up to 16 LDP ECMP paths for the FEC to load balance service packets when ECMP is enabled on the node.\n\nBGP LSP type\n\nOne RFC 8277-labeled BGP prefix programmed by the service manager. The ingress line card can use more than one next-hop for the prefix."
+    }
+}

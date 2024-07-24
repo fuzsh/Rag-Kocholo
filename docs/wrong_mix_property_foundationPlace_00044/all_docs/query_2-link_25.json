@@ -1,0 +1,34 @@
+{
+    "id": "wrong_mix_property_foundationPlace_00044_2",
+    "rank": 25,
+    "data": {
+        "url": "https://www.tutorialspoint.com/qlikview/qlikview_star_schema.htm",
+        "read_more_link": "",
+        "language": "en",
+        "title": "QlikView - Star Schema",
+        "top_image": "https://www.tutorialspoint.com/images/tp_logo_436.png",
+        "meta_img": "https://www.tutorialspoint.com/images/tp_logo_436.png",
+        "images": [
+            "https://www.tutorialspoint.com/qlikview/images/qlikview-mini-logo.jpg",
+            "https://www.tutorialspoint.com/qlikview/images/starschema_model.JPG",
+            "https://www.tutorialspoint.com/static/images/logo-footer.svg",
+            "https://www.tutorialspoint.com/static/images/googleplay.svg",
+            "https://www.tutorialspoint.com/static/images/appstore.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "QlikView - Star Schema - A start schema model is a type of data model in which multiple dimensions are linked to a single fact table. Of course, in bigger models there can be multiple facts tables linked to multiple dimensions and other fact tables. The usefulness of this model lies in performing fast queries with minimal j",
+        "meta_lang": "en",
+        "meta_favicon": "https://www.tutorialspoint.com/images/favicon.ico",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "A start schema model is a type of data model in which multiple dimensions are linked to a single fact table. Of course, in bigger models there can be multiple facts tables linked to multiple dimensions and other fact tables. The usefulness of this model lies in performing fast queries with minimal joins among various tables. The fact table contains data, which are measures and have numeric values. Calculations are applied on the fields in the fact table. The unique keys of the dimension tables are used in linking it to the fat table, which also has a key usually with the same field name. Therefore, the Fact table contains the keys from the entire dimension table and forms a concatenated primary key used in various queries.\n\nInput Data\n\nGiven below is a list of tables, which contain the data for different products from various suppliers and regions. Also the supply happens at different time intervals, which are captured in the Time dimension table.\n\nProduct Dimension\n\nIt contains the Product Category and Product Names. The Product ID field is the unique Key.\n\nProductID,ProductCategory,ProductName 1,Outdoor Recreation,Winter Sports & Activities 2,Clothing,Uniforms 3,Lawn & Garden Power, Equipment 4,Athletics,Rugby 5,Personal Care,Shaver 6,Arts & Entertainment,Crafting Materials 7,Hardware,Power Tool Batteries\n\nRegion Dimension\n\nIt contains the Region Names where the suppliers are based. The RegionID field is the unique Key.\n\nRegionID,Continent,Country 3,North America, USA 7,South America, Brazil 12,Asia,China 2,Asia,Japan 5,Europe,Belgium\n\nSupplier Dimension\n\nIt contains the Supplier Names, which supply the above products. The SupplierID field is the unique Key.\n\nSupplierID,SupplierName 3S12,Supre Suppliers 4A15,ABC Suppliers 4S66,Max Sports 5F244,Nice Foods 8A45,Artistic angle\n\nTime Dimension\n\nIt contains the Time periods when the supply of the above products occur. The TimeID field is the unique Key.\n\nTimeID,Year,Month 1,2012,Feb 2,2012,May 3,2012,Sep 4,2013,Aug 5,2014,Jan 6,2014,Nov\n\nSupplier Quantity Fact\n\nIt contains the values for the quantities supplied and percentage of defects in them. It joins to each of the above dimensions through keys with same name.\n\nProductID,RegionID,TimeID,SupplierID,Quantity, DefectPercentage 1,3,3,5F244,8452,12 2,3,1,4S66,5124,8.25 3,7,1,8A45,5841,7.66 4,12,2,4A15,5123,1.25 5,5,3,4S66,7452,8.11 6,2,5,4A15,5142,3.66 7,2,1,4S66,452,2.06\n\nLoad Script\n\nThe above data is loaded to QlikView memory by using the script editor. Open the Script editor from the File menu or press Control+E. Choose the Table Files option from the Data from Files tab and browse for the file containing the above data. Click OK and press Control+R to load the data into QlikView's memory. Below is the script which appears after each of the above file is read.\n\nLOAD ProductID, ProductCategory, ProductName FROM [C:\\Qlikview\\images\\StarSchema\\Product_dimension.csv] (txt, codepage is 1252, embedded labels, delimiter is ',', msq); LOAD TimeID, Year, Month FROM [C:\\Qlikview\\images\\StarSchema\\Time.csv] (txt, codepage is 1252, embedded labels, delimiter is ',', msq); LOAD SupplierID, SupplierName FROM [C:\\Qlikview\\images\\StarSchema\\Suppliers.csv] (txt, codepage is 1252, embedded labels, delimiter is ',', msq); LOAD RegionID, Continent, Country FROM [C:\\Qlikview\\images\\StarSchema\\Regions.csv] (txt, codepage is 1252, embedded labels, delimiter is ',', msq); LOAD ProductID, RegionID, TimeID, SupplierID, Quantity, DefectPercentage FROM [C:\\Qlikview\\images\\StarSchema\\Supplier_quantity.csv] (txt, codepage is 1252, embedded labels, delimiter is ',', msq);\n\nStar Schema Data Model\n\nAfter reading the above data into QlikView memory, we can look at the data model, which shows all the tables, fields, and relationship in form of a star schema."
+    }
+}

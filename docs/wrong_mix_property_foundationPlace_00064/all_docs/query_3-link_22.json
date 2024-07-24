@@ -1,0 +1,40 @@
+{
+    "id": "wrong_mix_property_foundationPlace_00064_3",
+    "rank": 22,
+    "data": {
+        "url": "https://alfasin.com/2012/11/04/i-see-dead-code-homage-for-intellij-idea/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "I see dead code (homage for IntelliJ Idea)",
+        "top_image": "https://alfasin.com/wp-content/uploads/2015/09/intellij-624x120.gif?w=300",
+        "meta_img": "https://alfasin.com/wp-content/uploads/2015/09/intellij-624x120.gif?w=300",
+        "images": [
+            "https://0.gravatar.com/avatar/ce152c9d61a63e3e68968afb73359f1d0a7b11772111cb14c2a7bdfbba65eba4?s=48&d=identicon&r=G",
+            "https://0.gravatar.com/avatar/0741fd61c3774bf7fa6cf5684cfd27d12384c2d65eccc237331da1acd454a3bd?s=48&d=identicon&r=G",
+            "https://0.gravatar.com/avatar/ce152c9d61a63e3e68968afb73359f1d0a7b11772111cb14c2a7bdfbba65eba4?s=48&d=identicon&r=G",
+            "https://1.gravatar.com/avatar/4430b2cbff9f8a4c3f20c96d3d86933703777c9f72d7dd374c3613783e109e17?s=48&d=identicon&r=G",
+            "https://2.gravatar.com/avatar/84e9fad3d63641e210112d1017c54cf2c67600028f050e2fb49a2e38834f0ace?s=48&d=identicon&r=G",
+            "https://alfasin.com/wp-content/uploads/2015/09/intellij-624x120.gif?w=300&h=58",
+            "https://alfasin.com/wp-content/uploads/2015/09/intellij_idea.png?w=300&h=232",
+            "https://alfasin.com/wp-content/uploads/2015/09/iseedeadcode.jpg?w=300&h=225",
+            "https://alfasin.com/wp-content/uploads/2018/02/pp.jpg?w=50",
+            "https://alfasin.com/wp-content/uploads/2018/02/pp.jpg?w=50",
+            "https://pixel.wp.com/b.gif?v=noscript"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2012-11-04T00:00:00",
+        "summary": "",
+        "meta_description": "About a month ago I went with my friend David to Silicon Valley CodeCamp. David met a few friends so we all set together and had lunch during which we discussed a few coding issues but we were also excited about the raffle which was to take place right after lunch. I told them that…",
+        "meta_lang": "en",
+        "meta_favicon": "https://alfasin.com/wp-content/uploads/2018/02/pp.jpg?w=32",
+        "meta_site_name": "Just Another Programmer",
+        "canonical_link": "https://alfasin.com/2012/11/04/i-see-dead-code-homage-for-intellij-idea/",
+        "text": "About a month ago I went with my friend David to Silicon Valley CodeCamp. David met a few friends so we all set together and had lunch during which we discussed a few coding issues but we were also excited about the raffle which was to take place right after lunch. I told them that I’m not interested in the XBOX (which was considered as the best prize) and that what I would really LOVE is to get a license for intelliJ. First time I “met” intelliJ was\n\nBack to our lunch at Silicon Valley CodeCamp. People were hoping to win the XBOX and I told them that I don’t care about the XBOX and that I wish they would throw in intelliJ licenses (one license worth $500). We finished our lunches and went to the main court where the raffle took place, and to my astonishment, the guy with the mic announced the list of prizes and among them, one intelliJ license. I was stunned. David laughed and said: “I’m going to win this one for you”.\n\nAnd believe it or not – he did!\n\nA few days later, I’m sitting at my desk, installing the newest version of intelliJ, and it took me only a few seconds to see what I was missing so much…\n\nJetbrains, the company that made intelliJ had a booth there in SVCC – so I got myself a shirt that says: “I see dead code”. And now I really do: among many other cool features, intelliJ finds unused parameters and colors them in grey. This simple feature is priceless (and I’m not familiar with any equivalent feature in Netbeans/Eclipse).\n\nThe shirt I got at SVCC\n\nSo, at that same first day when I started using intelliJ again, I went over some code, looking for something, and then I run into the following method (two points to the readers that find what’s wrong with this method):\n\nprivate String getContractName(Connection conn, int contractOrderId) { String methodName = \"getContractName\"; PreparedStatement st = null; ResultSet rs = null; String contractName = null; try { //get contract name String sqlQuery = \"SELECT CONTRACT_NAME FROM __CONTRACTS WHERE contract_order_id=?\"; st.setInt(1, contractOrderId); rs = st.executeQuery(); if (rs.next()) { contractName = rs.getString(\"CONTRACT_NAME\"); } } catch (Exception e) { Utils.writeLog(className + \":\" + methodName +\"- Warning: \" + className + \":\" + methodName + \"-\" + e.getMessage(), DEBUG); } finally { Utils.closeConnections(null, st, rs, null); } return contractName; }\n\nWithout intelliJ it’s not easy to see it, but if you figured it out – way to go!\n\nBetween the following two lines:\n\nString sqlQuery = \"SELECT CONTRACT_NAME FROM __CONTRACTS WHERE contract_order_id=?\"; st.setInt(1, contractOrderId);\n\nthere’s one “little” line missing:\n\nst = conn.prepareStatement(sqlQuery);\n\nThis could be easily detected with intelliJ since “Connection conn” passed in the method’s signature was marked grey. Actually, there isn’t only one wrong thing with this method, now that we understand the problem, we can also see that every time this method is being called, an exception is being thrown on:\n\nst.setInt(1, contractOrderId);\n\nand that this exception is caught six lines below – but the only thing that is being done is a “debug” printing to log (not even an error!) and then the method ALWAYS returns null and continues.\n\nHow many bad practices do we see here – can you count ?\n\n1. we don’t “fail-fast” (the method should have either thrown an error or at least print ERROR to log instead of DEBUG).\n\n2. we throw and catch an exception (which is costly!) without really handling it.\n\n3. we return a default value which is meaningless\n\n4. I’m 100% sure that no unit-tests, functionality tests, regression, end-to-end or any kind of tests were written and used here – otherwise this bug would have been easily caught."
+    }
+}

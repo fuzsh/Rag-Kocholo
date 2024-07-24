@@ -1,0 +1,53 @@
+{
+    "id": "wrong_mix_property_foundationPlace_00044_2",
+    "rank": 24,
+    "data": {
+        "url": "https://www.bitmetric.nl/blog/qlik-sense-data-modelling/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Picking the right data model for Qlik Sense",
+        "top_image": "https://www.bitmetric.nl/wp-content/uploads/2022/10/Friday-Qlik-Test-Prep-Solution-11.png",
+        "meta_img": "https://www.bitmetric.nl/wp-content/uploads/2022/10/Friday-Qlik-Test-Prep-Solution-11.png",
+        "images": [
+            "https://www.bitmetric.nl/wp-content/themes/bitmetric/assets/images/icons/socials/twitter.svg",
+            "https://www.bitmetric.nl/wp-content/themes/bitmetric/assets/images/icons/socials/linkedin.svg",
+            "https://www.bitmetric.nl/wp-content/themes/bitmetric/assets/images/icons/socials/youtube.svg",
+            "https://www.bitmetric.nl/wp-content/themes/bitmetric/assets/images/icons/socials/whatsapp.svg",
+            "https://www.bitmetric.nl/wp-content/themes/bitmetric/assets/images/icons/search.svg",
+            "https://www.bitmetric.nl/wp-content/themes/bitmetric/assets/images/icons/socials/twitter-pink.svg",
+            "https://www.bitmetric.nl/wp-content/themes/bitmetric/assets/images/icons/socials/linkedin-pink.svg",
+            "https://www.bitmetric.nl/wp-content/themes/bitmetric/assets/images/icons/socials/mail-pink.svg",
+            "https://www.bitmetric.nl/wp-content/uploads/2022/10/Friday-Qlik-Test-Prep-Solution-11-1024x686.png",
+            "https://www.bitmetric.nl/wp-content/uploads/2022/10/image-14.png",
+            "https://www.bitmetric.nl/wp-content/uploads/2022/10/Response-time.png",
+            "https://www.bitmetric.nl/wp-content/uploads/2024/02/MastersSummitQlikAustriaBanner.png",
+            "https://www.bitmetric.nl/wp-content/uploads/2024/05/join-the-team-1025x512-1.png",
+            "https://www.bitmetric.nl/wp-content/uploads/2024/03/avatar-barry-88x88.png",
+            "https://www.bitmetric.nl/wp-content/uploads/2024/07/Qlik-Improvements-to-sheet-navigation-530x355.png",
+            "https://www.bitmetric.nl/wp-content/uploads/2024/05/Whats-new-in-Qlik-Sense-May-2024-2-530x355.jpg",
+            "https://www.bitmetric.nl/wp-content/uploads/2024/05/Whats-new-in-Qlik-Sense-May-2024-530x355.jpg",
+            "https://www.bitmetric.nl/wp-content/themes/bitmetric/assets/images/logos/logo.svg",
+            "https://www.bitmetric.nl/wp-content/themes/bitmetric/assets/images/icons/socials/twitter.svg",
+            "https://www.bitmetric.nl/wp-content/themes/bitmetric/assets/images/icons/socials/linkedin.svg",
+            "https://www.bitmetric.nl/wp-content/themes/bitmetric/assets/images/icons/socials/youtube.svg",
+            "https://www.bitmetric.nl/wp-content/themes/bitmetric/assets/images/icons/socials/whatsapp.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Maarten Anema"
+        ],
+        "publish_date": "2022-10-26T00:00:00+00:00",
+        "summary": "",
+        "meta_description": "Learn how to pick the right data model for Qlik Sense. We'll compare the trade-offs between star schema, snowflake and single table models.",
+        "meta_lang": "en",
+        "meta_favicon": "https://www.bitmetric.nl/wp-content/uploads/favicons/apple-touch-icon.png",
+        "meta_site_name": "Bitmetric",
+        "canonical_link": "https://www.bitmetric.nl/blog/qlik-sense-data-modelling/",
+        "text": "Every Friday at Bitmetric we’re posting a new Qlik certification practice question to our LinkedIn company page. Last Friday we asked the following Qlik Data Architect certification practice question about Qlik Sense data modelling:\n\nWe got a lot of responses this time, showing a lot of good answers but also some discussions about the data models. And reading these discussions we do agree: The official answer should be: “it depends”. Which model is most efficient will always depend on the data provided or requirements of the project. However in case you find yourself sweating over a Qlik certification exam, you should always think “what does Qlik want to hear?“. And in that case:\n\nThe correct answer is C: A star schema\n\nSince we have phrased the question as “generally speaking” we will not go into depth too much about data modelling, since that is a rabbit hole in itself. However to understand the answer, we need to understand that we are looking at dimensional modelling here and will explain why the star schema is most of the times the preferred model for Qlik.\n\nEntity-Relationship Modelling\n\nBack in the day when relational databases first started to appear Relational Database Management Systems made it easy to store, retrieve and modify the data from these databases. The type of data modelling used was the so called Entity-Relationship Modeling. This aims to Normalize all data. This is the process of removing all redundant data from the database and only storing useful, related data in separate tables. This process makes it very efficient in inserting and updating information in the database. On the downside however, we find that retrieving information from the ER-model databases goes from being less convenient to very difficult. For example a car-lease company could store car related dimensions completely normalized into separate manufacturer, model and fueltype tables. We can imagine that the bigger the dataset the bigger the query grows to retrieve information. Only to get all car information from a single car we need to go through three tables in this case.\n\nDimensional Modelling\n\nIn case Entity-Relationship Modelling becomes too complicated to query, dimensional modelling can offer a solution. A dimensional model consists of a single fact table. The fact table contains a compound primary key, with several other separate keys linking to dimension tables. Next to these keys all important metrics are stored in the fact table.\n\nThe dimension tables contain all data that gives context to the metrics stored in the fact table. These dimensions contain data that is often centered around certain levels which are all flattened (denormalized) to give context about a certain topic in the dataset. For example, if we take the database of a car-lease company, the car dimension could contain manufacturer, model and fueltype all in the same dimensional table. This makes that querying information on a single car only needs to go through one table instead of many different tables.\n\nDifferent models\n\nAs we can see from the question asked that there are different types of dimensional models, which we will walk through in short fashion and see how these relate to Qlik. The biggest reasons to use dimensional modelling instead of ER-modelling are ease of use and ease of understanding. It is easier to understand for developers and users how the data is stored and retrieved and which types of data correlate with each other. We identify the following data models in dimensional modelling:\n\nA snowflake schema\n\nA snowflake schema is a partially denormalized schema. Visible in the fact that certain dimension tables are also linked to another table containing further information. With some fantasy the model looks like a snowflake under a microscope.\n\nA star schema\n\nThe star schema consists of a single fact table, containing all the measures and the keys to the dimension tables. The biggest advantage being ease of use and understanding for the developers and users. The model is named star schema, since if you really squint your eyes it sort of resembles a star.\n\nThe biggest benefit of using dimensional modeling in Qlik applications is the increased response time. Qlik applications work faster when there are fewer links between the tables. For each link between the tables Qlik has to calculate all possibilities of the relationships, making more links increase this calculation time exponentially.\n\nA single table\n\nWith the benefit of increased response time in mind, why wouldn’t a single table be the best solution? No links means no calculation time, right? As we stated in the beginning, the answer always is: “it depends”, the following diagram shows why a start schema is generally speaking considered the preferred model, since it offers the best balance between all various trade-offs.\n\nThat’s it for this week. See you next Friday?\n\nMore from the Bitmetric team"
+    }
+}
