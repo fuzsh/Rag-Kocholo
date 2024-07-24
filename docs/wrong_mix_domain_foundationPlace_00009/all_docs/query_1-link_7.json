@@ -1,0 +1,46 @@
+{
+    "id": "wrong_mix_domain_foundationPlace_00009_1",
+    "rank": 7,
+    "data": {
+        "url": "https://docs.aws.amazon.com/sagemaker/latest/dg/canvas-storage-configuration.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Configure your Amazon S3 storage",
+        "top_image": "https://docs.aws.amazon.com/assets/images/favicon.ico",
+        "meta_img": "https://docs.aws.amazon.com/assets/images/favicon.ico",
+        "images": [
+            "https://d1ge0kk1l5kms0.cloudfront.net/images/G/01/webservices/console/warning.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "SageMaker",
+            "Amazon SageMaker",
+            "machine learning",
+            "notebook instance",
+            "ml environments",
+            "supports",
+            "Interactive development environment",
+            "IDEs",
+            "no-code",
+            "predictions",
+            "generative AI",
+            "train models",
+            "Canvas",
+            "storage",
+            "application",
+            "Amazon S3",
+            "bucket"
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "Configure the Amazon S3 storage location for your Canvas application data.",
+        "meta_lang": "en",
+        "meta_favicon": "/assets/images/favicon.ico",
+        "meta_site_name": "",
+        "canonical_link": "https://docs.aws.amazon.com/sagemaker/latest/dg/canvas-storage-configuration.html",
+        "text": "When you set up your SageMaker Canvas application, the default storage location for model artifacts, datasets, and other application data is an Amazon S3 bucket that Canvas creates. This default Amazon S3 bucket follows the naming pattern s3://sagemaker-{Region}-{your-account-id} and exists in the same Region as your Canvas application.\n\nHowever, you can customize the storage location and specify your own Amazon S3 bucket for storing Canvas application data. You might want to use your own Amazon S3 bucket for storing application data for any of the following reasons:\n\nBy specifying your own Amazon S3 bucket, you can have increased control over your own storage and be compliant with your organization.\n\nTo get started, you can either create a new SageMaker domain or user profile, or you can update an existing domain or user profile. Note that the user profile settings override the domain-level settings. For example, you can use the default bucket configuration at the domain level, but you can specify a custom Amazon S3 bucket for an individual user. After specifying your own Amazon S3 bucket for the domain or user profile, Canvas creates a subfolder called Canvas/<UserProfileName> under the input Amazon S3 URI and saves all artifacts generated in the Canvas application under this subfolder.\n\nFor more information about granting cross-account access to your Amazon S3 bucket, see Granting cross-account object permissions in the Amazon S3 User Guide.\n\nThe following sections describe how to specify a custom Amazon S3 bucket for your Canvas storage configuration. If youâre setting up a new SageMaker domain (or a new user in a domain), then use the New domain setup method or the New user profile setup method. If you have an existing Canvas user profile and would like to update the profile's storage configuration, use the Existing user method.\n\nBefore you begin\n\nIf youâre specifying an Amazon S3 URI from a different AWS account, or if youâre using a bucket that is encrypted with AWS KMS, then you must configure permissions before proceeding. You must grant AWS IAM permissions to ensure that Canvas can download and upload objects to and from your bucket. For detailed information on how to grant the required permissions, see Grant permissions for cross-account Amazon S3 storage.\n\nAdditionally, the final Amazon S3 URI for the training folder in your Canvas storage location must be 128 characters or less. The final Amazon S3 URI consists of your bucket path s3://<your-bucket-name>/<folder-name>/ plus the path that Canvas adds to your bucket: Canvas/<user-profile-name>/Training. For example, an acceptable path that is less than 128 characters is s3://<my-bucket>/<machine-learning>/Canvas/<user-1>/Training.\n\nNew domain setup method\n\nIf youâre setting up a new domain and Canvas application, use this section to configure the storage location at the domain level. This configuration applies to all new users you create in the domain, unless you specify a different storage location for individual user profiles.\n\nWhen doing a Standard setup for your domain, use the following procedure for the Canvas settings section:\n\nYour domain is now configured to use the Amazon S3 location you specified for SageMaker Canvas application storage.\n\nNew user profile setup method\n\nIf youâre setting up a new user profile in your domain, use this section to configure the storage location for the user. This configuration overrides the domain-level configuration.\n\nWhen adding a user profile to your domain, use the following procedure for the Canvas settings section:\n\nYour user profile is now configured to use the Amazon S3 location you specified for SageMaker Canvas application storage.\n\nExisting user method\n\nIf you have an existing Canvas user profile and would like to update the Amazon S3 storage location, you can edit the SageMaker domain or user profile settings. The change takes effect the next time you log into the Canvas application.\n\nRemember that the user profile settings override the general domain settings, so you can update the Amazon S3 storage location for specific user profiles without changing it for all of the users. You can update the storage configuration for an existing domain or user by using the following procedures.\n\nUpdate an existing domain\n\nUse the following procedure to update the storage configuration for a domain.\n\nOpen the SageMaker console at https://console.aws.amazon.com/sagemaker/.\n\nOn the left navigation pane, choose Admin configurations.\n\nUnder Admin configurations, choose domains.\n\nFrom the list of domains, choose your domain.\n\nOn the domain settings page, choose the domain settings tab.\n\nChoose Edit.\n\nIn the navigation pane, choose Canvas settings.\n\nFor the Canvas storage configuration, do the following:\n\nSelect System managed if you want to set the location to the default SageMaker created bucket that follows the pattern s3://sagemaker-{Region}-{your-account-id}.\n\nSelect Custom S3 to specify your own Amazon S3 bucket as the storage location. Then, enter the Amazon S3 URI.\n\n(Optional) For Encryption key, specify a KMS key for encrypting Canvas artifacts stored at the specified location.\n\nFinish any other modifications you want to make to the domain, and then choose Submit to save your changes.\n\nUpdate an existing user profile\n\nUse the following procedure to update the storage configuration for a user profile.\n\nOpen the SageMaker console at https://console.aws.amazon.com/sagemaker/.\n\nOn the left navigation pane, choose Admin configurations.\n\nUnder Admin configurations, choose domains.\n\nFrom the list of domains, choose your domain.\n\nFrom the list of users in the domain, choose the user whose configuration you want to edit.\n\nOn the User Details page, choose Edit.\n\nIn the navigation pane, choose Canvas settings.\n\nFor the Canvas storage configuration, do the following:\n\nSelect System managed if you want to set the location to the default SageMaker bucket that follows the pattern s3://sagemaker-{Region}-{your-account-id}.\n\nSelect Custom S3 to specify your own Amazon S3 bucket as the storage location. Then, enter the Amazon S3 URI.\n\n(Optional) For Encryption key, specify a KMS key for encrypting Canvas artifacts stored at the specified location.\n\nFinish any other modifications you want to make to the user profile, and then choose Submit to save your changes.\n\nThe storage location for your Canvas user profile should now be updated. The next time you log into the Canvas application, you receive a notification that the storage location has been updated. You lose access to any previous artifacts that you created in Canvas. You can still access the files in Amazon S3, but you can no longer view them in Canvas."
+    }
+}
