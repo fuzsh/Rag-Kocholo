@@ -1,0 +1,28 @@
+{
+    "id": "wrong_mix_domain_subsidiary_00000_1",
+    "rank": 49,
+    "data": {
+        "url": "https://community.asterisk.org/t/polycom-firmware-for-many-models/39171",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Polycom firmware for many models",
+        "top_image": "https://global.discourse-cdn.com/asterisk/original/2X/4/475d0c889911cfb84ac4881ad6df8b523e3f9105.png",
+        "meta_img": "https://global.discourse-cdn.com/asterisk/original/2X/4/475d0c889911cfb84ac4881ad6df8b523e3f9105.png",
+        "images": [],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2012-05-09T04:56:52+00:00",
+        "summary": "",
+        "meta_description": "Salvete!  I have a LAN network running Asterisk 1.2 (I know we are behind here; I am working on an upgrade) with different polycom phones.  We have IP430, IP601, IP650, IP5000 and IP7000.  I want them all to have the lat&hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://global.discourse-cdn.com/asterisk/optimized/2X/8/88c77d5e8c159e27e43907cc80da346a0644ba2a_2_32x32.ico",
+        "meta_site_name": "Asterisk Community",
+        "canonical_link": "https://community.asterisk.org/t/polycom-firmware-for-many-models/39171",
+        "text": "Salvete! I have a LAN network running Asterisk 1.2 (I know we are behind here; I am working on an upgrade) with different polycom phones. We have IP430, IP601, IP650, IP5000 and IP7000. I want them all to have the latest firmware, but am having a little trouble trying to get the firmware for all the models into the same ftp directory.\n\nI figured that I can rename the sip.ld and sip.cfg for the 430 and note that in the macxxxxx.cfg file for each phone. Then I do the same for the other models.\n\nBut when it comes to the IP5000, IP7000 and IP650, it seems that I need to “upgrade” the bootrom with a set of bootrom.ld files named like this: 2345-12360-001.bootrom.ld - So I put those in the ftp directory too, and reboot the IP5000. It says it was not able to update configuration, so it falls back to its default built-in version of 3.3.4.0085. I can’t get it to update to 4.0.1b (the latest according to downloads.polycom.com/voice/voip … atrix.html. I see in the sample phone.cfg file that there is an entry to denote the location of polycomConfig.xsd. What is that? I see the sample one.\n\nFinally, can I put some files into subdirectories? For example, the xsd file - can I put it in “config-UC4.0.1B\\polycomConfig.xsd” and expect the phone to find it?\n\nThanks for y’all’s help here!\n\n-BGM\n\nOkay - figured it out. I put the 4.3.0 Bootrom in the ftp directory (it would not work with the 4.4.0 Bootrom). Then I also put the files for UC Software 3.3.2. Apparently, I was not able to go directly from 3.2.6 to 4.0.1. But I was able to go from 3.2.6 to 3.3.2 to 4.0.1.\n\nSo I judge that it is a matter of the right order of upgrading. It does say that in the manuals, but there are so many different versions of everything out there, and so many pdfs to read it is hard to decipher.\n\nTo upgrade, you don’t have to do much. In the newer versions, they don’t call it BootRom anymore - they call it Upgrader. You put the new “upgrader” files in the polycom ftp directory. That’s it.\n\nThe upgrade consists in the phone updating its own “brain” files that are kept inside itself. For the upgrade process, the phones do not boot from that - they boot from their regular sip configurations. After that, they check to see if any upgrader files are present, and then they load those too. Once those are loaded into the phone, you don’t need the upgrader files any more unless you need to upgrade other phones.\n\nHope that helps a little bit!\n\nWell, after Mr. Baier’s patient help, I am nearly there.\n\nIf anyone is still following this post, I asked a similar question on polycom’s forum at: community.polycom.com/t5/VoIP/IP … alse#M2110\n\nI haven’t gotten the issue solved yet, but it seems close. I just can’t seem to find enough clear information about the configuration files and their layouts. Sure, there is lots of “documentation” - but most of it is difficult, full of specifications, and not user friendly.\n\nHere is a nice list of documents to read:\n\n[FAQ] Can I use substitutions when provisioning my Phones?\n\n[FAQ] Supporting a mix of legacy SIP and UCS Phones on the same provisioning server\n\n[FAQ] Can I register my Polycom Phone with a “XYZ” SIP Server?\n\n[FAQ] Can I use substitutions when provisioning my Phones?\n\n[FAQ] Supporting a mix of legacy SIP and UCS Phones on the same provisioning server\n\n[ul]\n\nIf you are interested, please take a look at my post over there. I left off with these questions:\n\n[li]Do I create a .cfg file for my uc software phones too?\n\n[/li][li]Do I put an entry in 000000000000.cfg for the 3111-40000-001.sip.ld that the ip7000 uses?\n\n[/li][li]How do the uc devices get a config?\n\n[/li][li]Does the ip7000 need a sip.cfg?\n\n[/li][li]Is it okay not to have a file called sip.cfg in the ftp folder?\n\n[/li][li]Is the “Config” folder only to hold the samples, or do the uc devices use this directory (I don’t see any config references to the directory)?[/li][/ul]"
+    }
+}
