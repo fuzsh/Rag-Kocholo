@@ -1,0 +1,43 @@
+{
+    "id": "wrong_mix_domain_foundationPlace_00148_2",
+    "rank": 85,
+    "data": {
+        "url": "https://community.broadcom.com/vmware-cloud-foundation/discussion/backing-up-the-physical-vcenter-server-whats-best",
+        "read_more_link": "",
+        "language": "en",
+        "title": "backing up the physical vcenter server - whats best ?",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://higherlogicdownload.s3.amazonaws.com/BROADCOM/d85cb088-3276-4a37-9f81-a7fb3f2ae78d/UploadedImages/Broadcom.png",
+            "https://d2x5ku95bkycr3.cloudfront.net/App_Themes/Common/images/profile/0_50.png",
+            "https://d2x5ku95bkycr3.cloudfront.net/App_Themes/Common/images/profile/0_50.png",
+            "https://d2x5ku95bkycr3.cloudfront.net/App_Themes/Common/images/profile/0_50.png",
+            "https://d2x5ku95bkycr3.cloudfront.net/App_Themes/Common/images/profile/0_50.png",
+            "https://d2x5ku95bkycr3.cloudfront.net/App_Themes/Common/images/profile/0_50.png",
+            "https://d2x5ku95bkycr3.cloudfront.net/App_Themes/Common/images/profile/0_50.png",
+            "https://d2x5ku95bkycr3.cloudfront.net/App_Themes/Common/images/profile/0_200.png",
+            "https://d2x5ku95bkycr3.cloudfront.net/App_Themes/Common/images/profile/0_200.png",
+            "https://d2x5ku95bkycr3.cloudfront.net/App_Themes/Common/images/profile/0_200.png",
+            "https://d2x5ku95bkycr3.cloudfront.net/App_Themes/Common/images/profile/0_200.png",
+            "https://d2x5ku95bkycr3.cloudfront.net/App_Themes/Common/images/profile/0_200.png",
+            "https://d2x5ku95bkycr3.cloudfront.net/App_Themes/Common/images/profile/0_200.png",
+            "https://d2x5ku95bkycr3.cloudfront.net/img/loading.gif"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "Hi - we're running a small setup, 2 hosts (esx v4u1), 16 vm's, iscsi SAN.Our single vcenter server sits on a physical dell poweredge 1950 with a local sql 2005",
+        "meta_lang": "en",
+        "meta_favicon": "https://higherlogicdownload.s3.amazonaws.com/BROADCOM/4d01d5b1-ad11-4b09-96c1-3bcabb013aa2/UploadedImages/favicon.png",
+        "meta_site_name": "",
+        "canonical_link": "https://community.broadcom.com/vmware-cloud-foundation/discussion/backing-up-the-physical-vcenter-server-whats-best",
+        "text": "Hi - we're running a small setup, 2 hosts (esx v4u1), 16 vm's, iscsi SAN.\n\nOur single vcenter server sits on a physical dell poweredge 1950 with a local sql 2005 express db - raid 1\n\nI was wondering what measures other admins with a single physical vcenter server take to backup and protect this essential component of ESX?\n\ncheers...\n\nPutting HA to the side, which is more of an availability option than data protection, I personally like going one of 2 approaches for vCenter Servers. If all components are on the same server (co-located together), then I like to use an imaging tool such as Acronis True Image. It makes it easy to do a bare-metal restore, and you can do file-level restores too similar those using traditional backup software. However, since I usually don't have a requirement to DR the vCenter Server (because the DR site has its own vCenter Server already), I'm really only concerned with local backups. If that fits you case, you may want to consider booting your vCenter Server from the SAN, then take snapshots of it...assuming your SAN supports and is licensed for snapshots. Then each snapshot would be an instantaneous backup.\n\nThanks for all the suggestions chaps...\n\nThe heartbeat solution is out of our price range unfortunatley and although the boot from SAN/snapshot is a neat idea our SAN is isolated from all but the ESX hosts and I'd rather keep it that way for the time being, plus I've never configured a boot from SAN so I'd be dabbling in a grey area on a production system. I'd already considered the Acronis imaging idea so it's reassuring to hear that mentioned.\n\nWe have a couple of sql servers here and use a sql backup program called redgate - http://www.red-gate.com/products/SQL_Backup/index.htm , I could purchase another license for that and schedule regular vcenter db backups...then - In theory, if the vcenter server died - I could provision a new server (physical or virtual) install sql 2005 express, restore the vcenter sql db from backup, reinstall vcenter and during the install tell vcenter to use the existing database?\n\nIf its as simple as that then I think that would be the cheapest solution, followed by the acronis image...\n\nThat's understandable. Backing up the DB is a minimum. You'll want to backup all the DBs...the vCenter and Update Manager DBs as well as the system catalog DBs (master and msdb at a minimum). I still like to have the logs and the metadata from Update Manager (including the patches it has downloaded) backed up too. The Acronis (or any other image-based backup app) does have one additional benefit...and that's time to totally restore the server. If you've lost your VC completely, it will take you come time to reinstall Windows, patch it, install VC, and then do all that's necessary to restore the DBs. With Acronis (or similar tool), you simply perform a bare-metal restore and you're back up and running in less than 15 minutes. Either way, backups are good. :smileywink:"
+    }
+}
