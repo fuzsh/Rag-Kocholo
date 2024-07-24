@@ -1,0 +1,31 @@
+{
+    "id": "wrong_mix_domain_foundationPlace_00020_0",
+    "rank": 88,
+    "data": {
+        "url": "https://owasp.org/www-community/attacks/Path_Traversal",
+        "read_more_link": "",
+        "language": "en",
+        "title": "OWASP Foundation",
+        "top_image": "https://owasp.org/www--site-theme/favicon.ico",
+        "meta_img": "https://owasp.org/www--site-theme/favicon.ico",
+        "images": [
+            "https://owasp.org/assets/images/logo.png",
+            "https://owasp.org/assets/images/logo.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "Path Traversal on the main website for The OWASP Foundation. OWASP is a nonprofit foundation that works to improve the security of software.",
+        "meta_lang": "en",
+        "meta_favicon": "https://owasp.org/www--site-theme/favicon.ico",
+        "meta_site_name": "",
+        "canonical_link": "https://owasp.org/www-community/attacks/Path_Traversal",
+        "text": "Overview\n\nA path traversal attack (also known as directory traversal) aims to access files and directories that are stored outside the web root folder. By manipulating variables that reference files with “dot-dot-slash (../)” sequences and its variations or by using absolute file paths, it may be possible to access arbitrary files and directories stored on file system including application source code or configuration and critical system files. It should be noted that access to files is limited by system operational access control (such as in the case of locked or in-use files on the Microsoft Windows operating system).\n\nThis attack is also known as “dot-dot-slash”, “directory traversal”, “directory climbing” and “backtracking”.\n\nRelated Security Activities\n\nHow to Avoid Path Traversal Vulnerabilities\n\nAll but the most simple web applications have to include local resources, such as images, themes, other scripts, and so on. Every time a resource or file is included by the application, there is a risk that an attacker may be able to include a file or remote resource you didn’t authorize.\n\nHow to identify if you are vulnerable\n\nBe sure you understand how the underlying operating system will process filenames handed off to it.\n\nDon’t store sensitive configuration files inside the web root\n\nFor Windows IIS servers, the web root should not be on the system disk, to prevent recursive traversal back to system directories.\n\nHow to protect yourself\n\nPrefer working without user input when using file system calls\n\nUse indexes rather than actual portions of file names when templating or using language files (ie value 5 from the user submission = Czechoslovakian, rather than expecting the user to return “Czechoslovakian”)\n\nEnsure the user cannot supply all parts of the path – surround it with your path code\n\nValidate the user’s input by only accepting known good – do not sanitize the data\n\nUse chrooted jails and code access policies to restrict where the files can be obtained or saved to\n\nIf forced to use user input for file operations, normalize the input before using in file io API’s, such as normalize().\n\nHow to Test for Path Traversal Vulnerabilities\n\nSee the OWASP Testing Guide article on how to test for path traversal vulnerabilities.\n\nDescription\n\nRequest variations\n\nEncoding and double encoding:\n\n%2e%2e%2f represents ../\n\n%2e%2e/ represents ../\n\n..%2f represents ../\n\n%2e%2e%5c represents ..\\\n\n%2e%2e\\ represents ..\\\n\n..%5c represents ..\\\n\n%252e%252e%255c represents ..\\\n\n..%255c represents ..\\\n\nand so on.\n\nPercent encoding (aka URL encoding)\n\nNote that web containers perform one level of decoding on percent encoded values from forms and URLs.\n\n..%c0%af represents ../\n\n..%c1%9c represents ..\\\n\nOS specific\n\nUNIX\n\nWINDOWS\n\nIn many operating systems, null bytes %00 can be injected to terminate the filename. For example, sending a parameter like:\n\n?file=secret.doc%00.pdf\n\nwill result in the Java application seeing a string that ends with “.pdf” and the operating system will see a file that ends in “.doc”. Attackers may use this trick to bypass validation routines.\n\nExamples\n\nExample 1\n\nThe following examples show how the application deals with the resources in use.\n\nIn these examples it’s possible to insert a malicious string as the variable parameter to access files located outside the web publish directory.\n\nThe following URLs show examples of *NIX password file exploitation.\n\nNote: In a Windows system an attacker can navigate only in a partition that locates web root while in the Linux they can navigate in the whole disk.\n\nExample 2\n\nIt’s also possible to include files and scripts located on external website.\n\nhttp://some_site.com.br/some-page?page=http://other-site.com.br/other-page.htm/malicius-code.php\n\nExample 3\n\nThese examples illustrate a case when an attacker made the server show the CGI source code.\n\nhttp://vulnerable-page.org/cgi-bin/main.cgi?file=main.cgi\n\nExample 4\n\nThis example was extracted from: Wikipedia - Directory Traversal\n\nA typical example of vulnerable application code is:\n\nAn attack against this system could be to send the following HTTP request:\n\nGenerating a server response such as:\n\nThe repeated ../ characters after /home/users/phpguru/templates/ has caused include() to traverse to the root directory, and then include the UNIX password file /etc/passwd.\n\nUNIX etc/passwd is a common file used to demonstrate directory traversal, as it is often used by crackers to try cracking the passwords.\n\nAbsolute Path Traversal\n\nThe following URLs may be vulnerable to this attack:\n\nAn attacker can execute this attack like this:\n\nWhen the web server returns information about errors in a web application, it is much easier for the attacker to guess the correct locations (e.g. path to the file with a source code, which then may be displayed).\n\nRelated Attacks\n\nPath Manipulation\n\nRelative Path Traversal\n\nResource Injection\n\nRelated Vulnerabilities\n\nImproper Data Validation\n\nRelated Controls\n\nInput Validation Cheat Sheet\n\nReferences"
+    }
+}

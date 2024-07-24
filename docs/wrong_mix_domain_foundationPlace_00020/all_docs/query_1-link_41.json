@@ -1,0 +1,37 @@
+{
+    "id": "wrong_mix_domain_foundationPlace_00020_1",
+    "rank": 41,
+    "data": {
+        "url": "https://community.sonarsource.com/t/sonarscanner-error-the-folder-src-test-does-not-exist/109971",
+        "read_more_link": "",
+        "language": "en",
+        "title": "SonarScanner error \"The folder 'src/test' does not exist\"",
+        "top_image": "https://europe1.discourse-cdn.com/sonarsource/uploads/sonarcommunity/original/3X/4/0/406ed50fac50ffd4775c6dae9c70e62f1833ac16.svg",
+        "meta_img": "https://europe1.discourse-cdn.com/sonarsource/uploads/sonarcommunity/original/3X/4/0/406ed50fac50ffd4775c6dae9c70e62f1833ac16.svg",
+        "images": [
+            "https://dub2.discourse-cdn.com/sonarsource/user_avatar/community.sonarsource.com/alix/48/2460_2.png",
+            "https://dub2.discourse-cdn.com/sonarsource/user_avatar/community.sonarsource.com/alix/48/2460_2.png",
+            "https://europe1.discourse-cdn.com/sonarsource/uploads/sonarcommunity/original/3X/4/f/4f6674db7522055b727377786499c5008a8f58ce.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "gradle",
+            "scanner"
+        ],
+        "tags": null,
+        "authors": [
+            "Alix (Alix Warnke)",
+            "Colin (Colin)",
+            "Margarita_Nedzelska (Margarita Nedzelska)"
+        ],
+        "publish_date": "2024-02-27T11:35:00+00:00",
+        "summary": "",
+        "meta_description": "This one has been bugging me for quite some time and I felt like I should report it. \nIf one module, in a multi-module project, does not have any unit tests, for some reason, scanning fails. \nThere are numerous cases whe&hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://europe1.discourse-cdn.com/sonarsource/uploads/sonarcommunity/optimized/3X/5/b/5b45c94bfc9f75230c4bf9284ead89f998c27076_2_32x32.png",
+        "meta_site_name": "Sonar Community",
+        "canonical_link": "https://community.sonarsource.com/t/sonarscanner-error-the-folder-src-test-does-not-exist/109971",
+        "text": "This one has been bugging me for quite some time and I felt like I should report it.\n\nIf one module, in a multi-module project, does not have any unit tests, for some reason, scanning fails.\n\nThere are numerous cases when it can happen that a module does not have any unit tests, for example if sources in the module is used by test code only. Or if tests at the moment do not exist (SonarQube could then warn about low code coverage, there are rules for that).\n\nThe current workaround is to create a dummy file in “src/test” so that the folder exists… But no tests is are actually needed.\n\nMy suggestion is to fix this and convert this build error into a warning instead.\n\nI did this before, as I was told it was no longer necessary to specify sonar.sources/sonar.tests but then I ran into problems (I don’t remember the details, but either code was missing from the analysis or test coverage got skewed) so I had to revert to explicitly set these properties.\n\nSo to answer your question: No, unfortunately not\n\nHello @Alix,\n\nI have a few questions: does the folder src/test exist? If no, then you have to explicitly specify sonar.tests to be an empty String and that should fix your problem.\n\nAnother question do you want to analyze that module at all or it can be skipped?\n\nWe’ll see what we can do here, but most likely it’s better to explicitly mention that you don’t have test files.\n\nYou don’t need to specify sonar.sources and sonar.tests in the default case, but your situation is not default, so it’s valid to specify sonar.tests to be an empty string.\n\nBest,\n\nMargarita"
+    }
+}

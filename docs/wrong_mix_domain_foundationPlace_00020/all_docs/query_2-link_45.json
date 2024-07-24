@@ -1,0 +1,52 @@
+{
+    "id": "wrong_mix_domain_foundationPlace_00020_2",
+    "rank": 45,
+    "data": {
+        "url": "https://stackoverflow.com/questions/29764368/fatal-error-class-illuminate-foundation-application-not-found",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Fatal error: Class 'Illuminate\\Foundation\\Application' not found",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://cdn.sstatic.net/Img/teams/teams-promo.svg?v=e507948b81bf",
+            "https://lh4.googleusercontent.com/-9yG6sQVnAfE/AAAAAAAAAAI/AAAAAAAAZc0/WnkH9P9okP8/photo.jpg?sz=64",
+            "https://www.gravatar.com/avatar/110746cf47e5c66fbff1d5a056058b5a?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://lh3.googleusercontent.com/-EACp-yaUKO0/AAAAAAAAAAI/AAAAAAAAApM/9KTkQAv7JKU/photo.jpg?sz=64",
+            "https://www.gravatar.com/avatar/89f03696eb2e61afa6d73189643a04c5?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/86085e259e70937cc4dd74121b4b5267?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/tISuu.jpg?s=64",
+            "https://www.gravatar.com/avatar/569f5ba36359a9986f3d51ded1e6bce8?s=64&d=identicon&r=PG",
+            "https://graph.facebook.com/100001864011794/picture?type=large",
+            "https://www.gravatar.com/avatar/144f7c45f61b9a1b439ffcc95e6d20e1?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/807d7885f05b10aec30bbac236f8f594?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/zEkfy.png?s=64",
+            "https://i.sstatic.net/OmxV4.jpg?s=64",
+            "https://i.sstatic.net/byoZJ.jpg?s=64",
+            "https://i.sstatic.net/t5J0w.jpg?s=64",
+            "https://i.sstatic.net/J7noq.png?s=64",
+            "https://www.gravatar.com/avatar/ce2b2854c79be53a8234730f63041e66?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/QGLoj.jpg?s=64",
+            "https://i.sstatic.net/eaEdo.jpg?s=64",
+            "https://www.gravatar.com/avatar/4d7ec34a713de5d23d22dd54c3480360?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/rSWMq.jpg",
+            "https://graph.facebook.com/1005597153117690/picture?type=large",
+            "https://stackoverflow.com/posts/29764368/ivc/d169?prg=5eefd4b6-a5c9-456c-851f-88c14819fbf1"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2015-04-21T06:19:41",
+        "summary": "",
+        "meta_description": "I am getting following error when I open my site which is made using laravel 5\n\nFatal error: Class 'Illuminate\\Foundation\\Application' not found in C:\\cms\\bootstrap\\app.php on line 14\n\nI have tried",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/29764368/fatal-error-class-illuminate-foundation-application-not-found",
+        "text": "In my situation, I didn't have the full vendor dependencies in place (composer file was messed up during original install) - so running any artisan commands caused a failure.\n\nI was able to use the --no-scripts flag to prevent artisan from executing before it was included. Once my dependencies were in place, everything worked as expected.\n\ncomposer update --no-scripts\n\nJust in case I trip over this error in 2 weeks again... My case: Checkout an existing project via git and pull in all dependencies via composer. Came down to the same error listed within the title of this post.\n\nSolution:\n\ncomposer dump-autoload composer install --no-scripts\n\nmake sure everything works now as expected (no errors!)\n\ncomposer update\n\nSomething is clearly corrupt in your Laravel setup and it is very hard to track without more info about your environment. Usually these 2 commands help you resolve such issues\n\nphp artisan clear-compiled composer dump-autoload\n\nIf nothing else helps then I recommend you to install fresh Laravel 5 app and copy your application logic over, it should take around 15 min or so.\n\nI just fixed this problem (Different Case with same error),\n\nThe answer above I tried may not work because My case were different but produced the same error.\n\nI think my vendor libraries were jumbled,\n\nI get this error by:\n\n1. Pull from remote git, master branch is codeigniter then I do composer update on master branch, I wanted to work on laravel branch then I checkout and do composer update so I get the error,\n\nFatal error: Class 'Illuminate\\Foundation\\Application' not found in C:\\cms\\bootstrap\\app.php on line 14\n\nSolution: I delete the project on local and do a clone again, after that I checkout to my laravel file work's branch and do composer update then it is fixed.\n\ni was having same problem with this error. It turn out my Kenel.php is having a wrong syntax when i try to comply with wrong php8 syntax\n\nThe line should be\n\nprotected $commands = [ // ];\n\ninstead of\n\nprotected array $commands = [ // ];"
+    }
+}
