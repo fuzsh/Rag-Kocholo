@@ -1,0 +1,28 @@
+{
+    "id": "wrong_mix_range_subsidiary_00024_1",
+    "rank": 84,
+    "data": {
+        "url": "https://www.openldap.org/lists/openldap-software/200001/msg00157.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "LDAP 1.2 test-db fails on HP-UX 11.0 with -lpthread",
+        "top_image": "",
+        "meta_img": "",
+        "images": [],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "",
+        "meta_favicon": "",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "To: openldap-software@OpenLDAP.org\n\nSubject: LDAP 1.2 test-db fails on HP-UX 11.0 with -lpthread\n\nFrom: Carol Mattsson <mattsson@cup.hp.com>\n\nDate: Tue, 25 Jan 2000 22:17:27 -0800\n\nOrganization: IIO\n\nHi Folks, (This is my first post -- is openldap-software@OpenLDAP.org the right address? The Mailing Lists pages doesn't actually list which e-mail address to post to -- unless I missed it.) I'm trying to install OpenLDAP on an HP-UX 11.0 system. I'm having a problem getting the threaded version to pass the test-db. I'm using the OpenLDAP version 1.2 with the Berkeley DB 2.7.7 from Sleepycat. I've managed to get a version built with threads turned off, that passes the tests in the ldap/tests directory and installs OK. I finally got that version to at least start up from the command line but can't figure out to where it is logging -- there's nothing in /var/adm/syslog/syslog.log, but that is a smaller problem. What I really want working is a version that uses threads, so I can eventually run slurpd. I did get a version like that built by setting the LDFLAGS to explicitly use -lpthreads. But slapd is failing in the ldap/tests. The message in the syslog.log is \"./test-db/dn2id.dbb: unexpected file format,\" and the test output ends with: *** Error exit code 1 (ignored) Initiating LDAP tests... >>>>> Executing all LDAP tests... >>>>> Test Directory: . >>>>> Backend: ldbm >>>>> Starting test001-ldif2ldbm ... running defines.sh . ldbm Datadir is ./data Cleaning up in ./test-db... Running ldif2ldbm to build slapd database... Starting slapd on TCP/IP port 9009... Using ldapsearch to retrieve all the entries... Waiting 5 seconds for slapd to start... ldapsearch failed! >>>>> ./scripts/test001-ldif2ldbm failed (exit 32) *** Error exit code 32 For details, the tests/test-db/master.log starts with: slapd 1.2.7-Release (Fri Jan 21 14:45:10 PST 2000) root@booboo:/home/mattsson/ldap/test-with-threads/ldap/servers/slapd slapd starting do_bind do_bind: version 2 dn () method 128 send_ldap_result 0:: do_search SRCH \"O=UNIVERSITY OF MICHIGAN,C=US\" 2 0 0 0 0 filter: (objectclass=*) attrs: => ldbm_back_search using base \"O=UNIVERSITY OF MICHIGAN,C=US\" subtree_candidates: base: \"O=UNIVERSITY OF MICHIGAN,C=US\" lookupbase dn2entry_r: dn: \"O=UNIVERSITY OF MICHIGAN,C=US\" => dn2id( \"O=UNIVERSITY OF MICHIGAN,C=US\" ) => ldbm_cache_open( \"./test-db/dn2id.dbb\", 7, 600 ) <= ldbm_cache_open NULL \"./test-db/dn2id.dbb\" errno 9 reason \"Bad file number\") <= dn2id could not open dn2id.dbb send_ldap_result 32:: do_unbind ber_get_next on fd 5 failed errno 0 (Error 0) *** got 0 of 0 so far Where do I go from here? Got any ideas? What more information could I give you? What could I try to get more info? The build seemed to have gone smoothly. Also, is this test search supposed to be successful after I start slapd on the default port? I only get the \"no such object\" message: ./ldapsearch -h localhost -b \"o=University of Michigan, c=US\" \"sn=Jensen\" Thanks, Carol ____________________________________________________________________ Carol Mattsson Enterprise and Commercial Business - Communication Tools Hewlett-Packard Company (MS 46U-A) Email: mattsson@cup.hp.com 19091 Pruneridge Ave. phone: (408)447-2779 Cupertino, CA USA 95014-0794 FAX: (408)447-1682 ____________________________________________________________________"
+    }
+}

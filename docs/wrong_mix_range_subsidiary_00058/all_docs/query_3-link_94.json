@@ -1,0 +1,50 @@
+{
+    "id": "wrong_mix_range_subsidiary_00058_3",
+    "rank": 94,
+    "data": {
+        "url": "https://www.ucunleashed.com/2266",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Lync and Skype for Business Contacts – Where Does the Company Name Come From?",
+        "top_image": "https://www.ucunleashed.com/wp-content/uploads/2013/08/aduc1.jpg",
+        "meta_img": "https://www.ucunleashed.com/wp-content/uploads/2013/08/aduc1.jpg",
+        "images": [
+            "https://www.ucunleashed.com/wp-content/uploads/2013/08/elan-jeff-300x89.jpg",
+            "https://www.ucunleashed.com/wp-content/uploads/2013/08/sara-aduc-230x300.jpg",
+            "https://www.ucunleashed.com/wp-content/uploads/2013/08/sara-contact-card-300x298.png",
+            "https://www.ucunleashed.com/wp-content/uploads/2013/08/John-external-300x42.jpg",
+            "https://www.ucunleashed.com/wp-content/uploads/2013/08/john-correct-300x42.jpg",
+            "https://www.ucunleashed.com/wp-content/uploads/2013/08/aduc1.jpg",
+            "https://www.ucunleashed.com/wp-content/uploads/2013/08/bulk-edit.jpg",
+            "https://assets.pinterest.com/images/pidgets/pinit_fg_en_rect_gray_20.png",
+            "https://secure.gravatar.com/avatar/3ce919777df8c698dfbb6e9554e706bb?s=32&d=identicon&r=g",
+            "https://secure.gravatar.com/avatar/3eda6fcd3204ef285fa52176c28c4d3e?s=32&d=identicon&r=g",
+            "https://www.ucunleashed.com/wp-content/plugins/social-media-widget/images/default/64/googleplus.png",
+            "https://www.ucunleashed.com/wp-content/plugins/social-media-widget/images/default/64/twitter.png",
+            "https://www.ucunleashed.com/wp-content/plugins/social-media-widget/images/default/64/linkedin.png",
+            "https://www.ucunleashed.com/wp-content/plugins/social-media-widget/images/default/64/github.png",
+            "https://www.ucunleashed.com/included_images/Microsoft-MVP-badge.png",
+            "https://www.ucunleashed.com/included_images/uc-inside-track_logo_185x185.jpg",
+            "https://www.ucunleashed.com/included_images/UC_Architects_PodCast_1.gif",
+            "https://www.ucunleashed.com/included_images/NextHopBadge.fw.png",
+            "https://www.ucunleashed.com/included_images/Lync180x150.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Pat Richard"
+        ],
+        "publish_date": "2013-08-16T17:16:12+00:00",
+        "summary": "",
+        "meta_description": "I was curious the other day about where the company name comes from in the Lync/Skype for Business Contacts. For instance, we see Elan and Jeff below: The quick answer is it can pull that info from…",
+        "meta_lang": "",
+        "meta_favicon": "",
+        "meta_site_name": "UC Unleashed",
+        "canonical_link": "https://www.ucunleashed.com/2266",
+        "text": "I was curious the other day about where the company name comes from in the Lync/Skype for Business Contacts. For instance, we see Elan and Jeff below:\n\nThe quick answer is it can pull that info from an Outlook contact in your mailbox. But what if you don’t have the user in your Outlook contacts?\n\nI knew that it was in Active Directory somewhere, and thought it would be an organization setting somewhere since my experience has shown that the company name is always exactly the same for all users in each company I see in my contacts – right down to punctuation. Some cmdlets let you specify an org name, like Set-CsConferencingConfiguration, but that wasn’t it.\n\nWith the help of fellow Skype for Business MVP Brian Ricks, we got it narrowed down to the Company field on a user’s account in Active Directory. For example, we look at Sara’s account in Active Directory Users and Computers, and see her company set:\n\nAnd when a federated Lync/Skype for Business user looks at her in the Lync/Skype for Business client, we see her company defined:\n\nBut some people show as “External Network” as we see for fellow UC Architects member John Cook:\n\nAnd there are two reasons why this can happen. The first is that the user is homed on a cloud hosted solution like Office 365. Not the case here for John. Like me, he’s got a full Lync install going on at home. The other reason this could happen is that the user’s company field is completely blank. Sure enough, John’s is blank. So he updates that field, and a short time later, his company name shows up to federated contacts.\n\nThis is really a minor thing, but I’ve noticed the company field is hit or miss in orgs where onboarding of users is done manually. But no worries, updating the users is fairly straight-forward in ADUC. You can highlight multiple users in one OU, right click to edit, go to the Organization tab, and enter a valid company name. In more complex orgs, you could use a query to list all of the users without a company name. This can be accomplished by right clicking on the Saved Query branch on the left, and selecting New>Query. Click Define Query, set Find to Custom Search, and add to conditions: Field to Company and Condition to Not Present. And second, Field to Office Communications Server Address, and Condition to Present.\n\nOnce you click OK, you’ll be presented with a list of the users who don’t have a company, but are Lync/Skype for Business enabled. Just like mentioned above, you can select multiple/all of the users, right click, go to Properties>Organization, and enter a company name.\n\nOnce updated and replicated, federated users should see the changes within a short time. We can also query and update user accounts via PowerShell on any machine with the ActiveDirectory module installed. We can query for users where the company name is not set using:\n\nGet-AdUser -Filter {Company -notlike '*'} -Properties * -ResultSetSize $null | Select-Object -Property Name,Company\n\nAnd we can update them all at once using:\n\nGet-AdUser -Filter {Company -notlike '*'} -Properties * -ResultSetSize $null | Set-AdUser -Company 'Contoso'\n\nHaving it on the individual user’s account does make more sense as this allows for multiple names within the same org. But it does require ensuring that the company field is set for each user.\n\nAs for the title, the same applies – it’s set on the individual user account. However, unlike company name, title can also be set on Office 365 accounts."
+    }
+}
