@@ -1,0 +1,32 @@
+{
+    "id": "wrong_mix_property_subsidiary_00116_2",
+    "rank": 38,
+    "data": {
+        "url": "https://www.stigviewer.com/stig/layer_2_switch_-_cisco/2019-01-09/finding/V-23747",
+        "read_more_link": "",
+        "language": "en",
+        "title": "The network element must use two or more NTP servers to synchronize time.",
+        "top_image": "https://www.stigviewer.com/static/ico/favicon.f3aec23bac9098cd7e454cd3b53234bc.ico",
+        "meta_img": "https://www.stigviewer.com/static/ico/favicon.f3aec23bac9098cd7e454cd3b53234bc.ico",
+        "images": [
+            "https://static.stigviewer.com/static/images/big-logo-stig-viewer.a88db4a3f7f63049d42430bc6964fa76.png",
+            "https://static.stigviewer.com/static/images/cch_logo_min.33c3db47eb1edd4012ee97da1c1f2852.png",
+            "https://static.stigviewer.com/static/images/cch_logo_icon.4b80a5d6fe11238bae492f704ebcd7f3.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2019-01-09T00:00:00",
+        "summary": "",
+        "meta_description": "Security Technical Implementation Guides (STIGs) that provides a methodology for standardized secure installation and maintenance of DOD IA and IA-enabled devices and systems.",
+        "meta_lang": "en",
+        "meta_favicon": "/static/ico/favicon.f3aec23bac9098cd7e454cd3b53234bc.ico",
+        "meta_site_name": "STIG Viewer | Unified Compliance Framework®",
+        "canonical_link": "https://www.stigviewer.com/stig/layer_2_switch_-_cisco/2019-01-09/finding/V-23747",
+        "text": "Review the router or switch configuration and verify that two NTP servers have been defined to synchronize time similar to the following example:\n\nntp update-calendar\n\nntp server 129.237.32.6\n\nntp server 129.237.32.7\n\nSome platforms have a battery-powered hardware clock, referred to in the command-line interface (CLI) as the \"calendar,\" in addition to the software based system clock. The hardware clock runs continuously, even if the router is powered off or rebooted. If the software clock is synchronized to an outside time source via NTP, it is a good practice to periodically update the hardware clock with the time learned from NTP. Otherwise, the hardware clock will tend to gradually lose or gain time (drift) and the software clock and hardware clock may become out of synchronization with each other. The ntp update-calendar command will enable the hardware clock to be periodically updated with the time specified by the NTP source. The hardware clock will be updated only if NTP has synchronized to an authoritative time server. To force a single update of the hardware clock from the software clock, use the clock update-calendar command in user EXEC mode.\n\nNote: Lower end router models (i.e., 2500 series) and access switches (i.e. 2950, 2970, etc) do not have hardware clocks, so this command is not available on those platforms.\n\nAny NTP-enabled device that receives and accepts time from a stratum-n server can become a stratum-n+1 server. However, an NTP-enabled device will not accept time updates from an NTP server at a higher stratum; thereby enforcing a tree-level hierarchy of client-server relationships and preventing time synchronization loops. To increase availability, NTP peering can be used between NTP servers. Hence the following example configuration could be used to provide the necessary redundancy:\n\nntp update-calendar\n\nntp server 129.237.32.6\n\nntp peer 129.237.32.7\n\nAlternative to querying an NTP server for time is to receive NTP updates via server that is broadcasting or multicasting the time update messages. The following interface command would be configured to receive an NTP broadcast message:\n\nntp broadcast client\n\nThe above command must be configured on two interfaces or there must be two NTP servers on the same LAN segment broadcasting NTP messages.\n\nThe following interface command would be configured to receive an NTP multicast message:\n\nntp multicast client 239.x.x.x\n\nFor multicast, two different administratively scoped multicast groups can be used—one for each NTP server. In addition, the router or MLS must also have ip pim dense-mode configured on the interface as well as global ip multicast-routing."
+    }
+}

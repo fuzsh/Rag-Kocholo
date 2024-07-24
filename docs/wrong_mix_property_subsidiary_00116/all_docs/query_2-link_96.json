@@ -1,0 +1,39 @@
+{
+    "id": "wrong_mix_property_subsidiary_00116_2",
+    "rank": 96,
+    "data": {
+        "url": "https://community.cisco.com/t5/xr-os-and-platforms/asr9006/td-p/2439817",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Solved: ASR9006",
+        "top_image": "https://community.cisco.com/html/assets/ciscooglogo.png",
+        "meta_img": "https://community.cisco.com/html/assets/ciscooglogo.png",
+        "images": [
+            "https://community.cisco.com/t5/image/serverpage/avatar-name/default_icon/avatar-theme/candy/avatar-collection/Cisco_Default/avatar-display-size/profile/version/2?xdesc=1.0",
+            "https://community.cisco.com/html/@E1D9E5099E7D8FD73DECA4D3FF50F455/rank_icons/rank-1.png",
+            "https://community.cisco.com/legacyfs/online/photo/135856-xthuijs.jpg",
+            "https://community.cisco.com/html/@D17C385B8A505F8125C5E271F02ACC75/rank_icons/ciscologo-square_16x16.png",
+            "https://community.cisco.com/legacyfs/online/photo/135856-xthuijs.jpg",
+            "https://community.cisco.com/html/@D17C385B8A505F8125C5E271F02ACC75/rank_icons/ciscologo-square_16x16.png",
+            "https://community.cisco.com/skins/images/E1311705B9DA0A7B8BD8DC6748F9DFEE/responsive_peak/images/icon_anonymous_message.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "community.cisco.com",
+            "user-id"
+        ],
+        "publish_date": "2014-05-20T17:54:17+00:00",
+        "summary": "",
+        "meta_description": "Solved: Hi Fellows; Anybody Knows what&acute;s the meaning of the next log error: %IP-IP_NTP-5-ALL_CONN_LOST : All NTP peer connections failed. RP/0/RSP0/CPU0:May 19 19:47:32.868 : ntpd[261]: %IP-IP_NTP-5-LP_CONN_RECOVERED : At least a low priority",
+        "meta_lang": "en",
+        "meta_favicon": "https://community.cisco.com/html/@D17C385B8A505F8125C5E271F02ACC75/rank_icons/ciscologo-square_16x16.png",
+        "meta_site_name": "",
+        "canonical_link": "https://community.cisco.com/t5/xr-os-and-platforms/asr9006/td-p/2439817",
+        "text": "Hi Fellows;\n\nAnybody Knows what´s the meaning of the next log error:\n\n%IP-IP_NTP-5-ALL_CONN_LOST : All NTP peer connections failed.\n\nRP/0/RSP0/CPU0:May 19 19:47:32.868 : ntpd[261]: %IP-IP_NTP-5-LP_CONN_RECOVERED : At least a low priority NTP peer connection was recovered - Stratum 15->4.\n\nRP/0/RSP0/CPU0:May 20 09:44:57.434 : ntpd[261]: %IP-IP_NTP-5-SYNC_LOSS : Synchronization lost : 10.192.0.14 : The clock was stepped and needs to be resynced\n\nIt is critical??\n\nequipment ASR9006\n\nimage: disk0:asr9k-os-mbi-4.3.1/0x100305/mbiasr9k-rsp3.vm,1;\n\nThanks in advance!!\n\nhi there,\n\nthis is not that critical, what it means is that the 9006 lost its connection with the NTP server and needed to resync. The clock (date/time) will be running on its own internal system clock and is not synced to the time source required. the internal clock is very accurate already, but there may be a msec/usec skew.\n\nwhat happened was that the update from the ntp server was out of the boundaries for the xr ntp implementation to resync on that update received and instead dropped the sync completely and restarted from scratch to get the sync back going.\n\nIf this situation happens frequently, it may mean that ntp packets in between are getting dropped or the time server is updating its time with too much variation.\n\nI know we made some enahcenemtns in NTP in XR to deal with this more gracefully, but that in itself is not a necessity to upgrade.\n\nif you like more detail, the show ntp trace may hold some extra info you want to know to help mitigate thi if this continues on.\n\nregards\n\nxander\n\nhi there,\n\nthis is not that critical, what it means is that the 9006 lost its connection with the NTP server and needed to resync. The clock (date/time) will be running on its own internal system clock and is not synced to the time source required. the internal clock is very accurate already, but there may be a msec/usec skew.\n\nwhat happened was that the update from the ntp server was out of the boundaries for the xr ntp implementation to resync on that update received and instead dropped the sync completely and restarted from scratch to get the sync back going.\n\nIf this situation happens frequently, it may mean that ntp packets in between are getting dropped or the time server is updating its time with too much variation.\n\nI know we made some enahcenemtns in NTP in XR to deal with this more gracefully, but that in itself is not a necessity to upgrade.\n\nif you like more detail, the show ntp trace may hold some extra info you want to know to help mitigate thi if this continues on.\n\nregards\n\nxander"
+    }
+}

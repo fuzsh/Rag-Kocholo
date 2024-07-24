@@ -1,0 +1,33 @@
+{
+    "id": "wrong_mix_property_subsidiary_00116_2",
+    "rank": 41,
+    "data": {
+        "url": "https://serverfault.com/questions/1115681/how-can-the-local-time-clock-of-a-server-become-the-ntp-time-source-in-a-network",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How can the local time clock of a server become the NTP time source in a network?",
+        "top_image": "https://cdn.sstatic.net/Sites/serverfault/Img/apple-touch-icon@2.png?v=9b1f48ae296b",
+        "meta_img": "https://cdn.sstatic.net/Sites/serverfault/Img/apple-touch-icon@2.png?v=9b1f48ae296b",
+        "images": [
+            "https://cdn.sstatic.net/Sites/serverfault/Img/logo.svg?v=43f5b6d5f65b",
+            "https://lh3.googleusercontent.com/a/AATXAJzsEZQTfJb81E-oi816DoTVbuv8zSjnBn034EKS=k-s64",
+            "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg?sz=64",
+            "https://serverfault.com/posts/1115681/ivc/b61b?prg=c51ed933-c48a-40cd-8393-54897ab5e742"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2022-11-14T23:05:39",
+        "summary": "",
+        "meta_description": "I want to make a the local te clock in a Stratum 1 server be the network time source for my network (I don't want a Stratum 0 server with the antenna). How may I set this up in a network? Is there a",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/serverfault/Img/favicon.ico?v=18e9cc4f2aea",
+        "meta_site_name": "Server Fault",
+        "canonical_link": "https://serverfault.com/questions/1115681/how-can-the-local-time-clock-of-a-server-become-the-ntp-time-source-in-a-network",
+        "text": "Clocks in general purpose computers are garbage, relative to the accuracy expected in modern devices. Not precisely calibrated, and a server's thermal changes can cause the drift to vary. So it needs some method to be updated, or eventually it will become inaccurate, by minutes in extreme cases. Sometimes just having the clocks agree is enough, but people tend to expect better.\n\nOnward to practical configurations. On Linux for example, chrony is popular, and has features for manually setting the clock and dealing with getting disconnected. Start with examples such as RHEL documentation on time keeping, and refer to the chrony manual as reference.\n\nMost time servers have at least one of internet access, a sat nav antenna, or accurate clock hardware. By default chrony will serve time if it ultimately comes from a reference clock via NTP. Set allow directive to your net and use your NTP server. If however, you have none of these, you can make chrony serve time anyway with the local directive.\n\nIf this is truly an airgapped network with no time hardware either, also enable the manual directive, so you can tell it the time manually with chronyc settime.\n\nchrony.conf with these on, some commentary on what you can use for a NTP server, and some things I like from the EL default config:"
+    }
+}

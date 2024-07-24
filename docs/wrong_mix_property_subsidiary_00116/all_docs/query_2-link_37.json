@@ -1,0 +1,44 @@
+{
+    "id": "wrong_mix_property_subsidiary_00116_2",
+    "rank": 37,
+    "data": {
+        "url": "https://docs.paloaltonetworks.com/vm-series/9-1/vm-series-deployment/set-up-a-firewall-in-cisco-aci/palo-alto-firewall-integration-with-cisco-aci-overview",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Palo Alto Firewall Integration with Cisco ACI",
+        "top_image": "https://docs.paloaltonetworks.com/etc/designs/cq-framemaker/favicon-32x32.png",
+        "meta_img": "https://docs.paloaltonetworks.com/etc/designs/cq-framemaker/favicon-32x32.png",
+        "images": [
+            "https://docs.paloaltonetworks.com/content/dam/techdocs/en_US/images/logos/techdocs-logo.png",
+            "https://docs.paloaltonetworks.com/content/dam/techdocs/en_US/images/logos/techdocs-logo.png",
+            "https://docs.paloaltonetworks.com/content/dam/techdocs/en_US/images/icons/css/filter.svg",
+            "https://docs.paloaltonetworks.com/content/dam/techdocs/en_US/images/icons/css/filter.svg",
+            "https://docs.paloaltonetworks.com/content/dam/techdocs/en_US/dita/_graphics/9-1/virtualization/cisco-aci/sample-aci-PAN-topology.png",
+            "https://docs.paloaltonetworks.com/content/dam/techdocs/en_US/dita/_graphics/9-1/virtualization/cisco-aci/logical-aci-pan-topology.png",
+            "https://docs.paloaltonetworks.com/content/dam/techdocs/en_US/images/logos/techdocs-logo.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "Prisma",
+            "VM-Series Deployment Guide",
+            "Concept",
+            "Network Security",
+            "Cloud-Security",
+            "PANW Yellow Theme",
+            "9.1",
+            "VM-Series",
+            "Cisco ACI"
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "/etc/designs/cq-framemaker/apple-touch-icon.png",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "Palo Alto Networks Firewall Integration with Cisco ACI\n\nPalo Alto Networks integration with Cisco ACI allows you to insert a firewall between EPGs as a Layer 4 to Layer 7 service. The firewall then secures the east-west traffic between the application tiers within those EPGs or north-south traffic between users and the applications.\n\nThe figure below shows an example of a physical ACI deployment that includes integrated Palo Alto Network firewalls. All the entities in the ACI Fabric are connected to leaf switches and those leaf switches are connected to larger spine switches. As users access the application, the ACI fabric moves the traffic to the correct destination. To secure the traffic between the application tiers, the network administrator inserts the Palo Alto Networks firewalls as L4 to L7 services between each EPG and creates a service graph to define what services the L4 to L7 device provides.\n\nAfter the firewall services have been deployed, traffic now flows logically as shown below. Traffic to and from the end users and each tier in the application regardless of where or how each entity is physically connected to the network.\n\nWhen the firewall is integrated with Cisco ACI, traffic is sent to the firewall with a policy-based redirect (PBR). Additionally, configuration of the firewall and configuration of the APIC are completely separate. Network policy mode does not rely on any other configuration integration between the firewall and the APIC, so it provides greater flexibility of configuration and deployment of the firewall.\n\nFor east-west traffic, define a bridge domain and subnet in the ACI fabric for the firewall. Configure contracts between EPGs that send traffic to the firewall using a PBR. The PBR forwards traffic to the firewall based on policy containg the firewallâs IP and MAC address. The firewall interfaces are always in Layer 3 mode and traffic is received and routed back to the ACI fabric. You can configure separate interfaces for consumer and provider connections or a single interface for ingress and egress traffic. The procedure in this document uses a single interface because it simplifies the integration; you do not need to configure as many interfaces, IP addresses, or VLANs. However, when using a single interface, you cannot uses zone information in defining security policy and you must modify the default intra-zone policy on the firewall to deny traffic.\n\nFor north-south traffic, you must use a dedicated policy called an L3Out. An L3Out contains the information required for the tenant to connect to external routing devices and access external networks. L3Out connections contain an external network EPG that represent the networks accessible through the L3Out policy. Just as the L3Out can group all external networks into a single EPG, you can use a vzAny object ACI to represent all EPGs in a VRF. Using a vzAny object simples the application of the outbound traffic contract because, whenever a new EPG is added to the VRF, the contract is automatically applied. In this scenario, the external network provides the contract and the vzAny object (all internal EPGs) consume it."
+    }
+}
