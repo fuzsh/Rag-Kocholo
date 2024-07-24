@@ -1,0 +1,45 @@
+{
+    "id": "wrong_mix_domain_subsidiary_00061_3",
+    "rank": 44,
+    "data": {
+        "url": "https://stackoverflow.com/questions/67419637/e401-unable-to-authenticate-your-authentication-token-seems-to-be-invalid",
+        "read_more_link": "",
+        "language": "en",
+        "title": "E401 - Unable to authenticate, your authentication token seems to be invalid",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/85e6dd42c2c8cf1d3ff78840cb5ddadb?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/nIeo2.png?s=64",
+            "https://i.sstatic.net/FuYuS.jpg?s=64",
+            "https://www.gravatar.com/avatar/1e9ddd04b77f0f2403fc739e7cc3e188?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/OgsQq.jpg?s=64",
+            "https://lh6.googleusercontent.com/-OcY8IrLBsbE/AAAAAAAAAAI/AAAAAAAAALk/S0mGzwMZAK8/photo.jpg?sz=64",
+            "https://lh3.googleusercontent.com/a-/AAuE7mCI9J2lIWiFJT5zYU36nV67fUbwHaXhM2vJMYwYOA=k-s64",
+            "https://www.gravatar.com/avatar/e3f20afc18b8c6e7a0899e5a32c1fc95?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/7bd9c238a038fe01c2a965db60e2b607?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/6HADc.jpg?s=64",
+            "https://www.gravatar.com/avatar/40e6749c2b573f5835f1327f7d71e103?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://lh5.googleusercontent.com/-qL8bYPCY7mI/AAAAAAAAAAI/AAAAAAAAAhk/eSxgs89iX70/photo.jpg?sz=64",
+            "https://www.gravatar.com/avatar/49831067af3134b9d15a600149fa4429?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/MxG9n.jpg?s=64",
+            "https://stackoverflow.com/posts/67419637/ivc/70d9?prg=8f83c2ae-78f7-44af-8608-f3ce7a47cf29",
+            "https://stackoverflow.com/js-false.gif"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2021-05-06T13:57:05",
+        "summary": "",
+        "meta_description": "I tested with Azure Packages private NPM server and now want to revert back to using the standard NPM registry but when I do it complains.  I have tried everything I can think of and it is blocking...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/67419637/e401-unable-to-authenticate-your-authentication-token-seems-to-be-invalid",
+        "text": "In my case , I just deleted the package-lock.json file and tried running npm install.\n\nThe error disappeared and all packages in node-modules were created. This happened because in the previous package-lock.json file the resolved field had an address that was not for public access.\n\nBut my new package-lock.json resolved field looks like this:\n\n\"node_modules/@hapi/hoek\": { \"version\": \"9.3.0\", \"resolved\": \"https://registry.npmjs.org/@hapi/hoek/-/hoek-9.3.0.tgz\", \"integrity\": \"sha512-/c6rf4UJlmHlC9b5BaNvzAcFv7HZ2QHaV0D4/HNlBdvFnvQq8RI4kYdhyPCl7Xj+oWvTWQ8ujhqS53LIgAe6KQ==\" }.\n\nCheck your package.json for the node version you should be using and make sure that you are using a compatible version with nvm or something. This has been consistently the reason I have seen this error lately on my own machine.\n\nIf you have multiple npmrc configurations and you've change one of them.\n\nChange your npmrc to default\n\nYou can do this configuration for each one.\n\nnpm config set registry \"https://registry.npmjs.com/\"\n\nAbove @kotana Sie worked for me. But there is no explanation so I would like to add that.\n\nthe errors mean that your access key to the private Azure DevOps npm repository has expired and npm can’t login to the repository using it.\n\nTo refresh the keys just run to acquire new:\n\nvsts-npm-auth -config .npmrc\n\nThere is a known issue with sometimes that doesn't work and just says the keys “are already up to date” or “can’t get an authentication token…”:. To solve it delete the C:\\Users\\<YourAccountName>\\.npmrc manually and repeat the process.\n\nNone of the above answers fixed it for me. I had an additional problem I didn't notice at first and solved it this way:\n\nThe project I was working on apparently used an old version of npm and node. So I downgraded both globally via npm install -g [email protected] and npm install -g [email protected] (of course check which versions you need :)).\n\nAfter that I ran npm install and it worked.\n\nFor me it was the credentials (personal access token) stored in .npmrc has been expired. You have to generate a new personal access token in your repo. Eg: If you are using gitlab\n\nIt's under https://gitlab.com/-/user_settings/personal_access_tokens\n\nFind the .npmrc file and replace the below line with your new access token.\n\ngitlab.com/api/v4/packages/npm/:_authToken=YOUR_NEW_TOKEN"
+    }
+}

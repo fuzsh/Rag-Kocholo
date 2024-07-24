@@ -1,0 +1,39 @@
+{
+    "id": "wrong_mix_domain_subsidiary_00083_1",
+    "rank": 0,
+    "data": {
+        "url": "https://sqlanywhere-forum.sap.com/questions/13267/how-to-force-database-to-update-date-modified-for-the-db-file",
+        "read_more_link": "",
+        "language": "en",
+        "title": "how to force database to update date modified for the DB file",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://sqlanywhere-forum.sap.com/upfiles/SAPLogo.png",
+            "https://secure.gravatar.com/avatar/4dd766f6196b0044258777a571695249?s=32&d=identicon&r=g",
+            "https://secure.gravatar.com/avatar/1be640352b4300907de76ddb448b3e75?s=32&d=identicon&r=g",
+            "https://secure.gravatar.com/avatar/915181b1a2f62e1f58c0edaf6544a8b1?s=32&d=identicon&r=g",
+            "https://secure.gravatar.com/avatar/1be640352b4300907de76ddb448b3e75?s=32&d=identicon&r=g",
+            "https://secure.gravatar.com/avatar/94e993b1fb1ec21a92f27a78c2e24ce7?s=32&d=identicon&r=g",
+            "https://c.statcounter.com/6669954/0/3fa24be2/1/"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "timestamp",
+            "backup",
+            "incremental-backup",
+            "file"
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "I am using ASA 12.1 build 3501  and database size is about 10 GB and  trying to use offsite backup solution called Mozypro where they can take the modified portion of the whole file and take the backup at scheduled  event as there is now way we can take 10 GB file backup on ftp every night.  the pro...",
+        "meta_lang": "",
+        "meta_favicon": "/upfiles/SAPFavicon_.png",
+        "meta_site_name": "",
+        "canonical_link": "https://sqlanywhere-forum.sap.com/questions/13267/how-to-force-database-to-update-date-modified-for-the-db-file",
+        "text": "VSS notwithstanding, I strongly suggest you do not attempt to use MozyPro to back up a running SQL Anywhere database... that comes perilously close to creating a \"single point of failure\" with both the MozyPro process and the database server depending on the same file... and MozyPro is running across TCP/IP, right? Nothing can go wrong with that go wrong with that go wrong with that... :)\n\nInstead, use SQL Anywhere itself to create a full backup on the same hard drive, or another local hard drive (10G is not a lot of data), and then let MozyPro back up the resulting files: the backup copy of the *.db and the backup copy of the *.log. Those files will be closed, nice and stable, with up-to-date timestamps.\n\nYou can do the same with incremental backups of the log file: do a local backup, and then let MozyPro have its way with the resulting files. FWIW I use Carbonite, same idea, works fine.\n\nDivide and conquer: the server updates the database files, the backup process creates the backup files, MozyPro handles offsite, and if necessary the server handles recovery.\n\nShort answer: it is not possible to do this easily with a 100% guarantee.\n\nIn order for the database file to get a new modification-time timestamp the server must update the meta data for the file. This is an expensive operation and therefore all attempts are made to keep this operation to a minimum.\n\nThe only time that I know of that the server will update the file timestamp is when it needs to grow the size of the file, and this is not done very often due to the way that the server will reuse space (when available).\n\nNote however that the timestamp on the database will be updated when the database is stopped.\n\nTo answer your underlying question: \"how do I do backups of my very large database?\", the answer is you should (a) take an initial backup of the database and transaction log file and then (b) periodically take incremental backups of the transaction log file. Please read the section in the documentation on Backup and Data Recovery if you have not already done so. This section talks about how to create a backup and recovery plan. Make sure you TEST your plan!"
+    }
+}
