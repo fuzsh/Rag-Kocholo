@@ -1,0 +1,59 @@
+{
+    "id": "wrong_mix_range_foundationPlace_00140_1",
+    "rank": 41,
+    "data": {
+        "url": "https://blogs.vmware.com/vsphere/2011/09/should-i-defrag-my-guest-os.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Should I defrag my Guest OS?",
+        "top_image": "https://blogs.vmware.com/vsphere/files/2024/03/ITValue-576x324.jpeg",
+        "meta_img": "",
+        "images": [
+            "https://blogs.vmware.com/vsphere/wp-content/themes/vmware-blog-1.9.7/dist/images/VMware-by-Broadcom-Logo_color.svg",
+            "https://blogs.vmware.com/virtualblocks/files/2015/11/Cormac-Hogan_avatar_1447335742-30x30.png",
+            "https://blogs.vmware.com/tp/.a/6a00d8341c328153ef014e8bb247da970d-800wi",
+            "https://blogs.vmware.com/tp/.a/6a00d8341c328153ef015391be9433970b-800wi",
+            "https://blogs.vmware.com/tp/.a/6a00d8341c328153ef014e8a7e2282970d-800wi",
+            "https://blogs.vmware.com/vsphere/files/2023/08/VMWX-23_D1_GS_SHOWFLOW_v3_0821_1pm-1-150x150.jpg",
+            "https://blogs.vmware.com/vsphere/files/2023/08/VMWX-23_D1_GS_SHOWFLOW_v3_0821_1pm-1-150x150.jpg",
+            "https://blogs.vmware.com/vsphere/files/2024/03/ITValue-150x150.jpeg",
+            "https://blogs.vmware.com/vsphere/files/2022/08/2021-vSphere-Family-Icon-576x324-1-150x150.png",
+            "https://blogs.vmware.com/vsphere/files/2022/06/vmw-prod-icon-vsphere_plus-vert-e1657747775755-150x150.png",
+            "https://blogs.vmware.com/vsphere/files/2021/11/300DPIxiStock_000012892256Large-150x150.jpg",
+            "https://blogs.vmware.com/vsphere/files/2023/02/Screen-Shot-2023-02-08-at-3.12.13-PM-150x150.png",
+            "https://blogs.vmware.com/vsphere/files/2021/09/foundation_for_business_growth-150x150.jpg",
+            "https://blogs.vmware.com/vsphere/files/2021/05/2021-Security-Icon-150x150.png",
+            "https://blogs.vmware.com/vsphere/files/2022/08/1457400-vmwx22-social-media-1920x1080-1-576x324-1-150x150.png",
+            "https://blogs.vmware.com/vsphere/files/2022/03/Capture-1-150x150.jpg",
+            "https://blogs.vmware.com/vsphere/files/2021/09/vSphereVMworld-giveaway-150x150.jpg",
+            "https://blogs.vmware.com/vsphere/files/2021/09/1ED4E0BF-4FE2-42B6-919F-434115A69E8D-150x150.png",
+            "https://blogs.vmware.com/vsphere/files/2023/08/vSphere8-Update2-01-FB-150x150.png",
+            "https://blogs.vmware.com/virtualblocks/files/2015/11/Cormac-Hogan_avatar_1447335742-70x70.png",
+            "https://blogs.vmware.com/vsphere/files/2024/03/ITValue-576x324.jpeg",
+            "https://blogs.vmware.com/management/files/2016/07/Himanshu-Singh_avatar_1467917420-30x30.jpg",
+            "https://blogs.vmware.com/vsphere/files/2024/01/AdobeStock_490555667-scaled-e1705522046455-500x324.jpeg",
+            "https://blogs.vmware.com/management/files/2016/07/Himanshu-Singh_avatar_1467917420-30x30.jpg",
+            "https://blogs.vmware.com/vsphere/files/2023/08/VMWX-23_D1_GS_SHOWFLOW_v3_0821_1pm-1-576x324.jpg",
+            "https://blogs.vmware.com/vsphere/files/2014/09/VSAN-Network-Graphic-30x30.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Cormac Hogan",
+            "Himanshu Singh",
+            "Krish Prasad"
+        ],
+        "publish_date": "2011-09-20T11:14:00+00:00",
+        "summary": "",
+        "meta_description": "Yep – this old chestnut. 🙂 This has come up time and time again, and I am going to share with you some conversations that have been occurring within VMware on this topic. In fact, we’ve been having these conversations for a long time now. What is it that defragmentation is supposed to give you? … Continued",
+        "meta_lang": "en",
+        "meta_favicon": "https://blogs.vmware.com/vsphere/wp-content/themes/vmware-blog-1.9.7/favicon.ico",
+        "meta_site_name": "VMware vSphere Blog",
+        "canonical_link": "https://blogs.vmware.com/vsphere/2011/09/should-i-defrag-my-guest-os.html",
+        "text": "Yep – this old chestnut. 🙂\n\nThis has come up time and time again, and I am going to share with you some conversations that have been occurring within VMware on this topic. In fact, we’ve been having these conversations for a long time now.\n\nWhat is it that defragmentation is supposed to give you?\n\nWell, historically, if you ran a defragmentation* operation against an OS disk (typically Windows), you would expect to see a performance improvement. Defragmentation moves blocks around the disk to bring together blocks belonging to the same file in an effort to make the file contiguous on disk. This means that sequential I/O operations should be faster after a defrag. Here’s a view of the Disk Fragementer that is part of the System Tools with Windows 7:\n\nWhat about defragmentation of a Guest OS in a Virtual Machine?\n\nThis is very different to running a defrag on a physical host with a local disk. Typically you are going to have multiple VMs running together on a VMFS or NFS volume. Therefore the overall I/O to the underlying LUN is going to be random so defragmenting individual Guest OS’es is not really going to help performance. However, there are other concerns that you need to keep in mind. The easiest way to explain the concerns is to give you some scenarios of what might happen to a VM which is defraged, and what impact it has on the various vSphere technologies. You can then make up you own mind about whether it is a good idea or not.\n\nThin Provisioned VMs. If you defragment a Thin Provisioned VM, as file blocks are moved around, the TP VMDK bloats up, consuming much more disk space.\n\nLinked Clone VMs (vCloud Director, View). In the case of a VM running off of a linked clone, the defragmenter bloats up the linked clone redo logs.\n\nReplicated VMs (Site Recovery Manager, vSphere Replicator). If your VM was being replicated, and you defragemented the VM on the protected site, it could well cause a lot of data to be sent over the WAN to the replicated site.\n\nSnapshot’ed VMs. This is a similar use case to Linked Clones. Any VMs running off of a snapshot which ran a defrag would cause the snapshot to inflate considerably, depending on how many blocks were moved during the defrag operation.\n\nChange Block Tracking (VMware Data Recovery). The CBT feature is used heavily by backup products, including VMware Data Recovery (VDR). This feature tracks changes to a VM’s disk blocks during a backup operation. If a defrag is run during a backup operation, the number of blocks that changes will increase, which means more data will have to be backed up, meaning a longer backup time.\n\nStorage vMotion. Storage vMotion also uses CBT in vSphere 4.0. If a VM was being Storage vMotion’ed when a defrag operation was initiated, it would also impact the time to complete the operation since the defrag is changing blocks during the migration.\n\nDefragmentation also generates more I/O to the disk. This could be more of a concern to customers than any possible performance improvement that might be gained from the defrag. I should point out that I have read that, internally at VMware, we have not observed any noticeable improvement in performance after a defragmentation of Guest OSes residing on SAN or NAS based datastores.\n\nI also want to highlight an additional scenario that uses an array based technology rather than a vSphere technology. If your storage array is capable of moving blocks of data between different storage tiers (SSD/SAS/SATA), e.g. EMC FAST, then defragmentation of the Guest OS doesn’t really make much sense. If your VM has been running for some time on tiered storage, then in all likelihood the array has already learnt where the hot-blocks are, and has relocated these onto the SSD. If you now go ahead and defrag, and move all of the VM’s blocks around again, the array is going to have to relearn where the hot-spots are.\n\nIf you automate the defrag to run regularly, I think this could cause a performance decrease rather than give you any sort of performance gain if the VM is deployed on a datastore backed by tiered storage. This may already be enabled on some Operating Systems.\n\nWhat do the Storage Array vendors say?\n\nNetApp have a very good vSphere/NetApp interoperability WP in which they briefly discuss this topic. Quoting directly from the paper – “VMs stored on NetApp storage arrays should not use disk defragmentation utilities because the WAFL file system is designed to optimally place and access data at a level below the guest operating system (GOS) file system. If a software vendor advises you to run disk defragmentation utilities inside of a VM, contact the NetApp Global Support Center before initiating this activity.“\n\nWhat do you recommend?\n\nMy recommendation is not to use any defrag tools in the Guest OS. If you are being advised to use a defragmentation tool, you should now have a number of questions to raise about possible outcomes using the content in this blog posting.\n\n* [1-March-2013] I wanted to add a clarification with regards to the defrag operation. This article is written with the generic Windows OS defragmenter in mind. Customers should be aware that VMware partners with vendors such as Condusiv/Diskeeper & Raxco who provide products which intelligently avoid fragmentation occurring in the first place, and also understand features like snapshots, etc. If excessive fragmentation is an issue in your environment, have a look at what these partners can offer."
+    }
+}
