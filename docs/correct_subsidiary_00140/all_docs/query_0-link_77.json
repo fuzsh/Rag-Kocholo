@@ -1,0 +1,31 @@
+{
+    "id": "correct_subsidiary_00140_0",
+    "rank": 77,
+    "data": {
+        "url": "https://community-archive.progress.com/forums/00016/56315.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "What is causing [Oracle JDBC Driver]Login has timed out",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://community-archive.progress.com/images/progress-community-logo.png",
+            "https://community-archive.progress.com/images/community-banner.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "Looking for an answer to your question - What is causing [Oracle JDBC Driver]Login has timed out?  Check the threads in DataDirect Connect - Forum or navigate to the new Progress Community.",
+        "meta_lang": "en",
+        "meta_favicon": "",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "Hello,\n\nIn server logs I see errors like\n\nAcquisition Attempt Failed!!! Clearing pending acquires. While trying to acquire a needed new resource, we failed to succeed more than the maximum number of allowed acquisition attempts (30). Last acquisition attempt exception:\n\njava.sql.SQLException: [informatica][Oracle JDBC Driver]Login has timed out.\n\nI cannot find exact defenition of what is \"Login has timed out\" error in docs.\n\nI tried reproducing the issue locally stopping, dismounting, etc. database and stopping TNS listener - I was getting diffrerent self-descritive errors (most with ORA codes or Connection refused errors - cases that can understand by just reading the error message) but not the \"Login has timed out\" error.\n\nCould you please help me with understanding this error and technics of reproducing that locally.\n\nRegards,\n\nValery\n\nThere's no single database related state which leads to this error. Rather, if the driver is unable (in the alotted time) to establish a connection to the database and perform its initialization on that connection, then it will return this error. The error can be caused in part by server response latency, network traffic, etc.\n\nI have \"manufactured\" this type of behavior in the past by making use of an external snoop tool that sits between the driver and the database. Pausing the snoop tool during the connect establishment process allows for reproducing this error.\n\nHope this helps.\n\nMike\n\nPosted by vcherepanov on 17-Jun-2019 13:45\n\nThanks Mike,\n\n>> \"the specified time is exceeded when attempting to establish the connection\"\n\nHowever I still do not understand what is \"LoginTimeout\" - what is the condition from Oracle perspective when \"LoginTimeout\" may take place?\n\nIn other words - how can I reproduce this error?\n\nThanks,\n\nValery\n\nPosted by mikesp on 17-Jun-2019 13:52\n\nThere's no single database related state which leads to this error. Rather, if the driver is unable (in the alotted time) to establish a connection to the database and perform its initialization on that connection, then it will return this error. The error can be caused in part by server response latency, network traffic, etc.\n\nI have \"manufactured\" this type of behavior in the past by making use of an external snoop tool that sits between the driver and the database. Pausing the snoop tool during the connect establishment process allows for reproducing this error.\n\nHope this helps.\n\nMike"
+    }
+}
