@@ -1,0 +1,38 @@
+{
+    "id": "wrong_mix_range_foundationPlace_00057_1",
+    "rank": 16,
+    "data": {
+        "url": "https://community.spiceworks.com/t/sharepoint-foundation-2010/103682",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Sharepoint Foundation 2010",
+        "top_image": "https://global.discourse-cdn.com/spiceworks/original/1X/7a73606d7df2f794c4789897e49693fb3c471b23.png",
+        "meta_img": "https://global.discourse-cdn.com/spiceworks/original/1X/7a73606d7df2f794c4789897e49693fb3c471b23.png",
+        "images": [
+            "https://secure.intelligence52.com/795141.png",
+            "https://emoji.discourse-cdn.com/twitter/slight_smile.png?v=12",
+            "https://emoji.discourse-cdn.com/twitter/slight_smile.png?v=12",
+            "https://zdbb.net/l/z0WVjCBSEeGLoxIxOQVEwQ/"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "microsoft-sharepoint",
+            "question"
+        ],
+        "tags": null,
+        "authors": [
+            "scottalanmiller (Scott Alan Miller)",
+            "subyfly (SubyFly)",
+            "sausagetycoon (Sausage Tycoon)"
+        ],
+        "publish_date": "2011-09-22T10:03:15+00:00",
+        "summary": "",
+        "meta_description": "I was just wondering if any one had actually used Sharepoint Foundation 2010 into production? I don’t really know much about Sharepoint Foundation but I heard it’s a free version of Sharepoint Server 2010 but quite limit&hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://global.discourse-cdn.com/spiceworks/optimized/1X/a254df83358a951c43ed6ee756b5e0011a8d58bc_2_32x32.png",
+        "meta_site_name": "Spiceworks Community",
+        "canonical_link": "https://community.spiceworks.com/t/sharepoint-foundation-2010/103682",
+        "text": "With WSS3.0 and SharePoint 2007 there were quite a few differences.\n\nA lot of BI(Business Intelligence) and the BDC(Business data catalog) functonality was missing completely. Some of the security stuff was different, AD integration was different, etc.\n\nFoundation added in a lot of those pieces and MS is like a crack dealer, they give you enough to get you a taste and you want more\n\nHowever for what you want you’ll have no problem with Foundation. A lot of times what happens with our customers is even though they have Foundation and want something that Server does we can usally buy a single web part to fill that hole.\n\nOn the licensing side you can use Foundation internally/externally for your employee’s so long as each has a Windows CAL. The Windows CAL is your Sharepoint CAL for Foundation.\n\nIf you want to turn it on for people outside your company then it becomes a bit more complicated but there is the SharePoint Internet Connector at around 7K that is unlimited.\n\nBest practice for your situation is just to make sure you create separate SP Admin account, do not use the built in admin account especially if you have a rotating password policy.\n\nYou need SQL Server 2008 R2 Express as a minimum. You can do it in 2005 but it is a bunch hoops to jump through to get 2005 updated enough for SP2010. Download SP2010 Foundation and SQL 2008 R2 Express. Install SQL first with a named instance, not the default.\n\nWhen you launch the SP2010 installer it has a Install Prerequisites option, let it do that first obviouslly.\n\nInstall SP2010, point it the SQL server and it will create its own DB. If you are turning it out onto the internet then first off create an A-record with your domain, like sp.mycompany.com pointing to your public IP.\n\nSP does things differently in regards to IIS. Normally you’d change the binding in IIS so that sp.mycompanyname.com goes to the SP site but in SharePoint you do not. You go into Central Administration - Application Management, and then Configure Alternative Access Mappings. There you change the Internet name to sp.mycompany.com.\n\nIt is fairly easy to setup and if you have any questions feel free to ask. If your doing private info then an SSL cert is of course recommended."
+    }
+}
