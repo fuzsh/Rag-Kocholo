@@ -1,0 +1,40 @@
+{
+    "id": "wrong_mix_range_foundationPlace_00071_2",
+    "rank": 95,
+    "data": {
+        "url": "https://community.esri.com/t5/arcgis-utility-network-questions/how-does-utility-network-management-handle/td-p/1229478",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How does Utility Network Management handle existing associations when editing network data?",
+        "top_image": "https://www.esri.com/content/dam/esrisites/en-us/common/favicon/esri-favicon-dark-32.png",
+        "meta_img": "https://www.esri.com/content/dam/esrisites/en-us/common/favicon/esri-favicon-dark-32.png",
+        "images": [
+            "https://community.esri.com/html/assets/langTrFlag.PNG",
+            "https://community.esri.com/t5/image/serverpage/image-id/17i5C24E3D921257F9B/image-dimensions/50x50/image-coordinates/0%2C0%2C306%2C306/constrain-image/false?v=v2",
+            "https://community.esri.com/t5/image/serverpage/avatar-name/15-geonet-avatar-150x150/avatar-theme/candy/avatar-collection/Developers/avatar-display-size/message/version/2?xdesc=1.0",
+            "https://communitystg.esri.com/html/@09C70CF6BB92070325EF7BBC54D73CCB/rank_icons/esri-logo-40.png?version=preview",
+            "https://community.esri.com/t5/image/serverpage/avatar-name/15-geonet-avatar-150x150/avatar-theme/candy/avatar-collection/Developers/avatar-display-size/message/version/2?xdesc=1.0",
+            "https://communitystg.esri.com/html/@09C70CF6BB92070325EF7BBC54D73CCB/rank_icons/esri-logo-40.png?version=preview",
+            "https://community.esri.com/t5/image/serverpage/image-id/17i5C24E3D921257F9B/image-dimensions/50x50/image-coordinates/0%2C0%2C306%2C306/constrain-image/false?v=v2",
+            "https://community.esri.com/skins/images/BBF444602A7CD5BD3EF9200E42D63951/responsive_peak/images/icon_anonymous_message.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "community.esri.com",
+            "user-id"
+        ],
+        "publish_date": "2022-11-08T12:49:23.329000+00:00",
+        "summary": "",
+        "meta_description": "Solved: Hello, I am trying to figure out how Utility Network Management handles existing associations when editing network data, especially when splitting",
+        "meta_lang": "en",
+        "meta_favicon": "https://www.esri.com/content/dam/esrisites/en-us/common/favicon/esri-favicon-180.png",
+        "meta_site_name": "Esri Community",
+        "canonical_link": "https://community.esri.com/t5/arcgis-utility-network-questions/how-does-utility-network-management-handle/td-p/1229478",
+        "text": "Hello,\n\nI am trying to figure out how Utility Network Management handles existing associations when editing network data, especially when splitting associated objects. Please see the following example based on Electric Foundation V2 Solution:\n\nA cable is associated with three conduits (Image 1). The cable is split in two places, which automatically adjusts the associations.\n\nAfter the first split: Image 2\n\nAfter the second split: Image 3\n\nThe new containment associations seem to be computed due to geometric intersections, among other things. I have the following questions about this:\n\nHow does the Utility Network determine the adjusted associations after each of the two splits.\n\nWhich parameters have influence on it and (how) can these parameters be influenced?\n\nIs it possible to configure the Utility Network in such a way that when a device is placed on a cable, the cable is automatically split at this position?\n\nDoes a more detailed documentation exist on this topic, describing (besides containment associations) the effects on other association types?\n\nMany thanks for the help.\n\nJürgen\n\nHi Jurgen. In the Utility Network Foundation, by default we set all split policy's to the Utility Network default setting, which is DO_NOT_SPLIT. DO_NOT_SPLIT has the following behaviour: The container's content will not be split if the container feature is split. If a parallel content line feature is found, the content will be contained by both sections of the container feature. If the content line is not parallel, the content will be contained by the container feature that is closest to it. This is the default.\n\nYou can change the split policy by running the SetAssociationRole gp tool and changing the split policy the the specific asset type. This will require the UN network topology to be disabled. You can also change it in the Asset Package before apply by editing the table B_ASSOCIATIONROLE, changing the splitpolicy column for the desired asset types.\n\nJohn Alsup\n\njalsup@esri.com\n\nHi Jurgen. In the Utility Network Foundation, by default we set all split policy's to the Utility Network default setting, which is DO_NOT_SPLIT. DO_NOT_SPLIT has the following behaviour: The container's content will not be split if the container feature is split. If a parallel content line feature is found, the content will be contained by both sections of the container feature. If the content line is not parallel, the content will be contained by the container feature that is closest to it. This is the default.\n\nYou can change the split policy by running the SetAssociationRole gp tool and changing the split policy the the specific asset type. This will require the UN network topology to be disabled. You can also change it in the Asset Package before apply by editing the table B_ASSOCIATIONROLE, changing the splitpolicy column for the desired asset types.\n\nJohn Alsup\n\njalsup@esri.com\n\nHi John,\n\nThank you very much for your answer. This makes the behavior a bit clearer to me. Meanwhile I could also find the place in the ArcGIS Pro documentation where this behavior is described. I still hope it's okay if I ask a few follow-up questions.\n\nYour description assumes splitting a container. In my example, however, I split the content and the containers remain intact. Nevertheless, the associations of the newly created line sections to the containers are adjusted. Is the split policy you described for containers also responsible for this?\n\nThe documentation talks about a \"system algorithm\" in this context (https://pro.arcgis.com/en/pro-app/latest/help/data/utility-network/containment.htm). Is there more detailed information about this algorithm?\n\nAre there other split policies besides the split policy for containers and the split policy for attribute domains that have influence on the associations in the utility network?\n\nIt would also be important for me to know if one can configure point objects in the Utility Network to split line objects when placed on them.\n\nMany thanks and best regards,\n\nJürgen"
+    }
+}

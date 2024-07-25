@@ -1,0 +1,52 @@
+{
+    "id": "wrong_mix_range_foundationPlace_00119_1",
+    "rank": 95,
+    "data": {
+        "url": "https://stackoverflow.com/questions/62189825/terraform-error-acquiring-the-state-lock-conditionalcheckfailedexception",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Terraform: Error acquiring the state lock: ConditionalCheckFailedException",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://cdn.sstatic.net/Img/teams/teams-promo.svg?v=e507948b81bf",
+            "https://www.gravatar.com/avatar/e877c0b1c4ae702566320d30a0567960?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/43f0945564d21d29db27d8d90b56659e?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/b0bZb.jpg?s=64",
+            "https://www.gravatar.com/avatar/5123245edd78d46f0945099beff269f8?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/e877c0b1c4ae702566320d30a0567960?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://lh5.googleusercontent.com/-NniNFvUMNsQ/AAAAAAAAAAI/AAAAAAAAAf0/0vzYvPlPgGA/photo.jpg?sz=64",
+            "https://i.sstatic.net/agMKZ.png?s=64",
+            "https://www.gravatar.com/avatar/62361b9f1224480ae3ab2bdbd99a51c6?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/4f5402edc44c1cb3d66f441ef52cf241?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/wYo2j.jpg?s=64",
+            "https://lh3.googleusercontent.com/-PzPxvoG_BIg/AAAAAAAAAAI/AAAAAAAAAKg/dtM5S5Z1pSY/photo.jpg?sz=64",
+            "https://i.sstatic.net/tGpcY.jpg?s=64",
+            "https://www.gravatar.com/avatar/4844271f16e17c6abc073df863cd7a1b?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://lh4.googleusercontent.com/-KflgWeXgMZk/AAAAAAAAAAI/AAAAAAAAAEc/I6TmeyFlQg4/photo.jpg?sz=64",
+            "https://i.sstatic.net/Nx6Dd.jpg?s=64",
+            "https://www.gravatar.com/avatar/2841aab7ac98bff17ad17b1ec1477145?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/d8a8d0192160ff9af719aaa345bdb84b?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/1SqUy.jpg?s=64",
+            "https://www.gravatar.com/avatar/63204375b81e3079d286f7e7eea17a3d?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://lh5.googleusercontent.com/-s20twocADBU/AAAAAAAAAAI/AAAAAAAAAyQ/hT1aiblFw5I/photo.jpg?sz=64",
+            "https://www.gravatar.com/avatar/31e7c71ef9dcb7b1c4171a82eadc385f?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://stackoverflow.com/posts/62189825/ivc/4018?prg=0870e944-78e9-4389-bed1-548d979a17c0"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2020-06-04T08:11:50",
+        "summary": "",
+        "meta_description": "I got the following error during a terraform plan which occured in my pipeline:\n\nError: Error locking state: Error acquiring the state lock: ConditionalCheckFailedException: The conditional request",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/62189825/terraform-error-acquiring-the-state-lock-conditionalcheckfailedexception",
+        "text": "Cause of Error\n\nThis error usually appears when one process fails running terraform plan or terraform apply. For example if your network connection interrupts or the process is terminated before finishing. Then Terraform \"thinks\" that this process is still working on the infrastructure and blocks other processes from working with the same infrastructure and state at the same time in order to avoid conflicts.\n\nAs stated in the error message, you should make sure that there is really no other process still running (e.g. from another developer or from some build-automation). If you force-unlock in such a situation you might screw up your terraform state, making it hard to recover.\n\nResolution\n\nIf there is no other process still running: run this command\n\nterraform force-unlock 9db590f1-b6fe-c5f2-2678-8804f089deba\n\n(where the numerical id should be replace by the one mentioned in the error message)\n\nif you are not sure if there is another process running and you are worried that you might make things worse, I would recommend waiting for some time (like 1h), try again, then try again after maybe 30 min. If the error still persists it is likely that there really is no other process and it's safe to unlock as described above\n\nI experienced this issue when trying to run a terraform command for a resource in Google Cloud Console within the GitHub actions workflow.\n\nThe issue started after I cancelled a running terraform apply command.\n\nWhen I tried to run other terraform commands like the terraform apply -refresh-only command, I got the error below:\n\nRun terraform apply -var-file env/dev-01-default.tfvars -refresh-only -auto-approve /runner/_work/_temp/8cdffd5c-b7a1-446d-a294-c1e34b63cde4/terraform-bin apply -var-file env/dev-01-default.tfvars -refresh-only -auto-approve ╷ │ Error: Error acquiring the state lock │ │ Error message: writing \"gs://my-dev/k8s/default/dev-01.tflock\" failed: │ googleapi: Error 412: At least one of the pre-conditions you specified did │ not hold., conditionNotMet │ Lock Info: │ ID: 1688478112611453 │ Path: gs://my-dev/k8s/default/dev-01.tflock │ Operation: OperationTypeApply │ Who: runner@pm-runners-m4h7k-gcxqk │ Version: 1.1.8 │ Created: 2023-07-04 13:41:52.517578046 +0000 UTC │ Info: │ │ │ Terraform acquires a state lock to protect the state from being written │ by multiple users at the same time. Please resolve the issue above and try │ again. For most commands, you can disable locking with the \"-lock=false\" │ flag, but this is not recommended. ╵ Error: Terraform exited with code 1. Error: Process completed with exit code 1.\n\nHere's how I fixed this:\n\nThis issue created a lockfile called dev-01.tflock in the location gs://my-dev/k8s/default/dev-01.tflock with a lock-info-id of 1688478112611453\n\nOne way is to run the command below:\n\nterraform force-unlock -force <lock-info-id>\n\nAnother way is to locate the location of the lockfile in the Google cloud storage account where the statefile is located. And within the same directory where the statefile is stored you will see the lockfile. Go ahead to delete the lockfile.\n\nAfterwhich you can run the terraform command you want to run and it will run fine.\n\nI've run through the same issue in AWS and our pipele. We are transitioning to git-actions. Our terraform is using dynamodb as its lockstate persistence and s3 to hold the actual terraform statefile. When I looked at the lock state in the dynamodb, the md5 digest column is empty and the key did not indicate and -md5, just a normal .\n\nNote: Do not try this if you are not familiar with Terraform State File.\n\nWhat I did is I cloned the said lockstate and renamed to -md5. Look at my s3 statefile for the hashkey and copy it over to the digest column in dynamo table. Rename the old lockstate to a different key so that it wont be searched up.\n\nThat's it for me.\n\nAgain, this may not work for everybody but this worked for me."
+    }
+}
