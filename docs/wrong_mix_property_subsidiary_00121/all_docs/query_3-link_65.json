@@ -1,0 +1,37 @@
+{
+    "id": "wrong_mix_property_subsidiary_00121_3",
+    "rank": 65,
+    "data": {
+        "url": "https://lists.fedorahosted.org/archives/list/freeipa-users%40lists.fedorahosted.org/thread/ZYRUFPSIFV4IUMSV26HV7OAACL44HJZP/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "tomcatd service doesn't start on multiple servers in the domain",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://lists.fedorahosted.org/static/logo-hyperkitty-fedora.png",
+            "https://seccdn.libravatar.org/avatar/6bd1c2df6804abe30f67661c14efe38e.jpg?s=120&d=retro&r=g",
+            "https://seccdn.libravatar.org/avatar/65840ff88de1bf2112df2fb6b4af3027.jpg?s=120&d=retro&r=g",
+            "https://seccdn.libravatar.org/avatar/6bd1c2df6804abe30f67661c14efe38e.jpg?s=120&d=retro&r=g",
+            "https://seccdn.libravatar.org/avatar/1ddb1e893d3acb1c788c6c75a42f56c1.jpg?s=120&d=retro&r=g",
+            "https://seccdn.libravatar.org/avatar/65840ff88de1bf2112df2fb6b4af3027.jpg?s=48&d=retro&r=g",
+            "https://seccdn.libravatar.org/avatar/1ddb1e893d3acb1c788c6c75a42f56c1.jpg?s=48&d=retro&r=g",
+            "https://seccdn.libravatar.org/avatar/6bd1c2df6804abe30f67661c14efe38e.jpg?s=48&d=retro&r=g"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "",
+        "meta_favicon": "/static/hyperkitty/img/favicon.ico",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "Hello everyone,\n\nI'm trying to fix an issue with our freeipa setup where multiple servers in the domain are failing to start the pki-tomcatd service. At present we have used \"pactl start --ignore-service-failure\" just to get the rest of the services up and running and now trying to figure out how to fix the overall problem.\n\nBelow is a summary of the current state from what I've managed to find so far:\n\nWe have 6 servers in our freeipa domain running version 4.5.4\n\nThree servers including the \"IPA CA renewal master\" is having an issue\n\nwhen starting up the pki-tomcatd service, with slightly different observations.\n\nProblem started at different times, other two servers starting the\n\nproblem many weeks ago, which we haven't been able to fix\n\nOn the IPA CA renewal master server (this server only started having the problem few days ago following a crash > reboot ) -\n\nAll the certificates listed in \"getcert list\" are valid (one closest to\n\nexpiry has about 2 years left)\n\nCerfificate in /etc/pki/pki-tomcat/alias/ and LDAP match along with the\n\n\"description\" field that has the correct serial\n\nLogs contain this error : Internal Database Error encountered: Could not\n\nconnect to LDAP server host <FQDN> port 636 Error netscape.ldap.LDAPException: Authentication failed (49)\n\nOn the other two servers (where the problem started weeks apart following a server reboot or a ipactl restart ) -\n\nMost of the certificates listed \"getcert list\" are already expired\n\nLogs contain this error : Internal Database Error encountered: Could not\n\nconnect to LDAP server host <FQDN> port 636 Error netscape.ldap.LDAPException: Authentication failed (49)\n\nCerfificate in /etc/pki/pki-tomcat/alias/ and LDAP does NOT match\n\nOther than that there are many other errors on the logs on all the servers related to replication : ERR - NSMMReplicationPlugin - send_updates\" and messages like : Certificate in file \"/var/kerberos/krb5kdc/kdc.crt\" is no longer valid.\n\nTo try to come up with some method to fix the servers, I've taken a clone(disconnected from the network) of a non IPA CA renewal master. Below steps I've found on various articles were all done within the clone.\n\nSome things I've tried within the clone out so far along with the errors:\n\nhttps://floblanc.wordpress.com/2017/09/11/troubleshooting-freeipa-pki-tomcat...\n\n$ sudo grep internal /var/lib/pki/pki-tomcat/conf/password.conf | cut -d= -f2 > /tmp/pwdfile.txt $ sudo certutil -K -d /etc/pki/pki-tomcat/alias -f /tmp/pwdfile.txt -n 'subsystemCert cert-pki-ca' certutil: Checking token \"NSS Certificate DB\" in slot \"NSS User Private Key and Certificate Services\" certutil: problem listing keys: SEC_ERROR_INVALID_ARGS: security library: invalid arguments.\n\nI did notice is that the message says \"NSS Certificate DB\" but on the \"getcert list\" this certificate shows with token='NSS FIPS 140-2 Certificate DB', not sure if there is an actual problem with the password or if I'm not using the command correctly.\n\nTried resetting the time back to a point where the expired certs are still valid as mentioned in https://access.redhat.com/solutions/3357261 and to get the pki-tomcatd to come up, tried to update the cert. in LDAP to match what is in /etc/pki/pki-tomcat/alias/ using this method https://access.redhat.com/solutions/3614001 fails for me.\n\nIt updates the certificate serial in \"description\" field but never changes the certificate blob. ldapmodify command and the contents of the .ldif file I used are below.\n\n# ldapmodify -x -h localhost -p 389 -D “cn=directory manager” -w -f updatecert.ldif -v ldap_initializer( ldap://localhost:389 ) replace usercertificate: NOT ASCII (894 bytes) replace description: 2;32;CN=Certificate Authority,O=;CN=CA Subsystem,O=<OUR.DOMAIN> modifying entry “uid=pkidbuser,ou=people,o=ipaca” modify complete\n\n# cat updatecert.ldif dn: uid=pkidbuser,ou=people,o=ipaca changetype: modify replace: usercertificate usercertificate::MII.. – replace: description description: 2;32;CN=Certificate Authority,O=;CN=CA Subsystem,O=<OUR.DOMAIN>\n\nI've used various combinations here even a delete of \"userCertificate\" field to add the correct one later but none of which worked for me.\n\nI'm hoping someone can point me in the right direction."
+    }
+}

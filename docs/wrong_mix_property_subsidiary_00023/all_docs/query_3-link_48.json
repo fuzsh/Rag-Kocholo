@@ -1,0 +1,32 @@
+{
+    "id": "wrong_mix_property_subsidiary_00023_3",
+    "rank": 48,
+    "data": {
+        "url": "https://www.cloudrise.com/knowledge-base/generating-syslog-messages-from-symantec-data-loss-prevention/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Generating Syslog messages from Symantec Data Loss Prevention",
+        "top_image": "https://www.cloudrise.com/wp-content/uploads/2022/06/cropped-favicon-32x32.png",
+        "meta_img": "https://www.cloudrise.com/wp-content/uploads/2022/06/cropped-favicon-32x32.png",
+        "images": [
+            "https://www.cloudrise.com/wp-content/uploads/2022/04/logo.png",
+            "https://www.cloudrise.com/wp-content/uploads/2022/04/logo.png",
+            "https://www.cloudrise.com/wp-content/uploads/2022/04/linkedin.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2020-11-20T15:36:41+00:00",
+        "summary": "",
+        "meta_description": "DLP supports two methods for generating Syslog events: “Syslog Response Rule” notifications and “Syslog Server Alerts”. Creating a Syslog Response Rule When creating an Automated Response Rule, select ‘Log to a Syslog Server‘ as the action. Fill in the Host, Port, Message, and Level as appropriate. Once assigned to a Policy, the Response Rule will generate […]",
+        "meta_lang": "en",
+        "meta_favicon": "https://www.cloudrise.com/wp-content/uploads/2022/06/cropped-favicon-32x32.png",
+        "meta_site_name": "Cloudrise",
+        "canonical_link": "https://www.cloudrise.com/knowledge-base/generating-syslog-messages-from-symantec-data-loss-prevention/",
+        "text": "DLP supports two methods for generating Syslog events: “Syslog Response Rule” notifications and “Syslog Server Alerts”.\n\nCreating a Syslog Response Rule\n\nWhen creating an Automated Response Rule, select ‘Log to a Syslog Server‘ as the action. Fill in the Host, Port, Message, and Level as appropriate. Once assigned to a Policy, the Response Rule will generate a syslog event when triggered.\n\nThe creation of a “Syslog Response Rule” does not require the additional method described for “Syslog Server Alerts” – they are separate functions.\n\nCreate Syslog Server Alerts\n\nThe System Maintenance Guide outlines how to setup Syslog events.\n\nTo enable syslog functionality\n\nNavigate to the installed directory, for example <drive>:SymantecDLPProtectconfig directory on Windows or the /opt/SymantecDLP/Protect/config directory on Linux.\n\nOpen the Manager.properties file.\n\nUncomment the #systemevent.syslog.host= line by removing the # symbol from the beginning of the line and enter the hostname or IP address of the syslog server.\n\nUncomment the #systemevent.syslog.port= line by removing the # symbol from the beginning of the line and enter the port number that should accept connections from the Vontu Enforce server. The default is 514. This is UDP.\n\nUncomment the #systemevent.syslog.format= [{0.EN_US}] {1.EN_US} - {2.EN_US} line by removing the # symbol from the beginning of the line and define the system event message format.\n\nThe optional parameters are as follows:\n\n{0.EN_US} – name of the server on which the event occurred\n\n{1.EN_US} – event summary\n\n{2.EN_US} – event detail\n\nFor example, in the following configuration:\n\nsystemevent.syslog.host=galapagos.company.com\n\nsystemevent.syslog.port=600\n\nsystemevent.syslog.format= [{0.EN_US}] {1.EN_US} – {2.EN_US}\n\nSystem event notifications would be written to a server named galapagos.company.com using port 600 and the notification messages will be in the following format:\n\n[server name] summary – details\n\nIf galapagos was used to host an Enforce server, an event notification indicating low disk space on galapagos might look like this:\n\n[Enforce server] Low disk space – Hard disk space for incident\n\ndata storage server is low. Disk usage is over 82%.\n\nDLP 15.0 and later\n\nYou have the ability to set the log level to include INFO and WARNING along with SEVERE.\n\nFor reference:\n\nLog level 3 = logs SEVERE messages only (this is default)\n\nLog level 4 = Logs SEVERE and WARNING\n\nLog level 5 = logs INFO, WARNING, SEVERE\n\nSteps to implement:\n\nInstall/Upgrade to DLP 15.0 on your system.\n\nOpen manager.properties as indicated above.\n\nFind the following line: systemevent.syslog.level = x​\n\nChange the value of x to either 3, 4, or 5 (the default value is 3)\n\nRestart services for changes to take effect in Windows or Linux."
+    }
+}
