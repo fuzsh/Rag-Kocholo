@@ -1,0 +1,37 @@
+{
+    "id": "correct_foundationPlace_00063_2",
+    "rank": 45,
+    "data": {
+        "url": "https://stackoverflow.com/questions/7987712/why-does-avgantivirus-detect-an-executable-produced-from-dev-c-as-a-virus",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Why does AVG(antivirus) detect an executable produced from Dev-C++ as a virus?",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://i.sstatic.net/P4M8V.png?s=64",
+            "https://i.sstatic.net/vahiM.jpg",
+            "https://i.sstatic.net/2b4pE.jpg?s=64",
+            "https://www.gravatar.com/avatar/426aadae869c9a312275e8a7f5e01774?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/pkmbW.png?s=64",
+            "https://i.sstatic.net/07x9t.png",
+            "https://www.gravatar.com/avatar/f4dc4d6275ed8df6ebed3f1eaf82ebd7?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/7987712/ivc/e7c8?prg=4a4b6657-ffa8-4544-b960-7ede4db5f314"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2011-11-02T21:46:44",
+        "summary": "",
+        "meta_description": "I created a default Dev-C++ project and instead of the usual return 0;, it had return EXIT_SUCCESS; and upon compiling and running it, I was alerted by my antivirus that the executable was a virus....",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/7987712/why-does-avgantivirus-detect-an-executable-produced-from-dev-c-as-a-virus",
+        "text": "Why is AVG labeling my C++ program a virus?\n\nFor example, here is a C++ program that AVG detects as a virus:\n\n#include <cstdlib> #include <iostream> using namespace std; int main(int argc, char** argv) { cout << \"done\"; return 0; }\n\nRunning the executable, I get AVG popup window with this text:\n\nAVG Resident Shield Alert Threat detected! File name: c:\\Documents and Settings\\eleschinski\\Desktop\\workspace\\CppApplication_2\\dist\\Debug\\MinGW-Windows\\cppapplication_2.exe Threat name: Trojan horse Agent3.CJAI (More Info) Move to Vault (Reccommended) Go to file Ignore the threat\n\nScreenshot of what AVG does:\n\nSummary, What's going on here?\n\nAVG antivirus is a program that runs on your computer that uses Heuristics and other imprecise algorithms to identify which programs have unwanted evil agendas. AVG is taking as input the contents of your executable file, and decided that your program is unsafe.\n\nAntivirus writers are using the Enumerating Badness strategy to identify malware in the world, and it is coming back to bite them because this is the wrong approach to the problem of detecting malware. One problem with Enumerating Badness is the false positives, the problem you experience now.\n\nSteps to take to get a better understanding of the problem:\n\nStep 1. First you want to be very sure what file that AVG is complaining about. To do this, go to AVG -> Tools menu -> scan file. Choose the offending executable or file defined in your threat window. AVG will scan the file instantly and recommend to add it to the vault. At this point you can know AVG thinks this file alone is the malware.\n\nStep 2. Get a second opinion about this malware/virus file, better yet, get 50 independent second opinions. Go to the website https://www.virustotal.com, there you can upload your file for free, and it will be analyzed by about 50 different antivirus programs, if the majority of them think it is a virus, then AVG has done well. But if only a few antiviruses label your file as evil, then it's possible that AVG has a false positive.\n\nStep 3. An easy way to convince AVG that your C++ program is safe is to add the c++ statement: system(\"pause\"); in the beginning of your C++ program and recompiling and re-running. For me, AVG then warns me about it, I click ignore, then it lets me run it anyway. Also, try using 'return 1' instead of 'return 0' at the end of your main function. It will let you run it. If that seems bizarre, it is. Virus writers are smarter than antivirus writers by getting antivirus software to see to many false positives.\n\nStep 4. See if you can white-list your program. Go into the \"Virus Vault\" in AVG. AVG -> History menu -> Virus Vault. Find the line items that represent your offending C++ program and release them from the virus vault, or white list them, and try again.\n\nSolutions:\n\nOption 1: Acknowledge that the virus writers are winning the war against antivirus software. It's easier to hide something than it is to survey everything and spot all badness. AVG can't tell the difference between a legitimate virus and some c++ program you just made. Get new antivirus software, or get an operating system that doesn't need antivirus software (linux), or go without antivirus software all together and keeps lots of offline offsite backups.\n\nOption 2: Tell AVG to stop analyzing files with .EXE extensions. WARNING this will decrease AVG's ability to protect your computer from real viruses/malware. Go to AVG console -> Tools -> Advanced Settings -> Anti Virus -> Resident Shield -> Expert Settings. You will see a textbox with a label: \"always scan files with the following extensions\". Remove the EXE; from that textbox. Save and try re-running your program. AVG will no longer complain about your something.exe executable.\n\nOption 3: Fiddle with your C++ program until it stops being labelled a virus. Add some #include libraries, excluding some other ones. An inconsequential change could make all the difference in AVG deciding your file is malignant."
+    }
+}
