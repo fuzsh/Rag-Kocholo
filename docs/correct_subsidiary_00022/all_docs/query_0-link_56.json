@@ -1,0 +1,36 @@
+{
+    "id": "correct_subsidiary_00022_0",
+    "rank": 56,
+    "data": {
+        "url": "https://community.spiceworks.com/t/dell-equallogic-ps6100/676069",
+        "read_more_link": "",
+        "language": "en",
+        "title": "DELL Equallogic PS6100",
+        "top_image": "https://global.discourse-cdn.com/spiceworks/original/1X/7a73606d7df2f794c4789897e49693fb3c471b23.png",
+        "meta_img": "https://global.discourse-cdn.com/spiceworks/original/1X/7a73606d7df2f794c4789897e49693fb3c471b23.png",
+        "images": [
+            "https://secure.intelligence52.com/795141.png",
+            "https://sea1.discourse-cdn.com/spiceworks/user_avatar/community.spiceworks.com/joncoy/48/15447_2.png",
+            "https://zdbb.net/l/z0WVjCBSEeGLoxIxOQVEwQ/"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "dell-hardware",
+            "question"
+        ],
+        "tags": null,
+        "authors": [
+            "mtexter (mtexter)",
+            "samuel-dell (Samuel (Dell))"
+        ],
+        "publish_date": "2018-10-01T09:38:41+00:00",
+        "summary": "",
+        "meta_description": "Hi fellow Spiceheads, \nI’m in need of some assistance with a Dell Equallogic PS6100 device that is currently sitting in the server room of a client i’m working for. \nThe SAN Headquarters software is reporting that this u&hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://global.discourse-cdn.com/spiceworks/optimized/1X/a254df83358a951c43ed6ee756b5e0011a8d58bc_2_32x32.png",
+        "meta_site_name": "Spiceworks Community",
+        "canonical_link": "https://community.spiceworks.com/t/dell-equallogic-ps6100/676069",
+        "text": "Hi fellow Spiceheads,\n\nI’m in need of some assistance with a Dell Equallogic PS6100 device that is currently sitting in the server room of a client i’m working for.\n\nThe SAN Headquarters software is reporting that this unit has not communicated for over 800 days (since June 2016) and I’m wondering if there is a quick way of accessing the unit, to determine what it’s actually doing - if anything?\n\nAny help is gratefully received.\n\nThanks\n\nA null modem DB9 cable is all you need to get serial access to one of these, a pretty standard piece of IT kit. Default/standard putty settings with baud rate 9600 and you’ll be in. default login/pw is grpadmin/grpadmin. Once you log in, you’ll either see that the unit is not configured yet (indicated by a prompt), or it will just drop you to a shell where you can run commands. To see current IP info there’s a show command, but I can’t remember the exact syntax off the top of my head. The help menus in there are pretty good though.\n\nThanks MTexter.\n\nUnfortunately, it has had the grpadmin password changed (expected as I think you have to do that as soon as you log in for the first time).\n\nAny idea on how you get a password reset achieved on one of these things without knocking the entire config out?\n\nHello JC2010,\n\nI am guessing that you have check your network to ensure that the management cable is connected. You can try to reinstall SANHQ, but you will need to check your firmware against the version of SANHQ to make sure that they match.\n\nIf your system is still under warranty then you can call into support, and we can run a command that will give a code so that we can provide a temp password. If the system is not under warranty, then there will be a fee that will be charged in order to provide you with a temp password.\n\nPlease let us know if you have any other questions.\n\nHi Samuel,\n\nI can confirm that the management interface is connected, I just don’t know what IP (if any) has been configured on this unit.\n\nI have checked and there is still 18 months left on a 5 year support agreement left, so what’s the best number for me to contact support on to get this code?\n\nThanks\n\nThere was a way to do this, not sure if it’s been knocked out by newer firmware or only worked in older models. Disclaimer: I’ve never tried this on a production system where I cared about the data, but it should be fine. You basically reboot the controller you want to reset, and immediately after it bounces, it will prompt you to press ctrl+p to enter setup mode. Do this, then you’ll be at a CFE prompt. At this prompt, to reset the password to default, type the following commands:\n\nsetenv RESETPASSWORD 1 (case sensitive)\n\nreload\n\nOnce it comes back up, you should be able to login with grpadmin/grpadmin. You may need to remove the passive controller while resetting the active, then switch and do the other one. Again, not something i’ve tried on a very modern equallogic, so it might not work at all, and not something i’ve tried on a working production system. Good luck!\n\nedit: nevermind, you’ve got a support contract with Dell still! They’ll take good care of you.\n\nThanks MTexter, I did see this posted and it looks like it would be my last option to getting into the SAN again, with the Dell Support Challenge/Response process providing a lot less terrifying option to rebooting the unit, removing controllers, and praying to the SAN Gods that the data stays in place and the unit works after carrying out those steps.\n\nUltimately, I’d be a lot more comfortable trying that approach, if there was actually a replication between another SAN, meaning the data isn’t quite as reliant on that one unit.\n\nThanks for your help."
+    }
+}

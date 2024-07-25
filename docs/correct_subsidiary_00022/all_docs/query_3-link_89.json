@@ -1,0 +1,36 @@
+{
+    "id": "correct_subsidiary_00022_3",
+    "rank": 89,
+    "data": {
+        "url": "https://serverfault.com/questions/538796/replicating-databases-using-dell-equallogic",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Replicating databases using Dell equallogic",
+        "top_image": "https://cdn.sstatic.net/Sites/serverfault/Img/apple-touch-icon@2.png?v=9b1f48ae296b",
+        "meta_img": "https://cdn.sstatic.net/Sites/serverfault/Img/apple-touch-icon@2.png?v=9b1f48ae296b",
+        "images": [
+            "https://cdn.sstatic.net/Sites/serverfault/Img/logo.svg?v=43f5b6d5f65b",
+            "https://www.gravatar.com/avatar/a52d95c797726073c3d592a7c21e7b4a?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/9607d45c8fedcce07e2abee65fe1f442?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/0795ccf1fc0b2cfcfb194fcf49147b10?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/hE4Yi.png?s=64",
+            "https://www.gravatar.com/avatar/52a8efdba07a455f61ed489d5fe2739c?s=64&d=identicon&r=PG",
+            "https://serverfault.com/posts/538796/ivc/764a?prg=23d0dadb-2549-411c-af55-e070fa6ab8e9"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2013-09-13T19:25:56",
+        "summary": "",
+        "meta_description": "Can the Dell Equallogic 6100/4100 replicate databases like mysql, MS SQL 2012, and Oracle 11g?\n\nI would like to set up my web applications and their databases in VMWare 5. They would run off the",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/serverfault/Img/favicon.ico?v=18e9cc4f2aea",
+        "meta_site_name": "Server Fault",
+        "canonical_link": "https://serverfault.com/questions/538796/replicating-databases-using-dell-equallogic",
+        "text": "Yes, this can be done on SQL databases in conjunction with the Equallogic Host Integration Tools.\n\nFor database-consistent replicas that are handled directly by the Equallogic storage, you need to give your SQL VM direct iSCSI access to the SAN, and your database needs to be stored directly on an Equallogic volume (not on a VMDK within a datastore within a volume). You would also need to install the Host Integration Tools on the VM's OS to allow that system to communicate with the array properly, so that a snapshot can be created just after data is quiesced.\n\nFor Oracle 11g databases, I don't believe the Host Integration Tools are compatible just yet. You may consider referencing the Equallogic whitepaper that references \"Backup & Recovery using RMAN and Snapshots\" for more information on a good solution there.\n\nI'm not actually familiar with mySQL, and can't provide much insight for support there.\n\nYour plan for DR AND load balancing doesn't work out well with this setup though, as Equallogic replication is asynchronous and doesn't give you an \"always live\" copy of the data at the DR site. You would need application-level replication to accomplish that goal, similar to the functionality provided in Microsoft Exchange (I believe the feature is called a \"consistency group\"?) - I'm sure something like this exists within MS SQL, though I don't know how it compares to EQL replication."
+    }
+}
