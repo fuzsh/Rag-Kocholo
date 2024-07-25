@@ -1,0 +1,36 @@
+{
+    "id": "correct_leader_00036_2",
+    "rank": 50,
+    "data": {
+        "url": "https://discuss.python.org/t/a-more-useful-and-less-divisive-future-for-typing/34225/8",
+        "read_more_link": "",
+        "language": "en",
+        "title": "A more useful and less divisive future for typing?",
+        "top_image": "https://global.discourse-cdn.com/business6/uploads/python1/original/1X/f93ff97c4f381b5e8add5a0c163b4ded29f20ed7.png",
+        "meta_img": "https://global.discourse-cdn.com/business6/uploads/python1/original/1X/f93ff97c4f381b5e8add5a0c163b4ded29f20ed7.png",
+        "images": [
+            "https://sea2.discourse-cdn.com/business6/user_avatar/discuss.python.org/jelle/48/1049_2.png",
+            "https://sea2.discourse-cdn.com/business6/user_avatar/discuss.python.org/jelle/48/1049_2.png",
+            "https://sea2.discourse-cdn.com/business6/user_avatar/discuss.python.org/jelle/48/1049_2.png",
+            "https://sea2.discourse-cdn.com/business6/user_avatar/discuss.python.org/jelle/48/1049_2.png",
+            "https://sea2.discourse-cdn.com/business6/user_avatar/discuss.python.org/hansgeunsmeyer/48/15188_2.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "mikeshardmind (Michael H)"
+        ],
+        "publish_date": "2023-09-20T19:57:44+00:00",
+        "summary": "",
+        "meta_description": "First off, I apologize if any of this comes off as overly negative, it is my intent here to see if we can start a discussion about addressing some ecosystem pain points with typing that I personally believe stem from att&hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://global.discourse-cdn.com/business6/uploads/python1/optimized/1X/9997f0605d56c4bfecd63594f52f42cdafd6b06a_2_32x32.png",
+        "meta_site_name": "Discussions on Python.org",
+        "canonical_link": "https://discuss.python.org/t/a-more-useful-and-less-divisive-future-for-typing/34225",
+        "text": "I look forward to it and hope it helps with at least some of the diverging behavior bits or lack of having a common set of terms that new things can be discussed using. The recent discussion about subtyping, Never, and so on has shown how the lack of agreed-upon definitions can hurt even discussion of the system as it exists now, let alone how one might want to change it.\n\nYeah, I don’t have good answers for this in particular. It seems that tooling will naturally want to use things that are supported by the language, this included, but I think the issue with this is somewhat magnified by the fact that there isn’t a good canonical typing reference right now for users to not feel like they are fighting the type system because of the choices external to what can be accomplished here, so while it’s a factor, it’s a factor we can’t directly address here, only be mindful of how other decisions may change the perception of how much that impacts users.\n\nFor me personally, yes this would be the largest disconnect. I view the lack of soundness as a place for divergent behavior between type-checking implementation to emerge, as an unnecessary lack of safety that could be provided by typing, and as a way where the type system becomes harder to teach and harder to soundly build upon because it doesn’t follow rules people may be familiar with either from theory or other sound type systems in other languages. For languages with type systems I would consider worth comparing, those would be Julia, Elixir, Haskell, Rust, OCaml, and Kotlin. Julia, in particular, is interesting as a comparison as types are entirely optional and allowed to be gradually added, while being as rigorous as all of the others there when provided. Elixir is in a similar position, but the parallels are harder to draw.\n\nThe lack of soundness in particular has led to a discussion internally at my work about either implementing our own type checker which does enforce soundness or not using Python in a specific context. I don’t hold either of these options as great and largely a product of somewhat unneeded red tape, but the decision on the level of acceptable risks is outside of my direct influence. Creating our own type-checker without the broader community buying into soundness wouldn’t help, it would only create further divergence between type-checking implementations by adding yet another implementation that does things differently.\n\nQuite bluntly, I don’t think something should claim to be a type checker if its primary purpose is not to check for soundness based on type information with what is currently known to be sound. Anything short of that is just another linter, albeit one that can leverage type information.\n\nThat comes into a philosophical difference though that isn’t necessarily useful to what comes next, but I would hope that if someone has bought into the benefits of typing, they would see that a system that can be self-consistent because it has chosen soundness requires less work to understand as there don’t need to be special cases where “pragmatic” decisions interact with each other, and is therefore also easier to teach and harder for there to be a meaningful divergence between type-checkers.\n\nI should also emphasize that I don’t think a sound type system requires everything to be typed or for adding type information to be any harder than it is today, I expect it to be easier because the consistency provided by a sound, self-consistent system should make it easier to teach and document the “right” way, but I do acknowledge that changing existing tools to enforce soundness would cause some projects to need to fix things that are not currently enforced, and it’s definitely something that needs to be kept in mind.\n\nI would be very surprised if people picked rust for type safety as their first choice leaving Python unless they have some other very specific needs as well. I would expect that most people starting from python but wanting stronger benefits from typing as their primary goal would be better served by either Kotlin or Julia as both would have more similarities with their current code."
+    }
+}
