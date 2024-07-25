@@ -1,0 +1,34 @@
+{
+    "id": "wrong_mix_property_foundationPlace_00119_2",
+    "rank": 9,
+    "data": {
+        "url": "https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/s3-example-photos-view.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Viewing Photos in an Amazon S3 Bucket from a Browser",
+        "top_image": "https://docs.aws.amazon.com/assets/images/favicon.ico",
+        "meta_img": "https://docs.aws.amazon.com/assets/images/favicon.ico",
+        "images": [
+            "https://docs.aws.amazon.com/images/sdk-for-javascript/v2/developer-guide/images/browsericon.png",
+            "https://docs.aws.amazon.com/images/sdk-for-javascript/v2/developer-guide/images/s3-photo-album-example.png",
+            "https://d1ge0kk1l5kms0.cloudfront.net/images/G/01/webservices/console/warning.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "JavaScript",
+            "ECMAScript",
+            "Node.js"
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "Example browser script that shows how to view photos in Amazon S3 buckets.",
+        "meta_lang": "en",
+        "meta_favicon": "/assets/images/favicon.ico",
+        "meta_site_name": "",
+        "canonical_link": "https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/s3-example-photos-view.html",
+        "text": "We announced the upcoming end-of-support for AWS SDK for JavaScript v2. We recommend that you migrate to AWS SDK for JavaScript v3. For dates, additional details, and information on how to migrate, please refer to the linked announcement.\n\nViewing Photos in an Amazon S3 Bucket from a Browser\n\nThis browser script code example shows:\n\nThe Scenario\n\nIn this example, a simple HTML page provides a browser-based application for viewing the photos in a photo album. The photo album is in an Amazon S3 bucket into which photos are uploaded.\n\nThe browser script uses the SDK for JavaScript to interact with an Amazon S3 bucket. The script uses the listObjects method of the Amazon S3 client class to enable you to view the photo albums.\n\nPrerequisite Tasks\n\nTo set up and run this example, first complete these tasks.\n\nDefining the Webpage\n\nThe HTML for the photo-viewing application consists of a <div> element in which the browser script creates the viewing interface. The first <script> element adds the SDK to the browser script. The second <script> element adds the external JavaScript file that holds the browser script code.\n\nFor this example, the file is named PhotoViewer.js, and is located in the same folder as the HTML file. To find the current SDK_VERSION_NUMBER, see the API Reference for the SDK for JavaScript at AWS SDK for JavaScript API Reference Guide.\n\n<!DOCTYPE html> <html> <head> <!-- **DO THIS**: --> <!-- Replace SDK_VERSION_NUMBER with the current SDK version number --> <script src=\"https://sdk.amazonaws.com/js/aws-sdk-SDK_VERSION_NUMBER.js\"></script> <script src=\"./PhotoViewer.js\"></script> <script>listAlbums();</script> </head> <body> <h1>Photo Album Viewer</h1> <div id=\"viewer\" /> </body> </html>\n\nConfiguring the SDK\n\nObtain the credentials you need to configure the SDK by calling the CognitoIdentityCredentials method. You need to provide the Amazon Cognito identity pool ID. Then create an AWS.S3 service object.\n\n// **DO THIS**: // Replace BUCKET_NAME with the bucket name. // var albumBucketName = \"BUCKET_NAME\"; // **DO THIS**: // Replace this block of code with the sample code located at: // Cognito -- Manage Identity Pools -- [identity_pool_name] -- Sample Code -- JavaScript // // Initialize the Amazon Cognito credentials provider AWS.config.region = \"REGION\"; // Region AWS.config.credentials = new AWS.CognitoIdentityCredentials({ IdentityPoolId: \"IDENTITY_POOL_ID\", }); // Create a new service object var s3 = new AWS.S3({ apiVersion: \"2006-03-01\", params: { Bucket: albumBucketName }, }); // A utility function to create HTML. function getHtml(template) { return template.join(\"\\n\"); }\n\nThe rest of the code in this example defines the following functions to gather and present information about the albums and photos in the bucket.\n\nListing Albums in the Bucket\n\nTo list all of the existing albums in the bucket, the application's listAlbums function calls the listObjects method of the AWS.S3 service object. The function uses the CommonPrefixes property so that the call returns only objects that are used as albums (that is, the folders).\n\nThe rest of the function takes the list of albums from the Amazon S3 bucket and generates the HTML needed to display the album list on the webpage.\n\n// List the photo albums that exist in the bucket. function listAlbums() { s3.listObjects({ Delimiter: \"/\" }, function (err, data) { if (err) { return alert(\"There was an error listing your albums: \" + err.message); } else { var albums = data.CommonPrefixes.map(function (commonPrefix) { var prefix = commonPrefix.Prefix; var albumName = decodeURIComponent(prefix.replace(\"/\", \"\")); return getHtml([ \"<li>\", '<button style=\"margin:5px;\" onclick=\"viewAlbum(\\'' + albumName + \"')\\\">\", albumName, \"</button>\", \"</li>\", ]); }); var message = albums.length ? getHtml([\"<p>Click on an album name to view it.</p>\"]) : \"<p>You do not have any albums. Please Create album.\"; var htmlTemplate = [ \"<h2>Albums</h2>\", message, \"<ul>\", getHtml(albums), \"</ul>\", ]; document.getElementById(\"viewer\").innerHTML = getHtml(htmlTemplate); } }); }\n\nViewing an Album\n\nTo display the contents of an album in the Amazon S3 bucket, the application's viewAlbum function takes an album name and creates the Amazon S3 key for that album. The function then calls the listObjects method of the AWS.S3 service object to obtain a list of all the objects (the photos) in the album.\n\nThe rest of the function takes the list of objects that are in the album and generates the HTML needed to display the photos on the webpage."
+    }
+}

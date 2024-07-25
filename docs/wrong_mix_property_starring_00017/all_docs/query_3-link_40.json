@@ -1,0 +1,37 @@
+{
+    "id": "wrong_mix_property_starring_00017_3",
+    "rank": 40,
+    "data": {
+        "url": "http://varianceexplained.org/r/love-actually-network/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Analyzing networks of characters in 'Love Actually'",
+        "top_image": "http://varianceexplained.org/images/david_robinson_picture2.jpg",
+        "meta_img": "",
+        "images": [
+            "http://varianceexplained.org/images/david_robinson_picture2.jpg",
+            "https://www.dropbox.com/s/em5wuld7y2db7c9/Screenshot%202015-12-25%2010.28.38.png?dl=1",
+            "http://varianceexplained.org/figs/2015-12-25-love-actually-network/h-1.png",
+            "http://varianceexplained.org/figs/2015-12-25-love-actually-network/scenes-1.png",
+            "http://varianceexplained.org/figs/2015-12-25-love-actually-network/cooccur-1.png",
+            "http://varianceexplained.org/figs/2015-12-25-love-actually-network/unnamed-chunk-2-1.png",
+            "https://www.dropbox.com/s/tfln9lxrvqpqcwv/Screenshot%202015-12-25%2014.53.35.png?dl=1",
+            "http://varianceexplained.org/images/david_robinson_picture2.jpg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "r"
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2015-12-25T07:30:00+00:00",
+        "summary": "",
+        "meta_description": "Every Christmas Eve, my family watches Love Actually. Objectively it’s not a particularly, er, good movie, but it’s well-suited for a holiday tradition. (Vox has got my back here).",
+        "meta_lang": "en",
+        "meta_favicon": "http://varianceexplained.org/favicon.ico",
+        "meta_site_name": "Variance Explained",
+        "canonical_link": "http://varianceexplained.org/r/love-actually-network/",
+        "text": "Every Christmas Eve, my family watches Love Actually. Objectively it’s not a particularly, er, good movie, but it’s well-suited for a holiday tradition. (Vox has got my back here).\n\nEven on the eighth or ninth viewing, it’s impressive what an intricate network of characters it builds. This got me wondering how we could visualize the connections quantitatively, based on how often characters share scenes. So last night, while my family was watching the movie, I loaded up RStudio, downloaded a transcript, and started analyzing.\n\nParsing\n\nIt’s easy to use R to parse the raw script into a data frame, using a combination of dplyr, stringr, and tidyr. (For legal reasons I don’t want to host the script file myself, but it’s literally the first Google result for “Love Actually script.” Just copy the .doc contents into a text file called love_actually.txt).\n\nI also set up a CSV file matching characters to their actors, which you can read in separately. (I chose 20 characters that have notable roles in the story).\n\nNow we have a tidy data frame with one row per line, along with columns describing the scene number and characters:\n\nFrom here it’s easy to count the lines-per-scene-per-character, and to turn it into a binary speaker-by-scene matrix.\n\nNow we can get to the interesting stuff!\n\nAnalysis\n\nWhenever we have a matrix, it’s worth trying to cluster it. Let’s start with hierarchical clustering.\n\nThis looks about right! Almost all the romantic pairs are together (Natalia/PM; Aurelia/Jamie, Harry/Karen; Karl/Sarah; Juliet/Peter; Jack/Judy) as are the friends (Colin/Tony; Billy/Joe) and family (Daniel/Sam).\n\nOne thing this tree is perfect for is giving an ordering that puts similar characters close together:\n\nThis ordering can be used to make other graphs more informative. For instance, we can visualize a timeline of all scenes:\n\nIf you’ve seen the film as many times as I have (you haven’t), you can stare at this graph and the film’s scenes spring out, like notes engraved in vinyl.\n\nOne reason it’s good to lay out raw data like this (as opposed to processed metrics like distances) is that anomalies stand out. For instance, look at the last scene: it’s the “coda” at the airport that includes 15 (!) characters. If we’re going to plot this as a network (and we totally are!) we’ve got to ignore that scene, or else it looks like almost everyone is connected to everyone else.\n\nAfter that, we can create a cooccurence matrix (see here) containing how many times two characters share scenes:\n\nThis gives us a sense of how the clustering in the above graph occurred. We can then use the igraph package to plot the network.\n\nA few patterns pop out of this visualization. We see that the majority of characters are tightly connected (often by the scenes at the school play, or by Karen (Emma Thompson), who is friends or family to many key characters). But we see Bill Nighy’s plotline occurs almost entirely separate from everyone else, and that five other characters are linked to the main network by only a single thread (Sarah’s conversation with Mark at the wedding).\n\nOne interesting aspect of this data is that this network builds over the course of the movie, growing nodes and connections as characters and relationships are introduced. There are a few ways to show this evolving network (such as an animation), but I decided to make it an interactive Shiny app, which lets the user specify the scene and shows the network that the movie has built up to that point.\n\n(You can view the code for the Shiny app on GitHub).\n\nData Actually\n\nHave you heard the complaint that we are “drowning in data”? How about the horror stories about how no one understands statistics, and we need trained statisticians as the “police” to keep people from misinterpreting their methods? It sure makes data science sound like important, dreary work.\n\nWhenever I get gloomy about those topics, I try to spend a little time on silly projects like this, which remind me why I learned statistical programming in the first place. It took minutes to download a movie script and turn it into usable data, and within a few hours, I was able to see the movie in a new way. We’re living in a wonderful world: one with powerful tools like R and Shiny, and one overflowing with resources that are just a Google search away.\n\nMaybe you don’t like ‘Love Actually’; you like Star Wars. Or you like baseball, or you like comparing programming languages. Or you’re interested in dating, or hip hop. Whatever questions you’re interested in, the answers are just a search and a script away. If you look for it, I’ve got a sneaky feeling you’ll find that data actually is all around us."
+    }
+}
