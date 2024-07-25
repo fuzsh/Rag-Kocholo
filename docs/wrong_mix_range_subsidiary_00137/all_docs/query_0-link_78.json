@@ -1,0 +1,51 @@
+{
+    "id": "wrong_mix_range_subsidiary_00137_0",
+    "rank": 78,
+    "data": {
+        "url": "https://stackoverflow.com/questions/4842765/ora-00054-resource-busy-and-acquire-with-nowait-specified-or-timeout-expired",
+        "read_more_link": "",
+        "language": "en",
+        "title": "ORA-00054: resource busy and acquire with NOWAIT specified or timeout expired",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/74e7b8cd89552b4a8ca23172105cc00a?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/97cbf76c7ee1a0f35d935a826e6a7ea8?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/u87X2.jpg?s=64",
+            "https://www.gravatar.com/avatar/5377fcb45b6b2d94ad3bb0d09de6c5e0?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/a007be5a61f6aa8f3e85ae2fc18dd66e?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/5502c7ce21d1033225293aa2b2d8c595?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/vD4Mp.jpg?s=64",
+            "https://i.sstatic.net/m6p4d.jpg?s=64",
+            "https://www.gravatar.com/avatar/a0ef03e92f559ff3f86d7533225002b7?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/JPTgv.jpg?s=64",
+            "https://www.gravatar.com/avatar/15aa5d63d4b2970d4d1b564c9565e2f7?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/7nehd.jpg?s=64",
+            "https://www.gravatar.com/avatar/93440d834ee69145a86ecc21f5be6301?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/445cb781c61afac2171bbb0e83703825?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://graph.facebook.com/1249675173/picture?type=large",
+            "https://www.gravatar.com/avatar/add5c7489cf17cde1f02f89579bcfa76?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/fbc999ecadff4e40d49f526d5f31cc9d?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/c9f49572a6f013a186b04bb2051bb28c?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/W1kxv.png?s=64",
+            "https://www.gravatar.com/avatar/d25cc6de3754f84f6790474423923b08?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/32d1e7b634e47debd9e7cbb87eaa26fb?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/4842765/ivc/1758?prg=abbe4217-2221-42c5-b7fb-bbda714720e4"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2011-01-30T11:59:43",
+        "summary": "",
+        "meta_description": "Why am I getting this database error when I update a table?\r\n  ERROR at line 1:\n  ORA-00054: resource busy and acquire with NOWAIT specified or timeout expired",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/4842765/ora-00054-resource-busy-and-acquire-with-nowait-specified-or-timeout-expired",
+        "text": "There is a very easy work around for this problem.\n\nIf you run a 10046 trace on your session (google this... too much to explain). You will see that before any DDL operation Oracle does the following:\n\nLOCK TABLE 'TABLE_NAME' NO WAIT\n\nSo if another session has an open transaction you get an error. So the fix is... drum roll please. Issue your own lock before the DDL and leave out the 'NO WAIT'.\n\nSpecial Note:\n\nif you are doing splitting/dropping partitions oracle just locks the partition. -- so yo can just lock the partition subpartition.\n\nSo... The following steps fix the problem.\n\nLOCK TABLE 'TABLE NAME'; -- you will 'wait' (developers call this hanging). until the session with the open transaction, commits. This is a queue. so there may be several sessions ahead of you. but you will NOT error out.\n\nExecute DDL. Your DDL will then run a lock with the NO WAIT. However, your session has aquired the lock. So you are good.\n\nDDL auto-commits. This frees the locks.\n\nDML statements will 'wait' or as developers call it 'hang' while the table is locked.\n\nI use this in code that runs from a job to drop partitions. It works fine. It is in a database that is constantly inserting at a rate of several hundred inserts/second. No errors.\n\nif you are wondering. Doing this in 11g. I have done this in 10g before as well in the past.\n\nThis happens when a session other than the one used to alter a table is holding a lock likely because of a DML (update/delete/insert). If you are developing a new system, it is likely that you or someone in your team issues the update statement and you could kill the session without much consequence. Or you could commit from that session once you know who has the session open.\n\nIf you have access to a SQL admin system use it to find the offending session. And perhaps kill it.\n\nYou could use v$session and v$lock and others but I suggest you google how to find that session and then how to kill it.\n\nIn a production system, it really depends. For oracle 10g and older, you could execute\n\nLOCK TABLE mytable in exclusive mode; alter table mytable modify mycolumn varchar2(5);\n\nIn a separate session but have the following ready in case it takes too long.\n\nalter system kill session '....\n\nIt depends on what system do you have, older systems are more likely to not commit every single time. That is a problem since there may be long standing locks. So your lock would prevent any new locks and wait for a lock that who knows when will be released. That is why you have the other statement ready. Or you could look for PLSQL scripts out there that do similar things automatically.\n\nIn version 11g there is a new environment variable that sets a wait time. I think it likely does something similar to what I described. Mind you that locking issues don't go away.\n\nALTER SYSTEM SET ddl_lock_timeout=20; alter table mytable modify mycolumn varchar2(5);\n\nFinally it may be best to wait until there are few users in the system to do this kind of maintenance."
+    }
+}
