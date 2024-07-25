@@ -182,7 +182,7 @@ def get_article_from_query(kg, search_engine="google"):
     # TODO: FIX - count the number of files in the directory, if it is greater than 100, skip | BULLSHIT IDEA
     files = os.listdir(f"docs/{identifier}/all_docs")
     files_length = len(files)
-    if files_length > 0:
+    if files_length > 150:
         log.info(f"Skipping {identifier} with {files_length} files")
         return
 
@@ -198,6 +198,7 @@ def get_article_from_query(kg, search_engine="google"):
 
             urls = _get_urls(soup, search_engine)
             urls = [url for url in urls if not should_avoid(url['url'], avoid_extensions)]
+            urls = [url for url in urls if not os.path.exists(f"docs/{identifier}/all_docs/query_{i}-link_{url['rank']}.json")]
 
             # APPROACH 2
             rs = [grequests.get(u['url'], timeout=3) for u in urls]
