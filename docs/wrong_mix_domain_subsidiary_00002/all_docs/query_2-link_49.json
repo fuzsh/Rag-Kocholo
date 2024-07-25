@@ -1,0 +1,48 @@
+{
+    "id": "wrong_mix_domain_subsidiary_00002_2",
+    "rank": 49,
+    "data": {
+        "url": "https://stackoverflow.com/questions/219569/best-database-field-type-for-a-url",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Best database field type for a URL",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/970cfde558c269cc21cd075ae46731a5?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/75ffddfe141906b9e4fca7c6b44c681e?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/4KKZD.jpg?s=64",
+            "https://www.gravatar.com/avatar/970cfde558c269cc21cd075ae46731a5?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/6883cab0dedd4d45544abfc7eb788e82?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/D2CgS.png?s=64",
+            "https://i.sstatic.net/Of5eR.png?s=64",
+            "https://i.sstatic.net/LVOVA.jpg?s=64",
+            "https://www.gravatar.com/avatar/1f996601ecfe39d722db7eedf8ed81e8?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/12f470d8288ea322d9eca84b93c2b05c?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/a007be5a61f6aa8f3e85ae2fc18dd66e?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/344acc8bc056b59a7ea5d7601684a5d4?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/de9214b530ec1880860eb3a4ac30fdc7?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/xUEx5.png",
+            "https://i.sstatic.net/a76T0.jpg?s=64",
+            "https://www.gravatar.com/avatar/c11c60c7e6d29cb4b87f3c0a3b692181?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/Aksmt.jpg?s=64",
+            "https://www.gravatar.com/avatar/ccc2b01a6e55723c6b9d3810482dd8cf?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/219569/ivc/e4ad?prg=68886924-4950-434c-9869-958124d9d64e"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2008-10-20T19:29:04",
+        "summary": "",
+        "meta_description": "I need to store a url in a MySQL table. What's the best practice for defining a field that will hold a URL with an undetermined length?",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/219569/best-database-field-type-for-a-url",
+        "text": "This really depends on your use case (see below), but storing as TEXT has performance issues, and a huge VARCHAR sounds like overkill for most cases.\n\nMy approach: use a generous, but not unreasonably large VARCHAR length, such as VARCHAR(500) or so, and encourage the users who need a larger URL to use a URL shortener such as safe.mn.\n\nThe Twitter approach: For a really nice UX, provide an automatic URL shortener for overly-long URL's and store the \"display version\" of the link as a snippet of the URL with ellipses at the end. (Example: http://stackoverflow.com/q/219569/1235702 would be displayed as stackoverflow.com/q/21956... and would link to a shortened URL http://ex.ampl/e1234)\n\nNotes and Caveats\n\nObviously, the Twitter approach is nicer, but for my app's needs, recommending a URL shortener was sufficient.\n\nURL shorteners have their drawbacks, such as security concerns. In my case, it's not a huge risk because the URL's are not public and not heavily used; however, this obviously won't work for everyone. safe.mn appears to block a lot of spam and phishing URL's, but I would still recommend caution.\n\nBe sure to note that you shouldn't force your users to use a URL shortener. For most cases (at least for my app's needs), 500 characters is overly sufficient for what most users will be using it for. Only use/recommend a URL shortener for overly-long links.\n\nYou'll want to choose between a TEXT or VARCHAR column based on how often the URL will be used and whether you actually need the length to be unbound.\n\nUse VARCHAR with maxlength >= 2,083 as micahwittman suggested if:\n\nYou'll use a lot of URLs per query (unlike TEXT columns, VARCHARs are stored inline with the row)\n\nYou're pretty sure that a URL will never exceed the row-limit of 65,535 bytes.\n\nUse TEXT if :\n\nThe URL really might break the 65,535 byte row limit\n\nYour queries won't select or update a bunch of URLs at once (or very often). This is because TEXT columns just hold a pointer inline, and the random accesses involved in retrieving the referenced data can be painful.\n\nMost browsers will let you put very large amounts of data in a URL and thus lots of things end up creating very large URLs so if you are talking about anything more than the domain part of a URL you will need to use a TEXT column since the VARCHAR/CHAR are limited.\n\nYou better use varchar(max) which (in terms of size) means varchar (65535). This will even store your bigger web addresses and will save your space as well.\n\nThe max specifier expands the storage capabilities of the varchar, nvarchar, and varbinary data types. varchar(max), nvarchar(max), and varbinary(max) are collectively called large-value data types. You can use the large-value data types to store up to 2^31-1 bytes of data.\n\nSee this article on TechNet about using Using Large-Value Data Types"
+    }
+}

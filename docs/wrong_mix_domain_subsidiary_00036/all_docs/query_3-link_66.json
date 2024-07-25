@@ -1,0 +1,33 @@
+{
+    "id": "wrong_mix_domain_subsidiary_00036_3",
+    "rank": 66,
+    "data": {
+        "url": "https://stackoverflow.com/questions/63557459/cannot-send-email-with-javamail-and-zimbra-server",
+        "read_more_link": "",
+        "language": "en",
+        "title": "cannot send email with javamail and zimbra server",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://lh3.googleusercontent.com/a-/AOh14Gh72gaukJLsOMD1Hy0NkeCZlcf9Bw2SE0fgI_7zXw=k-s64",
+            "https://stackoverflow.com/posts/63557459/ivc/e4ad?prg=39b32588-3fae-4262-9122-39a1847d5741"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Trung Le"
+        ],
+        "publish_date": "2020-08-24T08:37:15",
+        "summary": "",
+        "meta_description": "I try to send email using javamail to Zimbra server but always receive error Client host rejected: Access denied\nThis is my java code:\npublic class TestMail {\n    public static void main(String[] a...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/63557459/cannot-send-email-with-javamail-and-zimbra-server",
+        "text": "I try to send email using javamail to Zimbra server but always receive error Client host rejected: Access denied\n\nThis is my java code:\n\npublic class TestMail { public static void main(String[] args) throws MessagingException { // provide recipient's email ID String to = \"[email protected]\"; // provide sender's email ID String from = \"[email protected]\"; // provide username final String username = \"[email protected]\"; // provide password final String password = \"password-here\"; // provide host address String host = \"mail.domain.com\"; // configure SMTP server details Properties props = new Properties(); props.put(\"mail.smtp.auth\", \"true\"); // setting starttls props.put(\"mail.smtp.starttls.enable\", \"true\"); props.put(\"mail.smtp.host\", host); props.put(\"mail.smtp.port\", \"587\"); // create the Session object Session session = Session.getInstance(props, new javax.mail.Authenticator() { protected PasswordAuthentication getPasswordAuthentication() { return new PasswordAuthentication(username, password); } }); try { // create a MimeMessage object Message message = new MimeMessage(session); // set From email field message.setFrom(new InternetAddress(from)); // set To email field message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to)); // set email subject field message.setSubject(\"Here comes Jakarta Mail!\"); // set the content of the email message message.setText(\"Just discovered that Jakarta Mail is fun and easy to use\"); // send the email message // Transport.send(message); Transport tr = session.getTransport(\"smtp\"); tr.connect(host, username, password); message.saveChanges(); tr.sendMessage(message, message.getAllRecipients()); tr.close(); System.out.println(\"Email Message Sent Successfully\"); } catch (MessagingException e) { throw new RuntimeException(e); } } }\n\nI think error because it seems java code don't send AUTH PLAIN but I don't know why, maybe I forget configure properties?\n\nBut with nodejs code then email sent success with AUTH PLAIN\n\nDEBUG LOG:"
+    }
+}

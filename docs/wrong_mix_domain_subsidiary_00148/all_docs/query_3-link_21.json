@@ -1,0 +1,33 @@
+{
+    "id": "wrong_mix_domain_subsidiary_00148_3",
+    "rank": 21,
+    "data": {
+        "url": "https://stackoverflow.com/questions/4785398/is-there-a-way-to-communicate-application-context-to-a-db-connection-in-non-syba",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Is there a way to communicate application context to a DB connection in non-Sybase DB servers (similar to set_appcontext in Sybase)?",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://i.sstatic.net/UcQgO.jpg?s=64",
+            "https://www.gravatar.com/avatar/47b88555c03aad35b076726767fcfa35?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/0a116491222bf3f94c85381528593fd7?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/4785398/ivc/e4ad?prg=2c2c6965-e9eb-4b88-99c3-e723c6aab7f9"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2011-01-24T18:03:40",
+        "summary": "",
+        "meta_description": "Sybase has a way for the application to communicate \"context\" data - such as application's end-user name, etc.. - to the database connection session. Context data is  basically just a set of key-va...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/4785398/is-there-a-way-to-communicate-application-context-to-a-db-connection-in-non-syba",
+        "text": "Sybase has a way for the application to communicate \"context\" data - such as application's end-user name, etc.. - to the database connection session. Context data is basically just a set of key-value pairs which is stored/retrieved via set_appcontext/get_appcontext stored procs.\n\nQUESTION:\n\nDo other major DB servers (MSSQL/Oracle/MySQL) have a facility for communicating app context to the session similar to Sybase's set_appcontext?\n\nDetails:\n\nOne specific practical use of app context is when you have an application with middle tier connecting to the database as a very specific generic database user (examples include \"webuser\"/\"http\" for a web app back-end running on web server or \"myappserver\" user for an app server).\n\nWhen that happens, we still want for the database session to know who the END user (e.g. actual user using the app client) is, either for access control or (more relevant to my interest), for an audit/history trigger to be able to determine which end user made the change and log that end user info into an audit table.\n\nPlease note that the info is set at the session level, which means that any inserts/updates/deletes executed within that session are able to use the context data without it being passed to each individual SQL statement - this is VERY important for, say, a trigger.\n\nAs a very specific example of why it's useful, let's say you have an app server starting a DB session on behalf of a client within which you insert/update/delete rows in 5 distinct tables. You want to have audit tables for each of those 5 tables, which include \"which end user made each change\" info.\n\nUsing context data, you can simply retrieve \"end user\" data from app context using the trigger and stored it as part of Audit table record. Without using the app context, your will need to (1) Add \"end user\" column to every one of those 5 tables (instead of to only audit tables) and (2) Change your app server to insert or set-on-update the value of that column in EVERY SQL statement that the app server issues. Oh, and this doesn't even get into how this can be done if you're deleting a row."
+    }
+}

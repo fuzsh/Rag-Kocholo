@@ -1,0 +1,40 @@
+{
+    "id": "wrong_mix_property_subsidiary_00101_1",
+    "rank": 99,
+    "data": {
+        "url": "https://stackoverflow.com/questions/6659360/how-to-solve-javax-net-ssl-sslhandshakeexception-error",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How to solve javax.net.ssl.SSLHandshakeException Error?",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://i.sstatic.net/qNUpW.jpg?s=64",
+            "https://www.gravatar.com/avatar/dfa3978b043d6b5fe00dd5a5b8e22c8d?s=64&d=identicon&r=PG",
+            "https://lh6.googleusercontent.com/-0ykZumduPX4/AAAAAAAAAAI/AAAAAAAAAA8/RQMECmLfpwE/photo.jpg?sz=64",
+            "https://i.sstatic.net/31Rw6.jpg?s=64",
+            "https://www.gravatar.com/avatar/83a2082f82b4952191a66d0a028ba4cc?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/0db2a8cd45527c25255d4e0451923f9b?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/e861c8ca78b4bf1b8d80b7d1c820b71b?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/a007be5a61f6aa8f3e85ae2fc18dd66e?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/b55a266b4b6665c145653a39157d8004?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/a82fbe5077620e3292107b5610adb694?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/6659360/ivc/245c?prg=eab6610a-577a-4375-be89-2e7e1fdc227b"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2011-07-12T04:03:09",
+        "summary": "",
+        "meta_description": "I connected with VPN to setup the inventory API to get product list and it works fine. Once I get the result from the web-service and i bind to UI. And also I integrated PayPal with my application ...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/6659360/how-to-solve-javax-net-ssl-sslhandshakeexception-error",
+        "text": "First, you need to obtain the public certificate from the server you're trying to connect to. That can be done in a variety of ways, such as contacting the server admin and asking for it, using OpenSSL to download it, or, since this appears to be an HTTP server, connecting to it with any browser, viewing the page's security info, and saving a copy of the certificate. (Google should be able to tell you exactly what to do for your specific browser.)\n\nNow that you have the certificate saved in a file, you need to add it to your JVM's trust store. At $JAVA_HOME/jre/lib/security/ for JREs or $JAVA_HOME/lib/security for JDKs, there's a file named cacerts, which comes with Java and contains the public certificates of the well-known Certifying Authorities. To import the new cert, run keytool as a user who has permission to write to cacerts:\n\nkeytool -import -file <the cert file> -alias <some meaningful name> -keystore <path to cacerts file>\n\nIt will most likely ask you for a password. The default password as shipped with Java is changeit. Almost nobody changes it. After you complete these relatively simple steps, you'll be communicating securely and with the assurance that you're talking to the right server and only the right server (as long as they don't lose their private key).\n\nWhenever we are trying to connect to URL,\n\nif server at the other site is running on https protocol and is mandating that we should communicate via information provided in certificate then we have following option:\n\n1) ask for the certificate(download the certificate), import this certificate in trustore. Default trustore java uses can be found in \\Java\\jdk1.6.0_29\\jre\\lib\\security\\cacerts, then if we retry to connect to the URL connection would be accepted.\n\n2) In normal business cases, we might be connecting to internal URLS in organizations and we know that they are correct. In such cases, you trust that it is the correct URL, In such cases above, code can be used which will not mandate to store the certificate to connect to particular URL.\n\nfor the point no 2 we have to follow below steps :\n\n1) write below method which sets HostnameVerifier for HttpsURLConnection which returns true for all cases meaning we are trusting the trustStore.\n\n// trusting all certificate public void doTrustToCertificates() throws Exception { Security.addProvider(new com.sun.net.ssl.internal.ssl.Provider()); TrustManager[] trustAllCerts = new TrustManager[]{ new X509TrustManager() { public X509Certificate[] getAcceptedIssuers() { return null; } public void checkServerTrusted(X509Certificate[] certs, String authType) throws CertificateException { return; } public void checkClientTrusted(X509Certificate[] certs, String authType) throws CertificateException { return; } } }; SSLContext sc = SSLContext.getInstance(\"SSL\"); sc.init(null, trustAllCerts, new SecureRandom()); HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory()); HostnameVerifier hv = new HostnameVerifier() { public boolean verify(String urlHostName, SSLSession session) { if (!urlHostName.equalsIgnoreCase(session.getPeerHost())) { System.out.println(\"Warning: URL host '\" + urlHostName + \"' is different to SSLSession host '\" + session.getPeerHost() + \"'.\"); } return true; } }; HttpsURLConnection.setDefaultHostnameVerifier(hv); }\n\n2) write below method, which calls doTrustToCertificates before trying to connect to URL\n\n// connecting to URL public void connectToUrl(){ doTrustToCertificates();// URL url = new URL(\"https://www.example.com\"); HttpURLConnection conn = (HttpURLConnection)url.openConnection(); System.out.println(\"ResponseCode =\"+conn.getResponseCode()); }\n\nThis call will return response code = 200 means connection is successful.\n\nFor more detail and sample example you can refer to URL.\n\nI believe that you are trying to connect to a something using SSL but that something is providing a certificate which is not verified by root certification authorities such as verisign.. In essence by default secure connections can only be established if the person trying to connect knows the counterparties keys or some other verndor such as verisign can step in and say that the public key being provided is indeed right..\n\nALL OS's trust a handful of certification authorities and smaller certificate issuers need to be certified by one of the large certifiers making a chain of certifiers if you get what I mean...\n\nAnyways coming back to the point.. I had a similiar problem when programming a java applet and a java server ( Hopefully some day I will write a complete blogpost about how I got all the security to work :) )\n\nIn essence what I had to do was to extract the public keys from the server and store it in a keystore inside my applet and when I connected to the server I used this key store to create a trust factory and that trust factory to create the ssl connection. There are alterante procedures as well such as adding the key to the JVM's trusted host and modifying the default trust store on start up..\n\nI did this around two months back and dont have source code on me right now.. use google and you should be able to solve this problem. If you cant message me back and I can provide you the relevent source code for the project .. Dont know if this solves your problem since you havent provided the code which causes these exceptions. Furthermore I was working wiht applets thought I cant see why it wont work on Serverlets...\n\nP.S I cant get source code before the weekend since external SSH is disabled in my office :("
+    }
+}

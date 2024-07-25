@@ -1,0 +1,46 @@
+{
+    "id": "wrong_mix_property_foundationPlace_00095_2",
+    "rank": 68,
+    "data": {
+        "url": "https://community.qlik.com/t5/QlikView-App-Dev/SAGE-50-Accounts-and-QlikView/td-p/384655",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Solved: SAGE 50 Accounts and QlikView",
+        "top_image": "https://community.qlik.com/html/assets/qlik-logo1.png",
+        "meta_img": "https://community.qlik.com/html/assets/qlik-logo1.png",
+        "images": [
+            "https://community.qlik.com/html/assets/qlik-logo-new.svg",
+            "https://community.qlik.com/skins/images/C93F0841338F0B9536143C576A72F195/responsive_peak/images/icon_anonymous_message.png",
+            "https://community.qlik.com/skins/images/C93F0841338F0B9536143C576A72F195/responsive_peak/images/icon_anonymous_message.png",
+            "https://community.qlik.com/skins/images/C93F0841338F0B9536143C576A72F195/responsive_peak/images/icon_anonymous_message.png",
+            "https://community.qlik.com/skins/images/C93F0841338F0B9536143C576A72F195/responsive_peak/images/icon_anonymous_message.png",
+            "https://community.qlik.com/skins/images/C93F0841338F0B9536143C576A72F195/responsive_peak/images/icon_anonymous_message.png",
+            "https://community.qlik.com/skins/images/C93F0841338F0B9536143C576A72F195/responsive_peak/images/icon_anonymous_message.png",
+            "https://community.qlik.com/legacyfs/online/39038_code.jpg",
+            "https://community.qlik.com/legacyfs/online/39039_sample dashboard.jpg",
+            "https://community.qlik.com/skins/images/C93F0841338F0B9536143C576A72F195/responsive_peak/images/icon_anonymous_message.png",
+            "https://community.qlik.com/skins/images/C93F0841338F0B9536143C576A72F195/responsive_peak/images/icon_anonymous_message.png",
+            "https://community.qlik.com/skins/images/C93F0841338F0B9536143C576A72F195/responsive_peak/images/icon_anonymous_message.png",
+            "https://community.qlik.com/legacyfs/online/emoticons/happy.png",
+            "https://community.qlik.com/skins/images/C93F0841338F0B9536143C576A72F195/responsive_peak/images/icon_anonymous_message.png",
+            "https://community.qlik.com/skins/images/C93F0841338F0B9536143C576A72F195/responsive_peak/images/icon_anonymous_message.png",
+            "https://community.qlik.com/skins/images/C93F0841338F0B9536143C576A72F195/responsive_peak/images/icon_anonymous_message.png",
+            "https://www.adasitecompliance.com/img/APolicy.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2012-09-05T20:40:38.662000+00:00",
+        "summary": "",
+        "meta_description": "Solved: Has anyone managed to link SAGE 50 accounts to qlikview via SQL 2005? The tables in SAGE are DTA files, I am struggling to bring SAGE through - 384655",
+        "meta_lang": "en",
+        "meta_favicon": "https://community.qlik.com/html/@C0F5D3F647A7CDEC19BE35D6A4BA1F39/assets/favicon2024.ico",
+        "meta_site_name": "",
+        "canonical_link": "https://community.qlik.com/t5/QlikView-App-Dev/SAGE-50-Accounts-and-QlikView/td-p/384655",
+        "text": "Mandy,\n\nYou're a miracle, thank you so much for your patience and support. I have now managed to load the Sage data via my laptop into Qlikview and can start working on the Qlikview code that you kindly shared with me.\n\nIn case anybody else subsequently reads this thread, my problem was with the ODBC driver. As Mandy correctly points out, this only works on the physical computer onto which the full Sage software is loaded. Simply running the installation routine to load it onto your PC or laptop does not run a complete installation. Again in the name of completeness, the error messages I got included references to data mismatches and a message saying ODBC driver not found when I tried to remove the Sage driver from my laptop. I got around this by loading the whole Sage 50 Accounts 2013 application onto my laptop then running the ODBC installation from the ODBC32 subdirectory. You can then totally ignore the Sage installation and access the Sage data on the shared drive on the server. The files can be found, as Mandy says, in the driveletter:\\Accounts\\ACCDATA in a series of DTA files. Save these as QVDs as described in Mandy's post.\n\nI'm not sure anybody will ever read that but it could save them the three weeks it took me to work it out if they do.\n\nMike\n\nHi Mike - yes I managed to crack it with a lot of patience and trial and error, and using your DAT back up files of SAGE rather than trying to link directly.\n\nThe key is linking the ACCDATA folder, which contains the DAT files via ODBC as follows:\n\nGo to administrative tools from the control panel - select data sources (ODBC)\n\nGo to system dsn and add the latest Sage Line 50 version (should automatically appear on the list)\n\nclick finish - give your data source a name you will remember, and add the data path - if you go to my computer and look to where your ACCDATA files are stored - use the properties of this as the data path.\n\nIf you are asked for login codes use the administrator ones rather than individual user codes.\n\nIf you can get this bit to work you then need to create qvd files before you can begin to create your dashboards.\n\nLet me know how you can get on - I can let you know the key data tables to use for your QVD's - we have a great dashboad that we use to help us analyse our sales trends.\n\nMandy\n\nThat's dissappointing - dont give up. If you want to email me directly I can provide screen shots to try and help you? Are you working on the server computer? ie the computer that the back up files are stored within?\n\nI note from another post that you made that you are wanting to look at invoice data - thats one of the pages within the dashboard that I've set up - the company are now finding that they use QlikView when dealing with customers and suppliers rather than SAGE because it is so easy to bring data from different reports through to the same screen. It would be a shame if you didnt finish it - believe me if I can do it any one can!\n\nCode to create the invoice QVD's is below, the passwords and user id's are pulled through from the ODBC set up - use the admin codes. Remember to build it on a computer that has access to the server files, ie where the backups are stored. Good Luck, Mandy\n\nMandy,\n\nYou're a miracle, thank you so much for your patience and support. I have now managed to load the Sage data via my laptop into Qlikview and can start working on the Qlikview code that you kindly shared with me.\n\nIn case anybody else subsequently reads this thread, my problem was with the ODBC driver. As Mandy correctly points out, this only works on the physical computer onto which the full Sage software is loaded. Simply running the installation routine to load it onto your PC or laptop does not run a complete installation. Again in the name of completeness, the error messages I got included references to data mismatches and a message saying ODBC driver not found when I tried to remove the Sage driver from my laptop. I got around this by loading the whole Sage 50 Accounts 2013 application onto my laptop then running the ODBC installation from the ODBC32 subdirectory. You can then totally ignore the Sage installation and access the Sage data on the shared drive on the server. The files can be found, as Mandy says, in the driveletter:\\Accounts\\ACCDATA in a series of DTA files. Save these as QVDs as described in Mandy's post.\n\nI'm not sure anybody will ever read that but it could save them the three weeks it took me to work it out if they do.\n\nMike"
+    }
+}

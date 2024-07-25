@@ -1,0 +1,41 @@
+{
+    "id": "wrong_mix_domain_subsidiary_00061_0",
+    "rank": 43,
+    "data": {
+        "url": "https://stackoverflow.com/questions/4992317/illegal-character-in-path-at-index-16",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Illegal character in path at index 16",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/965220a70d38e6a29466f44cdb4f804e?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/7747e7e62ff27bf51f8c96b1382d1adc?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/bdaed795a8e0a2965c02c6507b29b1ef?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/ec415b0f9759a02f6e054c93d2f072eb?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/a83229661e7dafa10b1c0d502aa15c8a?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/5513333e591f7e58c706e1c6c9f91742?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/a007be5a61f6aa8f3e85ae2fc18dd66e?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/690eec685cbdb79b9f6deee401a61558?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/CFS2D.jpg?s=64",
+            "https://www.gravatar.com/avatar/e7772971d74f93f71b3b806ac6ec03e1?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/352817d48f96da8072fed626aa8d51ec?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/4992317/ivc/70d9?prg=89b586cf-a78c-4fa1-a18c-6312a2f700e5"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2011-02-14T12:48:11",
+        "summary": "",
+        "meta_description": "I am getting the following error in RAD:\n\njava.net.URISyntaxException: Illegal character in path at index 16: file:/E:/Program Files/IBM/SDP/runtimes/base......\r\nCould you please let me know what i...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/4992317/illegal-character-in-path-at-index-16",
+        "text": "There's an illegal character at index 16. I'd say it doesn't like the space in the path. You can percent encode special characters like spaces. Replace it with a %20 in this case.\n\nThe question I linked to above suggests using URLEncoder:\n\nString thePath = \"file://E:/Program Files/IBM/SDP/runtimes/base\"; thePath = URLEncoder.encode(thePath, \"UTF-8\");\n\nI had a similar problem for xml. Just passing the error and solution (edited Jonathon version).\n\nCode:\n\nHttpGet xmlGet = new HttpGet( xmlContent );\n\nXml format:\n\n<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?> <employee> <code>CA</code> <name>Cath</name> <salary>300</salary> </employee>\n\nError:\n\njava.lang.IllegalArgumentException: Illegal character in path at index 0: <?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?> <contents> <portalarea>CA</portalarea> <portalsubarea>Cath</portalsubarea> <direction>Navigator</direction> </contents> at java.net.URI.create(URI.java:859) at org.apache.http.client.methods.HttpGet.<init>(HttpGet.java:69) at de.vogella.jersey.first.Hello.validate(Hello.java:56)\n\nNot Exactly perfect Solution: ( error vanished for that instance )\n\nString theXml = URLEncoder.encode( xmlContent, \"UTF-8\" ); HttpGet xmlGet = new HttpGet( theXml );\n\nAny idea What i should be doing ? It just cleared passed but had problem while doing this\n\nHttpResponse response = httpclient.execute( xmlGet );\n\nIf this error occurs with the jdk use this :\n\nprogra~1 instead of program files in the path example :\n\nc:/progra~1/java instead of c:/program files/java\n\nIt will be ok always avoid space in java code.....\n\nit can be used for every thing in program files, otherwise put quotes at the beginning and the en of path\n\n\"c:/..../\""
+    }
+}

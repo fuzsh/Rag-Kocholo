@@ -1,0 +1,38 @@
+{
+    "id": "wrong_mix_domainrange_subsidiary_00093_3",
+    "rank": 1,
+    "data": {
+        "url": "https://serverfault.com/questions/321249/accurate-unspoofable-time-source",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Accurate, Unspoofable Time Source",
+        "top_image": "https://cdn.sstatic.net/Sites/serverfault/Img/apple-touch-icon@2.png?v=9b1f48ae296b",
+        "meta_img": "https://cdn.sstatic.net/Sites/serverfault/Img/apple-touch-icon@2.png?v=9b1f48ae296b",
+        "images": [
+            "https://cdn.sstatic.net/Sites/serverfault/Img/logo.svg?v=43f5b6d5f65b",
+            "https://www.gravatar.com/avatar/71838b1ccd71421a3fc3db6612ba83c1?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/8OoyN.jpg?s=64",
+            "https://www.gravatar.com/avatar/99ed4843b8c0043c976a1bb823d853ef?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/8fd2cc38404eccac682402628d37accb?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/26ff5031981c6c28f2070b836b796861?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/2479a8442db5ac125ead180174e71422?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/346ca03edfbde2a468adc289867ab975?s=64&d=identicon&r=PG",
+            "https://serverfault.com/posts/321249/ivc/2799?prg=2a790f69-8024-401c-afb4-79023c30eb72"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2011-10-13T18:20:45",
+        "summary": "",
+        "meta_description": "I need an unspoofable and accurate time source.  \n\nShort of setting up my own atomic clock (unless that's easier than it sounds) how could I accomplish this?\n\nIt's not that I don't trust the NTP po...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/serverfault/Img/favicon.ico?v=18e9cc4f2aea",
+        "meta_site_name": "Server Fault",
+        "canonical_link": "https://serverfault.com/questions/321249/accurate-unspoofable-time-source",
+        "text": "One of the previous answers mentioned MD5 auth but failed to mention the pubkey authentication available in NTP4. Many national labs provide md5/autokey enabled time services.\n\nI do not understand what your threat model is; if someone is capable of and willing to spoof your GPS signal you have bigger issues than what time it is. That being said you could combine a local refclock using GPS or CDMA and then augment this time signal with authenticated time from some of the national labs that provide authenticated time services. This way if your GPS signal is spoofed you could still rely on the authenticated time from the national labs.\n\nGPS:\n\nFor as little as $40 and some soldering you could set up a local GPS+PPS time source with a Sure Electronics GPS evaluation board. Occasionally you can find a CDMA refclock for fairly cheap on ebay if you can not receive a GPS signal in your data center.\n\nAuthenticated NTP Service:\n\nNIST, NRC, and INRIM (national labs for US, Canada and Italy) provide MD5 authenticated time services. Unlike NIST and INRIM the CRC md5 service is not free. Autokey authenticated time service is available from OBSPM and INRIM (the french and italian national labs) and they provide this service for free. There are surely other national labs with authenticated time but you are going to need to google for them.\n\nLinks for authenticated time from national labs:\n\nNIST:\n\nhttp://www.nist.gov/pml/div688/grp40/auth-ntp.cfm\n\nNRC:\n\nhttp://www.nrc-cnrc.gc.ca/eng/services/inms/calibration-services/time-frequency.html#Authenticated\n\nOBSPM:\n\nhttp://syrte.obspm.fr/informatique/ntp_infos.php\n\nhttps://syrte.obspm.fr/informatique/ntp_keys.php\n\nINRIM:\n\nhttp://www.inrim.it/ntp/\n\nhttp://www.inrim.it/ntp/auth_i.shtml\n\nNTP isn't a secure protocol (well, there is an authentication mechanism, but it's not widely used, and MD5 auth isn't terribly secure) - no matter what internet time server you're talking to, you don't really know that you're talking to them. Trustworthiness of the pools aside (I don't like them because their strata are all over the place, NIST has good sources for internet NTP), internet NTP doesn't meet your requirement.\n\nA hardware clock on the local network is really the only way you can be assured that your connection isn't being intercepted - and even then, only if your local area network's security is able to assure you of that."
+    }
+}

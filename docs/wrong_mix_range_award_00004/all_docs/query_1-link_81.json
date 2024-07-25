@@ -1,0 +1,28 @@
+{
+    "id": "wrong_mix_range_award_00004_1",
+    "rank": 81,
+    "data": {
+        "url": "https://deepnote.com/app/mrcord/A-Visual-History-of-Nobel-Prize-Winners-9c6dccd8-ecde-454d-b559-217b4c7e4124",
+        "read_more_link": "",
+        "language": "en",
+        "title": "A Visual History of Nobel Prize Winners",
+        "top_image": "https://deepnote.com/project/9c6dccd8-ecde-454d-b559-217b4c7e4124/social-image",
+        "meta_img": "https://deepnote.com/project/9c6dccd8-ecde-454d-b559-217b4c7e4124/social-image",
+        "images": [],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2024-01-31T17:35:03.792000+00:00",
+        "summary": "",
+        "meta_description": "Data apps for data scientists and data analysts.",
+        "meta_lang": "en",
+        "meta_favicon": "/static/apple-touch-icon.png",
+        "meta_site_name": "Deepnote",
+        "canonical_link": null,
+        "text": "import pandas as pd import seaborn as sns import numpy as np nobel = pd.read_csv(\"datasets/nobel.csv\") nobel.head(6)\n\nnum_prizes = len(nobel) display(num_prizes) sex_counts = nobel['sex'].value_counts() display(sex_counts) top_countries = nobel['birth_country'].value_counts().head(10) top_countries\n\nnobel['usa_born_winner'] = nobel['birth_country'] == 'United States of America' nobel['decade'] = np.floor(nobel['year']/10).astype(int) * 10 prop_usa_winners = nobel.groupby('decade', as_index=False)['usa_born_winner'].mean() prop_usa_winners[['decade', 'usa_born_winner']]\n\nsns.set() import matplotlib.pyplot as plt plt.rcParams['figure.figsize'] = [11, 7] ax = sns.lineplot(data=prop_usa_winners, x='decade', y='usa_born_winner') from matplotlib.ticker import PercentFormatter ax.yaxis.set_major_formatter(PercentFormatter(1.0))\n\nnobel['female_winner'] = nobel['sex'] == 'Female' prop_female_winners = nobel.groupby(['decade', 'category'], as_index=False)['female_winner'].mean() ax = sns.lineplot(data=prop_female_winners, x='decade', y='female_winner', hue='category') ax.yaxis.set_major_formatter(PercentFormatter(1.0))\n\nnobel_female = nobel[nobel['sex'] == 'Female'] nobel_female.nsmallest(1, columns='year')\n\nnobel['birth_date'] = pd.to_datetime(nobel['birth_date'], errors='coerce') nobel['age'] = nobel['year'] - nobel['birth_date'].dt.year sns.lmplot(data=nobel, x='year', y='age', lowess=True, aspect=2, line_kws={'color': 'black'})\n\nsns.lmplot(x='year', y='age', data=nobel, row='category', aspect=2)\n\ndisplay(nobel.nlargest(1, 'age')) nobel.nsmallest(1, 'age')"
+    }
+}

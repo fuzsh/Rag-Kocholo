@@ -1,0 +1,37 @@
+{
+    "id": "wrong_mix_range_publicationDate_00078_3",
+    "rank": 87,
+    "data": {
+        "url": "http://josephshoer.com/blog/2009/11/a-nifty-thought-experiment-the-earth-with-rings/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "a nifty thought experiment: the Earth with rings",
+        "top_image": "http://josephshoer.com/blog/wp-content/uploads/2009/11/earthrings1-1024x775.jpg",
+        "meta_img": "http://josephshoer.com/blog/wp-content/uploads/2009/11/earthrings1-1024x775.jpg",
+        "images": [
+            "http://josephshoer.com/blog/wp-content/uploads/2020/12/cropped-CathedralGalaxy_201223_NoRegions_100-scaled-1.jpg",
+            "http://josephshoer.com/blog/wp-content/uploads/2009/11/earthrings1-1024x775.jpg",
+            "http://josephshoer.com/blog/wp-content/uploads/2009/11/earthrings2-1024x701.jpg",
+            "http://josephshoer.com/blog/wp-content/uploads/2009/11/earthrings_top.jpg",
+            "http://1.gravatar.com/avatar/42a072a6c2f6ec5beb4ffeb86b040cda?s=34&d=mm&r=g",
+            "http://1.gravatar.com/avatar/a26f74d228692626ce0c8a2d94860430?s=34&d=mm&r=g",
+            "http://1.gravatar.com/avatar/7edbf4f56e360b6bcac14b4403fa856b?s=34&d=mm&r=g",
+            "http://0.gravatar.com/avatar/0164b4c0914c6a6caf6188acdc5c3008?s=34&d=mm&r=g"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2009-11-23T19:34:33+00:00",
+        "summary": "",
+        "meta_description": "One of the most majestic and awe-inspiring structures in the Solar System is the Saturnian ring system. My sister sent me this video, which imagines what that same ring system would look like aroun…",
+        "meta_lang": "en",
+        "meta_favicon": "http://josephshoer.com/blog/wp-content/uploads/2022/10/cropped-observatorySignature-32x32.jpg",
+        "meta_site_name": "Joseph Shoer",
+        "canonical_link": "http://josephshoer.com/blog/2009/11/a-nifty-thought-experiment-the-earth-with-rings/",
+        "text": "One of the most majestic and awe-inspiring structures in the Solar System is the Saturnian ring system. My sister sent me this video, which imagines what that same ring system would look like around the Earth – and what it would look like in our sky when viewed from the surface. The result is pretty wonderful to imagine:\n\nHowever, sciency guy that I am, my very first thought on seeing this video translocate the Saturnian rings around the planet Earth was, “Hey! The Cassini Division’s still there!”\n\nThe significance of that gap between Saturn’s A and B rings is that it’s one of the most clear markers of the interaction between Saturn’s moons and the rings. All of the various gaps and spaces between the rings come from orbital resonances between the rings particles and various moons. If, for example, a ring particle orbits twice around Saturn for every orbit of the moon Mimas, then Mimas will pump energy into the orbiting particle and it will move into a higher-energy orbit with a larger semimajor axis – thus clearing a space in the rings (for the 2:1 Mimas resonance, the Huygens Gap).\n\nThat made me wonder just what a Terrestrial ring system would look like. We have only one moon, but it’s incredibly massive compared to the Earth. In fact, the Earth/Moon system has the largest moon-to-planet size ratio, by any measure, in the Solar System. (Sorry, Pluto/Charon!) Our single moon compared to Saturn’s dozens means that our ring system would be much more orderly, with many fewer and much more regularly spaced gaps. However, the huge size of the Moon means that the weaker resonances would have a stronger effect. The Saturnian rings show evidence of weak resonances all the way out to the double digits – like, say, 9:14 resonances – so I’d argue that weaker-still resonances would still be visible in the Earth-Moon system.\n\nSo, I wrote a little Matlab script. Clearly, this was more important today than getting my work done.\n\nAs in that video, I placed the outer limit of my hypothetical Terrestrial ring system at the Roche Limit, ~2.86 Earth radii from the center of the orbit. This is the innermost limit at which a fluid satellite could hold itself together, by its own self-gravity, against being ripped apart by tidal forces fromt he Earth. Outside this limit, the rings could start to aggregate together into moonlets. I bounded the inside of the ring at 1.59 Earth radii on the inside, coinciding with the definition of the outer limit of the exosphere. Even in low Earth orbit, atmospheric drag would eventually cause ring particles to fall into the deeper atmosphere, so I felt this would be a good value to pick to ensure that the ring would have a long enough lifetime to persist for millions or billions of years.\n\nI started my script with a ring opacity of 100% at all radii and put a fuzzy boundary on the ring system at either end. Then I had Matlab calculate the orbital radii of every ring-Moon resonance from 1:1 to 100:100 using Kepler’s Third Law. For each resonant semimajor axis that fell between the Roche limit and drag limit, I subtracted a narrow Gaussian from the ring opacity as a function of radius. Since my big 100×100 matrix of resonances had some repeats (like 3:4 and 6:8), several of these Gaussian functions would add together and decrease the ring opacity further, crudely estimating the effect of stronger resonances. Finally, I lowered the albedo and tweaked the color of the rings from what they are at Saturn, to make them look more like they’re made of rock rather than ice, which sublimes away in space at our distance from the Sun. This is what I got:\n\nThe rings in this image go around the Earth’s equator, inclined 22 degrees with respect to the field of view because of the Earth’s obliquity. Sadly, my Matlab graphics cannot handle casting the shadow of the rings onto the Earth, and I had to Photoshop in the shadow of Earth on the rings for effect. Still, pretty cool looking. Here’s the punchline: the ring system viewed from directly above the ring plane, with a white background so you can easily see the pattern:\n\nYou can see that the lunar resonances don’t start to have a major effect until about halfway through the ring system. This pattern, and the coloration, are mainly what that video was missing.\n\nOf course, I don’t have the complete story, either. Again, our Moon is huge and that will do even more to the rings’ shape. The Moon’s orbit is inclined 5 degrees to the Earth’s equator, so the tidal torques from the Moon should make the rings precess around the Earth with a one-month period. (That precession would lag the Moon, so we wouldn’t always see the rings piercing the Moon in our night sky.) In addition, I suspect that the lunar tides would twist the rings a bit, pulling them into a spoked configuration like Cassini has seen at Saturn.\n\nIt’s definitely fun to think about how these rings would look from vantage points on the Earth. Actually, since my ring system starts well above low Earth orbit, I have to wonder what they would look like to spacewalking astronauts…"
+    }
+}

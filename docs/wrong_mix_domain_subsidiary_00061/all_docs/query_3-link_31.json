@@ -1,0 +1,49 @@
+{
+    "id": "wrong_mix_domain_subsidiary_00061_3",
+    "rank": 31,
+    "data": {
+        "url": "https://stackoverflow.com/questions/65384754/error-err-module-not-found-cannot-find-module",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Error [ERR_MODULE_NOT_FOUND]: Cannot find module",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://i.sstatic.net/ghCNY.png",
+            "https://www.gravatar.com/avatar/a3e0949c0bd1a2d2e9c55b1cd9d78497?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/1b375c795476432e64d4433a651d2804?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/pB5aj.png?s=64",
+            "https://lh5.googleusercontent.com/-bggi5yiQZk0/AAAAAAAAAAI/AAAAAAAAACw/42Vl3uGA3Vg/photo.jpg?sz=64",
+            "https://i.sstatic.net/3wNPO.png?s=64",
+            "https://i.sstatic.net/agMKZ.png?s=64",
+            "https://i.sstatic.net/AB6jO.jpg?s=64",
+            "https://www.gravatar.com/avatar/49dca2bd9348c0738ae6c463600a741e?s=64&d=identicon&r=PG",
+            "https://lh5.googleusercontent.com/-xwgeBH0LXaQ/AAAAAAAAAAI/AAAAAAAAADA/qO9WbJRbgZ4/photo.jpg?sz=64",
+            "https://www.gravatar.com/avatar/b64fb4b1aaaf5da7b26a4fd4ec668fb9?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/WTx23.jpg?s=64",
+            "https://i.sstatic.net/1jyyH.jpg?s=64",
+            "https://www.gravatar.com/avatar/ba70e648b1de3fc3963beba3cbd4b4d5?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://lh3.googleusercontent.com/a/AAcHTtdLTrGkeFcogQuigcs9h2opQg3ZKd99zIZVHI21=k-s64",
+            "https://i.sstatic.net/P6v5w.jpg?s=64",
+            "https://lh3.googleusercontent.com/a/AATXAJwAh7LppMlAXpnC25c0MJRuXfwap211L7LHfp2w=k-s64",
+            "https://i.sstatic.net/VeJ69.gif?s=64",
+            "https://i.sstatic.net/1OUUP.jpg?s=64",
+            "https://stackoverflow.com/posts/65384754/ivc/70d9?prg=6d1555c0-64c5-43c4-9cb3-d0cefcf18df0"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2020-12-20T21:02:58",
+        "summary": "",
+        "meta_description": "I'm working on a node project (screenshot). I have a single function (urls) in helpers.js which I'm exporting at the bottom as:\nmodule.exports = {\nurls: urls,\n};\n\nIn my index.js I'm trying to impor...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/65384754/error-err-module-not-found-cannot-find-module",
+        "text": "When you are using ECMAScript modules you are forced to provide the file extension: https://nodejs.org/api/esm.html#esm_mandatory_file_extensions\n\nSo, on top of what other suggested of using \"type\": \"module\" on package.json you also need to specify the file extension import {urls} from './helpers.js'. You can also use the flag --es-module-specifier-resolution=node to make it resolve js files as modules just like it did before with require\n\nThis Happens because when using ES Modules we are enforced to specify the file extension in the import statement\n\nimport * from \"./demo.js\" // Works fine\n\nimport * from \"./demo\" // Will throw error as you see\n\nNote that : The above two options are both valid when using commonJs instead\n\nYou're not doing anything wrong. The current resolution algorithm for EcmaScript Modules of file extensions and the ability to import directories that have an index file requires using an experimental flag. see esm, the bottom part.\n\nso to make your work as it is, instead of\n\n$ node index.js\n\nyou do:\n\n$ node --experimental-specifier-resolution=node index.js\n\nYou can also create a script in your package.json\n\nlike so:\n\n\"scripts\": { \"start\": \"NODE_OPTIONS='--experimental-specifier-resolution=node' node src/index.js\n\nAnswer 1\n\nThis answer does not require using a runtime flag --es-module-specifier-resolution=node at execution time\n\nHowever, you have to modify your ts source code, which is a pain if there is are a lot of files. And, the modified files will no longer compile in \"commonjs\" mode, if you want to go back or use dual \"commonjs\"/\"module\" modes.\n\nModify your tsconfig.json to ensure at least these setting versions:\n\ncompilerOptions:{ \"lib\": [\"es2020\"], \"module\": \"ES2022\", \"moduleResolution\": \"node\", \"target\": \"es2022\", }\n\nWorks with typescript 4.6.3. (Note sure about 4.6.1 or lower).*\n\nModify index.js\n\nimport {urls} from \"#helpers\";\n\nModify package.json\n\n\"imports\": { \"#helpers\": \"./helpers.js\" }\n\nThe leading \"#\" is mandatory\n\nAnswer 2\n\nIn addition to not requiring the node runtime execution flag, this answer also satisifes:\n\ndoes not require changing your *.*ts source code (thus leaving it compilable under commonjs if you ever chose to do so(*note))\n\nIn case you are producing a library, it produces output which can be consumed by either \"commonjs\" or \"module\" clients.\n\n(*note) When using rollup, inline maps are required - so there may sometimes be advantage to using commonjs during development and switching to \"module\" for release.\n\nFirst modify package.json, create rollup.config.js, and then perform a post tsc action using rollup.\n\npackage.json\n\n... \"exports\":{ \"require\":\"./index.cjs\", \"import\":\"./index.js\" }, \"types\": \"./index.d.ts\", \"type\": \"module\" // you already had this\n\nrollup.config.js\n\n// import resolve from \"@rollup/plugin-node-resolve\"; import dts from \"rollup-plugin-dts\"; import commonjs from \"@rollup/plugin-commonjs\"; import * as path from \"path\"; import pkg from \"./package.json\"; export default [ { input: \"index.js\", external:[], // you may quash 'unresolved' warning by adding here output: [ { file: pkg.exports.require, format: \"cjs\" }, { file: pkg.exports.import, format: \"es\" }, ], plugins: [ commonjs(), ], }, { input: \"./index.d.ts\", output: [ { file: pkg.types, format: \"es\" }, ], plugins: [dts()], }, ];\n\nCall tsc then rollup:\n\nnpx tsc npx rollup -c"
+    }
+}

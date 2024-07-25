@@ -1,0 +1,38 @@
+{
+    "id": "wrong_mix_random_leader_00119_2",
+    "rank": 18,
+    "data": {
+        "url": "https://stackoverflow.com/questions/320841/css-should-i-limit-the-use-of-universal-selectors-classname-vs-a-classname",
+        "read_more_link": "",
+        "language": "en",
+        "title": "css: Should I limit the use of universal selectors (*.classname vs a.classname)?",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/eb5da802558da6491a1c383c367065eb?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/9797a726a1bcac449f6f12f335b47331?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/af2187787494c38fb16c8533d0cd693b?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/3344cfb3a44d9028ffaa9ae7ce178f95?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/a7d89341def0fe94efed618406344469?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/fc729122b5004caa7fe0c770a22dae1e?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/320841/ivc/851a?prg=db567001-2415-42fd-8dfc-dbb7d940d23c"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Ian G"
+        ],
+        "publish_date": "2008-11-26T14:21:23",
+        "summary": "",
+        "meta_description": "I have a question about css selectors.\n\nSay I have the following html \n\n&lt;div class=\"message\"&gt;\n  &lt;div class=\"messageheader\"&gt;\n    &lt;div class='name'&gt;A news story&lt;/div&gt;\n  &lt;/d...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/320841/css-should-i-limit-the-use-of-universal-selectors-classname-vs-a-classname",
+        "text": "If you are only interested in the initial scenario using .name is just fine. In fact, best practice with CSS is to always start more generic and focus as you go.\n\nalso, doing things like div.* are unnecessary unless you have the same class on a different element and want to make them different. If you are nesting classes, it is even more unneccessary. .messageheader .name will offer the same targeting.\n\nRemember CSS does mean cascading. If you make everything so targeted you'll have to redefine every element.\n\nIn my opinion, it's really up to you. One way is shorter, but the other is more precise although reliant on the markup staying mostly the same. If it's a complex project, then maybe being more specific is the right way to go. Otherwise, be a bit more relaxed. Try and find a balance.\n\nRemember though, it's important to make use of the cascade in CSS. Why add classes and ids to things that don't really need it?\n\nI agree with the answer of Jeremy B, but I want to add something.\n\nIn your example you can refer to the class called name either like this\n\ndiv.message div.messageheader div.name {}\n\nor\n\n.name {}\n\nor\n\ndiv.name\n\nThe first makes sense just if you want to override a less specific rule. The second is generic. The third, as you said, is good if you want apply different styles to different elements using the same class (but in this last case there is a good chance that you did something wrong in assigning your classes).\n\nI know it's only an example, but in your code I see too much classes. Remember that is a good thing to use element selectors when possible. I.e. if you want to give some style to that div, or to all the divs inside a div with class \"messagehader\", you should use this selector:\n\ndiv.messageheader div\n\nYou could also remove the class messageheader, and select that div with:\n\ndiv.message div\n\nAnd so on.\n\nObviously, you will need to use some classes in your page, but don't give a class to everything. In a lot of cases is not necessary.\n\nIn general specificity is favourable, but at a heirarchy level more than a unit level. What I mean by that is that 'div' is superflous, and perhaps damaging (see next paragraph) but #foo .bar .baz is good practice.\n\nIn general I try and get people to think about CSS in OO terms. If you're defining the style as a class make sure that it is behaving as a class. In this instance asserting div.foo instead of just .foo is a bit like having defined a subclass. It's fine if that's what you intend. Always always think about potential issues with future mark-up. Ideally you want future code to auto-inherit exactly what it needs, neither polluted by a vague CSS assertion, nor missing something because of an overly specific assertion.\n\nIn practice I find you usually favour the form:\n\n#foo .bar {}\n\nReserving root level classes for only the most generic of styles.\n\nI find that using both methods together can help the logical organisation of your CSS. Use the generic \".class\" for properties that you want to apply to ALL items of that class and the more specific \"p.class\" for a specific type object of the class. For example:\n\n<style> div.product { float: left; padding: 1em; border: 1px solid blue; } .price { color: #009900; } p.price { text-align: right; } </style> <div class=\"product\"> <p>Lorem ipsum <span class=\"price\">&pound;8.99</span> dolor sit amet.</p> <p class=\"price\">&pound;5.99</p> </div>\n\nThe answer to your question is that neither way is better, they just do different things. By all means use both! Leveraging the power of different selector types is an important aspect of good CSS and a great way to keep redundancy at bay. Other useful memthods are the use of multiple classes on one object (e.g. <p class=\"someClass someOtherClass\">), combining class AND id on objects (they are not mutually exclusive) and using the parent/child relationship of your HTML to avoid \"overclassing\" (e.g. ul.someClass li {} instead of ul li.someClass {}) whenever possible. Happy coding!"
+    }
+}

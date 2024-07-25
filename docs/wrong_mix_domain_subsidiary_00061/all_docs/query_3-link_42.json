@@ -1,0 +1,31 @@
+{
+    "id": "wrong_mix_domain_subsidiary_00061_3",
+    "rank": 42,
+    "data": {
+        "url": "https://cloud.google.com/appengine/docs/admin-api/deploying-apps",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Deploying Versions of Your App to App Engine",
+        "top_image": "https://cloud.google.com/_static/cloud/images/social-icon-google-cloud-1200-630.png",
+        "meta_img": "https://cloud.google.com/_static/cloud/images/social-icon-google-cloud-1200-630.png",
+        "images": [
+            "https://www.gstatic.com/devrel-devsite/prod/v1698cdd3153b47734bb6d9d8688c4490898207543be76b2c5805f109c27c7695/cloud/images/cloud-logo.svg",
+            "https://www.gstatic.com/devrel-devsite/prod/v1698cdd3153b47734bb6d9d8688c4490898207543be76b2c5805f109c27c7695/cloud/images/cloud-logo.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "https://www.gstatic.com/devrel-devsite/prod/v1698cdd3153b47734bb6d9d8688c4490898207543be76b2c5805f109c27c7695/cloud/images/favicons/onecloud/favicon.ico",
+        "meta_site_name": "Google Cloud",
+        "canonical_link": "https://cloud.google.com/appengine/docs/admin-api/deploying-apps",
+        "text": "View the status of the actual deployment operation:\n\nThe HTTP POST request that you used in the previous step returned the operation name in the name field, which you use with the GET method of the apps.operations collection to check the status of the deployment operation.\n\nFor example, if the name field of the response is:\n\n\"name\": \"apps/[MY_PROJECT_ID]/operations/89729825-ef1f-4ffa-b3e3-e2c25eb66a85\"\n\nThen you send the following HTTP GET request:\n\nGET https://appengine.googleapis.com/v1/apps/[MY_PROJECT_ID]/operations/89729825-ef1f-4ffa-b3e3-e2c25eb66a85\n\nExample cURL command:\n\ncurl -H \"Authorization: Bearer [MY_ACCESS_TOKEN]\" https://appengine.googleapis.com/v1/apps/[MY_PROJECT_ID]/operations/89729825-ef1f-4ffa-b3e3-e2c25eb66a85\n\nWhere [MY_ACCESS_TOKEN] is your access token and [MY_PROJECT_ID] is the ID of project where you deployed the version.\n\nExample response:\n\n{ \"done\": true, \"metadata\": { \"@type\": \"type.googleapis.com/google.appengine.v1.OperationMetadataV1\", \"endTime\": \"2015-05-29T17:13:20.424Z\", \"insertTime\": \"2015-05-29T17:12:44.679Z\", \"method\": \"google.appengine.v1.Versions.CreateVersion\", \"target\": \"apps/[MY_PROJECT_ID]/services/default/versions/v1\", \"user\": \"me@example.com\" }, \"name\": \"apps/[MY_PROJECT_ID]/operations/89729825-ef1f-4ffa-b3e3-e2c25eb66a85\", \"response\": { \"@type\": \"type.googleapis.com/google.appengine.v1.Version\", \"creationTime\": \"2015-05-29T17:12:46.000Z\", \"deployer\": \"me@example.com\", \"id\": \"v1\", \"name\": \"apps/[MY_PROJECT_ID]/services/default/versions/v1\", \"runtime\": \"python27\", \"servingStatus\": \"SERVING\", \"threadsafe\": true, } }\n\nTo learn more about polling long running operations, see the google.longrunning RPC reference.\n\nVerify that the version was created in your App Engine application:\n\nTo view details about the version, you use the GET method of the apps.services.versions collection. You must specify the version that you deployed in the HTTP GET request, for example:\n\nGET https://appengine.googleapis.com/v1/apps/[MY_PROJECT_ID]/services/default/versions/v1\n\nExample cURL command:\n\ncurl -H \"Authorization: Bearer [MY_ACCESS_TOKEN]\" https://appengine.googleapis.com/v1/apps/[MY_PROJECT_ID]/services/default/versions/v1\n\nWhere [MY_ACCESS_TOKEN] is your access token and [MY_PROJECT_ID] is the ID of project where you deployed the version.\n\nExample response:\n\n{ \"creationTime\": \"2015-05-29T17:12:46.000Z\", \"deployer\": \"me@example.com\", \"deployment\": { \"files\": { \"my-python-app.py\": { \"sha1Sum\": \"7cffbdaa9fcfa46e5e58269bfe336dd815de0566\", \"sourceUrl\": \"https://storage.googleapis.com/[YOUR_BUCKET_ID]/my-application/logo.jpg\", }, \"logo.jpg\": { \"sha1Sum\": \"13f7ea1e24f7cd2de5c66660525f2b509da37c14\", \"sourceUrl\": \"https://storage.googleapis.com/[YOUR_BUCKET_ID]/my-application/my-python-app.py\" } } }, \"handlers\": [ { \"authFailAction\": \"AUTH_FAIL_ACTION_REDIRECT\", \"login\": \"LOGIN_OPTIONAL\", \"script\": { \"scriptPath\": \"my-python-app.application\", }, \"securityLevel\": \"SECURE_OPTIONAL\", \"urlRegex\": \"/.*\" } ] \"id\": \"v1\", \"name\": \"apps/[MY_PROJECT_ID]/services/default/versions/v1\", \"runtime\": \"python27\", \"servingStatus\": \"SERVING\", \"threadsafe\": true, }\n\nGET https://appengine.googleapis.com/v1/apps/[MY_PROJECT_ID]/services/default/versions/v1?view=FULL"
+    }
+}

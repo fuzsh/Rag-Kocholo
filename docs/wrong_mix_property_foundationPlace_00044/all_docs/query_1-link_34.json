@@ -1,0 +1,35 @@
+{
+    "id": "wrong_mix_property_foundationPlace_00044_1",
+    "rank": 34,
+    "data": {
+        "url": "https://github.com/qlik-oss/catwalk",
+        "read_more_link": "",
+        "language": "en",
+        "title": "oss/catwalk: UI to ease the data modelling experience using Qlik Associative Engine.",
+        "top_image": "https://opengraph.githubassets.com/4afd69377c649f1bf3a12227fcfbf28953f1bb8d0a074b3f4ab705528c8e93f1/qlik-oss/catwalk",
+        "meta_img": "https://opengraph.githubassets.com/4afd69377c649f1bf3a12227fcfbf28953f1bb8d0a074b3f4ab705528c8e93f1/qlik-oss/catwalk",
+        "images": [
+            "https://github.com/qlik-oss/catwalk/raw/master/src/assets/catwalk.svg",
+            "https://camo.githubusercontent.com/701b737c87aa956d13f09a1fb431c857c98bac91e35ab3cde6fa77b43eb377a4/68747470733a2f2f636972636c6563692e636f6d2f67682f716c696b2d6f73732f63617477616c6b2f747265652f6d61737465722e7376673f7374796c653d737667",
+            "https://github.com/qlik-oss/catwalk/raw/master/images/screenshot.png",
+            "https://github.com/qlik-oss/catwalk/raw/master/images/qmc-whitelist.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "qlik-oss"
+        ],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "UI to ease the data modelling experience using Qlik Associative Engine. - qlik-oss/catwalk",
+        "meta_lang": "en",
+        "meta_favicon": "https://github.com/fluidicon.png",
+        "meta_site_name": "GitHub",
+        "canonical_link": "https://github.com/qlik-oss/catwalk",
+        "text": "⚠️ This project is no longer maintained. If you are interested in working on the project you can still create a fork of it on Github.\n\nGain data model insights quickly during its development and validation phases. This tool is useful when you want to explore your data model for whatever reason; maybe you are creating a complex load script, maybe you want to investigate associations.\n\nFor catwalk to work there are two things needed:\n\nThe UI\n\nA Qlik Associative Engine app\n\nYou can use catwalk from catwalk.qlik.dev, where the latest master build is deployed. It can be used against any Qlik Associative Engine, local or hosted.\n\nIf you want to run/develop the catwalk UI locally, you need Node.js installed. Then run these commands in Git Bash/command prompt/terminal and follow the instructions on your screen:\n\ngit clone https://github.com/qlik-oss/catwalk.git cd catwalk npm install npm start\n\nYou need to provide catwalk with a websocket URL to the app. The URL is set with the engine_url query parameter.\n\nFor convenience, there is an example app and docker-compose.yml in the catwalk repository\n\nACCEPT_EULA=yes docker-compose up -d\n\nThe docker-compose.yml in the repository will expose the Qlik Associative Engine app at:\n\nws://localhost:9076/data/drugcases.qvf\n\nand is viewable in catwalk with e.g. https://catwalk.qlik.dev/?engine_url=ws://localhost:9076/data/drugcases.qvf\n\nFor connecting to a Qlik Sense Desktop the websocket URL will be:\n\nws://localhost:4848/app/<app-name>\n\nIn order to connect to an app residing in Qlik Cloud Services or Qlik Sense Enterprise on Kubernetes, the qlik-web-integration-id has to be provided. You can create web integrations to add origins that are whitelisted to access the tenant. When a request arrives, Qlik Sense Enterprise confirms that the request derives from a whitelisted domain and then approves the request, else not. This is administered by tenant admins from the management console on the Integrations page. More info about this can be found here. The id is provided to catwalk by adding it as url parameter to the websocket address, e.g. wss://tenant.qlikcloud.com/app/<app-guid>?qlik-web-integration-id=<web-integration-id>.\n\nThe catwalk UI doesn't provide a login to the Qlik Sense app, but as long as there has been a login to the app in another tab/window the X-Qlik-Session cookie is set, and catwalk can \"reuse\" that session. The URL catwalk.qlik.dev has to be white listed in the QMC -> virtual proxy (per virtual proxy being used) for the Sense Proxy to allow sessions from catwalk. Since catwalk is running client side only, there is nothing other then the browser session and the engine that accesses the data in the app. This means that catwalk can be seen as any externally hosted mashup which also needs to be whitelisted.\n\nWe created a Qlik Sense extension that can be found in the sense-extension folder that will create a link to the Qlik hosted catwalk UI with the current open app if \"dragged\" onto a sheet of you Qlik Sense app. To install the extension you have to zip the folder and import it into you Qlik Sense installation, read more about how to do this here.\n\nWe created a javascript bookmark that can be found in the bookmark folder that will open up a new tab to the Qlik hosted catwalk UI with the current open app. To setup, create a bookmark and paste the content of bookmark.js in the URL field.\n\ncatwalk is running in a browser environment only, and creates a websocket connection directly to the QIX engine specified with the engine_url query parameter. This means that nothing other than the browser session and the engine will ever access the data in an app.\n\n|-----------------| | Browser running | | catwalk |----|------------| |--------|---|----| | | | | |-----|---|-| |---|----| | you | | engine | |-----------| |--------|\n\nThe only data collected is via Google Analytics which stores cookies on the users` PC. This is to gain insight into how catwalk is used, how much and by whom. Examples of this information could be how long the users are staying, where the users are coming from (e.g. social media links, but also where in the world), and errors and exceptions."
+    }
+}

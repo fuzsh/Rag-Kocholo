@@ -1,0 +1,48 @@
+{
+    "id": "wrong_mix_property_foundationPlace_00044_3",
+    "rank": 82,
+    "data": {
+        "url": "https://community.alteryx.com/t5/Alteryx-Designer-Desktop-Discussions/Write-Data-In-DB-temporary-Table/td-p/42678",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Write Data In-DB temporary Table.",
+        "top_image": "https://community.alteryx.com/t5/image/serverpage/image-id/11605i9933D4AC6E4AC8A5?v=v2",
+        "meta_img": "https://community.alteryx.com/t5/image/serverpage/image-id/11605i9933D4AC6E4AC8A5?v=v2",
+        "images": [
+            "https://community.alteryx.com/t5/image/serverpage/avatar-name/ScatterPlot/avatar-theme/candy/avatar-collection/DataInvestigation/avatar-display-size/message/version/2?xdesc=1.0",
+            "https://community.alteryx.com/t5/image/serverpage/avatar-name/DynamicSelect/avatar-theme/candy/avatar-collection/Developer/avatar-display-size/message/version/2?xdesc=1.0",
+            "https://community.alteryx.com/html/@9232A1939605DC58DFA7A78FB4433E85/assets/alteryx_a.svg",
+            "https://community.alteryx.com/t5/image/serverpage/image-id/11605i9933D4AC6E4AC8A5/image-size/large?v=v2&px=999",
+            "https://community.alteryx.com/t5/image/serverpage/avatar-name/Join/avatar-theme/candy/avatar-collection/Join/avatar-display-size/message/version/2?xdesc=1.0",
+            "https://community.alteryx.com/t5/image/serverpage/image-id/7117i713E3804E9748F05/image-dimensions/40x40/image-coordinates/408%2C0%2C2856%2C2448/constrain-image/false?v=v2",
+            "https://community.alteryx.com/t5/image/serverpage/image-id/176354i2C9F0B2C6C3B2AE9/image-dimensions/40x40/image-coordinates/0%2C0%2C1998%2C1998/constrain-image/false?v=v2",
+            "https://community.alteryx.com/t5/image/serverpage/image-id/61759iCAFE4DE75550C652/image-dimensions/40x40/image-coordinates/0%2C0%2C150%2C150/constrain-image/false?v=v2",
+            "https://community.alteryx.com/t5/image/serverpage/image-id/178744i687845BE2D724D85/image-dimensions/40x40/image-coordinates/2%2C0%2C596%2C594/constrain-image/false?v=v2",
+            "https://community.alteryx.com/t5/image/serverpage/image-id/61759iCAFE4DE75550C652/image-dimensions/40x40/image-coordinates/0%2C0%2C150%2C150/constrain-image/false?v=v2",
+            "https://community.alteryx.com/t5/image/serverpage/image-id/178744i687845BE2D724D85/image-dimensions/40x40/image-coordinates/2%2C0%2C596%2C594/constrain-image/false?v=v2",
+            "https://community.alteryx.com/skins/images/9015B72EFF4C3263B44BAD8AD988EC63/responsive_peak/images/icon_anonymous_message.png",
+            "https://community.alteryx.com/html/@9B232FE17F12983B54EA4731C3D5706A/assets/banner_rightrail_mentor_connect_500x400_v2.png",
+            "https://community.alteryx.com/t5/image/serverpage/image-id/363298i78FFD94F71AC24D7/image-size/large/is-moderation-mode/true?v=v2&px=999",
+            "https://community.alteryx.com/html/@80E6EF00266C8EFD73C7AD7415FFFF08/assets/alteryx_scroll_to_top_logo.svg",
+            "https://community.alteryx.com/html/@A1697BE88644D27858FBBA049DC87533/assets/cia2021-badge-winner.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "community.alteryx.com",
+            "user-id"
+        ],
+        "publish_date": "2017-01-06T19:40:00.451000+00:00",
+        "summary": "",
+        "meta_description": "So I'm using the Write Data In-DB and under the creation mode selecting Create Temporary Table. When I excute the workflow it all goes well until it",
+        "meta_lang": "en",
+        "meta_favicon": "https://community.alteryx.com/html/@E3FBC8813C4621756D522869F164958D/assets/favicons.png",
+        "meta_site_name": "Maveryx Community",
+        "canonical_link": "https://community.alteryx.com/t5/Alteryx-Designer-Desktop-Discussions/Write-Data-In-DB-temporary-Table/td-p/42678",
+        "text": "So I'm using the Write Data In-DB and under the creation mode selecting Create Temporary Table. When I excute the workflow it all goes well until it tries to create the temporary table and I get an error message:Error: Write Data In-DB (5): Error running PreSQL on \"NoTable\": [Teradata][ODBC Teradata Driver][Teradata Database] The user does not have CREATE TABLE access to database xxxxxx.\n\nThis is correct, i dont have access to the xxxxxx database and would like to change where the temporary table is being created. Is there a way to change what database this temporary table is created on?\n\nHi @mariop,\n\nAlteryx does not manage the temporary tables in a database and these are set up by your DBA or person that administers the database; Alteryx can only leverage these tables once they have been set up in the database itself. There is not a way to change where a temporary table is being created from Alteryx.\n\nIf you are able to however, you could create a new table in the Write Data In-DB tool to a location that you have access to:\n\nThanks!\n\nHi -\n\nI have a similar problem. I DO have access to create a temp table in our Teradata database.\n\nThe SQL to create temp tables in Teradata is \"Create MULTISET VOLATILE TABLE Temp_tablename....\"\n\nI tried executing this in a SQL Assistant and it worked perfectly.\n\nHowever, Alteryx generates the SQL as \"CREATE MULTISET TABLE \"AYX17040533fe5552f0477a8605\" ...\" missing the \"VOLATILE\" word in the statement. I do not have access to create permanent tables, and hence my workflow fails. Error message is noted below.\n\nData Stream In (14) Error creating table \"AYX17040533fe5552f0477a8605\": [Teradata][ODBC Teradata Driver][Teradata Database] The user does not have CREATE TABLE access to database PRD_CONTR_DMV. ¶CREATE MULTISET TABLE \"AYX17040533fe5552f0477a8605\" .....\n\nHow do I fix this issue? Can the \"VOLATILE\" syntax be added to the Alteryx generated SQL statement when temp table option is chosen in the In-DB Data Stream In tool? Please help!\n\nHi @Jash and @mariop\n\nFor the in-db tools Alteryx creates two separate sessions for read and write. The stream in tool first writes data in one session and then reads it in in another session. If it created a volatile table in the write session, the read session would not have access to it, which is why it doesn't create volatile tables.\n\nThis post by another community user has a macro attached that creates a SELECT * FROM VALUES query for the dynamic input in-db tool that allows him to bring data into in-db without writing a table.\n\nYou might be able to adapt his macro for your needs (NOTE: The dynamic input in-db tool does not accept CREATE TABLE statements, only SELECT statements).\n\nHenriette Haigh\n\nTechnical Product Manager - Data Connectors\n\nAlteryx, Inc.\n\n@apathetichellDepending on the database, you can set one in your dsn (or not). But if you want to have several places (because you work for several entities), you will need several dsn, several alteryx connection etc.\n\nAn other way we can't use in alteryx is to pass this parameter through session parameters (such as set something), since we can't use pre-sql on in database."
+    }
+}

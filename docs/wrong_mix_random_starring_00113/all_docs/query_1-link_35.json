@@ -1,0 +1,51 @@
+{
+    "id": "wrong_mix_random_starring_00113_1",
+    "rank": 35,
+    "data": {
+        "url": "http://web.mit.edu/ghudson/dev/nokrb/third/db/docs/ref/build_unix/solaris.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Berkeley DB Reference Guide: Building Berkeley DB for UNIX systems",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "http://web.mit.edu/ghudson/dev/nokrb/third/db/docs/images/prev.gif",
+            "http://web.mit.edu/ghudson/dev/nokrb/third/db/docs/images/ref.gif",
+            "http://web.mit.edu/ghudson/dev/nokrb/third/db/docs/images/next.gif",
+            "http://web.mit.edu/ghudson/dev/nokrb/third/db/docs/images/prev.gif",
+            "http://web.mit.edu/ghudson/dev/nokrb/third/db/docs/images/ref.gif",
+            "http://web.mit.edu/ghudson/dev/nokrb/third/db/docs/images/next.gif"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "embedded",
+            "database",
+            "programmatic",
+            "toolkit",
+            "b+tree",
+            "btree",
+            "hash",
+            "hashing",
+            "transaction",
+            "transactions",
+            "locking",
+            "logging",
+            "access method",
+            "access methods",
+            "java",
+            "C",
+            "C++"
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "Berkeley DB: An embedded database programmatic toolkit.",
+        "meta_lang": "",
+        "meta_favicon": "",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "I can't compile and run multi-threaded applications.\n\nSpecial compile-time flags and additional libraries are required when compiling threaded applications on Solaris. If you are compiling a threaded application, you must compile with the _REENTRANT flag and link with the libpthread.a or libthread.a libraries:\n\ncc -mt ... cc -D_REENTRANT ... -lthread cc -D_REENTRANT ... -lpthread\n\nThe Berkeley DB library will automatically build with the correct options.\n\nI've installed gcc on my Solaris system, but configuration fails because the compiler doesn't work.\n\nOn some versions of Solaris, there is a cc executable in the user's path, but all it does is display an error message and fail:\n\n% which cc /usr/ucb/cc % cc /usr/ucb/cc: language optional software package not installed\n\nAs Berkeley DB always uses the native compiler in preference to gcc, this is a fatal error. If the error message you're seeing is:\n\nchecking whether the C compiler (cc -O ) works... no configure: error: installation or configuration problem: C compiler cannot create executables.\n\nthen this may be the problem you're seeing. The simplest workaround is to set your CC environment variable to the system compiler, e.g.:\n\nenv CC=gcc ../dist/configure\n\nand reconfigure.\n\nIf you are using the --configure-cxx option, you may also want to specify a C++ compiler, e.g.:\n\nenv CC=gcc CCC=g++ ../dist/configure\n\nI get the error \"libc internal error: _rmutex_unlock: rmutex not held\", followed by a core dump, when running threaded or JAVA programs.\n\nThis is a known bug in Solaris 2.5 and it is fixed by Sun patch 103187-25.\n\nI get error reports of non-existent files, corrupted metadata pages and core dumps.\n\nSolaris 7 contains a bug in the threading libraries (-lpthread, -lthread) which causes the wrong version of the pwrite routine to be linked into the application if the thread library is linked in after the the C library. The result will be that the pwrite function is called rather than the pwrite64. To work around the problem, use an explicit link order when creating your application.\n\nSun Microsystems is tracking this problem with Bug Id's 4291109 and 4267207, and patch 106980-09 to Solaris 7 fixes the problem.\n\nBug Id: 4291109 Duplicate of: 4267207 Category: library Subcategory: libthread State: closed Synopsis: pwrite64 mapped to pwrite Description: When libthread is linked after libc, there is a table of functions in libthread that gets \"wired into\" libc via _libc_threads_interface(). The table in libthread is wrong in both Solaris 7 and on28_35 for the TI_PWRITE64 row (see near the end).\n\nDuring configuration I see a message that large file support has been turned off.\n\nThe Solaris 8 system include files redefine \"open\" when big-file support (the HAVE_FILE_OFFSET_BITS and _FILE_OFFSET_BITS #defines) is enabled. This causes problems when compiling for C++, where \"open\" is a legal identifier, used in the Berkeley DB C++ API. For this reason, we automatically turn off big-file support when Berkeley DB is configured with a C++ API. This should not be a problem for applications unless there is a need to create databases larger than 2GB."
+    }
+}

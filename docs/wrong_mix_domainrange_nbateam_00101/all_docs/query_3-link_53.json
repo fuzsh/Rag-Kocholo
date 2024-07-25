@@ -1,0 +1,32 @@
+{
+    "id": "wrong_mix_domainrange_nbateam_00101_3",
+    "rank": 53,
+    "data": {
+        "url": "https://stackoverflow.com/questions/59901366/use-html-to-go-into-url-and-scrape-tables",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Use html to go into url and scrape tables",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/8ad0db1220ef55073b4c52ff5fbb52a1?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/8741f5157e8373f8e15707f358c6e941?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://stackoverflow.com/posts/59901366/ivc/179b?prg=2b49f93d-128a-42a6-beac-28d7d0a684b5"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2020-01-24T17:45:21",
+        "summary": "",
+        "meta_description": "I need to scrape tables from individual pages of players, but sometimes the search will go to a list of players if there are multiple with the same name. I want the one that played in the NBA. For",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/59901366/use-html-to-go-into-url-and-scrape-tables",
+        "text": "Use if condition check if the text of the element matches with Sergio Rodriguez then go to that block and get the latest url and then get the soup ans so on..\n\nimport requests from bs4 import BeautifulSoup import pandas as pd playernames=['Carlos Delfino', 'Sergio Rodriguez','Nikola Jokic','Brandon Jennings','Thon Maker'] result = pd.DataFrame() for name in playernames: fname=name.split(\" \")[0] lname=name.split(\" \")[1] url=\"https://basketball.realgm.com/search?q={}+{}\".format(fname,lname) response = requests.get(url) soup = BeautifulSoup(response.content, 'html.parser') #Add check here if matches with `Sergio Rodriguez` then go to if clause if soup.find('a',text=name).text==name: url=\"https://basketball.realgm.com\"+soup.find('a',text=name)['href'] print(url) response = requests.get(url) soup = BeautifulSoup(response.text, 'lxml') try: table1 = soup.find('h2',text='International Regular Season Stats - Per Game').findNext('table') table2 = soup.find('h2',text='International Regular Season Stats - Advanced Stats').findNext('table') df1 = pd.read_html(str(table1))[0] df2 = pd.read_html(str(table2))[0] commonCols = list(set(df1.columns) & set(df2.columns)) df = df1.merge(df2, how='left', on=commonCols) df['Player'] = name print(df) except: print ('No international table for %s.' %name) df = pd.DataFrame([name], columns=['Player'])\n\nConsole you can see df is printing like."
+    }
+}

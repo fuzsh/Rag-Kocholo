@@ -1,0 +1,36 @@
+{
+    "id": "wrong_mix_property_foundationPlace_00064_3",
+    "rank": 3,
+    "data": {
+        "url": "https://stackoverflow.com/questions/21908785/where-can-i-find-launch-error-logs-for-intellij-idea",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Where can I find launch error logs for IntelliJ IDEA?",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/41a5871f9f0404a9ad6a04d6895b61a1?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/a007be5a61f6aa8f3e85ae2fc18dd66e?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/34fae3f18c0bf9744e8c5da2dd003048?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/gf9Xz.jpg?s=64",
+            "https://i.sstatic.net/OlfII.jpg?s=64",
+            "https://www.gravatar.com/avatar/4d819efdb2d3f9983a1437f3c1b9f710?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/21908785/ivc/249a?prg=2445e9e0-688c-4cc9-a4ab-7890d6da96c9"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2014-02-20T13:08:53",
+        "summary": "",
+        "meta_description": "Whenever I try to open IntelliJ IDEA, it just quits immediately without any message whatsoever. I was wondering if there's a log somewhere I can find to hopefully figure out what's causing it. It was",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/21908785/where-can-i-find-launch-error-logs-for-intellij-idea",
+        "text": "This just happened to me. I found the log file, but it didn't say anything at all after I tried to restart. (Maybe I could have got round this by changing the log level.) The problem was that I'd increased the memory allocation from 1GB to 1.5GB. I don't know why this made it crash on startup, but when I changed it back it was fine. The relevant file was {user.home}\\.IntelliJIdea14.1.4\\bin\\idea.exe.vmoptions. Obviously, it will be somewhere slightly different if you're not on Windows.\n\nAnother thing you could try is looking for a lock file. Some applications create an empty file called .lock on startup, in order to prevent duplicate instances of the same application from running at the same time. But if something goes wrong they can occasionally forget to delete the lock file on exit. (Or maybe the process is terminating but it just hasn't finished yet, even though the window has closed.) Then when you try to start up it says it can't because there's already a running instance. When you're in this situation you need to find the lock file and delete it. But I have no idea whether IntelliJ is like this."
+    }
+}

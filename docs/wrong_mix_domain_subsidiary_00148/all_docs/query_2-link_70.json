@@ -1,0 +1,35 @@
+{
+    "id": "wrong_mix_domain_subsidiary_00148_2",
+    "rank": 70,
+    "data": {
+        "url": "https://openliberty.io/docs/latest/relational-database-connections-JDBC.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Relational database connections with JDBC",
+        "top_image": "https://openliberty.io/img/twitter_card.jpg",
+        "meta_img": "https://openliberty.io/img/twitter_card.jpg",
+        "images": [
+            "https://openliberty.io/_/img/docs_openliberty_logo.png",
+            "https://openliberty.io/img/docs_github_logo.svg",
+            "https://openliberty.io/_/img/Footer_GitCat_Hover.svg",
+            "https://openliberty.io/_/img/Footer_StackO_Hover.svg",
+            "https://openliberty.io/_/img/Footer_GroupsIO_Hover.svg",
+            "https://openliberty.io/_/img/footer_gitter_hover.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "Open Liberty documentation and reference materials for developers to build applications and for administrators and operation teams to manage DevOps and deploy workloads to clouds by using open cloud-native Java. This content covers Open Liberty basics, development, security, deployment, and operations topics. It also includes Javadoc for Jakarta EE APIs, MicroProfile APIs, Java EE APIs, and Open Liberty APIs and SPIs.",
+        "meta_lang": "en",
+        "meta_favicon": "",
+        "meta_site_name": "",
+        "canonical_link": "https://openliberty.io/docs/latest/relational-database-connections-JDBC.html",
+        "text": "If you use Maven or Gradle build tools to build your application, you can configure a dependency to copy the JDBC driver files to the ${server.config.dir}/jdbc directory. The driver files must be copied after the server is created but before the application is deployed so that the database instance is available to the application at run time.\n\nWith Maven, you can use the copyDependencies element for the Open Liberty Maven plug-in to create a dependency for the JDBC driver.\n\nIf you use Maven to build your application, you can download and deploy the JDBC driver by adding code that is similar to the following example to your pom.xml file. In this example, the driver files are copied to the jdbc directory that is in the ${server.config.dir} directory:\n\nThis example uses version 3.3.4 of the Liberty Maven plug-in. To use a different version, update the version value to specify the version that you want to use. For more information, see Copying dependencies with the Open Liberty Maven plug-in.\n\nThe Open Liberty Gradle plug-in does not directly support configuring the JDBC driver library. With Gradle, you must manually add a Copy task to your build.gradle file to manage the JDBC dependency.\n\nIf you use Gradle to build your application, first add a copy task to your build.gradle file. Then, add a dependency for that task to the deploy task so that the copy task runs after the server is created but before the application is deployed:\n\nIn this build.gradle file example, a configurations instance that is called jdbcLib is declared with a dependency for the driver. The copyJDBC task specifies that the driver JAR files are copied into the jdbc folder in the server configuration directory. Finally, a deploy.dependsOn dependency specifies that the driver must be copied to the server before the application is deployed so it can be available at run time.\n\nIf you enable any Java EE or Jakarta EE features in Open Liberty, you can configure a default data source. To configure a default data source, set the ID of the dataSource element to DefaultDataSource, as shown in the following example:\n\nGet the IBM Data Server Driver For JDBC and SQLJ from Maven Central. The following example shows a sample data source configuration for an IBM Db2 database:\n\nGet the Microsoft JDBC Driver For SQL Server from Maven Central. The following example shows a sample data source configuration for a Microsoft SQL Server database:\n\nGet the Apache Derby Database Engine and Embedded JDBC Driver from Maven Central. The following example shows a sample data source configuration for a Derby database in an embedded environment:\n\nOracle Universal Connection Pool (UCP) is a stand-alone JDBC connection pool. When you use Oracle UCP with Open Liberty, you are using the Oracle UCP connection pool instead of the Open Liberty built-in connection pooling functions. Some of the Oracle high availability database functions require the use of Oracle UCP.\n\nOracle UCP might require some properties, such as user and password, to be set in the properties.oracle.ucp element. Because the Open Liberty connection pool is unavailable, some of the Open Liberty data source and connection manager configuration values are ignored. For most of those data source and connection manager properties, Oracle UCP provides equivalent functions. For more information, see the properties.oracle.ucp element documentation.\n\nOracle Real Application Clusters (RAC) is an option that brings together two or more database instances, which are known as nodes, to form a clustered database that behaves as a single system. Using the Oracle JDBC driver, you can configure failover support, load balancing, or both, in an Oracle RAC environment. Oracle RAC provides both high availability and flexible scalability and is typically used along with Oracle UCP.\n\nIn this example, example-host-1 and example-port-1 represent the host and port values for the first node, and example-host-2 and example-port-2 represent host and port values for the second node. The FAILOVER and LOAD_BALANCE Oracle parameters specify global configuration for both nodes. For more information about Oracle database parameters, see the Oracle RAC documentation. If you are not using Oracle services, then the value for SERVICE_NAME is your database name. If you are using Oracle services, then the value for SERVICE_NAME is the name of the service. You are not required to specify the Oracle login credentials as Oracle properties, other methods of database authentication also work. Some Oracle RAC functions require the use of Oracle UCP.\n\nThe following example shows a sample data source configuration for a relational database that Open Liberty does not recognize by default. Specify the type of the data source by using the type attribute of the dataSource element. The value for the type attribute can be one of the interface class names that are described in the Data source types section. Then, specify the mapping of the interface class name to the driver implementation of that class on the jdbcDriver element, as shown in the following example:"
+    }
+}

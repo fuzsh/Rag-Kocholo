@@ -1,0 +1,36 @@
+{
+    "id": "wrong_mix_domainrange_subsidiary_00031_2",
+    "rank": 0,
+    "data": {
+        "url": "https://community.cadence.com/cadence_technology_forums/f/custom-ic-skill/57793/how-to-display-ciw-output-in-forms-as-log",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How to Display CIW output in Forms as log",
+        "top_image": "https://community.cadence.com/cfs-filesystemfile/__key/themefiles/f-s-3fc3f82483d14ec485ef92e206116d49-files/favicon.png?_=638564397481093403",
+        "meta_img": "https://community.cadence.com/cfs-filesystemfile/__key/themefiles/f-s-3fc3f82483d14ec485ef92e206116d49-files/favicon.png?_=638564397481093403",
+        "images": [
+            "https://community.cadence.com/cfs-filesystemfile/__key/widgetfiles/5a76085a0add480cbbcc9ef8568e2de4-d/cadence_2D00_logo_2D00_black.png?_=638072669021690804",
+            "https://community.cadence.com/cfs-filesystemfile/__key/communityserver-components-imagefileviewer/system-images/anonymous.gif_2D00_32x32x2.png?_=637590656695278526",
+            "https://community.cadence.com/cfs-filesystemfile/__key/communityserver-components-imagefileviewer/communityserver-components-avatars-00-00-41-03-74/4UGFOU3WRLTV.jpg_2D00_44x44x2.jpg?_=637840792188744528",
+            "https://community.cadence.com/cfs-filesystemfile/__key/communityserver-components-imagefileviewer/system-images/anonymous.gif_2D00_44x44x2.png?_=637590656739458076",
+            "https://community.cadence.com/cfs-file/__key/system/emoji/1f642.svg",
+            "https://community.cadence.com/cfs-filesystemfile/__key/communityserver-components-imagefileviewer/communityserver-components-avatars-00-00-41-03-74/4UGFOU3WRLTV.jpg_2D00_44x44x2.jpg?_=637840792188744528",
+            "https://community.cadence.com/cfs-filesystemfile/__key/communityserver-components-imagefileviewer/communityserver-components-avatars-00-00-41-03-74/4UGFOU3WRLTV.jpg_2D00_44x44x2.jpg?_=637840792188744528"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2023-07-27T11:45:11.123000+00:00",
+        "summary": "",
+        "meta_description": "Hi all, \n I am using ICADVM20.1, I have created a form using hiCreateAppForm() but I want to see the CIW output in that form as a output log. Is there any way to",
+        "meta_lang": "en",
+        "meta_favicon": "https://community.cadence.com/cfs-filesystemfile/__key/themefiles/f-s-3fc3f82483d14ec485ef92e206116d49-files/favicon.png?_=638564397481093403",
+        "meta_site_name": "",
+        "canonical_link": "https://community.cadence.com/cadence_technology_forums/f/custom-ic-skill/57793/how-to-display-ciw-output-in-forms-as-log",
+        "text": "Hi Teja,\n\nIt depends what you actually want :\n\n- If you want to run a callback and display all the messages from the start to the end of the operation in your GUI, this is quite simple\n\nYou can either redirect poport, woport and errport temporarily using outstring function, or if you want this data to be also printed in the CIW / CDS.log, you can use hiStartLog and hiEndLog then you just have to fetch the content of the custom log to print it in your GUI\n\n- If you want a log that gets updated with whatever is going-on during your Virtuoso session, this will be more tricky but might be achievable using a child process calling tail -f or also using FIFO files\n\nHope this helps,\n\nCheers\n\nAurélien\n\nHi Aurélien\n\nThanks for the reply.\n\nBelow is my code...\n\ntkstring=hiCreateStringField(\n\n?name 'TK1\n\n?prompt \"Enter Your Name\"\n\n?value \"\"\n\n)\n\ntkstring1=hiCreateStringField(\n\n?name 'TK2\n\n?prompt \"Enter Your Age\"\n\n?value \"\"\n\n)\n\nform=hiCreateAppForm(\n\n?name 'TKform\n\n?formTitle \"Test Form\"\n\n?fields list(tkstring tkstring1)\n\n?callback \"subprogram()\"\n\n)\n\nprocedure(subprogram()\n\nprintf(\"Your Name is %s\\n\" form->TK1->value)\n\nprintf(\"Your Age is %s\\n\" form->TK2->value)\n\n)\n\nhiDisplayForm(form)\n\nThis will print some lines in the CIW, I want that lines to be printed as log attched to that form only.\n\nI mean Is there any way to create a string field or a text field to which we can pass the output of CIW into those fields.\n\nI am asking a little much, Could you please give me an example .\n\nRegards\n\nTeja.\n\nHi Teja,\n\nHere is an example that should do what you want (I refactored your code a little bit) :\n\n;; It is easier to use `hiCreateLayoutForm', `hiCreateFormLayout' `hiCreateVerticalBoxLayout';; and `hiCreateHorizontalBoxLayout' rather than `hiCreateAppForm'.;; The layouts are calculating all the fields position automaticallyhiCreateLayoutForm( 'TKform \"Test Form\" hiCreateFormLayout( 'main_layout ?items list( ;; Instead of creating the fields, storing them into variables then use the variable ;; I prefer to place them directly and access them using their name. (Less code, less bugs) hiCreateStringField( ?name 'TK1 ?prompt \"Enter Your Name\" ?value \"\") hiCreateStringField( ?name 'TK2 ?prompt \"Enter Your Age\" ?value \"\") hiCreateMLTextField( ?name 'output_log ?prompt \"Output Log\" ?value \"\" ?editable nil) )) ;; lambda functions are more flexible than strings when using from callbacks ?buttonLayout 'ApplyCancel ?callback lambda( (@rest _args) ;; Create an outstring port and safely store previous ports value so they can be reverted back let( ((port (outstring)) (old_poport poport ) (old_woport woport ) (old_errport errport ) ) ;; `unwindProtect' is required to guarantee main ports are always restored afterwards unwindProtect( progn( poport = port woport = port errport = port subprogram() TKform->output_log->value = getOutstring(port) ) progn( poport = old_poport woport = old_woport errport = old_errport close(port) ) );unwindProtect );let ) ) procedure(subprogram() printf(\"Your Name is %s\\n\" TKform->TK1->value) printf(\"Your Age is %s\\n\" TKform->TK2->value) ) hiDisplayForm(TKform)\n\nRegarding my previous answer\n\nThis is a way to achieve what you want when you are running another program for which you do not control the ouput\n\nIf the subprogram is written by yourself it would be much safer and cleaner to write a custom `print_to_log' function to replace your calls to `printf'\n\nThen inside this function you print the messages to whatever you want : the CIW, the field, an outstring, a file etc."
+    }
+}

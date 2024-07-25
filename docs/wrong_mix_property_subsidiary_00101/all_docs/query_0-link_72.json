@@ -1,0 +1,47 @@
+{
+    "id": "wrong_mix_property_subsidiary_00101_0",
+    "rank": 72,
+    "data": {
+        "url": "https://stackoverflow.com/questions/84847/how-do-i-create-a-self-signed-certificate-for-code-signing-on-windows",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How do I create a self-signed certificate for code signing on Windows?",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://i.sstatic.net/UIrGI.jpg?s=64",
+            "https://www.gravatar.com/avatar/8f9c683775bfbe76ed4855a19b73dc81?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/5f2013394a5cd1c804eac4cfa3f3cd49?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/8f9c683775bfbe76ed4855a19b73dc81?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/791dc748cccff9e985c16f113618ea13?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/99e9c8460e47d2c32d129ad0922cf24c?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/e478f2600848a3dc5238b7ffb2e148f6?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/qhHk1.jpg?s=64",
+            "https://i.sstatic.net/RIZKi.png?s=64",
+            "https://www.gravatar.com/avatar/bc17c46a329a4645da3513bb06268e57?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/fBP6e.png?s=64",
+            "https://www.gravatar.com/avatar/1a62456c71b0851726898e87ec88b69c?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/vuCgv6o7.png",
+            "https://i.sstatic.net/4QgJfdLj.png",
+            "https://www.gravatar.com/avatar/1bf2ffe7e4c2bc8aa5df48c8b9ea6cb7?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/a9a1c2ff44dd3ce29d802d0e23ac8f7a?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://stackoverflow.com/posts/84847/ivc/245c?prg=58ace0bb-4a09-4a98-9a50-ed1f8e6ec034",
+            "https://stackoverflow.com/js-false.gif"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2008-09-17T16:04:07",
+        "summary": "",
+        "meta_description": "How do I create a self-signed certificate for code signing using the Windows SDK?",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/84847/how-do-i-create-a-self-signed-certificate-for-code-signing-on-windows",
+        "text": "Updated Answer\n\nIf you are using the following Windows versions or later: Windows Server 2012, Windows Server 2012 R2, or Windows 8.1 then MakeCert is now deprecated, and Microsoft recommends using the PowerShell Cmdlet New-SelfSignedCertificate.\n\nIf you're using an older version such as Windows 7, you'll need to stick with MakeCert or another solution. Some people suggest the Public Key Infrastructure Powershell (PSPKI) Module.\n\nOriginal Answer\n\nWhile you can create a self-signed code-signing certificate (SPC - Software Publisher Certificate) in one go, I prefer to do the following:\n\nCreating a self-signed certificate authority (CA)\n\nmakecert -r -pe -n \"CN=My CA\" -ss CA -sr CurrentUser ^ -a sha256 -cy authority -sky signature -sv MyCA.pvk MyCA.cer\n\n(^ = allow batch command-line to wrap line)\n\nThis creates a self-signed (-r) certificate, with an exportable private key (-pe). It's named \"My CA\", and should be put in the CA store for the current user. We're using the SHA-256 algorithm. The key is meant for signing (-sky).\n\nThe private key should be stored in the MyCA.pvk file, and the certificate in the MyCA.cer file.\n\nImporting the CA certificate\n\nBecause there's no point in having a CA certificate if you don't trust it, you'll need to import it into the Windows certificate store. You can use the Certificates MMC snapin, but from the command line:\n\ncertutil -user -addstore Root MyCA.cer\n\nCreating a code-signing certificate (SPC)\n\nmakecert -pe -n \"CN=My SPC\" -a sha256 -cy end ^ -sky signature ^ -ic MyCA.cer -iv MyCA.pvk ^ -sv MySPC.pvk MySPC.cer\n\nIt is pretty much the same as above, but we're providing an issuer key and certificate (the -ic and -iv switches).\n\nWe'll also want to convert the certificate and key into a PFX file:\n\npvk2pfx -pvk MySPC.pvk -spc MySPC.cer -pfx MySPC.pfx\n\nIf you are using a password please use the below\n\npvk2pfx -pvk MySPC.pvk -spc MySPC.cer -pfx MySPC.pfx -po fess\n\nIf you want to protect the PFX file, add the -po switch, otherwise PVK2PFX creates a PFX file with no passphrase.\n\nUsing the certificate for signing code\n\nsigntool sign /v /f MySPC.pfx ^ /t http://timestamp.url MyExecutable.exe\n\n(See why timestamps may matter)\n\nIf you import the PFX file into the certificate store (you can use PVKIMPRT or the MMC snapin), you can sign code as follows:\n\nsigntool sign /v /n \"Me\" /s SPC ^ /t http://timestamp.url MyExecutable.exe\n\nSome possible timestamp URLs for signtool /t are:\n\nhttp://timestamp.verisign.com/scripts/timstamp.dll\n\nhttp://timestamp.globalsign.com/scripts/timstamp.dll\n\nhttp://timestamp.comodoca.com/authenticode\n\nhttp://timestamp.digicert.com\n\nFull Microsoft documentation\n\nsigntool\n\nmakecert\n\npvk2pfx\n\nDownloads\n\nFor those who are not .NET developers, you will need a copy of the Windows SDK and .NET framework. A current link is available here: [SDK & .NET][5] (which installs makecert in `C:\\Program Files\\Microsoft SDKs\\Windows\\v7.1`). Your mileage may vary.\n\nMakeCert is available from the Visual Studio Command Prompt. Visual Studio 2015 does have it, and it can be launched from the Start Menu in Windows 7 under \"Developer Command Prompt for VS 2015\" or \"VS2015 x64 Native Tools Command Prompt\" (probably all of them in the same folder).\n\nRoger's answer was very helpful.\n\nI had a little trouble using it, though, and kept getting the red \"Windows can't verify the publisher of this driver software\" error dialog. The key was to install the test root certificate with\n\ncertutil -addstore Root Demo_CA.cer\n\nwhich Roger's answer didn't quite cover.\n\nHere is a batch file that worked for me (with my .inf file, not included). It shows how to do it all from start to finish, with no GUI tools at all (except for a few password prompts).\n\nREM Demo of signing a printer driver with a self-signed test certificate. REM Run as administrator (else devcon won't be able to try installing the driver) REM Use a single 'x' as the password for all certificates for simplicity. PATH %PATH%;\"c:\\Program Files\\Microsoft SDKs\\Windows\\v7.1\\Bin\";\"c:\\Program Files\\Microsoft SDKs\\Windows\\v7.0\\Bin\";c:\\WinDDK\\7600.16385.1\\bin\\selfsign;c:\\WinDDK\\7600.16385.1\\Tools\\devcon\\amd64 makecert -r -pe -n \"CN=Demo_CA\" -ss CA -sr CurrentUser ^ -a sha256 -cy authority -sky signature ^ -sv Demo_CA.pvk Demo_CA.cer makecert -pe -n \"CN=Demo_SPC\" -a sha256 -cy end ^ -sky signature ^ -ic Demo_CA.cer -iv Demo_CA.pvk ^ -sv Demo_SPC.pvk Demo_SPC.cer pvk2pfx -pvk Demo_SPC.pvk -spc Demo_SPC.cer ^ -pfx Demo_SPC.pfx ^ -po x inf2cat /drv:driver /os:XP_X86,Vista_X64,Vista_X86,7_X64,7_X86 /v signtool sign /d \"description\" /du \"www.yoyodyne.com\" ^ /f Demo_SPC.pfx ^ /p x ^ /v driver\\demoprinter.cat certutil -addstore Root Demo_CA.cer rem Needs administrator. If this command works, the driver is properly signed. devcon install driver\\demoprinter.inf LPTENUM\\Yoyodyne_IndustriesDemoPrinter_F84F rem Now uninstall the test driver and certificate. devcon remove driver\\demoprinter.inf LPTENUM\\Yoyodyne_IndustriesDemoPrinter_F84F certutil -delstore Root Demo_CA"
+    }
+}

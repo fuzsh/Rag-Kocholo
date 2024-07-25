@@ -1,0 +1,34 @@
+{
+    "id": "wrong_mix_domain_subsidiary_00061_2",
+    "rank": 77,
+    "data": {
+        "url": "https://serverfault.com/questions/658502/tomcat-8-hangs-on-startup-while-deploying-webapp-possibly-related-to-entropy-ge",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Tomcat 8 hangs on startup while deploying webapp. Possibly related to entropy generation",
+        "top_image": "https://cdn.sstatic.net/Sites/serverfault/Img/apple-touch-icon@2.png?v=9b1f48ae296b",
+        "meta_img": "https://cdn.sstatic.net/Sites/serverfault/Img/apple-touch-icon@2.png?v=9b1f48ae296b",
+        "images": [
+            "https://cdn.sstatic.net/Sites/serverfault/Img/logo.svg?v=43f5b6d5f65b",
+            "https://i.sstatic.net/FK7ev.jpg?s=64",
+            "https://i.sstatic.net/FK7ev.jpg?s=64",
+            "https://lh6.googleusercontent.com/-Mnjv07WrzT0/AAAAAAAAAAI/AAAAAAAAC1o/ThRtQBZdJLo/photo.jpg?sz=64",
+            "https://serverfault.com/posts/658502/ivc/70d9?prg=48b8b005-e854-42c2-b063-a96fc93d1883"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2015-01-09T20:00:04",
+        "summary": "",
+        "meta_description": "I'm trying to get a tomcat webapp started and while just testing out the server (vanilla tomcat8 download) it seems to be hanging on startup. My guess is that it is hung up on something dealing wit...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/serverfault/Img/favicon.ico?v=18e9cc4f2aea",
+        "meta_site_name": "Server Fault",
+        "canonical_link": "https://serverfault.com/questions/658502/tomcat-8-hangs-on-startup-while-deploying-webapp-possibly-related-to-entropy-ge",
+        "text": "I'm trying to get a tomcat webapp started and while just testing out the server (vanilla tomcat8 download) it seems to be hanging on startup. My guess is that it is hung up on something dealing with the SecureRandom class. I heard that tomcat can sometimes stall while generating entropy.\n\nHere are my versions:\n\nJava\n\njava version \"1.7.0_65\" OpenJDK Runtime Environment (IcedTea 2.5.3) (7u71-2.5.3-0ubuntu0.14.04.1) OpenJDK 64-Bit Server VM (build 24.65-b04, mixed mode)\n\nTomcat\n\n8.0.15\n\nUbuntu\n\nVERSION=\"14.04.1 LTS, Trusty Tahr\"\n\nWhen I try and start it up, it seems to hang deploying the host-manager webapp. This is my log after about 5 minutes of waiting\n\nwillkara@SkyHold:/opt$ more /opt/tomcat8/logs/catalina.out 09-Jan-2015 14:42:50.085 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Server version: Apache Tomcat/8.0.15 09-Jan-2015 14:42:50.087 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Server built: Nov 2 2014 19:25:20 UTC 09-Jan-2015 14:42:50.088 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Server number: 8.0.15.0 09-Jan-2015 14:42:50.088 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log OS Name: Linux 09-Jan-2015 14:42:50.088 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log OS Version: 3.13.0-37-generic 09-Jan-2015 14:42:50.089 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Architecture: amd64 09-Jan-2015 14:42:50.089 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log JAVA_HOME: /usr/lib/jvm/java-7-openjdk-amd64/jre 09-Jan-2015 14:42:50.089 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log JVM Version: 1.7.0_65-b32 09-Jan-2015 14:42:50.090 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log JVM Vendor: Oracle Corporation 09-Jan-2015 14:42:50.090 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log CATALINA_BASE: /home/willkara/tomcat8 09-Jan-2015 14:42:50.090 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log CATALINA_HOME: /home/willkara/tomcat8 09-Jan-2015 14:42:50.091 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.util.logging.config.file=/opt/tomcat8/conf/logging.properties 09-Jan-2015 14:42:50.092 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager 09-Jan-2015 14:42:50.092 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.endorsed.dirs=/opt/tomcat8/endorsed 09-Jan-2015 14:42:50.093 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dcatalina.base=/opt/tomcat8 09-Jan-2015 14:42:50.093 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dcatalina.home=/opt/tomcat8 09-Jan-2015 14:42:50.093 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.io.tmpdir=/opt/tomcat8/temp 09-Jan-2015 14:42:50.094 INFO [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.libr ary.path: /usr/java/packages/lib/amd64:/usr/lib/x86_64-linux-gnu/jni:/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/usr/lib/jni:/lib:/usr/lib 09-Jan-2015 14:42:50.257 INFO [main] org.apache.coyote.AbstractProtocol.init Initializing ProtocolHandler [\"http-nio-8080\"] 09-Jan-2015 14:42:50.293 INFO [main] org.apache.tomcat.util.net.NioSelectorPool.getSharedSelector Using a shared selector for servlet write/read 09-Jan-2015 14:42:50.297 INFO [main] org.apache.coyote.AbstractProtocol.init Initializing ProtocolHandler [\"ajp-nio-8009\"] 09-Jan-2015 14:42:50.299 INFO [main] org.apache.tomcat.util.net.NioSelectorPool.getSharedSelector Using a shared selector for servlet write/read 09-Jan-2015 14:42:50.300 INFO [main] org.apache.catalina.startup.Catalina.load Initialization processed in 1026 ms 09-Jan-2015 14:42:50.334 INFO [main] org.apache.catalina.core.StandardService.startInternal Starting service Catalina 09-Jan-2015 14:42:50.334 INFO [main] org.apache.catalina.core.StandardEngine.startInternal Starting Servlet Engine: Apache Tomcat/8.0.15 09-Jan-2015 14:42:50.347 INFO [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory /home/willkara/tomcat8/webapps/host-manager\n\nI've also attached a few different jstack dumps to see if everything is okedoke with the java VM.\n\nDump 1\n\nDump 2\n\nLooks like it definitely was a problem with entropy generation with the SecureRandom class.\n\nI added this flag to the JAVA_OPTS: -Djava.security.egd=file:/dev/./urandom and it starts up perfectly fine.\n\nI know this isn't the perfect way to fix the problem so I'm going to see if upgrading to Java8 may solve it.\n\nI got my information from this link.\n\nanswered Jan 9, 2015 at 20:16\n\nSempusSempus\n\n34211 gold badge22 silver badges1111 bronze badges"
+    }
+}

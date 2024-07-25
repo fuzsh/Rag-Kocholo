@@ -1,0 +1,33 @@
+{
+    "id": "wrong_mix_domain_subsidiary_00061_2",
+    "rank": 61,
+    "data": {
+        "url": "https://community.spiceworks.com/t/java-silent-install-wonder-script/209199",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Java Silent Install Wonder Script?",
+        "top_image": "https://global.discourse-cdn.com/spiceworks/original/1X/7a73606d7df2f794c4789897e49693fb3c471b23.png",
+        "meta_img": "https://global.discourse-cdn.com/spiceworks/original/1X/7a73606d7df2f794c4789897e49693fb3c471b23.png",
+        "images": [
+            "https://secure.intelligence52.com/795141.png",
+            "https://global.discourse-cdn.com/spiceworks/optimized/4X/d/0/a/d0a1b199b9aff3d19eaad2aa29e2de15c94c4b4f_2_690x363.png",
+            "https://zdbb.net/l/z0WVjCBSEeGLoxIxOQVEwQ/"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "imaging-deployment-patching",
+            "discussion"
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2013-04-25T21:04:11+00:00",
+        "summary": "",
+        "meta_description": "Ok, so I’m getting very frustrated by the new Java 7. Feels like none of the current vendor software our company uses works properly with it. Virtually all of my vendors are suggesting a return to Java 6. So, what I’d li&hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://global.discourse-cdn.com/spiceworks/optimized/1X/a254df83358a951c43ed6ee756b5e0011a8d58bc_2_32x32.png",
+        "meta_site_name": "Spiceworks Community",
+        "canonical_link": "https://community.spiceworks.com/t/java-silent-install-wonder-script/209199",
+        "text": "Ok, so I’m getting very frustrated by the new Java 7. Feels like none of the current vendor software our company uses works properly with it. Virtually all of my vendors are suggesting a return to Java 6. So, what I’d like is a miracle script. I don’t mind if it’s .bat or .vbs or even a sexy .msi installer, but what I want to accomplish is this:\n\nUninstall ALL versions of the Java Runtime Environment\n\nInstall Java 6.45\n\nTurn OFF automatic updating.\n\nAll my machines are running windows 7 pro x86 (32bit) All are active directory joined, and have local user admin rights.\n\nThat being said, I’ve been able to build a silent installer for Java 6.45, I’ve been able to build a script to uninstall all versions of java currently installed on the client machines AND I’ve been successful in building a .reg file that will turn off the update feature. The whole thing just falls apart when I try to combine everything into one big script. Any suggestions?\n\nI would use vbs to automate the process.\n\nBy using spiceworks you should be able to detected the installed versions of java across your fleet. From there you can then find the uninstall string from the registry on those computers. From there just have vbscript automate the uninstallation by executing the uninstall command for each version of java installed.\n\nEdit:\n\nI just found this link that is said to uninstall all versions of java http://www.itninja.com/question/silent-uninstall-java-all-versions\n\nHi,\n\nYou can use PDQ Deploy to perform this task. There are several ways to skin this cat but if you already have the individual scripts you can just build a PDQ Deploy package that contains three steps. Each step can execute an existing script. It would look something like the attached image. Just place your three scripts and your Java 6 Update 45 install files in the same directory. On Step 2 make sure you check the Include Entire Directory option. This way step 2 will copy the install files to the targets so they can be installed. If your install bat file points to an accessible network share to run the installation then you can ignore having to check the Include Entire Directory option.\n\nPDQ Deploy has a free mode but to run multiple steps in a package you’ll need Pro mode. You can get a 2 week trial.\n\nclick this link to download PDQ Deploy. http://www2.adminarsenal.com/download-pdqdeploy\n\nclick this link to start a free trial of Pro mode: Try PDQ Deploy & Inventory free for 14 days | PDQ\n\nIf you have multiple installs PDQ Deploy IS the way to go if you plan on deploying more applications than just this one. The Pro version is not very much money and well worth the price.\n\nThere is an installer command line option that you can use to disable the auto update. Here is a link that talks about it."
+    }
+}

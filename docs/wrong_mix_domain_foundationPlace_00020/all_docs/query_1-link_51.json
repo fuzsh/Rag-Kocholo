@@ -1,0 +1,34 @@
+{
+    "id": "wrong_mix_domain_foundationPlace_00020_1",
+    "rank": 51,
+    "data": {
+        "url": "https://dba.stackexchange.com/questions/48273/whats-stored-in-data-dir-base-of-postgresql",
+        "read_more_link": "",
+        "language": "en",
+        "title": "What's stored in data_dir/base of postgresql",
+        "top_image": "https://cdn.sstatic.net/Sites/dba/Img/apple-touch-icon@2.png?v=246e2cb2439c",
+        "meta_img": "https://cdn.sstatic.net/Sites/dba/Img/apple-touch-icon@2.png?v=246e2cb2439c",
+        "images": [
+            "https://cdn.sstatic.net/Sites/dba/Img/logo.svg?v=d844126b2d09",
+            "https://i.sstatic.net/DeUoM.jpg?s=64",
+            "https://www.gravatar.com/avatar/11db73037dd7fb30ea7f8af83faa3147?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/61366d7613f73cf73087723ff8d0abbe?s=64&d=identicon&r=PG",
+            "https://dba.stackexchange.com/posts/48273/ivc/d169?prg=aa723cd9-efd6-4d3d-a1e1-3e1e03d883e9"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2013-08-15T19:38:25",
+        "summary": "",
+        "meta_description": "I suddenly found found my PostgreSQL out of space. It's a tmp instance running on ram disk. Limited space (around 800M) allowed. Data are not actually stored on it, all table will be dropped after ...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/dba/Img/favicon.ico?v=fccaf00a9c8c",
+        "meta_site_name": "Database Administrators Stack Exchange",
+        "canonical_link": "https://dba.stackexchange.com/questions/48273/whats-stored-in-data-dir-base-of-postgresql",
+        "text": "This folder is where PostgreSQL keeps all the data you insert on your databases (see PostgreSQL Database File Layout). Each sub-directory is used by a database in you cluster, the files inside them are the actual data of the relations (tables, indexes, sequences, ...).\n\nSo, your answer is no! You cannot clean it out, and if you do so, you will lose your data and PostgreSQL server will stop with a panic.\n\nBasically, only files inside the pg_log directory (if any) can be removed. A side note, do not, ever remove files inside pg_xlog, it is not useless as the name may suggest (you didn't ask for it, but I saw happening sometimes).\n\nTips to solve your problem:\n\nThere are some things you can do to use less space in your case, like:"
+    }
+}

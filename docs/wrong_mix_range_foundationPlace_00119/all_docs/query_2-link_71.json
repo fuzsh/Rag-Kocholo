@@ -1,0 +1,52 @@
+{
+    "id": "wrong_mix_range_foundationPlace_00119_2",
+    "rank": 71,
+    "data": {
+        "url": "https://shinesolutions.com/2024/03/15/allure-report-hosting-using-s3/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Allure report hosting using S3",
+        "top_image": "https://shinesolutions.com/wp-content/uploads/2024/03/Z9j_mkRSj4vQ.png",
+        "meta_img": "https://shinesolutions.com/wp-content/uploads/2024/03/Z9j_mkRSj4vQ.png",
+        "images": [
+            "https://shinesolutions.com/wp-content/uploads/2020/08/Logo.png",
+            "https://shinesolutions.com/wp-content/uploads/2020/08/Logo.png",
+            "https://shinesolutions.com/wp-content/uploads/2020/08/Logo.png",
+            "https://shinesolutions.com/wp-content/uploads/2020/08/Logo.png",
+            "https://shinesolutions.com/wp-content/uploads/2020/08/Logo.png",
+            "https://shinesolutions.com/wp-content/uploads/2020/08/Title-Placeholder-1.jpg",
+            "https://i0.wp.com/shinesolutions.com/wp-content/uploads/2024/03/Z9j_mkRSj4vQ.png?fit=1366%2C796&ssl=1",
+            "https://i0.wp.com/shinesolutions.com/wp-content/uploads/2024/02/image-2.png?resize=564%2C269&ssl=1",
+            "https://i0.wp.com/shinesolutions.com/wp-content/uploads/2024/02/image-3.png?resize=371%2C201&ssl=1",
+            "https://i0.wp.com/shinesolutions.com/wp-content/uploads/2024/02/image-4.png?resize=1024%2C494&ssl=1",
+            "https://i0.wp.com/shinesolutions.com/wp-content/uploads/2024/02/image-5.png?resize=289%2C49&ssl=1",
+            "https://documents.lucid.app/documents/b8d20cf5-b381-49ca-9aa9-3b6e847da241/pages/Z9j_mkRSj4vQ?a=1790&x=-383&y=121&w=1366&h=796&store=1&accept=image%2F*&auth=LCA%209936b756571073d50f688b22fda510dd40877403805527507af448cd92c66f96-ts%3D1706907022",
+            "https://i0.wp.com/shinesolutions.com/wp-content/uploads/2024/02/image-6.png?resize=1024%2C550&ssl=1",
+            "https://i0.wp.com/shinesolutions.com/wp-content/uploads/2024/02/image-7.png?resize=1024%2C403&ssl=1",
+            "https://i0.wp.com/shinesolutions.com/wp-content/uploads/2024/02/image-8.png?resize=1024%2C442&ssl=1",
+            "https://i0.wp.com/shinesolutions.com/wp-content/uploads/2024/02/image-9.png?resize=1024%2C634&ssl=1",
+            "https://secure.gravatar.com/avatar/bfe6df7510244e2ea725cc308f81bbfa?s=75&d=identicon&r=g",
+            "https://secure.gravatar.com/avatar/ff4cc869c325291c529238e0239136bf?s=75&d=identicon&r=g",
+            "https://secure.gravatar.com/avatar/bfe6df7510244e2ea725cc308f81bbfa?s=75&d=identicon&r=g",
+            "https://shinesolutions.com/wp-content/uploads/2023/08/AWS_advanced_partner_badge_light.png",
+            "https://i0.wp.com/shinesolutions.com/wp-content/uploads/2020/08/Logo.png?resize=229%2C91&ssl=1"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Prashant Mohapatra"
+        ],
+        "publish_date": "2024-03-15T00:00:00",
+        "summary": "",
+        "meta_description": "I have extensively utilised Allure reports over the past few years, drawn to its remarkable visual capabilities that significantly aid in comprehending complex test flows. However, a persistent challenge has been how to effectively host the report. In this blog post, my focus will be...",
+        "meta_lang": "en",
+        "meta_favicon": "https://i0.wp.com/shinesolutions.com/wp-content/uploads/2020/08/cropped-Favicon.png?fit=32%2C32&ssl=1",
+        "meta_site_name": "Shine Solutions Group",
+        "canonical_link": "https://shinesolutions.com/2024/03/15/allure-report-hosting-using-s3/",
+        "text": "I have extensively utilised Allure reports over the past few years, drawn to its remarkable visual capabilities that significantly aid in comprehending complex test flows. However, a persistent challenge has been how to effectively host the report.\n\nIn this blog post, my focus will be on guiding you through the process of hosting Allure reports. As a prerequisite, it’s assumed that you are familiar with how Allure reports function and have the necessary setup. If you are new to Allure reports, you can quickly get started by using the sample API automation framework outlined in my previous article.\n\nGenerating allure report\n\nTypically, a test run generates an allure-results directory that looks like this –\n\nAnd subsequently, you can generate an Allure report using allure command line like this –\n\nallure generate allure-results --clean -o allure-report\n\nThis generates an allure-report directory with numerous sub-directories –\n\nTo open the report, simply right click on index.html and open it in your favourite browser –\n\nHowever, it’s a bit tricky since there are multiple subdirectories, and an index.html file. Accessing the index.html file requires having all the subdirectories, making it challenging to easily share the report with stakeholders.\n\nGenerating single file allure html report\n\nThe good news is Allure now offers a simple command-line option for creating a single index.html file:\n\nallure generate --clean --single-file\n\nOnce you run this, you will see allure-report directory with a single index.html file –\n\nThis makes sharing the report a breeze and opens up additional possibilities, like uploading these files to S3 and sharing links with stakeholders for easy viewing.\n\nAllure report in S3 solution\n\nHere’s a straightforward solution for this –\n\nCreate a dedicated AWS S3 bucket with specific bucket policies to grant access only to relevant applications (via gateway endpoint) or users. Set an object expiry for the bucket, determining the number of days before the report is automatically deleted. In this case, we’ve configured it for 100 days.\n\nAdditionally, implement a transition lifecycle for efficient cost management by transitioning files to different storage classes. In the solution here, files transition from Standard to Infrequent access after 30 days and from Infrequent access to Glacier Instant Retrieval after 60 days.\n\nExecute the test automation suite either on a local computer or via a CI tool like Jenkins, generating a single HTML report after the tests. Post-execution, send the Allure report to the designated bucket.\n\nShare links to these reports with the relevant stakeholders for easy access and review.\n\nCreate S3 bucket and host allure report\n\nHere is a simple Cloudformation template to create the S3 bucket – S3Stack.yml\n\nPlease be aware that the template includes an AllowedIPAddress parameter, allowing you to specify your IP address for testing purposes. However, when implementing this solution, it’s advisable to consider alternative methods, such as allowing access via a gateway endpoint or restricting access to specific users or a CIDR range.\n\nOnce the S3 bucket creation process is complete, you’ll have a bucket that resembles the following:\n\nTo upload a report to the S3 bucket, you can utilise the AWS Command Line Interface (CLI) to copy files from the machine or CI tool where the tests are executed to the S3 bucket. Here is a sample command:\n\naws s3 cp 'allure-report/index.html' 's3://s3-bucket-allurereportbucket-62pkv6yqx6gp/report-030220240901.html'\n\nThe report will be stored in the S3 bucket as shown below:\n\nNow you can use the Object URL to easily open the report –\n\nConclusion\n\nIn conclusion, using an S3 bucket is a great way to store and share test automation reports easily. With this method, we can store reports without depending on CI builds, and everyone can access them, not just locally. This solves the problem of sharing reports effectively. While this blog focuses on AWS S3, similar results could likely be achieved with Azure Blob Storage and Google Cloud Storage. This blog aims to give you the concept behind it all."
+    }
+}

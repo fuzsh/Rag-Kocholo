@@ -1,0 +1,46 @@
+{
+    "id": "wrong_mix_range_foundationPlace_00071_2",
+    "rank": 93,
+    "data": {
+        "url": "https://community.esri.com/t5/arcgis-utility-network-questions/distance-trace-how-to/td-p/1417946",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Distance trace - how to?",
+        "top_image": "https://community.esri.com/t5/image/serverpage/image-id/103094i2AADD03170CBDA63?v=v2",
+        "meta_img": "https://community.esri.com/t5/image/serverpage/image-id/103094i2AADD03170CBDA63?v=v2",
+        "images": [
+            "https://community.esri.com/html/assets/langTrFlag.PNG",
+            "https://community.esri.com/t5/image/serverpage/image-id/17i5C24E3D921257F9B/image-dimensions/50x50/image-coordinates/0%2C0%2C306%2C306/constrain-image/false?v=v2",
+            "https://community.esri.com/t5/image/serverpage/image-id/104254iB3A209A9A04C93B1/image-dimensions/50x50/constrain-image/false?v=v2",
+            "https://communitystg.esri.com/html/@09C70CF6BB92070325EF7BBC54D73CCB/rank_icons/esri-logo-40.png?version=preview",
+            "https://community.esri.com/t5/image/serverpage/image-id/104254iB3A209A9A04C93B1/image-dimensions/50x50/constrain-image/false?v=v2",
+            "https://communitystg.esri.com/html/@09C70CF6BB92070325EF7BBC54D73CCB/rank_icons/esri-logo-40.png?version=preview",
+            "https://community.esri.com/t5/image/serverpage/image-id/17i5C24E3D921257F9B/image-dimensions/50x50/image-coordinates/0%2C0%2C306%2C306/constrain-image/false?v=v2",
+            "https://community.esri.com/t5/image/serverpage/image-id/104254iB3A209A9A04C93B1/image-dimensions/50x50/constrain-image/false?v=v2",
+            "https://communitystg.esri.com/html/@09C70CF6BB92070325EF7BBC54D73CCB/rank_icons/esri-logo-40.png?version=preview",
+            "https://community.esri.com/t5/image/serverpage/image-id/103094i2AADD03170CBDA63/image-size/medium?v=v2&px=400",
+            "https://community.esri.com/t5/image/serverpage/image-id/17i5C24E3D921257F9B/image-dimensions/50x50/image-coordinates/0%2C0%2C306%2C306/constrain-image/false?v=v2",
+            "https://community.esri.com/t5/image/serverpage/image-id/104254iB3A209A9A04C93B1/image-dimensions/50x50/constrain-image/false?v=v2",
+            "https://communitystg.esri.com/html/@09C70CF6BB92070325EF7BBC54D73CCB/rank_icons/esri-logo-40.png?version=preview",
+            "https://community.esri.com/skins/images/B84DBD35CBBCA832F9284C14D2DEE55D/responsive_peak/images/icon_anonymous_message.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "community.esri.com",
+            "user-id"
+        ],
+        "publish_date": "2024-05-02T07:32:58.377000+00:00",
+        "summary": "",
+        "meta_description": "Solved: Hello, I am trying to figure out how to do a distance trace in the Utility Network. I want to trace a line starting from a specific device (trace location),",
+        "meta_lang": "en",
+        "meta_favicon": "https://www.esri.com/content/dam/esrisites/en-us/common/favicon/esri-favicon-180.png",
+        "meta_site_name": "Esri Community",
+        "canonical_link": "https://community.esri.com/t5/arcgis-utility-network-questions/distance-trace-how-to/td-p/1417946",
+        "text": "Hello,\n\nI am trying to figure out how to do a distance trace in the Utility Network. I want to trace a line starting from a specific device (trace location), the trace should stop after a given distance. I want to find out exactly where this distance point is on the traced route. The route may well belong to different tiers and have branches.\n\nI have searched this community in vain and also consulted various Esri videos on the subject of network tracing (including this one: Trace Operations in the Trace Network). My own attempts with the Electric Utility Network Foundation Solution data have also been unsuccessful so far.\n\nWhat I think I have understood so far is that you have to define the distance via a Function Barrier with \"Add - Shape.Length\" (or any other lenght attribute) and use the \"Aggregated Geometry\" option as the Output Result Type in order to be able to visualize the exact distance position on the map. Unfortunately, I have not been able to do this in all my attempts, and depending on the choice of trace location, various errors have occurred when executing the network trace.\n\nIs there a detailed description somewhere, or better still a video, that shows how to formulate the trace in order to find the desired distance position on the route?\n\nI would be very grateful for any hints or help.\n\nBest regards,\n\nJürgen\n\nHi Robert,\n\nThank you for pointing out this very interesting video. Unfortunately, it didn't help me with my problem. Although it is explained at the end of the video that, as I had assumed, in order to be able to identify the exact distance position X, the “Aggregated Geometry” option must be used as the Result Type, this has not worked so far in my attempts. (However, thanks to the video, I have not received any further error messages when trying again).\n\nMy test case looks like this: I select any mid-voltage transformer (of the Electric Utility Network Foundation Solution) and define the primary terminal as the trace location. Then I execute an upstream trace in the distribution tier with the following filter function barrier: Add - Shape length - Is greater than or equal to - 20 (so my distance position is 20 units). Before running the trace I have deleted the traversability barriers of the trace configuration. My output options are “Aggregated Geometry” and “Selection”.\n\nIn fact, the trace delivers a result - it selects the line connected upstream to the transformer and generates an aggregated line geometry. However, this is not 20 units long, but goes as far as the vertex of the line that most closely fulfills the function barrier condition. However, I would have expected the aggregated geometry to be exactly 20 units long.\n\nOn further attempts with other X values (50, 100, 200), it can be seen that the aggregated geometry always runs up to a vertex of the line, but never ends at the exact X value.\n\nI am now wondering whether I am doing something wrong here, or whether it generally does not work to determine the exact distance position.\n\nI would be happy to demonstrate my test case in a web session.\n\nBest regards, Jürgen"
+    }
+}

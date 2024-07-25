@@ -1,0 +1,49 @@
+{
+    "id": "wrong_mix_random_leader_00119_3",
+    "rank": 50,
+    "data": {
+        "url": "https://stackoverflow.com/questions/1260952/how-to-execute-a-stored-procedure-within-c-sharp-program",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How to execute a stored procedure within C# program",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/c0ca3062cd19e16b73e8a787c0275666?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/7d4c00898424a2bfcc5329b442272408?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/eKxnb.jpg?s=64",
+            "https://i.sstatic.net/WqTIm.png?s=64",
+            "https://www.gravatar.com/avatar/f3d5046ef5f7bf7ea2911bec6ed5b402?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/a58bed28c49c8bcbfb32b2db864ae5c9?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/c83c9f132bd2cc7f07c3e842a3ee0895?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/ceP50.jpg?s=64",
+            "https://www.gravatar.com/avatar/c93cf60d57495b7462f5ccf3fdcd9dfb?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/r6zmw.jpg?s=64",
+            "https://i.sstatic.net/JDZrj.png?s=64",
+            "https://i.sstatic.net/WzBuW.jpg?s=64",
+            "https://i.sstatic.net/5z1Nm.jpg?s=64",
+            "https://www.gravatar.com/avatar/b4779212f57ff2e9549ea90a4499c2d7?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/nwZAE.jpg?s=64",
+            "https://www.gravatar.com/avatar/2a2cc0bea23b5e604a252f0f3f0456aa?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/b4779212f57ff2e9549ea90a4499c2d7?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/152eb9db605011b60c2ab41dce3bdd8f?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://lh3.googleusercontent.com/a-/AAuE7mBGZ3Is7bNLB5ClvSjKL3bGZ3JwDMLFc9LLpB6NghI=k-s64",
+            "https://stackoverflow.com/posts/1260952/ivc/851a?prg=0653768e-19da-41f9-abbc-257455d5ff3b"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2009-08-11T15:04:26",
+        "summary": "",
+        "meta_description": "I want to execute this stored procedure from a C# program.\n\nI have written the following stored procedure in a SqlServer query window and saved it as \nstored1:\n\nuse master \ngo\ncreate procedure dbo....",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/1260952/how-to-execute-a-stored-procedure-within-c-sharp-program",
+        "text": "using (SqlConnection conn = new SqlConnection(\"Server=(local);DataBase=Northwind;Integrated Security=SSPI\")) { conn.Open(); // 1. create a command object identifying the stored procedure SqlCommand cmd = new SqlCommand(\"CustOrderHist\", conn); // 2. set the command object so it knows to execute a stored procedure cmd.CommandType = CommandType.StoredProcedure; // 3. add parameter to command, which will be passed to the stored procedure cmd.Parameters.Add(new SqlParameter(\"@CustomerID\", custId)); // execute the command using (SqlDataReader rdr = cmd.ExecuteReader()) { // iterate through results, printing each to console while (rdr.Read()) { Console.WriteLine(\"Product: {0,-35} Total: {1,2}\",rdr[\"ProductName\"],rdr[\"Total\"]); } } }\n\nHere are some interesting links you could read:\n\nhttp://www.csharp-station.com/Tutorials/AdoDotNet/Lesson07.aspx\n\nhttp://www.c-sharpcorner.com/UploadFile/dclark/InsOutsinCS11302005072332AM/InsOutsinCS.aspx\n\nhttp://www.codeproject.com/KB/cs/simplecodeasp.aspx\n\nhttp://msdn.microsoft.com/en-us/library/ms171921(VS.80).aspx\n\nBy using Ado.net\n\nusing System; using System.Data; using System.Data.SqlClient; using System.Configuration; namespace PBDataAccess { public class AddContact { // for preparing connection to sql server database private SqlConnection conn; // for preparing sql statement or stored procedure that // we want to execute on database server private SqlCommand cmd; // used for storing the result in datatable, basically // dataset is collection of datatable private DataSet ds; // datatable just for storing single table private DataTable dt; // data adapter we use it to manage the flow of data // from sql server to dataset and after fill the data // inside dataset using fill() method private SqlDataAdapter da; // created a method, which will return the dataset public DataSet GetAllContactType() { // retrieving the connection string from web.config, which will // tell where our database is located and on which database we want // to perform opearation, in this case we are working on stored // procedure so you might have created it somewhere in your database. // connection string will include the name of the datasource, your // database name, user name and password. using (conn = new SqlConnection(ConfigurationManager.ConnectionString[\"conn\"] .ConnectionString)) { // Addcontact is the name of the stored procedure using (cmd = new SqlCommand(\"Addcontact\", conn)) { cmd.CommandType = CommandType.StoredProcedure; // here we are passing the parameters that // Addcontact stored procedure expect. cmd.Parameters.Add(\"@CommandType\", SqlDbType.VarChar, 50).Value = \"GetAllContactType\"; // here created the instance of SqlDataAdapter // class and passed cmd object in it da = new SqlDataAdapter(cmd); // created the dataset object ds = new DataSet(); // fill the dataset and your result will be stored in dataset da.Fill(ds); } } return ds; } } ****** Stored Procedure ****** CREATE PROCEDURE Addcontact @CommandType VARCHAR(MAX) = NULL AS BEGIN IF (@CommandType = 'GetAllContactType') BEGIN SELECT * FROM Contacts END END\n\nthis is an example of a stored procedure that returns a value and it's execution in c#\n\nCREATE PROCEDURE [dbo].[InsertPerson] -- Add the parameters for the stored procedure here @FirstName nvarchar(50),@LastName nvarchar(50), @PersonID int output AS BEGIN insert [dbo].[Person](LastName,FirstName) Values(@LastName,@FirstName) set @PersonID=SCOPE_IDENTITY() END Go -------------- // Using stored procedure in adapter to insert new rows and update the identity value. static void InsertPersonInAdapter(String connectionString, String firstName, String lastName) { String commandText = \"dbo.InsertPerson\"; using (SqlConnection conn = new SqlConnection(connectionString)) { SqlDataAdapter mySchool = new SqlDataAdapter(\"Select PersonID,FirstName,LastName from [dbo].[Person]\", conn); mySchool.InsertCommand = new SqlCommand(commandText, conn); mySchool.InsertCommand.CommandType = CommandType.StoredProcedure; mySchool.InsertCommand.Parameters.Add( new SqlParameter(\"@FirstName\", SqlDbType.NVarChar, 50, \"FirstName\")); mySchool.InsertCommand.Parameters.Add( new SqlParameter(\"@LastName\", SqlDbType.NVarChar, 50, \"LastName\")); SqlParameter personId = mySchool.InsertCommand.Parameters.Add(new SqlParameter(\"@PersonID\", SqlDbType.Int, 0, \"PersonID\")); personId.Direction = ParameterDirection.Output; DataTable persons = new DataTable(); mySchool.Fill(persons); DataRow newPerson = persons.NewRow(); newPerson[\"FirstName\"] = firstName; newPerson[\"LastName\"] = lastName; persons.Rows.Add(newPerson); mySchool.Update(persons); Console.WriteLine(\"Show all persons:\"); ShowDataTable(persons, 14);"
+    }
+}

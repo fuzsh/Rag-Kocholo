@@ -1,0 +1,38 @@
+{
+    "id": "wrong_mix_property_nbateam_00061_1",
+    "rank": 59,
+    "data": {
+        "url": "https://stackoverflow.com/questions/6697754/android-kernel-debugging",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Android Kernel Debugging",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://cdn.sstatic.net/Img/teams/teams-promo.svg?v=e507948b81bf",
+            "https://www.gravatar.com/avatar/2d8cb0eaa4de7f781e42328ec7544ca3?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/a8d4468065429d0852089aa54127323c?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/7HSUg.jpg?s=64",
+            "https://www.gravatar.com/avatar/074b5aae0a564bb72dc210c9c63abd87?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/a007be5a61f6aa8f3e85ae2fc18dd66e?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/50104b2b3afe44f66f1a583d45337cb5?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://stackoverflow.com/posts/6697754/ivc/d019?prg=1d2034e0-3121-4c80-b2cd-bdae8fd6f11b",
+            "https://stackoverflow.com/js-false.gif"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2011-07-14T17:55:39",
+        "summary": "",
+        "meta_description": "I have been experimenting with getting kgdb to work the Nexus One.\n\nI have pulled the kernel from https://android.googlesource.com and enabled everything to do with kgdb including kgdbts testing us...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/6697754/android-kernel-debugging",
+        "text": "Android Kernel questions are rare on [SO], asa nobody else has answered I have provided my findings on this issue. Unfortunately I don't have a nexus one to test this on so this answer is not intended as a step by step resolution of you problem, but should point you in the right direction of where to look.\n\nThe only useful resource I have found on this problem is in a LKML patch by Dongdong Deng, so it is unlikely a configuration issue as these are usually abundant and well-publicized.\n\nThis indicates that there is a problem with your kernel build. I would be tempted to start again with the latest versions of CM and see if the problem just goes away.\n\nFailing that, try reporting this to the cyanogen team and see if this is a known issue or has a simple workaround.\n\nAs a last resort you could try the patch if the versions are compatible. The only alternative is to roll up your sleeves and start hacking the CM kernel to incorporate the patch.\n\nGood luck.\n\nFound this post from a related post and wanted to say I've just published some work I did to get this working on the Nexus 6 if anyone is interested:\n\nhttp://www.contextis.com/resources/blog/kgdb-android-debugging-kernel-boss/\n\nInterestingly, the OP's problem with sysrq was one I also came across. The reason for this behaviour is that KGDB wasn't initialising correctly so it fails to install the handler for the 'g' (kgdb) trigger. That's why all the other sysrq commands still work.\n\nLonger explanation (thanks @Robert):\n\nTo get this working I had to make a UART debug cable based on this Accuvant blog. This is quite a simple circuit which consists of a FTDI 3.3v basic breakout (available from SparkFun at the time of writing), as well as 4 resistors (2 x 1K Ohm, 1 x 1.2K Ohm and 1 x 100Ohm), and a 4-element Tip-Ring-Ring-Sleeve (TRRS) headphone jack. The resistors are essentially providing a voltage divider to reduce the 3.3v down to something a little safer for your phone. By inserting the audio jack with the other end connected to your circuit board, the audio subsystem recognises that a voltage (~2.8V) on the one of the pins and it knows to provide a UART interface via that cable. The FTDI breakout plugs into your PC via USB and from here you can access console messages via a terminal emulator like minicom. However, you now have a serial interface through the same mechanism and that's what we can use for a KGDB connection.\n\nSo at this point some relatively minor changes are required to the Nexus 6's serial driver (msm_serial_hs_lite.c) to support KGDB (specifically, the ability to perform atomic character I/O operations). I just ported these changes from the Linux Kernel mainline code as a chap called Stephen Boyd had done the hard work to the full MSM (Qualcomm) serial driver msm_serial.c. His changes can be found here or just search for \"msm_serial: add support for poll_\" on Google. The port wasn't difficult and my code can be found on github.\n\nAside from that you need to be able to build a custom kernel for your N6 which google provides lots of information on. You then need to create a boot image which contains the KGDB modifications in the github repo. I took the stock kernel from https://developers.google.com/android/nexus/images, extracted it (using abootimg -x) and then used the following command to repack it with my custom kernel (zImage-dtb) and additional command line params to ensure KGDB would be loaded and point to my serial port like so:\n\nabootimg -u boot.img -k zImage-dtb -c 'cmdline=console=ttyHSL0,115200,n8 kgdboc=ttyHSL0,115200 kgdbretry=4'\n\nWith my boot.img created I could boot into it using the command fastboot boot boot.img, open an adb shell and then trigger a breakpoint in the Android kernel using the command:\n\necho -n g > /proc/sysrq-trigger\n\nIt is worth mentioning for completeness that you need superuser privileges to access /proc/sysrq-trigger so you need to have root.\n\nWith the phone halted, and your debug cable connected, launch a version of GDB for ARM on your host PC with your uncompressed kernel as an argument (e.g. arm-eabi-gdb ./vmlinux). Note: I'm running Ubuntu 14.04 and using arm-eabi-gdb from the 'prebuilts' directory in my AOSP source repository. Finally, enter the following commands:\n\nset remoteflow off set remotebaud 115200 target remote /dev/ttyUSB0\n\nAll being well this should immediately break into the kgdb breakpoint (that your write to /proc/sysrq-trigger produced) and you can start debugging."
+    }
+}

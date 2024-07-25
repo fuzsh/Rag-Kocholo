@@ -1,0 +1,36 @@
+{
+    "id": "wrong_mix_domain_subsidiary_00101_2",
+    "rank": 15,
+    "data": {
+        "url": "https://stackoverflow.com/questions/1479574/code-organization-style-for-c",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Code organization style for C?",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://i.sstatic.net/eaAZ8.jpg?s=64",
+            "https://www.gravatar.com/avatar/f911774749a6cad95d07c7f63a01bed3?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/680652ec4feb1969c39cfba008214ea9?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/svGiU.jpg?s=64",
+            "https://www.gravatar.com/avatar/372959c3d2ca68d8c558447e39de5565?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/0c4f4df702b23c8983f57d7113e809c8?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/1479574/ivc/b018?prg=fcafa7bd-bdff-4366-ae27-6d72372118b4"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2009-09-25T21:04:03",
+        "summary": "",
+        "meta_description": "I know some higher level languages, all web based (PHP, javascript, some python). I've finally decided to learn a lower level language, and I've decided to go with C.  The problem is that all the",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/1479574/code-organization-style-for-c",
+        "text": "C doesn't offer much in the way of code organization. There's functions and files.\n\nWhenever you want to implement an interface with hidden implementation, or perhaps with private functions, create two files, like \"foo.h\" and \"foo.c\".\n\nThe interface and/or public functions are function prototypes in \"foo.h\", and the functions are written in \"foo.c\". In addition, any hidden implementation or other private functions are in \"foo.c\", but marked as static, such as static int foo_internal_function(int i);. Functions marked static may only be referenced in the file they exist in, not any other.\n\nThere are no formal namespaces, although you can get much the same effect with prefixing function names, such as Foo_discombobulate_developers(). There are no classes, although you can at least get some encapsulation effects with the files. There is no extensible hierarchy, just files and functions.\n\nC doesn't have anywhere near the organization of later languages, but lots of really good programs have been written in it. Be careful, comment anything confusing (and in C there are likely to be confusing things), and keep good notes.\n\n\"Files with endless amounts of functions\"\n\nWhat you really want is files with a well defined and limited set of functions. This is called modular programming. The idea is you group functions based on functionality into a single compilation unit and define the function prototypes in a header:\n\nFoo.h:\n\nint GetFoo();\n\nFoo.c:\n\nint GetFoo() { ... }\n\nIts somewhat similar to how you would group a set of methods into a single class. The main difference is that there may-or-may-not be a \"this\" thing you are working on at any given time. That is to say you can still do essentially \"object oriented\" programming in C. Your object, however, becomes a parameter to your module. Here's one approach:\n\nBar.h:\n\ntypedef int BAR_OBJ BAR_OBJ MakeBar(); int GetBarSize(BAR_OBJ); void DoFooToBar(BAR_OBJ, ...)\n\nBar.c\n\nstruct BarDetails { int isFree; int size; ... // other info about bar }; static BarDetails arrayOfBars[...]; // BAR_OBJ MakeBar() { // search BarDetails array, find free Bar } int GetBarSize(BAR_OBJ obj) { return arrayOfBars[obj]; } void DoFooToBar(BAR_OBJ, ...) { // lookup bar obj and do something }\n\nHere's a pattern that pops up in C frequently that emulates OOP:\n\nConsider a class named MyClass.\n\n/* MyClass.h or myclass.h */ #ifndef MYCLASS_H #define MYCLASS_H struct myclass_s; typedef struct myclass_s myclass_t; myclass_t * myclass_new(); void delete_myclass(myclass_t *); // Method int doMyStuff(int arg1,int arg2) int myclass_doMyStuff(myclass_t *, int arg1, int arg2); #endif //MYCLASS_H\n\nThe header file defines the type myclass_t, but hides the actual implementation myclass_s. This somewhat ackward requirement to have two names follows from C having structs in a separate namespace, while in C++ structs are in the same namespace as all other types. The code is intended to work in both C and C++. Here is the corresponding .c file:\n\n/* MyClass.c or myclass.c */ #include \"myclass.h\" // Or MyClass.h struct myclass_s { int exampleField; }; myclass_t * myclass_new() { myclass_t * o=(myclass_t*)malloc(sizeof(myclass_t)); // Initialize o here. return o; } void myclass_delete(myclass_t * o) { // Do any cleanup needed on o here. free(o); } int myclass_doMyStuff(myclass_t * o,int arg1,int arg2) { // ... }\n\nInheritance and dynamic binding are also possible to do in C, but they are somewhat more involved. The above pattern, or any pattern that models OOP, isn't always the best way to do things in C, so try not to get hung up on the class centered way of thinking. Still, this pattern is occasionally useful. For example, libpng uses something close to this (they also do 'exceptions' using setjmp/longjmp, something which I advice against)."
+    }
+}

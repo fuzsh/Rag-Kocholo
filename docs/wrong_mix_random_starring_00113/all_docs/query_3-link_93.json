@@ -1,0 +1,28 @@
+{
+    "id": "wrong_mix_random_starring_00113_3",
+    "rank": 93,
+    "data": {
+        "url": "https://simonwillison.net/2003/Nov/26/discoveringBerkeleyDB/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Discovering Berkeley DB",
+        "top_image": "",
+        "meta_img": "",
+        "images": [],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2003-11-26T00:00:00",
+        "summary": "",
+        "meta_description": "I’m working on a project at the moment which involves exporting a whole bunch of data out of an existing system. The system is written in Perl and uses Berkeley …",
+        "meta_lang": "en",
+        "meta_favicon": "",
+        "meta_site_name": "",
+        "canonical_link": "https://simonwillison.net/2003/Nov/26/discoveringBerkeleyDB/",
+        "text": "I’m working on a project at the moment which involves exporting a whole bunch of data out of an existing system. The system is written in Perl and uses Berkeley DB files for most of its storage.\n\nI’d never done anything with Berkeley DB before, but luckily Python has a module which seems to do all of the hard work for me:\n\n>>> db = bsddb.btopen('xpand.db') >>> db.keys()[0:10] [':archives:index.html', ':art:test.html', ... >>> db[':art:test.html'] 'template;front.tp\\x01\\x01' >>>\n\nThe Berkeley DB libraries are maintained by Sleepycat Software. Unfortunately, their site is completely saturated with marketing jargon. Our customers rely on Berkeley DB for fast, scalable, reliable and cost-effective data management for their mission-critical applications. Great—now what does it do exactly?\n\nSome digging around turned up the real information: the Berkeley DB Tutorial and Reference Guide, which contains pretty much everything you could possible want to know about the technology. It turns out that at a basic level Berkeley DB is just a very high performance, reliable way of persisting dictionary style data structures—anything where a piece of data can be stored and looked up using a unique key. The key and the value can each be up to 4 gigabytes in length and can consist of anything that can be crammed in to a string of bytes, so what you do with it is completely up to you. The only operations available are “store this value under this key”, “check if this key exists” and “retrieve the value for this key” so conceptually it’s pretty simple—the complicated stuff all happens under the hood.\n\nIt seems like a great alternative to a full on relational database for simple applications, although I’m slightly confused by the license which allows free use for open source products but requires a license for commercial applications. Does that mean that if I use the bsddb Python module in a commercial app I need to get a license from Sleepycat?"
+    }
+}

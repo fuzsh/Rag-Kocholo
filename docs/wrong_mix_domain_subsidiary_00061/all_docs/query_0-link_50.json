@@ -1,0 +1,51 @@
+{
+    "id": "wrong_mix_domain_subsidiary_00061_0",
+    "rank": 50,
+    "data": {
+        "url": "https://community.sap.com/t5/technology-blogs-by-members/chatbot-on-s-4-hana-google-assistant-and-scp/ba-p/13372939",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Chatbot on S/4 HANA (Google Assistant and SCP)",
+        "top_image": "https://groups.community.sap.com/html/assets/SAP_R_grad_200x200.png",
+        "meta_img": "https://groups.community.sap.com/html/assets/SAP_R_grad_200x200.png",
+        "images": [
+            "https://avatars.profile.sap.com/a/5/ida5b9079e26222311023f07ee213b01d1988d29bce648822e46005161a3ad3699_small.jpeg",
+            "https://community.sap.com/legacyfs/online/storage/blog_attachments/2018/09/Chatbot.png",
+            "https://community.sap.com/html/assets/img_tile-default.png",
+            "https://avatars.profile.sap.com/former_member_small.jpeg",
+            "https://community.sap.com/html/assets/img_tile-default.png",
+            "https://avatars.profile.sap.com/f/a/idfa6c70916ad58d838d99a48f67d4419c79207f4cff11d4ee7e855a0cb144903b_small.jpeg",
+            "https://community.sap.com/html/assets/img_tile-default.png",
+            "https://avatars.profile.sap.com/d/0/idd0f56656dda1f2283a46d9bdf801f12cbfd021bcb726434a060e0127ea52847b_small.jpeg",
+            "https://avatars.profile.sap.com/e/f/ideff15d2172bde4bf68fd20b14e0c54fc1016114e60abe8ef97a9cea39e2f743b_small.jpeg",
+            "https://avatars.profile.sap.com/e/3/ide3e30891b6a09c74bc5159725d8a37c52374d3177903f1a527d658a26b42892f_small.jpeg",
+            "https://avatars.profile.sap.com/f/2/idf28bed10fb0cdcfb85f6994ce37b37e2877627385a7cb16624bdb857a1247372_small.jpeg",
+            "https://avatars.profile.sap.com/c/b/idcbc6a81ee4b6e31a62d55ac4fbf1547d3a826b61d9346f919f9c23f2fc4b76cf_small.jpeg",
+            "https://avatars.profile.sap.com/6/7/id677f624df4f67fa55aef9b803484fd38cfa389573f663b9623d9dc410597c931_small.jpeg",
+            "https://avatars.profile.sap.com/c/2/idc2091ea36ed9bbeafd6af0747a19a69e1a8172f446a049fb753d2f446abe1d8a_small.jpeg",
+            "https://avatars.profile.sap.com/5/d/id5d0e018f65bd368cf777fb9bb55730fe9d6da1dd6d6bff5d907dec7d2f3b6ac3_small.jpeg",
+            "https://avatars.profile.sap.com/a/4/ida402185a2dbc840ae38c209b91c64a0dc103cc0112d46c5f49df890c1ee77835_small.jpeg",
+            "https://avatars.profile.sap.com/1/5/id15869c51fdf8b954dce407f4bab8176a83c8fb57a615bd36df36c63a1312cf5c_small.jpeg"
+        ],
+        "movies": [
+            "https://www.youtube.com/embed/4s2ag1FXua0"
+        ],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "community.sap.com",
+            "user-id"
+        ],
+        "publish_date": "2018-09-11T09:40:22+00:00",
+        "summary": "",
+        "meta_description": "This is the 1st blog I am writing. Please have some mercy . I was attending courses on openSAP for SAP HANA Cloud Platform and exploring it to get the best out of it. So",
+        "meta_lang": "en",
+        "meta_favicon": "https://community.sap.com/html/@28E64AF715869863C9097AAA9C123156/assets/favicon.ico",
+        "meta_site_name": "SAP Community",
+        "canonical_link": "https://community.sap.com/t5/technology-blogs-by-members/chatbot-on-s-4-hana-google-assistant-and-scp/ba-p/13372939",
+        "text": "3,437\n\nThis is the 1st blog I am writing. Please have some mercy 🙂 .\n\nI was attending courses on openSAP for SAP HANA Cloud Platform and exploring it to get the best out of it. So I created few chatbots by end of the last year. This is before SAP acquired Recast.ai .\n\nFor this blog, I have created chatbot for Overdue accounts. We can ask chatbot about overdue accounts for particular customers. If there are customers with the same name, we can provide city as well. We can also send the Statement of account to customer via Email.\n\nThe Chatbot follows MVC concept. So here it goes -\n\nDialogflow (by Google) - View - Face of Chatbot\n\nDialogflow serves NLP which we need to build the chatbot. It has all the necessary NLP components like Intents, Entities, Fulfillment and most importantly, Integrations with Google Assistant, Facebook, Skype, Alexa; which makes chatbot easy-to-use and interesting.\n\nSAP Cloud Platform (by SAP) - Controller - Handles and connects View and Model\n\nSCP provides so many services and APIs. Using SCP, It is really convenient to connect to SAP ERP, S/4 HANA On-Premise and S/4 HANA Cloud.\n\nI have created JAVA Application and deployed on SCP. The Java Application interpretes the request from Dialogflow and accordingly forwards it to SAP Systems. Here we can call APIs provided by SAP and enhance functionality of Application accordingly.\n\nSAP System (by SAP) - Model - Executes Database / Process Logic\n\nSAP Systems can be connected to SCP via Cloud Connector. For that, we have options to communicate with Systems via HTTP or RFC. We can use HTTP for OData services and RFC to call BAPI and RFC-enabled Function modules.\n\nI have created custom RFC-Enabled Function modules that have all the necessary logic based on the request from SCP.\n\nLets deep dive into Implementation.\n\nDialogflow\n\nThe OverdueAccounts chatbot is deployed on Google Cloud. Via Google Cloud, we can assign chatbot to other users easily.\n\nIntents - There are 3 main intents. DisplayOverDueAccounts will provide Overdue account data. SendStatement will send statement to customer. Help intent will show some sample queries.\n\nEntities - Entities like Account, Customer and City are created with synonyms to construct wide range of words for Chatbot NLP.\n\nFulfillment - Here goes the url for Java Application. Dialogflow will send POST request on this URL.\n\nIntegration - We can integrate the chatbot with Google Assistant, Skype, Alexa, Facebook, Twitter and so on. I have integrated with Google Assistant.\n\nSCP\n\nJava Application - Java application has been deployed on SCP which has all the logic that should be called on SAP System when It gets request from Dialogflow. For eg. When DisplayOverDueAccounts intent has sent the request, call RFC Function module ZDisplayOverDueAccounts. When SendStatement intent has sent request, call RFC Function module ZSendStatement.\n\nCloud Connector - I have added SAP System to SCP via cloud connector. I have exposed only necessary Function Modules for security reason.\n\nSAP System\n\nFunction Modules - I have created 2 RFC-based Function modules which will do all the work in the system and return the data to Java Application. These 2 Function Modules have functionalities of Transactions FB12 and F.61 .\n\nHere is the video of Overdue Account Chatbot.\n\nChatbot also talks (as the name suggests 🙂 ). In Overdue Account information response, it tells only final amount instead of speaking every detail shown in screen. That makes it even cooler.\n\nVideo Description :\n\n1st, I am showing Business Partner and its Email address. There are no Email in SOST.\n\n2nd, Communication with Chatbot for getting Overdue Accounts Detail and then Sending the Statement to Business Partner.\n\n3rd, Chatbot has sent Email to Business Partner that we can see in SOST."
+    }
+}

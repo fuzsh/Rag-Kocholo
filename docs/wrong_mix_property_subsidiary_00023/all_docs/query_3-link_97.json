@@ -1,0 +1,30 @@
+{
+    "id": "wrong_mix_property_subsidiary_00023_3",
+    "rank": 97,
+    "data": {
+        "url": "https://knowledge.broadcom.com/external/article/159509/generating-syslog-messages-from-data-los.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Generating Syslog messages from Data Loss Prevention",
+        "top_image": "https://knowledge.broadcom.com/broadcom-log.png",
+        "meta_img": "https://knowledge.broadcom.com/broadcom-log.png",
+        "images": [
+            "https://cdn.wolkenservicedesk.com/wolken-footer-image.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "https://knowledge.broadcom.com/broadcom-log.png",
+        "meta_site_name": "",
+        "canonical_link": "https://knowledge.broadcom.com/external/article/159509/generating-syslog-messages-from-data-los.html",
+        "text": "DLP supports two methods for generating Syslog events: \"Syslog Response Rule\" notifications and \"Syslog Server Alerts\".\n\n1. Creating a Syslog Response Rule\n\nGo to the Enforce console >> Manage >> Policies >> Response Rules >> Add Response Rule >> From the action drop down select \"Log to a Syslog Server\"\n\nFill in the Host, Port, Message, Protocol(UDP or TCP) and Level as appropriate. You can also add variables to the Message field by selecting them from the Insert Variable list on the right. The variables will populate with values based on the specific incident. Once assigned to a Policy, the Response Rule will generate a syslog event when triggered.\n\nNOTE: The creation of a \"Syslog Response Rule\" does not require the additional method described for \"Syslog Server Alerts\" - they are separate functions.\n\n2. Create Syslog Server Alerts\n\nSyslog functionality is an on or off option. If syslog is turned on, all Severe events are sent to the syslog server. To enable sending server events to syslog:\n\na. Go to the \\Program Files\\Symantec\\DataLossPrevention\\EnforceServer\\15.8.00000\\Protect\\config directory on Windows or the /opt/Symantec/DataLossPrevention/EnforceServer/15.8.00000/Protect/config directory on Linux.\n\nb. Open the Manager.properties file.\n\nc. Uncomment the #systemevent.syslog.protocol = line by removing the # symbol from the beginning of the line, and enter [ udp | tcp | tls ] to secure communications sent from the Enforce Server to the syslog server.\n\nd. Uncomment the #systemevent.syslog.host= line by removing the # symbol from the beginning of the line, and enter the hostname or IP address of the syslog server.\n\ne. Uncomment the #systemevent.syslog.port= line by removing the # symbol from the beginning of the line. Enter the port number that should accept connections from the Enforce Server server. The default is 514.\n\nNote: If you are using TCP or TLS communication, ensure that the port you enter correctly corresponds to the port that is configured on the syslog server.\n\nf. Uncomment the #systemevent.syslog.format= [{0}] {1} - {2} line by removing the # symbol from the beginning of the line. Then define the system event message format to be sent to the syslog server:\n\nIf the line is uncommented without any changes, the notification messages are sent in the format: [server name] summary - details. The format variables are:\n\n{0} - the name of the server on which the event occurred\n\n{1} - the event summary\n\n{2} - the event detail\n\nFor example, the following configuration specifies that Severe system event notifications are sent to a syslog host named server1 which uses port 600.\n\nsystemevent.syslog.protocol = TCP\n\nsystemevent.syslog.host=server1\n\nsystemevent.syslog.port=600\n\nsystemevent.syslog.format= [{0}] {1} - {2}\n\nUsing this example, a low disk space event notification from an Enforce Server on a host named server1 would look like:\n\nserver1 Low disk space - Hard disk space for\n\nincident data storage server is low. Disk usage is over 82%.\n\nYou can set the log level to include INFO, WARNING and/or SEVERE by changing systemevent.syslog.level property, by default the value should be 3, but you can change it as per your requirement.\n\nFor reference:\n\nLog level 3 = logs SEVERE messages only (this is default)\n\nLog level 4 = Logs SEVERE and WARNING\n\nLog level 5 = logs INFO, WARNING, SEVERE"
+    }
+}

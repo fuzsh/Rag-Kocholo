@@ -1,0 +1,30 @@
+{
+    "id": "wrong_mix_domain_subsidiary_00148_2",
+    "rank": 36,
+    "data": {
+        "url": "https://techdocs.broadcom.com/us/en/ca-enterprise-software/intelligent-automation/autosys-workload-automation/12-1-01/Before-You-Begin/installation-considerations/install-ca-workload-automation-ae-with-sybase.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Install AutoSys Workload Automation with Sybase",
+        "top_image": "https://techdocs.broadcom.com/us/en/ca-enterprise-software/intelligent-automation/autosys-workload-automation/12-1-01/Before-You-Begin/installation-considerations/favicon.ico",
+        "meta_img": "https://techdocs.broadcom.com/us/en/ca-enterprise-software/intelligent-automation/autosys-workload-automation/12-1-01/Before-You-Begin/installation-considerations/favicon.ico",
+        "images": [],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "CA Inc"
+        ],
+        "publish_date": "2023-12-13T05:54:05.954000+00:00",
+        "summary": "",
+        "meta_description": "When installing AutoSys Workload Automation with a Sybase database, consider the following points:",
+        "meta_lang": "en",
+        "meta_favicon": "favicon.ico",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "cwaavalidate\n\nWhen installing AutoSys Workload Automation with a Sybase database, consider the following points:\n\nDatabase User Privileges\n\nEnsure that the database user has the sa_role and sso_role privileges.\n\n(UNIX) Locale\n\nThe LANG variable specifies the locale of a computer. To enable the Sybase computer and the AutoSys Workload Automation computer to communicate, ensure that the two computers support the same locale.\n\nTo display the LANG environment variable, run the following command from both the AutoSys Workload Automation session and the session from which Sybase was started:\n\necho $LANG\n\nIf they are different, change the LANG value to match the value on the Sybase session by running the following command from the AutoSys Workload Automation session:\n\nLANG=value; export LANG\n\nRemote Connections\n\nVerify that the computer where you plan to install the AutoSys Workload Automation server can connect to the remote database using one of the database client utilities before installing the server. Contact your database administrator about any problems connecting to the remote server.\n\nUser Connections\n\nBefore you install AutoSys Workload Automation, set the Sybase available user connections as appropriate. AutoSys Workload Automation requires up to 115 free Sybase user connections, depending on which components you install. The following list states the number of Sybase user connections required for each component of AutoSys Workload Automation:\n\nScheduler: 16+4\n\nApplication Server: 35\n\nHigh Availability (two Schedulers and two Application Servers): 110\n\nTie-breaker Scheduler: 5\n\nFor example, a typical AutoSys Workload Automation server installation with High Availability requires 115 Sybase user connections. When determining the minimum number of user connections that are required to support your configuration, account for the user connections used by Sybase itself, typically about 15 for each machine. The number may vary depending upon the version of Sybase. Thus, if AutoSys Workload Automation is the only Sybase application in a typical High Availability environment, the minimum number of user connections that are needed would be calculated as follows: (2 Schedulers x 20) + (2 Application Servers x 35) + (1 Tie-breaker Scheduler x 5) + (3 machines x 15) = 150.\n\nRun the following SQL command to determine the number of configured user connections:\n\n1>sp_configure 'user connections' 2>go\n\nRun the following SQL command to determine the number of user connections currently in use:\n\n1>sp_who 2>go\n\nThe number of rows returned from the aforementioned command represent the number of user connections currently in use. This number can be subtracted from the configured amount to determine the number of free user connections.\n\nRun the following SQL command to set the number of user connections to 64:\n\n76\n\n1>sp_configure 'user connections', 64762>go\n\nPage Size\n\nThe default Sybase installation comes with a page size of 2 KB. However, AutoSys Workload Automation requires a minimum 4KB page size.\n\nYou must increase the page size to 8 KB if you have one or more job parameter values exceeding 4000 characters.\n\nEnter the following command to check the current page size:\n\nselect @@maxpagesize\n\nFor information about changing the page size, see the Sybase documentation.\n\nRuntime Configuration\n\nAutoSys Workload Automation uses the Open Client/Open Server interface with Sybase. If your Sybase environment uses the runtime configuration file (ocs.cfg) and Sybase Open Client/Open Server products are used in your Sybase environment, you must update ocs.cfg with the corresponding application sections. Add the following information to ocs.cfg, at $SYBASE/$SYBASE_OCS/config (UNIX) or %SYBASE%\\%SYBASE_OCS%\\ini (Windows), before starting the AutoSys Workload Automation processes:"
+    }
+}

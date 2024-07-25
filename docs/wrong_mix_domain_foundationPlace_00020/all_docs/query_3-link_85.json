@@ -1,0 +1,35 @@
+{
+    "id": "wrong_mix_domain_foundationPlace_00020_3",
+    "rank": 85,
+    "data": {
+        "url": "https://developers.google.com/ar/develop/unity-arf/geospatial/enable-ios",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Enable the Geospatial API for your Unity (AR Foundation) app targeting iOS",
+        "top_image": "https://www.gstatic.com/devrel-devsite/prod/v1698cdd3153b47734bb6d9d8688c4490898207543be76b2c5805f109c27c7695/developers/images/opengraph/light-blue.png",
+        "meta_img": "https://www.gstatic.com/devrel-devsite/prod/v1698cdd3153b47734bb6d9d8688c4490898207543be76b2c5805f109c27c7695/developers/images/opengraph/light-blue.png",
+        "images": [
+            "https://developers.google.com/static/ar/images/logo.svg",
+            "https://developers.google.com/static/ar/images/logo.svg",
+            "https://developers.google.com/static/ar/develop/unity-arf/geospatial/images/enable-geospatial-ios.png",
+            "https://developers.google.com/static/ar/develop/unity-arf/geospatial/images/enable-geospatial-mode.png",
+            "https://developers.google.com/static/ar/develop/unity-arf/geospatial/images/connect-arcore-extensions-config.png",
+            "https://www.gstatic.com/devrel-devsite/prod/v1698cdd3153b47734bb6d9d8688c4490898207543be76b2c5805f109c27c7695/developers/images/lockup-google-for-developers.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "https://www.gstatic.com/devrel-devsite/prod/v1698cdd3153b47734bb6d9d8688c4490898207543be76b2c5805f109c27c7695/developers/images/favicon-new.png",
+        "meta_site_name": "Google for Developers",
+        "canonical_link": "https://developers.google.com/ar/develop/unity-arf/geospatial/enable-ios",
+        "text": "Configure your app's settings so that it can use the Geospatial API.\n\nPrerequisites\n\nMake sure that you understand fundamental AR concepts and how to configure an ARCore session before proceeding.\n\nSee the Introduction to the Geospatial API for more information about the Geospatial API.\n\nIf you're new to developing with ARCore, see Getting started for information about software and hardware requirements, prerequisities and other information specific to the platforms you are using.\n\nTo use the ARCore Geospatial API, your project must support AR Foundation and the ARCore Extensions for AR Foundation.\n\nEnable the ARCore API\n\nBefore using the Visual Positioning System (VPS) in your app, you must first enable the ARCore API in a new or existing Google Cloud project. This service is responsible for hosting, storing, and resolving Geospatial anchors.\n\nKeyless authorization is preferred, but API Key authorization is also supported.\n\nAdd required libraries to your app\n\nAfter authorizing your app to call the ARCore API, you must add libraries to enable Geospatial features in your app.\n\nNavigate to Edit > Project Settings > XR Plug-In Management > ARCore Extensions. Make sure that iOS Support Enabled is selected.\n\nUnder Optional Features, select Geospatial.\n\nEnable Geospatial capabilities in the session configuration\n\nOnce Geospatial functionality has been enabled in your app, enable Geospatial capabilities in your app’s AR session configuration so that it can communicate with the ARCore API:\n\nEnsure that the project Assets folder contains an ARCoreExtensionsConfig scriptable object. To create one, right-click in the Assets pane and select Create > XR > ARCore Extensions Config.\n\nSelect the ARCoreExtensionsConfig scriptable object in your Assets folder and set the Geospatial Mode to Enabled.\n\nConfigure the ARCore Extensions game object to use the ARCoreExtensionsConfig configuration. In the Hierarchy pane, locate the ARCore Extensions game object you created when you initially set up ARCore Extensions, and connect the ARCore Extensions Config field to the ARCoreExtensionsConfig scriptable object in your Assets folder.\n\nPrompt user to allow usage of device data\n\nApps that use the ARCore Geospatial API must present the user with a prompt to acknowledge and allow the use of data from their device. See User privacy requirements for more information.\n\nCheck device compatibility\n\nNot all devices that support ARCore also support the Geospatial API. To check the user's device for compatibility, call AREarthManager.IsGeospatialModeSupported(). If this returns FeatureSupported.Unsupported do not attempt to configure the session.\n\nAsk user for location permissions at runtime\n\nTo enable Unity's location services in a script that triggers the runtime permission requests, do the following:\n\nIn Project Settings > iOS > Other Settings > Location Usage Description, enter the name of the app that is requesting permissions.\n\nEnable Unity's location services to trigger the runtime permission request, as follows:\n\npublic void OnEnable() { Input.location.Start(); } public void OnDisable() { Input.location.Stop(); }\n\nSee Unity's LocationService documentation for more information.\n\nCheck Geospatial availability at the device's current location\n\nBecause the Geospatial API uses a combination of VPS and GPS to determine a Geospatial pose, the API can be used as long as the device is able to determine its location. In areas with low GPS accuracy, such as indoor spaces and dense urban environments, the API will rely on VPS coverage to generate high accuracy poses. Under typical conditions, VPS can be expected to provide positional accuracy of approximately 5 meters, and rotational accuracy of 5 degrees. Use AREarthManager.CheckVpsAvailability() to determine if a given location has VPS coverage.\n\nThe Geospatial API can also be used in areas that do not have VPS coverage. In outdoor environments with few or no overhead obstructions, GPS may be sufficient to generate a pose with high accuracy.\n\nWhat's next"
+    }
+}
