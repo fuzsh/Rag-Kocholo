@@ -1,0 +1,30 @@
+{
+    "id": "correct_foundationPlace_00064_1",
+    "rank": 23,
+    "data": {
+        "url": "https://discuss.kotlinlang.org/t/could-not-resolve-org-jetbrains-compose-foundation1-0-0-beta5/23554",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Could not resolve org.jetbrains.compose.foundation:foundation:1.0.0-beta5",
+        "top_image": "https://global.discourse-cdn.com/business5/uploads/kotlinlang/original/2X/3/36f29260725ebabd688b8ae8b0ef79f7a2e44e42.png",
+        "meta_img": "https://global.discourse-cdn.com/business5/uploads/kotlinlang/original/2X/3/36f29260725ebabd688b8ae8b0ef79f7a2e44e42.png",
+        "images": [
+            "https://global.discourse-cdn.com/business5/uploads/kotlinlang/original/2X/3/36f29260725ebabd688b8ae8b0ef79f7a2e44e42.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2021-11-29T17:01:27+00:00",
+        "summary": "",
+        "meta_description": "I’ve decided to try out Compose multi-platform and see what it’s up to. So far, I’ve created this root build.gradle.kts: \nallprojects {\n    repositories {\n        google()\n        mavenCentral()\n        maven(&quot;https://ma&hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://global.discourse-cdn.com/business5/uploads/kotlinlang/optimized/2X/2/224964e73572d20c3aa9d68b4c14ae5d11749202_2_32x32.png",
+        "meta_site_name": "Kotlin Discussions",
+        "canonical_link": "https://discuss.kotlinlang.org/t/could-not-resolve-org-jetbrains-compose-foundation1-0-0-beta5/23554",
+        "text": "I’ve decided to try out Compose multi-platform and see what it’s up to. So far, I’ve created this root build.gradle.kts:\n\nallprojects { repositories { google() mavenCentral() maven(\"https://maven.pkg.jetbrains.space/public/p/compose/dev\") } } plugins { kotlin(\"multiplatform\") version \"1.6.0\" apply false kotlin(\"android\") version \"1.6.0\" apply false id(\"com.android.application\") version \"4.2.2\" apply false } // group = ..., version = ...\n\nas well as this settings.gradle.kts:\n\npluginManagement { repositories { google() gradlePluginPortal() mavenCentral() maven(\"https://maven.pkg.jetbrains.space/public/p/compose/dev\") } } rootProject.name = \"Compose-MPP-Test\" include(\":android\") include(\":desktop\") include(\":common\")\n\nand finally, this is my build.gradle.kts for the common project. Nothing out of the ordinary. The :android & :desktop projects don’t matter; I can remove them from settings.gradle.kts and nothing changes. The gradle project won’t build; these are the errors:\n\nYour problem is on the common source set dependency of org.jetbrains.compose.foundation.\n\nThere is specific implementations of it for desktop and Android variants, but not Javascript (yet). As the common classes are exported to all variants on your project, the gradle can’t find any way of make this work on JS!\n\nin web projects, we use specific DOM compose classes, not from Foundation.\n\nThe right dependence you need to use on common is compose.runtime: you’ll have all classes you need to write agnostic composeable functions to share with desktop, web or android targets.\n\nYou can’t share screens across targets, but you shouldn’t: each platform have different UI/UX requirements anyway.\n\nBellow I offer a complete and functional build.gradle.kts that anyone interested on build (and understand) a multiplatform project containing Desktop, Android, Web, and Server (with Ktor) targets. Everything was made to fit in the same short file, and specific distribuition, configurations and deployment details was removed for the sake of simplicity. I tried to do nothing fancy about this file to make it easy to understand.\n\nplugins { kotlin(\"multiplatform\") version \"1.6.10\" id(\"org.jetbrains.compose\") version \"1.0.1-rc2\" id(\"com.android.application\") version \"4.2.2\" id(\"com.android.library\") version \"4.2.2\" apply false kotlin(\"android\") version \"1.6.10\" apply false } group = \"com.yourproject\" version = \"1.0-SNAPSHOT\" repositories { mavenCentral() maven(\"https://maven.pkg.jetbrains.space/public/p/compose/dev\") google() } dependencies { implementation(\"org.jetbrains.compose:compose-full:1.0.0\") } android{ sourceSets[\"main\"].manifest.srcFile(\"src/androidMain/AndroidManifest.xml\") compileSdk = 30 defaultConfig { minSdk = 23 targetSdk = 30 applicationId = \"com.yourproject\" versionCode = 1 versionName = \"1.0\" } } compose.desktop { application { //Just the file where you have your desktop main class to make distribution easier. mainClass = \"UIKt\" } } kotlin { val ktorVersion = \"2.0.0-beta-1\" android() js(IR) { browser() binaries.executable() } jvm(\"desktop\") jvm(\"server\") sourceSets { val commonMain by getting { dependencies { implementation(kotlin(\"stdlib-common\")) implementation(compose.runtime) implementation(\"io.ktor:ktor-client-core:$ktorVersion\") implementation(\"io.ktor:ktor-client-auth:$ktorVersion\") } } val commonTest by getting { dependencies { implementation(kotlin(\"test-common\")) implementation(kotlin(\"test-annotations-common\")) } } val jsMain by getting { dependencies { implementation(compose.web.core) implementation(compose.runtime) implementation(\"io.ktor:ktor-client-js:$ktorVersion\") implementation(\"io.ktor:ktor-client-json:$ktorVersion\") implementation(\"io.ktor:ktor-client-serialization:$ktorVersion\") } } val desktopMain by getting{ dependencies { implementation(compose.desktop.currentOs) implementation(\"io.ktor:ktor-client-core:$ktorVersion\") } } val serverMain by getting{ dependencies { implementation(\"io.ktor:ktor-serialization:$ktorVersion\") implementation(\"io.ktor:ktor-server-core:$ktorVersion\") implementation(\"io.ktor:ktor-server-netty:$ktorVersion\") implementation(\"ch.qos.logback:logback-classic:1.2.10\") } } val androidMain by getting{ dependencies{ implementation(\"io.ktor:ktor-client-android:$ktorVersion\") } } } }\n\nI have a hope that this help someone."
+    }
+}
