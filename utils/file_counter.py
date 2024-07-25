@@ -18,12 +18,12 @@ for filename in os.listdir('./docs'):
         total_correct += count_files
     total_processed_queries += 1
 
-print("===================================================================")
+print("=======================================")
 print(f"Correct docs\t\t: {correct_docs}")
 print(f"Wrong docs\t\t: {wrong_docs}")
 print(f"Total processed queries\t: {total_processed_queries}")
 print(f"Total fetched files\t: {total_wrong + total_correct}")
-print("===================================================================")
+print("=======================================")
 print(f"Avg. docs per correct query\t: {(total_correct / correct_docs):.2f}")
 print(f"Avg. docs per wrong query\t: {(total_wrong / wrong_docs):.2f}")
-print("===================================================================")
+print("=======================================")
