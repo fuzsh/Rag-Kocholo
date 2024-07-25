@@ -1,0 +1,49 @@
+{
+    "id": "correct_subsidiary_00116_1",
+    "rank": 73,
+    "data": {
+        "url": "https://community.cisco.com/t5/other-network-architecture-subjects/routers-ignoring-ntp-prefer-statement/td-p/3383444",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Routers ignoring NTP prefer statement",
+        "top_image": "https://community.cisco.com/html/assets/ciscooglogo.png",
+        "meta_img": "https://community.cisco.com/html/assets/ciscooglogo.png",
+        "images": [
+            "https://community.cisco.com/t5/image/serverpage/avatar-name/default_icon/avatar-theme/candy/avatar-collection/Cisco_Default/avatar-display-size/profile/version/2?xdesc=1.0",
+            "https://community.cisco.com/html/@E1D9E5099E7D8FD73DECA4D3FF50F455/rank_icons/rank-1.png",
+            "https://community.cisco.com/t5/image/serverpage/avatar-name/avatar-10/avatar-theme/candy/avatar-collection/Hermes_Default/avatar-display-size/profile/version/2?xdesc=1.0",
+            "https://community.cisco.com/html/@D17C385B8A505F8125C5E271F02ACC75/rank_icons/ciscologo-square_16x16.png",
+            "https://images.youracclaim.com/images/45e887ef-48d0-4310-ac6b-5ae656ceefd3/Cisco_Specialist_600.png",
+            "https://images.youracclaim.com/images/07f70c56-f067-458e-bbe5-736f055f0cce/CCNP_Enterprise_large.png",
+            "https://community.cisco.com/t5/image/serverpage/avatar-name/default_icon/avatar-theme/candy/avatar-collection/Cisco_Default/avatar-display-size/profile/version/2?xdesc=1.0",
+            "https://community.cisco.com/html/@E1D9E5099E7D8FD73DECA4D3FF50F455/rank_icons/rank-1.png",
+            "https://community.cisco.com/t5/image/serverpage/avatar-name/avatar-10/avatar-theme/candy/avatar-collection/Hermes_Default/avatar-display-size/profile/version/2?xdesc=1.0",
+            "https://community.cisco.com/html/@D17C385B8A505F8125C5E271F02ACC75/rank_icons/ciscologo-square_16x16.png",
+            "https://images.youracclaim.com/images/45e887ef-48d0-4310-ac6b-5ae656ceefd3/Cisco_Specialist_600.png",
+            "https://images.youracclaim.com/images/07f70c56-f067-458e-bbe5-736f055f0cce/CCNP_Enterprise_large.png",
+            "https://community.cisco.com/t5/image/serverpage/avatar-name/default_icon/avatar-theme/candy/avatar-collection/Cisco_Default/avatar-display-size/profile/version/2?xdesc=1.0",
+            "https://community.cisco.com/html/@E1D9E5099E7D8FD73DECA4D3FF50F455/rank_icons/rank-1.png",
+            "https://community.cisco.com/t5/image/serverpage/avatar-name/default_icon/avatar-theme/candy/avatar-collection/Cisco_Default/avatar-display-size/profile/version/2?xdesc=1.0",
+            "https://community.cisco.com/html/@E1D9E5099E7D8FD73DECA4D3FF50F455/rank_icons/rank-1.png",
+            "https://community.cisco.com/skins/images/E1311705B9DA0A7B8BD8DC6748F9DFEE/responsive_peak/images/icon_anonymous_message.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "community.cisco.com",
+            "user-id"
+        ],
+        "publish_date": "2018-05-15T12:42:33.097000+00:00",
+        "summary": "",
+        "meta_description": "Hello all, I have some routers occupying stratum 2, that have 3 available NTP servers. I have configured the nearest NTP server (stratum 2) with the &quot;prefer&quot; statement. The next nearest NTP server is also stratum 2. Lastly, I have",
+        "meta_lang": "en",
+        "meta_favicon": "https://community.cisco.com/html/@D17C385B8A505F8125C5E271F02ACC75/rank_icons/ciscologo-square_16x16.png",
+        "meta_site_name": "",
+        "canonical_link": "https://community.cisco.com/t5/other-network-architecture-subjects/routers-ignoring-ntp-prefer-statement/td-p/3383444",
+        "text": "Hello all,\n\nI have some routers occupying stratum 2, that have 3 available NTP servers.\n\nI have configured the nearest NTP server (stratum 2) with the \"prefer\" statement.\n\nThe next nearest NTP server is also stratum 2.\n\nLastly, I have configured the NTP server appliance, which is stratum 1.\n\nAll NTP sources are showing authenticated/sane/valid but the routers are overriding the \"prefer\" statement to synch up with the stratum 1 device.\n\nIs this normal behavior or am I doing something wrong? I thought \"prefer\" would keep the router on its local, designated time source.\n\nHello estimated good morning!\n\nI will share you this: The server option specifies which servers to query, with one server listed on each line. If a server entry includes prefer, that server is preferred over other servers. A response from a preferred server will be discarded if it differs significantly from other servers' responses; otherwise it will be used.\n\nDid you review this server had the time equal or similar to the others servers? and the connection (in terms of delay, etc) is optimum?\n\nDo not forget to rate useful post.\n\nBest Regards,\n\nHi Diana,\n\nI'm not sure what the thresholds are for a router discarding its \"preferred\" server, but I am noticing a difference in some of the qualities of the NTP servers. This is in a closed, classified environment so I can't post a screen shot but I can share some of the relevant information.\n\nThe output of \"show ntp associations\" is:\n\nAddress ref clock st when poll reach delay offset disp\n\n~ 2 964 1024 377 1.507 1.129 19.433\n\n~ 2 87 1024 377 2.583 -0.474 19.550\n\n~* 1 746 1024 377 1.655 0.333 0.071\n\nAs you can see, the dispersion is quite a bit different. I'm not sure if it is far enough off to cause this behavior.\n\nRich A.\n\nMaybe the others ntp sources are in close agreement but the preferred one is reporting a very different ntp time compared with the others then that device is considered not trustworthy and would not be used. The command \"show ntp associations detail\" will give you a more detailed information about why the router choose the other server.\n\nPlease do not forget to rate useful post, this motivate us to continue participating in the community.\n\nBest regards,\n\nAfter checking NTP associations detail on 3 similar routers, I'm not seeing an obvious reason for discarding the preferred NTP server.\n\ndelay, offset, dispersion and jitter are all very low values.\n\nAll of the filter values are very low. (filtdelay, filtoffset, filterror).\n\nI realize this is not an ideal solution but I restarted the router. (It's in a lab, so no harm done.)\n\nThe router has currently synchronized to the \"prefer\" server. I will observe it over the next several days to see if it rejects the preferred server later on."
+    }
+}

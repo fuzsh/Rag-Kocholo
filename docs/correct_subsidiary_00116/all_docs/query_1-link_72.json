@@ -1,0 +1,55 @@
+{
+    "id": "correct_subsidiary_00116_1",
+    "rank": 72,
+    "data": {
+        "url": "https://community.cisco.com/t5/unified-communications-infrastructure/changing-ntp-server-stratum-for-cucm-10-x/td-p/2874942",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Solved: Changing NTP server stratum for CUCM 10.x",
+        "top_image": "https://community.cisco.com/html/assets/ciscooglogo.png",
+        "meta_img": "https://community.cisco.com/html/assets/ciscooglogo.png",
+        "images": [
+            "https://community.cisco.com/t5/image/serverpage/avatar-name/default_icon/avatar-theme/candy/avatar-collection/Cisco_Default/avatar-display-size/profile/version/2?xdesc=1.0",
+            "https://community.cisco.com/html/@E1D9E5099E7D8FD73DECA4D3FF50F455/rank_icons/rank-1.png",
+            "https://community.cisco.com/legacyfs/online/photo/manish-pic.jpg",
+            "https://community.cisco.com/html/@D17C385B8A505F8125C5E271F02ACC75/rank_icons/ciscologo-square_16x16.png",
+            "https://images.youracclaim.com/images/a40c2ad9-04b7-4148-b5f0-974a41515034/cisco_ccie_collaboration.png",
+            "https://community.cisco.com/legacyfs/online/photo/manish-pic.jpg",
+            "https://community.cisco.com/html/@D17C385B8A505F8125C5E271F02ACC75/rank_icons/ciscologo-square_16x16.png",
+            "https://images.youracclaim.com/images/a40c2ad9-04b7-4148-b5f0-974a41515034/cisco_ccie_collaboration.png",
+            "https://community.cisco.com/t5/image/serverpage/avatar-name/default_icon/avatar-theme/candy/avatar-collection/Cisco_Default/avatar-display-size/profile/version/2?xdesc=1.0",
+            "https://community.cisco.com/html/@E1D9E5099E7D8FD73DECA4D3FF50F455/rank_icons/rank-1.png",
+            "https://community.cisco.com/legacyfs/online/photo/manish-pic.jpg",
+            "https://community.cisco.com/html/@D17C385B8A505F8125C5E271F02ACC75/rank_icons/ciscologo-square_16x16.png",
+            "https://images.youracclaim.com/images/a40c2ad9-04b7-4148-b5f0-974a41515034/cisco_ccie_collaboration.png",
+            "https://community.cisco.com/t5/image/serverpage/avatar-name/default_icon/avatar-theme/candy/avatar-collection/Cisco_Default/avatar-display-size/profile/version/2?xdesc=1.0",
+            "https://community.cisco.com/html/@E1D9E5099E7D8FD73DECA4D3FF50F455/rank_icons/rank-1.png",
+            "https://community.cisco.com/t5/image/serverpage/avatar-name/default_icon/avatar-theme/candy/avatar-collection/Cisco_Default/avatar-display-size/profile/version/2?xdesc=1.0",
+            "https://community.cisco.com/html/@2AABEAF69AB30CB19D57F93674E957AD/badge_icons/CiscoCommunityBadges_2023_VipAlumni_14x14.png",
+            "https://community.cisco.com/legacyfs/online/photo/manish-pic.jpg",
+            "https://community.cisco.com/html/@D17C385B8A505F8125C5E271F02ACC75/rank_icons/ciscologo-square_16x16.png",
+            "https://images.youracclaim.com/images/a40c2ad9-04b7-4148-b5f0-974a41515034/cisco_ccie_collaboration.png",
+            "https://community.cisco.com/t5/image/serverpage/avatar-name/default_icon/avatar-theme/candy/avatar-collection/Cisco_Default/avatar-display-size/profile/version/2?xdesc=1.0",
+            "https://community.cisco.com/html/@E1D9E5099E7D8FD73DECA4D3FF50F455/rank_icons/rank-1.png",
+            "https://community.cisco.com/skins/images/03642119F156C9B2A2B5B446CC573DD3/responsive_peak/images/icon_anonymous_message.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "community.cisco.com",
+            "user-id"
+        ],
+        "publish_date": "2016-05-05T08:19:53+00:00",
+        "summary": "",
+        "meta_description": "Solved: Hello guys, During a migration for our CUCM (9 nodes) + 2 IMP, we encountered some failures in the process with NTP check step. Our NTP server was stratum 6 instead of recommended stratum 1 to 3 for the nodes. I want to change the stratum,",
+        "meta_lang": "en",
+        "meta_favicon": "https://community.cisco.com/html/@D17C385B8A505F8125C5E271F02ACC75/rank_icons/ciscologo-square_16x16.png",
+        "meta_site_name": "",
+        "canonical_link": "https://community.cisco.com/t5/unified-communications-infrastructure/changing-ntp-server-stratum-for-cucm-10-x/td-p/2874942",
+        "text": "Hello guys,\n\nDuring a migration for our CUCM (9 nodes) + 2 IMP, we encountered some failures in the process with NTP check step.\n\nOur NTP server was stratum 6 instead of recommended stratum 1 to 3 for the nodes.\n\nI want to change the stratum, but, If I change my ntp server, I need to reboot all the nodes according to the cisco documentation\n\n-> don´t want that\n\nSecond plan : I can change the actual stratum for the actual NTP server (2 cisco GW) in changing the NTP server by an external.\n\nQuestion : does I need to reboot if my NTP server change it stratum ?\n\nAny advices ?\n\nThanks in advance\n\nCUCM server restart is not needed when you add / delete or modify NTP server information. Just update the NTP information and do a \"utils ntp restart\" and it should be good enough to synsc cucm with correct NTP. We recommend that the NTP for the publisher is set to stratum 1, 2, or 3, and that you use only a Linux or IOS NTP source. Windows Time Services as an NTP server is not recommended or supported.\n\nManish\n\n[+5] to Manish.\n\nI faced this issue where in I had to delete NTP server and then, add new NTP server in CUCM.\n\nSO, you need to have at least one NTP server defined else u won't be able to delete the existing one.\n\nAlso, the new NTP server should be reachable. If not, u won't be able to add that.\n\nLastly, no reboot of CUCM is required when NTP is changed.\n\nregds,\n\naman\n\nHi Aman,\n\nTo be honest even i don't remember rebooting cluster after changing NTP and i have done it N number of times. However, i am a bit surprised by this documentation, maybe if Kevin can open a TAC case to get it confirmed and possibly get a documentation defect opened if it actually turns out to be incorrect. At least it will get the things clarified. My suggestion would be to try the NTP change and observe the stratum and database replication on cucm cluster for a couple of hours. If all stays well there should be no need for reboot.\n\nManish"
+    }
+}
