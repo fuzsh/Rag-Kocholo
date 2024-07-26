@@ -1,0 +1,31 @@
+{
+    "id": "correct_subsidiary_00101_1",
+    "rank": 66,
+    "data": {
+        "url": "https://community-archive.progress.com/forums/00019/19862.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "SSL Certificate Issue?",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://community-archive.progress.com/images/progress-community-logo.png",
+            "https://community-archive.progress.com/images/community-banner.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "Looking for an answer to your question - SSL Certificate Issue??  Check the threads in OpenEdge Development - Forum or navigate to the new Progress Community.",
+        "meta_lang": "en",
+        "meta_favicon": "",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "Hello Mark,\n\nI believe the clue to your problem is in this fragment of the error message: \"certificate signature failure...\".\n\nWithout the SSL/TLS handshake protocol details, my first thought is that you are running into a problem common to some OpenEdge applications: some OpenEdge releases do not support SSL server certificates signed by the issuing CA using one of the SHA2 algorithm.\n\nApparently the public CAs have begun issuing new server certificates signed using an SHA2 algorithm. It's not always easy to tell if this is the problem or not.\n\nWhat version of OpenEdge are you running?\n\nMike J.\n\nHi Mike,\n\nThanks for the reply.\n\nWe're using 10.2A.02 on Redhat Unix.\n\nI should just mention I've been through the process of importing the security certificates and followed the knowledge base article for certutil -import and the named 00673b5b.0 file is now in my /usr/local/apps/dlc10/certs directory but the error message is the same.\n\nThanks,\n\nMark.\n\nThe OE 11.x series of releases included the enablement of the SHA2 hash algorithms in the ABL language. Enabling SHA2 in the ABL client also enabled support for the SHA2 signed server certificates the CA's have begun issuing. May not work everywhere, and it does for your use case.\n\nSo moving to OE 11 will be your answer?\n\nThanks for the updates!\n\nIf upgrade to version 11.x is not an option you can use third party software in order to route the web service you are trying to access to a SSL connection. We have used for this Sonic MQ server or created a routing service with IIS server. My recommendation is to use Sonic MQ server. Import the SSL certificate there and from the code you will be connecting to se Sonic MQ server.\n\nThe -nohostverify only skips the check which verifies whether the server's hostname is the same as the one in the certificate (CN). So it does not fully bypass the certificate check. Not sure it will help in this case.\n\nBtw, you could also try 10.2B08 if that's an option. I recently heard of a case where 10.2B08 worked in such a situation."
+    }
+}

@@ -1,0 +1,32 @@
+{
+    "id": "correct_subsidiary_00101_1",
+    "rank": 73,
+    "data": {
+        "url": "https://cloud.google.com/dns/docs/dnssec-config",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Manage DNSSEC configuration",
+        "top_image": "https://cloud.google.com/_static/cloud/images/social-icon-google-cloud-1200-630.png",
+        "meta_img": "https://cloud.google.com/_static/cloud/images/social-icon-google-cloud-1200-630.png",
+        "images": [
+            "https://www.gstatic.com/devrel-devsite/prod/v1698cdd3153b47734bb6d9d8688c4490898207543be76b2c5805f109c27c7695/cloud/images/cloud-logo.svg",
+            "https://www.gstatic.com/devrel-devsite/prod/v1698cdd3153b47734bb6d9d8688c4490898207543be76b2c5805f109c27c7695/cloud/images/cloud-logo.svg",
+            "https://cloud.google.com/static/dns/images/create-signed-zone.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "https://www.gstatic.com/devrel-devsite/prod/v1698cdd3153b47734bb6d9d8688c4490898207543be76b2c5805f109c27c7695/cloud/images/favicons/onecloud/favicon.ico",
+        "meta_site_name": "Google Cloud",
+        "canonical_link": "https://cloud.google.com/dns/docs/dnssec-config",
+        "text": "This page describes how to enable and disable Domain Name System Security Extensions (DNSSEC), and verify DNSSEC deployment.\n\nFor a conceptual overview of DNSSEC, see the DNSSEC overview.\n\nEnable DNSSEC for existing managed public zones\n\nTo enable DNSSEC for existing managed public zones, follow these steps.\n\nEnable DNSSEC when creating zones\n\nTo enable DNSSEC when you are creating a zone, follow these steps.\n\nVerify DNSSEC deployment\n\nTo verify correct deployment of your DNSSEC-enabled zone, make sure that you placed the correct DS record in the parent zone. DNSSEC resolution can fail if either of the following occurs:\n\nThe configuration is wrong, or you have mistyped it.\n\nYou have placed the incorrect DS record in the parent zone.\n\nTo verify that you have the right configuration in place and to cross-check the DS record before placing it in the parent zone, use the following tools:\n\nDNSViz\n\nVerisign DNSSEC debugger\n\nZonemaster\n\nYou can use the Verisign DNSSEC debugger and Zonemaster sites to validate your DNSSEC configuration before you update your registrar with your Cloud DNS name servers or DS record. A domain that is properly configured for DNSSEC is example.com, viewable using DNSViz.\n\nRecommended TTL settings for DNSSEC-signed zones\n\nTTL is the time to live (in seconds) for a DNSSEC-signed zone.\n\nUnlike TTL expirations, which are relative to the time a name server sends a response to a query, DNSSEC signatures expire at a fixed absolute time. TTLs configured longer than a signature lifetime can lead to many clients requesting records at the same time as the DNSSEC signature expires. Short TTLs can also cause problems for DNSSEC-validating resolvers.\n\nFor more recommendations about TTL selection, see RFC 6781 section 4.4.1 Time Considerations and RFC 6781 Figure 11.\n\nWhen reading RFC 6781 section 4.4.1, consider that many signature time parameters are fixed by Cloud DNS and you cannot change them. You cannot change the following parameters (subject to change without notice or update to this document):\n\nInception offset = 1 day\n\nValidity period = 21 days\n\nRe-sign period = 3 days\n\nRefresh period = 18 days\n\nJitter interval = ½ day (or ±6 hours)\n\nMinimum signature validity = refresh – jitter = 17.75 days = 1533600\n\nYou must never use a TTL longer than the minimum signature validity.\n\nDisable DNSSEC for managed zones\n\nAfter you have removed DS records and waited for them to expire from cache, you can use the following gcloud command to turn off DNSSEC:\n\ngcloud dns managed-zones update EXAMPLE_ZONE \\ --dnssec-state off\n\nReplace EXAMPLE_ZONE with the zone ID.\n\nWhat's next"
+    }
+}
