@@ -1,0 +1,28 @@
+{
+    "id": "correct_subsidiary_00117_2",
+    "rank": 38,
+    "data": {
+        "url": "https://community.freepbx.org/t/spectralink-8002-not-working/12069",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Spectralink 8002 Not Working",
+        "top_image": "https://community.freepbx.org/uploads/default/original/3X/f/9/f9cda61f46fd4dd3e4bc1599c786ae17d7de5b48.png",
+        "meta_img": "https://community.freepbx.org/uploads/default/original/3X/f/9/f9cda61f46fd4dd3e4bc1599c786ae17d7de5b48.png",
+        "images": [],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2011-10-06T02:01:15+00:00",
+        "summary": "",
+        "meta_description": "We recently upgraded from version 1.4 to 1.8.  We have Spectralink 8002 wireless phones that worked before that now don&#39;t work.  They can make calls but can not be called. \n\nI tried going to a fixed IP address instead of&hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://community.freepbx.org/uploads/default/optimized/3X/0/4/047a3ab6d41370c87b4892a74aa2ef2a81b7f623_2_32x32.png",
+        "meta_site_name": "FreePBX Community Forums",
+        "canonical_link": "https://community.freepbx.org/t/spectralink-8002-not-working/12069",
+        "text": "We recently upgraded from version 1.4 to 1.8. We have Spectralink 8002 wireless phones that worked before that now don’t work. They can make calls but can not be called.\n\nI tried going to a fixed IP address instead of DHCP but that didn’t help. With a DHCP address, if you dial the extension you get a rapid busy signal. With a fixed IP, it sounds like the call is ringing to the sender but the phone never gets called.\n\nI talked to Polycom and they said that the 8002 is not compatible with FreePBX and couldn’t/wouldn’t help.\n\nI’ve seen the post from a couple of years ago but it didn’t help solve the problem. I’ve checked and double checked the configuration files so am missing something that is probably obvious but I’m stuck.\n\n1.4 and 1.8 are Asterisk versions. FreePBX is really not in the mix. Polycom doesn’t help end users so that is a waste of time.\n\nSince you told us nothing about the system all I can do is take a raw stab. 1.8 TLS is on by default, without a certificate the phones will error out on the inbound call but properly setup the outbound call.\n\nIn the Global Settings section is shows TLS SIP Bindaddress Disabled.\n\nIs there something else needed to turn off TLS?\n\nIt’s Asterisk 1.8.6.0 and FreePBX 2.9.0.7.\n\nI did finally get an answer from Polycom - they blamed it on the WiFi access point. So I replaced that with a “certified” AP from Cisco but that made absolutely no difference.\n\nI found some diagnostic messages in the Asterisk log. The system is reporting that it rejected the registration due to a callid issue.\n\nHere’s a snip from the log file:\n\n<------------->\n\n[2011-10-12 17:45:10] VERBOSE[2625] chan_sip.c: — (10 headers 0 lines) —\n\n[2011-10-12 17:45:10] DEBUG[2625] chan_sip.c: Stopping retransmission on ‘[email protected]:5060’ of Request 102: Match Found\n\n[2011-10-12 17:45:10] VERBOSE[2625] chan_sip.c: Really destroying SIP dialog ‘[email protected]:5060’ Method: OPTIONS\n\n[2011-10-12 17:45:11] VERBOSE[2625] chan_sip.c:\n\n<— SIP read from UDP:10.20.5.60:5060 —>\n\nREGISTER sip:10.20.5.146 SIP/2.0\n\nVia: SIP/2.0/UDP 10.20.5.60:5060;branch=z9hG4bKcd11d64b\n\nFrom: sip:[email protected]\n\nTo: sip:[email protected]\n\nCall-ID: [email protected]\n\nCSeq: 101 REGISTER\n\nContact: “Vicky Lamson” sip:[email protected]:5060\n\nUser-Agent: Slnk/12\n\nMax-Forwards: 70\n\nContent-Length: 0\n\nExpires: 3600\n\n<------------->\n\n[2011-10-12 17:45:11] VERBOSE[2625] chan_sip.c: — (11 headers 0 lines) —\n\n[2011-10-12 17:45:11] DEBUG[2625] chan_sip.c: Invalid SIP message - rejected , no callid, len 331\n\n[2011-10-12 17:45:12] VERBOSE[2625] chan_sip.c:\n\n<— SIP read from UDP:10.20.5.60:5060 —>\n\nREGISTER sip:10.20.5.146 SIP/2.0\n\nVia: SIP/2.0/UDP 10.20.5.60:5060;branch=z9hG4bKcd11d64b\n\nFrom: sip:[email protected]\n\nTo: sip:[email protected]\n\nCall-ID: [email protected]\n\nCSeq: 101 REGISTER\n\nContact: “Vicky Lamson” sip:[email protected]:5060\n\nUser-Agent: Slnk/12\n\nMax-Forwards: 70\n\nContent-Length: 0\n\nExpires: 3600"
+    }
+}
