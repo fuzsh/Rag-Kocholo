@@ -1,0 +1,34 @@
+{
+    "id": "correct_foundationPlace_00009_2",
+    "rank": 16,
+    "data": {
+        "url": "https://stackoverflow.com/questions/43413998/cmake-with-microsoft-visual-c-build-tools",
+        "read_more_link": "",
+        "language": "en",
+        "title": "CMake with Microsoft Visual C++ Build Tools",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/b76155acb21f8488502d1046962b470a?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/b38d27249794c92de5cb131b848cdd89?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/43413998/ivc/e7cd?prg=abfd8527-1dc8-4914-8bcc-a1e060d6874d"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Kyle Rush"
+        ],
+        "publish_date": "2017-04-14T14:54:17",
+        "summary": "",
+        "meta_description": "EDIT:\nHaving posted this to their issue tracker and stepped through it with some CMake devs, this actually isn't a CMake problem. Something is broken with my MSBuild installation that causes it to ...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/43413998/cmake-with-microsoft-visual-c-build-tools",
+        "text": "EDIT: Having posted this to their issue tracker and stepped through it with some CMake devs, this actually isn't a CMake problem. Something is broken with my MSBuild installation that causes it to return the \"The operation completed successfully.\" error. Still no resolution on the issue overall, but this narrows down the potential causes.\n\nI'm trying to build a CMake project on Windows using the MS Visual C++ Build Tools 2015 (note: not full Visual Studio). CMake, however, is apparently unable to find cl.exe\n\ncmake .. -- Building for: Visual Studio 14 2015 -- The C compiler identification is unknown -- The CXX compiler identification is unknown CMake Error at CMakeLists.txt:4 (project): No CMAKE_C_COMPILER could be found. CMake Error at CMakeLists.txt:4 (project): No CMAKE_CXX_COMPILER could be found.\n\nI suspect this is because CMake is expecting to find the compiler in with the Visual Studio installation but perhaps the standalone build tools install it in a different location? Is it possible to configure CMake to look elsewhere for the compiler?\n\nEDIT: To head this possibility off at the pass, cl.exe is definitely installed. When I open the Visual C++ shell (adds the tools to the path) cl.exe outputs:\n\ncl.exe Microsoft (R) C/C++ Optimizing Compiler Version 19.00.24210 for x86 Copyright (C) Microsoft Corporation. All rights reserved. usage: cl [ option... ] filename... [ /link linkoption... ]\n\nAnd that is the same environment I'm running cmake .. from so cl.exe is definitely on the PATH for discovery by CMake.\n\nEDIT 2: Looking at the CMakeError.log file I see a couple variants of the following\n\nCompiling the CXX compiler identification source file \"CMakeCXXCompilerId.cpp\" failed. Compiler: Build flags: Id flags: The output was: 1 Microsoft (R) Build Engine version 14.0.25420.1 Copyright (C) Microsoft Corporation. All rights reserved. Build started 4/14/2017 11:58:13 AM. Project \"E:\\<project_dir>\\build\\CMakeFiles\\3.8.0-rc4\\CompilerIdCXX\\CompilerIdCXX.vcxproj\" on node 1 (default targets). PrepareForBuild: Creating directory \"Debug\\\". Creating directory \"Debug\\CompilerIdCXX.tlog\\\". InitializeBuildStatus: Creating \"Debug\\CompilerIdCXX.tlog\\unsuccessfulbuild\" because \"AlwaysCreate\" was specified. ClCompile: C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\bin\\CL.exe /c /nologo /W0 /WX- /Od /Oy- /D _MBCS /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo\"Debug\\\\\" /Fd\"Debug\\vc140.pdb\" /Gd /TP /analyze- /errorReport:queue CMakeCXXCompilerId.cpp TRACKER : error TRK0002: Failed to execute command: \"\"C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\bin\\CL.exe\" @C:\\Users\\<user>\\AppData\\Local\\Temp\\tmpa0925a9f05d5426d82afdcee8d722031.rsp\". The operation completed successfully. [E:\\<project_dir>\\build\\CMakeFiles\\3.8.0-rc4\\CompilerIdCXX\\CompilerIdCXX.vcxproj] Done Building Project \"E:\\<project_dir>\\build\\CMakeFiles\\3.8.0-rc4\\CompilerIdCXX\\CompilerIdCXX.vcxproj\" (default targets) -- FAILED. Build FAILED. \"E:\\<project_dir>\\build\\CMakeFiles\\3.8.0-rc4\\CompilerIdCXX\\CompilerIdCXX.vcxproj\" (default target) (1) -> (ClCompile target) -> TRACKER : error TRK0002: Failed to execute command: \"\"C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\bin\\CL.exe\" @C:\\Users\\<user>\\AppData\\Local\\Temp\\tmpa0925a9f05d5426d82afdcee8d722031.rsp\". The operation completed successfully. [E:\\<project_dir>\\build\\CMakeFiles\\3.8.0-rc4\\CompilerIdCXX\\CompilerIdCXX.vcxproj] 0 Warning(s) 1 Error(s) Time Elapsed 00:00:01.21\n\nThis looks like some kind of output compatibility issue, especially the \"ERROR: The operation completed successfully.\" lines. I'm using CMake 3.8.0-rc4 and the Visual C++ 2015 Build Tools. Any ideas?\n\nEDIT 3: I thought that upgrading from 3.8.0-rc4 to 3.8.0 might fix it, but no avail. I also considered that I was using 64bit CMake trying to build a 32 bit program so I changed that as well. No luck yet.\n\nEDIT 4: Also, for the record, this does build with CMake on a PC with full VS 2015 installed."
+    }
+}
