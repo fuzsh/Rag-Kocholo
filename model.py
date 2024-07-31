@@ -43,9 +43,9 @@ def init_llm(response_schema=False):
         ]
         # define output parser
         lc_output_parser = StructuredOutputParser.from_response_schemas(response_schemas)
-        llm = Ollama(model="llama3", request_timeout=300.0, output_parser=LangchainOutputParser(lc_output_parser))
+        llm = Ollama(model="llama3.1", request_timeout=300.0, output_parser=LangchainOutputParser(lc_output_parser))
     else:
-        llm = Ollama(model="llama3", request_timeout=300.0)
+        llm = Ollama(model="llama3.1", request_timeout=300.0)
 
     # model_name = "jinaai/jina-embeddings-v2-small-en"
     model_name = "BAAI/bge-small-en-v1.5"
