@@ -1,0 +1,37 @@
+I’ve been on the Internet a long time, since the early to mid 1990s. And when you are on the Internet that long, you tend to leave a pretty long trail behind you. But over the years that trail gets overgrown as sites close, lists vanish, and machines crash. There is precious little left from those early years.
+
+One thing that has persisted to this time, despite being pretty heavily neglected over the years, is Yahoo Groups. Those who remember the first dot-com boom may remember that Yahoo Groups was not originally Yahoo Groups. It was eGroups, which Yahoo bought and merged into their own sprawling empire. eGroups basically made it possible for anyone to set up a mailing list without needing access to a listserv service.
+
+Well, it looks like the end has finally come for Yahoo Groups. Verizon, the new owner of the rotting corpse of Yahoo, has announced that all groups will disappear on December 14th. I was on tons of mailing lists during my early Internet years, and I would really like to archive and preserve those messages if I could. But how could I get them out of Yahoo?
+
+As it turns out, there is already an option out there for downloading content from Yahoo. Someone has kindly written a backup script to take care of the hard part of getting messages out of Yahoo.
+
+The problem? It only appears to be able to store them in a MongoDB database. :( Not that I have anything against MongoDB (it is webscale!), but I really wanted to preserve the raw messages themselves as text data rather than storing them in a database.
+
+Why? Well, the biggest reason is long-term stability. Will you be able to read that data out of MongoDB in 20 years? I have some files that are younger than that I can no longer read. Either the program doesn’t work anymore, or isn’t supported, or can’t even be found. But text files? I can read 40 year old text files just fine. Pretty good bet text files will be readable in another 40 years as well.
+
+So the solution I came up with was to spin up a docker image of MongoDB and allow the script to do it’s thing, then wrote another script to pull the data out of MongoDB and write raw data. I decided to write both JSON of the full entry and text of the original raw email. That way I have all the Yahoo metadata if I ever need it in the future, in an open format that should be relatively easy to read in the future, as well as the original raw format.
+
+Setting Up The Fetch Script
+
+The fetching script is a tad finnicky, especially on macOS. Your best bet is to install Python 3.7 from Homebrew. You’re also better off doing this in a Python Virtual Environment, as I found out the hard way.
+
+You will also need to install Chromedriver as well.
+
+Now that you are inside a “pristine” Python environment, you can follow the instructions in the readme for the fetch script.
+
+Before I was able to get pip to install the dependencies from requirements.txt, I also had to bump the version of pyyaml to 3.13. It did not compile otherwise on macOS and there is a bug about this that is fixed on 3.13. Doing this does not seem to impact the script.
+
+Be sure to fill in your username and password in the YAML file.
+
+Next, we need to spin up a MongoDB instance in Docker:
+
+Once you’re ready to go, you can just run the script like so:
+
+Setting Up The Dump Script
+
+So after you’ve let the script run for awhile (and it may take awhile depending on the quantity of messages, as this script seems to process them at the rate of about 40 per hour), you can dump the data to local files.
+
+And now to dump the files out of Mongo:
+
+And it will create a directory structure of raw text and JSON files, one for each message. From there, you can zip them up for more efficient storage.

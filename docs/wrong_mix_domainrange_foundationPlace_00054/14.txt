@@ -1,0 +1,835 @@
+Abstract
+
+This document defines the WS-I Basic Security Profile 1.0, based on a set of non-proprietary Web services specifications, along with clarifications and amendments to those specifications which promote interoperability.
+
+Status of this Document
+
+This document is a Working Group Draft; it has been accepted by the Working Group as reflecting the current state of discussions. It is a work in progress, and should not be considered authoritative or final; other documents may supersede this document.
+
+Notice
+
+The material contained herein is not a license, either expressly or impliedly, to any intellectual property owned or controlled by any of the authors or developers of this material or WS-I. The material contained herein is provided on an "AS IS" basis and to the maximum extent permitted by applicable law, this material is provided AS IS AND WITH ALL FAULTS, and the authors and developers of this material and WS-I hereby disclaim all other warranties and conditions, either express, implied or statutory, including, but not limited to, any (if any) implied warranties, duties or conditions of merchantability, of fitness for a particular purpose, of accuracy or completeness of responses, of results, of workmanlike effort, of lack of viruses, and of lack of negligence. ALSO, THERE IS NO WARRANTY OR CONDITION OF TITLE, QUIET ENJOYMENT, QUIET POSSESSION, CORRESPONDENCE TO DESCRIPTION OR NON-INFRINGEMENT WITH REGARD TO THIS MATERIAL.
+
+IN NO EVENT WILL ANY AUTHOR OR DEVELOPER OF THIS MATERIAL OR WS-I BE LIABLE TO ANY OTHER PARTY FOR THE COST OF PROCURING SUBSTITUTE GOODS OR SERVICES, LOST PROFITS, LOSS OF USE, LOSS OF DATA, OR ANY INCIDENTAL, CONSEQUENTIAL, DIRECT, INDIRECT, OR SPECIAL DAMAGES WHETHER UNDER CONTRACT, TORT, WARRANTY, OR OTHERWISE, ARISING IN ANY WAY OUT OF THIS OR ANY OTHER AGREEMENT RELATING TO THIS MATERIAL, WHETHER OR NOT SUCH PARTY HAD ADVANCE NOTICE OF THE POSSIBILITY OF SUCH DAMAGES.
+
+Feedback
+
+The Web Services-Interoperability Organization (WS-I) would like to receive input, suggestions and other feedback ("Feedback") on this work from a wide variety of industry participants to improve its quality over time.
+
+By sending email, or otherwise communicating with WS-I, you (on behalf of yourself if you are an individual, and your company if you are providing Feedback on behalf of the company) will be deemed to have granted to WS-I, the members of WS-I, and other parties that have access to your Feedback, a non-exclusive, non-transferable, worldwide, perpetual, irrevocable, royalty-free license to use, disclose, copy, license, modify, sublicense or otherwise distribute and exploit in any manner whatsoever the Feedback you provide regarding the work. You acknowledge that you have no expectation of confidentiality with respect to any Feedback you provide. You represent and warrant that you have rights to provide this Feedback, and if you are providing Feedback on behalf of a company, you represent and warrant that you have the rights to provide Feedback on behalf of your company. You also acknowledge that WS-I is not required to review, discuss, use, consider or in any way incorporate your Feedback into future versions of its work. If WS-I does incorporate some or all of your Feedback in a future version of the work, it may, but is not obligated to include your name (or, if you are identified as acting on behalf of your company, the name of your company) on a list of contributors to the work. If the foregoing is not acceptable to you and any company on whose behalf you are acting, please do not provide any Feedback.
+
+Feedback on this document should be directed to wsi_secprofile_comment@lists.ws-i.org.
+
+Table of Contents
+
+1. Introduction
+
+1.1. Guiding Principles
+
+2. Document Conventions
+
+2.1. Security Considerations
+
+2.2. Notational Conventions
+
+2.3. Profile Identification and Versioning
+
+3. Profile Conformance
+
+3.1. Conformance Requirements
+
+3.2. Conformance Targets
+
+3.3. Conformance Scope
+
+3.4. Claiming Conformance
+
+4. Transport Layer Security
+
+4.1. SSL and TLS
+
+4.1.1. Use of SSL 2.0
+
+5. SOAP Message Security
+
+5.1. Security Tokens
+
+5.1.1. Binary Security Token EncodingType Attribute
+
+5.1.2. Binary Security Token ValueType Attribute
+
+5.2. SecurityTokenReferences
+
+5.2.1. Internal References
+
+5.2.2. Shorthand XPointer References
+
+5.2.3. References to Preceding Security Tokens
+
+5.2.4. Direct Preferred to Embedded for Internal References
+
+5.2.5. Direct Required When Possible for External References
+
+5.2.6. Format of Embedded References
+
+5.2.7. Key Name References Prohibited
+
+5.2.8. http://members.ws-i.org/dman/Document.phx?documentId=qr07104202846406#KeyIdentifier/@ValueType_Attribute
+
+5.2.9. http://members.ws-i.org/dman/Document.phx?documentId=qr07104202846406#KeyIdentifier/@EncodingType_Attribute
+
+5.2.10. References from within Embedded Tokens
+
+5.2.11. Embedded Token Content
+
+5.2.12. Reference from wsse:SecurityTokenReference to wsse:SecurityTokenReference
+
+5.2.13. wsse:SecurityTokenReference/Reference ValueType Attribute
+
+5.2.14. wsse:SecurityTokenReference content
+
+5.2.15. wsse:SecurityTokenReference/Reference requires URI attribute
+
+5.2.16. wsse:SecurityTokenReference Dereferencing Transform
+
+5.2.17. Security Token References across security headers prohibited
+
+5.3. Timestamps
+
+5.3.1. wsu:Timestamp/wsu:Created
+
+5.3.2. Occurence constraints on wsu:Created and wsu:Expires
+
+5.3.3. Leap Seconds Not Allowed
+
+5.3.4. Timestamp ValueType
+
+5.3.5. Timestamp Format
+
+5.3.6. Timestamp Resolution
+
+5.3.7. wsu:Timestamp inside wsse:Security header
+
+5.4. wsu:Id References
+
+5.4.1. wsu:Id Attribute Uniqueness
+
+5.5. wsse:Security Processing Order
+
+5.5.1. Order of Processing
+
+5.6. SOAP Actor
+
+5.6.1. SOAP Actor Value
+
+6. Username Token Profile
+
+6.1. Token Usage
+
+6.1.1. http://members.ws-i.org/dman/Document.phx?documentId=qr07104202846406#wsse_UsernameToken/wsse_Password/@Type
+
+6.1.2. PasswordDigest
+
+6.1.3. ValueType attribute
+
+6.1.4. EncodingType attribute
+
+6.1.5. Reference by KeyIdentifier
+
+6.1.6. Key Derivation
+
+7. X.509 Certificate Token Profile
+
+7.1. Token Types
+
+7.1.1. Certificate Path Format
+
+7.1.2. Key Identifier for External References
+
+7.1.3. KeyIdentifier
+
+7.1.4. KeyIdentifier EncodingType
+
+8. XML-Signature
+
+8.1. General Constraints on XML Signature
+
+8.1.1. Signature Content
+
+8.1.2. Signature Types
+
+8.2. Element References in XML Signature
+
+8.2.1. Reference to Elements by Shorthand XPointer (XMLDSIG)
+
+8.2.2. Reference to Elements by XPath Expression
+
+8.3. XML Signature Algorithms
+
+8.3.1. Use Exclusive C14N
+
+8.3.2. Transforms Element
+
+8.3.3. Transform Element
+
+8.3.4. Digest Algorithm
+
+8.3.5. Key Signature Algorithms
+
+8.3.6. Transform Algorithm
+
+8.4. XML Signature Syntax
+
+8.4.1. ds:HMACOutputLength
+
+8.4.2. ds:KeyInfo with ds:Signature
+
+8.4.3. ds:Manifest
+
+8.4.4. Encrypting signatures
+
+9. XML Encryption
+
+9.1. XML Encryption Processing Model
+
+9.1.1. xenc:ReferenceList
+
+9.1.2. xenc:EncryptedKey
+
+9.2. XML Encryption Syntax
+
+9.2.1. Placement
+
+9.2.2. Prohibited xenc:EncryptedKey attributes
+
+9.2.3. xenc:EncryptedData contents
+
+9.2.4. xenc:EncryptedData attributes
+
+9.2.5. References from xenc:EncryptedData
+
+9.2.6. xenc:EncryptionMethod mandatory
+
+9.2.7. http://members.ws-i.org/dman/Document.phx?documentId=qr07104202846406#xenc_EncryptedKey/@Recipient
+
+9.2.8. ds:KeyInfo with Encryption
+
+9.2.9. xenc:EncryptedData
+
+9.2.10. SOAP Envelope
+
+9.3. Element References in XML Encryption
+
+9.3.1. Reference to Elements by Shorthand XPointer (XMLENC)
+
+9.4. XML Encryption Algorithms
+
+9.4.1. Data Encryption Algorithms
+
+9.4.2. Key Transport Algorithms
+
+9.4.3. Key Wrap Algorithms
+
+10. Algorithms
+
+10.1. Transport Level Security Algorithms
+
+10.1.1. Mandatory ciphersuites
+
+10.1.2. Recommended ciphersuites
+
+10.1.3. Discouraged ciphersuites
+
+10.1.4. Prohibited ciphersuites
+
+11. Relationship of Basic Security Profile as an Extension to Basic Profile
+
+11.1. Basic Profile Clarifications
+
+11.1.1. BP Requirement R2301
+
+11.1.2. BP Requirement R2710
+
+11.1.3. BP Requirement R2712
+
+11.1.4. BP Requirement R2724
+
+11.1.5. BP Requirement R2725
+
+11.1.6. BP Requirement R2729
+
+11.1.7. BP Requirement R2738
+
+11.1.8. BP Requirement R1029
+
+12. Attachment Security
+
+12.1. SOAP with Attachments
+
+12.1.1. Conformance
+
+12.1.2. Relationship between Parts
+
+12.1.3. Encryption and Root Part
+
+12.2. Signed Attachments
+
+12.2.1. Reference to Signed Attachments
+
+12.2.2. Attachment Transforms
+
+12.2.3. Canonicalization
+
+12.2.4. Digest Values
+
+12.2.5. Content-Type
+
+12.3. Encrypted Attachments
+
+12.3.1. References to Encrypted Attachments
+
+12.3.2. Type attribute
+
+12.3.3. Reference URIs
+
+12.3.4. Content
+
+13. Security Considerations
+
+13.1. SOAPAction Header
+
+13.1.1. SOAPAction header
+
+13.2. Clock Synchronization
+
+13.3. Security Token Substitution
+
+13.3.1. Security Token Substitution
+
+13.3.2. Security Token Reference in Subsequent Messages
+
+13.4. Protecting against removal and modification of XML Elements
+
+13.5. Uniqueness of ID attributes
+
+13.6. Signing Security Tokens
+
+13.7. Signing Username Tokens
+
+13.8. Signing Binary Tokens
+
+13.9. Signing XML Tokens
+
+13.10. Replay of Username Token
+
+13.10.1. Replay of Username Token
+
+13.11. Use of Digest vs. Cleartext Password
+
+13.12. Encryption with Signatures
+
+13.12.1. Encrypt DigestValue
+
+13.13. Possible Operational Errors
+
+Appendix A: Referenced Specifications
+
+Appendix B: Extensibility Points
+
+Appendix C: Acknowledgements
+
+1. Introduction
+
+This document defines the WS-I Basic Security Profile 1.0 (hereafter, "Profile"), consisting of a set of non-proprietary Web services specifications, along with clarifications to and amplifications of those specifications which promote interoperability.
+
+Section 1, "Introduction," introduces the Basic Security Profile 1.0 and relates the philosophy that it takes with regard to interoperability.
+
+Section 2, "Document Conventions," describes notational conventions utilized by the Basic Security Profile 1.0.
+
+Section 3, "Profile Conformance," explains what it means to be conformant to the Basic Security Profile 1.0.
+
+Each subsequent section addresses a component of the Basic Security Profile 1.0, and consists of two parts: an overview detailing the component specifications and their extensibility points, followed by subsections that address individual parts of the component specifications. Note that there is no relationship between the section numbers in this document and those in the referenced specifications.
+
+1.1 Guiding Principles
+
+The Profile was developed according to a set of principles that, together, form the philosophy of the Basic Security Profile 1.0, as it relates to bringing about interoperability. This section documents these guidelines.
+
+No guarantee of interoperability Although it is impossible to completely guarantee the interoperability of a particular service, the Basic Security Profile 1.0 attempts to increase interoperability by addressing the most common problems that implementation experience has revealed to date. Focus profiling effort The focus of the Basic Security Profile 1.0 is the specifications that are explicitly defined as in-scope for the Basic Security Profile 1.0. Other specifications are profiled to the minimal extent necessary to allow meaningful profiling of the scoped specifications. This allows an in-depth profile of the scoped specifications with reduced constraining of other specifications. Application semantics Although communication of application semantics can be facilitated by the technologies that comprise the Basic Security Profile 1.0, assuring the common understanding of those semantics is not addressed by it. Testability When possible, the Basic Security Profile 1.0 makes statements that are testable. However, such testability is not required. Preferably, testing is achieved in a non-intrusive manner (e.g., examining artifacts "on the wire"). Note: Due to the nature of cryptographic security, non-intrusive testing may not be possible. Strength of requirements The Profile makes strong requirements (e.g., MUST, MUST NOT) wherever feasible; if there are legitimate cases where such a requirement cannot be met, conditional requirements (e.g., SHOULD, SHOULD NOT) are used. Optional and conditional requirements introduce ambiguity and mismatches between implementations. Restriction vs. relaxation When amplifying the requirements of referenced specifications (including the Basic Profile 1.0 ), the Basic Security Profile 1.0 may restrict them, but does not relax them (e.g., change a MUST to a MAY). Multiple mechanisms If a referenced specification allows multiple mechanisms to be used interchangeably to achieve the same goal, the Basic Security Profile 1.0 selects those that are well-understood, widely implemented and useful. Extraneous or underspecified mechanisms and extensions introduce complexity and therefore reduce interoperability. Future compatibility When possible, the Basic Security Profile 1.0 aligns its requirements with in-progress revisions to the specifications it references (e.g., Web Services Security). This aids implementers by enabling a graceful transition, and assures that WS-I does not 'fork' from these efforts. When the Basic Security Profile 1.0 cannot address an issue in a specification it references, this information is communicated to the appropriate body to assure its consideration. Compatibility with deployed services Backwards compatibility with deployed Web services is not a goal for the Basic Security Profile 1.0, but due consideration is given to it; the Profile does not introduce a change to the requirements of a referenced specification unless doing so addresses specific interoperability issues. Focus on interoperability Although there are potentially a number of inconsistencies and design flaws in the referenced specifications, the Basic Security Profile 1.0 only addresses those that affect interoperability. Conformance targets Where possible, the Basic Security Profile 1.0 places requirements on artifacts (e.g., WSDL descriptions, SOAP messages) rather than the producing or consuming software's behaviors or roles. Artifacts are concrete, making them easier to verify and therefore making conformance easier to understand and less error-prone. Lower-layer interoperability The Profile speaks to interoperability at the web-services layer only; it assumes that interoperability of lower-layer protocols ( e.g. TCP, HTTP ) and technologies (e.g. encryption and signature algorithms ) is adequate and well-understood. WS-I does not attempt to assure the interoperability of these protocols and technologies as a whole. This assures that WS-I's expertise in and focus on Web services standards is used effectively. Do no harm Interoperability of security technologies does not in and of itself ensure security, and the act of combining new technologies and protocols is especially susceptible to security threats. The profile takes steps to avoid introducing new security threats. Best Practices It is not the intent of the Basic Security Profile 1.0 to define security best practices. However, when multiple options exist, we may use known security weaknesses as a means of reducing choice and thus enhancing interoperability. The Profile will offer non-normative security considerations where the authors deem appropriate; however, these are by no means exhaustive and should not be perceived as a sanctioning of a security best practice.
+
+2. Document Conventions
+
+This document follows conventions common to all WS-I profiles. These are described in the following sections.
+
+2.1 Security Considerations
+
+In addition to interoperability recommendations (which are made in Rnnnn statements and intended to improve interoperability), the Basic Security Profile 1.0 makes a number of security recommendations intended to improve security. Security recommendations are presented as follows:
+
+Security considerations are presented as follows:
+
+Cnnnn Statement text here.
+
+where "nnnn" is replaced by a number that is unique among the security recommendations in the Basic Security Profile 1.0, thereby forming a unique security recommendation identifier. Each security recommendation contains a SHOULD to highlight exactly what is being recommended; however, these recommendations are informational only and are non-normative. Though security recommendations are expected to be tested by the test tools to highlight possible security problems, security recommendations have no impact on conformance.
+
+It should be understood that, while a number of recommendations are made about security, adherence to these security recommendations does not guarantee security.
+
+2.2 Notational Conventions
+
+The keywords "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC2119.
+
+Normative statements of requirements in the Basic Security Profile 1.0 (i.e., those impacting conformance, as outlined in "Conformance Requirements") are presented in the following manner:
+
+RnnnnStatement text here.
+
+where "nnnn" is replaced by a number that is unique among the requirements in the Basic Security Profile 1.0, thereby forming a unique requirement identifier.
+
+Requirement identifiers can be considered to be namespace qualified, in such a way as to be compatible with QNames from Namespaces in XML. If there is no explicit namespace prefix on a requirement's identifier (e.g., "R9999" as opposed to "bp10:R9999"), it should be interpreted as being in the namespace identified by the conformance URI of the document section it occurs in. If it is qualified, the prefix should be interpreted according to the namespace mappings in effect, as documented below.
+
+Some requirements clarify the referenced specification(s), but do not place additional constraints upon implementations. For convenience, clarifications are annotated in the following manner: C
+
+Some requirements are derived from ongoing standardization work on the referenced specification(s). For convenience, such forward-derived statements are annotated in the following manner: xxxx, where "xxxx" is an identifier for the specification (e.g., "WSDL20" for WSDL Version 2.0). Note that because such work was not complete when this document was published, the specification that the requirement is derived from may change; this information is included only as a convenience to implementers.
+
+Extensibility points in underlying specifications (see "Conformance Scope") are presented in a similar manner:
+
+EnnnnExtensibility Point Name - Description
+
+where "nnnn" is replaced by a number that is unique among the extensibility points in the Basic Security Profile 1.0. As with requirement statements, extensibility statements can be considered namespace-qualified.
+
+This specification uses a number of namespace prefixes throughout; their associated URIs are listed below. Note that the choice of any namespace prefix is arbitrary and not semantically significant.
+
+soap - "http://schemas.xmlsoap.org/soap/envelope/" xsd - "http://www.w3.org/2001/XMLSchema" wsi - "http://www.ws-i.org/schemas/conformanceClaim" ds - "http://www.w3.org/2000/09/xmldsig#"" xenc - "http://www.w3.org/2001/04/xmlenc#" c14n - "http://www.w3.org/2001/10/xml-exc-c14n#" wsse - "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" wsu - "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" b10 - "http://www.ws-i.org/Profiles/Basic/2003-08/BasicProfile-1.0a.htm" bp11 - "http://www.ws-i.org/Profiles/BasicProfile-1.1.html"
+
+2.3 Profile Identification and Versioning
+
+This document is identified by a name (in this case, Basic Security Profile) and a version number (here, 1.0). Together, they identify a particular profile instance.
+
+Version numbers are composed of a major and minor portion, in the form "major.minor". They can be used to determine the precedence of a profile instance; a higher version number (considering both the major and minor components) indicates that an instance is more recent, and therefore supersedes earlier instances.
+
+Instances of profiles with the same name (e.g., "Example Profile 1.1" and "Example Profile 5.0") address interoperability problems in the same general scope (although some developments may require the exact scope of a profile to change between instances).
+
+One can also use this information to determine whether two instances of a profile are backwards-compatible; that is, whether one can assume that conformance to an earlier profile instance implies conformance to a later one. Profile instances with the same name and major version number (e.g., "Example Profile 1.0" and "Example Profile 1.1") MAY be considered compatible. Note that this does not imply anything about compatibility in the other direction; that is, one cannot assume that conformance with a later profile instance implies conformance to an earlier one.
+
+3 Profile Conformance
+
+Conformance to the Basic Security Profile 1.0 is defined by adherence to the set of requirements defined for a specific target, within the scope of the Profile. This section explains these terms and describes how conformance is defined and used.
+
+3.1 Conformance Requirements
+
+Requirements state the criteria for conformance to the Profile. They typically refer to an existing specification and embody refinements, amplifications, interpretations and clarifications to it in order to improve interoperability. All requirements in the Basic Security Profile 1.0 are considered normative, and those in the specifications it references that are in-scope (see "Conformance Scope") should likewise be considered normative. When requirements in the Basic Security Profile 1.0 and its referenced specifications contradict each other, the Basic Security Profile 1.0's requirements take precedence for purposes of Profile conformance.
+
+Requirement levels, using RFC2119 language (e.g., MUST, MAY, SHOULD) indicate the nature of the requirement and its impact on conformance. Each requirement is individually identified (e.g., R9999) for convenience.
+
+For example;
+
+R9999 WIDGETs SHOULD be round in shape.
+
+This requirement is identified by "R9999", applies to the target WIDGET (see below), and places a conditional requirement upon widgets; i.e., although this requirement must be met to maintain conformance in most cases, there are some situations where there may be valid reasons for it not being met (which are explained in the requirement itself, or in its accompanying text).
+
+Each requirement statement contains exactly one requirement level keyword (e.g., "MUST") and one conformance target keyword (e.g., "MESSAGE"). The conformance target keyword appears in bold text (e.g. "MESSAGE"). Other conformance targets appearing in non-bold text are being used strictly for their definition and NOT as a conformance target. Additional text may be included to illuminate a requirement or group of requirements (e.g., rationale and examples); however, prose surrounding requirement statements must not be considered in determining conformance.
+
+Definitions of terms in the Basic Security Profile 1.0 are considered authoritative for the purposes of determining conformance.
+
+None of the requirements in the Basic Security Profile 1.0, regardless of their conformance level, should be interpreted as limiting the ability of an otherwise conforming implementation to apply security countermeasures in response to a real or perceived threat (e.g., a denial of service attack).
+
+3.2 Conformance Targets
+
+Conformance targets identify what artifacts (e.g., SOAP message, WSDL description, UDDI registry data) or parties (e.g., SOAP processor, end user) requirements apply to.
+
+This allows for the definition of conformance in different contexts, to assure unambiguous interpretation of the applicability of requirements, and to allow conformance testing of artifacts (e.g., SOAP messages and WSDL descriptions) and the behavior of various parties to a Web service (e.g., clients and service instances).
+
+Requirements' conformance targets are physical artifacts wherever possible, to simplify testing and avoid ambiguity.
+
+The following conformance targets are used in the Basic Security Profile 1.0:
+
+SECURE_ENVELOPE - a SOAP envelope that contains sub-elements that have been subject to integrity and/or confidentiality protection. A message is considered conformant when all of its contained Artifacts are conformant with all Statements related to SECURE_ENVELOPE, SECURE_MESSAGE, SECURITY_HEADER, REFERENCE, SIGNATURE, ENCRYPTED_KEY, ENCRYPTION_REFERENCE_LIST, ENCRYPTED_KEY_REFERENCE_LIST, ENCRYPTED_DATA, SECURITY_TOKEN_REFERENCE, INTERNAL_SECURITY_TOKEN and TIMESTAMP as appropriate in the Basic Security Profile. Use of artifacts for which there are no statements in the Basic Security Profile does not effect conformance. SECURE_MESSAGE - protocol elements that have WSS Security applied to them. Protocol elements include a primary SOAP envelope and optionally associated SwA attachments. SENDER - software that generates a message according to the protocol(s) associated with it. A sender is considered conformant when all of the messages it produces are conformant and its behavior is conformant with all statements related to SENDER in the Basic Security Profile 1.0. (from Basic Profile 1.0) RECEIVER - software that consumes a message according to the protocol(s) associated with it. A receiver is considered conformant when it is capable of consuming conformant messages containing the artifacts that it supports and its behavior is conformant with all statements related to RECEIVER in the Basic Security Profile 1.0. A conformant receiver need not accept all possible conformant messages. A conformant receiver may choose not to support artifacts that provide unneeded or undesired functionality. When a receiver supports a specific artifact, and the Basic Security Profile 1.0 contains statements related to that artifact, a conformant receiver must accept all required conformant forms of that artifact. (from Basic Profile 1.0) INSTANCE - software that implements a wsdl:port or a uddi:bindingTemplate. (from Basic Profile 1.0) SECURITY_HEADER - an element included as a child of soap:Envelope/soap:Header and named wsse:Security REFERENCE - a SIGNATURE ds:Reference element. SIGNATURE - an element included as a child of a SECURITY_HEADER and named ds:Signature. ENCRYPTED_KEY - an element included as a child of a SECURITY_HEADER and named xenc:EncryptedKey. ENCRYPTION_REFERENCE_LIST - an element which is included as a child of a SECURITY_HEADER and named xenc:ReferenceList. ENCRYPTED_KEY_REFERENCE_LIST - an element which is included as a child of an ENCRYPTED_KEY and named xenc:ReferenceList. ENCRYPTED_DATA - an element named xenc:EncryptedData which is referenced by either an ENCRYPTED_KEY_REFERENCE_LIST or an ENCRYPTION_REFERENCE_LIST. SECURITY_TOKEN_REFERENCE - an element included as a descendant of a SECURITY_HEADER or an ENCRYPTED_DATA and is named wsse:SecurityTokenReference. INTERNAL_SECURITY_TOKEN - a security token defined in a security token profile and that is either a child of SECURITY_HEADER or a child of a wsse:Embedded element in a SECURITY_TOKEN_REFERENCE. EXTERNAL_SECURITY_TOKEN - a security token defined in a security token profile that is external to a SECURE_ENVELOPE. SECURITY_TOKEN - either an INTERNAL_SECURITY_TOKEN or an EXTERNAL_SECURITY_TOKEN (e.g. UsernameToken, X.509 Certificate Token, REL Token, SAML Token et.al.). TIMESTAMP - an element included as a child of a SECURITY_HEADER and named wsu:Timestamp MIME_PART - the MIME-defined header fields and contents of one of the parts in the body of a multipart entity in a SECURE_MESSAGE.
+
+3.3 Conformance Scope
+
+The scope of the Basic Security Profile 1.0 delineates the technologies that it addresses; in other words, the Basic Security Profile 1.0 only attempts to improve interoperability within its own scope. Generally, the Basic Security Profile 1.0's scope is bounded by the specifications referenced by it.
+
+The Profile's scope is further refined by extensibility points. Referenced specifications often provide extension mechanisms and unspecified or open-ended configuration parameters; when identified in the Basic Security Profile 1.0 as an extensibility point, such a mechanism or parameter is outside the scope of the Basic Security Profile 1.0, and its use or non-use is not relevant to conformance.
+
+Note that the Basic Security Profile 1.0 may still place requirements on the use of an extensibility point. Also, specific uses of extensibility points may be further restricted by other profiles, to improve interoperability when used in conjunction with the Basic Security Profile 1.0.
+
+Because the use of extensibility points may impair interoperability, their use should be negotiated or documented in some fashion by the parties to a Web service; for example, this could take the form of an out-of-band agreement.
+
+The Profile's scope is defined by the referenced specifications in Appendix A, as refined by the extensibility points in Appendix B.
+
+3.4 Claiming Conformance
+
+Claims of conformance to the Basic Security Profile 1.0 can be made using the following mechanisms, as described in Conformance Claim Attachment Mechanisms, when the applicable Profile requirements associated with the listed targets have been met:
+
+The CCAM URI may change before final publication.
+
+The conformance claim URI for the Basic Security Profile 1.0 is "http://ws-i.org/profiles/basic-security/core/1.0" , with the following exceptions, which are associated with specific sections:
+
+Transport Layer Security - "http://ws-i.org/profiles/basic-security/transport/1.0" Username Token Profile - "http://ws-i.org/profiles/basic-security/username-token/1.0" X.509 Certificate Token Profile - "http://ws-i.org/profiles/basic-security/x.509-certificate-token/1.0" Attachment Security - "http://ws-i.org/profiles/basic-security/swa/1.0"
+
+If a claim of conformance is made as described in CCAM to BSP 1.0 ("http://ws-i.org/profiles/basic-security/core/1.0"), then the claim MUST also specify which tokens, be they BSP profile tokens or other mutually agreed upon tokens, are supported.
+
+The conformance URI for transport level security ("http://ws-i.org/profiles/basic-security/transport/1.0") can be used in isolation or in combination with other conformance URIs.
+
+4. Transport Layer Security
+
+This section of the Basic Security Profile 1.0 incorporates the following specifications by reference, and defines extensibility points within them:
+
+HTTP over TLS The TLS Protocol Version 1.0
+
+Extensibility points:
+
+E0009 - TLS Ciphersuites - TLS allows for the use of arbitrary encryption algorithms. Note that while section 10.1 of the Basic Security Profile 1.0 mandates, recommends, and discourages support for certain ciphersuites, the Basic Security Profile 1.0 does not prohibit use of any specific ciphersuite. E0010 - TLS Extensions - TLS allows for extensions during the handshake phase.
+
+The SSL Protocol Version 3.0
+
+Extensibility points:
+
+E0011 - SSL Ciphersuites - SSL allows for the use of arbitrary encryption algorithms. Note that while section 10.1 of the Basic Security Profile 1.0 mandates, recommends, and discourages support for certain ciphersuites, the Basic Security Profile 1.0 does not prohibit use of any specific ciphersuite.
+
+4.1 SSL and TLS
+
+The following specifications (or sections thereof) are referred to in this section of the Basic Security Profile 1.0:
+
+HTTP over TLS: Section 2.2.1
+
+SSL and TLS are both used as underlying protocols for HTTP/S. The Profile places the following constraints on those protocols:
+
+5. SOAP Message Security
+
+This section of the Basic Security Profile 1.0 incorporates the following specifications by reference, and defines extensibility points within them:
+
+Web Services Security: SOAP Message Security 1.0 (WS-Security 2004) OASIS Standard 200401, March 2004
+
+Extensibility points:
+
+E0002 - Security Tokens - Security tokens may be specified in additional security token profiles.
+
+Web Services Security: SOAP Message Security 1.0 (WS-Security 2004) Errata 1.0 Committee Draft 200401, October 2004
+
+5.1 Security Tokens
+
+The following specifications (or sections thereof) are referred to in this section of the Basic Security Profile 1.0:
+
+Web Services Security: SOAP Message Security Section 6
+
+In some areas the Basic Security Profile allows limited flexibility and extensibility in the application of security to messages. Some agreement between the SENDER and RECEIVER over which mechanisms and choices should be used for message exchanges is necessary. Since no security policy description language or negotiation mechanism is in scope for the Basic Security Profile, some out of band agreement must be reached for which security tokens should be used.
+
+The Basic Security Profile 1.0 places the following constraints on the use of Security Tokens:
+
+5.2 SecurityTokenReferences
+
+The following specifications (or sections thereof) are referred to in this section of the Basic Security Profile 1.0:
+
+Web Services Security: SOAP Message Security Section 7
+
+Web Services Security: SOAP Message Security defines a wsse:SecurityTokenReference element for use in SOAP messages. The Profile places the following constraints on its use:
+
+The following specifications (or sections thereof) are referred to in this section of the Basic Security Profile 1.0:
+
+Web Services Security: SOAP Message Security Section 10
+
+Web Services Security: SOAP Message Security defines a Timestamp element for use in SOAP messages. The Profile places the following constraints on its use:
+
+5.4 wsu:Id References
+
+The following specifications (or sections thereof) are referred to in this section of the Basic Security Profile 1.0:
+
+Web Services Security: SOAP Message Security
+
+Web Services Security: SOAP Message Security defines a wsu:Id element for use in SOAP messages. The Profile places the following constraints on its use:
+
+5.5 wsse:Security Processing Order
+
+The following specifications (or sections thereof) are referred to in this section of the Basic Security Profile 1.0:
+
+Web Services Security: SOAP Message Security
+
+Web Services Security: SOAP Message Security defines the order for processing signature and encryption blocks within wsse:Security headers. The Profile provides the following guidance:
+
+5.6 SOAP Actor
+
+The following specifications (or sections thereof) are referred to in this section of the Basic Security Profile 1.0:
+
+Web Services Security: SOAP Message Security
+
+SOAP defines an actor attribute for use in SOAP headers. The Profile places the following constraints on its use:
+
+6. Username Token Profile
+
+This section of the Basic Security Profile 1.0 incorporates the following specifications by reference:
+
+Web Services Security UsernameToken Profile 1.0 OASIS Standard 200401, March 2004 Web Services Security: UsernameToken Profile 1.0 Errata 1.0 Committee Draft 200401, September 2004
+
+6.1 Token Usage
+
+7. X.509 Certificate Token Profile
+
+This section of the Basic Security Profile 1.0 incorporates the following specifications by reference, and defines extensibility points within them:
+
+Web Services Security X.509 Certificate Token Profile OASIS Standard 200401, March 2004 Web Services Security: X.509 Token Profile 1.0 Errata 1.0 Committee Draft 200401, October 2004 RFC2459: Internet X.509 Public Key Infrastructure Certificate and CRL Profile
+
+Extensibility points:
+
+E0012 - Certificate Authority - The choice of the Certificate Authority is a private agreement between parties. E0013 - Certificate Extensions - X.509 allows for arbitrary certificate extensions.
+
+Information technology "Open Systems Interconnection" The Directory: Public-key and attribute certificate frameworks Technical Corrigendum 1
+
+7.1 Token Types
+
+The following specifications (or sections thereof) are referred to in this section of the Basic Security Profile 1.0:
+
+Web Services Security: X.509 Token Profile Section 3.1
+
+In some areas the Basic Security Profile allows limited flexibility and extensibility in the application of security to messages. Some agreement between the SENDER and RECEIVER over which mechanisms and choices should be used for message exchanges is necessary. Since no security policy description language or negotiation mechanism is in scope for the Basic Security Profile, some out of band agreement must be reached for which certificate extensions and issuers should be used.
+
+Web Services Security: X.509 Token Profile defines 3 token types: X509v3; x509PKIPathv1; and PKCS7. The Profile places the following constraints on their use:
+
+8. XML-Signature
+
+Web Services Security: SOAP Message Security builds on XML Signature, defining usage of various elements from XML Signature and a processing model. The Profile places the constraints defined in this section on the use of XML Signature with Web Services Security: SOAP Message Security. The Profile places no constraints on other use of XML Signature.
+
+In some areas the Basic Security Profile allows limited flexibility and extensibility in the application of security to messages. Some agreement between the SENDER and RECEIVER over which mechanisms and choices should be used for message exchanges is necessary. Since no security policy description language or negotiation mechanism is in scope for the Basic Security Profile, some out of band agreement must be reached for which elements should be signed and which signature algorithms should be used.
+
+This section of the Basic Security Profile 1.0 incorporates the following specifications by reference:
+
+XML-Signature Syntax and Processing
+
+8.1 General Constraints on XML Signature
+
+8.2 Element References in XML Signature
+
+The following specifications (or sections thereof) are referred to in this section of the Basic Security Profile 1.0:
+
+Web Services Security: SOAP Message Security Section 4
+
+Element references are used to specify which portions of a SECURE_ENVELOPE are integrity protected. The Basic Security Profile 1.0 places the following constraints on the use of element references:
+
+8.3 XML Signature Algorithms
+
+8.4 XML Signature Syntax
+
+XML-Signature Syntax and Processing defines many elements and attributes. The Basic Security Profile 1.0 places the following constraints on the syntax of signatures:
+
+9. XML Encryption
+
+Web Services Security: SOAP Message Security builds on XML Encryption, defining usage of various elements from XML Encryption and a processing model. The Basic Security Profile 1.0 places the constraints defined in this section on the use of XML Encryption with Web Services Security: SOAP Message Security. The Basic Security Profile 1.0 places no constraints on other use of XML Encryption.
+
+In some areas the Basic Security Profile allows limited flexibility and extensibility in the application of security to messages. Some agreement between the SENDER and RECEIVER over which mechanisms and choices should be used for message exchanges is necessary. Since no security policy description language or negotiation mechanism is in scope for the Basic Security Profile, some out of band agreement must be reached for which elements should be encrypted and which data encryption, key transport and/or key wrap algorithms should be used.
+
+This section of the Basic Security Profile 1.0 incorporates the following specifications by reference:
+
+Web Services Security: SOAP Message Security Section 9 XML Encryption Syntax and Processing
+
+9.1 XML Encryption Processing Model
+
+9.2 XML Encryption Syntax
+
+The following specifications (or sections thereof) are referred to in this section of the Basic Security Profile 1.0:
+
+XML Encryption Syntax and Processing
+
+XML Encryption Syntax and Processing defines many elements and attributes. The Basic Security Profile 1.0 places the following constraints on their use:
+
+9.3 Element References in XML Encryption
+
+9.4 XML Encryption Algorithms
+
+10. Algorithms
+
+This section provides guidance, and in some cases requirements, concerning the use of various categories of algorithms.
+
+10.1 Transport Level Security Algorithms
+
+In SSL and TLS, choices of algorithms are expressed as ciphersuites. The following subsections specify ciphersuites that are required, recommended, discouraged and prohibited, respectively. The use of any other ciphersuite not discussed below is optional.
+
+11. Relationship of Basic Security Profile as an Extension to Basic Profile
+
+The Basic Security Profile is an extension profile to the Basic Profile. This means it is consistent with the Basic Profile but profiles additional functionality - how to add conformant security features to the Basic Profile when needed.
+
+As an extension of the Basic Profile, the Basic Security Profile is designed to support the addition of security functionality to SOAP messaging, in an interoperable manner. One example of such functionality is the confidentiality of selected SOAP header blocks and SOAP body elements through the use of OASIS Web Services Security encryption. The intent of such techniques is to change the nature of the SOAP message so that unintended parties cannot read such content. This means that the secured SOAP message is no longer obviously related to the original WSDL description, and is not intelligible without decryption. Other security mechanisms such as signatures may also modify the content of SOAP envelopes.
+
+The Basic Profile includes requirements on the content of SOAP envelopes (or in Basic Profile 1.0 the format of SOAP messages). Testing conformance to these statements by using a "man-in-the-middle" interceptor as outlined in the WS-I Monitor Tool Functional Specification will not be possible if encryption has been applied to portions of the SOAP envelope and have not yet been decrypted. Even if interception is possible, some messages may have a different structure due to security.
+
+Such SOAP messages still conform to the Basic Profile, since conformance to the Basic Profile means conformance once a receiver has reversed security changes introduced by a message sender. This is not obvious in some Basic Profile requirements, so this document further clarifies these requirements in the normative "Basic Profile Clarifications" section below.
+
+It is helpful to visualize a SOAP message in light of a protocol layering model, such as the ISO seven layer protocol model [ Tanenbaum ]. This model shows how a protocol is in fact composed of different layers, and how to a given layer underlying layers are transparent. The implementation of a given protocol layer at an endpoint may be modeled as that implementation consuming a service of the underlying protocol layer, and providing a service to the layer above it. In this model no protocol layer need be aware of layers above or below it, making the layer implementations independent. This is illustrated in Figure 1.
+
+Figure 1: Protocol Stack with SOAP Message Security
+
+Traditionally, protocol layers have been distinguished by the use of protocol enveloping, where the message at one layer is conveyed as the body in the next lower layer. The sender passes a message to the lower level protocol implementation that packages it in a protocol envelope and sends it to the corresponding layer in the receiver. The sender and receiver at this lower layer perform whatever processing is necessary for delivery according to the specification of that layer, and finally the receiver passes the message up to the peer of the sender.
+
+SOAP Security may be viewed as a lower layer with respect to the more general SOAP web services application layer. Thus a SOAP sender may pass a SOAP message to a lower layer SOAP security implementation that applies encryption (for example), and sends the message to the destination SOAP Security layer, which removes the encryption before passing the message up to the peer SOAP web services application layer.
+
+Thus a Basic Profile interceptor and compliance monitoring activity should logically occur at a receiver at the interface between the SOAP security implementation and SOAP web services application layer.
+
+This section of the Basic Security Profile 1.0 incorporates the following specifications by reference:
+
+Basic Profile Version 1.0 (BP1.0) Basic Profile Version 1.0 Errata Basic Profile Version 1.1 (BP1.1) Simple SOAP Binding Profile Version 1.0 (SSBP1.0)
+
+11.1 Basic Profile Clarifications
+
+This section clarifies the BP1.0 (including Errata), BP1.1, SSBP1.0, and AP1.0 statements that might be unclear when SOAP Message Security is applied in compliance with the Basic Security Profile.
+
+This section lists each possibly confusing BP1.0, BP1.1, SSBP1.0, and AP1.0 requirement and an associated statement to clarify that requirement in the context of the basic security profile.
+
+When these clarifying statements include the phrase "reverse SOAP Message Security" it means to remove various impacts of applying SOAP Message Security that may have been applied since the MESSAGE (BP1.0) or ENVELOPE (BP 1.1) was originally created for that recipient according to the BP. This may mean decrypting relevant portions of the XML or removing XML Signature elements or making other reverse transformations as appropriate to the aspects of SOAP Message Security that were applied in the specific circumstance.
+
+Not all security must be reversed, only that for the intended recipient, as applied to the BP compliant envelope before sent to that recipient.
+
+12. Attachment Security
+
+This section of the Basic Security Profile 1.0 incorporates the following specifications by reference:
+
+Attachments Profile Version 1.0 (AP1.0) Web Services Security: SOAP Messages with Attachments (SwA) Profile 1.0
+
+The section provides guidance for protecting attachments when they are used with SOAP Messages. As is explained in Section 3 Conformance all features described in the Basic Security Profile 1.0, including support for attachments and security for attachments in any form by any instance is not required.
+
+SSL/TLS may be used to provide authentication, integrity and confidentiality protection, on a hop-by-hop basis, for an entire HTTP Message. This includes HTTP Headers, the SOAP Envelope, and all MIME_PARTs.
+
+SSL/TLS does not provide protection, except between adjacent HTTP Nodes, for HTTP Messages when the SOAP Message Path contains SOAP Intermediaries. An instance should not use SSL/TLS without WSS with Message Exchange Patterns (MEPs) that may contain SOAP intermediaries or when these security functions are required to be performed independently of the connection.
+
+WSS may be used to provide authentication, integrity and confidentiality protection for a subset of the SOAP Message and associated attachments. WSS provides protection for SOAP Messages and attachments when the SOAP Message Path contains SOAP Intermediaries. An instance should use WSS with MEPs that may contain SOAP Intermediaries or when these security functions are required to be performed independently of the transport layer connection.
+
+An instance may use SSL/TLS in conjunction with WSS if warranted by application security requirements. This combination provides integrity and confidentiality protection for the entire HTTP Message (on a hop-by-hop basis) including HTTP Headers, SOAP Envelope, and all MIME_PARTs.
+
+Application level security mechanisms, including XML Signature, XML Encryption, PKCS#7, S/MIME, etc. for attachment data may also be used by a instance where appropriate, but statements regarding the interoperability of such mechanisms are out of scope for the Basic Security Profile 1.0.
+
+The Basic Security Profile 1.0 describes one attachment security mechanism and URI.
+
+12.1 SOAP with Attachments
+
+The following specifications (or sections thereof) are referred to in this section of the Basic Security Profile 1.0:
+
+Attachments Profile Version 1.0 (AP1.0) Web Services Security: SOAP Messages with Attachments (SwA) Profile 1.0
+
+12.2 Signed Attachments
+
+12.3 Encrypted Attachments
+
+13. Security Considerations
+
+This section lists a number of security considerations that should be taken into account when using one or more of the technologies discussed in the Basic Security Profile 1.0.
+
+13.1 SOAPAction Header
+
+The use of the SOAPAction header in situations where the message content is being integrity or confidentiality protected can result in security risks when the transport layer does not provide the same protection to the SOAPAction header. The most obvious risk is that the SOAPAction header can potentially expose sensitive information about a SOAP message such as the URI of the service, or the context of the transaction that is taking place. Another, more subtle risk occurs in a situation where message routing is done based on the value of the SOAPAction header. By modifying the value, an attacker could cause the message to be directed to a different receiver. This could potentially defeat a replay detection mechanism that was based on the assumption that the message would always be routed to the same place. Yet another risk occurs when intermediates are present. An intermediate might decide on a set of processing steps based on the value of SOAPAction or application/soap+xml, which is subject to tampering. A subsequent receiver might base its processing on the actual message content, which could be secured through XML signatures. Suppose that the intermediate was a security gateway. It could be tricked into allowing a payment operation through that had only query security.
+
+13.2 Clock Synchronization
+
+The specifications covered by the Basic Security Profile 1.0 use time-based mechanisms to prevent replay attacks. These mechanisms will be ineffective unless the system clocks of the various network nodes are synchronized. Since the technology to perform distributed clock synchronization are well known and widely available and are not among the technologies being profiled here, this document does not specify how clock synchronization should be done. However, the recommendation of the use of time-based security mechanisms implies that synchronization is being done.
+
+13.3 Security Token Substitution
+
+If a message is signed using a Security Token that binds a public verification key with other claims, and specific processing is performed based on those claims, then in order to protect against post-signature substitution of the Security Token with one that binds the same key to different claims, Security Token itself should be part of the signature computation. This can be acheived by putting a child ds:Reference element whose URI attribute contains a shorthand XPointer reference to the wsse:SecurityTokenReference that specifies the Security Token into the ds:SignedInfo element of a signature. If a ds:SignedInfo contains one or more ds:Reference children whose URI attribute contains a shorthand XPointer reference to a wsse:SecurityTokenReference that uses a potentially ambiguous mechanism to refer to the Security Token (e.g. KeyIdentifier), then in order to protect against post-signature substitution of the Security Token with one that binds the same key to different claims, it is recommended that the content of the Security Token be signed either directly or using the Security Token Dereferencing Transform. When a key is provided in band within a Security Token or otherwise for the purpose of specifying a key to be used by another node for encrypting information to be sent in a future message, it is recommended that the sender of the key cryptographicaly bind the key to the message in which it is transmitted. This can be done either by using the key to perform a Signature or HMAC over critical elements of the message body or by including the key under a signature covering critical elements of the message body which uses some other key. If a key is sent in a message which the receiver is expected to use to encrypt data in some future message, there is a risk that an attacker could substitute some other key and thereby be able to read unauthorized data. This is true even if the key is contained in a signed certificate, but is not bound to the current message in some way. If the future encryption key is used to sign the initial request, by verifying the signature, the receiver can determine that the key is the one that was intended.
+
+13.4 Protecting against removal and modification of XML Elements
+
+XML Signatures using Shorthand XPointer References (AKA IDREF) protect against the removal and modification of XML elements; but do not protect the location of the element within the XML Document.
+
+Whether or not this is security vulnerability depends on whether the location of the signed data within its surrounding context has any semantic import. This consideration applies to data carried in the SOAP Body or the Header.
+
+Of particular concern is the ability to relocate signed data into a SOAP Header block which is unknown to the receiver and marked mustUnderstand="false". This could have the effect of causing the receiver to ignore signed data which the sender expected would either be processed or result in the generation of a mustUnderstand fault.
+
+A similar exploit would involve relocating signed data into a SOAP Header block targeted to a S11:actor or S12:role other than that which the sender intended, and which the receiver will not process.
+
+While these attacks could apply to any portion of the message, their effects are most pernicious with SOAP header elements which may not always be present, but must be processed whenever they appear.
+
+In the general case of XML Documents and Signatures, this issue may be resolved by signing the entire XML Document and/or strict XML Schema specification and enforcement. However, because elements of the SOAP message, particularly header elements, may be legitimately modified by SOAP intermediaries, this approach is usually not appropriate. It is RECOMMENDED that applications signing any part of the SOAP body sign the entire body.
+
+Alternatives countermeasures include (but are not limited to):
+
+References using XPath transforms with Absolute Path expressions, A Reference using an XPath transform to include any significant location-dependent elements and exclude any elements that might legitimately be removed, added, or altered by intermediaries, Using only References to elements with location-independent semantics, Strict policy specification and enforcement regarding which message parts are to be signed. For example:
+
+Requiring that the entire SOAP Body and all children of SOAP Header be signed, Requiring that SOAP header elements which are marked mustUnderstand="false" and have signed descendents MUST include the mustUnderstand attribute under the signature.
+
+13.5 Uniqueness of ID attributes
+
+XML 1.0 requires that all attributes of type ID in a given XML document have unique values, but only validating XML processors have such type information. As various aspects of SOAP Message Security use ID based references it is recommended that applications ensure that ID attributes are unique by some mechanism.
+
+13.6 Signing Security Tokens
+
+In general, tokens contain claims made by an authority, usually about some system entity. Obviously a party relying on these claims must trust that authority to make them. The relying party must generally verify these claims. The method of doing this depends on the token type and is specified by the corresponding token profile.
+
+13.7 Signing Username Tokens
+
+When a wsse:UsernameToken contains only a wsse:Username and wsse:PasswordText and is simply presented for Authentication where replay is not a concern, it does not need to be signed because the act of checking it against a stored value has the effect of verifying it. When a wsse:Nonce and/or wsu:Created are used with the wsse:Username and wsse:PasswordText to prevent replay, the wsse:UsernameToken must be signed to prevent undetected alteration of these fields. If a wsse:PasswordText is being used to derive a key for a subsequent encryption of a response, it should be signed to ensure that an attacker does not substitute an alternative, but valid wsse:Username and wsse:PasswordText. This is equivalent to the key substitution attack available when an X.509 Token is used for a similar purpose.
+
+13.8 Signing Binary Tokens
+
+The content of a binary token will be a binary object which is integrity protected by a mechanism specific to the object type. For example, an X.509 certificate will be signed by the issuing authority. The outer wrapper of the binary token merely contains type indication information which does not have to be integrity protected in order to be able to rely in the claims.
+
+13.9 Signing XML Tokens
+
+XML tokens should be digitally signed in a manner described by their profile (or documents referenced by it), or delivered directly from their issuer over an integrity protected channel.
+
+13.10 Replay of Username Token
+
+A sender that includes a Nonce child in a UsernameToken element should anticipate that the receiver may refuse to process the message due to either an accidental collision or transport layer delays. Therefore, if it decides to retry transmission, it should do so with a new Nonce.
+
+Unless other mechanisms are used to protect against replay of the username token, service providers should retain nonces in a store that is shared between all SOAP nodes (and within a distributed SOAP node all "components") that can be authorized using the same passwords.
+
+The policy that allows service providers to forget nonces may be based on any considerations that the service considers relevant. When a nonce is forgotten the server should ensure that in the future it rejects UsernameTokens with a Created time that is earlier than the forgotten nonce.
+
+13.11 Use of Digest vs. Cleartext Password
+
+A sending application utilizing password authentication must decide whether to use a cleartext password or a password digest (The sender needs to know via some out-of-band mechanism and/or prior arrangement which mechanisms the receiver supports). The digest should always be preferred if it can be used, as the digest algorithm does not reveal the password and can protect against replay of the password. (It does not however, protect against offline guessing or brute force attacks.)
+
+Password digests can only be used in situations where both sender and receiver can start with the same secret value (e.g., the cleartext password or a hash of the password). The following are criteria for considering when to use digests vs. cleartext:
+
+1. If the receiver can access the cleartext password, a digest may be used.
+
+2. If the receiver can access a value that can be derived by the sender directly from the cleartext password (e.g., the receiver has access to a SHA1 hash of the password), the derived value (e.g. the hash) may be used in the digest.
+
+3. If the sender needs extra information to derive the value available to the receiver, it will not be feasible to use password digest, even though the information is not intentionally secret. For example, UNIX systems add a salt value to each password before hashing it. It is infeasible for the sender to discover the salt value required for a specific username.
+
+4. If the receiver does not have access to any password value, derived or otherwise, but merely the ability to test a username/password combination for validity, a digest may not be used. An example of this is when the username/password combination is presented to a database, directory or mainframe system for verification.
+
+When sending any form of a password, cleartext or digest, confidentiality services are strongly recommended to prevent its value from being revealed or from offline guessing.
+
+13.12 Encryption with Signatures
+
+When a message contains a data value which does not have a significant number of probable variations and that data is signed and then encrypted, it is recommended that the sender either include some suitably random value such as a wsse:Nonce in the data, or encrypt the related ds:DigestValue element in order to protect the confidentiality of the data.
+
+An adversary can compute the digest for each data values and compare them against the digests in the signature thereby deducing the encrypted data value. This type of attack is most likely to be successful when there are a relatively small set of probable data values. Therefore the threat can be mitigated by introduction of some random value into the original data or encryption of the digest.
+
+13.13 Possible Operational Errors
+
+Under SOAP processing rules, there is no way a sender can be sure that a message containing a security header addressed to a given Role/Actor will ever reach a node that is taking on that Role/Actor. If not, the specified security processing will not occur.
+
+Under SOAP processing rules, there is no way a sender can determine in what order nodes taking on specific Role/Actor's will be reached. If signatures and encryptions specified in different security headers overlap, verification and decryption operations may fail as a result of being processed in the wrong order. (Generally overlapping signatures will verify regardless of the order of verification.) This problem can be avoided by never specifying overlapping operations in distinct headers, however application requirements may not prevent this. For example, many senders may wish to include the entire Body under a signature, possibly before or after encrypting portions of it.
+
+Under SOAP processing rules, there is no way a sender can determine which particular secrets are possessed by a node taking on a given Role/Actor. If a node is required to perform decryption or verify an HMAC and it does not posses the necessary secret, it will be unable to perform these operations. This will not only impact its operation, but in the case it is an intermedairy may make it possible for nodes receiving the message subsequently from performing security processing correctly due to overlapping operations, even when that node does posses the necessary secrets.
+
+If a namespace that is in fact visibly used within some text to be Canonicalized via the Exclusive C14N Algorithm is included in the InclusiveNamespaces PrefixList, then under some valid transformations of the transmitted document signature verification may spuriously fail, because the Canonicalized form shifts the location of of a namespace declaration. This case is expected to be rare in practice.
+
+Appendix A: Referenced Specifications
+
+The following specifications' requirements are incorporated into the Basic Security Profile 1.0 by reference, except where superseded by the Profile:
+
+HTTP over TLS The TLS Protocol Version 1.0 The SSL Protocol Version 3.0 Web Services Security: SOAP Message Security 1.0 (WS-Security 2004) OASIS Standard 200401, March 2004 Web Services Security: SOAP Message Security 1.0 (WS-Security 2004) Errata 1.0 Committee Draft 200401, October 2004 Web Services Security UsernameToken Profile 1.0 OASIS Standard 200401, March 2004 Web Services Security: UsernameToken Profile 1.0 Errata 1.0 Committee Draft 200401, September 2004 Web Services Security X.509 Certificate Token Profile OASIS Standard 200401, March 2004 Web Services Security: X.509 Token Profile 1.0 Errata 1.0 Committee Draft 200401, October 2004 RFC2459: Internet X.509 Public Key Infrastructure Certificate and CRL Profile Information technology "Open Systems Interconnection" The Directory: Public-key and attribute certificate frameworks Technical Corrigendum 1 XML-Signature Syntax and Processing Web Services Security: SOAP Message Security Section 9 XML Encryption Syntax and Processing Basic Profile Version 1.0 (BP1.0) Basic Profile Version 1.0 Errata Basic Profile Version 1.1 (BP1.1) Simple SOAP Binding Profile Version 1.0 (SSBP1.0) Attachments Profile Version 1.0 (AP1.0) Web Services Security: SOAP Messages with Attachments (SwA) Profile 1.0
+
+Appendix B: Extensibility Points
+
+This section identifies extensibility points, as defined in "Scope of the Basic Security Profile 1.0," for the Basic Security Profile 1.0's component specifications.
+
+These mechanisms are out of the scope of the Basic Security Profile 1.0; their use may affect interoperability, and may require private agreement between the parties to a Web service.
+
+In The TLS Protocol Version 1.0:
+
+E0009 - TLS Ciphersuites - TLS allows for the use of arbitrary encryption algorithms. Note that while section 10.1 of the Basic Security Profile 1.0 mandates, recommends, and discourages support for certain ciphersuites, the Basic Security Profile 1.0 does not prohibit use of any specific ciphersuite. E0010 - TLS Extensions - TLS allows for extensions during the handshake phase.
+
+In The SSL Protocol Version 3.0:
+
+E0011 - SSL Ciphersuites - SSL allows for the use of arbitrary encryption algorithms. Note that while section 10.1 of the Basic Security Profile 1.0 mandates, recommends, and discourages support for certain ciphersuites, the Basic Security Profile 1.0 does not prohibit use of any specific ciphersuite.
+
+In Web Services Security: SOAP Message Security 1.0 (WS-Security 2004) OASIS Standard 200401, March 2004:
+
+E0002 - Security Tokens - Security tokens may be specified in additional security token profiles.
+
+In RFC2459: Internet X.509 Public Key Infrastructure Certificate and CRL Profile:
+
+E0012 - Certificate Authority - The choice of the Certificate Authority is a private agreement between parties. E0013 - Certificate Extensions - X.509 allows for arbitrary certificate extensions.
+
+Appendix C: Acknowledgements
+
+This document is the work of the WS-I Basic Security Profiles Working Group, whose members have included:
+
+Steve Anderson (OpenNetwork), Paula Austel (IBM), Siddharth Bajaj (Verisign), Frank Balluffi (Deutsche Bank), Abbie Barbir (Nortel), David Baum (Kantega AS), Randy Bias (Grand Central Communications), Tim Bond (webMethods, Inc.), Heidi Buelow (Quovadx), David Burdett (Commerce One, Inc.), Ted Burghart (Hitachi, Ltd.) Symon Chang (Commerce One, Inc.), Richard Chennault, (Kaiser Permanente), Dipak Chopra (SAP AG), Jamie Clark (OASIS), Edward Cobb (BEA Systems, Inc.), David Cohen (Merrill Lynch), Brett Cooper, (Accenture), Ugo Corda (SeeBeyond Technology), Paul Cotton (Microsoft Corporation), Suresh Damodaran, (Rosettanet), Mark Davis (Sarvega, Inc.), Alex Deacon (Verisign), Thomas DeMartini (ContentGuard, Inc.), Blake Dournaee (Sarvega, Inc.), Rob Drew (Charlse Schwab), Gregory Elkins (Reed Elsevier), Mark Ericson (Mindreef), Jon Oyvind Eriksen (Kantega AS), Chris Ferris (IBM), Bob Freund, (Hitachi), Edwin Goei (Sun Microsystems), Grant Goodale (Reactivity, Inc.), Marc Goodner (SAP AG), Phil Goodwin (Sun Microsystems), Marc Graveline (Cognos, Inc.), Eric Gravengaard (Reactivity, Inc.), Thomas Gross (IBM), Martin Gudgin (Microsoft Corporation), Marc Hadley (Sun Microsystems), Mark Hapner (Sun Microsystems), Nathan Harris (Kaiser Permanente), Bret Hartman (Datapower Technology, Inc.), Frederick Hirsch (Nokia), Jason Hogg (Microsoft Corporation), Maryann Hondo (IBM), Lawrence Hsiung (Quovadx), Tony Huber (Commerce Quest), Jim Hughes (Hewlett-Packard), Michael Hui (Computer Associates), Brian Jackson (Avanade, Inc.), Steve Jenisch (SAS Institute), Erik Johnson (Epicor), Chris Kaler (Microsoft Corporation), Anish Karmarkar (Oracle Corporation), Dana Kaufman, (Forum Systems), Manveen Kaur (Sun Microsystems), Slava Kavsan (RSA Security), Paul Knight (Nortel Networks), Chris Kurt (Microsoft Corporation), Kelvin Lawrence (IBM), Hal Lockhart (BEA Systems), Brad Lund (Intel Corporation), Jim Luth (OPC Foundation), Paul Madsen (Entrust, Inc.), Eve Maler (Sun Microsystems), Skip Marler (Parasoft), Axl Mattheus (Sun Microsystems), Michael McIntosh (IBM), Craig Milhiser, (Ascential), Chris Miller (Accenture), Dale Moberg (Cyclone Commerce), Ron Monzillo (Sun Microsystems), K. Scott Morrison, (Layer 7) Tim Moses (Entrust, Inc.), Tony Nadalin (IBM), Nataraj Nagaratnam (IBM), Andrew Nash (RSA Security), Hsin Ning (Bestning Technologies), Eisaku Nishiyama (Hitachi, Ltd.), Mark Nottingham (BEA Systems, Inc.), TJ Pannu (ContentGuard, Inc.), Martine Pean (Quovadx), Robert Philpott (RSA Security), Dave Prout (BT), Joe Pruitt (F5 Networks, Inc.), Eric Rejkovic (Oracle Corporation), Matt Recupito (Accenture), Jason Rouault (Hewlett-Packard), Rich Salz (Datapower Technology, Inc.), Matt Sanchez (Webify Solutions, Inc. ), Jerry Schwarz (Oracle Corporation), Senthil Sengodan (Nokia), Shawn Sharp (Cyclone Commerce), Aslak Siira (F5 Networks, Inc.), David Solo (Citigroup, Inc. ), Davanum Srinivas (Computer Associates), Raghavan Srinivas (Sun Microsystems), John Stanton (Defense Information Systems Agency), Andrew Stone (Accenture), Julie Surer (MITRE), Wes Swenson (Forum Systems), Dino Vitale (Citigroup, Inc.), Jonathan Wenocur (Datapower Technology, Inc.), Pete Wenzel (SeeBeyond Technology), Ian White (Micro Focus)

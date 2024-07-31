@@ -1,0 +1,197 @@
+September 19th, 2013
+
+Summary: Learn about Updatabe Help in Windows PowerShell 3.0.
+
+Scripting Guy, Ed Wilson here. Today June Blender is back to tell us about Updatable Help in Windows PowerShell 3.0. Take it away, June…
+
+One of the great advances in Windows PowerShell 3.0 is Updatable Help. The advantages of updating the Help files on the box between releases are significant, far outweighing the minor hassle of running that first Update-Help or Save-Help command if the module does not include Help files. But there is still a bit of confusion associated with Updatable Help, and I’m here to explain.
+
+Does this module support Updatable Help?
+
+Some modules support Updatable Help and others do not. Fortunately, there’s an easy way to tell which modules support Updatable Help.
+
+If the HelpInfoUri property of a command (such as cmdlet, function, CIM command, or workflow) has a value, and the value is valid (that is, it begins with “http” or “https”), the module supports Updatable Help.
+
+PS C:\> Get-Module -ListAvailable | where HelpInfoUri
+
+The HelpInfoUri property of each module object comes from the HelpInfoUri key in the module manifest. Following is the module manifest of the NetQos module, and you can see the HelpInfoUri key:
+
+PS C:\ps-test> cat (get-module -list netqos).path
+
+@{
+
+GUID = ‘743692B7-A227-4389-B082-2B47DE1D0D2D’
+
+Author = “Microsoft Corporation”
+
+CompanyName = “Microsoft Corporation”
+
+Copyright = “© Microsoft Corporation. All rights reserved.”
+
+ModuleVersion = ‘1.0’
+
+PowerShellVersion = ‘3.0’
+
+NestedModules = @(‘MSFT_NetQosPolicy.cdxml’)
+
+FormatsToProcess = @(‘MSFT_NetQosPolicy.format.ps1xml’)
+
+TypesToProcess = @(‘MSFT_NetQosPolicy.types.ps1xml’)
+
+HelpInfoUri = “http://go.microsoft.com/fwlink/?LinkId=216150”
+
+FunctionsToExport = @(
+
+‘Get-NetQosPolicy’,
+
+‘Set-NetQosPolicy’,
+
+‘Remove-NetQosPolicy’,
+
+‘New-NetQosPolicy’)
+
+}
+
+This command gets the manifest as a hash table, so you can get the keys as properties. The command returns the value of the HelpInfoUri key.
+
+PS C:\ps-test>(Invoke-Expression (Get-Content (Get-Module -List NetQos).Path -Raw)).HelpInfoUri
+
+http://go.microsoft.com/fwlink/?LinkId=216150
+
+Why is it called HelpInfoUri?
+
+You might think that the Windows PowerShell team spends its lunch hours dreaming up weird property names, like HelpInfoUri, but if you know a bit about the innards of Updatable Help, this name actually makes sense.
+
+The URI in HelpInfoUri is the address of the HelpInfo.xml file for the module’s Updatable Help files. So the value is really the URI of HelpInfo. (The Updatable Help files can be in the same location, and often are, but they can also be in a different location.)
+
+The HelpInfo.xml file is like an old-fashioned .inf file. Remember Autorun.inf? These INFormation files store options for programs like the registry does. We use XML files for efficiency and easy parsing (see Select-XML) but the idea is the same.
+
+The HelpInfo XML file
+
+Because we’re picking on NetQos today (an AWESOME module), let’s look at the HelpInfo.xml file for the NetQos module. When you use Update-Help or Save-Help to download Updatable Help files, the cmdlets also download the HelpInfo XML file and save it in the module directory on your hard drive. So, we can examine the file locally:
+
+PS C:\ps-test> Get-Content C:\Windows\System32\WindowsPowerShell\v1.0\Modules\NetQos\NetQos
+
+_743692b7-a227-4389-b082-2b47de1d0d2d_HelpInfo.xml
+
+<?xml version=”1.0″ encoding=”utf-8″?>
+
+<HelpInfo xmlns=”http://schemas.microsoft.com/powershell/help/2010/05″>
+
+<HelpContentURI>http://go.microsoft.com/fwlink/?LinkId=216150</HelpContentURI>
+
+<SupportedUICultures>
+
+<UICulture>
+
+<UICultureName>en-US</UICultureName>
+
+<UICultureVersion>3.0.0.0</UICultureVersion>
+
+</UICulture>
+
+</SupportedUICultures>
+
+</HelpInfo>
+
+The HelpInfo XML file has an element for each supported UI culture. Each SupportedUICulture element contains the HelpContentUri, which is the URI of the Updatable Help CAB file. If the HelpInfo XML file and the CAB file are in the same place, the HelpContentUri value is same as the HelpInfoUri value. The SupportedUICulture element also contains information for each UI culture, including the version number of the Help files.
+
+The Update-Help and Save-Help cmdlets use the version number in the HelpInfo XML file to determine whether you have the latest Help files on your machine. Otherwise, the cmdlets download and install the latest version.
+
+Why can’t I read Help at the HelpInfoUri location?
+
+I bet everyone who’s played with Windows PowerShell Updatable Help has tried a variation of this command, which opens your default Internet browser to the location that is specified by the HelpInfoUri value:
+
+PS C:\> $u = (Get-Module -List NetQos).HelpInfoUri
+
+PS C:\> (new-object -com shell.application).Open($u)
+
+Or you might have pasted the URI in your browser address bar. And you expected to see the Help topics for the module, or some interesting content. But there was nothing there except a file.
+
+In the location where Windows stores Updatable Help files, there are no HTML files to display content. There are just the lowly CAB files, which are very valuable, but don’t create an UI.
+
+If you try the same trick with the HelpUri property of a cmdlet, the result is much better.
+
+PS C:\> $u = (Get-Command Get-History).HelpUri
+
+PS C:\> (New-Object -Com Shell.Application).Open($u)
+
+Or, better yet:
+
+PS C:\> Get-Help Get-History -Online
+
+What is HelpUri?
+
+Now that we know about the HelpInfoUri property of modules, what is the HelpUri property of commands?
+
+The URI in the value of the HelpUri property is the online location of the Help topic for the command:
+
+PS C:\ps-test> (Get-Command Get-History).HelpUri
+
+http://go.microsoft.com/fwlink/?LinkID=113317
+
+The Online parameter of Get-Help uses the HelpUri (among other things) to find the online Help topic. It can be overridden, but it’s the best guess for the URI at the time that the command is written.
+
+The value of the HelpUri comes from the command script. In cmdlets, HelpUri is a named parameter of the Cmdlet attribute:
+
+[Cmdlet(VerbsCommon.Get, “History”, HelpUri = “http://go.microsoft.com/fwlink/?LinkID=001122”)]
+
+In functions, HelpUri is a parameter of the CmdletBinding attribute:
+
+function New-Calendar {
+
+[CmdletBinding(SupportsShouldProcess=$true,
+
+HelpURI=”http://go.microsoft.com/fwlink/?LinkID=01122″)]
+
+You can also specify a HelpUri property value in CIM commands and workflows. For the details, see Supporting Online Help in the Windows PowerShell SDK.
+
+Now, about the “it can be overridden” part. When a Help topic for the command is installed on the computer, and the first related link in the Help topic is a valid URL, the first related link URL takes precedence over the HelpUri value of the command. That is, the Online parameter of Get-Help uses the first related link if it’s a URL. And if it’s not, it uses the value of the HelpUri property of the command.
+
+Why? In Windows PowerShell 3.0, the HelpUri property value of a command comes from the HelpUri attribute in the cmdlet code. But, in Windows PowerShell 2.0, the HelpUri property value came from the first related link in the Help topic, if that link included a URL.
+
+When we developed Updatable Help, we wanted online Help to work even when the Help files were not installed on the local machine—so we couldn’t rely on a value in a local Help file. That’s when we added the HelpUri attribute to the cmdlet (and function, CIM command, and workflow) script.
+
+But, we maintained the first related link source for backward compatibility and to provide a way to change the online Help topic location without changing the cmdlet.
+
+Here’s the relevant section from the Get-History Help topic:
+
+Related Links
+
+Online Version: http://go.microsoft.com/fwlink/?LinkID=113317
+
+Add-History
+
+Clear-History
+
+Invoke-History
+
+about_History
+
+And here’s the XML for the first related link:
+
+<maml:relatedLinks>
+
+<maml:navigationLink>
+
+<maml:linkText>Online Version:</maml:linkText>
+
+<maml:uri>http://go.microsoft.com/fwlink/?LinkID=113317</maml:uri>
+
+</maml:navigationLink>
+
+</maml:relatedLinks>
+
+…and other Help mysteries
+
+The Help system in Windows PowerShell is not simple. In fact, it’s quite revolutionary. And you can use every feature of the Help system to make the modules and commands that you write really easy for users to use.
+
+If you have question about the Updatable Help system, or any other aspect of Windows PowerShell, please reply in the Feedback section at the bottom of this page or tweet me a question at @juneb_get_help, and I’ll answer them in a follow-up blog post.
+
+If you are confused about URIs, URLs, URNs, and other URs, see this great blog post by Windows Azure Active Directory PM, Vittorio Bertocci. It’s the best one I’ve seen: URL, URN, URI: Oh My!
+
+~June
+
+Thank you, June.
+
+I invite you to follow me on Twitter and Facebook. If you have any questions, send email to me at scripter@microsoft.com, or post your questions on the Official Scripting Guys Forum. See you tomorrow. Until then, peace.

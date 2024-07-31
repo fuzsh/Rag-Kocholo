@@ -1,0 +1,63 @@
+1. Oracle Coherence Integration with WebLogic Server & WebLogic Portal An engineer’s introduction to in-memory data grid development Presenter Title
+
+2. Agenda What Is Coherence Distributed Data Grid How Does It Work? Use Cases Customer Examples Q&A
+
+3. Oracle Coherence Development Toolkit Pure Java 1.5+ Libraries Pure .Net 1.1 and 2.0 (Client Libraries) No Third-Party Dependencies No Open Source Dependencies Other Libraries for… Database and File System Integration Top Link and Hibernate Http Session Management, Spring, …
+
+4. Oracle Coherence Provides… Container-less Clustering of Java Processes Data Structures to manage Data across a Cluster / Grid Real-Time Event Observation – Listener Pattern Materialized Views of Data Parallel Queries and Aggregation – Object-based Queries Parallel Data Processing Parallel Grid Processing RemoteException Free Distributed Computing Clustered JMX MAN + WAN Connectivity Client + Data Grid Deployment Models
+
+6. <Insert Picture Here> “ A Data Grid is a system composed of multiple servers that work together to manage information and related operations - such as computations - in a distributed environment .” Cameron Purdy VP of Development, Oracle
+
+7. What is a Data Grid? What In-Memory Objects Shared Benefits Low response time High throughput Predictable scalability Continuous availability Information reliability
+
+8. Scalability Chasm Application Servers Web Servers Data Demand Ever Expanding Universe of Users Data Supply Data Demand outpacing Data Supply Rate of growth outpacing ability to cost effectively scale applications
+
+9. Performance Problem A Performance Bottleneck Application Database Tables Object Java SQL server Relational Volume Complexity Frequency of Data Access
+
+10. Oracle Coherence as Data Broker Application Servers Web Servers Data Demand Ever Expanding Universe of Users Data Supply Oracle Coherence brokers Data Supply with Data Demand Scale out Data Grid in middle tier using commodity hardware Data Sources Objects
+
+11. <Insert Picture Here> Coherence Clustering
+
+12. Coherence Clustering: Tangosol Clustered Messaging Protocol (TCMP) Completely asynchronous yet ordered messaging built on UDP multicast/unicast Truly Peer-to-Peer : equal responsibility for both producing and consuming the services of the cluster Self Healing - Quorum based diagnostics Linearly scalable mesh architecture . TCP-like features Messaging throughput scales to the network infrastructure.
+
+13. Coherence Clustering: The Cluster Service Transparent , dynamic and automatic cluster membership management Clustered Consensus: All members in the cluster understand the topology of the entire grid at all times . Crowdsourced member health diagnostics
+
+14. Coherence Distributed data management for applications Development Library Pure Java 1.4.2+ Pure .Net 1.1 and 2.0 (client) C++ client (3.4) No Third-Party Dependencies No Open Source Dependencies Proprietary Network Stack (Peer-To-Peer model) Other Libraries Support… Database and File System Integration TopLink and Hibernate Http Session Management WebLogic Portal Caches Spring, Groovy
+
+15. The Portable Object Format Advanced Serialization Simple Serialization Comparison In XML <date format=“java.util.Date”>2008-07-03</date> 47 characters (possibly 94 bytes depending on encoding) In Java (as a raw long) 64 bits = 8 bytes In Java (java.util.Date using ObjectOutputStream) 46 bytes In ExternalizableLite (as a raw long) 8 bytes In POF 4F 58 1F 70 6C = 5 bytes (c) Copyright 2008. Oracle Corporation
+
+16. ©2011 Oracle Corporation Coherence Cache Types / Strategies Replicated Cache Optimistic Cache Partitioned Cache Near Cache backed by partitioned cache LocalCache not clustered Topology Replicated Replicated Partitioned Cache Local Caches + Partitioned Cache Local Cache Read Performance Instant Instant Locally cached: instant --Remote: network speed Locally cached: instant -- Remote: network speed Instant Fault Tolerance Extremely High Extremely High Configurable Zero to Extremely High Configurable 4 Zero to Extremely High Zero Write Performance Fast Fast Extremely fast Extremely fast Instant Memory Usage (Per JVM) DataSize DataSize DataSize/JVMs x Redundancy LocalCache + [DataSize / JVMs] DataSize Coherency fully coherent fully coherent fully coherent fully coherent n/a Memory Usage (Total) JVMs x DataSize JVMs x DataSize Redundancy x DataSize [Redundancy x DataSize] + [JVMs x LocalCache] n/a Locking fully transactional none fully transactional fully transactional fully transactional Typical Uses Metadata n/a (see Near Cache) Read-write caches Read-heavy caches w/ access affinity Local data
+
+17. Use Cases
+
+18. Data Grid Uses Caching Applications request data from the Data Grid rather than backend data sources Analytics Applications ask the Data Grid questions from simple queries to advanced scenario modeling Transactions Data Grid acts as a transactional System of Record, hosting data and business logic Events Automated processing based on event
+
+19. Code Examples
+
+20. Clustering Java Processes Joins an existing cluster or forms a new cluster Time “to join” configurable cluster contains information about the Cluster Cluster Name Members Locations Processes No “master” servers No “server registries” Cluster cluster = CacheFactory.ensureCluster(); (c) Copyright 2007. Oracle Corporation
+
+21. Leaving a Cluster Leaves the current cluster shutdown blocks until “data” is safe Failing to call shutdown results in Coherence having to detect process death/exit and recover information from another process. Death detection and recovery is automatic (c) Copyright 2007. Oracle Corporation CacheFactory.shutdown();
+
+22. Using a Cache get, put, size & remove CacheFactory resolves cache names (ie: “mine” ) to configured NamedCache s NamedCache provides data topology agnostic access to information NamedCache interfaces implement several interfaces; java.util.Map, Jcache, ObservableMap * , ConcurrentMap * , QueryMap * , InvocableMap * (c) Copyright 2007. Oracle Corporation NamedCache nc = CacheFactory.getCache(“mine”); Object previous = nc.put(“key”, “hello world”); Object current = nc.get(“key”); int size = nc.size(); Object value = nc.remove(“key”); Coherence* Extensions
+
+23. Using a Cache keySet, entrySet, containsKey Using a NamedCache is like using a java.util.Map What is the difference between a Map and a Cache data-structure? Both use (key,value) pairs for entries Map entries don’t expire Cache entries may expire Maps are typically limited by heap space Caches are typically size limited (by number of entries or memory) Map content is typically in-process (on heap) (c) Copyright 2007. Oracle Corporation NamedCache nc = CacheFactory.getCache(“mine”); Set keys = nc.keySet(); Set entries = nc.entrySet(); boolean exists = nc.containsKey(“key”);
+
+24. Observing Cache Changes ObservableMap Observe changes in real-time as they occur in a NamedCache Options exist to optimize events by using Filters, (including pre and post condition checking) and reducing on-the-wire payload (Lite Events) Several MapListener s are provided out-of-the-box. Abstract, Multiplexing... (c) Copyright 2007. Oracle Corporation NamedCache nc = CacheFactory.getCache(“stocks”); nc.addMapListener(new MapListener() { public void onInsert(MapEvent mapEvent) { } public void onUpdate(MapEvent mapEvent) { } public void onDelete(MapEvent mapEvent) { } });
+
+25. Querying Caches QueryMap Query NamedCache keys and entries across a cluster (Data Grid) in parallel * using Filters Results may be ordered using natural ordering or custom comparators Filters provide support almost all SQL constructs Query using non-relational data representations and models Create your own Filters * Requires Enterprise Edition or above (c) Copyright 2007. Oracle Corporation NamedCache nc = CacheFactory.getCache(“people”); Set keys = nc.keySet( new LikeFilter(“getLastName”, “%Stone%”)); Set entries = nc.entrySet( new EqualsFilter(“getAge”, 35));
+
+26. Continuous Observation Continuous Query Caches ContinuousQueryCache provides real-time and in-process copy of filtered cached data Use standard or your own custom Filters to limit view Access to “view”of cached information is instant May use with MapListeners to support rendering real-time local views (aka: Think Client) of Data Grid information. (c) Copyright 2007. Oracle Corporation NamedCache nc = CacheFactory.getCache(“stocks”); NamedCache expensiveItems = new ContinuousQueryCache(nc, new GreaterThan(“getPrice”, 1000));
+
+27. Aggregating Information InvocableMap Aggregate values in a NamedCache across a cluster (Data Grid) in parallel * using Filters Aggregation constructs include; Distinct, Sum, Min, Max, Average, Having, Group By Aggregate using non-relational data models Create your own aggregators * Requires Enterprise Edition or above (c) Copyright 2007. Oracle Corporation NamedCache nc = CacheFactory.getCache(“stocks”); Double total = (Double)nc.aggregate( AlwaysFilter.INSTANCE, new DoubleSum(“getQuantity”)); Set symbols = (Set)nc.aggregate( new EqualsFilter(“getOwner”, “Larry”), new DistinctValue(“getSymbol”));
+
+28. Mutating Information InvocableMap Invoke EntryProcessors on zero or more entries in a NamedCache across a cluster (Data Grid) in parallel * (using Filters) to perform operations Execution occurs where the entries are managed in the cluster, not in the thread calling invoke This permits Data + Processing Affinity * Requires Enterprise Edition or above (c) Copyright 2007. Oracle Corporation NamedCache nc = CacheFactory.getCache(“stocks”); nc.invokeAll( new EqualsFilter(“getSymbol”, “ORCL”), new StockSplitProcessor()); ... class StockSplitProcessor extends AbstractProcessor { Object process(Entry entry) { Stock stock = (Stock)entry.getValue(); stock.quantity *= 2; entry.setValue(stock); return null; } }
+
+29. Customer Examples
+
+30. Amir Razmara Director, The Gap Problem: Universal user profile, preferences, shopping cart and single sign-on across 4 brands Shared sessions across all 4 brands leading to a need for a global session (each brand has its own cluster of servers) Possible Solutions: State repository with DB Data Grid backed session management with Coherence*Web Coherence*Web Solution: Create a “Global Cache Cloud” to maintain a brand agnostic session caching layer, enabling the global session Any server from any brand is able to obtain a session from the global cache cloud, enabling SSO and shared bag Session durability, immune from crashes in the application tier Sessions maintained during the nightly cell switch for publishing content *GAP - OOW2008 S299392 - Beyond Performance: Pushing Transaction
+
+31. The Universal Experience: Sister Tabs *GAP - OOW2008 S299392 - Beyond Performance: Pushing Transaction…
+
+32. Customer Examples Telecommunications Major Communications provider Home Subscriber Server (HSS) part of IMS platform “ Enterprise Data Grid” – Unified Data Access layer across the enterprise Active-Active data center replication across WAN Major Communications Provider “ Click-to-Chat” application – web chat between customers and CSRs Major Financial Services Provider User Session data in Coherence, access from Java and C++ User Session data replicated across WAN to alternate data center Mainframe MIPS cost mitigation Mid-tier caching to aid migration off MS SQL Server
+
+33. Oracle Coherence Advantage Protect the Database Investment Ensure DB does what it does best, limit cost of rearchitecture Scale as you Grow Cost effective: Start small with 3-5 servers, scale to hundreds of servers as business grows Enables business continuity Providing continuous data availability

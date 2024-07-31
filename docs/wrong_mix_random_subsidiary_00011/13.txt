@@ -1,0 +1,943 @@
+This page is an archive. Please do not modify it. Use the current page, even to continue an old discussion.
+
+As per the Chinese Wikipedia notice page, (English version), it seems like there are a lot of WD items affected by the issue (full list can be seen on the Chinese page), what's going to happen to them? CrystalLemonade (talk)
+
+@CrystalLemonade: If all the associated language wikipedia articles have been deleted then these wikidata id's can be nominated for deletion also. It's not a good idea to delete wikidata items when language wikipedia articles still exist, as they will just automatically be recreated in wikidata within a few days. ArthurPSmith (talk)
+
+Hi. The Wikidata page of the Slovenian town of Municipality of Jesenice (Q15881) currently shows 1121 metres as sea level. The page is protected so I can't edit, but this data is totally wrong (on en.wiki, sl.wiki and other wikis the altitude is correct: 576 m). Could someone fix it?
+
+Also the Julian Alps official site mentions the correct data.
+
+Just to say, the highest town in Slovenia is located at less than 1000 metres on sea level: https://en.wikipedia.org/wiki/List_of_highest_towns_by_country Steed (talk)
+
+Fixed. The claim did not have a reference so I removed it. Vojtěch Dostál (talk)
+
+I execute this query: SELECT ?item ?kgnr WHERE { ?item wdt:P31 wd:Q17376095; wdt:P8322 ?kgnr } ORDER BY ?kgnr and do not get Inzersdorf (Q1671849) within the returned set. Why? (instance of (P31) is set to cadastral municipality of Austria (Q17376095) and cadastral municipality ID in Austria (P8322) is set to 01803.) -- Senoloser (talk)
+
+Because too many people on wikidata don't understand rank. On that item, 'quarter' is set to preferred and so Q17376095 will not be found by a wdt: query. Try p:P31/ps:P31 instead. And/or edit the item to make both P31 statements normal rank. --Tagishsimon (talk)
+
+Thank you! --Senoloser (talk)
+
+What is an individual entry of a newspaper column an instance_of? We have an entry for a newspaper column but not for an individual entry in a column. Should it just a be a "news article" or should we create "entry in a newspaper column" or something similar? RAN (talk)
+
+Probably news article (Q5707594) will do. Page and column probably deserve to be in its references, or as qualifiers, depending on the use. --Tagishsimon (talk)
+
+news article (Q5707594) or simply article (Q191067) should do it. -Animalparty (talk)
+
+I'm pretty sure steam-powered fire engine (Q9336841) and steam-powered fire engine (Q7605378) are the same thing. If not, then we need to make the distinction clearer. - Jmabel (talk)
+
+Also, I think steam-powered fire engine (Q7605378) is correct that this is a subclass, not an instance, of fire engine (Q208281). - Jmabel (talk)
+
+Merged & P31 removed. They are indeed the same thing. --Tagishsimon (talk)
+
+Hello. I am trying to find out something. For an example on simple:Ralf Edström I put in the ac template but it is showing with 0 elements. I have come across quite a few of these. If you look at the property Q161918 there are a lot of identifiers on him. None of them are pulled into the authority control. What exactly should be pulled into the authority control from wikidata? If you have a list or article on it, I would love to be pointed to it. Thank you. PDLTalk to me!OMG, What have I done?
+
+What gets pulled into {{Authority control}} on any wikimedia site depends on the config of the AC template on that site, so for simple, https://simple.wikipedia.org/wiki/Template:Authority_control
+
+The concept of authority control cames, afaik, from the libraries sector, and the very strong bias on AC templates is towards, how to say, traditional authorities rather than the very much wider pool of external identifier sources held on WD.
+
+Any solution to the issue is a matter for the wikimedia site concerned, and not for WD, so you'd be better off having this conversation on simple than here. --Tagishsimon (talk)
+
+@Tagishsimon Thanks for that. It is typically better to ping someone as they may not always be on this wiki so I completely missed this. Since you have pointed me into the right place as far the template and what it needs so I can take it from here as that does help me a lot. PDLTalk to me!OMG, What have I done?
+
+Hi - On this particular property, everything's coming up as being against the constraint set. For example, https://www.dib.ie/biography/bell-john-stewart-a0548 is one of the issues I am facing. I put in a0548 or the bell-john-stewart-a0548 and it does not work, see this example. What would be the correct way of getting this properly linked? Please ping me as I am not always on wikidata. Thanks. PDLTalk to me!OMG, What have I done?
+
+It seems to want the number found at the end of the DOI, which itself is found in Publishing information at the foot of the page. DOI for the above example was https://doi.org/10.3318/dib.000548.v1 and the property now seems happy with 000548 ... possibly 0548 might also work, idk. --Tagishsimon (talk)
+
+So now we have all calls for this template removed. When is it planned to be loaded automatically? --Infovarius (talk)
+
+It already is loaded automatically on every item talk page — Martin (MSGJ · talk)
+
+But it's not! --Infovarius (talk)
+
+@MSGJ: did you really think that I would write this question not checking talkpages? I don't see the template at talkpage either watching or editing it. --Infovarius (talk)
+
+I see it displaying correctly on existing talk pages (e.g. Talk:Q79089353) and also on non-existent talk pages (e.g. Talk:Q24546547 above the edit window). We are obviously not seeing the same things! — Martin (MSGJ · talk)
+
+MSGJ, Infovarius {{Item documentation}} is displayed in the talk page header of each item page using MediaWiki:Talkpageheader. Yet, this is not perfect. If the talk page exist, you should see it. If you're using the mobile Web interface, you should click on "read as a Wiki page" before seeing it. If the talk page don't exist, you maybe automatically redirected to edit the talk page. See example : https://m.wikidata.org/w/index.php?title=Talk:Q20968036&redlink=1#/editor/all. I know that this feature will be removed in the future (see https://phabricator.wikimedia.org/T308390). So for now, it's not really user friendly but you just need to cut the url to : https://m.wikidata.org/w/index.php?title=Talk:Q20968036 and it should work. --PAC2 (talk)
+
+@PAC2: Sorry, I don't see the template on either of both links: Talk:Q79089353 or https://m.wikidata.org/w/index.php?title=Talk:Q20968036. Neither on MediaWiki:Talkpageheader (should it be there too?) And I don't know how to see it at all (except returning template in source code).
+
+SPARQL queries are essential to explore the Wikidata graph. Right now, each wikiproject has some specific queries in the project pages. Users share their queries in the weekly newsletter and many user stores queries in their own user page. That's great but there is a lack of documentation for queries.
+
+In Documented queries, I propose an approach to create wiki pages to document queries. I provide a first example : User:PAC2/Query/Gender and labels for properties whose values are instances or subclasses of human in French.
+
+I think that the documented queries approach is complimentary to existing initiatives such as {{Query page}} and Wikidata:Showcase Queries.
+
+Of course, there are many open question. If relevant, we could move User:PAC2/Documented queries to something such as Wikidata:Documented queries. Maybe it would be also relevant to have a specific namespace for documented queries such as Wikidata:Queries:.
+
+I would be happy to have feedback about this proposition. PAC2 (talk)
+
+I'm not really seeing it. And it's not clear what the need is that you're trying to fill. My experience of writing and using reports for my own purposes, and my experience on Request a Query meeting the wants of users there, suggests that, in general, report specifications are fairly highly specific and nuanced, making it vanishingly unlikely that a library of reports will be of much use. It's very unlikely the report I want will be in the library; or if it is, because there is such comprehensive coverage of reporting needs, it's unlikely I'm going to be able to find it. So "library in which you can find the report you want" is just not a happening prospect.
+
+If instead the purpose is exemplar reports, we have Wikidata:SPARQL query service/queries/examples, which is very well linked from the WDQS UI - has a very high profile - but is very very little maintained, suggesting there's not much user interest in collecting and collating reports. Were effort to be put into exemplar reports, improving that page might be more worthwhile. --Tagishsimon (talk)
+
+Thanks for your feedback Tagishsimon. I agree that we could also improve the documentation of example queries. But my proposition go further. I also want to check data quality. Both are useful in my opinion. PAC2 (talk)
+
+I actually see a need to collect queries related to specific fields, but this is already done by domain specialists. --SCIdude (talk)
+
+Thanks for your feedback SCIdude. Do you have any example? Maybe my template could be useful. PAC2 (talk)
+
+Many projects have a "Queries" tab, for example https://www.wikidata.org/wiki/Wikidata:WikiProject_COVID-19/Queries . --SCIdude (talk)
+
+Help:Description becomes a guideline now but it is still in the Help namespace. Can someone helps me to move the page to Wikidata:Description? Choi Chin Long
+
+You may also want to request this in Wikidata:Administrators' noticeboard. RXerself (talk)
+
+I think that this discussion is resolved and can be archived. If you disagree, don't hesitate to replace this template with your comment. Bovlb (talk)
+
+marine pollution (Q111008217) has gotten redirected at dewp. What what be the right procedure?--Aufbewarier (talk)
+
+In this case, merge it into the item of which it was a permanent duplicate. I've done so. --Tagishsimon (talk)
+
+Wikidata now has 11,337,886 items about humans. GZWDer (talk)
+
+Hello, how do I add the formation where the type specimen(s) were found to Thyrohyrax domorictus (Q112943480)? There is a constraint error at present, as Jebel Qatrani Formation (Q6172519) (the formation in question) is nested under lithostratigraphic unit (Q3550897) rather than geographic location (Q2221906). I was (overly) bold and tried adding lithostratigraphic unit as a value-type constraint (Q21510865) to type locality (biology) (P5304), but the constraint seemingly operates as an "and" check (requiring the locality/formation to be an instance both of geographic location and lithostratigraphic unit) rather than an "or" check (one or t'other) (have reverted).
+
+We already have type locality (biology) (P5304), but do we need a new property for "type horizon" (for lithostratigraphic unit (and/or age classification)) or is there another way? (As examples in the literature, "Type locality and horizon", "Type locality"..."Type horizon", "Type horizon" (including age classification and/or lithostratigraphic unit info)..."Type locality".) Thank you, Maculosae tegmine lyncis (talk)
+
+Issue seemingly fixed: have added lithostratigraphic unit (Q3550897) as a value-type constraint (Q21510865) to type locality (biology) (P5304) alongside geographic location (Q2221906) rather than as a separate value-type constraint (Q21510865), thanks, Maculosae tegmine lyncis (talk)
+
+An example is the Wikipedia article "Sexual abuse in Santa Fe de la Vera Cruz archdiocese".
+
+This article was linked to a human entity in Wikidata: Edgardo Gabriel Storni which is incorrect.
+
+They should be two separate wikidata items, one for the Sexual abuse case and another for the human who was one of the people involved in it.
+
+What is the procedure to fix this, please?
+
+Thank you.
+
+LAP959 (talk)
+
+In general, remove the offending sitelink from whichever wiki item, and add it to the correct item; I've done this for the issue you've raised above. --Tagishsimon (talk)
+
+thank you LAP959 (talk)
+
+We have some advice in: Help:Conflation, Help:Split an item, and Help:Conflation of two people. Bovlb (talk)
+
+I'm new to wikidata and I wanted to merge two items: Chayanta River (Q21805596) and Chayanta River (Q5088629) but it doesn't work. In ceb.wikipedia in both of them there was linked a pseudo article (so two different articles about the same topic). To merge the items I deleted the link of one article to wikidata because the items can't be merged if in ceb.wikipedia there is linked an article for both objects. Now there are still two problems: the merging still doesn't work and the article in ceb.wikipedia is not linked to any wikidata item and anyway should be deleted (double entry). https://ceb.wikipedia.org/wiki/R%C3%ADo_Chayanta_(suba_sa_Departamento_de_Potos%C3%AD,_lat_-18,32,_long_-66,46) Thanks for helping, --Grullab (talk)
+
+I've merged them, it worked for me. You could just redirect the other ceb article? — Martin (MSGJ · talk)
+
+I redirected the article, everything solved now. Thank you! --Grullab (talk)
+
+Q27333101, apparently about an extant mineshaft in Germany, was deleted in 2017 on notability grounds. There is an inbound link to that QID from OpenStreetMap. Commons has a category of images at c:Category:Schacht Westohm. The feature is listed on de:Liste von Bergwerken im Eichsfeld. It thus appears to be notable, and the item should be undeleted.
+
+Likewise, Q28501215 is about a college ([4]) and has an inbound link from OSM.
+
+Both undeleted. Q27333101 says "Schacht Wintzingerode" though, so we need to find out whether this is the same as "Schacht Westohm". —MisterSynergy (talk)
+
+I came across several merges which merge the item with a single link to a Commons category to the topic item. (I use User:Matěj Suchánek/Categories, but I could make a complete list a different way.) Some of them [5][6][7][8] are tagged as Sitelink Change from Connected Wiki, which indicates the intention was to simply connect the category to the other pages, some of them are deliberate [9][10].
+
+Obviously, this needs a cleanup because of all the descriptions and instance of (P31)Wikimedia category (Q4167836) . I am curious about the consensus on the following: When undoing the merge, should I keep the Commons link in the topic item (as this was likely the user's intention), or should I restore the redirected item, even if it contains just the link to Commons? --Matěj Suchánek (talk)
+
+@Matěj Suchánek: Standard practice has been that if there is a Commons gallery page, then that should get the sitelink from the 'main' wikidata item, so that any Commons category then has to get a sitelink from a special "instance of Wikimedia category" item.
+
+It's likely that if such category special items exist, that's because there was (at least at some point) a sitelink from the main item to a gallery on Commons. That gallery sitelink should be restored, if the gallery still exists.
+
+(UI links from the sidebars of wikipedia articles typically know how to navigate round this, to connect articles to categories). Jheald (talk)
+
+if there is a Commons gallery page, then that should get the sitelink from the 'main' wikidata item Yes. What if there wasn't one? Because that's what I'm dealing with. --Matěj Suchánek (talk)
+
+@Matěj Suchánek: If there isn't a category on any other wiki apart from Commons, then I guess let the merge stand. Jheald (talk)
+
+Can someone create a template similar to Wikipedia's "help me"-template (see here) ? --Bensin (talk)
+
+A nice idea, but we should not create a new way to ask for help without also having a process to respond to it. Given the scale of this project, people are usually better off asking on WD:Project chat or one of its language variants. This template would put the page into a category that people would have to check. Maybe it's an admin thing, but we don't seem to be doing very well at responding to the existing categories Category:Wikidata protected edit requests and Category:Requests for unblock. Bovlb (talk)
+
+Thanks for answering! I understand your objection. The template would fill two functions: 1) to add the talk page to a category where helpful people can intentionally seek up questions to answer, and 2) capture the attention of any stray reader of a talk page and inform them that there is an unanswered question in that section. --Bensin (talk)
+
+Hello, @Arpyia: has recently uploaded data from Statistical Classification of Economic Activities in the European Community, Rev. 2 (2008) (Q732298). In some cases, they were added to existing items such as air transport (Q1757562), in some cases not. Do we want to merge these concepts to existing items as much as possible? It may not be possible in all cases though, because we now have furniture construction (Q1957814) but also furniture construction (Q29584290) (NACE 31) and manufacture of furniture (Q112122223) (NACE 31.0). In this respect, what would Arpyia and others think about merging concepts which only have one (synonymical) subordinate concept in NACE terminology (such as furniture construction (Q29584290) and manufacture of furniture (Q112122223) as you can see here)? Vojtěch Dostál (talk)
+
+Bonjour, J'ai terminé de couvrir dans Wikidata les catégories de la NACE, à partir du travail commencé par quelqu'un d'autre il y a plusieurs années. J'ai créé les éléments manquants avec beaucoup de soin, de façon à pouvoir les utiliser et documenter les relations avec d'autres nomenclatures (inter)nationales, à commencer par la CITI (International Standard Industrial Classification Rev. 4 (Q112111674)). Le résultat est visible ici, pour l'instant complet seulement en français .
+
+Merci pour le signalement de l'erreur sur furniture construction (Q29584290), c'est corrigé. Je reste à disposition pour toutes propositions d'amélioration. Arpyia (talk)
+
+@Arpyia Thank you for your response. My suggestions are: 1) do we want to merge furniture construction (Q1957814) with furniture construction (Q29584290) or manufacture of furniture (Q112122223), or all of them together? Vojtěch Dostál (talk)
+
+How do I add a lengthy query example to the weekly summary? Title would be "Map of Ancient Philosophers and their Influencers" The URL shortener says it failed:
+
+--Drm2022 (talk)
+
+That's an *excellent* question, Drm2022. We asked for the link shortener character limit to be increased to a size which could accommodate the URLs associated with SPARQL reports - https://phabricator.wikimedia.org/T220703 - but tbh all we got was snark and incomprehension (e.g. "Ultimately, UrlShortener is a url shortener, not a pastebin.") from someone using the name Legoktm, who seems to be decisive in the matter. I say that's all we got, but in fact Legoktm was kind enough to put together some framework which seems to involve 1) create a new page 2) append SPARQL in it within a SPARQL template 3) find the page ID 4) append the ID to a URI pointing at a Legoktm tool - e.g. https://ls.toolforge.org/p/72919344 and, err, that's it. For some reason this is a better solution than increasing the link shortener limit.
+
+I imaging the answer is, use the above method, or, at least, steps 1 & 2, and then add a link to the page rather than a link to the report. So, for example Student-teacher/influencer relationships, lineage starting with Socrates, located by place of birth.
+
+<soapbox> Right now, and unambiguously, the perverse incentive on WD is to write abstruse and uncommented SPARQL so as to get it under the URL shortener limit. It's a very very poor state of affairs. </soapbox> --Tagishsimon (talk)
+
+Oh cool, like Student-teacher/influencer relationships, lineage starting with Socrates, located by place of birth , thanks! Drm2022 (talk)
+
+You can just use an unshortened link, there’s nothing wrong with that: Student-teacher/influencer relationships, lineage starting with Socrates, located by place of birth. Alternatively, you can use {{Query page}} to save the query on a wiki page and link to it using a variety of styles (e.g. link: Student-teacher/influencer relationships, lineage starting with Socrates, located by place of birth or link embed: Student-teacher/influencer relationships, lineage starting with Socrates, located by place of birth), but that won’t work for the weekly summary, because templates don’t work well with MassMessage. --Lucas Werkmeister (talk)
+
+I want to show the succession of Scottish lairds, should I use "noble title=" or should I use "position=". In Scotland a Laird is the owner of an estate, I am not sure if that constitutes noble status. RAN (talk)
+
+I don't think it does. P106=landowner, qualified by 'object named as' Laird, perhaps. --Tagishsimon (talk)
+
+Or by object has role (P3831)?
+
+https://www.wikidata.org/wiki/Q5734420
+
+en: castle (type of fortified structure built in Europe, Asia and the Middle East during the Middle Ages by nobility) [11]
+
+en: manor house (large historic country house, main building of manor estate) [12]
+
+en: residential building (building mainly used for residential purposes) [13]
+
+en: house (building usually intended for living in) [14]
+
+en: building (structure, typically with a roof and walls, standing more or less permanently in one place) [15]
+
+en: architectural structure (human-designed and -made structure) [16]
+
+en: academic discipline (academic field of study or profession) [17]
+
+(I have many similar examples of clearly invalid classification - is it a good place to report them? I mentioned on some other forum that Wikidata classification is really bad and full of various mistakes and got advise to report such problems here - is it a good idea and welcome? Note that I gave up on fixing classification problems on Wikidata and I do not plan to spend my time on that but I can report ones that I found if that is useful for editors and likely to result in improvements)
+
+Mateusz Konieczny (talk)
+
+I'd break that chain between academic discipline and architectural structure. You have an eye for 3 of my enthusiasms, ships, museums and fortifications! Vicarage (talk)
+
+Thanks for spotting! Here it is so clear that I just edited it instead of leaving quagmire cleanup for others. Mateusz Konieczny (talk)
+
+I think that this discussion is resolved and can be archived. If you disagree, don't hesitate to replace this template with your comment. marking as solved and edited - Mateusz Konieczny (talk)
+
+https://www.wikidata.org/wiki/Q1887879
+
+type Q2085381 en: publisher (organisation that prints and distributes pressed goods or electronic media) [18]
+
+en: mass media (media technologies that are intended to reach a large audience by mass communication) [19]
+
+en: media (storage and delivering agent of information or data) [20]
+
+en: means (means by which an item performs a function) [21]
+
+en: action (something an agent can do or perform) [22]
+
+(is it useful to report such issues here? if yes - how many should I report per day (or month or year) to keep it usable for everyone?
+
+Mateusz Konieczny (talk)
+
+publishers produce mass-media, they are not themselves media, other than than in the colloquial "The Media"
+
+and media are not means, other than in the sense that all physical objects are means to an end. Means should be for process, not the things that are processed. Vicarage (talk)
+
+Publisher is a facet of mass media, not a subclass of it. Fixed.
+
+I think that this discussion is resolved and can be archived. If you disagree, don't hesitate to replace this template with your comment. marking as solved, fixed by Pigsonthewing - thanks! Mateusz Konieczny (talk)
+
+I've been going through the instructions on how to propose a new property, and there's too much of a learning curve for me (how am I supposed to figure out allowed values? Do I need a planned use more complex than just "have entries point to it"? What about software tools?), so I'm just going to leave it here and let someone else do the lifting.
+
+FBC is a database of +8.5M Polish cultural items and people. I think it's an "external identifier", and it's already referenced on Wikidata and enwiki and commons and (of course) plwiki.
+
+Someone who has a better idea of what they're doing can take it from here. DS (talk)
+
+@DragonflySixtyseven: I'm happy to assist you, but you'll need to do some of the groundwork, Please draft a proposal page with as many of the answers as you can give, especially the examples. Save it, and let me know the link. I'll do the rest.
+
+I am sure someone has asked before, maybe even myself, but why do we have "described by source=Obalky knih.cz" instead of it as an Identifier? RAN (talk)
+
+@Richard Arthur Norton (1958- ) The identifier actually is the same as NL CR AUT ID (P691). However, not all items with NL CR AUT ID (P691) have an entry in Obalky knih.cz. Vojtěch Dostál (talk)
+
+of (P642) is a problamatic property that is currently depreciated and work is going on to replace its uses. It is essential that editors in all languages do not continue to use this property when there are other alternatives.
+
+If you know another language than English, please make sure that the property description is updated to indicate that the property should not be used and should use others instead. This way people don't continue to use it and we do not have to clean up even more uses. Lectrician1 (talk)
+
+done for French — Metamorforme42 (talk)
+
+I filled in all the details under the brand
+
+sollevare (dj)
+
+What am I supposed to do now for him to be accepted and appear? Sollevare (talk)
+
+@Sollevare: This is in reference to Q113016045. As I told you earlier, this article does not clearly indicate the notability of the subject. In particular, it is completely unreferenced. This means that, while this item is already part of Wikidata, it is likely to be deleted soon. Please read the advice I left on your talk page. Bovlb (talk)
+
+You can find this message translated into additional languages on Meta-wiki.
+
+Hi all,
+
+Community members in the 2022 Board of Trustees election are invited to propose statements to use in the Election Compass.
+
+An Election Compass is a tool to help voters select the candidates that best align with their beliefs and views. The community members will propose statements for the candidates to answer using a Lickert scale (agree/neutral/disagree). The candidates’ answers to the statements will be loaded into the Election Compass tool. Voters will use the tool by entering in their answer to the statements (agree/disagree/neutral). The results will show the candidates that best align with the voter’s beliefs and views.
+
+Here is the timeline for the Election Compass:
+
+July 8 - 20: Community members propose statements for the Election Compass
+
+July 21 - 22: Elections Committee reviews statements for clarity and removes off-topic statements
+
+July 23 - August 1: Volunteers vote on the statements
+
+August 2 - 4: Elections Committee selects the top 15 statements
+
+August 5 - 12: candidates align themselves with the statements
+
+August 15: The Election Compass opens for voters to use to help guide their voting decision
+
+The Elections Committee will select the top 15 statements at the beginning of August. The Elections Committee will oversee the process, supported by the Movement Strategy and Governance team. MSG will check that the questions are clear, there are no duplicates, no typos, and so on.
+
+Best,
+
+Movement Strategy and Governance
+
+MNadzikiewicz (WMF) (talk)
+
+I have spent some time on looking into the intangible heritage items. There's a lot of mess around the items across languages and projects. I have made an attempt to model a possible ideal status in the new Wikidata:WikiProject_Intangible_Cultural_Heritage. I would like to hear you thoughts about it. I will ping here people on the original ICH ID proposal. @Pamputt, @Fralambert, @Pmt, @Missvain, @MasterRus21thCentury, @Beireke1, @Bert-packed, @Susanna Giaccai, @Arbnos, @Smallison, @Dhx1, @Sam.Donvil, @Vladimir Alexiev and anyone else interested. I have also been in touch with my Finnish contact in Unesco Intangible heritage. – Susanna Ånäs (Susannaanas) (talk)
+
+Hi Susannaanas thank you for your work on this topic. I was discouraged to do myself a few months ago. I agree the way you propose to describe the items. Concerning Intangible Cultural Heritage (Q84036549) and intangible cultural heritage (Q59544), my understanding is that intangible cultural heritage (Q59544) is a generic item for any kind of cultural heritage while Intangible Cultural Heritage (Q84036549) is devoted to the UNESCOD cultural heritage. So, in my opinion, intangible cultural heritage (Q59544) should not be used with UNESCO cultural heritage items.
+
+To go further, you propose to model all UNESCO cultural heritage items with fado (Q185676) as a model, do you? If so, it is good idea, at least this is good example to debate and to decide which statements and which values we should use (for fado (Q185676) and all other UNESCO cultural heritage items). To me, it sounds good. Pamputt (talk)
+
+Hi @Pamputt and thanks for the positive comments. I have imported the two smaller lists today (list of Intangible Cultural Heritage in Need of Urgent Safeguarding (Q110319988) & Register of Good Safeguarding Practices (Q110320006)) and corrected some existing items here and there. The meaning of individual articles has not necessarily been clear and the links have been inconsistent. The work with cleaning up everything is not finished and people unfamiliar with the undertaking may be upset, I hope not dramatically. The documentation can be found in Wikidata:WikiProject Intangible Cultural Heritage/Imports.
+
+I have also merged duplicate items for the lists. I see that the redirects are not working as well as the native values in many cases. If so, I will see what extra actions that would require. – Susanna Ånäs (Susannaanas) (talk)
+
+Thanks for this work. By the way, I think Wikidata:WikiProject_Intangible_Cultural_Heritage should be linked to Wikidata:WikiProject Cultural heritage somehow. Maybe people interested by this wikiproject may also be interested by ICH. Sadly I have no time to manage that now. Pamputt (talk)
+
+If I remember correctly, the project is too large to be pinged. I will post on the talk page. – Susanna Ånäs (Susannaanas) (talk)
+
+I also thank you for deciding to put things in order and for the work you've already done. But as I've already written in personal talk page and I'll repeat it here again for everyone else – I don't think these items should be marked in p31 with anything about the heritage status. The separate property and its qualifiers fully cover the needs of designating this status and adding the same information to p31 would simply be a duplication. You've already said that you would manually remove the statements, so it would be perfect then. Solidest (talk)
+
+For the sake of not having items without any instance of (P31) I have added intangible cultural heritage (Q59544) as a temporary value to all ICH items on the RL list. The goal is to replace them with more fitting items manually. If this is a critical issue, I can also remove them all in a batch. – Susanna Ånäs (Susannaanas) (talk)
+
+Regarding items without any p31s - I don't mind about it. I was mainly concerned about adding these things back to music genres, as I've been cleaning them out of there for a while now :) Solidest (talk)
+
+Oh, I feel you! I could remove them all, it would be simplest. – Susanna Ånäs (Susannaanas) (talk)
+
+By the way, in intangible cultural heritage status (P3259) it seems right to use specific entries like list of UNESCO Intangible Cultural Heritage elements in Austria (Q1659958) which can be referred to as statuses, while things like National Inventory of Intangible Cultural Heritage in France (Q21011287) feels wrong for me. Qitems labeled as p3259 = list does not seem to be the right way to fill this property in, as it's not really correct to say that status of this item is a list. The status entry should mean intangible cultural heritage (Q59544) or its subclasses. Maybe it's even worth to create specific metaclass "heritage status" to group these statuses and then rework constraints based on them. But this is a more thorough reworking of the scheme. Perhaps putting up lists will work for now. Solidest (talk)
+
+My reasoning is that there are hundreds of countries with national lists, and creating a corresponding designation item for every list seems like an overkill and unreasonable complexity to me. I see that this shortcut has already been used by many people describing items on national lists. This is my main statement in this operation, and I think it would be good to continue discussion in the talk page about this. There is already a class of heritage designations (heritage designation (Q30634609)). – Susanna Ånäs (Susannaanas) (talk)
+
+Have you considered the cultural landscape (Q1129474) element? —Ismael Olea (talk)
+
+Interesting point! It is not part of the set of items on these lists, and it could be looked into in the next phase. – Susanna Ånäs (Susannaanas) (talk)
+
+I have a third party wiki and I would like to use lua modules like they are used on Wikipedias to fetch data. Is this a matter of configuration or do I need to install Wikibase Client or some other software? This page leaves me clueless and on the Wikidata IRC channel I get no responses to this question. I just want to know how much pain it may be to do this. Thanks for your time. 2003:F1:C713:C500:356B:AC42:F988:1F75
+
+Also asked on mediawiki.org. --2003:F1:C713:C500:5957:AB4D:9CB3:9073
+
+You might want to check out a page linked from the data access page: How to use data on Wikimedia projects. Dan Shick (WMDE) (talk)
+
+However, I think you might not be coming from a Wikimedia project. Access to Wikidata's data via Lua is only possible from other Wikimedia projects. See this section of the data access page -- your options as a client coming from outside Wikimedia are outlined on that page, and I'm sorry to say that to my knowledge they don't (and wouldn't feasibly be able to) include Lua. Dan Shick (WMDE) (talk)
+
+Thank you for your response and pointers. Yeah, this question indeed comes from outside Wikimedia. It is a bit sad that you cannot yet resuse the data this way. I'd put this on some wishlist if there is one. Perhaps one day... Anyhow it helps looking at the options. Thanks again for your answer and have a nice day. --2003:F1:C713:C500:E0D5:E96F:567:C0A6
+
+Hi all
+
+I'm looking for some information on what tools exist to generate Wikipedia articles from Wikidata data. I want to wait to have a discussion about the social side of this until after I have the technical side sorted out and know what options might be workable.
+
+I have been working with Kew Gardens on releasing their plant data to Wikidata which can hopefully happen soon. I have also developed a proforma to populate with the data to turn it into missing plant Wikipedia articles. This plant database Plants of the World Online is recognised by Wikiproject Plants as the definitive source for many kinds of plants. What I'm looking for now is how to practically suck the data from Wikidata which comes from Kew into a proforma to automatically create drafts/complete articles using data from Kew. Any suggestions would be greatly appreciated.
+
+Many thanks
+
+John Cummings (talk)
+
+Note Meta:Wikidata/Notes/Article generation and Wikidata:Article placeholder, which may have some useful links. Also reasonator. --Tagishsimon (talk)
+
+Thanks very much, none of these seem to do exactly what I need, if anyone else knows of anything please let me know. John Cummings (talk)
+
+There is Lsjbot, which creates biologic articles based on external data, but I'm sure it has to be significantly altered for the new source/domain/language.
+
+I've made some work in importing astronomy data and started to work on a gadget in ru-wiki, that create a draft article text when someone clicks on the red link. I guess the most comprehensive description in English is here.
+
+So I guess the answer somehow depends on the "social side of this" :)
+
+And I also have a feeling that you seriously underestimated the effort for correctly importing Kew Gardens data here Ghuron (talk)
+
+Wizards in a Squall (Q22246357) and Wizards in a Squall (Q22246912) are prints that seem very similar, yet I hesitate to merge the items. How could a relationship be modelled? --Magnus Manske (talk)
+
+And another one at Wizards in a Squall (Q85503511) Please see commons:Category:Ensor (Delteil 052) for images — Martin (MSGJ · talk)
+
+In my opinion it's often quite silly and pointless to have individual items for individual prints (see e.g. H. J. Crump (Q55006658), H. J. Crump (Q55016878), and H. J. Crump (Q55006661) in the National Library of Wales, as well as copies at The British Museum, and the National Portrait Gallery), of which there could well be hundreds of copies in different libraries and museums around the world, each with their own special internal ID number, but no one ever said Wikidata is a place for common sense or practicality. -Animalparty (talk)
+
+"silly and pointless to have individual items for individual prints" - why not, given that at least some values will be distinct (date of destruction, date of production, location, work id in museum collection)... Mateusz Konieczny (talk)
+
+If a item contain last words (P3909), the words or phrases should be added the translation in English if there are in different language? 151.71.54.79
+
+No, it should be whatever the actual words were in the language spoken. ArthurPSmith (talk)
+
+Yes, using literal translation (P2441) as a qualifier.
+
+Museo Civico Archeologico delle Acque (Q3329420) and Museo Civico Archeologico delle Acque (Q54152368) are the same museum. The first has linked with fr.wiki and the other with it.wiki. Please someone can merge the items? I can't do it. Kaspo (talk)
+
+It appears that this has been done.
+
+QuickStatements requires dates to be in strict +1967-01-17T00:00:00Z/11 format, while my data source (wikipedia pages) has all the variants in date format you'd expect from manually entered content. The web-based WD editor has an excellent parser that interprets whatever date I type in, is there similar logic available for the linux command line? I could use the python dateparser, except it has annoying omissions like throwing dates without months quoted to the middle of the year (oddly it can avoid this for days in a month), but my preference would be a command line version of the WD parser, for consistency. I assume this is a solved problem for Linux/python. Vicarage (talk)
+
+Since the source dates can have many formats or locales/timezones, I'm thinking it's best to "wash" the source data first using OpenRefine. As part of the process you can have it try to convert the dates, and whatever it can't convert you can enter in manually. Command line utilities that can interpret date strings include date and awk, and Python apparently has a module called dateutil. I don't recommend using these since your input is unpredictable, and so you are bound to run into ambiguous dates no matter how sophisticated their conversion may be. Infrastruktur (talk)
+
+Hi All,
+
+I just noticed than on this street "Avenue Roger-Salengro (La Courneuve)" , the town name which is "La Courneuve" (https://www.wikidata.org/wiki/Q244725) is displayed as "Bamako":
+
+https://www.wikidata.org/wiki/Q108418446
+
+I strongly suspect this is intentional.
+
+Same problem with other pages pointing to "La Courneuve" https://www.wikidata.org/wiki/Q244725 https://www.wikidata.org/wiki/Q19888795
+
+Thanks Rc1959 (talk)
+
+@Rc1959: Thanks for bringing this to our attention. This was vandalism from last month that was fixed yesterday. If you're still seeing the problem, it may be a temporary caching issue. To clear the cache, try appending "?action=purge" or "&action=purge" to the URL of the page you are looking at. Bovlb (talk)
+
+https://www.wikidata.org/wiki/Q2583657
+
+type Q49833 en: wind turbine (device that converts wind energy into mechanical and electric energy) [23]
+
+en: electric power source (equipment or engine which provides electrical energy) [24]
+
+en: energy source (physical or chemical phenomenon from which one can extract energy) [25]
+
+en: resource (source or supply from which benefit is produced) [26]
+
+en: source (object (person, place, text, thing, etc.) from which something (information, goods, etc.) comes or is acquired) [27]
+
+en: abstract object (object with no physical referents) [28]
+
+en: non-physical entity (object that exists outside physical reality) [29]
+
+(I am happy to report more cases like this if community here is interested in fixing them and such report are welcome)
+
+Mateusz Konieczny (talk)
+
+https://www.wikidata.org/wiki/Q7872265
+
+en: museum ship (ship preserved and converted into a museum open to the public) [30]
+
+en: transport museum (museum that holds collections of transport items) [31]
+
+en: technology museum (museum devoted to applied science and technological developments) [32]
+
+en: science museum (museum devoted primarily to science) [33]
+
+en: museum (institution that holds artifacts and other objects of scientific, artistic, cultural, historical, or other importance) [34]
+
+en: GLAM (acronym for "galleries, libraries, archives, and museums" that refers to cultural institutions that have access to knowledge as their mission) [35]
+
+en: cultural organization (voluntary association occupied with promotion or preservation of culture) [36]
+
+en: cultural institution (organization that works for the preservation or promotion of culture) [37]
+
+en: institution (structure or mechanism of social order and cooperation governing the behaviour of a set of individuals within a given community) [38]
+
+en: organization (social entity (not necessarily commercial) uniting people into a structured group managing shared means to meet some needs, or to pursue collective goals) [39]
+
+en: group of humans (any set of human beings) [40]
+
+Mateusz Konieczny (talk)
+
+My suggested changes: museum ship (Q575727) subclass of (P279) museum building (Q24699794); and museum ship (Q575727) used by (P1535) transport museum (Q2516357). Bluemask (talk)
+
+Good start, but I'd not expect a museum to be a group of people either. I'd break the chain between cultural organization and GLAM, as cultural organisations run museums. I'd strongly resist creating a hieracy of "board of govenors that run a museum" entries though. Or just accept that organizations employ humans, and are not collections of them. Its the distinction between a football club and a football team. Vicarage (talk)
+
+I personally don't mind that museum is a group of people. Sounds unusual, but museum is an organization, and organization is a group of people working for a common goal. As ArthurPSmith says. there may be slight changes of meaning along the way, but it sort of makes sense to me here. Vojtěch Dostál (talk)
+
+I don't think Wikidata items (or our conceptual model of the world in general) have the capability of being entirely logically consistent in the way you hope here, at least not without greatly multiplying the number of entities. What is being conflated here is the physical structure (ship or building), the public-facing services (the "museum" I guess), and the collection of people involved in providing those services (employees, director, board, etc. associated with the museum as an "organization"). I think every one of the subclass relations in this chain is fine, but some of them involve a slight shift in perspective that we simply have to acknowledge is something that happens with long subclass chains (unless we truly want to needlessly multiply all our entities to try to be pedantically precise). ArthurPSmith (talk)
+
+Well, I agree with you (I appeared here after I described Wikidata ontology as flaky and having exactly this problem - I was directed here by @Pigsonthewing: who implied that problem is fixable by Wikidata community, but I am considering it as unlikely but would be happy to be proven wrong) Mateusz Konieczny (talk)
+
+Anyone who wants to see what was actually said (and has been said since), may do so in the sub-thread starting here. Apparently, these posts are "a test".
+
+I have remodelled GLAM (Q1030034) in . In particular:
+
+removed instance of and subclass of statements
+
+Made "facet of" = cultural heritage (Q210272)
+
+added "has quality"= acronym (Q101244)
+
+added "parts of the class" for former subclass values.
+
+added "instance of" = concept (Q151885)
+
+How does that look?
+
+@Pigsonthewing: museum -> GLAM -> organization -> group of humans is still causing all museums to be a group of humans. Maybe organization should not be declared as subclass of group of humans? (BTW, I just removed claim that every single organization is "corporate body") Mateusz Konieczny (talk)
+
+The GLAM -> organization link to which you refer was added subsequent to my edits; I have removed it.
+
+@Pigsonthewing: then it should be much better! Hopefully this time it will stay longer in nonbroken state, thanks for fixes! Mateusz Konieczny (talk)
+
+en: canal (man-made channel for water) [41]
+
+en: line construction (construction where one dimension is considerable longer than the other dimensions) [42]
+
+en: line (general concept of a line (curved or straight)) [43]
+
+en: geometric shape (geometric information which remains when location, scale, orientation and reflection are removed from the description of a geometric object) [44]
+
+en: set (well-defined mathematical collection of distinct objects) [45]
+
+en: formalization (automated representation of a system) [46]
+
+en: representation (role, function or property of an abstract or real object, relation or changes) [47]
+
+en: relation (general relation between different objects or individuals) [48]
+
+en: abstract object (object with no physical referents) [49]
+
+en: non-physical entity (object that exists outside physical reality) [50]
+
+(I have many similar examples of clearly invalid classification - is it a good place to report them? I mentioned on some other forum that Wikidata classification is really bad and full of various mistakes and got advise to report such problems here - is it a good idea and welcome? Note that I gave up on fixing classification problems on Wikidata and I do not plan to spend my time on that but I can report ones that I found) Mateusz Konieczny (talk)
+
+So, above, canal probably shouldn't be part of line construction. But let's see if anyone else has further thoughts on that.
+
+For some further cases to consider, here is a query tinyurl.com/35frc9cp that finds classes which have both physical and abstract parent classes. IMO that's about the worst ontology fail you can get, so I do think it would be really helpful to have a look at these, and see if we can identify some patterns as to what is going wrong.
+
+One suggestion from an earlier discussion is that manifestation of (P1557) may be useful to build a firewall between physical and abstract, in some cases where subclass of (P279) is currently being used. (Those previous discussions here and here). However no program emerged of a definite way forward (or even of clearly identified difficult patterns); so maybe time to once more look at this. Jheald (talk)
+
+Well worth reporting here. I suspect comments on discussion pages don't get much notice. Did you use a tool to generate the trees, or do it manually? Vicarage (talk)
+
+"Did you use a tool to generate the trees, or do it manually?" @Vicarage: - I have tool to detect Wikidata ontology with bogus implications (part of my mostly failed attempt to use it). Usually I am using it to validate that my local cached copy of Wikidata is containing what I fixed (without further edits which broke things again). I manually selected, formatted and described entries presented here, but if Wikidata community will fix at least some of what I reported I will likely spend some time to automate it further Mateusz Konieczny (talk)
+
+You are in error here, because you have overlooked that the statement "line construction=subclass of:line" is marked as "deprecated".
+
+Wait, so this value is known to be false but instead of being removed it got some special qualifier? Why it was not removed then? Also, I opened https://www.wikidata.org/wiki/Wikidata:Requests_for_deletions#Q27949697 as it seems actively hostile to users of data and its page has no explanation why this trap exists. Mateusz Konieczny (⧼Talkpagelinktet⧽)
+
+No, it did not get a "special qualifier", it got a rank of "deprecated". You really should become more familiar with a project, before you start to throw as much mud about it - and to declare it unfit for purpose - as you are doing here and especially on the OSM mailing list. Your attempt to get something so widely used deleted because you do not understand it is laughable.
+
+Yes, in my opinion Wikidata classification system is unfit for use. This deprecated rank is a nasty surprise, but not a large problem. BTW, is there documentation of qualifiers which presence on claim should cause it to be skipped? How many "actually no" qualifiers are also existing?
+
+But fundamental problem is absurd classification of many objects. Overall, Wikidata classification system is not allowing to reliably answer questions such as "is this an event" or "is it a physical object" or or "is it physical or non-physical entity".
+
+What worse, fixing found cases with bogus classification is not sufficient - as they quickly become broken again. I have 130 test cases, all of them were working at some point, many of them I fixed myself - and right now 60 are reported to be with utterly bogus classifications if latest wikidata data is used. That is my source of reports that I am recently posting here.
+
+Maybe it is fixable issue - that is why I decided to follow your suggestion and start reporting here cases where I know that classification is broken - but as it stands I would advise against using Wikidata classification in any project.
+
+(@Pigsonthewing:) Mateusz Konieczny (talk)
+
+@Mateusz Konieczny "Actually no" only goes with deprecated rank. Qualifiers are not important there. Some qualifiers may however mean "maybe" or "often". These statements do not get a deprecated rank because they are, or were, true. Vojtěch Dostál (talk)
+
+https://www.wikidata.org/wiki/Q3413299
+
+type Q11707 en: restaurant (single establishment which prepares and serves food, located in building) [51]
+
+en: eating and lodging [52]
+
+en: mass caterer (establishments, such as restaurants, canteens, schools, hospitals and catering enterprises in which food is prepared to be ready for consumption by the final consumer) [53]
+
+en: food establishment (food-related business that offers food) [54]
+
+en: eating or drinking establishment [55]
+
+en: business (activity of making one's living or making money by producing or buying and selling products) [56]
+
+en: juridical person (legal entity which is different from a natural person) [57]
+
+en: organization (social entity established to meet needs or pursue goals) [58]
+
+en: group of humans (any set of human beings) [59]
+
+en: group of living things (set of live physical entities of any nature) [60]
+
+en: group of physical objects [61]
+
+en: set (well-defined mathematical collection of distinct objects) [62]
+
+en: multiset (mathematical set with repetitions allowed) [63]
+
+en: formalization (automated representation of a system) [64]
+
+en: representation (role, function or property of an abstract or real object, relation or changes) [65]
+
+en: relation (general relation between different objects or individuals) [66]
+
+en: abstract object (object with no physical referents) [67]
+
+en: non-physical entity (object that exists outside physical reality) [68]
+
+(I am happy to report more cases like this if community here is interested in fixing them)
+
+Mateusz Konieczny (talk)
+
+@Mateusz Konieczny: in this case it seems quite obvious that a street is not a restaurant. Simply removing that incorrect statement would be enough to solve the main problem.
+
+Apart from that organization -> group of humans seems a bit questionable. It however makes sense to call the business of a restaurant a non-physical entity. That way we can distinguish it from the physical building in which the restaurant is located. ChristianKl ❪✉❫
+
+@ChristianKl: I am not familiar with this street, but I have seen ones where classifying street as open-air restaurant would be reasonable or at least understandable (also, I would be happy to report such cases if that is welcome by Wikidata community but I am not planning to spend time on fixing them again) Mateusz Konieczny (talk)
+
+It's understandable, but it's quite naturally that you get into ontologic problems when you fail to distinguish the physical location from the institution that's located at the physical location. ChristianKl ❪✉❫
+
+This is the museum problem raised before. There are lots of organisations based on single buildings, like churches or country houses. But we refer happily to The White House, or the Pentagon as making a decision. I suspect as no-one will actually do SPARQL queries of the base ontologies, it doesn' matter Vicarage (talk)
+
+It's not a restaurant; I've removed that statement. However the problem here seems to lie between group of physical objects (Q61961344) and abstract entity (Q7048977).
+
+It seems to me that not every "group of physical objects" is "well-defined mathematical collection of distinct objects". I removed that claim Mateusz Konieczny (talk)
+
+Could someone please add an English description? Thanks! --158.181.68.50
+
+Hi everyone,
+
+The lexicographical data part of Wikidata is still in need of some love. Over the last few weeks we have worked on this in 2 areas. The first one was Lua access to Lexemes. We have rolled this out and all Wikimedia projects can now access not just Item data but also Lexemes. See the announcement for more details. The second one is coming today. We have reworked the Special:NewLexeme page. Lexicographical data is still hard to understand for people not familiar with lexicography. The new Special:NewLexeme page has a number of tweaks that we hope will make it more understandable and easier to use. This includes an information panel that gives a bit of context about what Lexemes are as well as a lexical category selector that ranks appropriate Items higher. (Better ranking of the Items in the language selector will come soon as well.) Additionally we have put the page on a better technical base.
+
+The information panel on the new special page includes an example Lexeme, which uses live data of a real Lexeme on Wikidata. That Lexeme is selected by the wikibaselexeme-newlexeme-info-panel-example-lexeme-id interface message in the current user interface language. The idea is that you can override this message on Wikidata to select suitable example Lexemes for various languages (e.g., set the German version of the message to the ID of some suitable German example Lexeme).
+
+Today we’d love for you to test the new page and give feedback.
+
+Test it: Special:NewLexemeAlpha
+
+Give feedback: Wikidata talk:Lexicographical data
+
+This page will be there in parallel to the current version during this testing period. It creates proper Lexemes and you can use it for your regular Lexeme creation work. We currently plan to replace Special:NewLexeme with this new version on August 3rd. At that point we also plan to turn off the temporary Special:NewLexemeAlpha page.
+
+If you have feedback or questions please let us know here. Additionally Lydia is looking for a few people for some short calls to get individual feedback from you. If you are up for that please let me know and we’ll schedule something.
+
+Cheers, -Mohammed Sadat (WMDE) (talk)
+
+Hi, can someone change the name of this https://www.wikidata.org/wiki/Q17984928 to BHG Financial. It is the new company name per this. It was already updated in Wikipedia. Aporesing60 (talk)
+
+Done. Just edit the English label next time. --Wolverène (talk)
+
+I've launched a new request for comments for gender neutral labels in French : Wikidata:Requests for comment/Gender neutral labels for occupations and positions in French. PAC2 (talk)
+
+hey guys can anyone make a wiki of this artist he was born in saint louis dunord haiti and came to pompano florida at age of 8 years old and now he resides in miami florida he was born novenmber 21 1996 hes a male of course and he makes very good music for an upcoming musician in the african american comunity @venskyDaDon he is on instagram, facebook, youtube apple music and etc Pompano5 (talk)
+
+I am about to upload all the items in the Austrian Commission for UNESCO's list of intangible heritage at https://www.unesco.at/kultur/immaterielles-kulturerbe/oesterreichisches-verzeichnis to Wikidata. Although I think I have done a good job reconciling the items and linking between the German and English data, I am sure there will be mistakes and misinterpretations. I have documented the import on the Imports page of the Wikidata:WikiProject_Intangible_Cultural_Heritage. I will also attach a link to a query or a list which can be used for quality control after I have done the import. I will wait for comments and do the upload tomorrow.
+
+Notified participants of WikiProject Austria – Susanna Ånäs (Susannaanas) (talk)
+
+Hello @Susannaanas: existing objects might be found via de:Immaterielles Kulturerbe in Österreich resp. de:Kategorie:Immaterielles Kulturerbe (Österreich). --M2k~dewiki (talk)
+
+Thank you! I went through the category but I will also use the list page. I am crafting sparql queries that will list the QIDs for them. – Susanna Ånäs (Susannaanas) (talk)
+
+Hi. I don't know whether this has already been discussed or not. In Wikimedia Commons there are thousands of images depicting lexemes (a few of them: c:Category:Images by text, not categorised by language yet). Would it be possible allowing to use depicts (P180) with "lexeme-type-items" (or creating a new specific property such as "depicts lexeme"? (to use that with Structured data on Wikimedia Commons (Q43387741) and maybe linking lexeme-commons-categories with lexeme-wikidata-items in the future). (I know WD:PP does exist in order to formalize a proposal, of course). This was also proposed here a few months ago, with no answer. strakhov (talk)
+
+@Strakhov: oh this was a proposal? Maybe more than four words should have been used.
+
+Lexeme is a different data type and properties can only use one type so the best course of action is to propose a new "depicts lexeme" property at Wikidata:Property proposal/Sister projects. Multichill (talk)
+
+@Multichill:: Thanks for the tip and the info about only one datatype allowed. The proposal is already here: Wikidata:Property proposal/Depicts lexeme. Anyway, I included that proposal because precisely that unanswered comment lead me to propose here the creation of this property (kind of giving recognition to the original "author"). Regards. strakhov (talk)
+
+I think this is wrong and needs deletion somehow: Q58787967. 'Retinal imager' would interfere with human body (if item relates to Q169342 and imager is interferent)... --5.43.73.144;
+
+I'm not sure I understand your objection. This is an item about an academic paper. - Jmabel (talk)
+
+Could someone change the flag image of Chester County, PA (Q27840) from the current one to this vector. I don't seem to be allowed to edit the item myself. Many thanks! Physeters (talk)
+
+Done William Avery (talk)
+
+Thanks! Physeters (talk)
+
+I put the population of subdivisions as qualifier into Ardagger (Q638449) (see here) and displayed it in en:Ardagger. Wikidata says with exclamation mark, that "The property population should not be used in this location (as qualifier)." But this is the only way to display it in en:Ardagger. How can I handle this? --Senoloser (talk)
+
+@Senoloser This is definitely not a good idea. Do not insert unrelated data about subdivisions to items about their higher administrative entity. That's just multiplication of information and leads to chaos. English Wikipedia can create a Lua module that does what you want by reading data from the subdivision items. Maybe it's even already possible right now. You could ask at Module:WikidataIB Vojtěch Dostál (talk)
+
+Talking of names, my work on the Royal Navy shows lots of ships that change names, often, but not always, when they are transferred between navies, as with HMS Ocean (Q1201247) and Brazilian aircraft carrier Atlântico (Q61733963). Often one country's cast-off is another's pride and joy, or a captured/sold ship has a more significant career under its new operator. Currently most ships have a single entry, with an item name, and aliases for the others, but as with HMS Ocean, sometimes we have two, with a clumsy second name based on the (english) Wikipedia article. Should we have general principle that a ship is a single entity, and multiple entries should be merged, even though we'd lose Wikipedia links and is name (P2561) with qualifiers operator (P137) and start time (P580) the way to define the naming history, with 'also known as' purely informal. I'm always conscious that any solution needs to work well with pragmatic SPARQL queries. Very few of these re-namings are historically controversial. I ask here because Wikidata_talk:WikiProject_Military_History is very quiet, and there is a more general guidance needed for any object that changes name. Advice on languages also appreciated, as we have destroyers operated by US, Royal and Soviet Navies who I guess need to be described in Japanese script. Vicarage (talk)
+
+We should probably not have a general principle that a ship is a single entity. said to be the same as (P460) does sterling service here. You've not afaics articulated any disadvantages associated with multiple items for renamed ships, nor any advantage associated with merging into a single item. It's clear, and you admit, that "we'd lose Wikipedia links" as if these were just a bagatelle. --Tagishsimon (talk)
+
+The current position in English Wikipedia is that you have single entries for most ships in English-speaking countries, as the most common transfers were within the Commonwealth/US, and all aspects of their career described, with pot-luck on the title. A WD SPARQL for an operator could return a better name set. Different entries for different phases of a ship's life are the exception, rather than the rule. Continuity of service is a key feature of a ship's history. Ships can suddenly appear in the record with their second owner with no indication of their age, or you get "launched 1918, commissioned 1942" with no explanation of the gap. Capture/transfer of ownership are key points in a ship's history which would be lost in separate items. In the English Wikipedia you might get 2 articles for the same ship, in other wikis probably not, and I can see why a French wikipedia would focus on the French rather than Royal Navy career of a prize, so the only reference to the latter could be in the article about the former. Should WD be controlled by a one-to-one mapping to individual wiki articles? And said to be the same as (P460), with its hint of disagreement, is not suitable for ships, and would make writing SPARQL queries to find out the object's life-history very hard.
+
+An example of the problem is ARA General Belgrano (Q540580) where the Argentine usage is key, but you'd not know from WD that the ship was built in 1938.Vicarage (talk)
+
+Wikipedia does use redirects for ships with multiple names. How does WD generally encapuslate redirects? Vicarage (talk)
+
+I'm still not seeing any real analysis of the advantages and disadvantages of one approach over another; besides the point that that WD will have items for all language wikipedia articles, and so the question is, how to deal with this, rather than suggesting that some articles will be excluded from having WD items.
+
+None of these two statements is true: "said to be the same as (P460), with its hint of disagreement, is not suitable for ships, and would make writing SPARQL queries to find out the object's life-history very hard." Here we are actively disagreeing whether a ship is one thing or two. P460 in a SPARQL query is not materially any more difficult than a query without P460. --Tagishsimon (talk)
+
+If they are into the era of IMO numbers, Commons sets up a category for the IMO number and subcats for the various names it has been known by. See, for example, commons:Category:IMO 1008279 - Jmabel (talk)
+
+And it looks like the way Natita (Q52289542) handles that particular yacht is reasonable. - Jmabel (talk)
+
+I did consider official name (P1448), but was put off by the requirement for a language, as ships generally have the same name across all languages at any point in time. IMO does appear for warships, but as its only been in use for 30 years, and with the dramatic shrinkage of navies, it doesn't address nearly all warships. I'd not have an IMO number as an also known as, but would have the names, just so a casual search for 'Dilbar I' would find something. This is a case when a ship with multiple names does only have one WD entry, and that wouldn't need to change even if each name had an entry in a particular language wiki.
+
+I don't know enough about SPARQL that given "General Belgrano", I could get the information on the armament when it was launched as USS Phoenix (Q1088018) via a said to be the same as (P460) link. Of course both entries could contain the same information, but I guess WD strives to avoid duplication. Vicarage (talk)
+
+I thought I'd try SPARQL queries but official name (P1448) and name (P2561) are 'limited support'. I'm not sure on the detail, but does that mean I can't search against them? I'm not even sure how you do a search against the Label, Description/Alias of an item, as opposed to its properties. I think I must ask the helpful people at the SPARQL query service. Vicarage (talk)
+
+Right now I'm comparing a SPARQL list of Scottish reservoirs - https://w.wiki/5PZv - with commons categories such as commons:Category:Reservoirs in Argyll and Bute.
+
+Commons, and wikipedias & wikimedias conventionally use a DEFAULTSORT template to provide a sort string, such that entries in categories can be ordered according to a preferred sort string rather than taking the articlename/filename/category name as the sort string.
+
+Wikidata, as far as I know, lacks the concept of a DEFAULTSORT. This makes it harder to compare a list of WD items with lists drawm from wikimedia categories, than such comparisons would be if WD had a defaultsort, b/c the lists are ordered on different keys.
+
+Is there a WD sort property that I've missed?
+
+If not, would WD benefit from a DEFAULTSORT property? If so, presumably it would need to take values marked up with language.
+
+Are there any good reasons why WD should not have such a property? --Tagishsimon (talk)
+
+I don't like the idea intuitively, but I don't have a good argument against it; anyway, the usefulness would appear after a majority of items have this property. Otherwise the sorting will be imperfect and many people will turn to normal label sorting anyway. Vojtěch Dostál (talk)
+
+@Tagishsimon: "sort key" was proposed in 2014, adopted as Property:P1964, but then deleted later in 2015 for not being multilingual. "Sort key (en)" was proposed in 2013, but considered redundant after P1964 was adopted. "DEFAULTSORT" was proposed in 2016 but not approved. "DEFAULTSORT" was proposed in 2018 but not approved.
+
+Such a property seems quite sensible to me -- though you might have a problem with there being a lot of possible entries per item; and also with building up coverage, as per User:Vojtěch Dostál. But to be successful, any proposal would need to spell out why the previous rejections should be set aside. Jheald (talk)
+
+It's odd, isn't it, that I was the proponent of P1964, but was not notified of the deletion proposal.
+
+This makes no sense to me. If you want to have a list of Wikidata items sorted in the same order as the linked Wikipedia pages, you should sort them by the sortkey they have on that Wikipedia – not add some separate sort key on Wikidata and just hope that it happens to produce the same order. Jheald already pointed out that the sort key would need to be multilingual; I also wouldn’t be surprised if some projects in the same language (Wikipedia, Wikisource, etc.) had different guidelines for the sort key, which couldn’t reasonably be unified in Wikidata. Lucas Werkmeister (talk)
+
+I'm sorry it does not make sense to you, Lucas. Possibly marrying up items and categories is not something you spend a lot of time doing, idk.
+
+Items that are not sitelinked or commonscat'd to the commons cat, and commons cats not sitelinked or commonscat'd from items, are not easily amenable to the "sort them by the sortkey they have on that Wikipedia" solution because of the absence of those links. Put another way, commons presents its categories according to commons sort keys ("Ness, Loch", or see commons:Category:Reservoirs in Argyll and Bute), and for unlinked items / cats there isn't a convenient way of ordering WD items to match the commons presentation. (Obvs, there are inconvenient ways of doing this, but, ideally, we'd aim a little higher than that.)
+
+As we have multilingual property types, that sortkeys would need to be multilingual doesn't seem like a huge deal breaker (but your raising it is, obvs, indicitive of your antipathy, to something or other.)
+
+While I cannot speak for other languages, my experience in EN is one of observing the same sortkey patterns on EN wiki and in commons cats, for EN concepts. So maybe you're right, maybe you're just waving a shroud; again, idk.
+
+All WMF wikis, afaik, employ DEFAULTSORT. WD has no compatible concept. Doesn't that strike you, in any way, at all, as curious? --Tagishsimon (talk)
+
+What Lucas Werkmeister says is correct. The different language versions of Wikipedia and the other Wikimedia projects have different guidelines on sorting keys. Also, I don't see who a sort key would be useful for on Wikidata since there are no categories. --HarryNº2 (talk)
+
+@HarryNº2: For one thing it could be useful because categorisations on projects can be generated from Wikidata (for example c:Template:Wikidata infobox on Commons does this a certain amount), and it would be useful for those categorisations to reflect a desired sort order.
+
+Secondly, we generate reports through queries from wikidata all the time, and it is useful for these to be able to have a sort order. Eg it's quite a common technique to align the results of wikidata queries and the contents of a category, by putting them into a spreadsheet and seeing what is missing each way (this can also help identify items that should be matched, but so far are not). Such alignment is much easier if category contents and the query report can be generated to both be in the same order (or pretty nearly). Jheald (talk)
+
+Are we allowed to create pages on the "Wikidata" namespace? I want to create a guide for adding social media accounts called Wikidata:Social media accounts AntisocialRyan (Talk)
+
+Generally, users are free to create new pages. At the start the draft template should be applied. For the document to become an actual guideline, there should be an RfC that approves it as such. ChristianKl ❪✉❫
+
+What start date do we use for bishops? A bot is loading multiple dates. See: https://www.catholic-hierarchy.org/bishop/blinda.html for all the possible dates, I assume "ordained" is the official start date. See entry for Joseph Andreas Lindauer (Q1706465) where we have two entries for bishop with two dates. Should we delete the duplicate "Catholic bishop" as a synonym of "Bishop of Budweis", even though there are different start dates? RAN (talk)
+
+I am going to delete the second entry with a slightly different date, the difference appears to be a date when nominated for the position, versus consecrated or ordained for the position, which differ by a few weeks to a month, we had the same problem with the popes, and decided on the day of consecration as the start_date. --RAN (talk)
+
+A voluntary team has collected a many facts about the beginnings of computing in Hungary (itf.njszt.hu). My intention is to transfer as many proven data from this source into Wikibase as I can. Intermediate place - as a sandbox - should be my own, empty site (adat.njszt.hu). I tried to use the Export tool for the page "https://www.wikidata.org/wiki/Q769944" but the result was a 48-line only xml without the page data and the template was missing as well. The Import tool on my site told the same "No page to import". How to make this first step? BÁRÁNY Sándor (talk)
+
+Have you read Wikidata:Data_access? It describes the various ways to get data out of Wikidata. Silver hr (talk)
+
+Do you need all the data for the items you are interested in? Because if you are only interested in a subset you can get that from SPARQL CONSTRUCT queries. This would also mean you would need to run some big-boy software on your own computer. Infrastruktur (talk)
+
+Just going to point to The Barassi Line, by Wikidata fellow Brett Tweedie, which is the source used by the above Barassi Line publication. Good to point to the repurposing of work, better to point to the original work itself. --Tagishsimon (talk)
+
+The "description" seems widely used ... even this field is a description... but we cannot find in wikidata a property with "description" as label that would simply be a "textual description of an item". The closest existing similar property seems to be original catalog description (P10358) but seems dedicated to Wikimedia Commons usage. Maybe we are missing a point with such a basic property? Does man use another property as a "description"? Is "description" a reserved word in the world of properties? D3fk dev (talk)
+
+Unclear in what situations such a proprty would be required, that would not be provided by, for instance, object named as (P1932) as a qualifier for a catalog code. What exactly are the use cases that are not currently possible? --Tagishsimon (talk)
+
+@D3fk dev: (ec) There are people that really dislike the idea of free-text fields on wikidata, feeling that this is not a good use of limited memory for a project that is principally about structured data. Myself, I wouldn't be so dogmatic -- I do think there are times when it is useful to quote external text & make it retrievable and accessible from our systematic structure. Also where a free-text comment or a free-text use note can be useful. But there certainly has been a feeling (which may be right, or may be wrong) that if you want to write more about something that will fit in a simple description box, then the right place to do that would be a new wikipedia article, not here. Jheald (talk)
+
+As far as I remember this property got proposed a few times and gets usually proposed by people who want to violate copyrights. Having the property without a lot of thought about how to get people to stop violating copyright will get people, who don't understand that while facts aren't copyrighted verbal experssions are, to violate copyright.
+
+Additionally, Wikidata is multilingual and dealing with free text descriptions means content isn't readable in other languages. Free text might also become an excuse to express less information as structured data. ChristianKl ❪✉❫
+
+This property, Property:P3988, is currently down and being replaced. I had reached out to the library and they replied that new services are being planned to launch in December 2022. Robertsky (talk)
+
+@Robertsky: Thanks for reporting, keep us informed. In such cases I suggest to leave a message in the talk page of the property and to link that discussion from the Project chat, so that future users consulting the talk page of the property will found the info (users interested in a property surely monitor it, but may not monitor the project chat). Thanks again! --Epìdosis
+
+@Epìdosis noted, and will do. This is my first time (I think) contributing beyond just updating the values in individual entries. Robertsky (talk)
+
+I'm unable to determine why predatory open-access publishing (Q17075959) is a subclass of (and not the same as) predatory publishing (Q29959533). Can anyone enlighten me?
+
+Seems like they're the selfsame thing. Dubious also is predatory open-access publishing (Q17075959) being a subclass of open-access publishing (Q29959484). --Tagishsimon (talk)
+
+predatory open-access publishing (Q17075959) was originally created as an item for "Predatory open-access publishing" on enwiki, and later set to be a subclass both of predatory publishing (Q29959533) and open-access publishing (Q29959484). Other languages were then linked to predatory open-access publishing (Q17075959) seemingly for the concept of predatory publishing in general, and the enwiki article (and English label) was later changed to the current form. I guess the question is whether there is any difference between predatory publishing and open-access predatory publishing, and if not the two items should probably be merged. Dogfennydd (talk)
+
+I'd say the OA version is only partially coincident with the general concept - we also have self-publishing company (Q149985) which can be a form of predatory publishing but generally not "OA". ArthurPSmith (talk)
+
+So we should rename predatory open-access publishing (Q17075959) as "predatory open-access publishing", and move anything related to the more general concept of predatory publishing up the chain to predatory publishing (Q29959533). Dogfennydd (talk)
+
+Support ArthurPSmith (talk)
+
+We do. --Tagishsimon (talk)
+
+I changed the label and moved the sitelinks. Sampling the sitelinks they seem to be essentially all on the same topic of academic predatory publishing which I don't think is the entire story; in any case that also is not limited to open access. ArthurPSmith (talk)
+
+Merge from: Q32324490
+
+Merge to: Q6305411
+
+"Conflicting descriptions for language en" Spidermine (talk)
+
+It was incorrect identified as a disambiguation page. However you still will not be able to merge them because student benefit (Q6305411) is already linked to en:student financial aid in Finland — Martin (MSGJ · talk)
+
+Okay, items merged, and new item created student financial aid in Finland (Q113161732) — Martin (MSGJ · talk)
+
+Hi, I'm looking into my institution possibly making a donation of data about Mormon literature. Our database sometimes includes information about individual poems. I was able to find Q2008338, Whitman's "Oh Captain! My Captain!". Does the scope of WikiData include poems that are less "notable" than "Oh Captain! My Captain!"? Rachel Helps (BYU) (talk)
+
+@Rachel Helps (BYU): Yes. In general, poems are notable with little or no reservation. At least 104062 on WD right now - https://w.wiki/5Umz --Tagishsimon (talk)
+
+Any idea why in cheesecake (Q215348) statement "topic's main category" shows "potential issues" with Norwegian Wikipedias, whereas Norwegian Wikipedias (Q191769) has the statement "instance of " Wikimedia project?--Carnby (talk)
+
+I don't know either. I notice that umbrella term (Q210588) is the preferred value so perhaps the constraint is not looking at the other value? — Martin (MSGJ · talk)
+
+I set Wikimedia Foundation project (Q14827288) as the preferred value and the warning sign has disappeared.-- Carnby (talk)
+
+@Carnby Why not keep both at NormalRank? Ranks are often misused in instance of (P31). Vojtěch Dostál (talk)
+
+@Vojtěch Dostál Yes, I think it's a good idea (and it seems to work, too).--Carnby (talk)
+
+I am evanglist Tesfaye Belachew the founder of Ethiopia Diakonia Theological College, i have many students in our college please we need more your advice and prayer. yours in crist Eva.tesfaye Eva.Dr. Tesfu (talk)
+
+@Eva.Dr. Tesfu: Welcome to Wikidata. Is there something related to this project on which we can advise you? Bovlb (talk)
+
+I propose a new request for comments about documented and featured queries : Wikidata:Requests for comment/Documented and featured SPARQL queries. PAC2 (talk)
+
+So now we have all calls for this template removed. When is it planned to be loaded automatically? --Infovarius (talk)
+
+It already is loaded automatically on every item talk page — Martin (MSGJ · talk)
+
+But it's not! --Infovarius (talk)
+
+@MSGJ: did you really think that I would write this question not checking talkpages? I don't see the template at talkpage either watching or editing it. --Infovarius (talk)
+
+I see it displaying correctly on existing talk pages (e.g. Talk:Q79089353) and also on non-existent talk pages (e.g. Talk:Q24546547 above the edit window). We are obviously not seeing the same things! — Martin (MSGJ · talk)
+
+MSGJ, Infovarius {{Item documentation}} is displayed in the talk page header of each item page using MediaWiki:Talkpageheader. Yet, this is not perfect. If the talk page exist, you should see it. If you're using the mobile Web interface, you should click on "read as a Wiki page" before seeing it. If the talk page don't exist, you maybe automatically redirected to edit the talk page. See example : https://m.wikidata.org/w/index.php?title=Talk:Q20968036&redlink=1#/editor/all. I know that this feature will be removed in the future (see https://phabricator.wikimedia.org/T308390). So for now, it's not really user friendly but you just need to cut the url to : https://m.wikidata.org/w/index.php?title=Talk:Q20968036 and it should work. --PAC2 (talk)
+
+@PAC2: Sorry, I don't see the template on either of both links: Talk:Q79089353 or https://m.wikidata.org/w/index.php?title=Talk:Q20968036. Neither on MediaWiki:Talkpageheader (should it be there too?) And I don't know how to see it at all (except returning template in source code).
+
+So? Am I the only one who don't see documentations? --Infovarius (talk)
+
+Comment I can see the Item documentation just fine (Desktop site). Jean-Fred (talk)
+
+Infovarius It's weird. Tell me if you're using the desktop or the mobile interface and which skin you're using (Vector, Timeless, Minerva). Here is a screenshot of what you should see.
+
+Also, you can add the following code in your common.js
+
+// Trick from https://phabricator.wikimedia.org/T308390 $(function () { var talk = document.querySelector('.minerva__tab[rel="discussion"]'); if (talk) { talk.href = talk.href.replace('&action=edit&redlink=1', ''); } }());
+
+See example : User:PAC2/minerva.js.
+
+Hope it helps. PAC2 (talk)
+
+Hi, this seems to be an interface language issue. I can't see item documentations when using German as interface language. It seems to work when switching to English (or French). - Valentina.Anitnelav (talk)
+
+You're right. I've just seen that MediaWiki:Talkpageheader/fr has a transclusion to MediaWiki:Talkpageheader but MediaWiki:Talkpageheader/it, MediaWiki:Talkpageheader/es and MediaWiki:Talkpageheader/de don't. I'll ask admins if they can resolve this problem. PAC2 (talk)
+
+@PAC2: I've added the code to my js and now I see the header at https://m.wikidata.org/w/index.php?title=Talk:Q20968036, but not at Talk:Q79089353. Probably the interface language is the issue, so I ask to create MediaWiki:Talkpageheader/ru. I am using Russian interface language and Vector(2010) skin. --Infovarius (talk)
+
+Great. Now we need an admin to solve this problem. PAC2 (talk)
+
+2005 Cypriot Super Cup (Q63461563) -> participating team (P1923)
+
+1) Normal time score 1-1. After overtime (Q186982) 2-2. How to add this?
+
+2) penalty kick (Q279532) 5-4. How to add this?
+
+Thanks. Philocypros (talk)
+
+I would do the following:
+
+participating team (P1923)AC Omonia (Q240783)number of points/goals/set scored (P1351)1 Q28454519
+
+participating team (P1923)Anorthosis Famagusta FC (Q141688)number of points/goals/set scored (P1351)1 Q28454519
+
+participating team (P1923)AC Omonia (Q240783)number of points/goals/set scored (P1351)2 Q28454519relative to (P2210)overtime (Q186982)
+
+participating team (P1923)Anorthosis Famagusta FC (Q141688)number of points/goals/set scored (P1351)2 Q28454519relative to (P2210)overtime (Q186982)
+
+participating team (P1923)AC Omonia (Q240783)number of points/goals/set scored (P1351)5 Q28454519relative to (P2210)penalty shoot-out (Q2691960)
+
+participating team (P1923)Anorthosis Famagusta FC (Q141688)number of points/goals/set scored (P1351)4 Q28454519relative to (P2210)penalty shoot-out (Q2691960)
+
+It seems the relative to (P2210) qualifiers would be more appropriate on number of points/goals/set scored (P1351) qualifiers, but Wikidata doesn't support qualifiers for qualifiers.
+
+BTW, 2005 Cypriot Super Cup (Q63461563) says it's an instance of (P31)sports season (Q27020041) , but the results are only for one match. Was there really just the one match in it? Silver hr (talk)
+
+Hi - I'm working on adding the 2022 Calgary Folk Music Festival as a part of the main Calgary Music Festival (Q5019671). I've added the 2022 festival entry (Q113205740) as 'part of' the main festival and would like to begin adding the bands & artists to this year's festival, but it isn't letting me add them as performers on that page. What should I use as instance for the artists? I tried adding Xenia Franca as a performer; she already has an entry (Q64213699), but it just disappears as soon as I add it. Thanks for any helpǃ I may have added them in wrong. JollyJamboree (talk)
+
+You had no P31 nor P279 value set, which was what the constraint violation was complaining about. I've fixed that. Note sure if participant (P710) or performer (P175) is the best choice for the artists roster. --Tagishsimon (talk)
+
+Thank you - I will use participant in. for the qualifier, can I use musician > singer? And then on the festival page, would I add the same but use participant with musician > singer as the qualifier? JollyJamboree (talk)
+
+I'd be adding a participant (P710) statement to Calgary Folk Music Festival 2022 (Q113205740) qualified by object has role (P3831) taking a value such as singer (Q177220). --Tagishsimon (talk)
+
+I think I had it wrong - on the festival page, I am adding the musicians as 'participant in' the festival, but am not sure what the qualifier would be for the festival or if I need one. JollyJamboree (talk)
+
+Right now you are using performer (P175) as the qualifier on participant (P710) in Calgary Folk Music Festival 2022 (Q113205740). THat is assuredly wrong. Use object has role (P3831). The role that Xênia França took as a participant in the Calgary Folk Music Festival 2022 was as a singer. --Tagishsimon (talk)
+
+And okay, I see that elsewhere you are adding participant in (P1344) to artist items to say that they participated in Calgary Folk Music Festival 2022 (Q113205740). Whilst I appreciate that property exists, it is complete and utter nonsense on stilts to seek to list everything that an artist participated in, on the artist page. This is a linked data project. Noting their participation on the festival item is amply sufficient. Adding their participation in the artist item is, IMO, indistinguishable from vandalism. You will notice your P1344 additions, e.g. on Q1372074#P1344, are the only use of the property on the item. --Tagishsimon (talk)
+
+Just chiming in to say we now also have P9788 (P9788) specifically for musicians and bands performing at things and places. Moebeus (talk)
+
+In South Asia, specifically in Indian Hindi cinema, most songs are picturised on specific actors and dancers. For which they are also credited and are known for in the cultural zeitgeist, along with the singers.
+
+There is no property for "picturisation", but I assumed adding actors or dancers as performers and qualifying them as such may be the best approach.
+
+Example: In the song - Yeh Mera Dil Yaar Ka Diwana (Q55657899)
+
+I have added an additional instance of (P31) = musical number (Q73067531);
+
+And then,
+
+performer (P175) = Asha Bhos (Q38393)
+
+subject has role (P2868) = playback singer (Q1755412)
+
+performer (P175) = Helen (Q467223)
+
+subject has role (P2868) = dancer (Q5716684) or actor (Q33999)
+
+Other Examples in the songs - Chandni O Meri Chandni (Q113155178) & Zara Zara Touch Me (Q113151376)
+
+However, is the property cast member (P161) more appropriate, as it is in a film? Example: In the song - Kabhi Kabhie Mere Dil Mein (Q6344091)
+
+Notified participants of WikiProject Movies
+
+WikiProject Music has more than 50 participants and couldn't be pinged. Please post on the WikiProject's talk page instead. WikiProject India has more than 50 participants and couldn't be pinged. Please post on the WikiProject's talk page instead.
+
+I personally prefer the use of performer (P175), but am open to any suggestion as I am trying to have some consistency going forward, and cannot seem to find any other examples, including in western music videos. Wallacegromit1 (talk)
+
+You probably want object has role (P3831) rather than subject has role (P2868) for those qualifiers, since the performers are the objects (not subjects) of the statements. Jheald (talk)
+
+@Jheald Thanks will do! Wallacegromit1 (talk)
+
+Hi there! I hope you will reconsider adding the extra p31. This conflates the composition and the performance (in your case a "musical number"). If you can find a soundtrack album, then add an audio track (Q7302866) to the tracklist (P658) of the album, then link it to the composition using recording or performance of (P2550). If there is no soundtrack album, or you can't easily find one, you also have the option of linking the performance item from the film directly, using featured track(s) (P10664). A property we very recently got. Hope that helps. Moebeus (talk)
+
+@Moebeus Will remove "Musical Number", and try your suggestions.
+
+But, would it not create an individual item for every single song/performance? Was hoping to reduce new item creations when talking about the same thing. As music/songs already have many variations.
+
+Thanks! Wallacegromit1 (talk)
+
+It would indeed lead to individual items, but for this editor that is a goal and not a problem :) EDIT: As I noticed this blue fringe dress of Katrina Kaif (Q112606691) I realize you are perhaps not *that* worried about making individual items for things ;-) Moebeus (talk)
+
+@Moebeus That was the fashion project. Lol!
+
+Was just worried about too many items having the same title. But I guess, the MusicBrainz database is also doing the same.
+
+Saw your new music video item Zara Zara Touch Me (Q113255309). Seems like a good template. Thanks! Wallacegromit1 (talk)
+
+Several hundred artists have the property "has works in the collection (P6379)" with the value "Führermuseum (Q475667)".
+
+The Führermuseum was never, and will never be, built, and the pieces which were intended for it have long since been distributed to other institutions (if they haven't been lost or destroyed).
+
+Therefore, I argue that including that property and that field - and, for individual artworks, the corresponding "location (P276)" with the value "Führermuseum (Q475667)" - is misleading, if not actually false, and that all such claims should be deleted.
+
+Since various bots have interpreted museums' provenance lists as meaning that individual artworks are in the F., it might be worth blocking this claim from being created henceforth, assuming that's even possible? DS (talk)
+
+@DragonflySixtyseven: the Linzer Sammlung (Führermuseum (Q475667)) did exist and did have a lot of works in it's collection. Some languages refer to it as "Führermuseum" and others as "Linzer Sammlung"/"Sonderauftrag Linz".I don't think you question that The Astronomer (Q544315) has been in this collection? It is supported by several sources. What you're proposing is destroying the provenance of these works. That's of course something I strongly oppose.
+
+It's a bit of philosophical question: When does a museum come into existence? This museum was aborted, but did it exist or not? Multichill (talk)
+
+The museum was never built and the art that was destined for the museum remained in warehouses, transport trains, and finally was stored in salt mines. If you want to track the provenance, you will have to come up with a better way to model the artwork. A better way would be "confiscated by the Nazis". There were several books made to show how each wall of the museum would look, and what art work would hang where, but the art never made it out of storage. --RAN (talk)
+
+RAN Always open for improvements, but here you're just saying that it's wrong without a solution so nothing will change. How do you propose to solve this problem? Multichill (talk)
+
+While there are cases where original art can be useful within Wikidata I don't think it is in this case. If the museums' provenance lists show this mapping then Wikidata should show it as well even if it might be problematic.
+
+Even if we would decide that the claims are problematic, deprecating them would be better then deleting. ChristianKl ❪✉❫
+
+@ChristianKl: I must be misunderstanding your reply. You don't think it's important to list that The Astronomer (Q544315) was looted? What exactly do you want to deprecated on this item? Multichill (talk)
+
+The proposal for P460 states that the intent for its use is to document claims about historical people by some scholars who say that they are in fact the same person, and it was approved with that in mind.
+
+Furthermore, the name of the property is "said to be the same as"; nothing is ever "said" as if it comes into existence on its own. There is always some person doing the saying. And this person can't be the Wikidata editor making the claim because that would be original research. This is why it makes no sense to not ask for the source when applying this property.
+
+And in any case, the Help:Sources guideline clearly indicates that almost all statements in Wikidata should be supported by a source. Silver hr (talk)
+
+The description says that the statement is "uncertain or disputed", so a source for it is not needed and is not endorsed by Wikidata:Verifiability in that sense. Because most terms are simply logical, especially in the area of personal names. For example, Fink, Finke, Finken, etc. or Miller, Muller, Müller, Möller, etc. all come from the same profession, so there is no need for a source. With the change, several hundred thousand sources would have to be inserted by name, just because, exceptionally, a source is missing somewhere else. --HarryNº2 (talk)
+
+The "uncertain or disputed" bit in the description means that it's to be used for cases when it's not completely obvious that two concepts are the same; instead someone is making that claim, but not everyone necessarily agrees with it. This is why it's important to state who is making the claim. Also, what's obvious to one person, might not be to someone else. Adding a source resolves the problem. Silver hr (talk)
+
+By the way, I've noticed that you do a lot of work on family names, including adding statements like Miller (Q1605060)said to be the same as (P460)Möller (Q1184002) . But those statements seem to claim that two different family names are the same concept, which is incorrect. Their spelling is obviously very similar, which is probably due to them originating from the same concept, but it does not make them the same concept. It might be a subtle semantic distinction, but it's an important one nonetheless. (In the case of Miller (Q1605060) and Möller (Q1184002), that connection is already captured in the statement instance of (P31)occupational surname (Q829026)of (P642)miller (Q694116) , and I expect the same is/can be done in other cases.) Silver hr (talk)
+
+If the intent is for the property to be used for disputed claims, the aliases should all have weasel words like 'may', and we should have a new property for uncontroversial equivalence statements. Simple statements like 'same as' should not have the overhead of finding citations, which can often be of poor quality anyway. A split would be a lot of work. References are good, nagging about them is bad. Vicarage (talk)
+
+I took a look around, and it seems there are currently a few ways of dealing with the sameness of concepts on Wikidata. One is redirects, which get exported to RDF as owl:sameAs. When a merge/redirect isn't possible, there's permanent duplicated item (P2959) which relates WD item to WD item, and it obviously doesn't need sourcing because its claims are about WD items themselves (which is semantically unfortunate because properties are supposed to relate concepts which the items represent). Finally, there's exact match (P2888) which is the equivalent of skos:exactMatch, it relates WD items to external items, and doesn't need sourcing for the same reason. Silver hr (talk)
+
+Help:Sources is not a guideline. Guidelines are things that went through an RfC to be approved as guidelines and that have the guideline template. In contrast to Wikipedia, Wikidata doesn't have a rule that original research is strictly forbidden. said to be the same as (P460) is frequently used in cases where we have two Wikidata items because there's a Wikipedia that has two articles for a concept we consider to be the same. It's very useful to have a way to label those cases even if it's original research to say that we believe that those two Wikipedia articles are about the same topic. ChristianKl ❪✉❫
+
+I stand corrected about Help:Sources being a guideline; in my defense it does say it's a guideline in the text. You bring up a valid point that there are edge cases when original research statements might be allowable, but I think at the very least they should be heavily discouraged. After all, one of the founding principles of Wikidata is that it's not a source of truth, but a database of referenced statements. Silver hr (talk)
+
+Sometimes Wikidata editors are not 100% certain that two entries are the same, so we keep both and use "said to be the same as". We encounter this the most with researchers of scientific papers, "A.B. Smith" appears to be "Abraham B. Smith" and "Abram B. Smith" with 90% certainty, so it is flagged for someone in the future to reevaluate when more resources are available. --RAN (talk)
+
+Both you and User:ChristianKl mentioned edge cases where an unsourced use of the property is legitimate and useful; both of those uses are internal as far as I can see. Internal-use properties, such as those that can be found in Wikidata:List_of_properties/Wikidata_property_for_properties, obviously don't require sources. I don't think, however, that we should have mixed-use properties, that is, properties used both for internal purposes and for describing the outside world, because then confusion and misuse can arise, and it seems that currently P460 is used in this way. Silver hr (talk)
+
+@Silver hr: If we want to move some of the current usages of P460 to a new property that would require a property proposal for a new property. To make that case for such a step, I think you would need to analyse the current usage more and point to problems that arise from the status quo. The fact that you don't like the status quo alone likely isn't enough for that case.
+
+Practically, I'm unsure whether there's a strict separation between internal and external usages for P460. It's inherently about whether or not two Wikidata items point to the same object in the real world and in that sense is about modeling decisions we do in Wikidata. ChristianKl ❪✉❫
+
+In the case you mentioned previously of two items that are about the same concept but can't be merged, I think permanent duplicated item (P2959) would be the appropriate property. No sourcing would be necessary for that because the claim is about two Wikidata items, i.e. it's internal use.
+
+As for other incorrect usages of P460, they might require a new property, yes. That doesn't preclude enabling the citation needed constraint on P460 to serve as a reminder of the original/actual meaning of the property, i.e. that it's about equality claims specifically made by a source. I really don't see the problem with this; I mean it's not li

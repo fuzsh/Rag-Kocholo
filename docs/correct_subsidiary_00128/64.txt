@@ -1,0 +1,69 @@
+Month: July 2007
+
+Oracle buys Bharosa
+
+I’m completely impressed just by the descriptions of the new tools that Oracle is getting with its Bharosa acquisition. If this stuff does even half of what it is advertising it can do, I’ll be very impressed. If you’re wondering what this is all about, please check out the post on the Talking Identity blog … Continue reading “Oracle buys Bharosa”
+
+I’m completely impressed just by the descriptions of the new tools that Oracle is getting with its Bharosa acquisition. If this stuff does even half of what it is advertising it can do, I’ll be very impressed. If you’re wondering what this is all about, please check out the post on the Talking Identity blog at http://blogs.oracle.com/talkingidentity/2007/07/25#a135. What a great an exciting addition this tool will make to the Suite!
+
+As I learn more, I’ll be continuing to post more information here. For now, it’s on to a vacation day tomorrow!
+
+The Best Oracle Database 11g New Features
+
+Oracle Database 11g was officially launched today. As a beta tester for the product, I can say that this product has some very interesting new features that really make me want to recommend the upgrade to Oracle Database 11g. Here are my thoughts on a few of the new features in Oracle Database 11g. Database … Continue reading “The Best Oracle Database 11g New Features”
+
+Oracle Database 11g was officially launched today. As a beta tester for the product, I can say that this product has some very interesting new features that really make me want to recommend the upgrade to Oracle Database 11g.
+
+Here are my thoughts on a few of the new features in Oracle Database 11g.
+
+Database Replay (Real Application Testing): This feature allows you to capture the actual workload on one system and then “play back” that workload on another database. It acts sort of like a load testing tool, but better because it actually uses the real workload from a live system to generate the load on the secondary system. The capture will include all queries, DDL, DML, and all other activity in the database. It also includes the actual timing for each event so that concurrency is also kept the same. For me, this is the most compelling new feature in Oracle Database 11g and I think it will ultimately have the most impact. If the capture can be gathered on a 10g or 9i database, the feature will be even more compelling. Rumors abound, but I’ve heard that a 10g capture may be coming in the future. Just imagine–what if you could actually test your real application workload on a new database release before doing the upgrade…awesome!
+
+SecureFiles: I didn’t put this new feature through any performance tests, but from the technical descriptions I’ve received, it will certainly have a positive impact. Basically, SecureFiles are the next generation of LOBs. Syntactically, you can almost miss the STORE AS SECUREFILE in the CREATE TABLE syntax. However, you won’t likely miss the performance impact of using SecureFiles–some testing has shown peformance comparable to filessytem access.
+
+Invisible Indexes: Ever have one query that could use that extra index, but that index causes severe problems for the other queries accessing that object? If so, then an invisible index may be the answer. Basically, an invisible index is one that the optimizer only considers when it is hinted to consider that index. In all other situations, it is ignored (because it is “invisible”).
+
+Partitioning Enhancements: You can use just about any combination of partitioning and subpartitioning schemes together in 11g. The restrictions from previous versions are lifted. The SQL Access Advisor now also includes the ability to recommend partitioning for an object if you’re not sure whether or not it will help.
+
+PL/SQL Enhancements:
+
+PL/SQL Fine-Grained Dependency Checking: This will enable PL/SQL stored code to remain valid if the object doesn’t require invalidation. For example, if you add a column to a table, the PL/SQL package that depends on that table shouldn’t become invalid in most cases.
+
+PL/SQL Automatic Native Compilation: Native Compilation has been available for the past several releases, but it had significant prerequisites including a C compiler. This new feature includes the necessary compiler and automates the steps involved so that PL/SQL can be natively compiled automatically.
+
+Results Caching: I’m a skeptic, but if this really does work well and gives current, non-stale data, it will be a very, very big deal.
+
+Flashback Data Archive (“Total Recall”): If you liked the flashback table and flashback transaction features, you’ll love this. It basically takes the undo information that is used to provide the flashback table feature and archive that data so that flashback table can be performed for as long as you have disk space to support it.
+
+Segregation of Ownership: One of the important features for larger organizations is the ability to segregate ownership of the Oracle software. For Oracle RAC clusters, there are typically three separate installations: Clusterware, ASM, and DBMS. With Oracle Database 11g, the beginning of support for separation of duties is visible. Oracle has acknowledged that some customers have system administrators that care for the Clusterware, but don’t know (or really care about) the database. The storage administrators are very interested in ASM and how it works so they can configure and support database storage better, but they don’t really know much about the database. And finally, while some DBAs are fluent in Clusterware and ASM, many know a little about Clusterware, a little more about ASM, but mainly focus on the database. Oracle’s new release will include documentation arranged in a manner that supports this segregation of duties.
+
+Rolling Upgrades: This new feature is what you think it is, but it won’t apply to upgrades to 11g. It will, however, apply to many of the patches that will be released on top of the 11g database. That’s another big motivating factor to upgrade–so that future patches and upgrades will incur less downtime.
+
+Automatic Partition Adds (Interval Partitioning): This is the automation that many people have done via a custom process for years. Basically, if you have a partitioned object that regularly requires you to add new partitions (commonly, this is when s date is in the partition key). With this new feature, Oracle will automatically add the new partition on the first insert that should go into this new partition. Obviously, you can still create new partitions by your own methods, but you might consider doing that by just running an insert and rollback instead of through a custom process as many customers do today.
+
+Managed Recovery Physical Standby: Finally! You can apply logs to a physical standby database while it is open read-only. There’s some black magic that makes this possible that I’m sure will be the source of much speculation until it’s guts are exposed.
+
+Besides these highlights, there are many other features that deserve mention. Many of those features are related to lifecycle management. Some very interesting advancements related to query tuning, testing those tuned queries, and rolling the new execution plans into production in a controlled, straightforward manner are among some of the most interesting to me. In another area of lifecycle management, managing less-frequently-accessed data, Oracle provides methods to migrate that data to less expensive storage to use the storage budget most efficiently without taking data offline.
+
+Oracle Database 11g Launch
+
+Today, July 11th, was the launch of Oracle Database 11g. From a technologist’s point of view, it’s a somewhat anticlimactic day since you can’t actually get your hands on the bits yet. However, there was some technical information posted on OTN and a nice overview presentation that was webcast online live from New York City. … Continue reading “Oracle Database 11g Launch”
+
+Today, July 11th, was the launch of Oracle Database 11g. From a technologist’s point of view, it’s a somewhat anticlimactic day since you can’t actually get your hands on the bits yet. However, there was some technical information posted on OTN and a nice overview presentation that was webcast online live from New York City.
+
+I’ve got a lengthy article prepared on some of my favorite features of 11g, but I’m not sure if I can post it yet. I need to sort out what information they’ve made public and which parts haven’t been disclosed yet. My company and I are participating in the 11g beta program, so I want to be sure I don’t let the cat out of the bag too soon with respect to some of the new features that may not have yet been disclosed. In fact, as we’re reminded often, some of the features we tested may not be in the final product if they aren’t ready or mature enough.
+
+So, watch for an article from me either here or on OTN in the next week or two after I make sure it’s properly censored. In the meantime, I encourage everyone to read the whitepapers on OTN.
+
+Licensing continues to “uninterest” me
+
+I am spending more and more time lately reading the writings of others in the Oracle technology space. Many of those readings start by following a link posted on the Oracle-L list. Today’s linkfest led me to a great Open Letter to Larry Ellison on AWR and ASH Licensing by Mark Brinsmead. I first had … Continue reading “Licensing continues to “uninterest” me”
+
+I am spending more and more time lately reading the writings of others in the Oracle technology space. Many of those readings start by following a link posted on the Oracle-L list.
+
+Today’s linkfest led me to a great Open Letter to Larry Ellison on AWR and ASH Licensing by Mark Brinsmead. I first had to understand the issue as I’ve made it a high priority to learn as little about Oracle Licensing as possible. Right or wrong, I’ve continued to contend that it seems to change week-to-week and there’s at least a full-time job to just keep up with the changes.
+
+Anywho, the issue is that in order to have any interaction with the Automatic Database Diagnostic Monitor (ADDM), Automatic Workload Repository (AWR) or Active Session History (ASH), you must license the Enterprise Manager Diagnostic Pack. (Don’t believe me?) This pack is licensed on top of your database license and currently lists for $60 per named user or $3,000 per processor.
+
+As you’ll find linked in the open letter posting above, I found more interesting reading in this area in a few articles, one by Jared Still on DBAzine.com, and from last year, another by Jonathan Lewis.
+
+While there was no interest in licensing that could be “sparked” by this new finding, I do like to help customers (and my own employer) stay in compliance with licensing restrictions, so this is good to know. I’d encourage you to add your name to the list of signatories on Mark’s open letter.

@@ -1,0 +1,325 @@
+Question
+
+Answer
+
+Further Reading
+
+What is MarkLogic's Built-In search feature?
+
+MarkLogic is a database with a built-in search engine, providing a single platform to load data from different silos and search/query across all of that data
+
+It uses an "Ask Anything" Universal Index where data is indexed as soon as it is loaded - so you can immediately begin asking questions of your data
+
+You want built-in search in your database because it:
+
+Removes the need for a bolt-on search engine for full-text searches, unlike other databases
+
+Enables you to immediately search/discover any new data loaded into MarkLogic, while also keeping track of your data as you harmonize it
+
+Can be leveraged when building apps (both transactional and analytical) that require powerful queries to be run efficiently, as well as when you want to build Google-like search features into your application
+
+Documentation:
+
+Built-in search
+
+Search All Your Data With an "Ask Anything" Universal Index
+
+"Ask Anything" Universal Index
+
+What features are available with MarkLogic search?
+
+MarkLogic includes rich full-text search features. All of the search features are implemented as extension functions available in XQuery, and most of them are also available through the REST and Java interfaces. This section provides a brief overview some of the main search features in MarkLogic and includes the following parts:
+
+High Performance Full Text Search
+
+Search APIs
+
+Support for Multiple Query Styles
+
+Full XPath Search Support in XQuery
+
+Lexicon and Range Index-Based APIs
+
+Alerting API and Built-Ins
+
+Semantic Searches
+
+Template Driven Extraction (TDE)
+
+Where to Find Additional Search Information
+
+Documentation:
+
+Searching in MarkLogic Server
+
+Developing Search Applications in MarkLogic Server
+
+Search Customization using Query Options
+
+KB Article:
+
+Semantics, SQL, TDE, and Optic Primer
+
+What are the various search APIs provided by MarkLogic?
+
+MarkLogic provides search features through a set of layered APIs.
+
+The built-in, core, full-text search foundations are the XQuery cts:* and JavaScript cts.* APIs
+
+The XQuery search:*, JavaScript jsearch.*, and REST APIs above this foundation provide a higher level of abstraction that enable rapid development of search applications.
+
+E.g.: The XQuery search:* API is built using cts:* features such as cts:search, cts:word-query, and cts:element-value-query.
+
+On top of the REST API are the Java and Node.js Client APIs that enable users familiar with those interfaces access to the MarkLogic search features
+
+This diagram illustrates the layering of the Java, Node.js, REST, XQuery (search and cts), and JavaScript APIs.
+
+Documentation:
+
+Search APIs
+
+What happens if you decide to change your index settings after loading content?
+
+The index settings are designed to apply to an entire database and MarkLogic Server indexes records (or documents/fragments) on ingestion based on these settings. If you change any index settings on a database in which documents are already loaded:
+
+If the “reindexer” setting on the database is enabled, reindexing happens automatically
+
+Otherwise, one should force reindex through the “reindex” option on the database “configure” page or by reloading the data
+
+Since the reindexer operation is resource intensive, on a production cluster, consider scheduling the reindex during a time when your cluster is less busy.
+
+Additionally, as reindexing is resource intensive, you’ll be best served to test any index changes on subsets of your data (as reindexing subsets will be faster and use fewer resources), then only promote those index changes to your full dataset once you’re sure those index settings are the ones you’ll want going forward
+
+Documentation:
+
+Text indexes
+
+KB Article:
+
+Indexing best practices
+
+What is the role of language baseline setting? What are the differences between legacy and ML9 settings?
+
+The language baseline configuration is for tokenization and stemming language support. The legacy language baseline setting is specified to allow MarkLogic to continue to use the older (MarkLogic 8 and prior versions) stemming and tokenization language support, whereas the ML9 setting would specify that the newer MarkLogic libraries (introduced in MarkLogic 9) are used.
+
+If you upgrade to MarkLogic 9 or later from an earlier version of MarkLogic, your installation will continue to use the legacy stemming and tokenization libraries as the language baseline.
+
+Any fresh installation of MarkLogic will use the new libraries. If necessary, you can change the baseline configuration using admin:cluster-set-language-baseline.
+
+Note: In most cases, stemming and tokenization will be more precise in MarkLogic 9 and later.
+
+Documentation:
+
+Known incompatibilities with previous releases
+
+What is the difference between unfiltered vs filtered searches?
+
+In a typical search:
+
+MarkLogic Server will first do index resolution from the D-Nodes - which results in unfiltered search results. Note that unfiltered index resolution is fast but may include false-positive results
+
+As a second step, the Server will then do filtering of those unfiltered search results on the E-Nodes to remove false positives from the above result set - which results in filtered search results. In contrast to unfiltered searches, filtered searches are slower but more accurate
+
+While searches are filtered by default, it is often also possible to explicitly perform a search unfiltered. In general, if search speed, scale, and accuracy are priorities for your application, you’ll want to pay attention to your schemas and data models so unfiltered searches return accurate results without the need for the slower filtering step
+
+Documentation:
+
+cts:search
+
+Fast Pagination and Unfiltered Searches
+
+KB Articles:
+
+Fast searches: resolving from the indexes vs. filtering
+
+When should I look into query or data model tuning?
+
+Is filtering during a search bad?
+
+Filtering isn’t necessarily bad but:
+
+It is still an extra step of processing and therefore not performant at scale
+
+A bad data model often makes things even worse because they’ll typically require unnecessary retrieval of large amounts of unneeded information during index resolution - all of which then will be filtered on the e-nodes
+
+To avoid performance issues with respect to filtering, try:
+
+Adding additional indexes
+
+Improving your data model to more easily index/search without filtering
+
+Structuring documents and configuring indexes to maximize both query accuracy and speed through unfiltered index resolution alone
+
+Documentation:
+
+cts:search
+
+Fast Pagination and Unfiltered Searches
+
+KB Articles:
+
+Fast searches: resolving from the indexes vs. filtering
+
+When should I look into query or data model tuning?
+
+What is the difference between cts.search vs jsearch?
+
+cts.search() runs filtered by default.
+
+JSearch runs unfiltered by default.
+
+JSearch can enable filtering by chaining the filter() method when building the query: http://docs.marklogic.com/DocumentsSearch.filter
+
+Note: Filtering is not performant at scale, so the better approach is to tune your data model and indexes such that filtering is not necessary.
+
+Documentation:
+
+cts:search
+
+Creating JavaScript search applications
+
+How do data models affect Search?
+
+Some data model designs pull lots of unnecessary data from the indexes with every query. That means your application will:
+
+Need to do a lot of filtering on the e-nodes
+
+Use more CPU cycles on the e-node to do that filtering
+
+Even with filtering disabled, you’re still be pulling lots of position information from the indexes - which means you’ll be using lots of CPU on the e-nodes to evaluate which positions are correct (and unlike filtering, position processing can’t be toggled on/off)
+
+Retrieving more data means an increased likelihood of CACHEFULL errors
+
+How you represent your data heavily informs the speed, accuracy, and ease of construction of your queries. If your application needs to perform and/or scale, its data model is the first and most important thing on which to focus
+
+Documentation:
+
+Data Modeling Tutorial
+
+KB Articles:
+
+When should i look into query or data-model tuning?
+
+Performance Issues in MarkLogic Server: what they look like - and what you should do about them
+
+How do I optimize my application’s queries?
+
+There are several things to consider when looking at query performance:
+
+How fast does performance need to be for your application?
+
+What indexes are defined for the database?
+
+Is your code written in the most efficient way possible?
+
+Can range indexes and lexicons speed up your queries?
+
+Are your server parameters set appropriately for your system?
+
+Is your system sufficiently large for your needs?
+
+Access patterns and resource requirements differ for analytic workloads
+
+Here is a checklist for optimizing query performance:
+
+Is your query running in “Accidental” update mode?
+
+Are you running cts:search unfiltered?
+
+Profile your code
+
+Use indexes when appropriate
+
+Optimize cts:search using indexes
+
+Tuning queries with query-meters and query-trace
+
+Documentation:
+
+Query Performance and Tuning Guide
+
+Tuning Queries with query-meters and query-trace
+
+Blog:
+
+A checklist for optimizing Query Performance
+
+KB Article:
+
+Performance Issues in MarkLogic Server: what they look like - and what you should do about them
+
+How to ensure wildcard searches are fast?
+
+The following database settings can affect the performance and accuracy of wildcard searches:
+
+word lexicons
+
+element, element attribute, and field word lexicons. (Use an element word lexicon for a JSON property).
+
+three character searches, two character searches, or one character searches. You do not need one or two character searches if three character searches is enabled.
+
+three character word positions
+
+trailing wildcard searches, trailing wildcard word positions, fast element trailing wildcard searches
+
+fast element character searches
+
+The three character searches index combined with the word lexicon provides the best performance for most queries, and the fast element character searches index is useful when you submit element queries. One and two character searches indexes are only used if you submit wildcard searches that try to match only one or two characters and you do not have the combination of a word lexicon and the three character searches index. Because one and two character searches generally return a large number of matches and result in much larger index storage footprints, they usually are not worth subsequent disk space and load time trade-offs for most applications
+
+Lastly, consider using query plans to help optimize your queries. You can learn more about query optimization by consulting our Query Performance and Tuning Guide
+
+Documentation:
+
+Recommended Wildcard Index Settings
+
+Understanding the Wildcard Indexes
+
+Understanding and using Wildcard Searches
+
+Blog:
+
+The Secrets to Wildcard Search in MarkLogic
+
+What are the factors that affect relevance score calculations?
+
+The score is a number that is calculated based on
+
+Statistical information, including the number of documents in a database
+
+The frequency in which the search terms appear in the database
+
+The frequency in which the search term appears in the document
+
+The relevance of a returned search item is determined based on its score compared with other scores in the result set, where items with higher scores are deemed to be more relevant to the search.
+
+By default, search results are returned in relevance order, so changing the scores can change the order in which search results are returned.
+
+Documentation:
+
+Understanding How Scores and Relevance are Calculated
+
+KB Article:
+
+Understanding Term Frequency rules for relevance calculations
+
+How do I restrict my searches to only parts of my documents (or exclude parts of my documents from searches altogether)?
+
+MarkLogic Server has multiple ways to include/exclude parts of documents from searches.
+
+At the highest level you can apply these restrictions globally by including/excluding elements in word queries. Alternative (and preferably), you can also define specific fields, which are a mechanism designed to restrict searches to specifically targeted elements within your document
+
+KB Article:
+
+Best practices when trying to search (or not search) parts of documents
+
+How do I specify that the match must be restricted to the top level attributes of my JSON document?
+
+You can configure fields in the database settings that are used with the cts:field-word-query, cts:field-words, and cts:field-word-match APIs, as well as with the field lexicon APIs in order to fetch the desired results.
+
+You can create a field for each top-level JSON property you want to match with indexes. In the field specification you should use a path expression /property-name for the top-level property "property-name". Then use field queries to match the top level property.
+
+Depending on your use-case, this could be an expensive operation due to the indexes involved resulting in slower document loads and larger database files.
+
+Documentation:
+
+Fields Database Settings

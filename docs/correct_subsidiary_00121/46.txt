@@ -1,0 +1,639 @@
+Day 7
+
+Chapter 14
+
+Frames and Linked Windows
+
+CONTENTS
+
+What Are Frames and Who Supports Them? Working with Linked Windows
+
+The <BASE> Tag
+
+Working with Frames
+
+The <FRAMESET> Tag The <FRAME> Tag The <NOFRAME> Tag
+
+Creating Complex Framesets
+
+Nesting <FRAMESET> Tags Magic TARGET Names
+
+Summary Q&A
+
+Before you learn about the details of setting up your own Web site on Day 8, "Going Live on the Web," there is one final subject to cover: that of frames. Frames are a very advanced new feature that provides an entirely different way of looking at Web pages. However, they are also currently supported only in Netscape 2.0, and even worse, pages created using frames are not easily backward-compatible with other browers.
+
+In this chapter you'll learn all about the following topics:
+
+What frames are, what they give you in terms of layout, and who supports them
+
+Working with linked windows
+
+Working with frames
+
+Creating complex framesets
+
+What Are Frames and Who Supports Them?
+
+Most of the features and tags discussed in previous chapters will, as a rule, basically work on just about any Web browser. The appearance of the page might not be exactly what you had expected, but at the very least, people with older Web browsers can still view the text and links contained on the page.
+
+In this chapter, however, you'll learn about a new set of tags-used to create frames-that currently work only with Netscape 2.0 (and throughout this chapter, whenever I refer to Netscape, I'll mean specifically Netscape 2.0 or higher). In addition, due to the nature of these tags, Web pages created using frames simply won't display using other browsers. You can, however, use special tags to create separate frame-based and non-frame-based versions of your pages, as you'll learn later in this chapter. The fact that frames can't be displayed on other Web browsers has made frames one of the most hotly debated topics of the "Netscape versus the rest" debate.
+
+Note
+
+Netscape plans to submit the new frame tags for recognition as part of the HTML 3.2 standard, but it will probably be some time before you see the arrival of other browsers that include the feature discussed in this chapter.
+
+This having been said, if you plan to develop presentations specifically for Netscape 2.0, the capabilities provided by the use of frames bring an entirely new level of layout control to Web publishing. Take, for example, the demonstration Web page created by Netscape Communications that is shown in Figure 14.1.
+
+Figure 14.1 : A sample Web page with frames.
+
+In this one screen, Netscape has integrated information that would previously have taken many separate screen loads. In addition, because the information displayed on the page is separated into individual areas or frames, the contents of a single frame can be updated without the contents of any other frame being affected. For example, if you click any of the hotlinks associated with the photos in the left frame, the contents of the large frame on the right are automatically updated to display the personal details of the selected staff member. When this occurs, the contents of the left frame and the bottom frame are not affected.
+
+Apart from the demonstration pages provided by Netscape, other sites are currently adding frame support to their Web pages. Of these, one site you might find handy is the color index page developed by InfiNet located at http://www.infi.net/wwwimages/colorindex.html (see Figure 14.2). This page provides a handy reference for many of the colors you can use for backgrounds and text colors, with the colors in the frame on the left and the results in the frame on the right.
+
+Figure 14.2 : The InfiNet color index.
+
+Working with Linked Windows
+
+Before looking at how frames are added to a page, you first need to learn about a new attribute of the <A> tag called TARGET. This new attribute takes the following form:
+
+TARGET="window_name"
+
+Usually, when you click a hyperlink, the contents of the new page replace the current page in the browser window. In a windowed environment, however, there is technically no reason why the contents of the new page can't be displayed in a new window, leaving the contents of the calling page displayed onscreen in their own window.
+
+The TARGET attribute enables you to do just that by telling the Web browser to display the information pointed to by a hyperlink in a window called window_name. You can basically call the new window anything you want, with the only proviso being that you not use names that start with an underscore (_). These names are reserved for a set of special TARGET values that you'll learn about later in the section "Magic TARGET Names."
+
+When you use the TARGET attribute inside an <A> tag, Netscape first checks to see whether a window with the name window_name exists. If it does, the document pointed to by the hyperlink replaces the current contents of window_name. On the other hand, if no window called window_name currently exists, a new browser window is opened and given the name window_name. The document pointed to by the hyperlink is then loaded into the newly created window.
+
+Exercise 14.1: Working with windows.
+
+In this exercise, you'll create four separate HTML documents that use hyperlinks, including the TARGET attribute. These hyperlinks will be used to open two new windows called first_window and second_window, as shown in Figure 14.3. The top window is the original Web browser window, first_window is on the bottom left, and second_window the bottom right.
+
+Figure 14.3 : Hyperlinks can be made to open new windows for each of the pages they point to.
+
+First, create the document to be displayed by the main Web browser window, shown in Figure 14.4, by opening your text editor of choice and entering the following lines of code:
+
+<HTML>
+
+<HEAD>
+
+<TITLE>Target Parent Window</TITLE>
+
+</HEAD>
+
+<BODY>
+
+<H1>Target Parent Window</H1>
+
+<P>
+
+<A HREF="target2.html" TARGET="first_window">Open</A>
+
+a new window called first_window.
+
+<BR>
+
+<A HREF="target3.html" TARGET="second_window">Open</A>
+
+a new window called second_window.
+
+</P>
+
+<P>
+
+<A HREF="target4.html" TARGET="first_window">Load</A>
+
+some new text into first_window.
+
+</P>
+
+</BODY>
+
+</HTML>
+
+Figure 14.4: The Target Parent window.
+
+Save this HTML source as target1.html.
+
+Next, create a document called target2.html that looks like the page shown in Figure 14.5, by entering the following code:
+
+<HTML>
+
+<HEAD>
+
+<TITLE>Target First Window</TITLE>
+
+</HEAD>
+
+<BODY>
+
+<H1>Target First Window</H1>
+
+</BODY>
+
+</HTML>
+
+Figure 14.5: target2.html displayed in the Web browser window named first_window.
+
+After saving target2.html, create another document called target3.html that looks like the page shown Figure 14.6. Do this by entering the following code:
+
+<HTML>
+
+<HEAD>
+
+<TITLE>Target Second Window</TITLE>
+
+</HEAD>
+
+<BODY>
+
+<H1>Target Second Window</H1>
+
+</BODY>
+
+</HTML>
+
+Figure 14.6: target3.html displayed in the Web browser window named second_window.
+
+And finally, create a fourth document, called target4.html, that looks like this:
+
+<HTML>
+
+<HEAD>
+
+<TITLE>Target First Window</TITLE>
+
+</HEAD>
+
+<BODY>
+
+<H1>Target First Window</H1>
+
+<P>But this time with new text...</P>
+
+</BODY>
+
+</HTML>
+
+Figure 14.7: target4.html displayed in the Web browser window named first_window.
+
+To complete the exercise, load target1.html into your Web browser, and click the top two hyperlinks. This action opens two new windows with the contents of the targets in each one. Note that the new windows probably won't be laid out like the ones shown in Figure 14.3; instead they'll usually overlap each other.
+
+Finally, click the third hyperlink to replace the contents of first_window with the Web page defined by target4.html, as shown in Figure 14.7.
+
+The <BASE> Tag
+
+When using the TARGET attribute with links, you'll sometimes encounter a situation in which all or most of the hyperlinks on a Web page point to the same window-especially when using frames, as you'll discover in the following section.
+
+In such cases, instead of including a TARGET attribute for each <A> tag, you can use another tag, <BASE>, to define a global target for all the links of a Web page. The <BASE> tag takes the following form:
+
+<BASE TARGET="window_name">
+
+If you include the <BASE> tag in the <HEAD>...</HEAD> block of a document, every <A> tag that does not have a corresponding TARGET attribute will display the document it points to in the window specified by <BASE TARGET="window_name">. For example, if the tag <BASE TARGET="first_window"> had been included in the HTML source for table1.html, the three hyperlinks could have been written this way:
+
+</HTML>
+
+<HEAD>
+
+<TITLE>Target Parent Window</TITLE>
+
+<BASE TARGET="first_window"> <!-- add BASE TARGET="value" here -->
+
+</HEAD>
+
+<BODY>
+
+<H1>Target Parent Window</H1>
+
+<P>
+
+<A HREF="target2.html">Open</A> <!-- no need to include a TARGET -->
+
+a new window called first_window.
+
+<BR>
+
+<A HREF="target3.html" TARGET="second_window">Open</A>
+
+a new window called second_window.
+
+</P>
+
+<P>
+
+<A HREF="target4.html">Load</A> <!-- no need to include a TARGET -->
+
+some new text into first_window.
+
+</P>
+
+</BODY>
+
+</HTML>
+
+In this case, target2.html and target4.html are loaded into the default window assigned by the <BASE> tag; target3.html overrides the default by defining its own target window.
+
+You can also override the window assigned by the <BASE> tag by using one of two special window names. If you use TARGET="_blank" in a hyperlink, a new browser window is opened that does not have a name associated with it. Alternatively, if you use TARGET="_self", the current window is used rather than the one defined by the <BASE> tag.
+
+Working with Frames
+
+The introduction of frames in Netscape 2.0 heralds a new era for Web publishers. With frames, you can create Web pages that look and feel entirely different from other Web pages-pages that have tables of tables, banners, footnotes, and sidebars, just to name a few common features that frames can give you.
+
+At the same time, frames change what a "page" means to the browser and to the reader. Unlike all the previous examples, which use a single HTML page to display a screen of information, when you create Web sites using frames, a single screen actually consists of a number of separate HTML documents that interact with each other. Figure 14.8 shows how a mini-mum of four separate documents is needed to create the screen shown earlier in Figure 14.1.
+
+Figure 14.8 : Separate HTML documents must be created for each frame.
+
+The first HTML document you need to create is called the frame definition document. In this document, you enter the HTML code that describes the layout of each frame and indicate the name of separate HTML document that contains the physical information to be displayed. The three remaining HTML documents contain normal HTML tags that define the physical contents of each separate frame area. These are the documents referenced by the frame definition document.
+
+New Term
+
+The frame definition document is the page that contains the layout of each frame and the names of the HTML documements that will fill that frame.
+
+The <FRAMESET> Tag
+
+To create a frame definition document, you use the <FRAMESET> tag. When used in an HTML document, the <FRAMESET> tag replaces the <BODY> tag, as shown here:
+
+<HTML>
+
+<HEAD>
+
+<TITLE>Page Title</TITLE>
+
+</HEAD>
+
+<FRAMESET>
+
+your frame definition goes here.
+
+</FRAMESET>
+
+</HTML>
+
+It's important to understand up front how a frame definition document differs from a normal HTML document. If you include a <FRAMESET> tag in an HTML document, you cannot also include a <BODY> tag. Basically, the two tags are mutually exclusive. In addition, no other formatting tags, hyperlinks, or document text should be included in a frame definition document, except in one special case (the <NOFRAME> tag) which you'll learn about in the section called, appropriately, "The <NOFRAME> Tag," later in this chapter. The <FRAMESET> tags contain only the definitions for the frames in this document: what's called the page's frameset.
+
+New Term
+
+A frameset is the set of frames defined by the <FRAMESET> tags in the frame definition document.
+
+The COLS Attribute
+
+When you define a <FRAMESET> tag, you must include one of two attributes as part of the tag definition. The first of these attributes is the COLS attribute, which takes the following form:
+
+<FRAMESET COLS="column width, column width, ...">
+
+The COLS attribute tells Netscape to split the screen into a number of vertical frames whose widths are defined by column width values separated by commas. You define the width of each frame in one of three ways: explicitly in pixels, as a percentage of the total width of the <FRAMESET>, or with an asterisk (*). When you use the *, Netscape uses as much space as possible for the specified frame.
+
+When included in a complete frame definition, the following <FRAMESET> tag creates a screen with three vertical frames (see Figure 14.9). The first frame is 100 pixels wide, the second is 50 percent of the width of the screen, and the third uses all the remaining space.
+
+<FRAMESET COLS="100,50%,*">
+
+Figure 14.9: The COLS attribute defines the number of vertical frames or columns in a frameset.
+
+Note
+
+Because you're designing Web pages that will be used on various screen sizes, you should use absolute frame sizes sparingly. And, whenever you do use an absolute size, ensure that one of the other frames is defined using an * to take up all the remaining screen space.
+
+Tip
+
+To define a frameset with three equal-width columns, use COLS="*, *, *". This way, you won't have to mess around with percentages, because Netscape automatically gives an equal amount of space to each frame assigned an * width.
+
+The ROWS Attribute
+
+The ROWS attribute works the same as the COLS attribute, except that it splits the screen into horizontal frames rather than vertical ones. For example, to split the screen into two equal-height frames, as shown in Figure 14.10, you could write either of the following:
+
+<FRAMESET ROWS="50%,50%">
+
+<FRAMESET ROWS="*, *">
+
+Figure 14.10:The ROWS attribute defines the number of horizontal frames or rows in a frameset.
+
+Note
+
+If you try either of the preceding examples for yourself, you'll find that the <FRAMESET> tag does not appear to work. The reason for this is that currently no contents are defined for the rows or columns in the frameset. To define the contents, you need to used the <FRAME> tag, which is discussed in the next section.
+
+The <FRAME> Tag
+
+After you have your basic frameset laid out, you need to associate an HTML document with each frame. To do this, you use the <FRAME> tag, which takes the following form:
+
+<FRAME SRC="document URL">
+
+For each frame defined in the <FRAMESET> tag, you must include a corresponding <FRAME> tag, as shown here:
+
+<FRAMESET ROWS="*,*,*">
+
+<FRAME SRC="document1.html">
+
+<FRAME SRC="document2.html">
+
+<FRAME SRC="document3.html">
+
+</FRAMESET>
+
+Figure 14.11: The <FRAME> tag in used to define the contents of each frame.
+
+In this example, a frameset with three equal-height horizontal frames has been defined (see Figure 14.11). The contents of document1.html are displayed in the first frame, document2.html in the second frame, and document3.html in the third frame.
+
+Tip
+
+When creating frame definition documents, you might find it helpful to indent the <FRAME> tags so they're separated from the <FRAMESET> tags in your HTML document. Doing so has no effect on the appearance of the resulting Web pages but does tend to make the HTML source easier to read.
+
+Additional Attributes
+
+A few extra attributes can be assigned to a <FRAME> tag to give you additional control over how the user interacts with your frames. Table 14.1 presents the details about them.
+
+Table 14.1. Control attributes for the <FRAME> tag.
+
+AttributeValue Description SCROLLING AUTO (default) By default, if the contents of a frame take up more space than the area available to the frame, Netscape automatically adds scrollbars to either the side or the bottom of the frame so that the user can scroll through the document. SCROLLING NO Setting the value of SCROLLING to NO disables the use of scrollbars for the current frame. (Note that if you set SCROLLING="NO" but there is more text in the document than can fit inside the frame, the user will not be able to scroll the additional text into view.) SCROLLING YES If you set SCROLLING to YES, the scrollbars are included in the frame regardless of whether they are required. NORESIZE By default, users can move the position of borders around each frame on the current screen by grabbing the border and moving it with their mouse. To lock the borders of a frame and pre-vent them from being moved, use the NORESIZE attribute. MARGINHEIGHT pixels To adjust the margin that appears above and below a document within a frame, set the MARGINHEIGHT to the number indicated by pixels. MARGINWIDTH pixels The MARGINWIDTH attribute enables you to adjust the margin on the left and right side of a frame to the number indicated by pixels.
+
+The <NOFRAME> Tag
+
+If you load a frame definition document into a Web browser that does not support frames, you get only a blank page. To get around this problem, Netscape 2.0 includes a special tag block called <NOFRAME> that enables you to include body text as part of the document. The <NOFRAME> tag takes the following form:
+
+<HTML>
+
+<HEAD>
+
+<TITLE>Page Title</TITLE>
+
+</HEAD>
+
+<FRAMESET>
+
+your frame definition goes here.
+
+<NOFRAME>
+
+Include any text, hyperlinks, and tags you want to here.
+
+</NOFRAME>
+
+</FRAMESET>
+
+</HTML>
+
+None of the text you include inside the <NOFRAME> block will be displayed by Netscape 2.0, but when the page is loaded into a Web browser that does not support frames, it will be displayed. Using both frames' content and tags inside <NOFRAME>, you can create pages that work nearly well with both kinds of browsers.
+
+Creating Complex Framesets
+
+The framesets you've learned about so far represent the most basic types of frames that can be displayed by Netscape . But in day-to-day use, you'll rarely use these basic frame designs. In all but the most simple sites, you'll most likely want to use more complex framesets.
+
+Therefore, to help you understand the possible combinations of frames, links, images, and documents that can be used by a Web site, this final section of the chapter explores the topic of complex framesets.
+
+Exercise 14.2: Combining ROWS and COLS.
+
+The frame layout presented by Figure 14.1, at the beginning of the chapter, provides a good basis for a simple example that explores how you can combine framesets to create complex designs. To remind you of the basic layout, Figure 14.12 shows a screen that uses a similar design but without any contents.
+
+Tip
+
+When you're designing complex frame layouts, the use of storyboards is an invaluable tool. The storyboard helps you block out the structure of a frameset, and it can also be invaluable when you're adding hyperlinks, as you will see in the next exercise, "Using Named Frames and Hyperlinks."
+
+In Figure 14.12 the top section of the screen is split into two vertical frames, and the third frame, at the bottom of the page, spans the entire width of the screen. To create a frame definition document that describes this layout, open your text editor and enter the following basic HTML structural details:
+
+<HTML>
+
+<HEAD>
+
+<TITLE>Complex Frames Exercise</TITLE>
+
+</HEAD>
+
+<FRAMESET>
+
+</FRAMESET>
+
+</HTML>
+
+Next, you must decide whether you need to use a ROWS or COLS attribute in your base <FRAMESET>. To do this, take a look at your storyboard-in this case Figure 14.12-and work out whether any frame areas extend right across the screen or from the top to the bottom of the screen. If any frames extend from the top to the bottom, you need to start with a COLS frameset; otherwise, you need to start with a ROWS frameset. On the other hand, if no frames extend completely across the screen in either direction, you should start with a COLS frameset.
+
+To put it more simply, here are three easily remembered rules:
+
+Left to right, use ROWS
+
+Top to bottom, use COLS
+
+Can't decide, use COLS
+
+Note
+
+The reasoning behind the use of the "left to right, use ROWS" rule relates to how Netscape creates frames. Each separate <FRAMESET> definition can split the screen (or a frame) either vertically or horizontally, but not both ways. For this reason, you need to define your framesets in a logical order to ensure that the desired layout is achieved.
+
+In Figure 14.12, the bottom frame extends right across the screen from side to side. As a result, by using the rules mentioned previously, you need to start with a ROWS frameset. To define the base frameset, write this:
+
+Figure 14.12 : The "Combining "ROWS and COLS" exercise.
+
+<FRAMESET ROWS="*, 80">
+
+<FRAME SRC="dummy.html"> <!-- this is the frame for row 1 -->
+
+<FRAME SRC="dummy.html"> <!-- this is the frame for row 2 -->
+
+</FRAMESET>
+
+Doing this splits the screen into two sections: a small frame at the bottom of the screen that is 80 pixels high, and a large frame at the top of the screen that uses the rest of the available space. Two <FRAME> tags have also been defined to represent the contents of each frame.
+
+Tip
+
+When laying out the basic structure of a frameset, you normally don't want to be bothered with such details as the actual contents of the frames. However, unless you define <FRAME> tags that include a valid document, your frameset will not be displayed properly when it is loaded into Netscape for testing. To get around this problem, create a small empty HTML document called dummy.html, and use it for all your frame testing.
+
+The next step in the process is to split the top frame area into two vertical frames. You achieve this effect by placing a second <FRAMESET> block inside the base <FRAMESET> block. When one <FRAMESET> block is nested inside another, the nested block must replace one of the <FRAME> tags in the outside frameset.
+
+Therefore, to split the top frame into two frame areas, you replace the <FRAME> tag for the first frame with an embedded <FRAMESET> block. Doing this embeds the new frameset inside the area defined for the <FRAME> tag it replaces. Inside the <FRAMESET> tag for this new block, you then need to define a COLS attribute as shown here:
+
+<FRAMESET ROWS="*, 80">
+
+<FRAMESET COLS="30%, *"> <!-- the frame for row 1 -->
+
+<FRAME SRC="dummy.html"> <!-- has been replaced -->
+
+<FRAME SRC="dummy.html"> <!-- by an embedded -->
+
+</FRAMESET> <!-- frameset block -->
+
+<FRAME SRC="dummy.html"> <!-- this is the frame for row 2 -->
+
+</FRAMESET>
+
+The embedded COLS frameset defines two columns, the first being 30 percent of the width of the embedded frame area and the second taking up all the remaining space in the embedded frame area. In addition, two <FRAME> tags are embedded inside the <FRAMESET> block to define the contents of each column.
+
+Note
+
+When used inside an embedded frameset, any percentage sizes are based on a percentage of the total area of the embedded frame and not as a percentage of the total screen.
+
+Finally, save the finished HTML document to your hard drive, and test it by using Netscape 2.0 or higher. Also, if you happen to have a copy of a different Web browser, try loading the document into it. (You should not see anything when you use the alternative browsers.)
+
+Exercise 14.3: Using named frames and hyperlinks.
+
+As mentioned earlier in this chapter, the frame definition document itself does not describe the contents of each frame. The documents indicated by the SRC attribute of the <FRAME> actually contain the text, images, and tags displayed by the frameset.
+
+As a result, to turn the frame definition document created in the preceding exercise into a fully working, frame-based Web page, you need to add some valid HTML documents to the definition. The frames are so powerful because any HTML document you've created previously can become the SRC for an individual frame. Therefore, it's easy to take the HTML reference documents you've created for each chapter and integrate them into a frameset. But first, so that you understand what you're about to create, Figure 14.13 shows the complete frameset you'll create in this exercise.
+
+Figure 14.13 : The HTML reference document as a frameset.
+
+Adding Real Documents to Your Frameset
+
+The first step in the process is a simple one. Take the frameset document you created in the exercise "Combining ROWS and COLS," and save a copy of it in the same directory as the HTML reference documents you created previously. Name the new file html_frame.html.
+
+After you've created this new file, change the references to the dummy.html file to point to real HTML files (here the changes are highlighted in bold):
+
+<FRAMESET ROWS="*, 80">
+
+<FRAMESET COLS="30%, *">
+
+<FRAME SRC="html_contents_frame.html">
+
+<FRAME SRC="05notes_frame.html">
+
+</FRAMESET>
+
+<FRAME SRC="html_footer.html">
+
+</FRAMESET>
+
+The first <FRAME> tag now points to a file called html_contents_frame.html, which is a copy of the html_contents.html file you've worked with in previous chapters. I just changed the name to protect the original because you need to make some changes to the document. But for now, simply copy the html_contents.html file to html_contents_frame.html.
+
+Tip
+
+If you're in DOS, you'll need to use an alternative naming scheme such as cont_f.htm and 05note_f.htm.
+
+Do the same for 05notes.html by copying it to 05notes_frame.html, and then work through each of the other chapter documents and any other pages they reference.
+
+You next need to make some alterations to 05notes_frame.html. In previous exercises, you have added <ADDRESS> blocks and navigation buttons to each page. With frames, however, you don't need to include either of these elements because, in this exercise, they'll be handled in one way or another by other frames in the frameset. As a result, you should remove the signature and navigation buttons from the bottom of 05notes_frame.html. In addition, remove any other hyperlinks that join the pages together.
+
+Finally, you need to create a new HTML document called html_footer.html. In this document, you'll place the information previously shown in the <ADDRESS> block of your individual pages. What you place in this document is up to you; however, keep in mind that it will need to fit into the small 80-pixel-high frame at the bottom of the frameset.
+
+To give you some idea about how you might create the contents of html_footer.html, here's the partial HTML source used for Figure 14.13:
+
+<TABLE WIDTH="100%">
+
+<TR>
+
+<TD WIDTH="50%">
+
+<ADDRESS>
+
+Created by <B>Laura Lemay</B><BR>
+
+Copyright (c) 1995,1996
+
+</ADDRESS>
+
+</TD>
+
+<TD WIDTH="50%" ALIGN="RIGHT">
+
+<ADDRESS>
+
+Email: <A HREF="mailto:lemay@lne.com">lemay@lne.com</A><BR>
+
+Home Page: <A HREF="http://www.lne.com/lemay/">
+
+http://www.lne.com/lemay/</A>
+
+</ADDRESS>
+
+</TD>
+
+</TR>
+
+</TABLE>
+
+This example uses a table without borders to place my name on the left side of the screen and my e-mail addresses on the right.
+
+Naming Individual Frames
+
+If you were to load html_frame.html into Netscape at this stage, you would see a screen similar to the one shown in Figure 14.13. Some of the text sizes and spacing might be slightly different, but the general picture would be the same. If, however, you were to click any of the hyperlinks in the left frame, you would most likely get some very strange results. To be more specific, Netscape would attempt to load the contents of the file you select into the left frame, when what you really want it to do is load each document into the right frame.
+
+To make this happen, you need to use a slight variation on the TARGET attribute discussed at the beginning of this chapter. But instead of the TARGET pointing to a new window, you want it to point to one of the frames in the current frameset.
+
+You can achieve this by first giving each frame in your frameset a frame name, or window name. To do this, you include a NAME attribute inside the <FRAME> tag, which takes the following form:
+
+<FRAME SRC="document URL" NAME="frame name">
+
+Therefore, to assign a name to each of the frames in the html_frame.html document, you alter the <FRAME> tags to look like this:
+
+<FRAMESET ROWS="*, 80">
+
+<FRAMESET COLS="30%, *">
+
+<FRAME SRC="html_contents_frame.html" NAME="Contents">
+
+<FRAME SRC="05notes_frame.html" NAME="Chapter">
+
+</FRAMESET>
+
+<FRAME SRC="html_footer.html" NAME="Footer">
+
+</FRAMESET>
+
+This names the left frame "Contents", the right frame "Chapter", and the bottom frame "Footer". After this, resave the updated html_frame.html file, and you're just about finished with the exercise.
+
+Linking Documents to Individual Frames
+
+All you need to do now is make some minor alterations to html_contents_frame.html so that each chapter document is loaded into the right-hand frame of the frameset.
+
+You may recall from the beginning of this chapter that the TARGET attribute was used with the <A> tag to force a document to load into a specific window. This is the same attribute that is used to control which frame a document is loaded into.
+
+For this exercise, what you want to happen is that, whenever you click a hyperlink in the left frame, the corresponding document is loaded into the right frame. Because you've already assigned the right frame a window name of "Chapter", to load all the documents into the right frame, all you need to do is add TARGET="Chapter" to each tag in the html_contents_frame.html document. The following snippet of HTML source demonstrates how this is done:
+
+<DT><A HREF="05notes_frame.html" TARGET="Chapter"><H3>Chapter 5</H3></A>
+
+<DD>
+
+<P>This chapter discusses document tags, headings,
+
+character styles and the comment tag. </P>
+
+<UL>
+
+<LI><A HREF="05notes_frame.html#document_tags" TARGET="Chapter">
+
+Document tags</A>
+
+<LI><A HREF="05notes_frame.html#heading_tags" TARGET="Chapter">
+
+Heading tags</A>
+
+<LI><A HREF="05notes_frame.html#paragraph_tags" TARGET="Chapter">
+
+Paragraph Formatting tags</A>
+
+</UL>
+
+Note
+
+If you're using the new naming system set out in this exercise, you need to change the HREF value of each <A> tag to point to the new names for each document. For example, 05notes.html becomes 05notes_frame.html.
+
+Alternatively, because every tag in the html_contents_frame.html document points to the same frame, you could also use the <BASE TARGET="value"> tag. In this case, you don't need to include TARGET="Chapter" inside each <A> tag. Instead, you place the following inside the <HEAD>...</HEAD> block of the document:
+
+<BASE TARGET="Chapter">
+
+The only other change you need to make to html_content_frame.html is purely cosmetic. In the original document, the main heading line uses <H1>; however, this is too large a heading size for the small left frame. Therefore, you should replace it with this:
+
+<H2 ALIGN="CENTER">HTML Reference Table of Contents</H2>
+
+With all the changes and new documents created, you should now be able to load html_frame.html into Netscape and view all of your HTML reference documents by selecting from the table of contents in the left frame.
+
+Tip
+
+To get the layout exactly right, after you have gotten all your links working properly, you might need to go back and adjust the size of the rows and columns as defined in the <FRAMESET> tags. But remember, the final appearance of a frameset is still determined by the size of the screen and the operating system used by people viewing the documents.
+
+Magic TARGET Names
+
+You can assign four special values to a TARGET attribute, two of which (_blank and _self) you've already encountered. Netscape calls these values Magic TARGET names. Table 14.2 lists the Magic TARGET names and describes their use.
+
+Table 14.2. Magic TARGET names.
+
+TARGET Name Description TARGET="_blank" Forces the document referenced by the <A> tag to be loaded into a new "unnamed" window. TARGET="_self" Causes the document referenced by the <A> tag to be loaded into the window or frame that held the <A> tag. TARGET="_parent" Forces the link to load into the <FRAMESET> parent of the current document. If, however, the current document has no parent, TARGET="_self" will be used. TARGET="_top" Forces the link to load into the full Web browser window, replacing the current <FRAMESET> entirely. If, however, the current document is already at the top, TARGET="_self" will be used.
+
+Summary
+
+If your head is hurting after reading this chapter, you're probably not alone. Although the basic concepts behind the use of frames are relatively straightforward, their implementation is somewhat harder to come to grips with. As a result, the best way to learn about frames is by experimenting with them.
+
+In this chapter, you learned how to link a document to a new or an existing window. In addition, you learned how to create framesets and link them together by using the tags listed in Table 14.3.
+
+Table 14.3. New tags discussed in this chapter.
+
+TagAttribute Description <BASE TARGET="window"> Set the global link window for a document. <FRAMESET> Define the basic structure of a frameset. COLS Defines the number of frame columns and their width in a frameset. ROWS Defines the number of frame rows and their height in a frameset. <FRAME> Define the contents of a frame within a frameset. SRC The URL of the document to be displayed inside the frame. MARGINWIDTH The size in pixels of the margin on each side of a frame. MARGINHEIGHT The size in pixels of the margin above and below the contents of a frame. SCROLLING Enable or disable the display of scroll bars for a frame. Values are YES, NO, and AUTO. NORESIZE Don't allow the user to resize frames. <NOFRAME> Define text to be displayed by Web browsers that don't support the use of frames.
+
+If you've made it this far through the book, you should give yourself a pat on the back. With the knowledge you've gained in the last week, you've done just about everything you can do while still working along on a single computer. You're now ready to place your Web pages onto the Internet itself and add more interactive features to those pages such as forms, image maps, and embedded animations. And tomorrow, with Day 8, you'll start doing just that.
+
+Q&A

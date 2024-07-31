@@ -1,0 +1,183 @@
+Last update on September 12, 2023 Published on June 30, 2023
+
+ARC allows email providers to verify that emails are genuine when they’re forwarded or sent from a mailing list.
+
+We all suffer from spam, and anyone can fall victim to phishing. And if you have your own email domain (like @yourname.com), fraudsters could spoof (forge) it to launch spam and phishing attacks.
+
+That’s why leading email providers use authentication methods like SPF, DKIM, and DMARC to verify emails and fight spam, spoofing, and phishing.
+
+But these protocols aren’t infallible. Learn how ARC solves a basic problem with email authentication, improving email deliverability and security.
+
+What is Authenticated Received Chain (ARC)?
+
+What problem does ARC solve?
+
+What does ARC do?
+
+How does ARC work?
+
+ARC email example
+
+Why use ARC?
+
+Final thoughts
+
+ARC FAQs
+
+What is Authenticated Received Chain (ARC)?
+
+Authenticated Received Chain (ARC) is an email authentication method that allows receiving mail servers to check the authentication results of an email when it’s forwarded or relayed by an intermediate server.
+
+A relatively new protocol formalized in 2019(new window), ARC has come to play a small but significant role in message filtering at leading email providers like Proton Mail. To understand ARC and why it matters, you need to grasp a basic problem with email authentication.
+
+What problem does ARC solve?
+
+ARC solves a specific issue with the three main email authentication methods:
+
+SPF (Sender Policy Framework)
+
+DKIM (DomainKeys Identified Mail)
+
+DMARC (Domain-based Message Authentication, Reporting, and Conformance)
+
+DMARC verifies SPF and DKIM
+
+SPF verifies that an email has been sent from an IP address authorized to send emails from the sender’s domain.
+
+DKIM cryptographically verifies that the sender’s address and message contents haven’t been changed in transit.
+
+However, with SPF and DKIM alone, you can’t be sure that the sender’s domain in the From field hasn’t been spoofed (forged).
+
+Therefore, DMARC was introduced to ensure that the domain in DKIM and SPF checks matches the sender’s domain. It also specifies how email servers should handle a message that fails both DKIM and SPF — accept, reject, or mark it as spam.
+
+Now widely adopted by major email providers like Google, Microsoft, and Proton, DMARC has significantly improved the deliverability of emails authenticated by SPF and DKIM.
+
+So what’s the problem?
+
+Intermediaries can break DMARC
+
+When you send an email, it passes through various SMTP mail servers in a series of “hops” from sender A to recipient B. The issue is that DMARC assumes that emails are sent directly from A to B unchanged.
+
+In reality, some intermediate mail servers may legitimately change a message in transit, for example:
+
+When forwarding it: The forwarder may edit the original message, or the server may change email header fields.
+
+When sending it via a mailing list: The mailing list may add the list’s name to the Subject line or an “unsubscribe” link or disclaimer in the message footer.
+
+As a result, these legitimate emails appear to have been tampered with and can fail DKIM checks.
+
+Similarly, as forwarding or mailing list mail servers send messages from a new IP address, these messages can fail SPF.
+
+And if a message fails both DKIM and SPF, it fails DMARC and is either rejected or treated with suspicion.
+
+This is where ARC comes in — to solve the problem of authentication failures caused by legitimate intermediaries.
+
+What does ARC do?
+
+ARC preserves the original authentication results from the first hop of an email’s journey and verifies the identity of each intermediate server along the way.
+
+When an email passes through a trusted intermediate server, the server digitally signs the message and adds this ARC signature to the email header. For each hop of a message’s journey from A to B, trusted intermediate servers add their signature, forming a chain of ARC signatures.
+
+By checking this “chain of custody” or authenticated received chain, the recipient’s email server can see the original authentication results. It can also verify that any changes to the email in transit were signed by a trusted intermediary.
+
+How does ARC work?
+
+ARC adds three extra email headers to messages to create a chain of trust back to the original message.
+
+Here are the three ARC headers and a simplified explanation of what they contain.
+
+Here’s how ARC headers appear in an email header:
+
+How intermediate servers sign the message
+
+For every hop of the message’s journey, each intermediate mail server:
+
+Copies the original Authentication-Results into a new ARC-Authentication-Results header and adds a sequence number starting with i=1 (showing the order of the servers)
+
+Generates an ARC-Message-Signature, including the sequence number
+
+Generates an ARC-Seal, which validates the authenticity of each intermediate server’s contribution to the ARC chain
+
+In this way, if an intermediate email server alters a message, it digitally signs the change to verify that the change is legitimate.
+
+If the recipient’s mail server sees a message has failed DMARC, it can check the ARC result by:
+
+Validating the chain of ARC-Seal headers
+
+Validating the latest ARC-Message-Signature (based on the sequence number)
+
+If all are valid, the message passes ARC. If the receiving server trusts all the intermediate servers in the ARC chain, the server may accept the message even if it has failed DMARC.
+
+At Proton, we currently only accept messages that fail DMARC for a limited set of parties that we trust to implement ARC correctly. We set two conditions:
+
+The message must pass ARC, and
+
+The ARC-Authentication-Results must show that the message passed DMARC at the first “hop” before it was forwarded.
+
+ARC email example
+
+Here’s an example of how ARC works: a message sent to a mailing list.
+
+1. You send your email to a mailing list address (from an email provider’s published IP address, for example, 185.70.40.111).
+
+2. The mailing list’s intermediate server receives the message and carries out SPF, DKIM, and DMARC checks. The message passes all checks.
+
+3. The mailing list server now changes the content, adding the mailing list name (for example, “Team member news”) to the Subject line and an “unsubscribe” link in the footer. Because it has changed the content, the server adds ARC headers to the message to preserve the authentication results.
+
+4. The recipient’s mail server receives the message, but it fails authentication:
+
+DKIM fails because the message’s content has been changed.
+
+SPF fails because the new IP address (211.22.33.44) isn’t in the SPF record.
+
+DMARC fails as both the above have failed.
+
+5. The server checks the ARC results and validates the ARC chain.
+
+6. If the server validates ARC and all the ARC signatures in the chain are from trusted parties, it may override the DMARC failure and deliver the message.
+
+Why use ARC?
+
+The chain of trust that ARC creates has several benefits for email providers and users.
+
+Improves email deliverability
+
+As ARC preserves the original authentication results, it ensures that legitimate emails aren’t marked as spam or rejected. This also allows email providers to set a stricter DMARC policy.
+
+Bolsters email security
+
+ARC allows receiving mail servers to verify the authenticity of emails even if they fail other authentication checks. This reduces the risk of email spoofing and phishing attacks.
+
+Helps email troubleshooting
+
+ARC signatures give a record of the intermediaries on an email’s journey. This can help providers analyze and resolve email delivery issues.
+
+Final thoughts
+
+Building on SPF, DKIM, and DMARC authentication, ARC solves the problem of email authentication failures when emails are forwarded or otherwise relayed by intermediate servers.
+
+ARC allows the recipient’s server to accept legitimate messages that would otherwise be rejected or marked spam, improving email deliverability and security.
+
+At Proton Mail, ARC is one of the tools we use to optimize our message filtering, helping to protect you from spam and phishing attacks. So join us and stay secure!
+
+Authenticated Received Chain (ARC) FAQs
+
+Can ARC be used instead of other email authentication methods like SPF, DKIM, and DMARC?
+
+No, ARC can’t replace these methods but complements them. ARC preserves the results of these authentication protocols as emails pass from one intermediate server to another.
+
+Do all email providers implement ARC?
+
+No, not all. First introduced in 2019, ARC is a relatively new protocol. However, major email providers like Gmail, Outlook, and Proton Mail now use ARC to filter messages, and adoption is growing among other providers.
+
+Can ARC signatures be forged or altered?
+
+ARC signatures use public-key cryptography(new window) to prevent tampering and forgery. But as with any security protocol, they must be implemented correctly to prevent unauthorized access to the encryption keys.
+
+Overall, ARC is secure when configured correctly, but intermediate servers can always inject harmful content into ARC headers or remove some or all the headers. ARC only works because trusted intermediaries sign the ARC chain.
+
+Does ARC provide end-to-end encryption for emails?
+
+No, ARC is designed to address problems with authenticating emails when they’re forwarded or relayed by intermediate servers. For end-to-end encryption, you need to use an encryption method like PGP.
+
+The easiest way to get secure email with end-to-end encryption and ARC is to sign up for Proton Mail.

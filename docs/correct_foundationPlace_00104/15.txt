@@ -1,0 +1,121 @@
+Knowledge graphs and ontologies represent a fairly simple and intuitive way to organize and search your content. Tech companies like Google, Amazon, and Apple, and other industry use cases in medicine and finance, have built knowledge graph technology into their search applications.
+
+(Knowledge graphs have other uses as well; for example, automatic translation. However, our focus here is on search.)
+
+In the history of search, there are many different approaches, for example, keyword search, which matches individual words or phrases based on textual matching or synonyms. Ontologies and knowledge graphs took that a step forward by adding topic matching, where items and documents that fall within the same topic or contain the same entities (not necessarily the same words) are also considered relevant to a query.
+
+We can see the differences between keyword search and knowledge graphs by looking at two common use cases:
+
+Searching for an item by seeing multiple results and selecting the one you prefer. This is what you’re doing on most specialized websites when you search for a shirt on an ecommerce website, look for a recipe with potatoes, etc.
+
+Searching for an answer to a precise question (“Question answering”). This is what you’re doing when you search for the construction date of a building you like, or an actor in a movie you just watched. Question answering is about looking for precise data: a date, a name, a place, etc.
+
+Keyword search is sufficient for the first. Knowledge graphs were introduced to help the latter – to answer precise questions. Before knowledge graphs, looking for the actor in the movie you just watched was a three step process: find a page that describes the movie and the casting, scan the page for casting, and find your character in the list. Knowledge graphs can display the answer directly.
+
+In 2013, Google announced a fundamental change to its search engine, following a growing trend in computer science, that searching the world wide web should help people find “things not strings”. That change was their use of knowledge graphs. Their thinking was that we are swamped by a multitude of things. Things defy easy categorization and therefore do not contain a simple set of shared keywords. Knowledge graphs help us uncover the thing we want from this multitude by organizing things by their meaning and usage within a given domain. The Google Knowledge Graph, which contains over 500 billion facts, is used in nearly one-third of all its monthly searches. Its famous “Knowledge Panel” (sometimes called an “info box”) combines item-based keyword search with its knowledge graph to return a full answer to a query:
+
+In the above image, the user has typed a single word (“academy award”) that Google used to find an entry point into its knowledge graph (we’ll see how that works below). Google then sent back a complete set of related facts in its Knowledge Panel, which we’ll call a story. The user then clicked on some of the facts in the knowledge panel to dig deeper into the story.
+
+Next, the user typed a more detailed query (“academy awards 1939”), which Google used to display an updated knowledge panel (with images for added effect):
+
+Pretty good. Google has expanded the query into a question and returned an answer as well as a useful set of search results. At this point, the user can choose to continue searching or stop here because their question has been answered.
+
+What is a knowledge graph? What does the data look like?
+
+A knowledge graph is a specialized data structure and query language that permits people, usually domain experts, to represent information in easy-to-understand knowledge bits. Medical experts can enter their expertise into a graph while other medical professionals can query the graph to help them diagnose and treat patients.
+
+Consider Wikidata, a widely-used knowledge graph that contains an increasing diversity of information, a lot of which is peer-reviewed and curated by the public at large (like Wikipedia). For example, it contains a large amount of structured information about Paris:
+
+As you scroll through the Wikidata page, you get a short description of Paris and its different names in multiple languages:
+
+Further down, you find the population in different years:
+
+Note the role that concepts play here: all of the information is organized into topics – population of the city, population by gender, and so on:
+
+Concepts enable the knowledge graph to organize its massive amount of data for any city in the world.
+
+Finally, there are hyperlinks to other subjects. For example, on the Paris page, you can learn about the current and previous mayors:
+
+But if you click on the current mayor’s name (Anne Hidalgo), you’ll go to a separate page of information about her:
+
+And so on. Knowledge is infinite, but can be structured one fact at a time.
+
+Facts, relationships, and concepts
+
+As we’ve seen, a knowledge graph organizes data into a graph of factual relationships. Such factual relationships involve:
+
+One or more associated concepts (“city” and “population” are concepts)
+
+Facts that fall within the concepts (“Paris is a city”)
+
+One or more relationships (the city “paris” has a population of “2,165,423”)
+
+We call these individual factual relationships triples, because they have 3 parts to them: 2 objects and 1 relation, as in: object 1 → relates to → object 2
+
+The triple is “paris” → “is an instance of” → “city”.
+
+The objects are “paris” and “city”
+
+The relationship is “is an instance of”
+
+You can also go one step further by creating a chain of factual relationships and inferences, such as “Paris is a large city with a near equal number of women and men residents.”
+
+Using concepts and hierarchies to create an ontological framework
+
+A graph therefore relates facts to other facts. But this is not yet knowledge. Like humans, computers need concepts (and hierarchies of concepts) to make sense of the multitude and complexity of things in the world. In other words, concepts as well as facts help us know the world; thus, a knowledge graph has to create conceptual relationships in which we place our facts. We call this the ontological framework of the graph.
+
+Coming back to Wikidata, we have the “instance of” concept, which is a type of knowledge on an object. This concept can be applied to the 100M+ items in the graph. For example, Paris is an “instance of” several classes including:
+
+“capital city”, which is a subclass of “city”
+
+“megacity” (more than 10M citizens), which is a subclass of “million city” (more than 1M citizen)
+
+Without concepts, keyword search would still be sufficient. With concepts, however, there is a potential to go further, adding in a city’s history, daily facts, and so on, to leverage the networked story that a graph can tell us about any city in the world.
+
+Let’s come back to the two use cases we mentioned at the beginning: searching for an item or a precise answer.
+
+keyword search
+
+While keyword search can answer most simple questions like “city population” by returning items, a knowledge graph can offer precise answers to a question like “what is the population of Paris”, thereby displaying more detailed knowledge as results. Synonyms in keyword search solve the complexity of the language when searching for an item (by adding alternative words to a query). In the case of a general knowledge graph, the goal is to provide answers to questions and the complexity is to analyze the query to recognize entities (the query can be an entity like “Paris” but it can also match several properties of the entity like “award academy 1939”.)
+
+Knowledge graphs
+
+Similar to the Paris page and the inferences therein derived, an expert medical diagnostic system would greatly benefit from the capabilities of a knowledge graph; however, to do this would require combining many different sources of data in an accurate way, which is an especially complex and massive challenge. For example, if you click on the first reference (2988507) to find out the weather in Paris:
+
+you’ll see the following informative screen, which pulls in data from a number of outside sources (for example, weather and map data providers). Working with multiple data sources, each with their own proprietary structures and idiosyncrasies, is a time-consuming and complex engineering task:
+
+Despite this challenge, powerful knowledge graphs are used in the medical fields, as well as in scientific research, finance, and law, where information is varied and enormous, and where factual relationships become multi-dimensional and often esoteric. We’ll discuss the large data and scalability challenges that arise with knowledge graphs. But first, let’s take another look at how knowledge graphs combine with keyword search.
+
+Combining knowledge graphs with keyword search
+
+Coming back to the two use cases stated above, here’s how keyword search can work side-by-side with knowledge graphs:
+
+Searching for an item:
+
+Keyword search can answer a simple query like “evening dress” with synonyms. Knowledge graphs are necessary for this use case.
+
+Answering a question:
+
+A precise question that looks for a fact can be solved via a knowledge graph. For example, “What is the population of Paris”.
+
+Note that complex questions like “What is the best city for drinking wine?” cannot be answered with a knowledge graph. While knowledge graphs may help to answer a precise question, they are limited by the types of question they can answer. Machine learning technologies like LLMs are required to “understand” and answer such complex, semantic-based questions.
+
+The challenges of knowledge graphs – advantages/drawbacks
+
+One of the key advantages of a knowledge graph is that its information is curated. Most of the data in the Google Knowledge Graph, for example, is manually curated. Another advantage is its ability to justify answers by providing the link to their source
+
+However, one drawback is that a knowledge graph focuses on precision not on recall. In other words, a knowledge graph can answer a small list of questions quite well (high precision), but fails to cover many questions (low recall). To improve recall without compromising on precision, LLMs like OpenAI’s ChatGPT, while still in their early stages, have surpassed knowledge graphs.
+
+No great technology comes free of challenges. But some challenges can be showstoppers:
+
+Building a knowledge graph is expensive and often fails to reach the size needed to answer enough questions to have a positive return on investment (ROI). Most knowledge graphs have no positive ROI, which has convinced many companies to seek out other semantic search solutions to answer their customers’ questions.
+
+Ensuring the quality and the right quantity of data is a challenge. A knowledge graph is only as good as the relationships it contains. The sheer amount of facts and relationships it needs to be successful can be daunting. If there are any holes in its knowledge, or wrong information, the graph becomes unusable and could be risky to rely on if important data is misleading.
+
+It’s hard to scale. Information changes and gets outdated or goes stale; old data might be wrong or misclassified; new data sometimes requires rethinking the old concepts and relationships; and so on. These issues make knowledge graphs difficult to keep up to date in many situations.
+
+A dedicated knowledge graph relies on tedious manual entry by experts in the field. It requires a great amount of their precious (and expensive) time to enter everything right.
+
+Machine learning and/or knowledge graphs
+
+Companies have thus turned to AI/ML technologies to reinforce their keyword search, like pre-trained Large Language Models (LLMs) and vector spaces. Imagine: instead of manually entering facts and concepts, or extracting knowledge from curated sources, how about a technology that teaches a machine to read every important document within a domain and learn how to synthesize that information in order to answer related questions? A self-learning machine would solve, among other things, the data entry and scalability challenges mentioned above.

@@ -1,0 +1,173 @@
+Introduction to Polyphemus
+
+Goals and Policy
+
+Polyphemus is a Cyclops in Odyssey whose name roughly means "multiple speeches". It is consistent with the goals of the system, that is, gathering on the same platform:
+
+several models: with Gaussian, Eulerian, Lagrangian ... formulations;
+
+several scales: from small/local scale to continental scale;
+
+multiple polluants: passive, radionuclides, photochemistry, aerosols, ...
+
+processing from many inputs (meteorological models, ground data);
+
+many advanced methods: data assimilation, ensemble forecasting, models coupling, ...
+
+It is written as much as possible with modern computer languages (mainly C++), and only perennial and scalable developments are included. Polyphemus is open. It is open source, distributed under GNU GPL, well documented (for users and developers), and released on a regular basis. Open also means that contributions from other teams are welcome.
+
+Parallel computing is implemented in its main modules. Both OpenMP and MPI API are supported and allow shared-memory, distributed memory or hybrid parallel schemes.
+
+Main Reference
+
+The main reference for Polyphemus is:
+
+[Reference] "Technical Note: The air quality modeling system Polyphemus", V. Mallet, D. Quélo, B. Sportisse, M. Ahmed de Biasi, É. Debry, I. Korsakissok, L. Wu, Y. Roustan, K. Sartelet, M. Tombette and H. Foudhil, Atmos. Chem. Phys., 7 (20), 2007 (bib) [Read it on ACP website ]
+
+Please cite this paper if you refer to Polyphemus in a publication, a talk or so.
+
+Contents in Short
+
+Polyphemus has a rich content which may be summarized with this list (in bold: key components or features):
+
+Models
+
+Gaussian models
+
+Stationary Gaussian model and puff Gaussian model
+
+Gas and aerosols
+
+Several parameterizations to compute the dispersion
+
+Eulerian models
+
+Castor (clone of the gas version of Chimere): passive and reactive versions
+
+Polair3D: passive, reactive, aerosol and adjoint (for gas) versions
+
+Modules for transport, chemistry and aerosols
+
+Lagrangian models
+
+Basic stochastic Lagrangian transport without scavenging nor deposition
+
+Particles related to the Horker and Fokker-Planck formulations
+
+Drivers
+
+What is a driver?
+
+it implements advanced methods (data assimilation, model coupling, ...) on top of the models
+
+it is developed independently from the underlying model: the model is a black box
+
+it can be applied to any model in the platform providing the model has a sufficient interface
+
+it is also a model: for instance, a driver that couples two models can be seen as a new model
+
+Driver list
+
+"BaseDriver": forward simulations
+
+"StationaryModel": stationary solutions (for small/local scale)
+
+Optimal interpolation
+
+Ensemble Kalman filter
+
+Reduced-rank square root Kalman filter
+
+4D-Var (and adjoint validation)
+
+Plume-in-grid model (couples a Gaussian model and an Eulerian model)
+
+Monte Carlo
+
+Perturbation driver (applying factors to input fields)
+
+Modules
+
+Transport
+
+Advection (DST3, PPM), diffusion (ROS2)
+
+Chemistry
+
+RACM, RACM2, CB05, RADM 2, Melchior
+
+Radioactive or biological decay
+
+Aerosols
+
+SIREAM (size-resolved module, semi-Lagrangian)
+
+SIREAM-AEC (same as SIREAM, with better treatment of organic matter)
+
+VSRM (clouds)
+
+Radioactive or biological decay
+
+Output savers
+
+Whole domain, list of points
+
+Boundary conditions (for nesting)
+
+Deposition fluxes, ...
+
+Preprocessing (rough summary)
+
+Meteorological fields
+
+ECMWF, MM5, WRF
+
+Vertical diffusion: Louis and Troen&Mahrt
+
+Ground data
+
+Land use cover: USGS, GLCF
+
+Emissions from EMEP
+
+Biogenic emissions (Simpson et al., 1999), sea salt
+
+Dry deposition: Emberson, Wesely and Zhang
+
+Boundary conditions
+
+Mozart 2, Inca
+
+Gocart
+
+Gaussian models (linear sources, deposition, ...)
+
+Libraries
+
+SeldonData
+
+Interpolations, input/output operations, ...
+
+AtmoData
+
+Extension of SeldonData to atmospheric sciences
+
+Physical parameterizations: meteorology, emissions, aerosols, ...
+
+AtmoPy
+
+Visualization
+
+Postprocessing, statistics
+
+Observations, ensemble forecasts, ...
+
+Polyphemus is distributed with several other resources for the user: test cases, training sessions, a comprehensive user's guide, a scientific documentation for AtmoData, a reference documentation for AtmoPy. In addition, the development team can be contacted at polyphemus-help@liste.enpc.fr. Futhermore, resources are available on this website for new developers.
+
+Other Resources
+
+Below is the talk given during the Polyphemus training day (27 March 2007). It explains Polyphemus purpose, its structure and its contents:
+
+Introduction à Polyphemus
+
+Introduction to Polyphemus (translation)

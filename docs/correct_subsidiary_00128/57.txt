@@ -1,0 +1,353 @@
+Tuxedo (software)
+
+Tuxedo (Transactions for Unix, Extended for Distributed Operations) is a middleware platform used to manage distributed transaction processing in distributed computing environments. Tuxedo is a transaction processing system or transaction-oriented middleware, or enterprise application server for a variety of systems and programming languages. Developed by AT&T in the 1980s, it became a software product of Oracle Corporation in 2008.
+
+History
+
+From the beginning in 1983, AT&T designed Tuxedo for high availability and to provide extremely scalable applications to support applications requiring thousands of transactions per second on commonly-available distributed systems. The original development targeted the creation and administration of operations support systems for the US telephone company that required online transaction processing (OLTP) capabilities.
+
+The Tuxedo concepts derived from the Loop Maintenance Operations System (LMOS). Tuxedo supported moving the LMOS application off mainframe systems that used Information Management System (IMS) from IBM on to much cheaper distributed systems running (AT&T's own) Unix.
+
+The original Tuxedo team comprised members of the LMOS team, including Juan M. Andrade, Mark T. Carges, Terrence Dwyer, and Stephen Felts. In 1993 Novell acquired the Unix System Laboratories (USL) division of AT&T which was responsible for the development of Tuxedo at the time. In September 1993 it was called the "best known" distributed transaction processing monitor, running on 25 different platforms. In February 1996, BEA Systems made an exclusive agreement with Novell to develop and distribute Tuxedo on non-NetWare platforms, with most Novell employees working with Tuxedo joining BEA. In 2008, Oracle Corporation acquired BEA Systems, and TUXEDO was marketed as part of the Oracle Fusion Middleware product line.
+
+Tuxedo has been used as transactional middleware by a number of multi-tier application development tools. The Open Group used some of the Tuxedo interfaces as the basis of their standards such as X/Open XA and XATMI.
+
+The Tuxedo developers published papers about it in the early 1990s. Later it became the basis of some research projects.
+
+Features
+
+Standards based APIs - SCA, The Open Group XATMI, Object Management Group CORBA
+
+Communication types - Synchronous, Asynchronous, Conversational, Unsolicited Notifications, Publish/subscribe
+
+Typed buffers
+
+FML/FML32 - Self describing fielded buffers similar to Abstract Syntax Notation One or Fast Infoset
+
+XML
+
+STRING and multibyte strings MBSTRING
+
+CARRAY binary blobs
+
+VIEW/VIEW32 externally descripted records
+
+Transaction Management - Global Transactions - Two-phase commit protocol - X/Open XA
+
+Clustering - Domains
+
+/WS - Remote Clients
+
+Java clients - Jolt
+
+JEE Integration - Tuxedo JCA Adapter
+
+Bidirectional Web Services - SALT
+
+/QUEUE - Transient (in memory) and Persistent Queues (also called Reliable Queues)
+
+Data Dependent Routing (DDR)
+
+Event Broker
+
+Security - Authentication, Authorization, Auditing, and Public key infrastructure based message signing and encryption
+
+Programmed Administration and SNMP support
+
+System and application performance monitoring - TSAM
+
+Load balancing, server spawning and decay
+
+Mainframe connectivity - TMA
+
+Supports C, C++, COBOL, Python, Ruby, PHP, and Java applications on most Unix platforms, Linux, Microsoft Windows, and other proprietary platforms such as OpenVMS and AS400 IBM System i
+
+.
+
+Messaging core
+
+Tuxedo is at its core a message routing and queuing system. Requests are sent to named services and Tuxedo uses memory based inter-process communication facilities to queue the requests to servers. The requester is unaware of where the server that actually processes the request is located or how it is implemented. In essence, Tuxedo provided the elements of service-oriented architecture (SOA) decades before the phrase was coined. Tuxedo can use the content of the message to determines what servers should be utilized to receive the request by means of data dependent routing.
+
+Clustering
+
+The heart of the Tuxedo system is the Bulletin Board (BB). This is a shared memory segment that contains the configuration and state of a Tuxedo domain. Servers, services, transactions, and clients are all registered in the BB providing a global view of their state across the machines within a domain. To coordinate updates to the BB a process called the Bulletin Board Liaison (BBL) runs on each machine to keep the local copy of the BB up-to-date. A master machine runs a process called the 'Distinguished Bulletin Board Liaison' that coordinates the updates to the BB. This allows each machine to have a view of what servers, services, transactions, and clients are on each machine within the domain.
+
+Another process on each machine called the Bridge is responsible for passing requests from one machine to another. This allows Tuxedo to spread load across the various machines within a domain and allows servers and services to be running on multiple machines. In addition the BBL and Bridge monitor each other and restart the other should one fail. In the advent of a failure of the master machine, another machine designated as a backup master can take over the function of master machine. Also, since machines within a single domain can be of different architectures (x86, IA32, SPARC, P-Series, etc.), the Bridge is also responsible for handling differences in things like endianness.
+
+On Oracle Exalogic Tuxedo leverages the RDMA capabilities of InfiniBand to bypass the bridge. This allows the client of a service on one machine to directly make a request of a server on another machine.
+
+Flexible buffer formats
+
+Tuxedo applications can utilize a variety of message formats depending upon the type of data that is to be passed. One of the most popular formats is the FML buffer format which is much like a binary XML or ASN.1 format. FML buffers can contain an arbitrary number of named fields of arbitrary type. Fields can be repeated and nested. As it is a self describing binary format, the processing of fields incurs very little overhead in comparison to the parsing necessary to support something like XML. VIEW buffers are essentially records, C structures, or COBOL copybooks. A VIEW buffer has an external description which allows Tuxedo to access the fields within it if necessary for things like data dependent routing. Other buffer formats include XML, CARRAY (opaque binary data), STRING, and MBSTRING (a string buffer containing multibyte characters.) Tuxedo can automatically and transparently convert FML buffers to and from XML buffers.
+
+There is also support for user-developed buffer types (for example JamFlex buffers defined by Tuxedo version of Panther RAD toolset).
+
+Communication concentrators
+
+For remote clients (Java, CORBA, or /WS), Tuxedo provides communication concentrators called listener/handlers that handle the remote network communication. Clients connect to these communication concentrators and act as proxies for the clients. As clients make requests, the listener/handler uses the local Tuxedo infrastructure to make the request on the behalf of the client. Tuxedo then load balances the requests across the servers within the domain that offer the service even if the server is not on the local machine. This is in contrast to most Java EE application servers where load balancing is done by the client making requests to different machines with the cluster.
+
+Gateways
+
+To facilitate the sharing of services across domains, Tuxedo provides domain gateways. A domain gateway allows importing and exporting services from remote domains. This allows the local domain to see services on remote domains as though they were local services. The domain gateways are responsible for propagating security and transaction context to the remote domain. Besides connecting Tuxedo domains together, domain gateways exist for mainframe systems using TCP/IP, IBM Systems Network Architecture (SNA), or the OSI protocols, and Java Platform, Enterprise Edition application servers. For the mainframe gateways, each system sees the services imported from the remote system as local services and use the local systems infrastructure to interact with those services. This means that Tuxedo sees a CICS transaction as a Tuxedo service, and CICS sees a Tuxedo service as a CICS transaction.
+
+Failure recovery
+
+The BBL on each machine monitors the state of all servers and can automatically restart failed servers. It can also detect hung servers and kill/restart them as required. Any transactions that are affected by a server or machine failure are rolled back.
+
+Transaction monitoring and coordination
+
+Tuxedo applications can request that all service invocations and their associated updates to any resources controlled by resource managers (such as databases) be controlled by a transaction. Once the application begins a transaction, all subsequent service invocations and nested invocations are included as part of that transaction, even those services that were executed on remote domains. Tuxedo then coordinates the commit processing with the resource managers to ensure atomic updates to all affected resources. Transactions can be controlled by the application or automatically controlled by the Tuxedo configuration, i.e., container controlled transactions.
+
+Queuing subsystem
+
+Tuxedo provides a queuing subsystem called /Q. This facility provides transient and persistent queues that allows application to explicitly queue requests to named queues. Queues can be ordered by message availability time, expiration time, priority, LIFO, FIFO, or a combination. Queues are managed by an XA compliant resource manager allowing queue operations to participate in transactions. An automated queue forwarding server is provided that will remove entries from a queue and invoke an associated Tuxedo services.
+
+Event subsystem
+
+The event subsystem within Tuxedo provides support for unsolicited events as well as brokered events. Unsolicited events allow Tuxedo applications to send out-of-band notifications to clients that aren't necessarily waiting for a response. Brokered events allow application to subscribe to events of interest and when another application posts an event, all applications subscribed to that event receive it. This allows applications to use an event driven model instead of the more typical request/response model.
+
+Add-on Products
+
+Oracle offers a number of add-on products to Tuxedo.
+
+Mainframe re-hosting
+
+In March 2010, Oracle announced two new products. Application Runtime for CICS and Batch along with the associated Oracle Tuxedo Application Rehosting Workbench allows the migration of IBM Customer Information Control System (CICS) and batch applications onto Tuxedo on distributed systems. By providing automated conversion tools, CICS equivalent API pre-processor macro expansion, and a JES-2 like Batch execution environment, the migration of mainframe applications is greatly simplified.
+
+SALT
+
+This product provides a bi-directional web services SOAP/HTTP(S) gateway. This gateway allows Tuxedo services to be accessed by external SOAP clients without making any changes to the Tuxedo service. Likewise Tuxedo applications can call an external web service as though it were a local Tuxedo service. The latest version of SALT supports WS-AtomicTransactions and modules for Apache Web Server, Oracle HTTP Server, and Oracle iPlanet Web Server, that allows the creation of dynamic web content by calling Tuxedo services.
+
+TSAM
+
+This product provides centralized monitoring capabilities for multiple Tuxedo domains. TSAM agents are deployed on the machines in a Tuxedo domain. These agents collect metric data from the running Tuxedo processes based on a configured policy, and send the data back to the TSAM Manager where it is used historically or in real time. TSAM provides configuration information, call path, call pattern, service execution, transaction, and more monitoring metrics. TSAM also monitors Tuxedo ART CICS and Batch applications.
+
+Tuxedo Mainframe Adapters (TMA)
+
+This product provides a set of gateway processes that run on Tuxedo that communicate with a mainframe using its native protocols. This gateway provides bidirectional integration between mainframe and Tuxedo platforms and makes Tuxedo appear as a remote CICS region to the mainframe.
+
+JCA Adapter
+
+This product is a wrapper to the WebLogic Tuxedo Connector (WTC) found as part of the WebLogic Server (WLS) product. WTC can only be used on WebLogic, but the JCA adapter allows deploying WTC capabilities on other Java Application Servers that support the Java EE JCA specification.
+
+Tuxedo Message Queue
+
+Provides enterprise messaging capabilities that combines the features of Oracle MessageQ with Tuxedo. This extends the existing /Q message queuing facility of Tuxedo by providing things like delivery notification, offline messaging, and store and forward capabilities.
+
+Oracle WebCenter Imaging
+
+Oracle WebCenter Imaging (formerly known as Oracle Imaging and Process Management or Oracle IPM) is Oracle Corporation's combined document management and business process management suite, marketed as a component of the Oracle Fusion Middleware portfolio of products.
+
+Oracle WebCenter Imaging provides organisations with a software solution focused on process-oriented imaging applications and "image-enabling" business applications, including Oracle E-Business Suite, PeopleSoft Enterprise, and many others. It enables annotation and markup of images, automates routing and approvals, and supports high-volume applications for trillions of items.
+
+Oracle WebCenter Imaging (and its historical variants) have been installed at thousands of customers world-wide since its inception, in a variety of industries from finance and banking, healthcare, through to construction.
+
+Current/Historical Versions
+
+Oracle WebCenter Imaging 11g Release 1 (11.1.1.6.0) - released February 2012
+
+Oracle WebCenter Imaging 11g Release 1 (11.1.1.5.0) - released May 2011
+
+Oracle WebCenter Imaging 10g Release 3 (10.1.3.6.0) - released April 2011
+
+History
+
+Oracle WebCenter Imaging was originally developed by Optika in the late 1990s, as a workflow-enabled next generation of an imaging-only product called FilePower. The initial versions (1.0 to 1.5.1) were marketed under the name of eMedia, and with the release of version 2.0 the name was changed to Acorde. The Acorde name lasted through to version 4.0, which was the last Optika-developed release, due to a merger between Optika and Stellent in 2004, where the Optika brand was dissolved. At this point, the product was rebranded as Stellent Imaging and Business Process Management (or its acronym of IBPM). The version numbers were aligned with Stellent versioning at the time, so the following releases were 7.5 and 7.6.
+
+Soon after the merger, Oracle Corporation acquired Stellent in 2007, and the product was rebranded as Oracle Imaging and Process Management (IPM). The subsequent Oracle-branded version was known as 7.7 (Stellent numbering), and 10gR3 which aligned with Oracle Corporation's product line at the time.
+
+In 2009, Brainware entered into an OEM agreement with Oracle whereby Oracle plans to embed the Brainware Distiller' intelligent data capture software into Oracle WebCenter Imaging. This adds AP processing and intelligent data extraction into the imaging product offering. As it turns out, Oracle took a more modular approach, and integrated this technology into a new Oracle product, called Oracle Forms Recognition (OFR), which is designed to closely integrate with Oracle WebCenter Imaging.
+
+In July 2011, several of Oracle Corporation's ECM products underwent a repositioning under the existing Oracle WebCenter marketing name, so Oracle IPM became known as Oracle WebCenter Imaging.
+
+Architecture
+
+Oracle WebCenter Imaging supports both Oracle and Microsoft SQL Server databases. In 10g versions (and below) the only core server architecture supported is Win32 or Win64, so support for the main services is restricted to Microsoft Windows Server editions, from Windows 2000 Server through to Windows Server 2008. End-user/client access for image retrieval and workflow actions is via either a Windows-based application (also known as a "production" or "thick" client) which is required for administrative functions, or two versions of a web-based client; a heavier but more featured version, or a cut-down "express" version. The Windows client is installed and kept updated from a central repository service (known as Distributed Software Management Service, or DSMS), enabling easy installation to end-user machines, and automatic updates as the central repository is updated or upgraded. The web client is ASP.NET based, so is restricted to Microsoft IIS only.
+
+The WebCenter Imaging server consists of a number of separate highly task-focused components (known as services), which can be enabled or disabled depending on requirements, distributed over a number of physical machines to spread workload, and in most instances duplicated to provide scalability.
+
+The 11g release has been completely rewritten as a J2EE application, which runs on Oracle WebLogic Server, so supported operating systems and architectures has been extensively improved. With the initial release (Release 1) versions, there is no direct upgrade path from previous versions, so it is for new installs only. Both client and administrative access is now performed via a web interface, and workflow functionality has been removed; the intention is to integrate the product with dedicated workflow suites, such as Oracle BPEL Process Manager. There are also no longer specific services as in previous versions, so scalability and redundancy is now handled via the clustering functionality provided by the WebLogic Server architecture.
+
+Oracle Forms
+
+Oracle Forms is a software product for creating screens that interact with an Oracle database. It has an IDE including an object navigator, property sheet and code editor that uses PL/SQL. It was originally developed to run server-side in character mode terminal sessions. It was ported to other platforms, including Windows, to function in a client - server environment. Later versions were ported to Java where it runs in a Java EE container and can integrate with Java and web services.
+
+The primary focus of Forms is to create data entry systems that access an Oracle database.
+
+How it works ?
+
+Oracle Forms accesses the Oracle database and generates a screen that presents the data. The source form (*.fmb) is compiled into an "executable" (*.fmx), that is run (interpreted) by the forms runtime module. The form is used to view and edit data in database-driven applications. Various GUI elements, such as buttons, menus, scrollbars, and graphics can be placed on the form.
+
+The environment supplies built-in record creation, query, and update modes, each with its own default data manipulations. This minimizes the need to program common and tedious operations, such as creating dynamic SQL, sensing changed fields, and locking rows.
+
+As is normal with event driven interfaces, the software implements event-handling functions called triggers which are automatically invoked at critical steps in the processing of records, the receipt of keyboard strokes, and the receipt of mouse movements. Different triggers may be called before, during, and after each critical step.
+
+Each trigger function is initially a stub, containing a default action or nothing. Programming Oracle Forms therefore generally consists of modifying the contents of these triggers in order to alter the default behavior. Some triggers, if provided by the programmer, replace the default action while others augment it.
+
+As a result of this strategy, it is possible to create a number of default form layouts which possess complete database functionality yet contain no programmer-written code at all.
+
+History
+
+Oracle Forms is sold and released separately from the Oracle Database. However, major releases of an Oracle database usually result in a new major version of Oracle Forms to support new features in the database.
+
+Oracle Forms started as Interactive Application Facility (IAF), which had two main components: the compiler (Interactive Application Generator - IAG) and the runtime interpreter (Interactive Application Processor - IAP). Released with Oracle Database version 2, IAF provided a character mode interface to allow users to enter and query data from an Oracle database. It was renamed to FastForms with Oracle Database version 4 and added an additional tool to help generate a default form to edit with IAG, the standard tool. The product saw one more name change before gaining its current moniker, called SQL*Forms version 2 with the Oracle 5 database.
+
+Oracle Forms 2.3 was character-based, and did not use PL/SQL. The source file was an *.INP ASCII file. This enabled developers to commonly edit the INP file directly, although that editing method was not supported by Oracle. This version used its own primitive and unfriendly according to whom ? built-in language, augmented by user exits compiled language code linked to the binary of the Oracle-provided run-time.
+
+Oracle Forms 3 was character-based, and by using PL/SQL was the first real version of Forms. All subsequent versions are a development of this version. It could run under X but did not support any X interface-specific features such as checkboxes. The source file was an *.INP ASCII file. The IDE was vastly improved[according to whom?] from 2.3 which dramatically decreased the need to edit the INP file directly, though this was still a common practice. Forms 3 automatically generated triggers and code to support some database constraints. Constraints could be defined, but not enforced in the Oracle 6 database at this time, so Oracle used Forms 3 to claim support for enforcing constraints. There was a "GUI" version of Forms 3 which could be run in environments such as X Window, but not Microsoft Windows. This had no new trigger types, which made it difficult to attach PL/SQL to GUI events such as mouse movements.
+
+Oracle Forms version 4.0 was the first "true" GUI based version of the product. A character-based runtime was still available for certain customers on request. The arrival of Microsoft Windows 3 forced Oracle to release this GUI version of Forms for commercial reasons. Forms 4.0 accompanied Oracle version 6 with support for Microsoft Windows and X Window. This version was notoriously buggy and introduced an IDE that was unpopular with developers.according to whom ? The 4.0 source files became binary and were named *.FMB. This version was not used by the Oracle Financials software suite.
+
+Oracle Forms version 4.5 was really a major release rather than a "point release" of 4.0 despite its ".5" version number. It contained significant functional changes and a brand new IDE, replacing the unpopular IDE introduced in 4.0. It is believed[according to whom?] to be named 4.5 in order to meet contractual obligations to support Forms 4 for a period of time for certain clients. It added GUI-based triggers, and provided a modern IDE with an object navigator, property sheets and code editor.
+
+Due to conflicting operational paradigms, Oracle Forms version 5 accompanied Oracle version 7. It featured custom graphical modes tuned especially for each of the major systems, though its internal programmatic interface remained system-independent. It was quickly superseded by Forms 6, which was released with Oracle 8.0 database and was rereleased as Forms 6i with Oracle 8i. This was basically Forms 4.5 with some extra wizards and bug-fixes. But it also included the facility to run inside a web server. A Forms Server was supplied to solve the problem of adapting Oracle Forms to a three-tier, browser-based delivery, without incurring major changes in its programmatic interface. The complex, highly interactive form interface was provided by a Java applet which communicated directly with the Forms server. However the web version did not work very well over HTTP. A fix from Forms 9i was retrofitted to later versions of 6i to address this.
+
+The naming and numbering system applied to Oracle Forms underwent several changes due to marketing factors, without altering the essential nature of the product. The ability to code in Java, as well as PL/SQL, was added in this period. Forms 7 was never release to the public and only existed internally as Project Cherokee. Version 8 did not exist; This number was jumped over in order to allow the Oracle Forms version number to match the database version in v9. Forms 9i included many bug fixes to 6i and was a stable version, but it did not include either client - server or character-based interfaces, and three-tier, browser-based delivery is the only deployment option. The ability to import java classes means that it can act as a web service client.
+
+Forms 10g is actually Forms version 9.0.4, so is merely a rebadged forms 9i. Forms 11 includes some new features, relying on Oracle AQ to allow it to interact with JMS.
+
+Integration with Oracle Designer CASE Tool
+
+Oracle Designer is a CASE tool that is sold by Oracle. It is able to generate various software modules including Oracle Forms and Oracle Report
+
+Current Status
+
+Whilst Oracle's preferred approach for new development is its Java based Oracle Application Development Framework or Oracle Application Express. Oracle's development tools statement of direction is quite clear in its commitment to continuing to support Oracle Forms and continue to develop and enhance it in the following areas:
+
+Making the upgrade to the web and to new releases as smooth as possible
+
+Allowing Forms and Reports applications to take full advantage of the application server services and inter-operate with Java EE applications. An Alternative to Oracle Application Development Framework is also Oracle Application Express. One of the advantages of Oracle Application Express is that it is more closely related to Forms as it also relies heavily on PL/SQL.
+
+Oracle Financial Services Software
+
+Oracle Financial Services Software Limited (formerly called i-flex Solutions Limited BSE: 532466) is a subsidiary of Oracle Corporation. It is an IT solution provider to the banking industry. It claims to have more than 900 customers in over 145 countries. Oracle Financial Services Software Limited is ranked No. 9 in IT companies of India and overall ranked No. 253 in Fortune India 500 list in 2011.
+
+History
+
+Part of Citicorp
+
+Oracle Financial Software Limited was a part of Citicorp's (now Citigroup) wholly owned subsidiary called Citicorp Overseas Software Ltd (COSL). In 1991, Mr. Ravi Apte carved out a separate company called Citicorp Information Technologies Industries Ltd. (CITIL) out of COSL and named Mr. Rajesh Hukku to head CITIL. While COSL's mandate was to serve CiticorpÃ¢â¬â¢s internal needs globally and be a cost center, CITIL's mandate was to be profitable by serving not only Citicorp but the whole global financial software market. COSL was the brain child of Mr. Ravi Apte, who convinced Citicorp, while working for Citibank, to start COSL as the offshore captive.
+
+Many of the executive management of Oracle Financial Services, including Rajesh Hukku, R.Ravisankar and NRK Raman were at COSL and moved to CITIL when it was formed.
+
+i-flex
+
+CITIL started off with the universal banking product MicroBanker (which became successful in some English speaking parts of Africa and other developing regions over the next 3 - 4 years) and the retail banking product Finware. In the mid-90s, CITIL developed FLEXCUBE at its Bangalore development center after a significant development effort spanning more than 18 months. After the launch of FLEXCUBE, all of CITIL's transactional banking products were brought under a common brand umbrella.
+
+CITIL changed its name to i-flex solutions to reflect its growing independence from Citicorp and to strengthen its FLEXCUBE brand. The name CITIL also made the prospective client banks hesitant about trusting the company with their data, since the name alluded to a close link with Citibank which could be one of their competitors.
+
+The first version of MicroBanker was created at COSL by Ravi Sankaran who migrated to Australia before CITIL was formed. COSL started selling MicroBanker to non-Citi banks in Africa. Ravi Apte the founder CEO of COSL decided to carve out CITIL to focus on non-Citi business. Because non-Citi was the primary target for MicroBanker, MicroBanker was moved to CITIL. Rajesh Hukku was in the United States managing COSL's business development in North America during the time CITIL was formed. It was Mr. Apte who decided to get Hukku back to India to head the newly formed CITIL. This is previously
+
+Enter Oracle Corporation
+
+In 2006, i-flex became a majority-owned subsidiary of Oracle Corporation. Oracle built its stake through a series of purchases, first buying Citigroup's 41% stake in i-flex solutions for US$593 million in August 2005, a further 7.52% in March and April 2006, and 3.2 per cent in an open-market purchase in mid-April 2006.
+
+On 14 August 2006, i-flex solutions announced it would acquire Mantas, a US-based anti-money laundering and compliance software company for US$122.6 million. The company part-funded the transaction through a preferential share allotment to majority shareholder Oracle Corporation.
+
+Following its acquisition by Oracle, i-flex has begun an expansion plan reportedly to capitalize on its owner's brand and financial strength. It has invested to expand capacity at its existing locations in India which is reportedly sufficient to accommodate 17,000 employees compared with over 10000 staff already employed by the company in August 2007.
+
+On 12 January 2007, after an open offer price to minority shareholders, Oracle increased its stake in i-flex to around 83%.
+
+On 4 April 2008, the board of directors of i-flex solutions approved a proposal to change the name of the company to Oracle Financial Services Limited, subject to regulatory and shareholder approvals. A press release issued by the company said that "The proposed new name reflects the company's close strategic and operational alignment with its parent, Oracle Corporation, which owns 81 percent of the company." It added that the current management team under N.R.K. Raman, CEO and Managing Director, will continue to run the operations of the company.
+
+On 24 October 2010, Oracle announced the appointment of Chaitanya M Kamat (Chet Kamat) as Managing Director and Chief Executive Officer of Oracle Financial Services Software Limited. Mr. Kamat has also joined the Board of Directors. The outgoing CEO and MD, N.R.K.Raman retired from these posts after 25 distinguished years of service.
+
+Now Oracle Financial Services Software Limited is a major part of Oracle Financial Services Global Business Unit (FSGBU) under Mr.Frank Brienzi who is the Vice President & Group Head of Oracle FSGBU World Wide
+
+Products and services
+
+Oracle Financial Services Software Limited has two main streams of business. The products division (formerly called BPD - Banking products Division) and PrimeSourcing. The company's offerings cover retail, corporate and investment banking, funds, cash management, trade, treasury, payments, lending, private wealth management, asset management and business analytics. The company undertook a rebranding exercise in the latter half of 2008. As part of this, the corporate website was integrated with Oracle's website and various divisions, services and products renamed to reflect the new identity post alignment with Oracle.
+
+Recently,Oracle Financial Services launched products for Internal Capital Adequacy Assessment Process, exposure management, enterprise performance management and energy and commodity trading compliance.
+
+Products Business
+
+Oracle FLEXCUBE Universal Banking Suites
+
+Oracle Banking Product
+
+Oracle FLEXCUBE Core Banking
+
+Oracle FLEXCUBE Universal Banking
+
+Oracle FLEXCUBE Investor Servicing
+
+Oracle FLEXCUBE Private Banking
+
+Oracle FLEXCUBE Lending and Leasing
+
+Oracle FLEXCUBE Islamic Banking
+
+Oracle FLEXCUBE Direct Banking- Internet, Mobile, SMS and WAP
+
+Oracle FLEXCUBE Messaging Hub
+
+Oracle FLEXCUBE Remit
+
+Oracle FLEXCUBE Enterprise Limits and Collateral Management
+
+Oracle Financial Services Analytical Applications for Customer Insight
+
+Oracle Financial Services Analytical CRM Advanced
+
+Oracle Financial Services Channel Analytics
+
+Oracle Financial Services CRM Analytics
+
+Oracle Financial Services Advanced Analytical Applications Infrastructure Oracle Financial Services Analytical Applications for Enterprise Risk Management
+
+Oracle Reveleus Internal Capital Adequacy Assessment Process
+
+Oracle Financial Services Basel II
+
+Oracle Financial Services Operational Risk
+
+Oracle Financial Services Market Risk
+
+Oracle Financial Services Credit Risk
+
+Oracle Financial Services Liquidity Risk
+
+Oracle Financial Services Corporate Credit Risk
+
+Oracle Financial Services Model Risk Management
+
+Oracle Financial Services Analytical Applications for Financial Crime and Compliance Management
+
+Oracle Financial Services Fraud
+
+Oracle Financial Services Energy and Commodity Trading Compliance
+
+Oracle Financial Services Anti Money Laundering
+
+Oracle Financial Services Broker Compliance
+
+Oracle Financial Services Trading Compliance
+
+Oracle Financial Services Know Your Customer
+
+Oracle Financial Services Regulatory Reporting System
+
+Oracle Financial Services Analytical Applications for Enterprise Performance Management Oracle Financial Services Data Warehouse
+
+Services offerings
+
+Oracle Financial Services
+
+Oracle Financial Services Support
+
+Oracle Financial Services BPO
+
+Oracle (OFSS) ASP Private Limited
+
+Oracle Financial Services University
+
+Oracle Financial Services AIM
+
+Oracle Partner Network
+
+Primesourcing
+
+PRSG
+
+.

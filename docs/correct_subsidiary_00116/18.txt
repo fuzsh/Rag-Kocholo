@@ -1,0 +1,133 @@
+Quick definition: The NTP stratum is a hierarchical structure where each higher number represents another step from the NTP server. It ensures accurate timekeeping between all devices and servers.
+
+In computing and IT, precision timing is crucial. Servers rely on the Network Time Protocol (NTP) to synchronize their clocks, ensuring uniformity across the network. NTP was introduced in 1979, making it one of the earliest computer protocols.
+
+Time synchronization is critical for various functions, including SSL certificates, log aggregation, and scheduled tasks. NTP operates on a hierarchical system known as the stratum hierarchy, where each level represents an additional step from the primary clock, with the most accurate being stratum 0.
+
+Before delving into the intricacies of the stratum hierarchy, let's first explore the fundamentals of NTP and how it leverages this hierarchy to maintain precise timekeeping.
+
+Understanding NTP is pivotal for both the CCNA and Network+ Exam. Towards the end of the article, we’ll also discuss a concept that always confused me when learning about NTP – so stick around until the end!
+
+What is NTP Stratum?
+
+NTP stratum is a hierarchical strategy used to ensure accurate timekeeping among all devices and servers. Each level within the hierarchy represents its distance from the NTP server.
+
+The source NTP server is generally an atomic clock with an exact timekeeping mechanism. As the strata increase, so does the distance from the source clock, so technically, they are less accurate. However, public internet devices are within milliseconds of the source clock and are still accurate for all computational purposes.
+
+The stratum hierarchy ensures reliability and scalability within a computer network. Distributing timekeeping to individual machines ensures a computer can keep track of time despite network disruption. Each hierarchy is a backstop to the ones below it, ensuring resilient and robust timekeeping.
+
+What is the NTP Stratum Hierarchy?
+
+The NTP stratum hierarchy consists of sixteen levels. Let’s go through each level and discuss their purpose and accuracy.
+
+Stratum 0
+
+This is the highest level in the hierarchy and represents the primary reference clock source. Typically, this includes highly precise atomic clocks or GPS receivers.
+
+Stratum 1
+
+These are servers directly synchronized to stratum 0 sources. They act as primary time servers for stratum 2 servers.
+
+Stratum 2
+
+These servers synchronize their time with stratum 1 servers. They serve as secondary time servers for clients, such as computers and devices on a network.
+
+Stratum 3, Stratum 4, etc.
+
+The hierarchy can continue with additional levels, each representing an additional level of synchronization away from the primary source.
+
+Most devices on the internet are stratum 1 or higher, and those are connected directly to stratum 1 servers. Let’s look at a couple of examples of stratum 1 servers:
+
+Servers operated by the National Institute of Standards and Technologies (NIST).
+
+Servers operated by meteorology institutes, such as the Physikalisch-Technische Bundesanstalt (PTB) in Germany
+
+Servers operated by scientists performing time research, such as Google’s public NTP service.
+
+Services operated by universities and other research institutions.
+
+NTP Synchronization Process
+
+All NTP synchronization processes occur on UDP port 123. (That’s easy to remember!) Once the ports are open up, the NTP sync process is straightforward, though it does contain quite a few steps. Let’s outline each step in the NTP synchronization process:
+
+NTP Startup
+
+The NTP client running on a computer or network device initializes when the system boots up or when the NTP service starts.
+
+Server Selection
+
+The computer must decide which stratum server it will retrieve the time from. These servers are usually manually configured on the router, chosen via DHCP, or picked from an NTP server pool.
+
+Time Synchronization Request
+
+The NTP client sends a time synchronization request to the chosen NTP server. The request will contain the current time on the user system.
+
+Server Response
+
+The server responds with the correct time. It also sends metadata regarding its stratum hierarchy level and the level of precision.
+
+Time Offset Calculation
+
+The NTP client receives responses from multiple NTP servers and calculates the offset between its local system time and the time reported by the servers. This offset accounts for network latency and other factors affecting the time synchronization process.
+
+Clock Adjustment
+
+Based on the calculated time offset, the NTP client adjusts its local system clock to synchronize with the time reported by the NTP servers. This adjustment may involve speeding up or slowing down the local clock to gradually align it with the reference time provided by the servers.
+
+Stratum Hierarchy
+
+The NTP client may select time servers based on their stratum level, preferring servers closer to the primary time sources (e.g., atomic clocks) with lower stratum numbers for increased accuracy and reliability. Following this process ensures consistent timekeeping for all servers.
+
+Troubleshooting NTP Stratum Issues
+
+Time synchronization issues can be a real headache when troubleshooting logs or verifying SSL certificates. If you think NTP may be the culprit, there are a couple of troubleshooting strategies to verify:
+
+Check NTP Server Connectivity
+
+Check the status of the NTP server. Errors and warnings are logged in the following location on your router: var/log/ntp.log.
+
+Verify the Time Source
+
+Ensure the time source is from a low stratum level, such as stratum 1 or 2. Check the stratum level with the following command on your router: ntpq -p
+
+Check Firewall Configurations
+
+Verify port 123 is open to receive data. Firewall or other network restrictions may block communication with the NTP Server.
+
+Check NTP Documentation
+
+Check the official NTP documentation and resources for more troubleshooting tips. The NTP documentation (e.g., man ntp.conf) provides valuable information on configuring and troubleshooting NTP.
+
+Security Concerns for NTP Stratum
+
+There are a few security concerns related to the NTP stratum. Let's review them and explore how to limit these risks.
+
+Use the Latest NTP Version
+
+Use the latest version of NTP and apply security patches when required. Use the command ntpd --version to check your NTP version, and compare it to the latest version on the NTP website.
+
+Access Control
+
+Restrict NTP access to only trusted users and services. This will prevent unauthorized synchronization and time manipulation.
+
+Network Segmentation
+
+Segmenting NTP traffic on separate network segments or VLANs isolates time synchronization services from other critical network resources and reduces the risk of network-based attacks.
+
+Vendor Recommendations
+
+Follow all recommended security practices specified by the NTP server vendor, including recommendations from the IEFT (Internet Engineering Task Force) and the NIST (National Institute of Standards and Technology).
+
+For our last segment, let’s review a commonly confused concept: the BIOS (basic input/output system), the Real-Time Clock (RTC), and the NTP stratum.
+
+What is the Difference Between the RTC and the NTP clock?
+
+When first learning about NTP, it is common to misunderstand the difference between a computer’s real-time clock (RTC) and NTP. The computer’s RTC is located in the BIOS and is an independent clock used to manage and synchronize the computer’s internal mechanisms. NTP, on the other hand, synchronizes time between different servers and devices on a network.
+
+If the RTC time and the NTP time ever differ significantly, the system administrator or user may manually adjust the BIOS time to match the NTP time. In some cases, BIOS firmware updates may include options for automatic time synchronization with NTP servers, but this functionality is not universally present in all BIOS firmware versions.
+
+Final Thoughts
+
+NTP stratum is one of the unsung heroes of the modern computer. Without it, servers would have no way of telling time with each other. Imagine a scenario where you and your friends are at the mall, and everyone plans to meet up at 3:00 PM. Well, that’d be useless if you didn’t each have the time on your watch.
+
+In a nutshell, that’s precisely what NTP does. It has a single source of truth (Stratum 0), and each server in the hierarchy inevitably uses it as a single source of truth. NTP stratum will show up on the Network+ exam, so make sure you understand how it works and what it’s for.

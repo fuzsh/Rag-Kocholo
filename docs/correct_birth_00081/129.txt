@@ -1,0 +1,67 @@
+Hi! I’m a long-time Sonos user who recently (1) replaced my Windows computer and (2) added a NAS drive to my network. The NAS is a Buffalo LinkStation 220. I have 5 separate music folders that Sonos accesses (I used to have one but it stopped automatically updating and Sonos asked me to break them out into 5 different folders about 9 months ago). I transferred those 5 folders from the old computer to the new one. I then transferred those 5 folders from the new computer to the NAS. When I tried to link to those folders from Sonos, it only linked to three of them (I could link to all 5 from the new computer). The other two got an error saying the link was bad or the drive was turned off, neither of which was true. Those two folders were essentially two iTunes library folders. The other 3 folders were only mp3 music files. I spent 90 minutes on the phone with Sonos and their tech eventually said it must be an issue with the Buffalo NAS. I contacted Buffalo and they said it must be a permission issue with iTunes. I did realize at that point I hadn’t authorized iTunes on the new computer but after doing so, I still got the same error. So at this point I am on the verge of sending the NAS back and keeping music on my HD for the time being but I really want a NAS to work.
+
+Any thoughts from the community?
+
+Thanks in advance.
+
+icon
+
+Best answer by Corry P
+
+View original
+
+Hi @Franke
+
+Thanks for your post!
+
+Given that you have 5 folders on your NAS, the only difference being their names, and you can access 3 but not 2, I would first look at the read/write permissions of those two problem folders. Sonos needs both read and write access to a folder to index. You might need to look at which users are allowed access too.
+
+If the folder names were unusually long, that may cause an issue - though I think the full path of each file would need to exceed 255 characters, so is unlikely to be the problem. I don’t think the iTunes service is related - the Sonos system will be trying to access NAS files via the SMB protocol.
+
+Personally, I can’t follow the logic of needing 5 folders in the first place - perhaps you should try moving all the contents to one folder on the NAS (one of the folders that already works) to see if that helps?
+
+For what it’s worth, the diagnostics submitted on the 22nd seem to indicate a credentials problem as they report “Access Denied”, but I can’t tell if that’s relating to your computer or your NAS.
+
+I hope this helps.
+
+Edit: The system is trying to access “//LS220DA17/Music/Franke iTune Library” or “//FRANKEFAMILY/Franke iTune Library” - please make sure it shouldn’t be “//LS220DA17/Music/Franke iTunes Library” or “//FRANKEFAMILY/Franke iTunes Library”. I’d also try a path with no spaces, eg. “//FRANKEFAMILY/Music”
+
+Thanks. The Sonos tech when accessing my computer seemed to verify my permissions were all identical between the 5 folders but I will confirm.
+
+I have 5 separate folders because when I had only 1 folder my library stopped updating new music. I called Sonos and they thought the overall size of the folder was an issue and suggesting breaking the one large music folder into smaller subfolders which fixed my updating issue.
+
+I’m positive the file path is correct because I’ve “browsed” to it through Sonos and still get the same error.
+
+From a user perspective, the folders are set up for “Everyone” to have full permission (Windows 11). On my previous computer, “Sonos Wi-Fi Music System” or something similar was specifically identified as a user. It is not on my current computer but the Sonos tech didn’t seem to think that was an issue.
+
+Hi @Franke
+
+I understand where you’re coming from, but if the files are now stored on the NAS, the permissions that Windows reports are irrelevant to Sonos - Sonos makes it’s own connection, which may be subject to different rules, depending on the user name used. If you haven’t set up separate users on the NAS, however, this is unlikely. I also don’t see why they would differ, but it’s worth checking directly from within the NAS control software/webpage.
+
+Additionally, the 5 folder fix was for a connection to Windows, and there’s no reason that it relates to your current situation now that your files have moved - remember: the PC is only pointing Sonos to the share, and has nothing to do with the connection being made. The only size limitation I know of is the 65,000 track limit - there’s no limit to the size of a particular folder. For what it’s worth, I think you might have been hitting a time-out when connecting to your old computer, and perhaps having multiple folders reset the timer each time so that the limit was never reached. I think you can probably expect better from your NAS - especially if your computer was connecting via WiFi and your NAS connects via ethernet (which it really should!).
+
+Have you tried a path without spaces? Linux isn’t overly fond of spaces in filenames.
+
+Also, how many music files (roughly) are we talking here?
+
+Hi circling back here. I’ve verified all permissions are the same on all 5 folders. I deleted a significant number of duplicate files to get the overall size of my total library down (I think around 20-30k songs). I authorized iTunes on the new computer for both iTune library folders that Sonos won’t recognize (I honestly thought that was it...), I changed the file name to one long word versus spaces, and just tried again and still get the same error that Sonos doesn’t think the path is correct or can’t access it. I did reach out Buffalo about the issue and they said this (which I don’t fully understand):
+
+If the folders that are not being detected are the only ones that are not being properly detected and they have the same access restrictions set, the unit will be proving the same level off access to each of the 5 folders as the unit has no other way of preventing access to the folder. If the sonos system is using DLNA having this option turned on for the folders will be needed to detect the folders in question. Otherwise, if this is accounted for and other folders are detectable this is likely an issue with how the itunes archives are being created or they have file level permissions baked into the files.
+
+Any other ideas? I am inclined to just send the NAS back and try and different brand at a later time.
+
+Thanks.
+
+Hi @Franke
+
+I think they’re saying that other than the folder permissions, the NAS has no way of restricting folders. We don’t use DLNA for Music Library, so the rest doesn’t apply.
+
+I recommend you get back in touch with our technical support team, but start a new case (don’t reference your old case) to help the agent get a fresh look at things, now that the Windows share is out of the picture. Personally, I wouldn’t like to call anything definitely until I had looked at it myself, but that isn’t an option anymore.
+
+Tidying up your music folders was a good idea - perhaps there’s more to do? I find it suspicious that you’re having these issues across platforms - perhaps there’s some folders in there that have some unusual contents? It might be worth trawling through them all to check, though I don’t envy you.
+
+You mentioned the five folders again - you haven’t tried turning them into one?
+
+A thought just occurred to me - if you downloaded a lot of your music from iTunes a long time ago (more that a decade), there might be DRM (Digital Rights Management) issues - Apple removed DRM some time ago, and all tracks are now available without it. Replacing any DRM tracks you have with fresh copies might just help, but as I understand it, DRM would only prevent playback and not indexing, so don’t go to too many lengths to check this.
+
+I hope this helps.

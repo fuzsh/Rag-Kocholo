@@ -1,0 +1,307 @@
+by
+
+Ali Khosravifardshirazi
+
+1 ,
+
+Babak Tavana
+
+2 ,
+
+Akbar A. Javadi
+
+1 ,
+
+Ali Johari
+
+3 ,
+
+Shima Gholzom
+
+4 ,
+
+Behnaz Khosravifardshirazi
+
+1 and
+
+Mohammad Akrami
+
+1,*
+
+1
+
+Department of Engineering, University of Exeter, Exeter EX4 4QF, UK
+
+2
+
+Department of Engineering, Bushehr University, Bushehr 75158-95496, Iran
+
+3
+
+Department of Civil and Environment Engineering, Shiraz University of Technology, Shiraz 71557-13876, Iran
+
+4
+
+Department of Music, Shiraz University, 5th Km of Sadra Highway, Shiraz 71987-74731, Iran
+
+*
+
+Author to whom correspondence should be addressed.
+
+Buildings 2024, 14(6), 1804; https://doi.org/10.3390/buildings14061804
+
+Submission received: 20 May 2024 / Revised: 2 June 2024 / Accepted: 6 June 2024 / Published: 14 June 2024
+
+(This article belongs to the Special Issue Vibration Monitoring and Control of the Built Environment)
+
+Abstract
+
+:
+
+This paper examines the effects of soil–structure and structure–soil–structure interactions in the design of foundations for adjacent concrete buildings, which are located on soft soils. The study employs an elasto-plastic model through static (quasi-dynamic) analysis using the direct finite element method by applying earthquake loads in one time step. Two concrete buildings, one with 6 stories and another with 12 stories, were modelled and numerically analysed using ANSYS. The foundations of these two buildings were analysed separately and compared when they were assumed to be adjacent to each other. The designs of the buildings’ foundations were evaluated independently and in comparison with each other to determine the impact of these interactions. The results indicated that accounting for the effects of both interactions increases the total deformation of the foundations. Additionally, the study found that adjusting the subgrade reaction modulus values (Ks) for different sections of the foundation can be a practical method to address both interaction effects simultaneously. This method also optimizes the weight of reinforcement material (Wr) by reducing it by 15% and modifying the positions and quantities of reinforcements used and considering various subgrade reaction modulus values in foundation design.
+
+1. Introduction
+
+In recent years, the reduction in suitable urban spaces and the need for large-scale housing for the growing population have led to an increase in the construction of buildings with minimal distances between them. This has resulted in the accumulation of ground stress and an increase in deformation within the foundations of adjacent buildings. Existing regulations, such as FEMA 273 [1], allow for the consideration of this effect in foundation design by adjusting the subgrade reaction modulus in 2D analysis, but it needs to be expanded and modified in terms of 3D analysis [2]. Additionally, the interaction between buildings has the potential to impact foundation performance. Moreover, soil–structure interaction (SSI) is influenced by the flexibility of the soil below the foundation and the relative vibrations between the foundation and the free surface. By accounting for these effects, it is possible to determine the inertial forces and actual displacements of a structure under seismic ground motion or quasi-dynamic loads [3].
+
+Traditionally, the effects of soil deformability are neglected even if the motion of the foundation differs from the free-field ground motion [4]. Wong et al. [4] and Luco et al. [5] investigated dynamic structure–soil–structure interaction (SSSI) between two shear walls placed on rigid foundations subjected to SH waves. They demonstrated that structures with high frequencies positioned near each other have minimal mutual influence, whereas structures with lower frequencies can exert significant effects on one another [5,6]. As the number of structures increases, the maximum displacement experiences an increase due to SSSI effects. This depends on the frequencies of the structures that are relatively close, and their masses are larger compared to the foundation area, thereby magnifying interaction effects [6]. However, these effects were previously neglected in a study [7] when Young’s modulus exceeded 6.9 × 106 kPa. Various types of soil were analysed to consider SSSI effects, including sandy and soft soils [8]. These types of soil amplify seismic wave interactions with soil–structure systems. In most studies, maximum principal stresses were observed on the contact surface between the soil and the foundation beneath the columns, whereas minimum stress values appeared at the centre of the foundations [9]. Çelebi et al. [10] observed a noticeable change in the seismic response of structures with only a few stories when SSI effects were disregarded in loose soil. Furthermore, there is a significant discrepancy between analyses using linear soil behaviour and a nonlinear elasto-plastic Mohr–Coulomb soil behaviour.
+
+Cayci et al. [11] indicated that linear models may provide inaccurate estimates of soil behaviour when subjected to seismic loads. The influence of neighbouring buildings can be particularly strong for embedded foundations, leading to reduced responses at the top of the buildings [12]. Alexander et al. [13] demonstrated that the effect of an earthquake is often transferred from a taller new building to a shorter, older one. Buildings with higher aspect ratios (tall and narrow) are more susceptible to failure on medium and dense soils, while buildings with very small aspect ratios (short and wide) are at higher risk on loose soils in terms of SSSI effects. When there is a significant difference in height (ε > 1.5, where ε is the relation between the height of a taller building to a shorter one) between buildings, maximum building displacement occurs, and it may increase due to earthquake effects transmitted from taller buildings to shorter ones [14].
+
+Some researchers have explored these effects in the context of three or more buildings [4,6,15,16,17], demonstrating that these effects are more pronounced compared to situations with only two adjacent buildings. Aldaikh et al. [16] revealed that SSSI effects are more severe when buildings are in close proximity, and these effects can be considered negligible when the spacing between buildings is more than 2.5 times the foundation width [15]. Li and Liu [17] noted that SSSI effects become significant when the spacing between adjacent buildings is less than 9 m (or 0.3 × B). SSSI effects should also be taken into account in seismic designs [18]. Aldaikh et al. [15] emphasized that the height of structures plays a significant role in terms of SSSI effects under seismic loads. Ignoring SSI and SSSI effects may lead to erroneous estimations of seismic capacity and drift parameters, as SSI effects increase drift parameters while reducing seismic capacity [19]. Pile foundations could be a reliable strategy for mitigating these effects [18]. Furthermore, SSSI effects increase the maximum drift in adjacent buildings, but when the spacing between buildings is larger and the columns are made of stone, the maximum drift is reduced [20].
+
+The effects of soil–structure interaction can be considered using both direct and substructure methods. In the direct method, the structure and the soil are modelled simultaneously and analysed together, allowing for the consideration of nonlinear soil behaviour [21,22,23]. The substructure method consists of dividing the two sub-systems that are analysed separately, and the results are combined in the final analysis stage by assuming linear behaviours.
+
+There is currently a gap in using both SSI and SSSI effects on foundation design in engineering projects [24]. The integration and application of both soil–structure interaction (SSI) and structure–soil–structure interaction (SSSI) effects within the realm of structural and geotechnical engineering have been considered in this study. This paper introduces a methodology that utilizes diverse subgrade reaction modulus values, as outlined in the provided formulation and table, to account for and apply these effects in the analysis and design process. This approach represents a step forward in bridging the gap between structural and geotechnical considerations, ensuring a more holistic and accurate assessment of the interaction between buildings and their underlying soft soil.
+
+2. Materials and Methods
+
+Three different plans were assessed to achieve the required results, each proposing varying locations for the shear walls. All structures were analysed to obtain the optimum locations of the shear walls via SAP 2000 and ETABS 9.2 software (Computers and Structures, INC., New York, NY, USA) (see Figure 1).
+
+The structural models of the buildings presented in this article are described below.
+
+Two buildings A1 and A2 were considered, each with the same plan dimensions of 18 m × 12 m (Figure 1a). A1 had a height of 36 m (12-story), while A2 had a height of 18 m (6 storeys), creating a significant height difference (ε > 1.5, ε is representative of the proportion of building heights) [13]. The irregular distribution of mass and stiffness components in building plans introduces complexities in how these structures interact with the underlying soil. This asymmetry amplifies the sensitive behaviour of the buildings under varying loads and environmental conditions. The significance lies in its potential to significantly alter deformation patterns and load transfer mechanisms, consequently impacting the accuracy of SSI and SSSI analyses. A concrete elasticity modulus E = 25.2 GPa and Poisson’s ratio υ = 0.2 were assumed for both structures. To model the beams and columns of the buildings, a three-dimensional element (BEAM 4) with six degrees of freedom at each node (three for translational movements and three for rotational movements) was employed. The slabs were modelled using a four-node element (SHELL 181), where each node also possessed six degrees of freedom. The SHELL 181 element was also used to model the shear walls [2].
+
+The foundation model for both buildings had dimensions of 13 m × 19 m × 1 m. The modulus of elasticity (E) and Poisson’s ratio (υ) values are presented in Table 1 for both foundations. To represent the foundation elements, a three-dimensional eight-node SOLID 45 element was utilized, with each node having three degrees of freedom. Furthermore, a four-node contact element (CONTA 173) was employed to model the interface between the foundation and the soil. The following properties in Table 1 were attributed to the contacting elements. These properties correspond to the coefficient of friction (MU: representing the frictional ratio between contact surfaces), normal stiffness (FKN: indicating the normal stiffness of the contact interface), cohesive strength (COHE: defining adhesive forces between the contact surfaces), and maximum shear stress (TAUMAX: representing the maximum allowable shear stress at the contact interface), respectively [25].
+
+A 2D soil domain (plan dimensions: 28 m × 34 m and height: 20 m) was considered for the analysis of buildings. The chosen dimensions aim to capture the influence of nearby soil conditions, neighbouring structures, or geological features that could impact the building’s behaviour [26]. SOLID 45 element was employed to model the soil. The modulus of elasticity for the soils (E) and the Poisson ratio (υ) values are shown in Table 1. The Drucker–Prager model with an internal friction angle (φ), cohesion (c), and dilation angle (Ψ) was used for soil plasticity. The use of negative dilation angles in soil material modelling allows for the accurate representation of specific soil behaviour, especially those associated with contraction tendencies or minimal lateral strain during shearing, providing a more realistic depiction of soil behaviour in geotechnical analyses [27].
+
+The selection of specific building dimensions and heights (12-storey building (A1) and 6-storey building (A2)) allows for the examination of a substantial height difference (ε > 1.5). This deliberate difference aids in analysing the impact of varied building heights on structural behaviour and soil–structure interaction. The assumptions of concrete properties (elasticity modulus E = 25.2 GPa and Poisson’s ratio υ = 0.2) for both structures ensure consistency in material behaviour across the models. These values are often standard and representative of typical concrete properties used in construction [28,29]. The choice of three-dimensional elements (BEAM 4, SHELL 181, and SOLID 45) with specified degrees of freedom provides an appropriate level of detail and accuracy in modelling the structural components (beams, columns, slabs, and shear walls) and the foundation. These elements offer the necessary complexity to capture realistic behaviour and interactions within the structural system. The foundation’s dimensions and material properties (elasticity modulus E = 25.2 GPa and Poisson’s ratio υ = 0.2) mirror the properties assumed for the building materials [30]. This consistency ensures compatibility between the structural elements and their supports. The soil area dimensions and properties are chosen to encapsulate a substantial area around the buildings, allowing for an accurate representation of the soil–structure interaction. The selection of the SOLID 45 element for soil modelling, along with the Drucker–Prager model for soil plasticity, enables the simulation of realistic soil behaviour under varying loads and conditions [27,31]. The structural discretization was performed using the automatic meshing procedure in ANSYS to create a comprehensive model. To ensure accuracy, a grid sensitivity analysis was conducted, generating five different meshes ranging from 175,352 to 1,649,803 cells for the initial design within ANSYS Meshing software (version 11, Ansys, Inc., Canonsburg, PA, USA). It was observed that the standard deviation of the base support reactions stabilized at approximately 0.82% for the configuration containing 1,123,492 cells. Consequently, this mesh density was selected for subsequent finite element method (FEM) analyses.
+
+In foundation design incorporating structure–soil–structure interaction (SSSI), key boundary conditions encompass structural elements’ loads, fixity, and rigidity, while soil aspects include properties like elasticity, shear strength, and interface characterization. These conditions focus on ensuring compatibility between structural and soil deformations, accounting for the effects in seismic areas, and employing accurate finite element analysis (FEA) parameters [32,33]. These considerations underpin a holistic approach to accurately model SSSI, ensuring realistic simulations and enhancing the reliability of foundation design. Flexibility impacts how the structure responds to external loads and how this response interacts with the soil. It influences the extent of settlements, rotations, and differential movements in the foundation, crucial aspects of SSSI. Utilizing advanced structural analysis software (ANSYS) that is capable of accurately modelling various structural elements and soil–structure interaction phenomena would be a method for considering flexibility [34,35].
+
+In the first step, the shorter structure (A2) (comprising beams, columns, shear walls, and slabs) with plan dimensions of 18 m × 12 m and a height of 18 m (6 storeys) was independently modelled. It was analysed in ANSYS, and subsequently, its foundation was designed using SAFE geotechnical software (version 8.0.6, Computers and Structures, INC., New York, NY, USA), with the weight of the reinforcement used calculated (further details will be provided later). In the second step, the structure’s foundation was incorporated into the previous model within ANSYS. Following that, the soil and the contact surface between the soil and the foundation were modelled. In the final step, various load combinations were applied to the structure, and the model was analysed.
+
+To model the taller structure (A1), with plan dimensions of 18 m × 12 m and a height of 36 m (12 storey), all steps pertaining to the analysis of the first structure were repeated. After independently modelling the first and second structures and assessing the total deformation associated with the foundation of each structure, both buildings were modelled side by side, with the distance between the two foundations assumed to be zero (i.e., the two foundations are in contact) to account for the most severe effects [17].
+
+To validate a conceptual design in ANSYS software, the buildings were initially modelled and designed using structural software (ETABS). Subsequently, the sections of beams, columns, and shear walls were modelled in ANSYS software. A comparison was made between the results of the building analysis in ANSYS and ETABS software, with the same loads applied to validate the modelling processes in ANSYS [2]. The reaction results for A2, represented in terms of moment Mx along the foundation’s width under earthquake load, are presented in Figure 2 for both ETABS and ANSYS software.
+
+To account for the interaction between adjacent buildings with SSSI effects, both buildings were concurrently modelled in ANSYS. The model was then subjected to various loads, such as gravity loads (comprising dead load and live load) and earthquake loads in the X direction (parallel to the foundation width) and Y direction (parallel to the foundation length). Subsequently, both building foundations were modelled in SAFE for foundation design.
+
+In the first step of foundation design, the foundations were analysed with the same subgrade reaction modulus (Ks). In the second step, they were analysed with different values of subgrade reaction modulus for various sections of the foundations, and the quantities of reinforcement used were calculated for both steps. The variation in Ks values for foundation design was necessary to account for SSI and SSSI effects [2]. The results of the analysis of foundations with SSSI (employing different Ks values) and without SSSI effects (using a single Ks value) were then compared [36].
+
+3. Results and Discussion
+
+By combining the gravity loads (dead load and live load) with seismic loads as the inertia loads in both the X and Y directions (seismic loads applied with a coefficient of 0.1 g (0.981 m/s2) as quasi-dynamic loads in one step time), deformations were obtained for both A2 and A1, both without SSSI effects (analysed separately) and with SSSI effects (when adjacent to each other). Figure 3 illustrates the total deformation in the Z direction for both A2 and A1 (with the Z-axis representing the vertical direction). These results include the effects of the soil–structure interaction (SSI) and structure–soil–structure interaction (SSSI) resulting from the combination of gravitational loads and seismic loads in both the X and Y directions. SMN represents the maximum stress, SMX indicates the minimum stress values (negative in the direction of applied forces), and DMX denotes the maximum displacement. In both the gravity load combination and earthquake load combination along the X direction, both buildings displayed a noticeable inclination towards each other. This discernible deviation was more accentuated and visible in Figure 3b. The structural response during seismic loading resulted in a more pronounced convergence of the buildings towards each other along the X-axis. This convergence indicates a significant interaction between the buildings, suggesting increased vulnerability under seismic forces compared to gravitational loads. The observed inclination during the seismic scenario along the X direction underscores the importance of thoroughly assessing structural behaviour, especially under dynamic forces, highlighting the necessity of designing structures for extreme loading conditions. However, there was no leaning between the buildings in terms of earthquake forces along the Y direction, as depicted in Figure 3c.
+
+The positions of the maximum total deformation contours vary significantly between the two buildings across all load combinations. The maximum deformation occurred within the taller building (A1) in the gravity load combination. In the case of the shorter building (A2), this occurred during the earthquake load combination in the direction of the width of the foundations. Figure 4 displays the deformation of the foundations for both A2 and A1 in the Z direction, considering interactions resulting from the three load combinations. It is evident that the maximum deformations are in the zone between the foundations and in one of the building corners, with the specific location depending on the load combination directions. Therefore, the adjacent taller building exerts a greater influence on the shorter building when an earthquake load combination in the X-axis is considered (as depicted in Figure 4b).
+
+Figure 5 illustrates the deformation of the foundations for A2 and A1 in the Z direction, analysed separately without structure–soil–structure interaction (SSSI) effects, due to the combination of gravitational loads. The maximum total deformation is lower in A2 when analysed without SSSI effects (Figure 5b almost 0.029 m) compared to when SSSI effects are considered (Figure 4a: almost 0.038 m). Conversely, the difference in the total deformation for A1 with and without SSSI effects is not significantly different (Figure 4a and Figure 5a: almost 0.037 m). In fact, the settlement of the taller building (A1) had a greater effect on the settlement of the shorter building (A2) when SSSI effects were considered. These impacts have also changed the area of overall deformations occurring on the foundations. Soil–structure interactions relate to the influence of soil characteristics beneath a structure on its seismic performance. The flexibility of the building’s foundation and its interaction with the neighbouring soil are key factors in shaping the building’s reaction during earthquakes. To adequately address soil–structure interaction effects, it is imperative to consider the flexibility of both the structure and the soil in the analysis [37].
+
+It is worth noting that the concentration of total deformations is primarily in the middle of the foundations when SSSI effects are disregarded. Figure 6 illustrates the deformation of the foundation of A1 without SSSI effects, using SAFE software, and with SSSI effects, using both ANSYS and SAFE software, due to the combination of gravitational loads. The difference between foundational deformations in terms of gravitational loads for A1 in Figure 6a–c is evident. By adjusting the values of the subgrade reaction modulus in foundation design to account for SSSI effects, the foundation’s deformation in Figure 6a converts into Figure 6c, resembling Figure 6b, which represents foundation deformations with SSSI effects. This shows that by changing the values of the subgrade reaction modulus, it is possible to apply SSSI effects in foundation design.
+
+The maximum total deformation of the A1 foundation without SSSI effects, induced by the gravitational load, is situated on the right side of the building in the X-axis. However, it shifts to the left side of the foundation when influenced by the presence of A2. In fact, the maximum total deformation in the A1 foundation occurs in the corner of the foundation near the length of the other foundation without the SSSI effect (top right). Conversely, it is on the opposite side when considering the SSSI effect (top left). The total deformation with SSSI effects is 12 cm greater than that occurring in the case without SSSI effects in A1.
+
+Figure 6a shows the foundation deformation of A1 by considering the same Ks for all elements of the foundation, while Figure 6c shows it by considering the different values of Ks for each element of the foundation, paying attention to the deformation and pattern of deformation shown in Figure 6b, which is related to foundation deformations that consider SSSI effects. Figure 7 illustrates the total deformation of the A2 foundation under the influence of gravitational loads, showing three scenarios: (a) without SSSI effects, with structure–soil–structure interactions analysed (b) in ANSYS software, and (c) in SAFE software by varying values for Ks to account for SSSI effects. By adjusting the subgrade reaction modulus values beneath the foundation, one can manipulate the foundation’s deformation to achieve the desired results, taking into account SSSI effects in direct finite element modelling. With SSSI effects considered, the maximum deformation occurs on the left side (in the X-axis) of the A2 foundation, whereas without SSSI effects, it is located on the top left side. The maximum total deformation value decreases by 11 cm when SSSI effects are not applied. The differential settlements of A1 cause A2 to incline towards A1.
+
+Figure 8 illustrates the deformation of the foundation of A1 under the influence of SSSI effects, considering the combination of gravitational and earthquake loads in the X direction using ANSYS and SAFE software (ANSYS software for analysing the structure and foundation and SAFE software for designing the foundation). It is evident that maximum deformation occurs on the right side of the foundation, adjacent to the other building’s foundation. In the context of this load combination, both buildings incline towards each other.
+
+Finally, Figure 9 shows the total deformation of the A2 foundation when subjected to a combination of gravitational and earthquake loads in the X direction, accounting for SSSI effects. The maximum deformation occurs in the areas of the foundations adjacent to each other, specifically on the right side of the A1 foundation and the left side of the A2 foundation, demonstrating that A2 tends to incline towards A1.
+
+The magnitude and location of the maximum deformation change due to SSSI effects are shown above. These effects have led to a reduction between 10% and 15% in the weight of the reinforcement used (Wr) in the foundation’s design.
+
+There have been several studies focusing on the utilization of varying values of the subgrade reaction modulus to account for soil–structure interaction effects in foundation design [1,2,23,24]. Employing different values for the subgrade reaction modulus in foundation design allows for the incorporation of SSI and SSSI effects, providing convenient tools for civil engineers in their simulations. For example, Equations (1) and (2), Table 2, and Figure 10 demonstrate a strong agreement with our results [1,2]:
+
+K S N e w = a × b × K S k N / m 3
+
+(1)
+
+where a denotes the coefficient of the storey, and b denotes the coefficient of different zones for a foundation, and they are calculated using Equation (2), Figure 10, and Table 2, respectively, with ‘n’ representing the number of storeys [2].
+
+a = 0.25 3 n + 3 b y a = 0.30 3 n + 3
+
+(2)
+
+4. Conclusions
+
+This research investigated the pivotal role of varied subgrade reaction modulus values in the foundation design of concrete buildings which are situated on soft soil with low bearing capacities, particularly within the context of structure–soil–structure interaction (SSSI). The comprehensive analysis revealed several significant findings:
+
+(1)
+
+The mutual influence of adjacent buildings due to SSSI effects was evident, notably with the taller building (A1) exerting a more pronounced impact on the shorter one (A2), especially concerning their adjacent foundations.
+
+(2)
+
+SSSI effects resulted in an increase in the maximum total deformation within adjacent buildings, accompanied by a shifting position with respect to the total maximum deformation in the foundations.
+
+(3)
+
+The practicality of employing diverse subgrade reaction modulus values (Ks) for individual foundation elements emerged as an effective strategy for civil engineers to effectively address SSI and SSSI effects in foundation design.
+
+(4)
+
+Implementing this method to integrate SSSI effects in foundation design showcased optimization benefits, notably reducing the required reinforcement weight (Wr) by approximately 10% to 15%. Furthermore, it necessitated adjustments in reinforcement positions within each foundation’s design.
+
+The variation in subgrade reaction modulus values emerged as a pivotal aspect in mitigating SSI and SSSI effects in foundation design when the foundations are placed on soft soils, while the SSSI effects may indeed provide additional stability benefits for buildings on stiff or very stiff soils. Neglecting these effects could significantly impact building displacements, particularly under seismic loads. Future studies could delve into exploring soil parameter uncertainties by considering them as random variables. This approach could be combined with investigating SSI (soil–structure interaction) and SSSI (structure–soil–structure interaction) effects across diverse soil depths and various types of structures. These studies should encompass a range of construction materials, including wooden and steel structures. Additionally, further research could examine how different environmental conditions and loading scenarios influence the interaction between the soil and structures, ultimately leading to more resilient and adaptable foundation designs.
+
+Author Contributions
+
+Conceptualisation, A.J., A.A.J., A.K. and B.T.; methodology, A.J., A.A.J., A.K. and B.T.; software, B.T. and A.K.; validation, B.T., A.J., A.A.J., A.K., B.K. and M.A.; formal analysis, B.T. and A.K.; investigation, B.T., S.G. and A.K.; resources, A.K. and B.K.; data curation, A.J.; writing original draft preparation, B.T., A.J., A.K. and S.G.; writing—review and editing, A.A.J., A.K., S.G., B.K. and M.A.; visualisation, A.J.; supervision, A.J., A.A.J. and M.A.; project administration, A.J. All authors have read and agreed to the published version of the manuscript.
+
+Funding
+
+This research received no external funding.
+
+Data Availability Statement
+
+This is available upon request.
+
+Conflicts of Interest
+
+The authors declare that the research was conducted in the absence of any commercial or financial relationships that could be construed as a potential conflict of interest.
+
+References
+
+Building Seismic Safety Council. NEHRP Guidelines for the Seismic Rehabilitation of Buildings; FEMA-273; Federal Emergency Management Agency: Washington, DC, USA, 1997; pp. 2–12. [Google Scholar]
+
+Khosravifardshirazi, A.; Johari, A.; Javadi, A.A.; Khanjanpour, M.H.; Khosravifardshirazi, B.; Akrami, M. Role of Subgrade Reaction. Buildings 2022, 12, 540. [Google Scholar] [CrossRef]
+
+Di Marzo, M.; Tomassi, A.; Placidi, L. A Methodology for Structural Damage Detection Adding Masses. Res. Nondestruct. Eval. 2024, 35, 172–196. [Google Scholar] [CrossRef]
+
+Wong, H.; Trifunac, M. Two-dimensional, antiplane, building-soil-building interaction for two or more buildings and for incident planet SH waves. Bull. Seismol. Soc. Am. 1975, 65, 1863–1885. [Google Scholar]
+
+Luco, J.E.; Contesse, L. Dynamic structure-soil-structure interaction. Bull. Seismol. Soc. Am. 1973, 63, 1289–1303. [Google Scholar] [CrossRef]
+
+Kobori, T.; Minai, R.; Kusakabe, K. Dynamical characteristics of soil-structure cross-interaction system, I. Bull. Disaster Prev. Res. Inst. 1973, 22, 111–151. [Google Scholar] [CrossRef]
+
+Lee, T.; Wesley, D. Soil-structure interaction of nuclear reactor structures considering through-soil coupling between adjacent structures. Nucl. Eng. Des. 1973, 24, 374–387. [Google Scholar] [CrossRef]
+
+Khosravikia, F.; Mahsuli, M.; Ghannad, M.A. The effect of soil–structure interaction on the seismic risk to buildings. Bull. Earthq. Eng. 2018, 16, 3653–3673. [Google Scholar] [CrossRef]
+
+Matinmanesh, H.; Asheghabadi, M.S. Seismic analysis on soil-structure interaction of buildings over sandy soil. Procedia Eng. 2011, 14, 1737–1743. [Google Scholar] [CrossRef]
+
+Çelebi, E.; Göktepe, F.; Karahan, N. Non-linear finite element analysis for prediction of seismic response of buildings considering soil-structure interaction. Nat. Hazards Earth Syst. Sci. 2012, 12, 3495–3505. [Google Scholar] [CrossRef]
+
+Cayci, B.T.; Inel, M.; Ozer, E. Effect of Soil–Structure Interaction on Seismic Behavior of Mid-and Low-Rise Buildings. Int. J. Geomech. 2021, 21, 04021009. [Google Scholar] [CrossRef]
+
+Clouteau, D.; Broc, D.; Devésa, G.; Guyonvarh, V.; Massin, P. Calculation methods of Structure–Soil–Structure Interaction (3SI) for embedded buildings: Application to NUPEC tests. Soil Dyn. Earthq. Eng. 2012, 32, 129–142. [Google Scholar] [CrossRef]
+
+Alexander, N.; Ibraim, E.; Aldaikh, H. A simple discrete model for interaction of adjacent buildings during earthquakes. Comput. Struct. 2013, 124, 1–10. [Google Scholar] [CrossRef]
+
+Vicencio, F.; Alexander, N.A. Dynamic interaction between adjacent buildings through non-linear soil during earthquakes. Soil Dyn. Earthq. Eng. 2018, 108, 130–141. [Google Scholar] [CrossRef]
+
+Aldaikh, H.; Alexander, N.A.; Ibraim, E.; Oddbjornsson, O. Two dimensional numerical and experimental models for the study of structure–soil–structure interaction involving three buildings. Comput. Struct. 2015, 150, 79–91. [Google Scholar] [CrossRef]
+
+Aldaikh, H.; Alexander, N.A.; Ibraim, E.; Knappett, J. Shake table testing of the dynamic interaction between two and three adjacent buildings (SSSI). Soil Dyn. Earthq. Eng. 2016, 89, 219–232. [Google Scholar] [CrossRef]
+
+Gan, J.; Li, P.; Liu, Q. Study on Dynamic Structure-Soil-Structure Interaction of Three Adjacent Tall Buildings Subjected to Seismic Loading. Sustainability 2020, 12, 336. [Google Scholar] [CrossRef]
+
+Scarfone, R.; Morigi, M.; Conti, R. Assessment of dynamic soil-structure interaction effects for tall buildings: A 3D numerical approach. Soil Dyn. Earthq. Eng. 2020, 128, 105864. [Google Scholar] [CrossRef]
+
+Shakib, H.; Homaei, F. Probabilistic seismic performance assessment of the soil-structure interaction effect on seismic response of mid-rise setback steel buildings. Bull. Earthq. Eng. 2017, 15, 2827–2851. [Google Scholar] [CrossRef]
+
+Cilsalar, H.; Cadir, C.C. Seismic performance evaluation of adjacent buildings with consideration of improved soil conditions. Soil Dyn. Earthq. Eng. 2021, 140, 106464. [Google Scholar] [CrossRef]
+
+AlKhayat, A.; Hassan, T.; Ahmed, S.M.; Moustafa, A. Effect of Soil Structure Interaction on the Design of Tall Concrete Buildings. In Geo-Congress; American Society of Civil Engineers: Reston, VA, USA, 2023; pp. 312–322. [Google Scholar]
+
+Sallam, A.M.; Jammal, S.E. Settlement-control piles to optimize the mat foundation of a high-rise building in Downtown Orlando. In Art of Foundation Engineering Practice; American Society of Civil Engineers: Reston, VA, USA, 2010; pp. 605–619. [Google Scholar]
+
+Far, H. Advanced computation methods for soil-structure interaction analysis of structures resting on soft soils. Int. J. Geotech. Eng. 2019, 13, 352–359. [Google Scholar] [CrossRef]
+
+Wang, J.; Guo, T.; Du, Z. Experimental and numerical study on the influence of dynamic structure-soil-structure interaction on the responses of two adjacent idealized structural systems. J. Build. Eng. 2022, 52, 104454. [Google Scholar] [CrossRef]
+
+Popov, V.L. Contact Mechanics and Friction; Springer: Berlin/Heidelberg, Germany, 2010. [Google Scholar]
+
+Kramer, S.L. Geotechnical Earthquake Engineering; Pearson Education: Delhi, India, 1996. [Google Scholar]
+
+Das, B.M. Principles of Geotechnical Engineering; Cengage Learning: Belmont, CA, USA, 2021. [Google Scholar]
+
+ACI Committee. Building Code Requirements for Structural Concrete (ACI 318-08) and Commentary; American Concrete Institute: Farmington Hills, MI, USA, 2008. [Google Scholar]
+
+Neville, A.; Adam, M. Properties of Concrete; Pearson: London, UK, 2011. [Google Scholar]
+
+Bowles, J.E. Foundation Analysis and Design; McGraw Hill: New York, NY, USA, 1988. [Google Scholar]
+
+Lambe, T.; Whitman, R. Soil Mechanics; Wiley: New York, NY, USA, 1979. [Google Scholar]
+
+Zienkiewicz, O.C.; Taylor, R.L.; Zhu, J.Z. The Finite Element Method: Its Basis and Fundamentals; Elsevier: Amsterdam, The Netherlands, 2005. [Google Scholar]
+
+Bathe, K.-J. Finite Element Procedures; Massachusetts Institute of Technology: Cambridge, MA, USA, 2006. [Google Scholar]
+
+Callisto, L.; Rampello, S.; Viggiani, G.M. Soil–structure interaction for the seismic design of the Messina Strait Bridge. Soil Dyn. Earthq. Eng. 2013, 52, 103–115. [Google Scholar] [CrossRef]
+
+Peck, R.B.; Hanson, W.E.; Thornburn, T.H. Foundation Engineering; John Wiley & Sons: Hoboken, NJ, USA, 1991. [Google Scholar]
+
+Forcellini, D. A Novel Framework to Assess Soil Structure Interaction (SSI) Effects with Equivalent Fixed-Based Models. Appl. Sci. 2021, 11, 10472. [Google Scholar] [CrossRef]
+
+Forcellini, D. Seismic fragility of tall buildings considering soil structure interaction (SSI) effects. In Structures; Elsevier: Amsterdam, The Netherlands, 2022. [Google Scholar]
+
+Figure 1. Three building design plans with different shear wall locations used in this research in (a) spans 5 m and 5 m, (b) spans 5 m and 6 m, (c) spans 4 m and 6 m.
+
+Figure 2. Comparison of X-directional moment values for A2 in (a) ETABS and (b) ANSYS software.
+
+Figure 3. Total deformation of both buildings adjacent to each other in ANSYS software considering SSI and SSSI effects at the same time: (a) with gravity load combinations; (b) with earthquake load combinations in the X-axis; (c) with earthquake load combinations in the Y-axis (red contours represent the minimum deformation values, while the dark blue contours represent the maximum values, MN refers to minimum deformation in Z–direction).
+
+Figure 4. Total deformations of two adjacent building foundations in ANSYS considering SSI and SSSI effects: (a) with gravity load combinations; (b) with earthquake load combinations in the X-axis; (c) with earthquake load combinations in the Y-axis (MX refers to maximum and MN refers to minimum deformations in Z−direction).
+
+Figure 5. Total deformation of building’s foundation in ANSYS without considering SSSI effects with gravity load combinations: (a) 12-storey building (A1); (b) 6-storey building (A2).
+
+Figure 6. Total deformation of A1 foundation with gravity loads combination: (a) without SSSI effects; (b) with SSSI effects; (c) with SSSI effects and applying different Ks.
+
+Figure 7. Total deformation of the A2 foundation with gravity load combination: (a) without SSSI effects; (b) with SSSI effects; (c) with SSSI effects and applying different Ks.
+
+Figure 8. Total deformation of the A1 foundation with combinations of gravitational and earthquake loads in the X-axis: (a) with SSSI effects; (b) with SSSI effects and applying different Ks.
+
+Figure 9. Total deformation of the A2 foundation with gravitational and earthquake load combinations in the X-axis with SSSI effects.
+
+Figure 10. Different zones of A foundation for calculating B coefficient [2].
+
+Table 1. Foundation, soil, and contact element properties.
+
+FoundationE = 25.2 GPaυ = 0.2SoilE = 0.02 GPaυ = 0.3φ = 30°c = 20 kPaΨ = −5°CONTA173MU = 0.35FKN = 3 × 104 KN/m3COHE = 10 KpaTAUMAX = 7.06 × 10−3
+
+Table 2. Values of the b coefficient in Equation (1) based on different zones in Figure 10 [2].
+
+Position Based on Figure 10Values of B CoefficientA10.18–0.23A20.20–0.35A30.30–0.40A40.75–1.00
+
+Disclaimer/Publisher’s Note: The statements, opinions and data contained in all publications are solely those of the individual author(s) and contributor(s) and not of MDPI and/or the editor(s). MDPI and/or the editor(s) disclaim responsibility for any injury to people or property resulting from any ideas, methods, instructions or products referred to in the content.
+
+© 2024 by the authors. Licensee MDPI, Basel, Switzerland. This article is an open access article distributed under the terms and conditions of the Creative Commons Attribution (CC BY) license (https://creativecommons.org/licenses/by/4.0/).
+
+Share and Cite
+
+MDPI and ACS Style
+
+Khosravifardshirazi, A.; Tavana, B.; Javadi, A.A.; Johari, A.; Gholzom, S.; Khosravifardshirazi, B.; Akrami, M. Role of the Subgrade Reaction Modulus in the Design of Foundations for Adjacent Buildings. Buildings 2024, 14, 1804. https://doi.org/10.3390/buildings14061804
+
+AMA Style
+
+Khosravifardshirazi A, Tavana B, Javadi AA, Johari A, Gholzom S, Khosravifardshirazi B, Akrami M. Role of the Subgrade Reaction Modulus in the Design of Foundations for Adjacent Buildings. Buildings. 2024; 14(6):1804. https://doi.org/10.3390/buildings14061804
+
+Chicago/Turabian Style
+
+Khosravifardshirazi, Ali, Babak Tavana, Akbar A. Javadi, Ali Johari, Shima Gholzom, Behnaz Khosravifardshirazi, and Mohammad Akrami. 2024. "Role of the Subgrade Reaction Modulus in the Design of Foundations for Adjacent Buildings" Buildings 14, no. 6: 1804. https://doi.org/10.3390/buildings14061804
+
+Note that from the first issue of 2016, this journal uses article numbers instead of page numbers. See further details here.
+
+Article Metrics
+
+No
+
+No
+
+Article Access Statistics
+
+For more information on the journal statistics, click here.
+
+Multiple requests from the same IP address are counted as one view.
