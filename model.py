@@ -125,9 +125,6 @@ def init_index(embed_model, directory="./docs", persist=False):
     vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
     storage_context = StorageContext.from_defaults(vector_store=vector_store)
 
-    # use this to set custom chunk size and splitting
-    # https://docs.llamaindex.ai/en/stable/module_guides/loading/node_parsers/
-
     # index = VectorStoreIndex.from_documents(documents, storage_context=storage_context, embed_model=embed_model)
     index = VectorStoreIndex(
         sentence_nodes,
@@ -195,7 +192,7 @@ def create_sample_queries(knowledge_graph):
         print(f"Sample queries already exist for {identifier}")
         return
 
-    response = llm.complete(QUESTION_GENERATION_TEMPLATE(knowledge_graph))
+    response = llm.complete(QUESTION_GENERATION_TEMPLATE(knowledge_graph[1]))
 
     try:
         # parse the response to get the context and query string

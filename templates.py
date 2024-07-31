@@ -17,8 +17,8 @@ Answer: \
 """
 
 
-def QUESTION_GENERATION_TEMPLATE(knowledge_graph):
-    return f"""\
+def QUESTION_GENERATION_TEMPLATE(query):
+    return """\
 You are an intelligent system with access to a vast amount of information. \
 I will provide you with a knowledge graph in the form of triples (subject, predicate, object). \
 Your task is to generate ten questions based on the knowledge graph. The questions should assess understanding and insight into the information presented in the graph. \
@@ -43,8 +43,8 @@ Expected Response: \
         {"id": 8, "question": "What did Albert Einstein receive the Nobel Prize in?"},
         {"id": 9, "question": "In what field did Albert Einstein win a Nobel Prize?"},
         {"id": 10, "question": "Name the city where Albert Einstein was born."}
-]} \
-Considering the above information, please respond to this Knowledge Graph: {' '.join(knowledge_graph[1])} \
+]}""" + f"""\
+Considering the above information, please respond to this Knowledge Graph: {query} \
 The output should be in JSON format with each question having a unique identifier and question doesn't contain term knowledge graph, without any additional information 
 """
 

@@ -1,10 +1,10 @@
 import json
 
 
-def load_dataset(dataset_name: str = "FactBench"):
+def load_dataset(dataset_name: str = "FactBench", dataset_file: str = "kg.json"):
     print('Load {} dataset.'.format(dataset_name))
     # get target dataset
-    with open('./dataset/' + dataset_name + '/data/kg.json', 'r') as f:
+    with open('./dataset/' + dataset_name + f'/data/{dataset_file}', 'r') as f:
         id2triple = json.load(f)
 
     # set KG as [(id, triple), ...]

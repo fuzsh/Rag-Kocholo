@@ -23,12 +23,12 @@ if __name__ == '__main__':
     #     identifier = knowledge_graph[0]
     #     search_engine(knowledge_graph)
     #
-    data = []
-    for knowledge_graph in kg:
-        if knowledge_graph[0].startswith('correct_death'):
-            data.append(knowledge_graph)
-    print(len(data))
-    get_results(data, 'results/FactBench.json', recreate_index=True)
+    # data = []
+    # for knowledge_graph in kg:
+    #     if knowledge_graph[0].startswith('correct_death'):
+    #         data.append(knowledge_graph)
+    # print(len(data))
+    get_results(kg, 'results/FactBench.json', recreate_index=True)
     #
     # if config["fetch_documents"]:
     #     queries = []
