@@ -19,16 +19,18 @@ config = {
 if __name__ == '__main__':
     init_llm(response_schema=True)
     kg, gt = load_dataset(dataset_name="FactBench")
-    # for knowledge_graph in kg:
-    #     identifier = knowledge_graph[0]
-    #     search_engine(knowledge_graph)
-    #
     # data = []
     # for knowledge_graph in kg:
-    #     if knowledge_graph[0].startswith('correct_death'):
+    #     if knowledge_graph[0].startswith('wrong'):
     #         data.append(knowledge_graph)
     # print(len(data))
-    get_results(kg, 'results/FactBench.json', recreate_index=True)
+    #
+    # for knowledge_graph in data:
+    #     identifier = knowledge_graph[0]
+    #     if identifier.startswith('wrong'):
+    #         search_engine(knowledge_graph, force_recreate=True)
+
+    get_results(kg, 'results/FactBench_modified.json', recreate_index=True)
     #
     # if config["fetch_documents"]:
     #     queries = []

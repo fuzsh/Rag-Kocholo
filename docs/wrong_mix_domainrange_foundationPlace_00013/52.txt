@@ -1,0 +1,69 @@
+1. Inside Picnik: How we built Picnik and what we learned along the way Mike Harrington Justin Huff Web 2 Expo, April 3rd 2009
+
+3. Thanks! We couldn’t have done this without help!
+
+4. Traffic, show scale of our problem Our happy problem
+
+5. Client Flex HTML Apache Data Center MySQL Python Render Storage Amazon
+
+7. We Flash • Browser and OS independence • Secure and Trusted • Huge installed base • Graphics and animation in your browser Flex pros and cons
+
+8. We Flash • Decent tool set • Decent image support • ActionScript Flex pros and cons
+
+9. Flash isn’t Perfect • Not Windows, Not Visual Studio • ActionScript is not C++ • SWF Size/Modularity • Hardware isn’t accessible • Adobe is our Frienemy • Missing support for jpg Compression Flex pros and cons
+
+10. Flash is a control freak Flex pros and cons
+
+11. Forecast: Cloudy with a chance of CPU
+
+12. Your users are your free cloud! • Free CPU & Storage! • Cuts down on server round trips • More responsive (usually) • 3rd Party APIs Directly from your client • Flash 10 enables direct load User Cloud
+
+13. You get what you pay for. • Your user is a crappy sysadmin • Hard to debug problems you can’t see • Heterogeneous Hardware • Some OS Differences User Cloud
+
+14. Client Side Challenges • Hard to debug problems you can’t see • Every 3rd party API has downtime • You get blamed for everything • Caching madness User Cloud
+
+15. Dealing with nasty problems Logging • Ask customers directly • Find local customers • Test, test, test •
+
+17. LAMP
+
+18. Linux YUP.
+
+23. CherryPy • We chose CherryPy • RESTish API • Cheetah for a small amount of templaGng
+
+25. Fun Stuff
+
+26. VirtualizaGon XEN • Dual Quad core machines • 32GB RAM • We virtualize everything • – Except DB servers
+
+28. VirtualizaGon Cons • More complexity • Uses more RAM • IO/CPU ineﬃciencies
+
+29. Storage • We started with one server – Files stored locally – Not scalable
+
+30. Storage • Switched to MogileFS – Working great – No dedicated storage machines!
+
+32. Storage – S3 S3 is dead simple to implement. • For our usage paberns, it's expensive • Picnik generates lots of temp ﬁles • Problems keeping up with deletes • Made a decision to focus on other things • before ﬁxing deletes
+
+33. Load Balancers • Started using Perlbal • Bought two BigIPs – Expensive, but good. • Outgrew the BigIPs • Went with A10 Networks – A lible bumpy – They've had great support.
+
+35. Rendering We render images when a user saves • Render jobs go into a queue • Workers pull from the queue • Workers in both the DC and EC2 •
+
+36. Rendering • Manager process maintain enough idle workers • Workers in DC are at ~100% uGlizaGon %$@#!!!
+
+37. EC2 • Our processing is elasGc between EC2 and our own servers • We buy servers in batches
+
+39. Monitoring • Nagios for Up/Down – Integrated with automaGc tools – ~120 hosts – ~1100 service checks • CacG for general graphing/trending – ~3700 data sources – ~2800 Graphs • Smokeping – Network latency
+
+40. Redundancy I like sleeping at night • Makes maintenance tasks easier • It takes some work to build • We built early (thanks Flickr!)￼ •
+
+41. War Stories
+
+42. ISP Issues • We're happy with both of our providers. • But... – Denial of service abacks – Router problems – Power • Have several providers • Monitor & trend!
+
+43. ISP Issues • High latency on a transit link: • Cause: High CPU usage on their aggregaGon router • SoluGon: Clear and reconﬁg our interface
+
+44. Amazon Web Services • AWS is preby solid • But, it's not 100% • When AWS breaks, we're down – The worst type of outage because you can't do anything. • Watch out for issues that neither party controls – The Internet isn't as reliable point to point
+
+47. Flickr Launch • Very slow Flickr API calls post‐launch • Spent an enGre day on phone/IM with Flickr Ops • Finally discovered an issue with NAT and TCP Gmestamps • Lessons: – Have tools to be able to dive deep – Granular monitoring
+
+48. Firewalls • We had a pair of Watchguard x1250e ﬁrewalls. – Specs: “1.5Gbps of ﬁrewall throughput” – Actual at 100Mbps:
+
+49. authorize.net ConnecGvity issues • Support was useless • Eventually got to their NOC • We rerouted via my home DSL. • Lessons: • – Access to technical people – Handle failure of services gracefully

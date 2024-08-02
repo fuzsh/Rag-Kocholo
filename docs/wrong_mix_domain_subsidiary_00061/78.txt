@@ -1,0 +1,433 @@
+Hello,
+
+I am new to the PSAppDeployToolkit and PowerShell in general. I am trying to install Java 8 Update 101 and remove all previous versions of Java. The script I wrote successfully installs Java 8 Update 101 but fails to remove Java 7 Update 79. I’ve tried a few different methods to try and uninstall Java 7 Update 79:
+
+Execute-MSI -Action Uninstall -Path ‘{26A24AE4-039D-4CA4-87B4-2F03217079FF}’
+
+Execute-MSI -Action Uninstall -Path {26A24AE4-039D-4CA4-87B4-2F03217079FF}
+
+Remove-MSIApplications -Name ‘Java 7 Update 79’
+
+Remove-MSIApplications -Name ‘Java 8 Update’ -FilterApplication @( @(‘Is64BitApplication’, $false, ‘Exact’), @(‘Publisher’, ‘Oracle Corporation’, ‘Exact’)
+
+)
+
+When I run msiexec /X {26A24AE4-039D-4CA4-87B4-2F03217079FF} /qn from a command prompt it will uninstall correctly. The default for Remove-MSIApplications in the admin guide also works: REBOOT=ReallySuppress /QN from a command prompt.
+
+Any assistance would be appreciated.
+
+Jake
+
+<pre class=“brush: powershell; gutter: true; first-line: 1; highlight: []; html-script: false”>
+
+That didn’t work either… I feel like it is failing before the Uninstall portion of the script starts. That might explain why I can’t see anything in the logs. Here is the entire script:
+
+<#
+
+.SYNOPSIS
+
+This script performs the installation or uninstallation of an application(s).
+
+.DESCRIPTION
+
+The script is provided as a template to perform an install or uninstall of an application(s).
+
+The script either performs an “Install” deployment type or an “Uninstall” deployment type.
+
+The install deployment type is broken down into 3 main sections/phases: Pre-Install, Install, and Post-Install.
+
+The script dot-sources the AppDeployToolkitMain.ps1 script which contains the logic and functions required to install or uninstall an application.
+
+.PARAMETER DeploymentType
+
+The type of deployment to perform. Default is: Install.
+
+.PARAMETER DeployMode
+
+Specifies whether the installation should be run in Interactive, Silent, or NonInteractive mode. Default is: Interactive. Options: Interactive = Shows dialogs, Silent = No dialogs, NonInteractive = Very silent, i.e. no blocking apps. NonInteractive mode is automatically set if it is detected that the process is not user interactive.
+
+.PARAMETER AllowRebootPassThru
+
+Allows the 3010 return code (requires restart) to be passed back to the parent process (e.g. SCCM) if detected from an installation. If 3010 is passed back to SCCM, a reboot prompt will be triggered.
+
+.PARAMETER TerminalServerMode
+
+Changes to “user install mode” and back to “user execute mode” for installing/uninstalling applications for Remote Destkop Session Hosts/Citrix servers.
+
+.PARAMETER DisableLogging
+
+Disables logging to file for the script. Default is: $false.
+
+.EXAMPLE
+
+powershell.exe -Command “& { & ‘.\Deploy-Application.ps1’ -DeployMode ‘Silent’; Exit $LastExitCode }”
+
+.EXAMPLE
+
+powershell.exe -Command “& { & ‘.\Deploy-Application.ps1’ -AllowRebootPassThru; Exit $LastExitCode }”
+
+.EXAMPLE
+
+powershell.exe -Command “& { & ‘.\Deploy-Application.ps1’ -DeploymentType ‘Uninstall’; Exit $LastExitCode }”
+
+.EXAMPLE
+
+Deploy-Application.exe -DeploymentType “Install” -DeployMode “Silent”
+
+.NOTES
+
+Toolkit Exit Code Ranges:
+
+60000 - 68999: Reserved for built-in exit codes in Deploy-Application.ps1, Deploy-Application.exe, and AppDeployToolkitMain.ps1
+
+69000 - 69999: Recommended for user customized exit codes in Deploy-Application.ps1
+
+70000 - 79999: Recommended for user customized exit codes in AppDeployToolkitExtensions.ps1
+
+.LINK
+
+http://psappdeploytoolkit.com
+
+#>
+
+[CmdletBinding()]
+
+Param (
+
+[Parameter(Mandatory=$false)]
+
+[ValidateSet(‘Install’,‘Uninstall’)]
+
+[string]$DeploymentType = ‘Install’,
+
+[Parameter(Mandatory=$false)]
+
+[ValidateSet(‘Interactive’,‘Silent’,‘NonInteractive’)]
+
+[string]$DeployMode = ‘Interactive’,
+
+[Parameter(Mandatory=$false)]
+
+[switch]$AllowRebootPassThru = $false,
+
+[Parameter(Mandatory=$false)]
+
+[switch]$TerminalServerMode = $false,
+
+[Parameter(Mandatory=$false)]
+
+[switch]$DisableLogging = $false
+
+)
+
+Try {
+
+## Set the script execution policy for this process
+
+Try { Set-ExecutionPolicy -ExecutionPolicy ‘ByPass’ -Scope ‘Process’ -Force -ErrorAction ‘Stop’ } Catch {}
+
+##*=============================================== ##* VARIABLE DECLARATION ##*=============================================== ## Variables: Application [string]$appVendor = 'Oracle' [string]$appName = 'Jav Runtime Environment' [string]$appVersion = '8.101' [string]$appArch = 'x86' [string]$appLang = 'EN' [string]$appRevision = '01' [string]$appScriptVersion = '1.0.0' [string]$appScriptDate = '10/13/2016' [string]$appScriptAuthor = 'Jake' ##*=============================================== ## Variables: Install Titles (Only set here to override defaults set by the toolkit) [string]$installName = '' [string]$installTitle = '' ##* Do not modify section below #region DoNotModify ## Variables: Exit Code [int32]$mainExitCode = 0 ## Variables: Script [string]$deployAppScriptFriendlyName = 'Deploy Application' [version]$deployAppScriptVersion = [version]'3.6.8' [string]$deployAppScriptDate = '02/06/2016' [hashtable]$deployAppScriptParameters = $psBoundParameters ## Variables: Environment If (Test-Path -LiteralPath 'variable:HostInvocation') { $InvocationInfo = $HostInvocation } Else { $InvocationInfo = $MyInvocation } [string]$scriptDirectory = Split-Path -Path $InvocationInfo.MyCommand.Definition -Parent ## Dot source the required App Deploy Toolkit Functions Try { [string]$moduleAppDeployToolkitMain = "$scriptDirectory\AppDeployToolkit\AppDeployToolkitMain.ps1" If (-not (Test-Path -LiteralPath $moduleAppDeployToolkitMain -PathType 'Leaf')) { Throw "Module does not exist at the specified location [$moduleAppDeployToolkitMain]." } If ($DisableLogging) { . $moduleAppDeployToolkitMain -DisableLogging } Else { . $moduleAppDeployToolkitMain } } Catch { If ($mainExitCode -eq 0){ [int32]$mainExitCode = 60008 } Write-Error -Message "Module [$moduleAppDeployToolkitMain] failed to load: <code>n$($_.Exception.Message)</code>n `n$($_.InvocationInfo.PositionMessage)" -ErrorAction 'Continue' ## Exit the script, returning the exit code to SCCM If (Test-Path -LiteralPath 'variable:HostInvocation') { $script:ExitCode = $mainExitCode; Exit } Else { Exit $mainExitCode } } #endregion ##* Do not modify section above ##*=============================================== ##* END VARIABLE DECLARATION ##*=============================================== If ($deploymentType -ine 'Uninstall') { ##*=============================================== ##* PRE-INSTALLATION ##*=============================================== [string]$installPhase = 'Pre-Installation' ## Show Welcome Message, close Internet Explorer if required, allow up to 3 deferrals, verify there is enough disk space to complete the install, and persist the prompt Show-InstallationWelcome -CloseApps 'java,iexplore=Internet Explorer,firefox=Mozilla Firefox,chrome=Google Chrome' -AllowDefer -DeferTimes 3 -CheckDiskSpace -PersistPrompt ## Show Progress Message (with the default message) Show-InstallationProgress ## &lt;Perform Pre-Installation tasks here&gt; ##*=============================================== ##* INSTALLATION ##*=============================================== [string]$installPhase = 'Installation' ## Handle Zero-Config MSI Installations If ($useDefaultMsi) { [hashtable]$ExecuteDefaultMSISplat = @{ Action = 'Install'; Path = $defaultMsiFile }; If ($defaultMstFile) { $ExecuteDefaultMSISplat.Add('Transform', $defaultMstFile) } Execute-MSI @ExecuteDefaultMSISplat; If ($defaultMspFiles) { $defaultMspFiles | ForEach-Object { Execute-MSI -Action 'Patch' -Path $_ } } } ## &lt;Perform Installation tasks here&gt; Execute-Process -Path "$dirFiles\JavaSetup8Update101.exe" -Parameters "INSTALLCFG=$dirSupportFiles\java.settings.cfg /L $configToolkitLogDir\JavaSetup8Update101.log" ##*=============================================== ##* POST-INSTALLATION ##*=============================================== [string]$installPhase = 'Post-Installation' ## &lt;Perform Post-Installation tasks here&gt; Set-RegistryKey -Key "HKEY_LOCAL_MACHINE\SOFTWARE\JavaSoft" -Name "SPONSORS" -Value "DISABLE" -Type String -ContinueOnError $True
+
+Set-RegistryKey -Key “HKEY_LOCAL_MACHINE\SOFTWARE\JavaSoft\Java Update\Policy” -Name “EnableAutoUpdateCheck” -Value 0 -Type DWord -ContinueOnError $True
+
+Set-RegistryKey -Key “HKEY_LOCAL_MACHINE\SOFTWARE\JavaSoft\Java Update\Policy” -Name “EnableJavaUpdate” -Value 0 -Type DWord -ContinueOnError $True
+
+Set-RegistryKey -Key “HKEY_LOCAL_MACHINE\SOFTWARE\JavaSoft\Java Update\Policy” -Name “NotifyDownload” -Value 0 -Type DWord -ContinueOnError $True
+
+Remove Java auto-update item from Run Registry key. This is a “just in case” tweak.
+
+Remove-RegistryKey -Key HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Run -Name SunJavaUpdateSched
+
+if ($Is64Bit)
+
+{
+
+Set-RegistryKey -Key “HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\JavaSoft” -Name “SPONSORS” -Value “DISABLE” -Type String -ContinueOnError $True
+
+Set-RegistryKey -Key “HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\JavaSoft\Java Update\Policy” -Name “EnableAutoUpdateCheck” -Value 0 -Type DWord -ContinueOnError $True
+
+Set-RegistryKey -Key “HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\JavaSoft\Java Update\Policy” -Name “EnableJavaUpdate” -Value 0 -Type DWord -ContinueOnError $True
+
+Set-RegistryKey -Key “HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\JavaSoft\Java Update\Policy” -Name “NotifyDownload” -Value 0 -Type DWord -ContinueOnError $True
+
+Remove-RegistryKey -Key HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Run -Name SunJavaUpdateSched
+
+}
+
+## Display a message at the end of the install
+
+If (-not $useDefaultMsi) { Show-InstallationPrompt -Message ‘You can customize text to appear at the end of an install or remove it completely for unattended installations.’ -ButtonRightText ‘OK’ -Icon Information -NoWait }
+
+}
+
+ElseIf ($deploymentType -ieq ‘Uninstall’)
+
+{
+
+##===============================================
+
+## PRE-UNINSTALLATION
+
+##*===============================================
+
+[string]$installPhase = ‘Pre-Uninstallation’
+
+## Show Welcome Message, close Internet Explorer with a 60 second countdown before automatically closing #Show-InstallationWelcome -CloseApps 'iexplore' -CloseAppsCountdown 60 ## Show Progress Message (with the default message) Show-InstallationProgress ## &lt;Perform Pre-Uninstallation tasks here&gt; Show-InstallationWelcome -CloseApps 'java,iexplore=Internet Explorer,firefox=Mozilla Firefox,chrome=Google Chrome' -AllowDefer -DeferTimes 3 -CheckDiskSpace -PersistPrompt ##*=============================================== ##* UNINSTALLATION ##*=============================================== [string]$installPhase = 'Uninstallation' # &lt;Perform Uninstallation tasks here&gt; Show-InstallationProgress -StatusMessage ‘Removing Java versions older than Java 8 Update 101, please wait…’
+
+[regex]$Regex = ‘(?i)Java((TM))\s\d+(\sUpdate\s\d+)$’
+
+$GetJavaProductNames = Get-InstalledApplication -Name ‘Java’ |
+
+Select-Object -ExpandProperty DisplayName |
+
+Where-Object -FilterScript { $_ -match $Regex }
+
+$GetOldJavaProductNames = $GetJavaProductNames -ne ‘Java 8 Update 101’
+
+If ($GetJavaProductNames.count -gt ‘1’ -and $GetJavaProductNames -eq ‘Java 8 Update 101’ )
+
+{
+
+Foreach ($Name in $GetOldJavaProductNames)
+
+{
+
+Remove-MSIApplications -Exact $Name -Parameters ‘/qn /norestart’
+
+}
+
+}
+
+##*=============================================== ##* POST-UNINSTALLATION ##*=============================================== [string]$installPhase = 'Post-Uninstallation' ## &lt;Perform Post-Uninstallation tasks here&gt; } ##*=============================================== ##* END SCRIPT BODY ##*=============================================== ## Call the Exit-Script function to perform final cleanup operations Exit-Script -ExitCode $mainExitCode
+
+}
+
+Catch {
+
+[int32]$mainExitCode = 60001
+
+[string]$mainErrorMessage = “$(Resolve-Error)”
+
+Write-Log -Message $mainErrorMessage -Severity 3 -Source $deployAppScriptFriendlyName
+
+Show-DialogBox -Text $mainErrorMessage -Icon ‘Stop’
+
+Exit-Script -ExitCode $mainExitCode
+
+}
+
+ISE Output:
+
+PS C:\Users\Administrator\Desktop\Java8Update101-PSADT-3.6.8> C:\Users\Administrator\Desktop\Java8Update101-PSADT-3.6.8\Deploy-Application.ps1
+
+[10-13-2016 15:48:31.121] [Initialization] [PSAppDeployToolkit] :: *******************************************************************************
+
+[10-13-2016 15:48:31.121] [Initialization] [PSAppDeployToolkit] :: *******************************************************************************
+
+[10-13-2016 15:48:31.230] [Initialization] [PSAppDeployToolkit] :: [Oracle_JavRuntimeEnvironment_8.101_x86_EN_01] setup started.
+
+[10-13-2016 15:48:31.245] [Initialization] [PSAppDeployToolkit] :: Script [C:\Users\Administrator\Desktop\Java8Update101-PSADT-3.6.8\AppDeployToolkit\AppDeployToolkitMain.ps1] dot-source invoked by [C:\Users\Administrator\Desktop\Java8Update101-PSADT-3.6.8\Dep
+
+loy-Application.ps1]
+
+[10-13-2016 15:48:31.261] [Initialization] [PSAppDeployToolkitExt] :: Script [C:\Users\Administrator\Desktop\Java8Update101-PSADT-3.6.8\AppDeployToolkit\AppDeployToolkitExtensions.ps1] dot-source invoked by [C:\Users\Administrator\Desktop\Java8Update101-PSADT-
+
+3.6.8\AppDeployToolkit\AppDeployToolkitMain.ps1]
+
+[10-13-2016 15:48:31.261] [Initialization] [PSAppDeployToolkit] :: [Oracle_JavRuntimeEnvironment_8.101_x86_EN_01] script version is [1.0.0]
+
+[10-13-2016 15:48:31.261] [Initialization] [PSAppDeployToolkit] :: [Deploy Application] script version is [3.6.8]
+
+[10-13-2016 15:48:31.277] [Initialization] [PSAppDeployToolkit] :: [App Deploy Toolkit Main] script version is [3.6.8]
+
+[10-13-2016 15:48:31.277] [Initialization] [PSAppDeployToolkit] :: [App Deploy Toolkit Extensions] version is [1.5.0]
+
+[10-13-2016 15:48:31.277] [Initialization] [PSAppDeployToolkit] :: Computer Name is [DT-MDT2013.workstations.corp.sgi.com]
+
+[10-13-2016 15:48:31.292] [Initialization] [PSAppDeployToolkit] :: Current User is [DT-MDT2013\Administrator]
+
+[10-13-2016 15:48:31.292] [Initialization] [PSAppDeployToolkit] :: OS Version is [Microsoft Windows 7 Professional Service Pack 1 64-bit 6.1.7601.65536]
+
+[10-13-2016 15:48:31.308] [Initialization] [PSAppDeployToolkit] :: OS Type is [Workstation]
+
+[10-13-2016 15:48:31.308] [Initialization] [PSAppDeployToolkit] :: Current Culture is [en-US] and UI language is [EN]
+
+[10-13-2016 15:48:31.339] [Initialization] [Get-HardwarePlatform] :: Retrieve hardware platform information.
+
+[10-13-2016 15:48:31.386] [Initialization] [PSAppDeployToolkit] :: Hardware Platform is [Physical]
+
+[10-13-2016 15:48:31.401] [Initialization] [PSAppDeployToolkit] :: PowerShell Host is [Windows PowerShell ISE Host] with version [2.0]
+
+[10-13-2016 15:48:31.401] [Initialization] [PSAppDeployToolkit] :: PowerShell Version is [2.0 x64]
+
+[10-13-2016 15:48:31.417] [Initialization] [PSAppDeployToolkit] :: PowerShell CLR (.NET) version is [2.0.50727.8669]
+
+[10-13-2016 15:48:31.417] [Initialization] [PSAppDeployToolkit] :: *******************************************************************************
+
+[10-13-2016 15:48:31.433] [Initialization] [Get-LoggedOnUser] :: Get session information for all logged on users.
+
+[10-13-2016 15:48:31.604] [Initialization] [Convert-RegistryPath] :: Return fully qualified registry key path [Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\MUI\Settings].
+
+[10-13-2016 15:48:31.620] [Initialization] [Get-RegistryKey] :: Registry key [Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\MUI\Settings] does not exist. Return $null.
+
+[10-13-2016 15:48:31.682] [Initialization] [Convert-RegistryPath] :: Return fully qualified registry key path [Registry::HKEY_USERS\S-1-5-21-271251414-2703758630-3564054488-500\Software\Policies\Microsoft\Windows\Control Panel\Desktop].
+
+[10-13-2016 15:48:31.682] [Initialization] [Get-RegistryKey] :: Registry key [Registry::HKEY_USERS\S-1-5-21-271251414-2703758630-3564054488-500\Software\Policies\Microsoft\Windows\Control Panel\Desktop] does not exist. Return $null.
+
+[10-13-2016 15:48:31.713] [Initialization] [Convert-RegistryPath] :: Return fully qualified registry key path [Registry::HKEY_USERS\S-1-5-21-271251414-2703758630-3564054488-500\Control Panel\Desktop].
+
+[10-13-2016 15:48:31.713] [Initialization] [Get-RegistryKey] :: Get registry key [Registry::HKEY_USERS\S-1-5-21-271251414-2703758630-3564054488-500\Control Panel\Desktop] value [PreferredUILanguages].
+
+[10-13-2016 15:48:31.745] [Initialization] [Get-RegistryKey] :: Registry key value [Registry::HKEY_USERS\S-1-5-21-271251414-2703758630-3564054488-500\Control Panel\Desktop] [PreferredUILanguages] does not exist. Return $null.
+
+[10-13-2016 15:48:31.776] [Initialization] [Convert-RegistryPath] :: Return fully qualified registry key path [Registry::HKEY_USERS\S-1-5-21-271251414-2703758630-3564054488-500\Control Panel\Desktop\MuiCached].
+
+[10-13-2016 15:48:31.776] [Initialization] [Get-RegistryKey] :: Get registry key [Registry::HKEY_USERS\S-1-5-21-271251414-2703758630-3564054488-500\Control Panel\Desktop\MuiCached] value [MachinePreferredUILanguages].
+
+[10-13-2016 15:48:31.838] [Initialization] [Convert-RegistryPath] :: Return fully qualified registry key path [Registry::HKEY_USERS\S-1-5-21-271251414-2703758630-3564054488-500\Control Panel\Desktop\WindowMetrics].
+
+[10-13-2016 15:48:31.838] [Initialization] [Get-RegistryKey] :: Get registry key [Registry::HKEY_USERS\S-1-5-21-271251414-2703758630-3564054488-500\Control Panel\Desktop\WindowMetrics] value [AppliedDPI].
+
+[10-13-2016 15:48:31.885] [Initialization] [PSAppDeployToolkit] :: Display session information for all logged on users:
+
+NTAccount : DT-MDT2013\Administrator
+
+SID : S-1-5-21-271251414-2703758630-3564054488-500
+
+UserName : Administrator
+
+DomainName : DT-MDT2013
+
+SessionId : 1
+
+SessionName : RDP-Tcp#1
+
+ConnectState : Active
+
+IsCurrentSession : True
+
+IsConsoleSession : False
+
+IsActiveUserSession : True
+
+IsUserSession : True
+
+IsRdpSession : True
+
+IsLocalAdmin : True
+
+LogonTime : 10/13/2016 1:40:52 PM
+
+IdleTime : 00:00:14.7263056
+
+DisconnectTime : 10/13/2016 2:11:56 PM
+
+ClientName : lt-ricci.workst
+
+ClientProtocolType : RDP
+
+ClientDirectory :
+
+ClientBuildNumber : 10382
+
+[10-13-2016 15:48:31.885] [Initialization] [PSAppDeployToolkit] :: The following users are logged on to the system: [DT-MDT2013\Administrator].
+
+[10-13-2016 15:48:31.901] [Initialization] [PSAppDeployToolkit] :: Current process is running with user account [DT-MDT2013\Administrator] under logged in user session for [DT-MDT2013\Administrator].
+
+[10-13-2016 15:48:31.901] [Initialization] [PSAppDeployToolkit] :: There is no console user logged in (user with control of physical monitor, keyboard, and mouse).
+
+[10-13-2016 15:48:31.901] [Initialization] [PSAppDeployToolkit] :: The active logged on user is [DT-MDT2013\Administrator].
+
+[10-13-2016 15:48:31.901] [Initialization] [PSAppDeployToolkit] :: The active logged on user [DT-MDT2013\Administrator] has a primary UI language of [EN].
+
+[10-13-2016 15:48:31.932] [Initialization] [PSAppDeployToolkit] :: The following UI messages were imported from the config XML file: [UI_Messages_EN].
+
+[10-13-2016 15:48:31.932] [Initialization] [PSAppDeployToolkit] :: The active logged on user [DT-MDT2013\Administrator] has a DPI scale factor of [100] with DPI pixels [96].
+
+[10-13-2016 15:48:31.947] [Initialization] [PSAppDeployToolkit] :: Unable to load COM Object [Microsoft.SMS.TSEnvironment]. Therefore, script is not currently running from a SCCM Task Sequence.
+
+[10-13-2016 15:48:31.963] [Initialization] [PSAppDeployToolkit] :: Skipping attempt to check for and make the task scheduler services healthy because the App Deployment Toolkit is not running under the [NT AUTHORITY\SYSTEM] account.
+
+[10-13-2016 15:48:31.963] [Initialization] [PSAppDeployToolkit] :: Session 0 not detected.
+
+[10-13-2016 15:48:31.963] [Initialization] [PSAppDeployToolkit] :: Installation is running in [Interactive] mode.
+
+[10-13-2016 15:48:31.979] [Initialization] [PSAppDeployToolkit] :: Deployment type is [Installation].
+
+[10-13-2016 15:48:31.994] [Pre-Installation] [Show-InstallationWelcome] :: Evaluate disk space requirements.
+
+[10-13-2016 15:48:32.010] [Pre-Installation] [Get-FreeDiskSpace] :: Retrieve free disk space for drive [C:].
+
+[10-13-2016 15:48:32.025] [Pre-Installation] [Get-FreeDiskSpace] :: Free disk space for drive [C:]: [21599 MB].
+
+[10-13-2016 15:48:32.025] [Pre-Installation] [Show-InstallationWelcome] :: Successfully passed minimum disk space requirement check.
+
+[10-13-2016 15:48:32.072] [Pre-Installation] [Get-DeferHistory] :: Get deferral history…
+
+[10-13-2016 15:48:32.088] [Pre-Installation] [Convert-RegistryPath] :: Return fully qualified registry key path [Registry::HKEY_LOCAL_MACHINE\SOFTWARE\PSAppDeployToolkit\DeferHistory\Oracle_JavRuntimeEnvironment_8.101_x86_EN_01].
+
+[10-13-2016 15:48:32.103] [Pre-Installation] [Get-RegistryKey] :: Registry key [Registry::HKEY_LOCAL_MACHINE\SOFTWARE\PSAppDeployToolkit\DeferHistory\Oracle_JavRuntimeEnvironment_8.101_x86_EN_01] does not exist. Return $null.
+
+[10-13-2016 15:48:32.103] [Pre-Installation] [Show-InstallationWelcome] :: User has [2] deferrals remaining.
+
+[10-13-2016 15:48:32.135] [Pre-Installation] [Get-RunningProcesses] :: Check for running application(s) [java,iexplore,firefox,chrome]…
+
+[10-13-2016 15:48:32.166] [Pre-Installation] [Get-RunningProcesses] :: Application(s) are not running.
+
+[10-13-2016 15:48:32.181] [Pre-Installation] [Get-RunningProcesses] :: Finished checking running application(s).
+
+[10-13-2016 15:48:32.213] [Pre-Installation] [Show-WelcomePrompt] :: User has the option to defer.
+
+[10-13-2016 15:48:35.988] [Pre-Installation] [Show-InstallationWelcome] :: User selected to continue…
+
+[10-13-2016 15:48:38.016] [Pre-Installation] [Test-PowerPoint] :: Check if PowerPoint is in either fullscreen slideshow mode or presentation mode…
+
+[10-13-2016 15:48:38.031] [Pre-Installation] [Test-PowerPoint] :: PowerPoint application is not running.
+
+[10-13-2016 15:48:38.031] [Pre-Installation] [Test-PowerPoint] :: PowerPoint is running in fullscreen mode [False].
+
+[10-13-2016 15:48:38.047] [Pre-Installation] [Show-BalloonTip] :: Display balloon tip notification with message [Installation started.].
+
+[10-13-2016 15:48:38.172] [Pre-Installation] [Show-InstallationProgress] :: Spin up progress dialog in a separate thread with message: [Installation in progress. Please wait…].
+
+[10-13-2016 15:48:39.165] [Installation] [Execute-Process] :: [C:\Users\Administrator\Desktop\Java8Update101-PSADT-3.6.8\Files\JavaSetup8Update101.exe] is a valid fully qualified path, continue.
+
+[10-13-2016 15:48:39.191] [Installation] [Execute-Process] :: Working Directory is [C:\Users\Administrator\Desktop\Java8Update101-PSADT-3.6.8\Files].
+
+[10-13-2016 15:48:39.199] [Installation] [Execute-Process] :: Executing [C:\Users\Administrator\Desktop\Java8Update101-PSADT-3.6.8\Files\JavaSetup8Update101.exe INSTALLCFG=C:\Users\Administrator\Desktop\Java8Update101-PSADT-3.6.8\SupportFiles\java.settings.cfg
+
+/L C:\Windows\Logs\Software\JavaSetup8Update101.log]…
+
+[10-13-2016 15:49:33.451] [Installation] [Execute-Process] :: Execution completed successfully with exit code [0].
+
+[10-13-2016 15:49:33.490] [Post-Installation] [Close-InstallationProgress] :: Close the installation progress dialog.
+
+[10-13-2016 15:49:33.528] [Post-Installation] [Show-InstallationPrompt] :: Displaying custom installation prompt with the non-default parameters: [-NoWait:$true -Icon “Information” -Message “You can customize text to appear at the end of an install or remove i
+
+t completely for unattended installations.” -ButtonRightText “OK”].
+
+[10-13-2016 15:49:33.575] [Post-Installation] [Exit-Script] :: Oracle_JavRuntimeEnvironment_8.101_x86_EN_01 Installation completed with exit code [0].
+
+[10-13-2016 15:49:33.591] [Post-Installation] [Test-PowerPoint] :: Check if PowerPoint is in either fullscreen slideshow mode or presentation mode…
+
+[10-13-2016 15:49:33.622] [Post-Installation] [Test-PowerPoint] :: PowerPoint application is not running.
+
+[10-13-2016 15:49:33.622] [Post-Installation] [Test-PowerPoint] :: PowerPoint is running in fullscreen mode [False].
+
+[10-13-2016 15:49:33.637] [Post-Installation] [Show-BalloonTip] :: Display balloon tip notification with message [Installation complete.].
+
+[10-13-2016 15:49:33.653] [Post-Installation] [Exit-Script] :: -------------------------------------------------------------------------------
+
+But this looks like it is trying to install Java 8 update 101.
+
+I thought you wanted to uninstall Java 7 Update 79?
+
+If you want to uninstall Java 7 Update 79 while simultaneously installing Java 8 Update 101, then you will need to use the “REMOVEOLDERJRES=1” MSI parameter for the Java 8 Update 101 install.
+
+By the way, are you using an MSI or an EXE to install Java 8 Update 101?
+
+There is such a thing called the JRE MSI Enterprise Installer that Oracle builds for Oracle enterprise customers that you can download from the My Oracle Support Center, but if you do not have an Oracle enterprise account, then I do not believe you can download it.
+
+If you are using the common public facing Java EXE download installer, then you can extract the MSI from it and then do something like the following in the “Installation” section of the Deploy-Application.ps1 file:
+
+Execute-MSI -Action Install -Path “$dirFiles\x64\jre-8u101-windows-x64.msi” -Parameters ‘/QN AUTOUPDATECHECK=0 JAVAUPDATE=0 JU=0 NOSTARTMENU=Enable REMOVEOLDERJRES=1 RebootYesNo=No’

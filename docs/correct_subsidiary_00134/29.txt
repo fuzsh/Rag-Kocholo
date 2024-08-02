@@ -1,63 +1,125 @@
-1. Oracle Coherence Integration with WebLogic Server & WebLogic Portal An engineer’s introduction to in-memory data grid development Presenter Title
+If you’ve ever wished that building modern, scalable, distributed cloud-based apps could be made as easy as building basic Windows desktop or client-server apps used to be, you are not alone.
 
-2. Agenda What Is Coherence Distributed Data Grid How Does It Work? Use Cases Customer Examples Q&A
+First showcased at CloudNative London 2019, the Ecstasy language has been co-created by Cameron Purdy and Gene Gleyzer, co-founders of Tangosol, a maker of in-memory data grid software, with exactly this goal in mind. Ecstasy is a new, strongly typed, modular, general-purpose, C-family programming language.
 
-3. Oracle Coherence Development Toolkit Pure Java 1.5+ Libraries Pure .Net 1.1 and 2.0 (Client Libraries) No Third-Party Dependencies No Open Source Dependencies Other Libraries for… Database and File System Integration Top Link and Hibernate Http Session Management, Spring, …
+Alongside the language itself, the Ecstasy project comprises a new portable binary format and instruction set, and a new managed runtime that is designed to support JIT, AOT and adaptive compilation.
 
-4. Oracle Coherence Provides… Container-less Clustering of Java Processes Data Structures to manage Data across a Cluster / Grid Real-Time Event Observation – Listener Pattern Materialized Views of Data Parallel Queries and Aggregation – Object-based Queries Parallel Data Processing Parallel Grid Processing RemoteException Free Distributed Computing Clustered JMX MAN + WAN Connectivity Client + Data Grid Deployment Models
+Java is used to run the current Ecstasy toolchain (the compiler and the runtime); it requires JDK 17, the latest LTS release. The whole project is open source, and licensed under Apache 2.0. It is sponsored by xqiz.it with, to date, no outside funding.
 
-6. <Insert Picture Here> “ A Data Grid is a system composed of multiple servers that work together to manage information and related operations - such as computations - in a distributed environment .” Cameron Purdy VP of Development, Oracle
+Ecstasy is not intended for use as a systems programming language — in other words, it isn’t designed for writing an operating system or a word processor. Instead, it has specifically been designed for modern, serverless-style cloud architectures, and is intended to support modern development practices such as CI/CD.
 
-7. What is a Data Grid? What In-Memory Objects Shared Benefits Low response time High throughput Predictable scalability Continuous availability Information reliability
+The language is currently at version 0.3 and is not yet ready for production use, as the project’s GitHub README makes clear: “This is a large and extremely ambitious project, and it may yet be several years before this project is certified for production use.”
 
-8. Scalability Chasm Application Servers Web Servers Data Demand Ever Expanding Universe of Users Data Supply Data Demand outpacing Data Supply Rate of growth outpacing ability to cost effectively scale applications
+That said, although the language implementation is not mature, the language design is complete, and Purdy and Gleyzer both have extensive prior experience working on languages and programming tools.
 
-9. Performance Problem A Performance Bottleneck Application Database Tables Object Java SQL server Relational Volume Complexity Frequency of Data Access
+After Oracle acquired Tangosol, Purdy became the Oracle senior vice president for enterprise Java, WebLogic, Coherence, Traffic Director, HTTP, JDBC, and Exalogic products. He and Gleyzer have worked together for about 30 years.
 
-10. Oracle Coherence as Data Broker Application Servers Web Servers Data Demand Ever Expanding Universe of Users Data Supply Oracle Coherence brokers Data Supply with Data Demand Scale out Data Grid in middle tier using commodity hardware Data Sources Objects
+“Our first job together was in a company that was making a couple of programming languages and programming tools,” “and we built an IDE in Java which was a component-based environment,” Purdy told The New Stack,
 
-11. <Insert Picture Here> Coherence Clustering
+“When we left that company we bought the technology we had built and it’s actually what Coherence” — Tangasol’s flagship product — “was built in.”
 
-12. Coherence Clustering: Tangosol Clustered Messaging Protocol (TCMP) Completely asynchronous yet ordered messaging built on UDP multicast/unicast Truly Peer-to-Peer : equal responsibility for both producing and consuming the services of the cluster Self Healing - Quorum based diagnostics Linearly scalable mesh architecture . TCP-like features Messaging throughput scales to the network infrastructure.
+Ecstasy’s Design Goals
 
-13. Coherence Clustering: The Cluster Service Transparent , dynamic and automatic cluster membership management Clustered Consensus: All members in the cluster understand the topology of the entire grid at all times . Crowdsourced member health diagnostics
+According to a blog post on the language’s official website, the Ecstasy team had five initial design goals:
 
-14. Coherence Distributed data management for applications Development Library Pure Java 1.4.2+ Pure .Net 1.1 and 2.0 (client) C++ client (3.4) No Third-Party Dependencies No Open Source Dependencies Proprietary Network Stack (Peer-To-Peer model) Other Libraries Support… Database and File System Integration TopLink and Hibernate Http Session Management WebLogic Portal Caches Spring, Groovy
+Correctness, aka Predictability. The behavior of a language must be obvious, correct and predictable. This also incorporates The Principle of Least Surprise.
 
-15. The Portable Object Format Advanced Serialization Simple Serialization Comparison In XML <date format=“java.util.Date”>2008-07-03</date> 47 characters (possibly 94 bytes depending on encoding) In Java (as a raw long) 64 bits = 8 bytes In Java (java.util.Date using ObjectOutputStream) 46 bytes In ExternalizableLite (as a raw long) 8 bytes In POF 4F 58 1F 70 6C = 5 bytes (c) Copyright 2008. Oracle Corporation
+Security. While generally not a priority for language design, it is self-evident that security is not something that one adds to a system; security is either in the foundation and the substrate of a system, or it does not exist. Specifically, a language must not make possible the access to (or even make detectable the existence of) any resource that is not explicitly granted to the running software.
 
-16. ©2011 Oracle Corporation Coherence Cache Types / Strategies Replicated Cache Optimistic Cache Partitioned Cache Near Cache backed by partitioned cache LocalCache not clustered Topology Replicated Replicated Partitioned Cache Local Caches + Partitioned Cache Local Cache Read Performance Instant Instant Locally cached: instant --Remote: network speed Locally cached: instant -- Remote: network speed Instant Fault Tolerance Extremely High Extremely High Configurable Zero to Extremely High Configurable 4 Zero to Extremely High Zero Write Performance Fast Fast Extremely fast Extremely fast Instant Memory Usage (Per JVM) DataSize DataSize DataSize/JVMs x Redundancy LocalCache + [DataSize / JVMs] DataSize Coherency fully coherent fully coherent fully coherent fully coherent n/a Memory Usage (Total) JVMs x DataSize JVMs x DataSize Redundancy x DataSize [Redundancy x DataSize] + [JVMs x LocalCache] n/a Locking fully transactional none fully transactional fully transactional fully transactional Typical Uses Metadata n/a (see Near Cache) Read-write caches Read-heavy caches w/ access affinity Local data
+Composability. High-level computer languages are about composition. Specifically, a language should enable a developer to locate each piece of design and logic in its one best and natural place.
 
-17. Use Cases
+Readability. Code is written once and referenced many times. What we call “code” should be a thing of beauty, where form follows function.
 
-18. Data Grid Uses Caching Applications request data from the Data Grid rather than backend data sources Analytics Applications ask the Data Grid questions from simple queries to advanced scenario modeling Transactions Data Grid acts as a transactional System of Record, hosting data and business logic Events Automated processing based on event
+Lastly, a language must be recursive in its design. There is no other mechanism that predictably folds in complexity and naturally enables encapsulation. It’s turtles, the whole way down.”
 
-19. Code Examples
+In addition, the language is intended to be very easy to get started with.
 
-20. Clustering Java Processes Joins an existing cluster or forms a new cluster Time “to join” configurable cluster contains information about the Cluster Cluster Name Members Locations Processes No “master” servers No “server registries” Cluster cluster = CacheFactory.ensureCluster(); (c) Copyright 2007. Oracle Corporation
+“After I left Oracle I was playing around and I realized that everything has just got so complicated,” Purdy told us. “If you go back 30 years, you had Access, PowerBuilder, Delphi or whatever. You installed it, and two hours later you’d have a working demo. How is it after 30 years, and with massive investment, we’ve actually made it harder to build stuff, and way more complicated to manage?
 
-21. Leaving a Cluster Leaves the current cluster shutdown blocks until “data” is safe Failing to call shutdown results in Coherence having to detect process death/exit and recover information from another process. Death detection and recovery is automatic (c) Copyright 2007. Oracle Corporation CacheFactory.shutdown();
+“So my number one goal for Ecstasy was ‘I want a developer to be able to be up and running with an app inside an hour — from start, to deployment, to showing a friend. One hour.’ It has to be simple, and it has to make sense … and then we want to be able to run 10,000 applications on a single server.”
 
-22. Using a Cache get, put, size & remove CacheFactory resolves cache names (ie: “mine” ) to configured NamedCache s NamedCache provides data topology agnostic access to information NamedCache interfaces implement several interfaces; java.util.Map, Jcache, ObservableMap * , ConcurrentMap * , QueryMap * , InvocableMap * (c) Copyright 2007. Oracle Corporation NamedCache nc = CacheFactory.getCache(“mine”); Object previous = nc.put(“key”, “hello world”); Object current = nc.get(“key”); int size = nc.size(); Object value = nc.remove(“key”); Coherence* Extensions
+The ‘Turtles Type System’
 
-23. Using a Cache keySet, entrySet, containsKey Using a NamedCache is like using a java.util.Map What is the difference between a Map and a Cache data-structure? Both use (key,value) pairs for entries Map entries don’t expire Cache entries may expire Maps are typically limited by heap space Caches are typically size limited (by number of entries or memory) Map content is typically in-process (on heap) (c) Copyright 2007. Oracle Corporation NamedCache nc = CacheFactory.getCache(“mine”); Set keys = nc.keySet(); Set entries = nc.entrySet(); boolean exists = nc.containsKey(“key”);
+Ecstasy’s emphasis on predictability is perhaps best illustrated via the type system, known as the Turtles Type System, because it is bootstrapped on itself.
 
-24. Observing Cache Changes ObservableMap Observe changes in real-time as they occur in a NamedCache Options exist to optimize events by using Filters, (including pre and post condition checking) and reducing on-the-wire payload (Lite Events) Several MapListener s are provided out-of-the-box. Abstract, Multiplexing... (c) Copyright 2007. Oracle Corporation NamedCache nc = CacheFactory.getCache(“stocks”); nc.addMapListener(new MapListener() { public void onInsert(MapEvent mapEvent) { } public void onUpdate(MapEvent mapEvent) { } public void onDelete(MapEvent mapEvent) { } });
+As in Smalltalk, everything in Ecstasy is an object, and all Ecstasy types are built out of other Ecstasy types. In other words, unlike in Java or C#, there is no secondary primitive type system and chars, ints, bits, and booleans are all objects.
 
-25. Querying Caches QueryMap Query NamedCache keys and entries across a cluster (Data Grid) in parallel * using Filters Results may be ordered using natural ordering or custom comparators Filters provide support almost all SQL constructs Query using non-relational data representations and models Create your own Filters * Requires Enterprise Edition or above (c) Copyright 2007. Oracle Corporation NamedCache nc = CacheFactory.getCache(“people”); Set keys = nc.keySet( new LikeFilter(“getLastName”, “%Stone%”)); Set entries = nc.entrySet( new EqualsFilter(“getAge”, 35));
+In common with Java and C# there is a single root called Object — although, In Ecstasy, Object is an interface, not a class.
 
-26. Continuous Observation Continuous Query Caches ContinuousQueryCache provides real-time and in-process copy of filtered cached data Use standard or your own custom Filters to limit view Access to “view”of cached information is instant May use with MapListeners to support rendering real-time local views (aka: Think Client) of Data Grid information. (c) Copyright 2007. Oracle Corporation NamedCache nc = CacheFactory.getCache(“stocks”); NamedCache expensiveItems = new ContinuousQueryCache(nc, new GreaterThan(“getPrice”, 1000));
+Technically the type system supports a long and rather intimidating-looking list of features. It is fully generic and fully reified, covariant, module-based, transitively closed, type-checked and type-safe.
 
-27. Aggregating Information InvocableMap Aggregate values in a NamedCache across a cluster (Data Grid) in parallel * using Filters Aggregation constructs include; Distinct, Sum, Min, Max, Average, Having, Group By Aggregate using non-relational data models Create your own aggregators * Requires Enterprise Edition or above (c) Copyright 2007. Oracle Corporation NamedCache nc = CacheFactory.getCache(“stocks”); Double total = (Double)nc.aggregate( AlwaysFilter.INSTANCE, new DoubleSum(“getQuantity”)); Set symbols = (Set)nc.aggregate( new EqualsFilter(“getOwner”, “Larry”), new DistinctValue(“getSymbol”));
+The majority of type safety checks are performed by the compiler and re-checked by the link-time verifier, with only those checks in which the types cannot be fully known beforehand performed at runtime — specifically to allow support for type variance.
 
-28. Mutating Information InvocableMap Invoke EntryProcessors on zero or more entries in a NamedCache across a cluster (Data Grid) in parallel * (using Filters) to perform operations Execution occurs where the entries are managed in the cluster, not in the thread calling invoke This permits Data + Processing Affinity * Requires Enterprise Edition or above (c) Copyright 2007. Oracle Corporation NamedCache nc = CacheFactory.getCache(“stocks”); nc.invokeAll( new EqualsFilter(“getSymbol”, “ORCL”), new StockSplitProcessor()); ... class StockSplitProcessor extends AbstractProcessor { Object process(Entry entry) { Stock stock = (Stock)entry.getValue(); stock.quantity *= 2; entry.setValue(stock); return null; } }
+“The Ecstasy language rules automatically handle covariance and contravariance,” Purdy wrote in an email response to The New Stack. “And that saves the developer from all that nonsensical gibberish that you see in e.g. Java, like:
 
-29. Customer Examples
+void putAll(Map<? extends K, ? extends V> m);
 
-30. Amir Razmara Director, The Gap Problem: Universal user profile, preferences, shopping cart and single sign-on across 4 brands Shared sessions across all 4 brands leading to a need for a global session (each brand has its own cluster of servers) Possible Solutions: State repository with DB Data Grid backed session management with Coherence*Web Coherence*Web Solution: Create a “Global Cache Cloud” to maintain a brand agnostic session caching layer, enabling the global session Any server from any brand is able to obtain a session from the global cache cloud, enabling SSO and shared bag Session durability, immune from crashes in the application tier Sessions maintained during the nightly cell switch for publishing content *GAP - OOW2008 S299392 - Beyond Performance: Pushing Transaction
+Or in Scala, like:
 
-31. The Universal Experience: Sister Tabs *GAP - OOW2008 S299392 - Beyond Performance: Pushing Transaction…
+trait EventListener[-E] { def listen(e:E) }
 
-32. Customer Examples Telecommunications Major Communications provider Home Subscriber Server (HSS) part of IMS platform “ Enterprise Data Grid” – Unified Data Access layer across the enterprise Active-Active data center replication across WAN Major Communications Provider “ Click-to-Chat” application – web chat between customers and CSRs Major Financial Services Provider User Session data in Coherence, access from Java and C++ User Session data replicated across WAN to alternate data center Mainframe MIPS cost mitigation Mid-tier caching to aid migration off MS SQL Server
+(The minus sign in Scala indicates contravariance.)
 
-33. Oracle Coherence Advantage Protect the Database Investment Ensure DB does what it does best, limit cost of rearchitecture Scale as you Grow Cost effective: Start small with 3-5 servers, scale to hundreds of servers as business grows Enables business continuity Providing continuous data availability
+There are many cases, though, in which the support for type variance implies (i.e. requires) runtime type checks,” Purdy said. “What Ecstasy does is to prevent obvious variance errors at compile time, but then do the necessary type checks at runtime as if you had added explicit type casts.
+
+“As a result of these rules, in Ecstasy you almost never have to ‘cast.’ That’s probably one of the things that always stands out to me when I go back to working in Java — I have casts everywhere.”
+
+Functions and tuples are prominent in the language, with support for multiple (and named) returns, optional (and named) parameters, lambdas, partial and complete argument binding, and currying.
+
+Although it sounds complex, the features of the type system feel very carefully matched to the overall design of the language. Ecstasy, Purdy said, also “doesn’t have to build on some external foundation; it is self-contained and fully self-referential.”
+
+In practice, the type system is one of the things that makes Ecstasy code easy to read and pleasant to work with.
+
+Another important aspect of Ecstasy’s design is that it has a sense of familiarity. “We worked really hard to make the type system feel like other older type systems.” Purdy told us. “We patterned the feel primarily after Java and C#, but also some Smalltalk, Ruby and Python.”
+
+That familiarity extends to the language syntax itself. Ecstasy isn’t a terse language and, although there are differences, by design it intentionally feels very familiar to anyone who has written code using languages like Java, C# or Swift, much in the same way that Java did for developers coming to it from C++.
+
+Here, for example, is the canonical “Hello World” app in Ecstasy taken from the examples in the project’s GitHub repo.
+
+The XVM Runtime and Security
+
+A key to understanding Ecstasy is its container-based runtime, called the XVM. Unlike an operating system container, code running within an Ecstasy container has no access to any operating system or hardware resources. The runtime also cannot host native code. You can see this from the list of XVM byte codes, which is extremely constrained.
+
+“We set out to create a different runtime model,” Purdy said, “where by default your app has zero capabilities.”
+
+What this means is that the app has to declare all the resources that it needs, which are then provided via Inversion of Control (IoC). In the “hello world” example presented previously, the code depends on its container to provide something that implements the console interface.
+
+Everything is injected as interfaces rather than classes. As a consequence, anything can be easily mocked for testing. “When you deploy your app, and it needs a file system, if I’m running it in test I can just give it a fake filesystem in memory and I’ll throw it away when I’m done,” Purdy said. “I can run a thousand of those in parallel, and everything becomes mockable.”
+
+This has major security benefits. For one thing, no code running in the container can do something that it hasn’t been given the right to do. In addition, resources are automatically limited in their surface area to the programming interfaces defined by the host, and the host environment can decide precisely what to provide for each of those requested resources.
+
+This means that any security bugs introduced via injection are limited in scope to the design of the relatively small number of interfaces that will be supported for resource injection and the various injectable implementations of those interfaces.
+
+Moreover, “once you have this as a basic building block, things like API keys are no longer the domain of the application,” Purdy said. “If you need an API key, you can ask to be injected with an API key, so now I can take my application source code, give it to someone else, and they don’t have my keys.”
+
+The Memory Model and Concurrency
+
+In a similar way, the Ecstasy managed runtime doesn’t surface the concept of a thread. Ecstasy uses an actor model similar to Erlang’s processes. In Ecstasy, these are known as services and can be used by a developer to break code into potentially concurrent units.
+
+A service is a programming abstraction for an independent von Neumann machine, which can perhaps best be thought of as a category of a class that represents a sphere of mutability.
+
+“Data that changes is inside of a service, and only that service can change that data,” Purdy said. “If you are outside of the service, you may think you can see the data but you actually can’t; when you are accessing the data that is inside that service, you are actually sending a request to the service to access that data for you.”
+
+Likewise, when one service wants to modify the data in another service it does so via a property, and that property access becomes a proxied call to the other service. This proxied call can be inlined if there is no contention — “basically it’s an erased semaphore at that point,” Purdy told us.
+
+To put this another way, the only two things that can leave one service boundary and enter another are immutable data or a reference to another service, which makes for a very simple memory model.
+
+A service acts like a combination of a work queue and a thread, in which any call from outside of the context of the service (i.e., any call into the service from any other conceptual thread of execution) is converted into a work item placed into the work queue, and an associated future result provided to the caller as a return value.
+
+From a concurrency point of view, every call into the service creates a new fiber or virtual thread. Within the service only one fiber can be running at one time. A fiber doesn’t have to run to completion — it can run until blocked.
+
+The choice of how to allocate hardware threads to potentially concurrent and asynchronous work is made by the runtime. In essence, this is applying adaptive compilation to the problems of concurrency and threading.
+
+The runtime is also specifically optimized for modern CPU cache line behavior. “What we’re designing for from a runtime perspective is eliminating all read and write barriers,” Purdy said. “Because single-threaded code, particularly when running out of L2 or L3 cache, is blazingly fast, but the second you hit a read barrier you’ve just thrown away 200, maybe 400 clock cycles.”
+
+Next Steps for Learning Ecstasy
+
+Readers who want to try Ecstasy for themselves should take a look at the language blog, which includes a useful, and surprisingly extensive introduction for a language this young; it also includes a section for programmers coming from Java.
+
+I also found a trip through the source code helpful, and in particular ecstasy.x, which is the module definition; Object.x, which is the root Object; and Service.x, which is the key to understanding the concurrency model
+
+There is still a huge amount of work to do, and plenty of opportunities for contributions from the community. The project has a code of conduct and a guide for contributors.
+
+The next stage, which Purdy and Gleyzer have just started to prototype, is to build a Platform-as-a-Service (PaaS) that will allow the team to show off all this capability.
+
+“We’re about six years into this, and we’re just now building the actual project we intended to build,” Purdy said. “It’s the longest road to a minimal viable product you’ve ever heard of!”

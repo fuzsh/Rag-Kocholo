@@ -11,7 +11,7 @@ def re_ranker(query, documents, return_documents=True):
     """
     return [
         {'id': result['corpus_id'] + 1, 'score': float(result['score']), 'question': result['text'] if return_documents else ''}
-        for result in model.rank(query, documents, return_documents=return_documents)
+        for result in model.rank(query, documents, return_documents=return_documents, show_progress_bar=False)
     ]
 
 

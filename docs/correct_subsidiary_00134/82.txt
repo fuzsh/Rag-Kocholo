@@ -1,0 +1,141 @@
+•Download as PPT, PDF•
+
+4 likes•1,538 views
+
+The document provides an overview of distributed caching with Coherence, JPA with TopLink Grid, and integrating Coherence with WebLogic Server. It discusses Coherence clustering, data management options like partitioned caching, data processing options like events and queries, how TopLink Grid allows scaling JPA applications using the Coherence data grid, and how Coherence servers integrate with the WebLogic lifecycle.
+
+Related slideshows
+
+Weblogic configuration
+
+Weblogic configuration
+
+Oracle WebLogic Server Basic Concepts
+
+Oracle WebLogic Server Basic Concepts
+
+Weblogic performance tuning1
+
+Weblogic performance tuning1
+
+JPA and Coherence with TopLink Grid
+
+1. Series Overview Data Access with JPA Distributed Caching with Coherence Message Driven and Web Services with Spring RESTful Web Services with JAX-RS and Javascript UI with JQuery Troubleshooting and tuning ©2010 Oracle Corporation
+
+2. Next Session: JMS and WebServices with Spring Learn how to: Use Spring with WebLogic JMS Use Spring to create Web Services on WebLogic ©2010 Oracle Corporation
+
+3. Coherence, TopLink Grid JPA, and WebLogic James Bayer WebLogic Server Product Management ©2010 Oracle Corporation
+
+4. Agenda Coherence Overview TopLink Grid – JPA + Coherence Oracle Parcel Service Example WebLogic Server and Coherence Integration ©2010 Oracle Corporation
+
+5. <Insert Picture Here> Coherence Overview
+
+6. <Insert Picture Here> “ A Data Grid is a system composed of multiple servers that work together to manage information and related operations - such as computations - in a distributed environment .”
+
+7. Coherence Clustering: Tangosol Clustered Messaging Protocol (TCMP) Completely asynchronous yet ordered messaging built on UDP multicast/unicast Truly Peer-to-Peer : equal responsibility for both producing and consuming the services of the cluster Self Healing - Quorum based diagnostics Linearly scalable mesh architecture . TCP-like features Messaging throughput scales to the network infrastructure.
+
+8. Coherence Clustering: The Cluster Service Transparent , dynamic and automatic cluster membership management Clustered Consensus: All members in the cluster understand the topology of the entire grid at all times . Crowdsourced member health diagnostics
+
+9. Coherence Clustering: The Coherence Hierarchy One Cluster (i.e. “singleton”) Under the cluster there are any number of uniquely named Services (e.g. caching service) Underneath each caching service there are any number of uniquely named Caches
+
+10. Data Management: Partitioned Caching Extreme Scalability: Automatically, dynamically and transparently partitions the data set across the members of the grid. Pros: Linear scalability of data capacity Processing power scales with data capacity. Fixed cost per data access Cons: Cost Per Access: High percentage chance that each data access will go across the wire. Primary Use: Large in-memory storage environments Parallel processing environments
+
+11. Data Management: Partitioned Fault Tolerance Automatically, dynamically and transparently manages the fault tolerance of your data. Backups are guaranteed to be on a separate physical machine as the primary. Backup responsibilities for one node’s data is shared amongst the other nodes in the grid.
+
+12. Data Management: Cache Client/Cache Server Partitioning can be controlled on a member by member basis . A member is either responsible for an equal partition of the data or not (“storage enabled” vs. “storage disabled”) Cache Client – typically the application instances Cache Servers – typically stand-alone JVMs responsible for storage and data processing only.
+
+13. Data Management: Near Caching Extreme Scalability & Performance The best of both worlds between the Replicated and Partitioned topologies. Most recently/frequently used data is stored locally. Pros: All of the same Pros as the Partitioned topology plus… High percentage chance data is local to request. Cons: Cost Per Update: There is a cost associated with each update to a piece of data that is stored locally on other nodes. Primary Use: Large in-memory storage environments with likelihood of repetitive data access.
+
+14. Data Management: Data Affinity The ability to associate objects across caches guaranteeing they are located on the same member . Typical Use Case: Parent Child relationships
+
+15. <Insert Picture Here> Data Processing Options
+
+16. Data Processing: Events - JavaBean Event Model Listen to all events for all keys ENTRY_DELETED ENTRY_INSERTED ENTRY_UPDATED NamedCache cache = CacheFactory.getCache(“myCache”); cache.addMapListener(listener);
+
+17. Data Processing: Parallel Query
+
+18. Data Processing: Parallel Query
+
+19. Data Processing: Parallel Query
+
+20. Data Processing: Parallel Query
+
+21. Data Processing: Continuous Query Cache
+
+22. Data Processing: Continuous Query Cache
+
+23. Data Processing: Continuous Query Cache
+
+24. Data Processing: Continuous Query Cache
+
+25. Data Processing: Invocable Map
+
+26. Data Processing: Invocable Map
+
+27. Data Processing: Invocable Map
+
+28. Data Processing: Invocable Map
+
+32. <Insert Picture Here> TopLink Grid JPA + Coherence
+
+33. TopLink Grid, Coherence & WebLogic Server JPA DBWS SDO EIS MOXy TopLink Grid APPLICATION GRID
+
+34. EclipseLink Project Open source Eclipse project Project Lead by Oracle Founded by Oracle with the contribution of full TopLink source code and tests Based upon product with 12+ years of commercial usage Certified on WebLogic and redistributed by Oracle as part of TopLink product
+
+35. Scaling JPA Applications Historically, scaling a JPA application entails Adding nodes to a cluster Tuning database performance to reduce query time Both of these approaches will support scalability but only to a point By leveraging Oracle Coherence, TopLink Grid offers a new way to scale JPA applications
+
+36. EclipseLink in a Cluster Application EntityManager EntityManagerFactory Shared Cache L1 Cache Application EntityManager EntityManagerFactory Shared Cache L1 Cache Need to keep Shared Caches Coherent
+
+37. Traditional Approaches to Scaling JPA Prior to TopLink Grid, there were two strategies for scaling EclipseLink JPA applications into a cluster: Disable Shared Cache Each transaction retrieves all required data from the database. Increased database load limits overall scalability but ensures all nodes have latest data. Cache Coordination When Entity is modified in one node, other cluster nodes messaged to replicate/invalidate shared cached Entities.
+
+38. Disable Shared Cache Application EntityManager EntityManagerFactory L1 Cache Application EntityManager EntityManagerFactory L1 Cache
+
+39. Disable Shared Cache Ensures all nodes have coherent view of data. Database is always right Each transaction queries all required data from database and constructs Entities No inter-node messaging Memory footprint of application increases as each transaction has a copy of each required Entity Every transaction pays object construction cost for queried Entities. Database becomes bottleneck
+
+40. Cache Coordination Application EntityManager EntityManagerFactory Shared Cache Cache Coordination L1 Cache Application EntityManager EntityManagerFactory Shared Cache L1 Cache
+
+41. Cache Coordination Ensures all nodes have coherent view of data. Database is always right Fresh Entities retrieved from shared cache Stale Entities refreshed from database on access Creation and/or modification of Entity results in message to all other nodes Messaging latency means that nodes may have stale data for a short period. Cost of coordinating 1 simultaneous update per node is n 2 as all nodes must be informed— cost of communication and processing may eventually exceed value of caching Shared cache size limited by heap of each node Objects shared across transactions to reduce memory footprint
+
+42. TopLink Grid TopLink Grid is a component of Oracle TopLink TopLink Grid allows Java developers to transparently leverage the power of the Coherence data grid TopLink Grid combines: the simplicity of application development using the Java standard Java Persistence API (JPA) with the scalability and distributed processing power of Oracle’s Coherence Data Grid. Supports 'JPA on the Grid' Architecture EclipseLink JPA applications using Coherence as a shared (L2) cache replacement along with configuration for more advanced usage
+
+43. Scaling JPA with TopLink Grid TopLink Grid integrates EclipseLink JPA and Coherence Base configuration uses Coherence data grid as distributed shared cache Updates to Coherence cache immediately available to all cluster nodes Advanced configurations uses data grid to process queries to avoid database access and decrease database load
+
+44. TopLink Grid with Coherence Cache Application EntityManager EntityManagerFactory L1 Cache Application EntityManager EntityManagerFactory L1 Cache Coherence
+
+45. TopLink Grid—Typical Configurations Grid Cache—Coherence as Shared (L2) Cache Configurable per Entity type Entities read by one grid member are put into Coherence and are immediately available across the entire grid Grid Read All supported read queries executed in the Coherence data grid All writes performed directly on the database by TopLink (synchronously) and Coherence updated Grid Entity All supported read queries and all writes are executed in the Coherence data grid
+
+46. Grid Cache—Reading Objects Queries are performed using JPA em.find(..) or JPQL. A find() will result in a get() on the appropriate Coherence cache. If found, Entity is returned. If get() returns null or query is JPQL, the database is queried with SQL. The queried Entities are put() into Coherence and returned to the application.
+
+47. Grid Cache—Query Results Coherence also leveraged when processing database results EclipseLink constructs Entities from JDBC result set but first extracts primary keys from results and checks cache to avoid object construction cost Even if a SQL query is executed, Coherence can still improve application throughput by eliminating object construction costs for cached Entities
+
+48. Grid Cache—Writing Objects Applications persist Entities using standard JPA and commit a transaction. The new and/or updated Entities are inserted/updated in the database and the database transaction committed. If the database transaction is successful the Entities are put() into Coherence which makes them available to all cluster members.
+
+49. Grid Cache Configuration A CoherenceInterceptor intercepts all shared cache operations and direct them to Coherence instead of the default EclipseLink shared cache. Configure with annotations or via eclipselink-orm.xml @CacheInterceptor (CoherenceInterceptor. class ) public class Employee implements Serializable {
+
+50. Grid Read—Reading Objects Queries are performed using JPA em.find(..) or JPQL. JQPL will be translated to a Coherence Filter and used to query results from Coherence. A find() will result in a get() on the appropriate Coherence cache. The database is not queried by EclipseLink. If Coherence is configured with a CacheLoader then a find() may result in a SELECT, but JQPL will not.
+
+51. Grid Read—Writing Objects An application commits a transaction with new Entities or modifications to existing Entities. EclipseLink issues the appropriate SQL to update the database and commits the database transaction. Upon successful commit, the new and updated Entities are put() into Coherence.
+
+52. Grid Read Configuration An Entity can be configured as Grid Read through annotations or in eclipselink-orm.xml @Entity @Customizer (CoherenceReadCustomizer. class ) public class Employee implements Serializable {
+
+53. Limitations in TopLink 11gR1 JPQL translated to Filter and executed in Coherence: TopLink Grid 11gR1 Supports single Entity queries with constraints on attributes, e.g.: select e from Employee e where e.name = 'Joe' Complex queries are executed on the database: Multi-Entity queries or queries that traverse relationships ('joins'), e.g.: select e from Employee e where e.address.city = 'Bonn' Projection (Report) queries, e.g.: select e.name, e.city from Employee e
+
+54. Grid Entity Configuration An Entity can be configured as a Grid Entity through annotations or in eclipselink-orm.xml @Entity @Customizer (CoherenceReadWriteCustomizer. class ) public class Employee implements Serializable {
+
+55. Grid Entity—Reading Objects (Same as Grid Read) Queries are performed using JPA em.find(..) or JPQL. JQPL will be translated to a Coherence Filter and used to query results from Coherence. A find() will result in a get() on the appropriate Coherence cache. The database is not queried by EclipseLink. If Coherence is configured with a CacheLoader then a find() may result in a SELECT, but JQPL will not.
+
+56. Grid Entity—Writing Objects An application commits a transaction with new Entities or modifications to existing Entities. EclipseLink put()s all new and updated Entities into Coherence. If a CacheStore is configured, Coherence will synchronously or asynchronously write the changes to the database, depending on configuration.
+
+57. How is TopLink Grid different from Hibernate with Coherence? Hibernate does not cache objects, it caches data rows Hibernate caches serialized data rows in Coherence Using Coherence as a cache for Hibernate Every cache hit incurs both object construction and serialization costs Worse, object construction cost is paid by every cluster member for every cache hit Hibernate only uses Coherence as a cache—TopLink Grid is unique in supporting execution of queries against Coherence which can significantly offload the database and increase throughput
+
+58. Summary TopLink supports a range of strategies for scaling JPA applications TopLink Grid integrates EclipseLink JPA with Oracle Coherence to provide: 'JPA on the Grid' functionality to support scaling JPA applications with Coherence Support for caching Entities with relationships in Coherence Both TopLink and Coherence are a part of WebLogic Application Grid
+
+59. <Insert Picture Here> Oracle Parcel Service Example WebLogic Server and Coherence Integration WebLogic Server and Coherence Integration WebLogic Server and Coherence Integration WebLogic Server and Coherence Integration
+
+60. <Insert Picture Here> WebLogic Server and Coherence Integration WebLogic Server and Coherence Integration WebLogic Server and Coherence Integration WebLogic Server and Coherence Integration WebLogic Server and Coherence Integration
+
+61. Coherence Server Lifecycle WLS MBean’s Node Manager Client Node Manager WebLogic Admin Server WLS Console WLST, JMX Domain Directory - Coherence Cluster - tangosol-coherence-override.xml - Coherence Server Coherence Server(s) Machine A Node Manager Coherence Server(s) Machine B [Lifecycle, HA] Pack / Unpack
+
+62. OracleWebLogic YouTube Channel www.YouTube.com/OracleWebLogic ©2010 Oracle Corporation
+
+63. OracleWebLogic YouTube Channel www.YouTube.com/OracleWebLogic ©2010 Oracle Corporation

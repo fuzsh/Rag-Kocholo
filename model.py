@@ -11,9 +11,11 @@ import json_repair
 from langchain.output_parsers import StructuredOutputParser, ResponseSchema
 from llama_index.core import (Settings, VectorStoreIndex, SimpleDirectoryReader, PromptTemplate)
 from llama_index.core import StorageContext
+from llama_index.core.evaluation import RelevancyEvaluator
 from llama_index.core.node_parser import SentenceWindowNodeParser
 from llama_index.core.output_parsers import LangchainOutputParser
 from llama_index.core.postprocessor import MetadataReplacementPostProcessor
+from llama_index.core.query_engine import FLAREInstructQueryEngine
 from llama_index.core.schema import NodeWithScore, QueryBundle
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 from llama_index.legacy.postprocessor import BaseNodePostprocessor
@@ -34,21 +36,23 @@ llm = None
 def init_llm(response_schema=False):
     global llm
     if response_schema:
-        response_schemas = [
-            ResponseSchema(
-                name="output",
-                description="Check the validity of the knowledge graph triple based on the provided documents, yes if the triple is correct, no if the triple is incorrect.",
-                type="boolean"
-            )
-        ]
-        # define output parser
-        lc_output_parser = StructuredOutputParser.from_response_schemas(response_schemas)
-        llm = Ollama(model="llama3.1", request_timeout=300.0, output_parser=LangchainOutputParser(lc_output_parser))
+        # response_schemas = [
+        #     ResponseSchema(
+        #         name="output",
+        #         description="Check the validity of the knowledge graph triple based on the provided documents, yes if the triple is correct, no if the triple is incorrect.",
+        #         type="boolean"
+        #     )
+        # ]
+        # # define output parser
+        # lc_output_parser = StructuredOutputParser.from_response_schemas(response_schemas)
+        # llm = Ollama(model="llama3.1", request_timeout=300.0, output_parser=LangchainOutputParser(lc_output_parser))
+        llm = Ollama(model="mistral", request_timeout=300.0)
     else:
-        llm = Ollama(model="llama3.1", request_timeout=300.0)
+        llm = Ollama(model="mistral", request_timeout=300.0)
 
     # model_name = "jinaai/jina-embeddings-v2-small-en"
     model_name = "BAAI/bge-small-en-v1.5"
+    # model_name = "Snowflake/snowflake-arctic-embed-m-v1.5"
     embed_model = HuggingFaceEmbedding(model_name=model_name)
 
     Settings.llm = llm
@@ -80,7 +84,7 @@ class DummyNodePostprocessor(BaseNodePostprocessor):
     ) -> List[NodeWithScore]:
         """Postprocess nodes."""
         new_nodes = []
-        sim_cutoff_exists = self.similarity_cutoff is not None
+        sim_cutoff_exists = self.similarity_cutoff != -1 and self.similarity_cutoff is not None
 
         re_rank_nodes = re_rank(self.knowledge_graph, [node.text for node in nodes])
 
@@ -120,7 +124,7 @@ def init_index(embed_model, directory="./docs", persist=False):
     else:
         chroma_client = chromadb.EphemeralClient()
     collection_name = f"{directory.split('/')[-1]}_collection"
-    chroma_collection = chroma_client.get_or_create_collection(collection_name)
+    chroma_collection = chroma_client.create_collection(collection_name)  # TODO: get or create collection
 
     vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
     storage_context = StorageContext.from_defaults(vector_store=vector_store)
@@ -210,7 +214,7 @@ def create_sample_queries(knowledge_graph):
 def few_shot_examples_fn(**kwargs):
     queries = [
         "Pat Frank author Alas, Babylon",
-        "Jonathan Swift deathPlace New York City",
+        "Elisabeth Domitien office Iraq",
         "Camilo José Cela award Nobel Prize in Literature",
     ]
     responses = [
@@ -239,7 +243,7 @@ def init_query_engine(index, query):
         similarity_top_k=3,
         text_qa_template=qa_template,
         node_postprocessors=[
-            DummyNodePostprocessor(knowledge_graph=query, similarity_cutoff=0.4),
+            DummyNodePostprocessor(knowledge_graph=query, similarity_cutoff=-1),
             MetadataReplacementPostProcessor(target_metadata_key="window"),
         ]
     )
@@ -283,7 +287,8 @@ def chat(input_question, n_retries=3):
     try:
         response = query_engine.query(input_question)
         logging.info("got response from llm - %s", response)
-        return clear_response(response.response)
+        # return clear_response(response.response)
+        return {"short_ans": clear_response(response.response), "full_ans": response.response}
     except Exception as e:
         logging.error("Error querying llm - %s", e)
         return chat(input_question, n_retries - 1)

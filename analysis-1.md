@@ -1,0 +1,67 @@
+# Analysis Results
+
+## Metrics
+
+| Category | Correct | Incorrect | Not understandable | Overall Accuracy |
+| --- | --- | --- | --- | --- |
+| death | 142 | 8 | 0 | 0.9467 |
+| award | 150 | 0 | 0 | 1.0000 |
+| nbateam | 150 | 0 | 0 | 1.0000 |
+| spouse | 146 | 3 | 1 | 0.9733 |
+| birth | 148 | 2 | 0 | 0.9867 |
+| foundationPlace | 97 | 48 | 5 | 0.6467 |
+| starring | 148 | 2 | 0 | 0.9867 |
+| leader | 150 | 0 | 0 | 1.0000 |
+| publicationDate | 146 | 4 | 0 | 0.9733 |
+| subsidiary | 136 | 6 | 8 | 0.9067 |
+| mix_random_death | 21 | 2 | 3 | 0.8077 |
+| mix_random_award | 22 | 0 | 4 | 0.8462 |
+| mix_random_nbateam | 21 | 2 | 3 | 0.8077 |
+| mix_random_spouse | 21 | 2 | 3 | 0.8077 |
+| mix_random_birth | 21 | 4 | 1 | 0.8077 |
+| mix_random_foundationPlace | 19 | 5 | 2 | 0.7308 |
+| mix_random_starring | 19 | 3 | 4 | 0.7308 |
+| mix_random_leader | 22 | 0 | 4 | 0.8462 |
+| mix_random_publicationDate | 20 | 4 | 2 | 0.7692 |
+| mix_random_subsidiary | 19 | 1 | 6 | 0.7308 |
+| mix_domainrange_death | 26 | 0 | 0 | 1.0000 |
+| mix_domainrange_award | 20 | 6 | 0 | 0.7692 |
+| mix_domainrange_nbateam | 15 | 11 | 0 | 0.5769 |
+| mix_domainrange_spouse | 18 | 4 | 4 | 0.6923 |
+| mix_domainrange_birth | 24 | 2 | 0 | 0.9231 |
+| mix_domainrange_foundationPlace | 16 | 4 | 6 | 0.6154 |
+| mix_domainrange_starring | 21 | 4 | 1 | 0.8077 |
+| mix_domainrange_leader | 25 | 1 | 0 | 0.9615 |
+| mix_domainrange_publicationDate | 22 | 4 | 0 | 0.8462 |
+| mix_domainrange_subsidiary | 15 | 5 | 5 | 0.6000 |
+| mix_domain_death | 24 | 1 | 1 | 0.9231 |
+| mix_domain_award | 22 | 4 | 0 | 0.8462 |
+| mix_domain_nbateam | 9 | 17 | 0 | 0.3462 |
+| mix_domain_spouse | 14 | 4 | 8 | 0.5385 |
+| mix_domain_birth | 26 | 0 | 0 | 1.0000 |
+| mix_domain_foundationPlace | 19 | 3 | 4 | 0.7308 |
+| mix_domain_starring | 20 | 6 | 0 | 0.7692 |
+| mix_domain_leader | 25 | 1 | 0 | 0.9615 |
+| mix_domain_publicationDate | 15 | 8 | 3 | 0.5769 |
+| mix_domain_subsidiary | 15 | 6 | 5 | 0.5769 |
+| mix_range_death | 25 | 1 | 0 | 0.9615 |
+| mix_range_award | 19 | 7 | 0 | 0.7308 |
+| mix_range_nbateam | 9 | 17 | 0 | 0.3462 |
+| mix_range_spouse | 17 | 4 | 5 | 0.6538 |
+| mix_range_birth | 26 | 0 | 0 | 1.0000 |
+| mix_range_foundationPlace | 15 | 8 | 3 | 0.5769 |
+| mix_range_starring | 17 | 9 | 0 | 0.6538 |
+| mix_range_leader | 22 | 4 | 0 | 0.8462 |
+| mix_range_publicationDate | 15 | 11 | 0 | 0.5769 |
+| mix_range_subsidiary | 15 | 6 | 5 | 0.5769 |
+| mix_property_death | 15 | 11 | 0 | 0.5769 |
+| mix_property_award | 10 | 16 | 0 | 0.3846 |
+| mix_property_nbateam | 15 | 11 | 0 | 0.5769 |
+| mix_property_spouse | 13 | 9 | 4 | 0.5000 |
+| mix_property_birth | 14 | 12 | 0 | 0.5385 |
+| mix_property_foundationPlace | 10 | 10 | 6 | 0.3846 |
+| mix_property_starring | 6 | 20 | 0 | 0.2308 |
+| mix_property_leader | 9 | 17 | 0 | 0.3462 |
+| mix_property_publicationDate | 13 | 12 | 1 | 0.5000 |
+| mix_property_subsidiary | 9 | 11 | 6 | 0.3462 |
+| **Overall** | 2303 | 383 | 113 | 0.8228 |

@@ -1,5 +1,6 @@
 import json
 import os
+import re
 from json import JSONDecodeError
 
 import numpy as np
@@ -149,6 +150,11 @@ def search_engine(knowledge_graph, top_n=10, force_recreate=False):
             if directory.endswith(".txt"):
                 print(f"Documents for {identifier} already exist. Skipping...")
                 return
+    else:
+        # Remove existing documents
+        for filename in os.listdir(f"docs/{identifier}"):
+            if filename.endswith(".txt"):
+                os.remove(f"docs/{identifier}/{filename}")
 
     if identifier == "wrong_mix_domainrange_subsidiary_00012":
         return
@@ -159,35 +165,50 @@ def search_engine(knowledge_graph, top_n=10, force_recreate=False):
     documents = read_documents(f'docs/{identifier}/all_docs')
 
     # Define the queries
-    queries = [' '.join(knowledge_graph[1])]
-    with open(f"./docs/{identifier}/questions.json", "r") as f:
-        questions = json.load(f)['questions']
-    # get top 3 questions based on score field
-    questions = sorted(questions, key=lambda x: x['score'], reverse=True)[:3]
-    queries.extend([q['question'] for q in questions])
+    queries = [re.sub(r'(?<=[a-z])([A-Z])', r' \1', " ".join(knowledge_graph[1]))]
+    queries.append(f'Did {knowledge_graph[1][0]} died in "{knowledge_graph[1][2]}"?')
+
+    # with open(f"./docs/{identifier}/questions.json", "r") as f:
+    #     questions = json.load(f)['questions']
+    # # get top 3 questions based on score field
+    # questions = sorted(questions, key=lambda x: x['score'], reverse=True)[:3]
+    # queries.extend([q['question'] for q in questions])
 
     # Get search results
-    results = search_engine_BM25(documents, queries, top_n=top_n)
+    # results = search_engine_BM25(documents, queries, top_n=top_n)
 
-    selected_docs = []
-    for query, result in results:
-        docs = []
-        for doc_idx, score in result:
-            docs.append(documents[doc_idx])
+    # selected_docs = []
+    # for query, result in results:
+    #     docs = []
+    #     for doc_idx, score in result:
+    #         docs.append(documents[doc_idx])
+    #
+    #     re_rank_results = re_rank(query, docs, return_documents=False)
+    #
+    #     max_bm25_score = max([score for _, score in result])
+    #     max_re_rank_score = max([result['score'] for result in re_rank_results])
+    #
+    #     for idx, (doc_idx, score) in enumerate(result):
+    #         # calculate new rank with harmonic mean between BM25 and re_ranker, also normalize the score to be between 0 and 1
+    #         a = score / max_bm25_score
+    #         b = re_rank_results[idx]['score'] / max_re_rank_score
+    #         new_score = 2 * a * b / (a + b) if a + b != 0 else 0
+    #         selected_docs.append({'doc_idx': doc_idx, 'score': new_score, "doc": documents[doc_idx]})
 
-        re_rank_results = re_rank(query, docs, return_documents=False)
+    re_rank_results = re_rank(
+        re.sub(r'(?<=[a-z])([A-Z])', r' \1', " ".join(knowledge_graph[1])),
+        documents,
+        return_documents=True
+    )
 
-        max_bm25_score = max([score for _, score in result])
-        max_re_rank_score = max([result['score'] for result in re_rank_results])
-
-        for idx, (doc_idx, score) in enumerate(result):
-            # calculate new rank with harmonic mean between BM25 and re_ranker, also normalize the score to be between 0 and 1
-            a = score / max_bm25_score
-            b = re_rank_results[idx]['score'] / max_re_rank_score
-            new_score = 2 * a * b / (a + b) if a + b != 0 else 0
-            selected_docs.append({'doc_idx': doc_idx, 'score': new_score, "doc": documents[doc_idx]})
+    selected_docs = [{
+        'doc_idx': result['id'],
+        'score': result['score'],
+        'doc': result['question']
+    } for result in re_rank_results]
 
     selected_docs = sorted(selected_docs, key=lambda x: x['score'], reverse=True)[:10]
+
     for doc in selected_docs:
         with open(f"docs/{identifier}/{doc['doc_idx']}.txt", 'w', encoding='utf-8') as file:
             file.write(doc['doc'])

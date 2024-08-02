@@ -1,0 +1,55 @@
+A Deeper Look At Sybase, I'm planning to do a series of blog posts on the various Sybase data management products -- to make the point that Sybase is not just about mobile stuff (as the casual observer might be led to believe).
+
+Today, it's about Sybase Adaptive Server Enterprise, or 'ASE' as it's usually called.
+
+ASE is Sybase's flagship database. It is a versatile, enterprise-class RDBMS which is especially good at handling OLTP workloads. ASE is used intensively in the financial world (capital markets, stock exchanges, banking, insurance), in E-commerce, as well as in virtually every other area.
+
+So how did we get here?
+
+ASE started its life in the mid-1980's as 'Sybase SQL Server', originally developed from Bob Epstein's home in Berkeley, California (Bob and Sybase's other founder, Mark Hoffman have long left Sybase). In those early days, relational databases were mostly found in academic environments: relational technology was just not mature enough for the requirements of business systems, and operational systems at the time were typically using IMS (a hierarchical DB), IDMS (Codasyl/network DB), or were using ISAM files or some custom home-grown type of file management.
+
+When it appeared on the market, Sybase SQL Server was innovative in a number of ways. Perhaps the most important aspect was that ASE was architected for client-server from the ground up. The original designers had correctly envisioned that networks would become pervasive (an enabler and necessary requirement for client-server architectures). In contrast, other DBMSs have long been monolithic programs where a each user would essentially start up a full copy of the database; for example, Oracle only 'bolted on' client-server functionality in the mid-90's. Sybase's client-server architecture made it very resource-efficient: I recall that the amount of memory required by Sybase for each additional user connection was only ~45 KB in 1990 - a big difference with those monolithic databases that required megabytes of memory for each additional user.
+
+In the early 1990's, a number of trends coincided that allowed Sybase to take Wall Street by storm. Perhaps the most important factor was the advent of fast and relatively cheap Unix-based servers (remember Pyramid? remember 'Sun Microsystems' whose 'SunOS' became a Unix standard for years to come?).
+
+Up till then, business applications were typically running on mainframe-type hardware (anyone remembers Amdahl and Fujitsu besides IBM?). Though Unix servers could not achieve the availability and reliability levels offered by mainframes, their performance, cost advantage and ease of use made them attractive. As it happened, Sybase SQL Server ran extremely well on those Unix boxes, and as a result Sybase benefited greatly from the drive to replace mainframes.
+
+Another factor at the time was the transformation of batch-driven processing to online systems. A banking system in the old days would update its accounts once per day, processing a batch of mutations against a database of accounts; the mutations would come in on magnetic tapes, sorted by account number, and were processed in batch. The business need for more real-time updates was driving a conversion to online transaction processing (OLTP), where the result of an individual mutation could be seen immediately rather than only at the end of a long batch job (I know this sounds trivial today, it just show how much technology has evolved).
+
+(just to put things in perspective: the word 'analytics' didn't even exist in those days -- 'reporting', 'decision support' or 'management information system' would probably have been the terminology describing data aggregation -- which typically was a big pile of paper printout, delivered to your desk once per week/month/quarter).
+
+Sybase SQL Server was designed for OLTP workload. OLTP is characterized by small, short and relatively simple transactions. The classic example is a bank transfer, which is in essence a database transaction consisting of two updates (i.e. adding EUR 100 from one bank account and subtracting it from another account). OLTP workloads tend to have massive amounts of such transactions, and Sybase SQL Server handled such workloads exceptionally well.
+
+My own first encounter with Sybase was in 1989 for an ambitious real-time logistics system. Sybase SQL Server provided innovations such as stored procedures, triggers and a cost-based query optimizer.
+
+These are taken for granted today, but they were novel and exciting features at the time.
+
+All together, Sybase created the first commercially successful client-server RDBMS capable of handling real-world workloads through a SQL interface. The Sybase flavour of SQL was -and still is- called 'Transact-SQL'.
+
+It was not a coincidence to for Sybase to gain a foothold at Wall St: those firms are always looking for new technology that allows them to gain a competitive edge. Sybase SQL server provided just that.
+
+As a result of the big success of Sybase in the early 1990's, many critical systems in the financial sector are still running on Sybase today. These are often complex and critical systems related to securities trading on which a huge amount of specialized development and tuning effort has been spent. Since Sybase has proven to be efficient, robust and reliable for so many years, many customers have stayed with Sybase. As just one example, most of the trading systems making up the world market for derivatives (a class of complex financial products) still run on Sybase-powered systems today.
+
+Now, about that name 'SQL Server'... chances are you've heard that name before, but prepended with 'Microsoft'. Unlike what many Microsoft users think, SQL Server is not originally a Microsoft product.
+
+During the early years of Sybase, Microsoft was a Sybase distributor, essentially reselling the Sybase product for OS/2 and (later) Windows NT under the name 'Microsoft SQL Server'; all engineering was however done by Sybase.
+
+Around 1994, Microsoft basically bought a copy of the source code of Sybase SQL Server for the Windows platform and then went its own way. As competitors, Sybase and Microsoft have been developing their products independently ever since. Microsoft has mostly emphasised ease-of-use and 'Window-ising' the product, while Sybase has focused on enterprise features, maximising performance and reliability, and catering to the high end of the OLTP market.
+
+When releasing version 11.5 in 1997, Sybase renamed its SQL Server product to Adaptive Server Enterprise (ASE) to better distinguish itself from Microsoft SQL Server and to emphasise its focus on enterprise systems.
+
+Because of the common background, there are still many similarities in today's versions of ASE and MS SQL Server. For example, both have the concept of 'master', 'model' and 'tempdb' databases in a server, and of system stored procedures starting with 'sp_' (like sp_who, sp_helpdb).
+
+Also, both ASE and MS SQL Server have an SQL implementation called 'Transact-SQL', which are still quite similar though they have diverged more and more over the years. Still, probably no two databases are as similar as Sybase ASE and MS SQL Server, so it is relatively simple to learn one if you already know the other.
+
+So, Sybase earned itself a reputation for producing a reliable, high-performance database that became the workhorse of mission-critical financial systems.
+
+Over the course of the years, naturally also a few things happened that were somewhat less successful.
+
+One 'issue' worth mentioning here at the SAP blog site is what happened somewhere in the first half of the 1990's. A German software company that was yet little-known in the USA, approached Sybase because they wanted to run their application on Sybase SQL Server -- the most popular financial database, after all. However, their application was designed such that it caused too many concurrency problems (locking) in Sybase SQL Server. The Germans therefore requested Sybase to implement row-level locking to solve this problem (at that point, Sybase only supported page-level and table-level locking). Accounts differ on the reasons why, but Sybase declined the request. What happened next is history: SAP (you guessed it, right?) ended up running on all major databases except Sybase, and consequently Sybase missed out on the big wave of ERP-driven business in the rest of the 1990's (Sybase did eventually implement row-level locking in version 11.9, offering a choice of three different lock schemes).
+
+Now that SAP has acquired Sybase, and Business Suite will be running on Sybase ASE later this year, history has more or less come full circle. I'm confident that ASE will be a great platform for SAP ERP, albeit indeed a bit late.
+
+For the first few years, SQL Server was Sybase's only product. For many years, it remained the #1 product in Sybase's product line. By its installed base and prominent role in mission-critical systems, it still is Sybase's flagship database today.
+
+Next: A Deeper Look At Sybase: ASE Today.

@@ -1,0 +1,41 @@
+First, thanks to Mikael Svenson for getting this part as it is much essential on the new modern experience. Although Microsoft is not recommending the use of script loading on the new platform, there is a certain limitation that can come from the use of the available webparts. Surely, the available webparts will grow exponentially over the time but for the time being, being able to bring in the script editor is a true relief.
+
+Clone or Download the repo
+
+You will have to clone this repo: https://github.com/SharePoint/sp-dev-fx-webparts
+
+Although we would only use one specific webpart (you can git sparse if you want): https://github.com/SharePoint/sp-dev-fx-webparts/tree/master/samples/react-script-editor
+
+The documentation is pretty good there but just wanted to go through some points that might be helpful
+
+2. Edit the Write-manifests.json.
+
+This is where you have to add the path to the CDN. You have to make sure you have enabled Office 365 public CDN for your Office 365 tenant. To ensure you have it set up properly, open your SharePoint Online Management Shell as administrator then run the comments from this article:
+
+Think where you want to put the files for the application in your site collection (siteAssets makes a good location as shown below), create the needed folder and then copy the path to the write-manifests.json file.
+
+3. Build the package
+
+Well, first make sure to npm install, gulp trust-dev-cert and then gulp serve in your terminal.
+
+If it does not work in your local workbench, it less likely that it will work where you want to install the webpart. Make sure npm install did not fail at some point. I had to update npm in my case to the latest version to finally make it work locally.
+
+4. Build the package and deploy
+
+Once you get here, you will need to run the commands as mentioned in the wiki:
+
+gulp — ship
+
+gulp package-solution — ship
+
+You will see 2 new directories: sharepoint and temp.
+
+Copy contents of temp\deploy to the CDN folder. This is the folder that we defined in step 1
+
+Upload .sppkg file from sharepoint\solution to your tenant App Catalog. If you haven’t setup your SharePoint App Catalog, follow these steps to get that completed: https://support.office.com/en-us/article/use-the-app-catalog-to-make-custom-business-apps-available-for-your-sharepoint-online-environment-0b6ab336-8b83-423f-a06b-bcc52861cba0
+
+Navigate to the site that you want to add the webpart and add it as an app first. You should see it under add an app.
+
+Finally, we can now add the webpart to the modern experience pages in Sharepoint. Just Edit the snipped to add int whatever html, css or js needed and Enjoy!
+
+***

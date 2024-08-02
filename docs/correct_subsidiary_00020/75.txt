@@ -1,0 +1,9 @@
+When I tried to post a picture using the small camera icon in the Newsfeed webpart, on a site which is located in a different Web Application than the MySite, I got this error: Sorry, this site hasn’t been shared with you.
+
+The explanation for this manner is quite simple: When you try to upload a picture to the Newsfeed from another Web Application, the corresponding application pool user needs access to the MySite Web Application. You can set the correct permissions using the SharePoint Management Shell:
+
+$WebApp = Get-SPWebApplication «https://MySite.domain.com»
+
+$WebApp.GrantAccessToProcessIdentity(«domain\PortalUser»)
+
+Where «https:/MySite.domain.com» is the MySite Host and «domain\PortalUser» is the service account of Web Application which is hosting the site from which you try to upload the picture.

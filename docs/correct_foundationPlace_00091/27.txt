@@ -1,33 +1,65 @@
-An increasing number of attackers are trying to exploit a critical vulnerability in firewall appliances from Palo Alto Networks after proof-of-concept exploit code was published last week. The flaw was originally reported on April 12th as a zero-day after an APT group was found exploiting it in the wild in limited attacks.
+On Friday, April 12, Palo Alto Networks published an advisory on CVE-2024-3400, a CVSS 10 zero-day vulnerability in several versions of PAN-OS, the operating system that runs on the company’s firewalls. According to the vendor advisory, if conditions for exploitability are met, the vulnerability may enable an unauthenticated attacker to execute arbitrary code with root privileges on the firewall. Patches are available for some versions as of Sunday, April 14, 2024.
 
-As of April 18, there were still about 22,500 devices accessible from the internet that were potentially vulnerable, according to statistics from the Shadowserver Foundation. While the number is significant considering that every such device is a potential gateway into a corporate network, it’s much lower than the more than 150,000 vulnerable devices estimated when the flaw was announced.
+Note: Initially, Palo Alto Networks's advisory indicated that customers were only vulnerable if they were using PAN-OS 10.2, PAN-OS 11.0, and/or PAN-OS 11.1 firewalls with the configurations for both GlobalProtect gateway (or GlobalProtect portal) and device telemetry enabled. As of Tuesday, April 16, the advisory has been updated to say, "Device telemetry does not need to be enabled for PAN-OS firewalls to be exposed to attacks related to this vulnerability."
 
-The vulnerability, tracked as CVE-2024-3400, is located in the GlobalProtect feature of PAN-OS and allows attackers to inject commands that would be executed on the underlying system with root privileges. PAN-OS is the operating system running on Palo Alto Networks’ next-generation firewall (NGFW) devices and appliances and GlobalProtect is the SSL VPN feature that enables secure remote access to the corporate network.
+Palo Alto Networks’ advisory indicates that CVE-2024-3400 has been exploited in the wild in “a limited number of attacks.” The company has given the vulnerability their highest urgency rating. Palo Alto Networks has released an in-depth blog on the scope of the attack, indicators of compromise, and adversary behavior observations. We highly recommend reviewing it. Security firm Volexity, who discovered the zero-day vulnerability, also has a blog available here with extensive analysis, indicators of compromise, and observed attacker behavior.
 
-Threat actor UTA0218 identified as culprit
+Mitigation guidance
 
-Researchers from security firm Volexity discovered the vulnerability on April 10 while investigating suspicious traffic coming from the Palo Alto Networks firewall of a customer. The researchers determined that the firewall had been compromised by a threat actor the company tracks as UTA0218 through a previously unknown vulnerability.
+CVE-2024-3400 was unpatched at time of disclosure, but patches are available for some versions of PAN-OS as of Sunday, April 14. CVE-2024-3400 affects the following versions of PAN-OS when GlobalProtect (gateway or portal) is enabled:
 
-After notifying the Palo Alto Networks product security team, the firewall vendor ran its own investigation and released an advisory on April 12 providing mitigation information to customers while the company worked on patches. The patches for the affected PAN-OS versions were then released between April 14 and 18.
+PAN-OS 11.1 (before 11.1.2-h3)
 
-It’s worth noting that one of the mitigations originally suggested by Palo Alto Networks was for customers to disable the device telemetry feature which was believed to be necessary for the exploit to work. However, the company’s security team later identified alternative exploitation methods that did not require device telemetry to be enabled, so this mitigation advice was retracted.
+PAN-OS 11.0 (before 11.0.4-h1)
 
-Attackers have exploited the flaw since late March
+PAN-OS 10.2 (before 10.2.7-h8, before 10.2.8-h3, before 10.2.9-h1)
 
-After its initial discovery, Volexity was able to create a detection signature and went back through its customer telemetry to find past compromises. The earliest exploitation signs the company managed to find dated from March 26, but those incidents looked like attempts by UTA0218 to test the exploit without deploying a malicious payload, whereas by April 10, the threat actor had begun deploying a custom backdoor written in Python and dubbed UPSTYLE.
+Additional versions have been added to the advisory since initial publication
 
-“After successfully exploiting devices, UTA0218 downloaded additional tooling from remote servers they controlled in order to facilitate access to victims’ internal networks,” the Volexity researchers said in their report.
+The vendor has updated their advisory as of April 16 to note that device telemetry does not need to be enabled for PAN-OS firewalls to be exposed to attacks related to this vulnerability. Palo Alto Networks’ Cloud NGFW and Prisma Access solutions are not affected; nor are earlier versions of PAN-OS (10.1, 10.0, 9.1, and 9.0).
 
-“They quickly moved laterally through victims’ networks, extracting sensitive credentials and other files that would enable access during and potentially after the intrusion. The tradecraft and speed employed by the attacker suggest a highly capable threat actor with a clear playbook of what to access to further their objectives.”
+Important: Palo Alto Networks has been continually updating their advisory, which now has an extensive list of affected versions and when fixes are expected. For additional information and the latest remediation guidance, please refer to the vendor advisory as the source of truth.
 
-Proof-of-concept exploit released
+Patches for the CVE-2024-3400 were released on Sunday, April 14. Rapid7 recommends applying the vendor-provided patch immediately, without waiting for a typical patch cycle to occur. If you are unable to patch, apply one of the below vendor-provided mitigations:
 
-On April 16, researchers from security firm WatchTowr Labs managed to reconstruct the vulnerability by reverse engineering the PAN-OS code and published a technical write-up along with a proof-of-concept exploit in the form of an HTTP request with the payload injected into the cookie value.
+Customers with a Threat Prevention subscription can block attacks for this vulnerability by enabling Threat ID 95187 (introduced in Applications and Threats content version 8833-8682). In addition to enabling Threat ID 95187, customers should ensure vulnerability protection has been applied to their GlobalProtect interface to prevent exploitation of this issue on their device. More information here.
 
-The following day, GreyNoise, a company that monitors malicious traffic on the internet through a series of global sensors, reported a spike in the number of IP addresses attempting to exploit CVE-2024-3400. Palo Alto Networks has also updated its advisory to warn customers that it’s aware of an increasing number of attacks leveraging the vulnerability and that proof-of-concept exploit code is now publicly available.
+Note: While disabling device telemetry was initially mentioned as a temporary workaround, Palo Alto Networks has said as of April 16 that disabling device telemetry is no longer an effective mitigation.
 
-The company has also released commands that PAN-OS users can execute on their devices in order to identify if there was an exploitation attempt, while the company’s threat research unit published indicators of compromise in a blog post analyzing the UPSTYLE backdoor.
+Palo Alto Networks has a knowledge base article here with their recommended steps for remediating exploited devices. We also recommend reviewing indicators of compromise in Palo Alto Networks's blog and Volexity's blog.
 
-It’s worth noting that it’s hard to say if an internet-reachable Palo Alto Networks firewall is vulnerable with just a passive scan. The presence of a vulnerable PAN-OS version indicates that the full patch hasn’t been applied, but it doesn’t mean the device lacks the alternative mitigations Palo Alto Networks suggested be put in place and is therefore protected from an exploit.
+Rapid7 customers
 
-“A Threat Prevention signature with Threat ID 95187 (released on April 11, 2024) detects and blocks, with 100% accuracy, all known and observed suspicious patterns in session IDs,” the company said in a blog post on Friday. “This prevention signature was released by Palo Alto networks within a day of confirming the vulnerability. We see approximately 90% of susceptible devices are already protected.”
+Authenticated vulnerability checks are available to InsightVM and Nexpose customers as of the Friday, April 12 content release. Since the vendor added more vulnerable versions to their advisory after it was originally published, our engineering team has updated our vulnerability checks as of the Wednesday, April 17 content release to be able to detect additional vulnerable versions of PAN-OS.
+
+Per the vendor advisory, organizations that are running vulnerable firewalls and are concerned about potential exploitation in their environments can open a support case with Palo Alto Networks to determine if their device logs match known indicators of compromise (IoCs) for this vulnerability.
+
+InsightIDR and Managed Detection and Response customers have existing detection coverage through Rapid7's expansive library of detection rules. Rapid7 recommends installing the Insight Agent on all applicable hosts to ensure visibility into suspicious processes and proper detection coverage. Below is a non-exhaustive list of detections that are deployed and will alert on post-exploitation behavior related to this zero-day vulnerability:
+
+Attacker Technique - NTDS File Access
+
+Attacker Technique: Renamed AnyDesk Binary in Non-Standard Location
+
+Attacker Technique: Renamed EWSProxy in Non-Standard Location
+
+Attacker Technique: Renamed AvastBrowserUpdate in Non-Standard Location
+
+Attacker Tool - Unknown Raw File Copy Utility For Credential Dumping
+
+Credential Access - Copying Credential Files with Esenutil
+
+Suspicious Process: A Single Character Executable in Root Intel Directory
+
+Suspicious Process - Avast Executable NOT in Program Files directory
+
+Friday, April 12, 2024: Updated with link to Volexity blog on exploitation in the wild and indicators of compromise and Palo Alto Networks blog on the incident. Updated to note availability of VM content.
+
+Monday, April 15, 2024: Updated to note that patches were available Sunday, April 14. Updated to note that GlobalProtect portal is also a vulnerable configuration (in addition to GlobalProtect gateway).
+
+Tuesday, April 16, 2024: Added more vulnerable versions of the PAN-OS 10.2.x version stream per the updated vendor advisory. Patches are available for some versions, but not all, as of April 16. The advisory has ETAs on in-flight fixes. Rapid7 vulnerability checks will be updated on April 17 to detect newly listed vulnerable versions of PAN-OS.
+
+Tuesday, April 16, 2024: Updated to note that disabling device telemetry is no longer considered an effective mitigation; Palo Alto Networks has now indicated that "device telemetry does not need to be enabled for PAN-OS firewalls to be exposed to attacks related to this vulnerability."
+
+Wednesday, April 17, 2024: For InsightVM and Nexpose customers, vulnerability checks have been updated to detect additional vulnerable versions of PAN-OS. See the vendor advisory for the latest information.
+
+Monday, April 22, 2024: Added list of (non-exhaustive) detection rules alerting for InsightIDR and Rapid7 MDR customers.
