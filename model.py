@@ -243,7 +243,7 @@ def init_query_engine(index, query):
         similarity_top_k=3,
         text_qa_template=qa_template,
         node_postprocessors=[
-            DummyNodePostprocessor(knowledge_graph=query, similarity_cutoff=0.3),
+            DummyNodePostprocessor(knowledge_graph=query, similarity_cutoff=-1),
             MetadataReplacementPostProcessor(target_metadata_key="window"),
         ]
     )
