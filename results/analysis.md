@@ -1,144 +1,67 @@
-Let's break down the metrics for each category, dividing them into correct and incorrect metrics separately. We'll also separate them into their respective categories like `death` and `mix_*_death`, considering `mix_*` as wrong queries.
+# Analysis Results
 
-### Detailed Metrics
-
-#### Death Category
-
-| Subcategory | Correct | Incorrect | Not understandable | Overall Accuracy |
-| --- | --- | --- | --- | --- |
-| death | 142 | 8 | 0 | 0.9467 |
-| mix_random_death | 24 | 2 | 0 | 0.9231 |
-| mix_domainrange_death | 26 | 0 | 0 | 1.0000 |
-| mix_domain_death | 25 | 1 | 0 | 0.9615 |
-| mix_range_death | 25 | 1 | 0 | 0.9615 |
-| mix_property_death | 15 | 11 | 0 | 0.5769 |
-| **Total** | 257 | 23 | 0 | 0.9179 |
-
-#### Award Category
-
-| Subcategory | Correct | Incorrect | Not understandable | Overall Accuracy |
-| --- | --- | --- | --- | --- |
-| award | 150 | 0 | 0 | 1.0000 |
-| mix_random_award | 25 | 1 | 0 | 0.9615 |
-| mix_domainrange_award | 20 | 6 | 0 | 0.7692 |
-| mix_domain_award | 22 | 4 | 0 | 0.8462 |
-| mix_range_award | 19 | 7 | 0 | 0.7308 |
-| mix_property_award | 10 | 16 | 0 | 0.3846 |
-| **Total** | 246 | 34 | 0 | 0.8783 |
-
-#### NBA Team Category
-
-| Subcategory | Correct | Incorrect | Not understandable | Overall Accuracy |
-| --- | --- | --- | --- | --- |
-| nbateam | 150 | 0 | 0 | 1.0000 |
-| mix_random_nbateam | 24 | 2 | 0 | 0.9231 |
-| mix_domainrange_nbateam | 15 | 11 | 0 | 0.5769 |
-| mix_domain_nbateam | 9 | 17 | 0 | 0.3462 |
-| mix_range_nbateam | 9 | 17 | 0 | 0.3462 |
-| mix_property_nbateam | 15 | 11 | 0 | 0.5769 |
-| **Total** | 222 | 58 | 0 | 0.7929 |
-
-#### Spouse Category
-
-| Subcategory | Correct | Incorrect | Not understandable | Overall Accuracy |
-| --- | --- | --- | --- | --- |
-| spouse | 147 | 3 | 0 | 0.9800 |
-| mix_random_spouse | 23 | 2 | 1 | 0.8846 |
-| mix_domainrange_spouse | 21 | 5 | 0 | 0.8077 |
-| mix_domain_spouse | 20 | 5 | 1 | 0.7692 |
-| mix_range_spouse | 22 | 4 | 0 | 0.8462 |
-| mix_property_spouse | 15 | 10 | 1 | 0.5769 |
-| **Total** | 248 | 29 | 3 | 0.8955 |
-
-#### Birth Category
-
-| Subcategory | Correct | Incorrect | Not understandable | Overall Accuracy |
-| --- | --- | --- | --- | --- |
-| birth | 148 | 2 | 0 | 0.9867 |
-| mix_random_birth | 22 | 4 | 0 | 0.8462 |
-| mix_domainrange_birth | 24 | 2 | 0 | 0.9231 |
-| mix_domain_birth | 26 | 0 | 0 | 1.0000 |
-| mix_range_birth | 26 | 0 | 0 | 1.0000 |
-| mix_property_birth | 14 | 12 | 0 | 0.5385 |
-| **Total** | 260 | 20 | 0 | 0.9286 |
-
-#### FoundationPlace Category
-
-| Subcategory | Correct | Incorrect | Not understandable | Overall Accuracy |
-| --- | --- | --- | --- | --- |
-| foundationPlace | 97 | 53 | 0 | 0.6467 |
-| mix_random_foundationPlace | 21 | 5 | 0 | 0.8077 |
-| mix_domainrange_foundationPlace | 21 | 5 | 0 | 0.8077 |
-| mix_domain_foundationPlace | 23 | 3 | 0 | 0.8846 |
-| mix_range_foundationPlace | 17 | 9 | 0 | 0.6538 |
-| mix_property_foundationPlace | 14 | 10 | 2 | 0.5385 |
-| **Total** | 193 | 85 | 2 | 0.6961 |
-
-#### Starring Category
-
-| Subcategory | Correct | Incorrect | Not understandable | Overall Accuracy |
-| --- | --- | --- | --- | --- |
-| starring | 148 | 2 | 0 | 0.9867 |
-| mix_random_starring | 21 | 4 | 1 | 0.8077 |
-| mix_domainrange_starring | 22 | 4 | 0 | 0.8462 |
-| mix_domain_starring | 20 | 6 | 0 | 0.7692 |
-| mix_range_starring | 17 | 9 | 0 | 0.6538 |
-| mix_property_starring | 6 | 20 | 0 | 0.2308 |
-| **Total** | 234 | 45 | 1 | 0.8378 |
-
-#### Leader Category
-
-| Subcategory | Correct | Incorrect | Not understandable | Overall Accuracy |
-| --- | --- | --- | --- | --- |
-| leader | 150 | 0 | 0 | 1.0000 |
-| mix_random_leader | 25 | 0 | 1 | 0.9615 |
-| mix_domainrange_leader | 25 | 1 | 0 | 0.9615 |
-| mix_domain_leader | 25 | 1 | 0 | 0.9615 |
-| mix_range_leader | 22 | 4 | 0 | 0.8462 |
-| mix_property_leader | 9 | 17 | 0 | 0.3462 |
-| **Total** | 256 | 23 | 1 | 0.9182 |
-
-#### PublicationDate Category
-
-| Subcategory | Correct | Incorrect | Not understandable | Overall Accuracy |
-| --- | --- | --- | --- | --- |
-| publicationDate | 146 | 4 | 0 | 0.9733 |
-| mix_random_publicationDate | 22 | 4 | 0 | 0.8462 |
-| mix_domainrange_publicationDate | 22 | 4 | 0 | 0.8462 |
-| mix_domain_publicationDate | 17 | 9 | 0 | 0.6538 |
-| mix_range_publicationDate | 15 | 11 | 0 | 0.5769 |
-| mix_property_publicationDate | 13 | 12 | 1 | 0.5000 |
-| **Total** | 235 | 44 | 1 | 0.8429 |
-
-#### Subsidiary Category
-
-| Subcategory | Correct | Incorrect | Not understandable | Overall Accuracy |
-| --- | --- | --- | --- | --- |
-| subsidiary | 139 | 9 | 2 | 0.9267 |
-| mix_random_subsidiary | 23 | 3 | 0 | 0.8846 |
-| mix_domainrange_subsidiary | 19 | 5 | 1 | 0.7600 |
-| mix_domain_subsidiary | 19 | 6 | 1 | 0.7308 |
-| mix_range_subsidiary | 20 | 6 | 0 | 0.7692 |
-| mix_property_subsidiary | 13 | 12 | 1 | 0.5000 |
-| **Total** | 233 | 41 | 5 | 0.8519 |
-
-### Summary
-
-Here is a consolidated view of the metrics divided for correct ones and wrong ones separately and also for each category:
+## Metrics
 
 | Category | Correct | Incorrect | Not understandable | Overall Accuracy |
 | --- | --- | --- | --- | --- |
-| death | 257 | 23 | 0 | 0.9179 |
-| award | 246 | 34 | 0 | 0.8783 |
-| nbateam | 222 | 58 | 0 | 0.7929 |
-| spouse | 248 | 29 | 3 | 0.8955 |
-| birth | 260 | 20 | 0 | 0.9286 |
-| foundationPlace | 193 | 85 | 2 | 0.6961 |
-| starring | 234 | 45 | 1 | 0.8378 |
-| leader | 256 | 23 | 1 | 0.9182 |
-| publicationDate | 235 | 44 | 1 | 0.8429 |
-| subsidiary | 233 | 41 | 5 | 0.8519 |
-| **Total** | **2384** | **402** | **13** | **0.8517**
-
-
-In this detailed breakdown, the "Overall Accuracy" is calculated for each category by combining the main category metrics and the corresponding `mix_*` subcategory metrics. The table shows a clearer picture of the performance of each category, including the division between correct, incorrect, and not understandable results.
+| death | 138 | 12 | 0 | 0.9200 |
+| award | 150 | 0 | 0 | 1.0000 |
+| nbateam | 149 | 1 | 0 | 0.9933 |
+| spouse | 117 | 31 | 2 | 0.7800 |
+| birth | 145 | 5 | 0 | 0.9667 |
+| foundationPlace | 87 | 45 | 18 | 0.5800 |
+| starring | 143 | 7 | 0 | 0.9533 |
+| leader | 148 | 0 | 2 | 0.9867 |
+| publicationDate | 145 | 5 | 0 | 0.9667 |
+| subsidiary | 129 | 9 | 12 | 0.8600 |
+| mix_random_death | 18 | 1 | 7 | 0.6923 |
+| mix_random_award | 15 | 1 | 10 | 0.5769 |
+| mix_random_nbateam | 15 | 1 | 10 | 0.5769 |
+| mix_random_spouse | 19 | 1 | 6 | 0.7308 |
+| mix_random_birth | 20 | 0 | 6 | 0.7692 |
+| mix_random_foundationPlace | 21 | 1 | 4 | 0.8077 |
+| mix_random_starring | 18 | 2 | 6 | 0.6923 |
+| mix_random_leader | 22 | 0 | 4 | 0.8462 |
+| mix_random_publicationDate | 19 | 1 | 6 | 0.7308 |
+| mix_random_subsidiary | 18 | 0 | 8 | 0.6923 |
+| mix_domainrange_death | 23 | 0 | 3 | 0.8846 |
+| mix_domainrange_award | 26 | 0 | 0 | 1.0000 |
+| mix_domainrange_nbateam | 19 | 7 | 0 | 0.7308 |
+| mix_domainrange_spouse | 18 | 0 | 8 | 0.6923 |
+| mix_domainrange_birth | 25 | 0 | 1 | 0.9615 |
+| mix_domainrange_foundationPlace | 9 | 5 | 12 | 0.3462 |
+| mix_domainrange_starring | 20 | 1 | 5 | 0.7692 |
+| mix_domainrange_leader | 21 | 0 | 5 | 0.8077 |
+| mix_domainrange_publicationDate | 22 | 2 | 2 | 0.8462 |
+| mix_domainrange_subsidiary | 9 | 4 | 12 | 0.3600 |
+| mix_domain_death | 24 | 0 | 2 | 0.9231 |
+| mix_domain_award | 26 | 0 | 0 | 1.0000 |
+| mix_domain_nbateam | 12 | 13 | 1 | 0.4615 |
+| mix_domain_spouse | 8 | 2 | 7 | 0.4706 |
+| mix_domain_birth | 11 | 0 | 2 | 0.8462 |
+| mix_domain_foundationPlace | 6 | 1 | 6 | 0.4615 |
+| mix_domain_starring | 23 | 0 | 3 | 0.8846 |
+| mix_domain_leader | 10 | 0 | 3 | 0.7692 |
+| mix_domain_publicationDate | 12 | 0 | 1 | 0.9231 |
+| mix_domain_subsidiary | 5 | 2 | 6 | 0.3846 |
+| mix_range_death | 12 | 0 | 1 | 0.9231 |
+| mix_range_award | 13 | 0 | 0 | 1.0000 |
+| mix_range_nbateam | 8 | 5 | 0 | 0.6154 |
+| mix_range_spouse | 7 | 0 | 6 | 0.5385 |
+| mix_range_birth | 13 | 0 | 0 | 1.0000 |
+| mix_range_foundationPlace | 8 | 1 | 4 | 0.6154 |
+| mix_range_starring | 24 | 1 | 1 | 0.9231 |
+| mix_range_leader | 9 | 0 | 4 | 0.6923 |
+| mix_range_publicationDate | 12 | 0 | 1 | 0.9231 |
+| mix_range_subsidiary | 6 | 3 | 4 | 0.4615 |
+| mix_property_death | 11 | 2 | 0 | 0.8462 |
+| mix_property_award | 13 | 0 | 0 | 1.0000 |
+| mix_property_nbateam | 9 | 3 | 1 | 0.6923 |
+| mix_property_spouse | 8 | 4 | 1 | 0.6154 |
+| mix_property_birth | 11 | 2 | 0 | 0.8462 |
+| mix_property_foundationPlace | 5 | 4 | 4 | 0.3846 |
+| mix_property_starring | 18 | 7 | 1 | 0.6923 |
+| mix_property_leader | 10 | 3 | 0 | 0.7692 |
+| mix_property_publicationDate | 11 | 2 | 0 | 0.8462 |
+| mix_property_subsidiary | 2 | 5 | 6 | 0.1538 |
+| **Overall** | 2075 | 202 | 214 | 0.8330 |

@@ -46,9 +46,9 @@ def init_llm(response_schema=False):
         # # define output parser
         # lc_output_parser = StructuredOutputParser.from_response_schemas(response_schemas)
         # llm = Ollama(model="llama3.1", request_timeout=300.0, output_parser=LangchainOutputParser(lc_output_parser))
-        llm = Ollama(model="mistral", request_timeout=300.0)
+        llm = Ollama(model="gemma2", request_timeout=300.0)
     else:
-        llm = Ollama(model="mistral", request_timeout=300.0)
+        llm = Ollama(model="gemma2", request_timeout=300.0)
 
     # model_name = "jinaai/jina-embeddings-v2-small-en"
     model_name = "BAAI/bge-small-en-v1.5"
@@ -243,7 +243,7 @@ def init_query_engine(index, query):
         similarity_top_k=3,
         text_qa_template=qa_template,
         node_postprocessors=[
-            DummyNodePostprocessor(knowledge_graph=query, similarity_cutoff=-1),
+            DummyNodePostprocessor(knowledge_graph=query, similarity_cutoff=0.3),
             MetadataReplacementPostProcessor(target_metadata_key="window"),
         ]
     )
