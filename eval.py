@@ -133,7 +133,7 @@ if __name__ == "__main__":
     # init_llm(response_schema=True)
 
     dataset = 'FactBench'
-    result_file_path = 'results/FactBench.json'
+    result_file_path = 'results/FactBench_modified.json'
 
     # # remove the existing results
     # with open(result_file_path, "w") as f:

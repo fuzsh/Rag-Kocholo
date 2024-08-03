@@ -30,7 +30,7 @@ if __name__ == '__main__':
     #     if identifier.startswith('wrong'):
     #         search_engine(knowledge_graph, force_recreate=True)
 
-    get_results(kg, 'results/FactBench.json', recreate_index=True)
+    get_results(kg, 'results/FactBench_modified.json', recreate_index=True)
     #
     # if config["fetch_documents"]:
     #     queries = []
