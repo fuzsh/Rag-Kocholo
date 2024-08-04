@@ -1,7 +1,3 @@
-# Analysis Results
-
-## Metrics
-
 | Category | Correct | Incorrect | Not understandable | Overall Accuracy |
 | --- | --- | --- | --- | --- |
 | death | 139 | 4 | 7 | 0.9267 |
