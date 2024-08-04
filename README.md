@@ -1,6 +1,38 @@
-# Model Accuracy Charts
+# Results
+### Model Accuracy by Category (Correct Labels)
 
-## Results - Accuracy
+| Model     | death | award | nbateam | spouse | birth | foundationPlace | starring | leader | publicationDate | subsidiary |
+|-----------|----------|----------|----------|----------|----------|----------|----------|----------|----------|----------|
+| Gemma2 | 0.92 | 1.00 | 0.99 | 0.79 | 0.97 | 0.59 | 0.95 | 0.99 | 0.97 | 0.91 |
+| Llama3_1 | 0.83 | 0.99 | 0.93 | 0.79 | 0.84 | 0.55 | 0.86 | 0.91 | 0.91 | 0.82 |
+| Mistral | 0.95 | 1.00 | 1.00 | 0.98 | 0.99 | 0.65 | 0.99 | 1.00 | 0.97 | 0.93 |
+| Qwen2 | 0.96 | 1.00 | 1.00 | 0.92 | 0.99 | 0.73 | 0.95 | 1.00 | 0.95 | 0.91 |
+
+
+### Model Accuracy by Category (Wrong Labels)
+
+| Model     | starring | death | award | nbateam | spouse | birth | foundationPlace | leader | publicationDate | subsidiary |
+|-----------|----------|----------|----------|----------|----------|----------|----------|----------|----------|----------|
+| Gemma2 | 0.92 | 0.96 | 0.99 | 0.72 | 0.91 | 0.96 | 0.79 | 0.93 | 0.92 | 0.78 |
+| Llama3_1 | 0.78 | 0.84 | 0.79 | 0.64 | 0.82 | 0.85 | 0.80 | 0.84 | 0.80 | 0.77 |
+| Mistral | 0.66 | 0.88 | 0.74 | 0.55 | 0.78 | 0.86 | 0.74 | 0.82 | 0.68 | 0.73 |
+| Qwen2 | 0.72 | 0.81 | 0.82 | 0.48 | 0.76 | 0.82 | 0.53 | 0.81 | 0.67 | 0.67 |
+
+
+### Model Accuracy by Category
+
+| Model     | starring | death | award | nbateam | spouse | birth | foundationPlace | leader | publicationDate | subsidiary |
+|-----------|----------|----------|----------|----------|----------|----------|----------|----------|----------|----------|
+| Gemma2 | 0.94 | 0.94 | 1.00 | 0.86 | 0.85 | 0.96 | 0.69 | 0.96 | 0.95 | 0.85 |
+| Llama3_1 | 0.82 | 0.84 | 0.90 | 0.80 | 0.80 | 0.85 | 0.66 | 0.88 | 0.86 | 0.80 |
+| Mistral | 0.84 | 0.92 | 0.88 | 0.79 | 0.89 | 0.93 | 0.69 | 0.91 | 0.84 | 0.84 |
+| Qwen2 | 0.84 | 0.89 | 0.92 | 0.76 | 0.85 | 0.91 | 0.64 | 0.91 | 0.82 | 0.80 |
+
+
+---
+# Charts
+
+## BarChart
 <p align="center">
     <img src="results/Figure_1.png" alt="Correct Radar Chart" width="49%">
     <img src="results/Figure_2.png" alt="Wrong Radar Chart" width="49%">
@@ -10,7 +42,7 @@
     <img src="results/Figure_3.png" alt="Correct Radar Chart" width="100%">
 </p>
 
-## Results
+## Radar
 
 <p align="center">
     <img src="results/combined_correct_radar_chart.png" alt="Correct Radar Chart" width="30%">
@@ -20,6 +52,7 @@
 
 ---
 ## Results By LLM
+
 ### Gemma 2
 
 <p align="center">
