@@ -1,4 +1,12 @@
 # Results
+
+### Models
+
+- Gemma 2: Google Gemma 2 is a high-performing and efficient model by now available in three sizes: 2B, 9B, and 27B. (We use 9B) 
+- Llama 3.1: Llama 3.1 is a new state-of-the-art model from Meta available in 8B, 70B and 405B parameter sizes. (We use 8B)
+- Mistral: 7B model released by Mistral AI.
+- Qwen 2: Qwen2 is a new series of large language models from Alibaba group. (We use 7B)
+
 ### Model Accuracy by Category (Correct Labels)
 
 | Model     | award | birth | death | foundationPlace | leader | nbateam | publicationDate | spouse | starring | subsidiary | Total |
