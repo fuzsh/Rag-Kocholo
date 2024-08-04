@@ -54,8 +54,9 @@ def merge_and_sum(data):
     return merged_data
 
 
-def plot_data(data, title):
+def plot_data(data, title, file_name, output_dir="results",):
     accuracies = defaultdict(list)
+    data = defaultdict(list, sorted(data.items()))
 
     for category, values in data.items():
         for model_name, correct, wrong in values:
@@ -82,10 +83,12 @@ def plot_data(data, title):
     ax.set_ylim(0, 1)
     ax.legend()
     plt.tight_layout()
-    plt.show()
+    plt.savefig(os.path.join(output_dir, file_name))
+    plt.close()
+    # plt.show()
 
 
-def plot_radar_chart(data, models, title, file_name, output_dir="results", ):
+def plot_radar_chart(data, models, title, file_name, output_dir="results" ):
     categories = list(data.keys())
     num_vars = len(categories)
     angles = np.linspace(0, 2 * np.pi, num_vars, endpoint=False).tolist()
@@ -121,6 +124,8 @@ def plot_radar_chart(data, models, title, file_name, output_dir="results", ):
 
 
 def plot_all_radar_charts(data, title, models, filename, output_dir="results"):
+    # sort data by their category
+    data = defaultdict(list, sorted(data.items()))
     plot_radar_chart(data, models, title, filename, output_dir)
 
 
@@ -161,6 +166,8 @@ def plot_radar_chart_2(data, models, title, filename, output_dir="results"):
 
 
 def plot_all_radar_charts_2(data, title, models, filename, output_dir="results"):
+    # sort data by their category
+    data = defaultdict(list, sorted(data.items()))
     plot_radar_chart_2(data, models, title, filename, output_dir)
 
 
@@ -170,19 +177,19 @@ raw_data = load_and_process_data(LLM_MODELS, gt)
 processed_data = prepare_data(raw_data)
 
 
-# plot_data(processed_data['correct'], "Model Accuracy by Category for Correct Labels")
-# plot_data(processed_data['wrong'], "Model Accuracy by Category for Wrong Labels")
-# plot_data(merge_and_sum(processed_data['combined']), "Model Accuracy by Category for All")
-#
-#
-# plot_all_radar_charts(processed_data['correct'], "Model Accuracy by Category (Correct Labels)", LLM_MODELS, "correct_radar_chart.png")
-# plot_all_radar_charts(processed_data['wrong'], "Model Accuracy by Category (Wrong Labels)", LLM_MODELS, "wrong_radar_chart.png")
-# plot_all_radar_charts(merge_and_sum(processed_data['combined']), "Model Accuracy by Category", LLM_MODELS, f"radar_chart.png")
-#
-#
-# plot_all_radar_charts_2(processed_data['correct'], "Model Accuracy by Category (Correct Labels)", LLM_MODELS, "correct_radar_chart.png")
-# plot_all_radar_charts_2(processed_data['wrong'], "Model Accuracy by Category (Wrong Labels)", LLM_MODELS, "wrong_radar_chart.png")
-# plot_all_radar_charts_2(merge_and_sum(processed_data['combined']), "Model Accuracy by Category", LLM_MODELS, f"radar_chart.png")
+plot_data(processed_data['correct'], "Model Accuracy by Category for Correct Labels", "Figure_1.png")
+plot_data(processed_data['wrong'], "Model Accuracy by Category for Wrong Labels", "Figure_2.png")
+plot_data(merge_and_sum(processed_data['combined']), "Model Accuracy by Category for All", "Figure_3.png")
+
+
+plot_all_radar_charts(processed_data['correct'], "Model Accuracy by Category (Correct Labels)", LLM_MODELS, "correct_radar_chart.png")
+plot_all_radar_charts(processed_data['wrong'], "Model Accuracy by Category (Wrong Labels)", LLM_MODELS, "wrong_radar_chart.png")
+plot_all_radar_charts(merge_and_sum(processed_data['combined']), "Model Accuracy by Category", LLM_MODELS, f"radar_chart.png")
+
+
+plot_all_radar_charts_2(processed_data['correct'], "Model Accuracy by Category (Correct Labels)", LLM_MODELS, "correct_radar_chart.png")
+plot_all_radar_charts_2(processed_data['wrong'], "Model Accuracy by Category (Wrong Labels)", LLM_MODELS, "wrong_radar_chart.png")
+plot_all_radar_charts_2(merge_and_sum(processed_data['combined']), "Model Accuracy by Category", LLM_MODELS, f"radar_chart.png")
 
 
 def generate_markdown(data, title, file_path):
@@ -192,6 +199,8 @@ def generate_markdown(data, title, file_path):
         for model_name, correct, wrong in values:
             accuracy = correct / (correct + wrong)
             accuracies[model_name][category] = accuracy
+
+    data = defaultdict(list, sorted(data.items()))
 
     # Prepare data for markdown
     categories = list(data.keys())
@@ -216,7 +225,7 @@ def generate_markdown(data, title, file_path):
     with open(file_path, "w") as file:
         file.write(markdown_content)
 
-
+#
 generate_markdown(processed_data['correct'], "Model Accuracy by Category (Correct Labels)", "correct_table.md")
 generate_markdown(processed_data['wrong'], "Model Accuracy by Category (Wrong Labels)", "wrong_table.md")
 generate_markdown(merge_and_sum(processed_data['combined']), "Model Accuracy by Category", f"table.md")
