@@ -1,16 +1,56 @@
-| Identifier                               | Expected Response | Actual Response | Correct |
-|------------------------------------------|-------------------|-----------------|---------|
-| correct_publicationDate_00075            | 1                 | 1               | True    |
-| wrong_mix_domain_death_00118             | 0                 | 0               | True    |
-| correct_award_00119                      | 1                 | 1               | True    |
-| correct_publicationDate_00025            | 1                 | 1               | True    |
-| wrong_mix_random_leader_00006            | 0                 | 0               | True    |
-| correct_foundationPlace_00122            | 1                 | 1               | True    |
-| correct_publicationDate_00060            | 1                 | 1               | True    |
-| wrong_mix_domainrange_starring_00095     | 0                 | 0               | True    |
-| correct_award_00010                      | 1                 | 1               | True    |
-| correct_leader_00066                     | 1                 | 1               | True    |
+# Model Accuracy Charts
 
+## Results - Accuracy
+<p align="center">
+    <img src="results/Figure_1.png" alt="Correct Radar Chart" width="49%">
+    <img src="results/Figure_2.png" alt="Wrong Radar Chart" width="49%">
+</p>
+
+<p align="center">
+    <img src="results/Figure_3.png" alt="Correct Radar Chart" width="100%">
+</p>
+
+## Results
+
+<p align="center">
+    <img src="results/combined_correct_radar_chart.png" alt="Correct Radar Chart" width="30%">
+    <img src="results/combined_wrong_radar_chart.png" alt="Wrong Radar Chart" width="30%">
+    <img src="results/combined_radar_chart.png" alt="All Models Radar Chart" width="30%">
+</p>
+
+---
+## Results By LLM
+### Gemma 2
+
+<p align="center">
+    <img src="results/Gemma2_correct_radar_chart.png" alt="Correct Radar Chart" width="30%">
+    <img src="results/Gemma2_wrong_radar_chart.png" alt="Wrong Radar Chart" width="30%">
+    <img src="results/Gemma2_radar_chart.png" alt="All Models Radar Chart" width="30%">
+</p>
+
+### Llama 3.1
+
+<p align="center">
+    <img src="results/Llama3_1_correct_radar_chart.png" alt="Correct Radar Chart" width="30%">
+    <img src="results/Llama3_1_wrong_radar_chart.png" alt="Wrong Radar Chart" width="30%">
+    <img src="results/Llama3_1_radar_chart.png" alt="All Models Radar Chart" width="30%">
+</p>
+
+### Qwen 2
+
+<p align="center">
+    <img src="results/Qwen2_correct_radar_chart.png" alt="Correct Radar Chart" width="30%">
+    <img src="results/Qwen2_wrong_radar_chart.png" alt="Wrong Radar Chart" width="30%">
+    <img src="results/Qwen2_radar_chart.png" alt="All Models Radar Chart" width="30%">
+</p>
+
+### Mistral
+
+<p align="center">
+    <img src="results/Mistral_correct_radar_chart.png" alt="Correct Radar Chart" width="30%">
+    <img src="results/Mistral_wrong_radar_chart.png" alt="Wrong Radar Chart" width="30%">
+    <img src="results/Mistral_radar_chart.png" alt="All Models Radar Chart" width="30%">
+</p>
 
 
 Todo:
