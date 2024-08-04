@@ -198,13 +198,19 @@ def generate_markdown(data, title, file_path):
     models = list(accuracies.keys())
 
     # Create the markdown table
-    markdown_content = f"#{title}\n\n"
-    markdown_content += "| Model     | " + " | ".join(categories) + " |\n"
-    markdown_content += "|-----------|" + "|".join(["----------"] * len(categories)) + "|\n"
+    markdown_content = f"### {title}\n\n"
+    markdown_content += "| Model     | " + " | ".join(categories) + " | Total |\n"
+    markdown_content += "|-----------|" + "|".join(["----------"] * (len(categories) + 1)) + "|\n"
+
+
+# for model in models:
+    #     accuracies_list = [f"{accuracies[model].get(category, 0):.2f}" for category in categories]
+    #     markdown_content += f"| {model} | " + " | ".join(accuracies_list) + " |\n"
 
     for model in models:
-        accuracies_list = [f"{accuracies[model].get(category, 0):.2f}" for category in categories]
-        markdown_content += f"| {model} | " + " | ".join(accuracies_list) + " |\n"
+        accuracies_list = [accuracies[model].get(category, 0) for category in categories]
+        accuracies_list.append(sum(accuracies_list) / len(categories))
+        markdown_content += f"| {model} | " + " | ".join([f"{acc:.2f}" for acc in accuracies_list]) + " |\n"
 
     # Write to a markdown file
     with open(file_path, "w") as file:
