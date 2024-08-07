@@ -24,7 +24,7 @@ class Google(SearchEngine):
 
         self.set_headers({'User-Agent': FAKE_USER_AGENT})
 
-    def _selectors(element):
+    def _selectors(self, element):
         """Returns the appropriate CSS selector."""
         selectors = {
             # Organic Search Results
