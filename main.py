@@ -1,13 +1,10 @@
+import os
 import json
-import random
+# import random
 from crawler import crawler, get_article_from_query
-from eval import get_results, remove_duplicates
-# from model import *
+
 from data_loader import load_dataset
-# from data_retrieval import search_engine
-# from utils.append_json import append_json
-#
-# from re_ranker import re_ranker
+
 
 config = {
     "recreate_index": False,
