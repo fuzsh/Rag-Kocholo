@@ -37,8 +37,11 @@ if __name__ == '__main__':
         data = []
         for existing in os.listdir("./docs"):
             if existing.startswith("dbpedia"):
-                identifier = existing.split("_")[1]
-                data.append(kg[int(identifier)])
+                for knowledge_graph in kg:
+                    if knowledge_graph[0] == existing.split("_")[1]:
+                        data.append(knowledge_graph)
+                        break
+
         print(len(data), len(kg), data[:1], kg[:1])
 
         for knowledge_graph in data:
