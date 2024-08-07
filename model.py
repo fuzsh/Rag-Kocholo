@@ -3,7 +3,9 @@ import logging
 import os
 import re
 import shutil
+import subprocess
 import sys
+import time
 from typing import List, Optional, cast
 
 import chromadb
@@ -46,9 +48,9 @@ def init_llm(response_schema=False):
         # # define output parser
         # lc_output_parser = StructuredOutputParser.from_response_schemas(response_schemas)
         # llm = Ollama(model="llama3.1", request_timeout=300.0, output_parser=LangchainOutputParser(lc_output_parser))
-        llm = Ollama(model="qwen2", request_timeout=300.0)
+        llm = Ollama(model="gemma2", request_timeout=300.0)
     else:
-        llm = Ollama(model="qwen2", request_timeout=300.0)
+        llm = Ollama(model="gemma2", request_timeout=300.0)
 
     # model_name = "jinaai/jina-embeddings-v2-small-en"
     model_name = "BAAI/bge-small-en-v1.5"
@@ -196,6 +198,8 @@ def create_sample_queries(knowledge_graph):
         print(f"Sample queries already exist for {identifier}")
         return
 
+    start_time = time.time()  # Record the start time
+    print(f"Creating sample queries for {identifier}")
     response = llm.complete(QUESTION_GENERATION_TEMPLATE(knowledge_graph[1]))
 
     try:
@@ -209,6 +213,10 @@ def create_sample_queries(knowledge_graph):
             json.dump(questions, f, indent=4, ensure_ascii=False)
     except Exception as e:
         logging.error("Error creating sample queries - %s", e)
+
+    end_time = time.time()    # Record the end time
+    return end_time - start_time
+    # subprocess.run(f"echo '{end_time - start_time}' > time.txt", shell=True)
 
 
 def few_shot_examples_fn(**kwargs):
@@ -243,7 +251,7 @@ def init_query_engine(index, query):
         similarity_top_k=3,
         text_qa_template=qa_template,
         node_postprocessors=[
-            DummyNodePostprocessor(knowledge_graph=query, similarity_cutoff=-1),
+            DummyNodePostprocessor(knowledge_graph=query, similarity_cutoff=0.3),
             MetadataReplacementPostProcessor(target_metadata_key="window"),
         ]
     )

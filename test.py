@@ -11,19 +11,19 @@
 #     with ThreadPoolExecutor(max_workers=steps) as executor:
 #         # Submit tasks to the executor
 #         future_to_input = {executor.submit(create_sample_queries, (f"dbpedia_{i[0]}", i[1])): i for i in inputs}
-import json
-
-with open('results/FactBench.json', 'r') as f:
-    data = json.load(f)
-
-new_obj = {}
-for key, value in data.items():
-    if value["full_ans"] != "Empty Response":
-        new_obj[key] = value
-
-
-with open('results/FactBench_modified.json', 'w') as f:
-    json.dump(new_obj, f, indent=4)
+# import json
+#
+# with open('results/FactBench.json', 'r') as f:
+#     data = json.load(f)
+#
+# new_obj = {}
+# for key, value in data.items():
+#     if value["full_ans"] != "Empty Response":
+#         new_obj[key] = value
+#
+#
+# with open('results/FactBench_modified.json', 'w') as f:
+#     json.dump(new_obj, f, indent=4)
 # from collections import defaultdict
 #
 # import pandas as pd
