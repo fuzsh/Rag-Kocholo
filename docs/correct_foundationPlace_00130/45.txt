@@ -1,0 +1,29 @@
+Small library for opening a location or route in other popular iOS navigation apps.
+
+Currently supported are Apple Maps, Google Maps, Citymapper, Transit, Lyft, Uber, Navigon, Waze, DB Navigator, Yandex.Navi and Moovit.
+
+Know of any other navigation apps that can be opened via URL scheme or universal link? Please open an issue and/or PR 🙃
+
+Check if an app is installed.
+
+Launch a specific app with directions.
+
+Or directly present the user with an action sheet listing all installed navigation apps to pick from.
+
+If you need more control in how to present the action sheet (e.g. on an iPad), you can get a configured one from Karte without having it presented directly.
+
+.launch(), .presentPicker() and .createPicker() have a few extra parameters with default values set that you can change to your liking. Most important to note would be an origin location, which can of course also be specified. Leaving it blank defaults to the user's current location in most apps.
+
+A mode of transport can also be specified, which would then filter unsupported apps from the picker. Be aware that trying to launch an app directly with a specific mode of transport will verify if the app supports that mode and throw a Karte.Error.unsupportedMode otherwise.
+
+Please be aware that for .isInstalled(), .presentPicker() and .createPicker() to work you will have to have added the necessary URL schemes to your app's Info.plist beforehand. See Apple's Docs for more info on this. The necessary URL schemes can be found here. You're still free to try and launch apps via Karte.launch(app:to:) regardless of registered URL schemes, although that obviously might result in nothing happening if the app isn't there. Don't forget that even Apple Maps can be "uninstalled" now 😉
+
+The section to add to your Info.plist should look like this:
+
+Karte is available through SwiftPM. Just copy https://github.com/kiliankoe/Karte into Xcode ✌️
+
+This library is based on CMMapLauncher. Unfortunately development on that library seems to have been stopped, so this is a reimplementation in Swift including a few changes and other apps to make usage even more pleasant 😊
+
+Kilian Koeltzsch, @kiliankoe
+
+It's German for "Map" and that seemed fitting 🤷‍♀️

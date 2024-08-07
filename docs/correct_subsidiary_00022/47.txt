@@ -1,0 +1,91 @@
+What is Dell EqualLogic SAN?
+
+EqualLogic is a line of storage area network devices produced by Dell. Initially, it was developed by EqualLogic Inc., an independent manufacturer which subsequently became a part of Dell in 2008.
+
+These SANs utilize the iSCSI (Internet Small Computer System Interface) protocol, enabling data transfers over traditional Ethernet networks. It is worth mentioning that EqualLogic was one of the pioneers in that respect. At the time when Fibre Channel solutions dominated the market, EqualLogic's reliance on iSCSI provided an alternative that was more cost-effective and easier to deploy, as it didn’t require specialized Fibre Channel equipment.
+
+The core of the EqualLogic lineup is the PS Series. It embraces a variety of storage array families, each designed to meet specific performance, capacity and scalability requirements. The most prominent among them are:
+
+PS-50 through PS3000 Series – the earliest releases of the EqualLogic product line. They offered quite basic yet reliable storage solutions, with moderate capacities and performance capabilities.
+
+Pic. 1. Dell EqualLogic of the PS-50 through PS3000 Series.
+
+PS5000/PS5500 Series – models that came in the mid-2000s. They derived from the initial generation of EqualLogic arrays, but were tailored to cater to the growing demands of businesses for scalable and easy-to-manage storage.
+
+Pic. 2. Dell EqualLogic of the PS5000/PS5500 Series.
+
+PS6500/PS6510/6610 Series – high-capacity storage solutions launched in the period from the late 2000s to early 2010s. These models were made suitable for demanding applications and large-scale deployments.
+
+Pic. 3. Dell EqualLogic of the PS6500/PS6510/PS6610 Series.
+
+PS4000/PS4100/PS4110/PS-M4110/PS4210 Series – newer models introduced to address medium-scale storage needs, providing a decent balance between performance, capacity and affordability.
+
+Pic. 4. Dell EqualLogic of the PS4000/PS4100/PS4110/PS-M4110/PS4210 Series.
+
+PS6000/PS6010/PS6100/PS6110/PS6210 Series – the latest and most advanced products within the EqualLogic lineup, offering high performance, scalability and various modern features.
+
+Pic. 5. Dell EqualLogic of the PS6000/PS6010/PS6100/PS6110/PS6210 Series.
+
+The architecture of Dell EqualLogic PS Series systems typically consists of the following components:
+
+EqualLogic hardware
+
+The array is equipped with dual storage controllers to ensure continuous access to data even in the event of controller failure. Each controller features Ethernet ports for network connectivity and SAS ports for connecting to disk enclosures, also known as disk shelves. The examples of such modules are shown in color on the rear panels of previously described models.
+
+Almost all shelves, except for the PS-M4110 blade-chassis system, are designed to be rack-mountable, allowing for straightforward installation within standard data center racks. The specific form factor may vary depending on the model. Most of them, like PS4100 and PS4210, occupy 2 rack units, while certain models, for example, PS6100 and PS6500, may have a larger 4U form factor, or even 5U, like PS6610.
+
+Pic. 6. Rack-mountable Dell EqualLogic disk shelf.
+
+Pic. 7. Blade-chassis Dell EqualLogic disk shelf.
+
+Disk shelves feature at least 12 and maximum up to 84 drive bays where the physical drives are installed. Different models may allow for 2.5-inch or 3.5-inch hard disks or solid-state drives and sometimes combinations thereof. SAS is the predominant drive interface that is accepted by the majority of shelves, whereas SATA drives may be supported by older devices or specific configurations to provide additional flexibility.
+
+EqualLogic firmware
+
+EqualLogic firmware is distributed across various hardware components of the storage array, such as controllers, disk shelves and network adapters, with each component containing its own firmware to manage its specific functions and operations. Yet, there may be substantial differences in applicable firmware versions across different generations and models of EqualLogic systems.
+
+EqualLogic software
+
+EqualLogic software is represented by a suite of tools and utilities designed to configure and monitor Dell EqualLogic storage arrays. These include:
+
+EqualLogic Group Manager – a central management interface that can be used for provisioning storage resources, watching performance and health of the array, setting up RAID levels and conducting other essential tasks.
+
+EqualLogic SAN Headquarters (SAN HQ) – a centralized monitoring and reporting tool that collects information about health, performance, capacity utilization and potential issues within the array.
+
+EqualLogic Host Integration Tools – software packages that serve for better interaction between EqualLogic storage arrays and various platforms or applications.
+
+Auto-Snapshot Manager/VMware Edition (ASM/VE) – a specialized software tool introduced for VMware vSphere environment. It simplifies snapshot management for virtual machines running on EqualLogic arrays. Integrating with VMware vCenter Server, a native central management platform for VMware vSphere, it also allows administrators to configure snapshot policies directly from its interface.
+
+Data organization peculiarities
+
+Data organization on Dell EqualLogic storage arrays follows a rather complex hierarchical structure. So, let's break it down layer by layer:
+
+Physical drives: At the lowest layer, Dell EqualLogic consists of physical disk drives (HDDs or/and SSDs) that provide raw storage capacity. These drives may come from one or several physical arrays organized into a group.
+
+Storage pools: The next layer is the storage pool, which is created by combining multiple drives from one or more arrays (members of the same group). Storage pools are defined within the EqualLogic centralized management interface and serve as the foundation for allocating and controlling storage resources. A pool is provided with a specific RAID policy, which determines the employed data protection techniques. Common supported RAID types include RAID 5, RAID 6, RAID 10, RAID 50 and RAID 60. The rest of the parameters are established by the controller.
+
+Volumes: Volumes represent logical containers of storage space that are carved out of storage pools. Administrators create volumes to allocate storage resources to applications, virtual machines or file systems. Volumes can be configured with such characteristics as size and thin provisioning.
+
+Snapshots: EqualLogic systems offer snapshot capabilities to create copies of volumes at a particular moment in time. Volume snapshots capture the state of a volume, enabling efficient protection of its data and possibility to return it to this very state. By default, the system reserves space within the storage pool equal to the size of the volume to store the snapshot data.
+
+Thin provisioning: EqualLogic arrays support thin provisioning, allowing administrators to allocate storage space on demand, as data is actually written to the volume, rather than pre-allocating its entire capacity beforehand. In contrast to many other storage systems, thin provisioning is handled in this case without the need for additional metadata.
+
+To track the distribution of data across the physical disk drives, the storage system uses special internal metadata structures, typically referred to as "data maps". These maps provide a mechanism that translates logical addresses to physical locations and helps to trace and retrieve the data requested by users or applications.
+
+Common data loss problems
+
+While EqualLogic arrays incorporate multiple protection features to enhance the overall system’s reliability and minimize potential risks, unfortunately, the possibility of data loss can never be ruled out altogether. Some of its most common causes include:
+
+RAID rebuild failures: When one or more drives fail within the RAID group, the data can usually be reconstructed from the remaining components of the array. Yet, any errors encountered during the rebuild process may hinder its proper completion, affecting the integrity of stored information. The impact of such mishaps can be severe, and in most cases is associated with data loss or corruption.
+
+Firmware or software bugs: For their functioning, EqualLogic arrays rely on firmware and software, which is also not fail-proof. Glitches or conflicts within it often lead to incorrect or incomplete storage operations that eventually cause data loss, either directly or indirectly.
+
+Upgrade errors: Implementing any changes or updates to the EqualLogic SAN environment, like firmware upgrades or SAN migration, carries the risk of errors or compatibility issues. As a result, the data may become inaccessible, lost or corrupted.
+
+Operator’s mistakes: Human error is a considerable risk factor in any IT environment, let alone such complicated systems like EqualLogic. Accidental deletion, misconfiguration or improper management are other common reasons for data loss incidents on these arrays, the impact of which may be disastrous, especially when critical data is lost without a backup.
+
+Power outages: Sudden power outages or fluctuations can disrupt the ongoing SAN operations and lead to data loss, for example, due to metadata corruption, incomplete writes or other inconsistencies.
+
+To reduce the possibility of irreversible data loss, it's crucial to not only adopt effective safeguarding practices, but also create a decent plan for recovering data from Dell EqualLogic SAN systems in case of such episodes.
+
+The described technology is supported for data recovery and access by the following software products:

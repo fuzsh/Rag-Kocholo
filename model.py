@@ -1,16 +1,32 @@
-import os
-import sys
 import json
-import shutil
 import logging
+import os
+import re
+import shutil
+import subprocess
+import sys
+import time
+from typing import List, Optional, cast
+
 import chromadb
 import json_repair
-
-from llama_index.llms.ollama import Ollama
-from llama_index.embeddings.huggingface import HuggingFaceEmbedding
+from langchain.output_parsers import StructuredOutputParser, ResponseSchema
 from llama_index.core import (Settings, VectorStoreIndex, SimpleDirectoryReader, PromptTemplate)
 from llama_index.core import StorageContext
+from llama_index.core.evaluation import RelevancyEvaluator
+from llama_index.core.node_parser import SentenceWindowNodeParser
+from llama_index.core.output_parsers import LangchainOutputParser
+from llama_index.core.postprocessor import MetadataReplacementPostProcessor
+from llama_index.core.query_engine import FLAREInstructQueryEngine
+from llama_index.core.schema import NodeWithScore, QueryBundle
+from llama_index.embeddings.huggingface import HuggingFaceEmbedding
+from llama_index.legacy.postprocessor import BaseNodePostprocessor
+from llama_index.llms.ollama import Ollama
 from llama_index.vector_stores.chroma import ChromaVectorStore
+from pydantic import Field
+
+from re_ranker import re_rank
+from templates import RAG_TEMPLATE, QUESTION_GENERATION_TEMPLATE, FORMAL_SENTENCE_TEMPLATE
 
 logging.basicConfig(stream=sys.stdout, level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -19,19 +35,90 @@ query_engine = None
 llm = None
 
 
-def init_llm():
+def init_llm(response_schema=False):
     global llm
+    if response_schema:
+        # response_schemas = [
+        #     ResponseSchema(
+        #         name="output",
+        #         description="Check the validity of the knowledge graph triple based on the provided documents, yes if the triple is correct, no if the triple is incorrect.",
+        #         type="boolean"
+        #     )
+        # ]
+        # # define output parser
+        # lc_output_parser = StructuredOutputParser.from_response_schemas(response_schemas)
+        # llm = Ollama(model="llama3.1", request_timeout=300.0, output_parser=LangchainOutputParser(lc_output_parser))
+        llm = Ollama(model="gemma2", request_timeout=300.0)
+    else:
+        llm = Ollama(model="gemma2", request_timeout=300.0)
 
-    llm = Ollama(model="llama3", request_timeout=300.0)
-    embed_model = HuggingFaceEmbedding(model_name="BAAI/bge-small-en-v1.5")
+    # model_name = "jinaai/jina-embeddings-v2-small-en"
+    model_name = "BAAI/bge-small-en-v1.5"
+    # model_name = "Snowflake/snowflake-arctic-embed-m-v1.5"
+    embed_model = HuggingFaceEmbedding(model_name=model_name)
 
     Settings.llm = llm
     Settings.embed_model = embed_model
 
+    sentence_parser = SentenceWindowNodeParser.from_defaults(
+        window_size=6,  # Number of sentences in each window
+        window_metadata_key="window",  # Metadata key for window information
+        original_text_metadata_key="original_text"  # Metadata key for original text
+    )
+
+    Settings.node_parser = sentence_parser
+
+
+class DummyNodePostprocessor(BaseNodePostprocessor):
+    """Similarity-based Node processor."""
+
+    knowledge_graph: str = Field(default="")
+    similarity_cutoff: float = Field(default=None)
+
+    @classmethod
+    def class_name(cls) -> str:
+        return "Change Similarity Postprocessor"
+
+    def _postprocess_nodes(
+            self,
+            nodes: List[NodeWithScore],
+            query_bundle: Optional[QueryBundle] = None,
+    ) -> List[NodeWithScore]:
+        """Postprocess nodes."""
+        new_nodes = []
+        sim_cutoff_exists = self.similarity_cutoff != -1 and self.similarity_cutoff is not None
+
+        re_rank_nodes = re_rank(self.knowledge_graph, [node.text for node in nodes])
+
+        for node in nodes:
+            score = list(filter(lambda x: x['question'] == node.text, re_rank_nodes))[0]['score']
+
+            node.score = score
+            should_use_node = True
+            if sim_cutoff_exists:
+                similarity = node.score
+                if similarity is None:
+                    should_use_node = False
+                elif cast(float, similarity) < cast(float, self.similarity_cutoff):
+                    should_use_node = False
+
+            if should_use_node:
+                new_nodes.append(node)
+
+        return new_nodes
+
+
 def init_index(embed_model, directory="./docs", persist=False):
-    reader = SimpleDirectoryReader(input_dir=directory, recursive=True, exclude=["questions.json", "index"])
+    reader = SimpleDirectoryReader(input_dir=directory, recursive=True, exclude=["questions.json", "index", "all_docs"])
     documents = reader.load_data()
 
+    sentence_parser = SentenceWindowNodeParser.from_defaults(
+        window_size=6,  # Number of sentences in each window
+        window_metadata_key="window",  # Metadata key for window information
+        original_text_metadata_key="original_text"  # Metadata key for original text
+    )
+
+    sentence_nodes = sentence_parser.get_nodes_from_documents(documents)
     logging.info("index creating with `%d` documents", len(documents))
 
     if persist:
@@ -39,15 +126,18 @@ def init_index(embed_model, directory="./docs", persist=False):
     else:
         chroma_client = chromadb.EphemeralClient()
     collection_name = f"{directory.split('/')[-1]}_collection"
-    chroma_collection = chroma_client.get_or_create_collection(collection_name)
+    chroma_collection = chroma_client.create_collection(collection_name)  # TODO: get or create collection
 
     vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
     storage_context = StorageContext.from_defaults(vector_store=vector_store)
 
-    # use this to set custom chunk size and splitting
-    # https://docs.llamaindex.ai/en/stable/module_guides/loading/node_parsers/
-
-    index = VectorStoreIndex.from_documents(documents, storage_context=storage_context, embed_model=embed_model)
+    # index = VectorStoreIndex.from_documents(documents, storage_context=storage_context, embed_model=embed_model)
+    index = VectorStoreIndex(
+        sentence_nodes,
+        storage_context=storage_context,
+        embed_model=embed_model,
+        show_progress=False
+    )
 
     if persist:
         index.storage_context.persist(persist_dir=f"{directory}/index/index")
@@ -63,7 +153,8 @@ def load_index(embed_model, directory="./docs", persist=False):
         chroma_collection = chroma_client.get_or_create_collection(collection_name)
 
         vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
-        storage_context = StorageContext.from_defaults(vector_store=vector_store, persist_dir=f"{directory}/index/index")
+        storage_context = StorageContext.from_defaults(vector_store=vector_store,
+                                                       persist_dir=f"{directory}/index/index")
 
         # Now you can load the index
         return VectorStoreIndex([], storage_context=storage_context)
@@ -83,6 +174,21 @@ def get_index(embed_model, directory, force_recreate=False, persist=False):
     return load_index(embed_model, directory, persist)
 
 
+def create_formal_sentence(knowledge_graph):
+    global query_engine, llm
+
+    response = llm.complete(FORMAL_SENTENCE_TEMPLATE(knowledge_graph))
+    try:
+        # parse the response to get the context and query string
+        formated_text = json_repair.loads(response.text)
+        if 'output' in formated_text:
+            return formated_text['output']
+        return None
+    except Exception as e:
+        logging.error("Error creating sample queries - %s", e)
+        return None
+
+
 def create_sample_queries(knowledge_graph):
     global query_engine, llm
     identifier = knowledge_graph[0]
@@ -92,32 +198,9 @@ def create_sample_queries(knowledge_graph):
         print(f"Sample queries already exist for {identifier}")
         return
 
-    response = llm.complete("You are an intelligent system with access to a vast amount of information."
-                            "I will provide you with a knowledge graph in the form of triples (subject, predicate, object)."
-                            "Your task is to generate ten questions based on the knowledge graph. The questions should assess understanding and insight into the information presented in the graph. "
-                            "Provide the output in JSON format, with each question having a unique identifier.\n"
-                            "Instructions:\n"
-                            "1. Analyze the provided knowledge graph.\n"
-                            "2. Generate ten questions that are relevant to the information in the knowledge graph.\n"
-                            "3. Provide the questions in JSON format, each with a unique identifier.\n\n"
-                            "Input Knowledge Graph: Albert Einstein bornIn Ulm\n"
-                            "Expected Response:\n"
-                            """{
-                            "questions": [
-                            {"id": 1, "question": "Where was Albert Einstein born?"},
-                            {"id": 2, "question": "What is Albert Einstein known for?"},
-                            {"id": 3, "question": "In what year was the Theory of Relativity published?"},
-                            {"id": 4, "question": "Where did Albert Einstein work?"},
-                            {"id": 5, "question": "What prestigious award did Albert Einstein win?"},
-                            {"id": 6, "question": "Which theory is associated with Albert Einstein?"},
-                            {"id": 7, "question": "Which university did Albert Einstein work at?"},
-                            {"id": 8, "question": "What did Albert Einstein receive the Nobel Prize in?"},
-                            {"id": 9, "question": "In what field did Albert Einstein win a Nobel Prize?"},
-                            {"id": 10, "question": "Name the city where Albert Einstein was born."}
-                        ]}"""
-                            f"Considering the above information, please respond to this Knowledge Graph: {' '.join(knowledge_graph[1])}\n"
-                            f"The output should be in JSON format with each question having a unique identifier and question doesn't contain term knowledge graph, without any additional information \n"
-                            )
+    start_time = time.time()  # Record the start time
+    print(f"Creating sample queries for {identifier}")
+    response = llm.complete(QUESTION_GENERATION_TEMPLATE(knowledge_graph[1]))
 
     try:
         # parse the response to get the context and query string
@@ -131,59 +214,92 @@ def create_sample_queries(knowledge_graph):
     except Exception as e:
         logging.error("Error creating sample queries - %s", e)
 
+    end_time = time.time()    # Record the end time
+    return end_time - start_time
+    # subprocess.run(f"echo '{end_time - start_time}' > time.txt", shell=True)
 
-def init_query_engine(index):
+
+def few_shot_examples_fn(**kwargs):
+    queries = [
+        "Pat Frank author Alas, Babylon",
+        "Elisabeth Domitien office Iraq",
+        "Camilo José Cela award Nobel Prize in Literature",
+    ]
+    responses = [
+        {"output": "yes"},
+        {"output": "no"},
+        {"output": "yes"},
+    ]
+    result_strs = []
+    for query, response_dict in zip(queries, responses):
+        result_str = f"""\
+Query: {query}
+Response: {response_dict}"""
+        result_strs.append(result_str)
+    return "\n\n".join(result_strs)
+
+
+def init_query_engine(index, query):
     global query_engine
 
-    # custom prompt template
-    template = (
-        "Instructions:\n"
-        "Input Documents: A collection of documents related to the subject will be provided.\n"
-        "Triple Knowledge: A triple in the format ('Subject', 'Predicate', 'Object') will be given.\n"
-        "Evaluation Task: Your task is to evaluate whether the information in the documents supports the triple. Your response should be \"yes\" if the triple is correct according to the documents, or \"no\" if the triple is incorrect\n\n"
-        "Example:\n"
-        "Documents:\n"
-        "Document 1: \"Benjamin Franklin was one of the Founding Fathers of the United States. He was a renowned polymath who contributed significantly to the fields of science, politics, and diplomacy.\"\n"
-        "Document 2: \"Franklin spent much of his life in Philadelphia, where he engaged in various civic projects and founded institutions such as the University of Pennsylvania.\"\n"
-        "Triple: ('Benjamin Franklin', 'spouse', 'Philadelphia')\n"
-        "Expected Response: \"no\"\n\n"
-        "Here is some context related to the Input Documents:\n"
-        "-----------------------------------------\n"
-        "{context_str}\n"
-        "-----------------------------------------\n"
-        "Considering the above information, please respond to Input:\n"
-        "Triple Knowledge question: {query_str}\n"
-        "Answer succinctly, just with \"yes\" or \"no\", without any additional information.\n"
-    )
-    qa_template = PromptTemplate(template)
+    qa_template = PromptTemplate(RAG_TEMPLATE, function_mappings={"few_shot_examples": few_shot_examples_fn})
 
     # build query engine with custom template
     # text_qa_template specifies custom template
     # similarity_top_k configure the retriever to return the top 3 most similar documents,
-    # the default value of similarity_top_k is 2
-    query_engine = index.as_query_engine(text_qa_template=qa_template, similarity_top_k=3)
+    query_engine = index.as_query_engine(
+        similarity_top_k=3,
+        text_qa_template=qa_template,
+        node_postprocessors=[
+            DummyNodePostprocessor(knowledge_graph=query, similarity_cutoff=0.3),
+            MetadataReplacementPostProcessor(target_metadata_key="window"),
+        ]
+    )
 
     return query_engine
 
 
 def clear_response(response):
-    # remove extra text from response and just return the yes or no
-    # check which one exists in the response, if both exist, return unknown
+    """
+    Simplify the response to determine if it contains 'yes', 'no', or neither.
+    Returns:
+    - 1 for 'yes'
+    - 0 for 'no'
+    - -1 for 'unknown' (if both 'yes' and 'no' are present or neither is present)
+    """
+
+    # Convert to lower case to handle case insensitivity
     response = response.lower()
-    if ('yes' in response and 'no' in response) or ('no' not in response and 'yes' not in response):
-        return -1
-    elif 'yes' in response:
-        return 1
-    return 0
+
+    # Use regular expressions to find 'yes' and 'no' as whole words
+    has_yes = re.search(r'\byes\b', response)
+    has_no = re.search(r'\bno\b', response)
+
+    # Determine the result based on the presence of 'yes' and 'no'
+    if has_yes and has_no:
+        return -1  # Both 'yes' and 'no' are present
+    elif has_yes:
+        return 1  # Only 'yes' is present
+    elif has_no:
+        return 0  # Only 'no' is present
+
+    return -1  # Neither 'yes' nor 'no' is present
 
 
-def chat(input_question):
+def chat(input_question, n_retries=3):
     global query_engine
 
-    response = query_engine.query(input_question)
-    logging.info("got response from llm - %s", response)
+    if n_retries == 0:
+        return -1
 
-    return clear_response(response.response)
+    try:
+        response = query_engine.query(input_question)
+        logging.info("got response from llm - %s", response)
+        # return clear_response(response.response)
+        return {"short_ans": clear_response(response.response), "full_ans": response.response}
+    except Exception as e:
+        logging.error("Error querying llm - %s", e)
+        return chat(input_question, n_retries - 1)
 
 
 def chat_cmd():

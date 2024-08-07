@@ -1,0 +1,53 @@
+We built our headquarters in the center of New York’s Silicon Alley —to let the city shape us, just like we help shape the companies that do business not just here but everywhere. Come see for yourself at Inforum 2016 on July 10-13 in New York City. http://www.inforum2016.com/
+
+Wow… New York. Sweden and Stockholm can’t compare. I know a few colleagues that are traveling and I hope that you all can enjoy this great event. If you like me are unable to go to New York you can still follow online:
+
+The Infor Blog
+
+youtube
+
+The last week I’ve got two questions from Smart Office Developers in the partner network desperately trying to run the Smart Office SDK but as soon as they log in to Smart Office they are presented with “Infor Smart Office has encountered a problem”, “We are sorry for the inconvenience. Please tell Infor about this problem and provide the log file and information of the steps leading up to it. Press the Support button to save the log file at a location of your choice.”.
+
+What to do?
+
+When you are having an issue always check the log file. when developing the log file is located in a location similar to this example from Windows 10:
+
+C:\Users\username\AppData\Local\Infor\Mango Client
+
+This generic “catch-all” is only shown when there is an unhandled exception on a background thread. When developing always make sure that you have try-catch on code that is executed on a background thread. If you are developing and get this error the issue is probably in your code. But not in this case.
+
+The log
+
+In this case the log file had the following log at the bottom:
+
+2016-06-30 16:07:25,519 [20] FATAL Mango.UI.Client.MangoApplication.OnUnhandledExceptionCurrentDomain – Fatal shutdown caused by unhandled exception on background thread.
+
+2016-06-30 16:07:25,520 [9] FATAL Mango.UI.Client.MangoApplication.OnUnhandledExceptionCurrentDomain – [MUI0040] Unhandled exception from AppDomain. IsTerminating=True.
+
+System.IO.FileNotFoundException: Could not load file or assembly ‘System.Data.SqlServerCe, Version=3.5.1.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91’ or one of its dependencies. The system cannot find the file specified.
+
+File name: ‘System.Data.SqlServerCe, Version=3.5.1.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91’
+
+Server stack trace:
+
+at Mango.Core.Persistance.Statistics.GetRecentlyUsed(Int32 returnCount)
+
+at Mango.UI.Services.ApplicationUsageService.RecentlyUsed(Int32 returnCount)
+
+at Mango.UI.Services.HistoryDS.LoadRecent()
+
+at Mango.UI.Services.HistoryDS.Execute()
+
+at System.Runtime.Remoting.Messaging.StackBuilderSink._PrivateProcessMessage(IntPtr md, Object[] args, Object server, Object[]& outArgs)
+
+at System.Runtime.Remoting.Messaging.StackBuilderSink.AsyncProcessMessage(IMessage msg, IMessageSink replySink)
+
+Exception rethrown at [0]:
+
+at System.Runtime.Remoting.Proxies.RealProxy.EndInvokeHelper(Message reqMsg, Boolean bProxyCase)
+
+The solution
+
+SQL Server Compact Edition is a requirement for SDK development. Usually you don’t need to install it – it just works. But if you have any issues then please download Microsoft SQL Server Compact 3.5 Service Pack 2 for Windows Desktop from Microsoft and install it. On a 64-bit computer install both 32-bit and 64-bit versions.
+
+I hope that this post will find it’s way to any SDK developer that encounter this issue.
