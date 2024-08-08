@@ -33,10 +33,11 @@ if __name__ == '__main__':
     #
     if config["fetch_documents"]:
         queries = []
-        kg, gt = load_dataset(dataset_name="DBpedia", dataset_file="kg_modified.json")
+        dataset_name = "DBpedia"
+        kg, gt = load_dataset(dataset_name=dataset_name, dataset_file="kg_modified.json")
         data = []
         for existing in os.listdir("./docs"):
-            if existing.startswith("dbpedia"):
+            if existing.startswith(dataset_name.lower()):
                 for knowledge_graph in kg:
                     if knowledge_graph[0] == existing.split("_")[1]:
                         data.append(knowledge_graph)
@@ -46,14 +47,14 @@ if __name__ == '__main__':
 
         for knowledge_graph in data:
             identifier = knowledge_graph[0]
-            with open(f"./docs/dbpedia_{identifier}/questions.json", "r") as f:
+            with open(f"./docs/{dataset_name.lower()}_{identifier}/questions.json", "r") as f:
                 questions = json.load(f)['questions']
             # get top 3 questions based on score field
             questions = sorted(questions, key=lambda x: x['score'], reverse=True)[:3]
             questions = [{
-                "id": f"dbpedia_{identifier}_{q_id + 1}", "text": q['question']} for q_id, q in enumerate(questions)
+                "id": f"{dataset_name.lower()}_{identifier}_{q_id + 1}", "text": q['question']} for q_id, q in enumerate(questions)
             ]
-            questions.append({"id": f"dbpedia_{identifier}_0", "text": knowledge_graph[1]})
+            questions.append({"id": f"{dataset_name.lower()}_{identifier}_0", "text": knowledge_graph[1]})
             queries.extend(questions)
             # print(queries)
         # get the documents for the queries
