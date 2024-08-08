@@ -28,7 +28,8 @@ def should_avoid(url, avoid_extensions):
 
 # List of file extensions to avoid
 avoid_extensions = [
-    '.cfm', '.jsp', '.cgi', '.exe', '.bat', '.cmd', '.sh', '.pl', '.py', '.rb', 'pdf', 'doc', 'docx', 'ppt', 'pptx',
+    '.cfm', '.jsp', '.cgi', '.exe', '.bat', '.cmd', '.sh', '.pl',
+    '.py', '.rb', '.pdf', '.doc', '.docx', '.ppt', '.pptx', '.rss'
 ]
 
 
