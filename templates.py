@@ -3,7 +3,7 @@ Context information is below.
 ---------------------
 {context_str}
 ---------------------
-Given the context information and prior knowledge, \
+Given the context information and without prior knowledge, \
 Evaluate whether the information in the documents supports the triple. \
 Please provide your answer in the form of a structured JSON format containing \
 a key \"output\" with the value as \"yes\" or \"no\". \
@@ -59,22 +59,22 @@ Instructions: \
 
 Examples: \
 Input: \
-    Subject: http://dbpedia.org/resource/Mathnet \
-    Predicate: http://dbpedia.org/property/title \
-    Object: The Case of the Unnatural \
-    Output: {"output" : "The title of the Mathnet episode is 'The Case of the Unnatural'."} \
+    Subject: Alexander_III_of_Russia \
+    Predicate: isMarriedTo \
+    Object:  Maria_Feodorovna__Dagmar_of_Denmark_ \
+    Output: {"output" : "Alexander III of Russia is married to Maria Feodorovna, also known as Dagmar of Denmark."} \
 
 Input: \
-    Subject: http://dbpedia.org/resource/Alfara_de_la_Baronia \
-    Predicate: http://dbpedia.org/ontology/leaderTitle \
-    Object: Alcalde \
-    Output: {"output": "The leader title of Alfara de la Baronia is Alcalde."} \
+    Subject: Quentin_Tarantino \
+    Predicate: produced \
+    Object: From_Dusk_till_Dawn \
+    Output: {"output": "Quentin Tarantino produced the film From Dusk till Dawn."} \
 
 Input: \
-    Subject: http://dbpedia.org/resource/Emmanuel_Steinschneider \
-    Predicate: http://xmlns.com/foaf/0.1/name \
-    Object: Emmanuel Efimovich Steinschneider \
-    Output: {"output": "The full name of Emmanuel Steinschneider is Emmanuel Efimovich Steinschneider."} \
+    Subject: Joseph_Heller \
+    Predicate: created \
+    Object: Catch-22 \
+    Output: {"output": "Joseph Heller created the novel Catch-22."} \
 """+f"""\
 Do the following: \
 Input: \

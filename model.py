@@ -176,18 +176,23 @@ def get_index(embed_model, directory, force_recreate=False, persist=False):
 
 def create_formal_sentence(knowledge_graph):
     global query_engine, llm
+    start_time = time.time()  # Record the start time
 
     response = llm.complete(FORMAL_SENTENCE_TEMPLATE(knowledge_graph))
+
     try:
         # parse the response to get the context and query string
         formated_text = json_repair.loads(response.text)
+        duration = time.time() - start_time   # Record the end time
+
         if 'output' in formated_text:
-            return formated_text['output']
-        return None
+            return formated_text['output'], duration
+
+        return None, duration
     except Exception as e:
         logging.error("Error creating sample queries - %s", e)
-        return None
-
+        duration = time.time() - start_time   # Record the end time
+        return None, duration
 
 def create_sample_queries(knowledge_graph):
     global query_engine, llm
