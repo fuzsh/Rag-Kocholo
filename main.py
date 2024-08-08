@@ -61,6 +61,12 @@ if __name__ == '__main__':
         crawler(queries)
     #
     # if config["get_urls"]:
+    #     dataset_name = "DBpedia"
+    #     kg, gt = load_dataset(dataset_name=dataset_name, dataset_file="kg_modified.json")
+    #
+    #     # fix identifiers
+    #     kg = [(f"{dataset_name.lower()}_{i[0]}", i[1]) for i in kg]
+    #
     #     for knowledge_graph in kg:
     #         get_article_from_query(knowledge_graph)
     #
