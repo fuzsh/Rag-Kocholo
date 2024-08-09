@@ -202,7 +202,9 @@ def get_article_from_query(kg, search_engine="google"):
             urls = [url for url in urls if not os.path.exists(f"docs/{identifier}/all_docs/query_{i}-link_{url['rank']}.json")]
 
             # APPROACH 2
-            rs = [grequests.get(u['url'], timeout=3) for u in urls]
+            rs = [grequests.get(u['url'], timeout=3, headers={
+                "User-Agent": ua.random
+            }) for u in urls]
             for index, response in grequests.imap_enumerated(rs, size=50):
                 if response is None or response.status_code != 200:
                     continue
