@@ -1,29 +1,35 @@
 import os
 
-wrong_docs = 0
-correct_docs = 0
-total_correct = 0
-total_wrong = 0
-total_processed_queries = 0
+factBench = 0
+yago = 0
+dbPedia = 0
+total = 0
 
 for filename in os.listdir('./docs'):
     if not os.path.exists(f"./docs/{filename}/all_docs"):
         continue
     count_files = len(os.listdir(f"./docs/{filename}/all_docs"))
-    if filename.startswith("wrong"):
-        wrong_docs += 1
-        total_wrong += count_files
+    if filename.startswith("correct") or filename.startswith("wrong"):
+        factBench += 1
     else:
-        correct_docs += 1
-        total_correct += count_files
-    total_processed_queries += 1
+        if filename.startswith("yago"):
+            yago += 1
+        else:
+            dbPedia += 1
+    total += count_files
 
-print("=======================================")
-print(f"Correct docs\t\t: {correct_docs}")
-print(f"Wrong docs\t\t: {wrong_docs}")
-print(f"Total processed queries\t: {total_processed_queries}")
-print(f"Total fetched files\t: {total_wrong + total_correct}")
-print("=======================================")
-print(f"Avg. docs per correct query\t: {(total_correct / correct_docs):.2f}")
-print(f"Avg. docs per wrong query\t: {(total_wrong / wrong_docs):.2f}")
-print("=======================================")
+
+def create_bar(percentage, length=20):
+    filled_length = int(length * percentage // 100)
+    bar = '█' * filled_length + '-' * (length - filled_length)
+    return bar
+
+
+print("====================================")
+print(f"FactBench\t: {factBench} out of 2800 \t {create_bar(factBench / 2800 * 100)}")
+print(f"YAGO\t\t: {yago} out of 1386 \t {create_bar(yago / 1386 * 100)}")
+print(f"DBpedia\t\t: {dbPedia} out of 9344 \t {create_bar(dbPedia / 9344 * 100)}")
+print("=====================================")
+print(f"Total\t\t: {total} documents fetched")
+print("======================================")
+print(f"Remaining\t: {len(os.listdir('./docs')) - (factBench + yago + dbPedia)}")
