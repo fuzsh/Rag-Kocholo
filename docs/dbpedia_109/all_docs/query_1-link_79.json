@@ -1,0 +1,50 @@
+{
+    "id": "dbpedia_109_1",
+    "rank": 79,
+    "data": {
+        "url": "https://docs.splunk.com/Documentation/SCS/current/Search/Wildcards",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Splunk Documentation",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://docs.splunk.com/skins/OxfordComma/images/splunkicons/splunk-logo-dark.svg",
+            "https://docs.splunk.com/skins/OxfordComma/images/splunkicons/splunk-logo-dark.svg",
+            "https://docs.splunk.com/skins/OxfordComma/images/splunkicons/pricing.svg",
+            "https://docs.splunk.com/skins/OxfordComma/images/splunkicons/download.svg",
+            "https://docs.splunk.com/skins/OxfordComma/images/splunkicons/network-data.svg",
+            "https://docs.splunk.com/skins/OxfordComma/images/splunkicons/header-resources.svg",
+            "https://docs.splunk.com/skins/OxfordComma/images/splunkicons/header-events.svg",
+            "https://docs.splunk.com/skins/OxfordComma/images/splunkicons/header-blogs.svg",
+            "https://docs.splunk.com/skins/OxfordComma/images/splunkicons/splunk-logo-dark.svg",
+            "https://docs.splunk.com/skins/OxfordComma/images/splunkicons/pricing.svg",
+            "https://docs.splunk.com/skins/OxfordComma/images/splunkicons/download.svg",
+            "https://docs.splunk.com/skins/OxfordComma/images/icons/v2_category-Community.png",
+            "https://docs.splunk.com/skins/OxfordComma/images/acrobat-logo.png",
+            "https://docs.splunk.com/skins/OxfordComma/images/acrobat-logo.png",
+            "https://docs.splunk.com/skins/OxfordComma/images/close_icon.svg",
+            "https://docs.splunk.com/skins/OxfordComma/images/v2_Splunk-logo.svg",
+            "https://docs.splunk.com/skins/OxfordComma/images/v2_X.svg",
+            "https://docs.splunk.com/skins/OxfordComma/images/v2_face.svg",
+            "https://docs.splunk.com/skins/OxfordComma/images/v2_linkedin.svg",
+            "https://docs.splunk.com/skins/OxfordComma/images/v2_youtube.svg",
+            "https://docs.splunk.com/skins/OxfordComma/images/v2_instagram.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "/favicon.ico",
+        "meta_site_name": "",
+        "canonical_link": "https://docs.splunk.com/Documentation/SCS/current/Search/Wildcards",
+        "text": "Wildcards\n\nWith SPL2, you can use wildcards to match characters in string values. The wildcard that you use depends on the command that you are using the wildcard with. The following table describes the supported wildcards:\n\nCommand Wildcard Usage where command and WHERE clause LIKE function with the percent ( % ) symbol or underscore ( _ ) character Use the percent ( % ) symbol to match multiple characters. Use the underscore ( _ ) character to match a single character. See the like (<str>, <pattern>) function in the list of Comparison and Conditional eval functions. eval command LIKE function with the percent ( % ) symbol or underscore ( _ ) character Use the percent ( % ) symbol to match multiple characters. Use the underscore ( _ ) character to match a single character. See the like (<str>, <pattern>) function in the list of Comparison and Conditional eval functions. All other commands Asterisk ( * ) character Use to match an unlimited number of characters in a string. For example,\n\n\"my*\" matches myhost1 and myhost.ny.mydomain.com.\n\nWildcard strings must be in quotation marks\n\nWhen you use a wildcard character, the string must be enclosed in quotation marks. For example:\n\nwhere like(ipaddress, \"198.%\")\n\nsearch sourcetype=\"access_*\"\n\nBe efficient\n\nIf you specify an asterisk with no other criteria, you are asking to match everything. Yes, everything. All events are retrieved, up to the maximum limit. A search to match everything is both inefficient and time consuming. You'll use a lot of system resources, which can prevent others from running their searches. Additionally, you might wait a long time for your search results.\n\nTo avoid these problems, be as specific as you in your search criteria.\n\nBe specific\n\nThe more specific your search terms are, the more efficient your search is. Sometimes that means not using a wildcard. Searching for a specific word or phrase is more efficient than a search that uses a wildcard. For example, searching for \"access denied\" is always better than searching for \"access*\".\n\nBest practices for using wildcards\n\nThe best way to use a wildcard is at the end of a term.\n\nSpecify a field-value pair whenever possible to avoid searching the raw field, which is the entire event. For example:\n\nsearch status=\"fail*\"\n\nWHERE like(source, \"license%\")\n\nWhen to avoid wildcard characters\n\nThere are several situations in which you should avoid using wildcard characters.\n\nAvoid using wildcards in the middle of a string\n\nWildcard characters in the middle of a word or string might cause inconsistent results. This is especially true if the string contains punctuation, such as an underscore _ or dash - character.\n\nFor example, suppose you have the following list of product IDs.\n\nDB-SG-G01 DC-SG-G02 MB-AG-G07 MB-AG-T01 SC-MG-G01 SF-BVS-G01 SG-SH-G05 WC-SH-A02 WC-SH-G04\n\nYou create a search that looks for all of the product IDs that begin with the letter S and end in G01.\n\nproductID=\"S*G01\"\n\nThat search will fail.\n\nWhen the events with the product IDs are indexed, the product IDs are broken up into segments. For example, the product ID SC-MG-G01 has these segments: SC, MG, G01. There is no segment that starts with an S and ends with G01 which is what the search productID=\"S*G01\" specifies. Because there are no segments that match your search, no results are found.\n\nA search that uses a wildcard in the middle of the term returns inconsistent results because of the way in which data that contains punctuation is indexed and searched.\n\nTo learn more about how punctuation can impact using wildcards, see Event segmentation and searching.\n\nThe solution to this problem?\n\nIf the number of product IDs is small, specify the exact product IDs in your search rather than using a wildcard. For example:\n\nproductID=\"SC-MG-G01\" OR productID=\"SF-BVS-G01\"\n\nIf the number of product IDs is large, use a lookup instead of a wildcard.\n\nAvoid using wildcards to match punctuation\n\nPunctuation are characters that are not numbers or letters. If you want to match part of a string that includes punctuation, specify each string with the punctuation that you are searching for.\n\nFor example, you have the following values in the uri_path field in your events.\n\n/cart.do /cart/error.do /cart/success.do /category.screen /oldlink /product.screen /productscreen.html /show.do /stuff/logo.ico\n\nYou want to match every uri_path that starts with /cart. The problem is that the paths contain a forward slash ( / ) character and period ( . ) character. Instead of specifying a wildcard character for the punctuation such as /cart*, specify the punctuation directly in your search criteria. For example:\n\n...uri_path=\"/cart.do\" OR uri_path=\"/cart/error.do\" OR uri_path=\"/cart/success.do\"\n\nAvoid using wildcards as prefixes\n\nWhen you use a wildcard character at the beginning of a string, the search must look at every string to determine if the end of the string matches what you specify after the asterisk. Using a prefix wildcard is almost like using a wildcard by itself. Prefix wildcards might cause performance issues.\n\nAvoid using wildcards at the beginning of search terms.\n\nSearching for the asterisk character\n\nYou can't search for the asterisk ( * ) character directly because the character is reserved as a wildcard.\n\nHowever, you can search for a term without the asterisk and then use either the where command or the match function to filter the results.\n\nFor example, to search for a term that contains an asterisk such as *78, use these steps:\n\nFirst search for 78 without the asterisk, which returns all events that contain the number.\n\nFollow that with | where _raw=\"\\*78\" to return only those events that contain *78.\n\nThe backslash ( \\ ) is used in the regular expression to not interpret, or escape, the asterisk character."
+    }
+}

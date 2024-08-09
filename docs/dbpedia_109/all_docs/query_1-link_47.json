@@ -1,0 +1,53 @@
+{
+    "id": "dbpedia_109_1",
+    "rank": 47,
+    "data": {
+        "url": "https://talk.plesk.com/threads/special-characters-not-working.345634/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Resolved - Special Characters not Working",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://talk.plesk.com/styles/plesk/images/logo.svg",
+            "https://talk.plesk.com/styles/plesk/images/facebook.svg",
+            "https://talk.plesk.com/styles/plesk/images/twitter.svg",
+            "https://talk.plesk.com/styles/plesk/images/logo.svg",
+            "https://talk.plesk.com/data/attachments/12/12417-ad085f0b73b56c7da7ba4fbcb925764d.jpg",
+            "https://talk.plesk.com/data/attachments/12/12419-3159afdd62d2dbc435ea09074015c56d.jpg",
+            "https://talk.plesk.com/data/avatars/m/90/90711.jpg?1621585074",
+            "https://talk.plesk.com/data/attachments/12/12424-d72c0986dbbfbf9b5a8dd7683eebe717.jpg",
+            "https://talk.plesk.com/data/attachments/12/12425-db3b1caaee5801f062a4b002439b6777.jpg",
+            "https://talk.plesk.com/data/avatars/m/174/174043.jpg?1445401788",
+            "https://talk.plesk.com/data/attachments/12/12431-b1e125225c1f635541fa393615594d7d.jpg",
+            "https://secure.gravatar.com/avatar/8267a913b31875c4efc069d2e8fd1849?s=96",
+            "https://talk.plesk.com/styles/plesk/images/partners/automattic.svg",
+            "https://talk.plesk.com/styles/plesk/images/partners/docker.svg",
+            "https://talk.plesk.com/styles/plesk/images/partners/virtuozzo.svg",
+            "https://talk.plesk.com/styles/plesk/images/partners/amazon.svg",
+            "https://talk.plesk.com/styles/plesk/images/partners/microsoft.svg",
+            "https://talk.plesk.com/styles/plesk/images/partners/microsoft-azure.svg",
+            "https://talk.plesk.com/styles/plesk/images/partners/red-hat.svg",
+            "https://talk.plesk.com/styles/plesk/images/partners/alibaba-cloud.svg",
+            "https://talk.plesk.com/styles/plesk/images/logo.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "R rafaelgrecco New Pleskian",
+            "mschenk New Pleskian"
+        ],
+        "publish_date": "2017-10-17T07:52:15-07:00",
+        "summary": "",
+        "meta_description": "Hello,\n\nI am manually migrating all websites that I host (WebsitePanel) to Plesk.\n\nSites that use database (MySQL) can't display special characters.\n\nPlease...",
+        "meta_lang": "en",
+        "meta_favicon": "/data/assets/logo/Plesk_192.png",
+        "meta_site_name": "Plesk Forum",
+        "canonical_link": "https://talk.plesk.com/threads/special-characters-not-working.345634/",
+        "text": "Hello,\n\nI am manually migrating all websites that I host (WebsitePanel) to Plesk.\n\nSites that use database (MySQL) can't display special characters.\n\nPlease see the image below: I marked green the special characters that are OK and red the special characters that are broken (the broken characters are data from the database).\n\nI can't find the configuration to fix it. Can you guys help me?\n\nThanks.\n\nTo prevent the appearance of non-UTF8 symbols on site's pages you need to change default character set for WordPress database to utf8. Try to do it with something like:\n\nmysql> alter database wordpress_db default character set utf8;\n\nHi Igor, thank you for your help.\n\nThe site is actually made using ASP, not Wordpress (but it does not make a difference... I have Wordpress sites with the same behavior).\n\nWhile the character set was already uft8, I did run the code that you posted just to make sure, but it does not seem to make a difference. This is what I have:\n\nIt is using the exact same configuration on my old server (WebSitePanel)... I can't find the problem and I am not a database specialist...\n\nDo you have any other idea?\n\nThank you very much.\n\nLooks like initial data on the source website stored in non-UTF8 in the source database. In other words, tables encoding is UTF8, but stored text has another encoding. In certain cases such data could be corrupted while importing database.\n\nCould you please take a look on the corrupted text in the target database using phpMyAdmin? If you edit and fix it manually (any one place for test), the issue will be fixed on your site?"
+    }
+}

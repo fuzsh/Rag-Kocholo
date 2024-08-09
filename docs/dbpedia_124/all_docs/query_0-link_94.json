@@ -1,0 +1,44 @@
+{
+    "id": "dbpedia_124_0",
+    "rank": 94,
+    "data": {
+        "url": "http://www.crypto-it.net/eng/simple/nihilist.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Polyalphabetic Substitution Ciphers",
+        "top_image": "http://www.crypto-it.net/Images/Crypto-IT-Logo.png",
+        "meta_img": "http://www.crypto-it.net/Images/Crypto-IT-Logo.png",
+        "images": [
+            "http://www.crypto-it.net/Images/favicon.png",
+            "http://www.crypto-it.net/Images/flag-poland-512.png",
+            "http://www.crypto-it.net/Images/share-linkedin.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "nihilist",
+            "polyalphabetic",
+            "substitution",
+            "cipher",
+            "algorithm",
+            "secret",
+            "key",
+            "encryption",
+            "decryption",
+            "cryptography",
+            "crypto-it"
+        ],
+        "tags": null,
+        "authors": [
+            "Polyalphabetic Substitution Cipher"
+        ],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "The Nihilist cipher was a polyalphabetic substitution cipher used in 19th century Russia by Nihilist organizations.",
+        "meta_lang": "en",
+        "meta_favicon": "../../Images/favicon.png",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "Nihilist Cipher\n\nFirst used in the eighties of the nineteenth century in Russia by Nihilist organizations.\n\nUsage\n\nThe cipher is named after the Nihilist movement, who fought against czarism in Russia and attacked czarism's officials in the nineteenth century. They killed the tsar Alexander II in the successful assassination in 1881.\n\nThe original algorithm was not very strong but there are some modifications which provide much better security. One of ciphers which belongs to the Nihilist family of ciphers is the VIC cipher.\n\nAlgorithm\n\nAn algorithm of the Nihilist cipher uses a matrix called a Polybius square. It has 5 rows and 5 columns and it is filled with all Latin letters (there are 26 Latin letters, so usually the letters i and j are treated as one character).\n\nAn order of letters in the table depends on a secret word which is shared by the two communicating parties. To determine the order of letters, one should remove duplicate letters of the secret word and then enter the rest letters into the table. Usually the letters are written starting from the top leftmost cell and going to the right, row by row. However, the parties can agree to the different order. The rest of empty cells are filled with the rest of letters, which aren't contained by the secret word. Usually the parties use an alphabetical order.\n\nBoth rows and columns of the table are numbered from 1 to 5.\n\nFor example, if a full name of the tsar Alexander II killed by Nihilists (Aleksandr II Nikolaevich) is used as the secret word, then the table can be written as below:\n\n1 2 3 4 5 1 a l e k s 2 n d r i o 3 v c h b f 4 g m p q t 5 u w x y z\n\nEach letter of the secret key and each letter of a given message is changed into a two-digit number, determined by digits of rows and columns. The secret key is usually different than the secret word used for create the table in the previous step. The secret key is used during encryption of the whole communication. Both the secret key (used for creating the table) and the secret key (used for encrypting all messages) must be shared between the communicating parties.\n\nDuring encryption one should add one by one all the numbers created from plaintext letters to the numbers created from the secret key's letters. The results can be two-digit or three-digit numbers. The created ciphertext can contain a sequence of numbers or the received numbers can be changed into letters using the same table and the inverse transform.\n\nFor example, the steps during encrypting of a sentence Acta est fabula using a secret keyword Vivere and the Polybius square defined above, are presented below.\n\nThe plaintext and the secret encrypting key should be written in two rows, one under another:\n\nactaestfabula v i v e r e v i v e r e v\n\nAfter replacing letters by numbers, the rows have the following form:\n\n11 32 45 11 13 15 45 35 11 34 51 12 11 31 24 31 13 23 13 31 24 31 13 23 13 31\n\nThe ciphertext is created by adding the plaintext numbers to the secret key numbers:\n\n42 56 76 24 36 28 76 59 42 47 74 25 52\n\nThe recipient, which knows the secret key, subtracts the secret key numbers from the ciphertext numbers. He receives the plaintext numbers, which can be changed into letters using the same table as the sender used for encryption.\n\nSecurity of the Nihilist cipher\n\nThe Nihilist cipher is quite similar to the VigenÃ¨re cipher. It uses numbers instead of letters. Therefore, one can use similar methods for its analysis and breaking. During analyzing frequencies of characters in the ciphertext, one should check two-digit numbers.\n\nDuring encryption using the Nihilist algorithm, the ordinary addition is used (without modulo operation), so the ciphertext may contain three-digit numbers. It happens when the corresponding letters of the plaintext and the secret key are located in the last (fifth) row of the table (so the addends are bigger that 50). It makes the analyzing of the ciphertext much more easier.\n\nBreaking the Nihilist cipher\n\nThe first step during breaking the Nihilist cipher is discovering a length of the secret key. It may be achieved by trying some possible key lengths for probable values (for example from 4 to 15 characters). For each of the numbers, one should write the ciphertext, breaking lines after the amount of characters equal to that number. The created tables have numbers of columns equal to the currently analyzed lengths of the secret key.\n\nThen, for each received table, one should check numbers in all its columns. The numbers in each columns should have both tens digits and ones digits which differ from each other not more than 5. It is caused by the fact that in each column all the characters have been encoded using the same letter of the secret key, so each plaintext number in the column has been added to the same secret key number. The value of the secret key number does not affect a difference between plaintext numbers, which were encoded using this number.\n\nDuring adding any numbers from the Polybius square to another number which also belongs to the Polybius square, one always receives numbers, which have tens digits and ones digits that don't differ from each other more than 5 (so the difference between the biggest and the smallest tens digits in the column can't be bigger than 5; the same situation applies to ones digits). In the next steps, one should use only tables (only such potential lengths of the secret key) which satisfy this condition.\n\nThe second step is to determine possible key numbers, which could be used for encryption. For each column, one should find all possible numbers, which subtracted from all ciphertext numbers in the column, result in numbers of values ââfrom 11 to 55. Every other number, which doesn't satisfy the condition, should be discarded. In practice, it is possible to eliminate a lot of potential secret key numbers in that way.\n\nFurther analysis of the ciphertext can rely on changing numbers into letters using a trial and error method looking for solutions which disclose fragments of the original plaintext. For each correct solution, one should create all possible encrypting keys and subtract them from the ciphertext, receiving potential plaintext letters."
+    }
+}

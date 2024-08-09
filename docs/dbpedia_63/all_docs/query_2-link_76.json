@@ -1,0 +1,41 @@
+{
+    "id": "dbpedia_63_2",
+    "rank": 76,
+    "data": {
+        "url": "https://groups.google.com/g/api-craft/c/YMZk2N4XP-4",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Return image and JSON in a single response",
+        "top_image": "https://www.gstatic.com/images/branding/product/1x/groups_32dp.png",
+        "meta_img": "https://www.gstatic.com/images/branding/product/1x/groups_32dp.png",
+        "images": [
+            "https://fonts.gstatic.com/s/i/productlogos/groups/v9/web-48dp/logo_groups_color_1x_web_48dp.png",
+            "https://lh3.googleusercontent.com/a-/ALV-UjWNLQIRGvs6iPBW5C0JCqn3zTohHMQX6t_oHCOe0h3-jb2V7UBK=s40-c",
+            "https://lh3.googleusercontent.com/a-/ALV-UjXTdxmPDpya_cJSWCr8U6lVR37tdAwAScMpN64zxKokJzWGUqTt=s40-c",
+            "https://lh3.googleusercontent.com/a-/ALV-UjWgbFILW736lhciD_62svyUY0fGkkxIkId-os2lb1d4-IDXzGDR=s40-c",
+            "https://lh3.googleusercontent.com/a-/ALV-UjXrSkuKm_Vtqa6e9Ed0CJbG2NG_fb8Wj6SqpJi_e0uW6XloBsB1=s40-c",
+            "https://lh3.googleusercontent.com/a-/ALV-UjWNLQIRGvs6iPBW5C0JCqn3zTohHMQX6t_oHCOe0h3-jb2V7UBK=s40-c",
+            "https://lh3.googleusercontent.com/a-/ALV-UjX1chN50VXkVhcNVVMOtXdredBvN-EtJg_Rs8NdgnW71QHSQdiq=s40-c",
+            "https://lh3.googleusercontent.com/a-/ALV-UjWA2YRbRt3fB1fdTG9QYJXY1QytYmA1jHASq8jMtbBxVo06gSA=s40-c",
+            "https://lh3.googleusercontent.com/a-/ALV-UjW03WG8StQG7YXiTmI1FOIvWKAqwrprOo7h2l-L-_g-0ZzimQ=s40-c",
+            "https://lh3.googleusercontent.com/a-/ALV-UjUam6G6_D3MHGzV-qk3ibHd2dC7aSfL6D_a1flovQT_QRU26c_-=s40-c",
+            "https://lh3.googleusercontent.com/a-/ALV-UjWNLQIRGvs6iPBW5C0JCqn3zTohHMQX6t_oHCOe0h3-jb2V7UBK=s40-c",
+            "https://lh3.googleusercontent.com/a/default-user=s40-c"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "//www.gstatic.com/images/branding/product/1x/groups_32dp.png",
+        "meta_site_name": "",
+        "canonical_link": "https://groups.google.com/g/api-craft/c/YMZk2N4XP-4",
+        "text": "Hi all,\n\nI'm trying to create my first RESTful service.\n\nAmong other API requests I need to provide one that returns a PNG image and some JSON with meta info about this image. The info is very specific to my application.\n\nThe receiving part is JavaScript / jQuery app.\n\nFrom Google search I see that there are few possible approaches:\n\n1. To have two different request / response queries. This does not seem too RESTful to me - things may happen between the calls, and the transaction is broken - or the service needs to remember the previous request.\n\n2. To encode the image with base64 and put inside the JSON. This one seems to increase the package size significantly.\n\n3. To have a multipart response.\n\nThe last one seems more correct to me but as I am a newbie in this area, multipart seems very complicated to me. There are also several kinds of multipart.\n\nCan anybody point to a good description and / or good examples?\n\nWhile I am a newbie in Web dev and REST, I have many years of experience in software dev in general, mainly in C/C++. So the examples in any language may help, I guess.\n\nThanks a lot\n\nMichael\n\nThanks anybody for your answers. It looks like there is no silver bullet that I looked for :-)\n\nA link inside the JSON does not seem a good option just because the image is not a static one but is generated per each request - so I will need to arrange a temporary storage somehow.\n\nEmbedding the image means base64 encoding which will increase the data size.\n\nI'll try to think about custom headers - indeed the additional information is not so big. And will think also about how would I arrange without this meta info at all.\n\nThanks\n\nMichael\n\nHi Michael,\n\nOn the OneNote API, we have gone down the route of supporting both an inline base64 encoding using the 'data:' protocol as Jeferson mentions, and also allowing a custom 'name:' protocol that refers to a multipart/mime part containing binary image data. Currently we're supporting this for POST rather than GET as, in our scenarios, we feel that a second round trip for the image on GET is acceptable, whereas POST needs to be atomic. It would work fine for GET though.\n\nWe're using multipart/form-data, simply because that seemed to have much the best client support across a range of platforms, even though it's not a perfect semantic match.\n\nHTH\n\nGareth"
+    }
+}

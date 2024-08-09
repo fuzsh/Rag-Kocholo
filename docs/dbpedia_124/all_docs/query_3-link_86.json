@@ -1,0 +1,35 @@
+{
+    "id": "dbpedia_124_3",
+    "rank": 86,
+    "data": {
+        "url": "https://crypto.stackexchange.com/questions/19632/is-it-true-the-longer-the-key-length-is-the-more-secure-the-encryption",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Is it true the longer the key length is the more secure the encryption?",
+        "top_image": "https://cdn.sstatic.net/Sites/crypto/Img/apple-touch-icon@2.png?v=fff48bebc5fd",
+        "meta_img": "https://cdn.sstatic.net/Sites/crypto/Img/apple-touch-icon@2.png?v=fff48bebc5fd",
+        "images": [
+            "https://cdn.sstatic.net/Sites/crypto/Img/logo.svg?v=87c028c5e448",
+            "https://i.sstatic.net/HXtpD.jpg?s=64",
+            "https://i.sstatic.net/Pektu.png?s=64",
+            "https://www.gravatar.com/avatar/93badf02333e5336d1271c81d7ead824?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/5e5e291d11660d7018eedcfee7e3ba7b?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://crypto.stackexchange.com/posts/19632/ivc/31d9?prg=191e2426-6195-44e3-ad9c-7df28fd897e6"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2014-10-14T17:08:04",
+        "summary": "",
+        "meta_description": "Then why don't we use xxxxxxx bits encryption? what stopping us from using a very lengthy key?\nI am referring to the encryption we use with SSL",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/crypto/Img/favicon.ico?v=e5444c0e7c0b",
+        "meta_site_name": "Cryptography Stack Exchange",
+        "canonical_link": "https://crypto.stackexchange.com/questions/19632/is-it-true-the-longer-the-key-length-is-the-more-secure-the-encryption",
+        "text": "No. Key length does put an upper bound on security, because it determines the complexity of brute force iteration of the key space or factoring, discrete log, etc. for some asymmetric algorithms. However, once you have a long enough key to make brute force attacks impossible, there is no benefit to a longer key alone, you must have a stronger algorithm in general (e.g. more rounds, larger state or block size) to benefit.\n\nFor some asymmetric systems, like RSA, it may seem that you can just increase the numbers and call it a day. However, RSA security rests on the encryption and signature algorithms which probably use symmetric encryption and hash functions that have a constant security, limiting that of the whole algorithm.\n\nAs a practical example, RC4 allows up to 2048-bit keys but has biases in the initial keystream no matter which size you use. Meanwhile, many ciphers with 128-bit keys are thought to be secure, like AES-128 or HC-128.\n\nwhat stopping us from using a very lengthy key?\n\nDiminishing returns, performance costs and increasing complexity.\n\nThe effect of key length on performance is most readily apparent in something like RSA, where modular exponentiation takes about $O(n^{k})$ time for $n$-bit numbers ($k > 2$ depends on the algorithm). Longer keys usually mean longer key schedules, which may be more difficult to analyze, require more constants and code, etc. adding to complexity.\n\nLike all things in life, there are tradeoffs to be balanced. SSL can use RSA keys, right? So why not generate 2 billion bit RSA keys? Well, the efficiency of RSA goes down significantly as more bits are added. With too large of keys, RSA would be impractical to use in real life.\n\nAnother answer to your question is that 5000-bit AES does not exist. We are definitely limited by existing ciphers. Even if we weren't limited by existing ciphers and computational efficiency was a non-issue, there are still reasons to not go with forever increasingly large keys. One is that keys have to be exchanged, so bandwidth could be a limitation. Could you imagine if SSL used 30 gigabyte keys? No one would use it."
+    }
+}

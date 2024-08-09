@@ -1,0 +1,40 @@
+{
+    "id": "dbpedia_109_3",
+    "rank": 86,
+    "data": {
+        "url": "https://www.ime.usp.br/~pf/algorithms/chapters/strings.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "8 encodings of character chains?",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://www.ime.usp.br/~pf/algorithms/chapters/img/string-of-numbersletters.jpg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "sequence of bytes",
+            "character chain",
+            "null byte",
+            "string",
+            "ASCII",
+            "encodings",
+            "UTF-8",
+            "decoding",
+            "computer science"
+        ],
+        "tags": null,
+        "authors": [
+            "Paulo Feofiloff"
+        ],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "What is a character? What is a C string? What is the difference between a character chain and a string? What is an ASCII string? What is UTF-8 encoding?",
+        "meta_lang": "en",
+        "meta_favicon": "",
+        "meta_site_name": "",
+        "canonical_link": "https://www.ime.usp.br/~pf/algorithms/chapters/strings.html",
+        "text": "Algorithms Design | C language | Index\n\nStrings and character chains\n\nA large part of all the data in the world is in text form. In other words, a large part of all the data has the form of chains of characters. Many of these chains are represented by strings in digital files. This chapter discusses the relation between character chains and strings.\n\nTable of contents:\n\nStrings Character chains Reading and writing character chains Constant character chains\n\nStrings\n\nIn C language, a string is an array of bytes in which the null byte 00000000 is interpreted as a sentinel that signals the end of the relevant part of the array. Here is a small example of a string:\n\n01000001 01000010 01000011 00000000 01000100\n\n(the symbols 0 and 1 represent bits). In this example, only the first 4 bytes constitute the string.\n\nThe length of a string is its number of bytes, not counting the final null byte. (Hence, the string in the example above has length 3.) A string is empty if its length is zero.\n\nEach byte of a string is treated as a char, and therefore a string is an array of chars. (We could have said unsigned char; this would not make any difference in practice.) To break the association between char and character, we may use byte as a synonym for char.\n\nThe address of a string is the address of its first byte. In informal discussions, we blurr the distinction between a string and its address. So, the expression consider a string str must be understood as consider a string whose address is str.\n\nThe following code fragment builds a string str one byte at a time. After the code fragment is executed, the array str[0..3] contains the string 01000001 01000010 01000011 00000000. The part str[4..9] of the array is ignored.\n\nbyte *str; str = malloc (10 * sizeof (byte)); str[0] = 65; str[1] = 66; str[2] = 67; str[3] = 0; str[4] = 68;\n\nWe can treat strings as a new data type. To do this, use the typedef below and start writing string instead of char *.\n\ntypedef char *string;\n\nExercises 1\n\nCharacter chains\n\nA character chain is a sequence of characters. This page, for example, is a long character chain. The length of a character chain is the number of characters in the chain. For example, the character chain\n\ni ≤ 99\n\nhas length 6 (the second and the fourth characters are spaces).\n\nIn digital files, and in computer memory, character chains are represented by strings. For chains of ASCII characters, each character is represented by a single byte, as defined by the ASCII table. Strings of this kind will be called ASCII strings. The value of each byte of such a string belongs to the interval 0..127. For example, the character chain i <= 99 is represented by the string 105 32 60 61 32 57 57 0.\n\nNow consider character chains in which not every character belongs to the ASCII alphabet. Since we are assuming that out programming environment uses UTF-8 encoding, each non-ASCII character (such as £, À, ñ, ó, ≤, etc.) is represented by two, three, or even four bytes and these bytes do not belong to the interval 0..127. For example, the character chain i ≤ 99 is represented by the string 105 32 226 137 164 32 57 57 0 . The character ≤ takes up 3 bytes; the other five characters take up 1 byte each since they belong to the ASCII alphabet. The details of this representation are discussed in chapter Unicode and UTF-8.\n\nThe UTF-8 code was defined in such a way that the character \\0 is the only one whose code contains a null byte. Hence, the first null byte of the string indicates the end of the string as well as the end of the character chain that the string represents.\n\nExercises 2\n\nReading and writing character chains\n\nTo obtain the character chain that a given string represents, we must decode the string. In the case of ASCII strings, the decoding is simple: just look up the ASCII table. In general, however, the decoding is more complex (partly because not every string is a valid UTF-8 representation of a character chain). Fortunately, the function printf with format specification %s takes care of the decoding. For example, the code fragment\n\nbyte str[66] = {194, 163, 52, 50, 0}; printf (\"%s\\n\", str);\n\ndisplays the character chain\n\n£42\n\nsince the pair of bytes 194 163 represents £ in UTF-8 code.\n\nThe format specification %s can also be used with the scanf function. For example, the program fragment below reads a character chain (without white-spaces) from the keyboard, adds a null byte to its end, and stores the resulting string in the array str:\n\nbyte str[66]; scanf (\"%s\", str);\n\nConstant character chains\n\nTo specify a constant character chain, just wrap it in double quotes (characters 34). Constant character chains (also known as literals) figure frequently in C programs: the first argument of the functions printf and scanf are typically such constants.\n\nWhen a constant character chain is assigned to a string, it is converted into a sequence of bytes and a null byte is added at the end. For example, after the code fragment\n\nbyte *str; str = \"ABC\";\n\nthe string str contains 65 66 67 0. The characters of a constant character chain may contain non-ASCII characters; we can, for example, say\n\nstr = \"£42\";\n\nIn this case, the string str will have five bytes in UTF-8 encoding.\n\nExample. The following function counts the number of vowels in an ASCII string:\n\nint countvowels (byte s[]) { byte *vowels; vowels = \"aeiouAEIOU\"; int numvowels = 0; for (int i = 0; s[i] != '\\0'; ++i) { byte b = s[i]; for (int j = 0; vowels[j] != '\\0'; ++j) { if (vowels[j] == b) { numvowels += 1; break; } } } return numvowels; }\n\n(Is the letter y also a vowel?)\n\nExercises 3"
+    }
+}

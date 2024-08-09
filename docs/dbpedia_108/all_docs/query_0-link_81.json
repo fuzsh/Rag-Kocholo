@@ -1,0 +1,52 @@
+{
+    "id": "dbpedia_108_0",
+    "rank": 81,
+    "data": {
+        "url": "https://stackoverflow.com/questions/4458696/finding-out-what-characters-a-given-font-supports",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Finding out what characters a given font supports",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/e8f67f35200cf319e30329dddd412b6d?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/9214b8bfba6ff7da2da6b3da84965e2f?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/7c866ac84e832e585c6bd3abe1149c47?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/d797538504a367f277d19bd8369e9a19?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/7c866ac84e832e585c6bd3abe1149c47?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/ecc927b23787f71ff79d64a07fce10b2?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/e8f67f35200cf319e30329dddd412b6d?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/e43539b3257049bef7885c9f193b364d?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/99ca9cf38107858a2b49718da4b603fc?s=64&d=identicon&r=PG",
+            "https://lh4.googleusercontent.com/-fCqGIsmgfHA/AAAAAAAAAAI/AAAAAAAAABE/patcyrXXyS0/photo.jpg?sz=64",
+            "https://i.sstatic.net/zto2h.jpg?s=64",
+            "https://www.gravatar.com/avatar/02bfe3f45d9c2862bfdf2ab2d9935833?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/f9710302df78c0f49a2dafc9191f4118?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/b4940ed24ec91abf1ad503ac98f3a281?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/1d28ae5baacc819cd8c523426118d4e5?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/w1393.jpg?s=64",
+            "https://www.gravatar.com/avatar/39de8f85714b3e8e9eaa118dc9ac9cb1?s=64&d=identicon&r=PG",
+            "https://lh5.googleusercontent.com/-BTjJ-PEXw1s/AAAAAAAAAAI/AAAAAAAAAUk/z0T-CUMdsaA/photo.jpg?sz=64",
+            "https://www.gravatar.com/avatar/272fb7e67ecd35cd53293d78afd7de7f?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/K8V4G.jpg?s=64",
+            "https://i.sstatic.net/LrH0d.jpg?s=64",
+            "https://www.gravatar.com/avatar/175de5ee4c37905e75358880c30cce2b?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/4458696/ivc/642f?prg=c7e13923-4a49-4979-8617-df6542163f58"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2010-12-16T08:23:54",
+        "summary": "",
+        "meta_description": "How do I extract the list of supported Unicode characters from a TrueType or embedded OpenType font on Linux?\n\nIs there a tool or a library I can use to process a .ttf or a .eot file and build a li...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/4458696/finding-out-what-characters-a-given-font-supports",
+        "text": "Here is a method using the fontTools Python library (which you can install with something like pip install fonttools):\n\n#!/usr/bin/env python from itertools import chain import sys from fontTools.ttLib import TTFont from fontTools.unicode import Unicode with TTFont( sys.argv[1], 0, allowVID=0, ignoreDecompileErrors=True, fontNumber=-1 ) as ttf: chars = chain.from_iterable( [y + (Unicode[y[0]],) for y in x.cmap.items()] for x in ttf[\"cmap\"].tables ) if len(sys.argv) == 2: # print all code points for c in chars: print(c) elif len(sys.argv) >= 3: # search code points / characters code_points = {c[0] for c in chars} for i in sys.argv[2:]: code_point = int(i) # search code point #code_point = ord(i) # search character print(Unicode[code_point]) print(code_point in code_points)\n\nThe script takes as arguments the font path and optionally code points / characters to search for:\n\n$ python checkfont.py /usr/share/fonts/**/DejaVuSans.ttf (32, 'space', 'SPACE') (33, 'exclam', 'EXCLAMATION MARK') (34, 'quotedbl', 'QUOTATION MARK') … $ python checkfont.py /usr/share/fonts/**/DejaVuSans.ttf 65 12622 # a ㅎ LATIN CAPITAL LETTER A True HANGUL LETTER HIEUH False\n\nThe fontconfig commands can output the glyph list as a compact list of ranges, eg:\n\n$ fc-match --format='%{charset}\\n' OpenSans 20-7e a0-17f 192 1a0-1a1 1af-1b0 1f0 1fa-1ff 218-21b 237 2bc 2c6-2c7 2c9 2d8-2dd 2f3 300-301 303 309 30f 323 384-38a 38c 38e-3a1 3a3-3ce 3d1-3d2 3d6 400-486 488-513 1e00-1e01 1e3e-1e3f 1e80-1e85 1ea0-1ef9 1f4d 2000-200b 2013-2015 2017-201e 2020-2022 2026 2030 2032-2033 2039-203a 203c 2044 2070 2074-2079 207f 20a3-20a4 20a7 20ab-20ac 2105 2113 2116 2120 2122 2126 212e 215b-215e 2202 2206 220f 2211-2212 221a 221e 222b 2248 2260 2264-2265 25ca fb00-fb04 feff fffc-fffd\n\nUse fc-query for a .ttf file and fc-match for an installed font name.\n\nThis likely doesn't involve installing any extra packages, and doesn't involve translating a bitmap.\n\nUse fc-match --format='%{file}\\n' to check whether the right font is being matched.\n\nfc-query my-font.ttf will give you a map of supported glyphs and all the locales the font is appropriate for according to fontconfig\n\nSince pretty much all modern linux apps are fontconfig-based this is much more useful than a raw unicode list\n\nThe actual output format is discussed here http://lists.freedesktop.org/archives/fontconfig/2013-September/004915.html\n\nHere is a POSIX[1] shell script that can print the code point and the character in a nice and easy way with the help of fc-match which is mentioned in Neil Mayhew's answer (it can even handle up to 8-hex-digit Unicode):\n\n#!/bin/bash for range in $(fc-match --format='%{charset}\\n' \"$1\"); do for n in $(seq \"0x${range%-*}\" \"0x${range#*-}\"); do n_hex=$(printf \"%04x\" \"$n\") # using \\U for 5-hex-digits printf \"%-5s\\U$n_hex\\t\" \"$n_hex\" count=$((count + 1)) if [ $((count % 10)) = 0 ]; then printf \"\\n\" fi done done printf \"\\n\"\n\nYou can pass the font name or anything that fc-match accepts:\n\n$ ls-chars \"DejaVu Sans\"\n\nUpdated content:\n\nI learned that subshell is very time consuming (the printf subshell in my script). So I managed to write a improved version that is 5-10 times faster!\n\n#!/bin/bash for range in $(fc-match --format='%{charset}\\n' \"$1\"); do for n in $(seq \"0x${range%-*}\" \"0x${range#*-}\"); do printf \"%04x\\n\" \"$n\" done done | while read -r n_hex; do count=$((count + 1)) printf \"%-5s\\U$n_hex\\t\" \"$n_hex\" [ $((count % 10)) = 0 ] && printf \"\\n\" done printf \"\\n\"\n\nOld version:\n\n$ time ls-chars \"DejaVu Sans\" | wc 592 11269 52740 real 0m2.876s user 0m2.203s sys 0m0.888s\n\nNew version (the line number indicates 5910+ characters, in 0.4 seconds!):\n\n$ time ls-chars \"DejaVu Sans\" | wc 592 11269 52740 real 0m0.399s user 0m0.446s sys 0m0.120s\n\nEnd of update\n\nSample output (it aligns better in my st terminal 😆):\n\n0020 0021 ! 0022 \" 0023 # 0024 $ 0025 % 0026 & 0027 ' 0028 ( 0029 ) 002a * 002b + 002c , 002d - 002e . 002f / 0030 0 0031 1 0032 2 0033 3 0034 4 0035 5 0036 6 0037 7 0038 8 0039 9 003a : 003b ; 003c < 003d = 003e > 003f ? 0040 @ 0041 A 0042 B 0043 C 0044 D 0045 E 0046 F 0047 G ... 1f61a😚 1f61b😛 1f61c😜 1f61d😝 1f61e😞 1f61f😟 1f620😠 1f621😡 1f622😢 1f623😣 1f625😥 1f626😦 1f627😧 1f628😨 1f629😩 1f62a😪 1f62b😫 1f62d😭 1f62e😮 1f62f😯 1f630😰 1f631😱 1f632😲 1f633😳 1f634😴 1f635😵 1f636😶 1f637😷 1f638😸 1f639😹 1f63a😺 1f63b😻 1f63c😼 1f63d😽 1f63e😾 1f63f😿 1f640🙀 1f643🙃\n\n[1] Seems \\U in printf is not POSIX standard?\n\nThe character code points for a ttf/otf font are stored in the CMAP table.\n\nYou can use ttx to generate a XML representation of the CMAP table. see here.\n\nYou can run the command ttx.exe -t cmap MyFont.ttf and it should output a file MyFont.ttx. Open it in a text editor and it should show you all the character code it found in the font.\n\nI just had the same problem, and made a HOWTO that goes one step further, baking a regexp of all the supported Unicode code points.\n\nIf you just want the array of codepoints, you can use this when peeking at your ttx xml in Chrome devtools, after running ttx -t cmap myfont.ttf and, probably, renaming myfont.ttx to myfont.xml to invoke Chrome's xml mode:\n\nfunction codepoint(node) { return Number(node.nodeValue); } $x('//cmap/*[@platformID=\"0\"]/*/@code').map(codepoint);\n\n(Also relies on fonttools from gilamesh's suggestion; sudo apt-get install fonttools if you're on an ubuntu system.)\n\nThe above Janus's answer (https://stackoverflow.com/a/19438403/431528) works. But python is too slow, especially for Asian fonts. It costs minutes for a 40MB file size font on my E5 computer.\n\nSo I write a little C++ program to do that. It is depends on FreeType2(https://www.freetype.org/). It is a vs2015 project, but it is easy to port to linux for it is a console application.\n\nCode can be found here, https://github.com/zhk/AllCodePoints For the 40MB file size Asian font, it costs about 30 ms on my E5 computer.\n\nFreeType's project provides demo application, where one of the demos is called \"ftdump\". Then you can do: \"ftdump -V path-to-the-font-file\" and you will get what you are looking for. To view the source code, you can close the sources here: https://www.freetype.org/developer.html\n\nOn Ubuntu it can be installed with \"sudo apt install freetype2-demos\"\n\nNote: Try \"-c\" instead of \"-V\". I see that args have changed between versions."
+    }
+}

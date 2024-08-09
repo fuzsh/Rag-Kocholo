@@ -1,0 +1,28 @@
+{
+    "id": "dbpedia_109_2",
+    "rank": 33,
+    "data": {
+        "url": "https://developer.x.com/en/docs/counting-characters",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Counting characters",
+        "top_image": "https://cdn.cms-twdigitalassets.com/content/dam/developer-twitter/x_sharing_card.png.twimg.768.png",
+        "meta_img": "https://cdn.cms-twdigitalassets.com/content/dam/developer-twitter/x_sharing_card.png.twimg.768.png",
+        "images": [],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "https://abs.twimg.com/favicons/twitter-orange.3.ico",
+        "meta_site_name": "",
+        "canonical_link": "https://developer.x.com/en/docs/counting-characters",
+        "text": "Counting characters when composing Tweets\n\nThis page describes how characters are treated when composing Tweets and across the Twitter API. For more information on the implementation, Twitter provides an Open Source twitter-text library that can be found on GitHub.\n\nÂ\n\nBackground\n\nTwitter began as an SMS text-based service. This limited the original Tweet length to 140 characters (which was partly driven by the 160 character limit of SMS, with 20 characters reserved for commands and usernames). Over time as Twitter evolved, the maximum Tweet length grew to 280 characters - still short and brief, but enabling more expression.Â\n\nÂ\n\nDefinition of a Character\n\nIn most cases, the text content of a Tweet can contain up to 280 characters or Unicode glyphs. Some glyphs will count as more than one character.Â\n\nWe refer to whether a glyph counts as one or more characters as its weight. The exact definition of which characters have weights greater than one character is found in the configuration file for the twitter-text Tweet parsing library.\n\nThe current version of the configuration file defines a default two-character weight and four ranges of Unicode code points that are weighted differently. Currently code points in these ranges are all counted as a single character.\n\nThe first range covers characters across the Latin-1 code pages. (U+0000 - U+10FF).\n\nThe second range is general punctuation up to and including the Zero Width Joiner (used to combine emoji and other glyphs) (U+2000-U+200D).\n\nThe third range is general punctuation excluding U+200E and U+200F, which are Unicode directional marks (U+2010-U+201F).\n\nThe final range covers quotation marks (U+2032-U+2037).\n\nÂ\n\nExamples of Tweet text and lengths calculated by the twitter-text library can be found in the libraryâs validate.yml test configuration file.\n\nÂ\n\nExamples\n\nChinese / Japanese / Korean Glyphs\n\nGlyphs used in CJK (Chinese / Japanese / Korean) languages also count as two characters.Â Therefore, a Tweet composed of only CJK text can only have a maximum of 140 of these types of glyphs.\n\nÂ\n\nEntity Objects\n\nTweets can contain Entity Objects, some of which impact the length of a Tweet.\n\nURLs: All URLs are wrapped in t.co links. This means a URLâs length is defined by the transformedURLLength parameter in the twitter-text configuration file. The current length of a URL in a Tweet is 23 characters, even if the length of the URL would normally be shorter.\n\nReplies: @names that auto-populate at the start of a reply Tweet will not count towards the character limit.Â New non-reply Tweets starting with a @mention will count, as will @mentions added explicitly by the user in the body of the Tweet.\n\nMedia: media attached to a Tweet, represented as a pic.twitter.com URL, if posted from an official client, counts for 0 characters.\n\nFor more on Entity Objects, see the developer documentation.\n\nÂ\n\nTwitter Character Encoding\n\nTwitter API endpoints only accept UTF-8 encoded text. All other encodings must be converted to UTF-8 before sending the the text to the API.\n\nTwitter counts the length of a Tweet using the Normalization Form C (NFC) version of the text.Â\n\nAs an example: the word âcafÃ©â. There are two byte sequences that visually look and read the same, but use a different number of bytes:"
+    }
+}

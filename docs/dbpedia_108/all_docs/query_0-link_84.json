@@ -1,0 +1,31 @@
+{
+    "id": "dbpedia_108_0",
+    "rank": 84,
+    "data": {
+        "url": "https://matplotlib.org/stable/users/explain/text/fonts.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Fonts in Matplotlib — Matplotlib 3.9.1 documentation",
+        "top_image": "https://matplotlib.org/stable/_static/favicon.ico",
+        "meta_img": "https://matplotlib.org/stable/_static/favicon.ico",
+        "images": [
+            "https://matplotlib.org/stable/_static/logo_light.svg",
+            "https://matplotlib.org/stable/_images/users-explain-text-fonts-1.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "codex"
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "../../../_static/favicon.ico",
+        "meta_site_name": "",
+        "canonical_link": "https://matplotlib.org/stable/users/explain/text/fonts.html",
+        "text": "Font subsetting#\n\nThe PDF and PostScript formats support embedding fonts in files, allowing the display program to correctly render the text, independent of what fonts are installed on the viewer's computer and without the need to pre-rasterize the text. This ensures that if the output is zoomed or resized the text does not become pixelated. However, embedding full fonts in the file can lead to large output files, particularly with fonts with many glyphs such as those that support CJK (Chinese/Japanese/Korean).\n\nThe solution to this problem is to subset the fonts used in the document and only embed the glyphs actually used. This gets both vector text and small files sizes. Computing the subset of the font required and writing the new (reduced) font are both complex problem and thus Matplotlib relies on fontTools and a vendored fork of ttconv.\n\nCurrently Type 3, Type 42, and TrueType fonts are subsetted. Type 1 fonts are not.\n\nCore Fonts#\n\nIn addition to the ability to embed fonts, as part of the PostScript and PDF specification there are 14 Core Fonts that compliant viewers must ensure are available. If you restrict your document to only these fonts you do not have to embed any font information in the document but still get vector text.\n\nThis is especially helpful to generate really lightweight documents:\n\n# trigger core fonts for PDF backend plt.rcParams[\"pdf.use14corefonts\"] = True # trigger core fonts for PS backend plt.rcParams[\"ps.useafm\"] = True chars = \"AFM ftw!\" fig, ax = plt.subplots() ax.text(0.5, 0.5, chars) fig.savefig(\"AFM_PDF.pdf\", format=\"pdf\") fig.savefig(\"AFM_PS.ps\", format=\"ps\")"
+    }
+}

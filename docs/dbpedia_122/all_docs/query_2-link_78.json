@@ -1,0 +1,33 @@
+{
+    "id": "dbpedia_122_2",
+    "rank": 78,
+    "data": {
+        "url": "https://stackoverflow.com/questions/15763145/display-image-to-repositorypictureedit-in-gridview-of-devexpress",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Display Image to RepositoryPictureEdit in gridView of DevExpress...?",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://i.sstatic.net/HHnBj.jpg?s=64",
+            "https://www.gravatar.com/avatar/2687cfb2e6bf13eee6b3ec83ca5e5210?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/7634126fd83f4491bfd991374f6a099a?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/15763145/ivc/31d9?prg=63a83fe2-7678-4abb-9468-d0958326601b"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2013-04-02T11:38:05",
+        "summary": "",
+        "meta_description": "I am working in DevExpress Gridview Concepts. I require one User Image in my grid field. i m working in winforms platforms. \n\nMy Datatable has only path of image. I dont know how to bind an image to",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/15763145/display-image-to-repositorypictureedit-in-gridview-of-devexpress",
+        "text": "You could using a ImageEdit. This is a dropdown of Images. So you generate Images first via:\n\nImage.FromFile(Path);\n\nAdd them to a List or ImageList and fill the dropdown with it. Then you just bind the index of the picture to your column.\n\nI hope this is able to work in your case.\n\nedit: OR\n\nAt first you have to create a UnboundColumn in your Grid. Just create a column and set the Property 'UnboundType' to object. Then set a RepositoryPictureEdit as ColumnEdit. Now you have a Column which got a pictureedit in each row. To populate the Images you can handle the CustomUnboundColumnData event. This event you can find on the GridView.\n\nTo accomplish this task do following:\n\nRun GridView Designer -> Change to columns at the left side\n\nAdd Column\n\nIn the Propertywindow ->\n\nset the Columnedit to repositorypictureedit\n\nset the UnboundType to object\n\nActivate the CustomUnboundColumnData event (you can find in the GridView) -> this event fires on loading Grid for every cell.\n\nWith e.ListSourceRowIndex you can get the row of your datasource appending to the unboundcolumn. So you could do following:\n\nprivate void gridView1_CustomUnboundColumnData(object sender, DevExpress.XtraGrid.Views.Base.CustomColumnDataEventArgs e) { if (e.Column.Name == \"MyColumn\") { clsTest test = myListAsDataSource[e.ListSourceRowIndex]; e.Value = test.Bild; } }\n\nI hope this can help you."
+    }
+}

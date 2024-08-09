@@ -1,0 +1,33 @@
+{
+    "id": "dbpedia_124_3",
+    "rank": 3,
+    "data": {
+        "url": "https://stackoverflow.com/questions/31710606/how-secure-is-my-custom-encryption-algorithm",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How secure is my custom encryption algorithm?",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://i.sstatic.net/obpU8.png",
+            "https://i.sstatic.net/StoMh.png?s=64",
+            "https://www.gravatar.com/avatar/7a718caa4f9650e518b1323847f97200?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/31710606/ivc/31d9?prg=eb8e434b-3fdb-4f5c-b0ae-d4f7e07c78b0"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2015-07-29T20:37:02",
+        "summary": "",
+        "meta_description": "I created my own very simple encryption algorithm in C#, and I was wondering just how secure it really is. I call the algorithm \"SBC\" which stands for \"Simple Byte Cipher\". Essentially, it works li...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/31710606/how-secure-is-my-custom-encryption-algorithm",
+        "text": "I created my own very simple encryption algorithm in C#, and I was wondering just how secure it really is. I call the algorithm \"SBC\" which stands for \"Simple Byte Cipher\". Essentially, it works like a Caesar Cipher, except I increment integers(the value of the associated bytes) instead of letters.\n\nThere was a few reasons why I decided to do this. First, I wanted an algorithm that offered an exact 1:1 size ratio. In other words, I wanted the output encryption length to equal the input text's length without any growth. I also wanted to be able to use any letter, number, character, etc that I wanted, without the cipher making everything capital letters, which a native Caesar Cipher cannot do. I wanted the output to also be mostly a mess of unprintable characters, kind of like a binary file. I also wanted it to be fast. Very fast. My current algorithm was able to fully encrypt Huckleberry Finn in less time than I care to even express(yes, it was fractions of a second).\n\nBut the real question is on the table now...how secure is my algorithm? Is there a way to possibly test it? Are there any glaring flaws with it? Allow me first to explain how it works, and then I will show you the code.\n\nThe algorithm is actually very simple, almost too simple. We start by taking any arbitrary string that we desire, let's say that for this situation we choose \"Stackoverflow\". We then choose a password, which will be \"Cats Rule The Internet\", and finally, a single seed/salt value. Let's do 31 because it is my favorite number.\n\nMy algorithm starts by looping through the string, taking each letter and using its byte value + the current letter index of the password's byte value + seed integer value.\n\nAs a mockup it would look something like:\n\nInput Byte | Password Byte | Seed Value| 45 + 18 + 31 = 94(this number rolls around for byte if it exceeds 255)\n\nAnd then, we have our new byte value, which can litterally be anything from a number, a letter(both capital or not), a symbol, or even unprintable characters. When printed to a file the message \"This is but a test.\" looks like:\n\nHere is the code as it currently stands:\n\n/** * Simple Byte Cipher \"SBC\" * Created by Gordon Kyle Wallace, \"Krythic\". */ public static class SimpleByteCipher { public static byte[] EncryptStringToByteArray( string data , string password , uint seed) { byte[] bytes = Encoding.ASCII.GetBytes( data ); byte[] passwordBytes = Encoding.ASCII.GetBytes( password ); int passwordShiftIndex = 0; for( int i = 0; i < bytes.Length; i++ ) { bytes[ i ] = ( byte )( bytes[ i ] + passwordBytes[ passwordShiftIndex ] + seed ); passwordShiftIndex = ( passwordShiftIndex + 1 ) % passwordBytes.Length; } return bytes; } public static string DecryptByteArrayToString( byte[] data , string password , uint seed) { byte[] bytes = data; byte[] passwordBytes = Encoding.ASCII.GetBytes( password ); int passwordShiftIndex = 0; for( int i = 0; i < bytes.Length; i++ ) { bytes[ i ] = ( byte )( bytes[ i ] - passwordBytes[ passwordShiftIndex ] - seed ); passwordShiftIndex = ( passwordShiftIndex + 1 ) % passwordBytes.Length; } return Encoding.ASCII.GetString( bytes ); } }\n\nI personally feel as though it is pretty secure. Not only do you need the algorithm, but you will need the exact password, and the seed/salt that was used to be able to decrypt the encrypted message. I just need to know what you guys think, am I missing anything here?"
+    }
+}

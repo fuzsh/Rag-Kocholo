@@ -1,0 +1,33 @@
+{
+    "id": "dbpedia_59_1",
+    "rank": 10,
+    "data": {
+        "url": "https://stackoverflow.com/questions/70651617/how-to-detect-the-kernel-size-for-gaussian-blurring",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How to detect the kernel size for Gaussian Blurring?",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://i.sstatic.net/wZbA7.jpg",
+            "https://www.gravatar.com/avatar/bd6cd8574f18f0ceec9a6282a14c150b?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/vpQni.jpg?s=64",
+            "https://stackoverflow.com/posts/70651617/ivc/606f?prg=79032ec9-9d40-480a-a70f-34406f30bc22"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2022-01-10T11:22:08",
+        "summary": "",
+        "meta_description": "I am preprocessing an image to improve the results of tesseract. Therefore, I want to blur an image using OpenCV, so that OpenCV is able to detect shapes and therefore draw bounding boxes. However ...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/70651617/how-to-detect-the-kernel-size-for-gaussian-blurring",
+        "text": "I am preprocessing an image to improve the results of tesseract. Therefore, I want to blur an image using OpenCV, so that OpenCV is able to detect shapes and therefore draw bounding boxes. However I am having problems setting the correct kernel size.\n\nBelow is an example of a document I currently work with. Please ignore the arrows and hand written words, since my documents are all written with a computer.\n\nI have now read a few articles on the subject and also know by now that the kernel size specifies how many and which pixels in the environment of the target pixel should be considered.\n\nHowever, I ask myself how to know how big this parameter should be. For example, the OpenCV documentation simply chooses the value (5,5) - which seems pretty arbitrary to me. Also, it says that the kernel size must be positive and odd, but that's it.\n\nWhy is (5,5) chosen here and not, for example, (3,3) or (7,7)? And is it advisable to always use the same numbers or do you also take (1,3) or (5,3)? How do I know which is the 'best' kernel size, or how do I at least get a good initial value?\n\nI would be very happy about your answers, many thanks in advance!\n\nWhen using the Gaussian Blur there are some things to play with. The standard deviation/variance and the radius/kernel size.\n\nThe standard deviation for a two-dimensional kernel is the radius in pixels containing 68% of the integrated magnitude of the coefficients. Increasing the standard deviation will increase the effective kernel size.\n\nThe size of the kernel should normally be selected large enough so that the kernel coefficients of the border rows and columns contribute very little to the sum of coefficients. By selecting a kernel size parameters six times the standard deviation the border parameters will be 1% or lower than the center parameter.\n\nIn opencv, the function cv2.GaussianBlur(src, ksize, sigmaX, sigmaY, borderType) allows you to play not only with the kernel size but with the standard deviation of each axis.\n\nUnfortunately, the choice of the standard variation and kernel size of your gaussian filter is extremely application dependent. So, there is no absolute truth. However, typically, you want to choose a gaussian filter such that you are considerable amount of high frequency components in your image.\n\nYou could provide an example image with which you are working with.\n\nHope it works.\n\nInfo from: Link1 Link2\n\nanswered Jan 10, 2022 at 11:44\n\nDavid SerranoDavid Serrano\n\n30511 gold badge55 silver badges1414 bronze badges"
+    }
+}

@@ -1,0 +1,32 @@
+{
+    "id": "dbpedia_123_3",
+    "rank": 22,
+    "data": {
+        "url": "https://stackoverflow.com/questions/60130124/heuristic-function-for-rubiks-cube-in-a-algorithm-artificial-intelligence",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Heuristic Function for Rubik's cube in A* algorithm Artificial Intelligence",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://graph.facebook.com/2627639240645260/picture?type=large",
+            "https://www.gravatar.com/avatar/c87a005a15ea03d98c6692fcd5518542?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://stackoverflow.com/posts/60130124/ivc/31d9?prg=2d7c9ebc-341a-4b38-a402-6ffe42e4b1bf"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2020-02-08T18:54:27",
+        "summary": "",
+        "meta_description": "So I am trying to solve a Rubik's Cube by different algorithms using C++. I have tried the Iterative Deepening Search (IDS) and got it right but now I am stuck at A* algorithm. \nI have done some re...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/60130124/heuristic-function-for-rubiks-cube-in-a-algorithm-artificial-intelligence",
+        "text": "IDA* is one of the best algorithms for solving the Rubik's cube because the state space is large and there aren't very many duplicates if you do proper move pruning. To get an efficient solver you need move pruning and good heuristics. Typically there are three moves per face - 90 degrees forward/backwards and 180 degrees. With 6 faces there are 18 moves.\n\nSimple move pruning: If you do some simple pruning of your moves by keeping one move of history, you can shrink the branching factor of Rubik's cube from 18 to about 15. Because any single move can get a single face into any configuration, you should never move the same face twice in a row. After the first move, there will be 5 faces with 3 moves each = 15 moves at each step.\n\nAdvanced move pruning: Let three of the faces be \"first\" faces, and three of them be \"second\" faces, where the second faces are opposite the first faces. Here the rule is that after you move a first face, you can move any of the other faces - so there will be 15 moves. But, after you move a second face, you can't move the same face again or the opposite first face. In this case the branching factor is 12. The overall branching factor is then around 13.\n\nHeuristics: Pattern Databases (PDBs) make good heuristics for Rubik's Cube. What you do is, for instance, ignore the edges and then exhaustively solve all corners, store the results in a hash table. (Use a perfect hash function and then there will be a unique compact mapping which is very memory efficient.) There are 88 million combinations and less than 16 values, you can store this in 44 MB of memory. When you want the heuristic for a state, you then just use the hash function to look up the corner configuration in the table, which contains the total number of moves required to solve that configuration. That is an admissible (and consistent) heuristic for the problem. On top of this you might want to do the edges, but the 12-edge PDB takes 500GB of memory to store and might not fit in memory. So, you can do subsets of edges. You can also use cube symmetries and many other tricks to get better heuristic values. But, with a good parallel IDA* implementation and some large PDBs you can solve random Rubik's cube instances optimally.\n\nThere are a lot of research papers on the topic - I suggest using Google scholar to look them up online.\n\nIf you want to start with something simpler, here is how you can implement a \"simpler\" heuristics:\n\nFor each corner/edge in the cube, compute how many moves it will take to get to the goal position/orientation all on its own. Add this up over all cubes.\n\nSince each turn of a face of the cube moves 4 corners and 4 edges, take the number from the first step and divide it by 8. This is then an admissible heuristic for the problem.\n\nIf you ignore the orientation, it will take at most two moves for each cube to reach its goal position, meaning your final heuristic will be less than 2. Taking orientation into account will only raise this slightly. So, this approach will not be particularly effective in practice."
+    }
+}

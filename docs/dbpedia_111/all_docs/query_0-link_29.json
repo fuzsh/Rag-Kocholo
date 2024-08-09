@@ -1,0 +1,46 @@
+{
+    "id": "dbpedia_111_0",
+    "rank": 29,
+    "data": {
+        "url": "https://stackoverflow.com/questions/10229156/how-many-characters-can-utf-8-encode",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How many characters can UTF-8 encode?",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/39f6e2dc52425b1e08027c01bb880be0?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/4d9bd85f7c3faa4c7270e69b139c1445?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/39f6e2dc52425b1e08027c01bb880be0?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/5c9f1a530bb9d8cf91a889b4af5f80e9?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/q6fMI.jpg?s=64",
+            "https://www.gravatar.com/avatar/fa52ef479099bbac71d378ecf9af0c14?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/605442f85418d858e2ce1e1aea2092bb?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/9f1398011905f8bebb7fdf02a3a68716?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/fe22b94ecefdc91cdd1761638695a265?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/a007be5a61f6aa8f3e85ae2fc18dd66e?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/c0377fc1b08293d3362611978913a32b?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/a235706e3d81b614acaec3368edfea4b?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/82cc5eda87ea72157037377b42608b5a?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/9ab016b2c4ccfa6878dfa7ce640e3d06?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/43238d5492ebbd269fac626623248279?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/86b8594a70729326ab40ca833740ef07?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://stackoverflow.com/posts/10229156/ivc/642f?prg=09703318-dfb9-4bca-a4b5-8034109543bb"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2012-04-19T13:29:46",
+        "summary": "",
+        "meta_description": "If UTF-8 is 8 bits, does it not mean that there can be only maximum of 256 different characters?\n\nThe first 128 code points are the same as in ASCII. But it says UTF-8 can support up to million of",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/10229156/how-many-characters-can-utf-8-encode",
+        "text": "UTF-8 does not use one byte all the time, it's 1 to 4 bytes.\n\nThe first 128 characters (US-ASCII) need one byte.\n\nThe next 1,920 characters need two bytes to encode. This covers the remainder of almost all Latin alphabets, and also Greek, Cyrillic, Coptic, Armenian, Hebrew, Arabic, Syriac and Tāna alphabets, as well as Combining Diacritical Marks.\n\nThree bytes are needed for characters in the rest of the Basic Multilingual Plane, which contains virtually all characters in common use[12] including most Chinese, Japanese and Korean [CJK] characters.\n\nFour bytes are needed for characters in the other planes of Unicode, which include less common CJK characters, various historic scripts, mathematical symbols, and emoji (pictographic symbols).\n\nsource: Wikipedia\n\nUTF-8 uses 1-4 bytes per character: one byte for ascii characters (the first 128 unicode values are the same as ascii). But that only requires 7 bits. If the highest (\"sign\") bit is set, this indicates the start of a multi-byte sequence; the number of consecutive high bits set indicates the number of bytes, then a 0, and the remaining bits contribute to the value. For the other bytes, the highest two bits will be 1 and 0 and the remaining 6 bits are for the value.\n\nSo a four byte sequence would begin with 11110... (and ... = three bits for the value) then three bytes with 6 bits each for the value, yielding a 21 bit value. 2^21 exceeds the number of unicode characters, so all of unicode can be expressed in UTF8.\n\nUnicode vs UTF-8\n\nUnicode resolves code points to characters. UTF-8 is a storage mechanism for Unicode. Unicode has a spec. UTF-8 has a spec. They both have different limits. UTF-8 has a different upwards-bound.\n\nUnicode\n\nUnicode is designated with \"planes.\" Each plane carries 216 code points. There are 17 Planes in Unicode. For a total of 17 * 2^16 code points. The first plane, plane 0 or the BMP, is special in the weight of what it carries.\n\nRather than explain all the nuances, let me just quote the above article on planes.\n\nThe 17 planes can accommodate 1,114,112 code points. Of these, 2,048 are surrogates, 66 are non-characters, and 137,468 are reserved for private use, leaving 974,530 for public assignment.\n\nUTF-8\n\nNow let's go back to the article linked above,\n\nThe encoding scheme used by UTF-8 was designed with a much larger limit of 231 code points (32,768 planes), and can encode 221 code points (32 planes) even if limited to 4 bytes.[3] Since Unicode limits the code points to the 17 planes that can be encoded by UTF-16, code points above 0x10FFFF are invalid in UTF-8 and UTF-32.\n\nSo you can see that you can put stuff into UTF-8 that isn't valid Unicode. Why? Because UTF-8 accommodates code points that Unicode doesn't even support.\n\nUTF-8, even with a four byte limitation, supports 221 code points, which is far more than 17 * 2^16\n\n2,164,864 “characters” can be potentially coded by UTF-8.\n\nThis number is 27 + 211 + 216 + 221, which comes from the way the encoding works:\n\n1-byte chars have 7 bits for encoding 0xxxxxxx (0x00-0x7F)\n\n2-byte chars have 11 bits for encoding 110xxxxx 10xxxxxx (0xC0-0xDF for the first byte; 0x80-0xBF for the second)\n\n3-byte chars have 16 bits for encoding 1110xxxx 10xxxxxx 10xxxxxx (0xE0-0xEF for the first byte; 0x80-0xBF for continuation bytes)\n\n4-byte chars have 21 bits for encoding 11110xxx 10xxxxxx 10xxxxxx 10xxxxxx (0xF0-0xF7 for the first byte; 0x80-0xBF for continuation bytes)\n\nAs you can see this is significantly larger than current Unicode (1,112,064 characters).\n\nUPDATE\n\nMy initial calculation is wrong because it doesn't consider additional rules. See comments to this answer for more details.\n\nCheck out the Unicode Standard and related information, such as their FAQ entry, UTF-8 UTF-16, UTF-32 & BOM. It’s not that smooth sailing, but it’s authoritative information, and much of what you might read about UTF-8 elsewhere is questionable.\n\nThe “8” in “UTF-8” relates to the length of code units in bits. Code units are entities use to encode characters, not necessarily as a simple one-to-one mapping. UTF-8 uses a variable number of code units to encode a character.\n\nThe collection of characters that can be encoded in UTF-8 is exactly the same as for UTF-16 or UTF-32, namely all Unicode characters. They all encode the entire Unicode coding space, which even includes noncharacters and unassigned code points.\n\nWhile I agree with mpen on the current maximum UTF-8 codes (2,164,864) (listed below, I couldn't comment on his), he is off by 2 levels if you remove the 2 major restrictions of UTF-8: only 4 bytes limit and codes 254 and 255 can not be used (he only removed the 4 byte limit).\n\nStarting code 254 follows the basic arrangement of starting bits (multi-bit flag set to 1, a count of 6 1's, and terminal 0, no spare bits) giving you 6 additional bytes to work with (6 10xxxxxx groups, an additional 2^36 codes).\n\nStarting code 255 doesn't exactly follow the basic setup, no terminal 0 but all bits are used, giving you 7 additional bytes (multi-bit flag set to 1, a count of 7 1's, and no terminal 0 because all bits are used; 7 10xxxxxx groups, an additional 2^42 codes).\n\nAdding these in gives a final maximum presentable character set of 4,468,982,745,216. This is more than all characters in current use, old or dead languages, and any believed lost languages. Angelic or Celestial script anyone?\n\nAlso there are single byte codes that are overlooked/ignored in the UTF-8 standard in addition to 254 and 255: 128-191, and a few others. Some are used locally by the keyboard, example code 128 is usually a deleting backspace. The other starting codes (and associated ranges) are invalid for one or more reasons (https://en.wikipedia.org/wiki/UTF-8#Invalid_byte_sequences)."
+    }
+}

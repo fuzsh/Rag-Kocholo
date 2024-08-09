@@ -1,0 +1,41 @@
+{
+    "id": "dbpedia_40_0",
+    "rank": 29,
+    "data": {
+        "url": "https://superuser.com/questions/611410/is-there-a-command-to-split-lines-in-vim",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Is there a command to split lines in Vim?",
+        "top_image": "https://cdn.sstatic.net/Sites/superuser/Img/apple-touch-icon@2.png?v=e869e4459439",
+        "meta_img": "https://cdn.sstatic.net/Sites/superuser/Img/apple-touch-icon@2.png?v=e869e4459439",
+        "images": [
+            "https://cdn.sstatic.net/Sites/superuser/Img/logo.svg?v=4bc8a703ebac",
+            "https://www.gravatar.com/avatar/2898f6c373e52c34c1c70f20a10ce770?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/fVsOZ.jpg?s=64",
+            "https://i.sstatic.net/SIhsx.png?s=64",
+            "https://i.sstatic.net/0egSZ.png?s=64",
+            "https://i.sstatic.net/rUfLl.png?s=64",
+            "https://i.sstatic.net/DdTpU.jpg?s=64",
+            "https://www.gravatar.com/avatar/abaecd2096be476f995fc19568fe1a2a?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/KHa84.png?s=64",
+            "https://www.gravatar.com/avatar/c3f8ed77d34aadbf545b705c8eaf9b67?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/0b421f5e1cb4eb10b392a12306181ae8?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://superuser.com/posts/611410/ivc/606f?prg=8e9ce9f5-cf80-47c2-86b0-1771337e3513"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2013-06-24T15:12:15",
+        "summary": "",
+        "meta_description": "In Vim, the J key joins two lines together. Is there a similar, built-in, key combination to split lines with a newline (at the cursor position, or similar)?\n\nAlternatively, what would be the most ...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/superuser/Img/favicon.ico?v=4852d6fb3f5d",
+        "meta_site_name": "Super User",
+        "canonical_link": "https://superuser.com/questions/611410/is-there-a-command-to-split-lines-in-vim",
+        "text": "No, there's no built-in command for that.\n\nWhen I want to split on a <Space>, I do r<CR>.\n\n--- EDIT ---\n\n@keith-nicholas' comment reminded me about this question. FWIW I came up with an hopefully \"universal\" method in the mean time:\n\nfunction! BreakHere() s/^\\(\\s*\\)\\(.\\{-}\\)\\(\\s*\\)\\(\\%#\\)\\(\\s*\\)\\(.*\\)/\\1\\2\\r\\1\\4\\6 call histdel(\"/\", -1) endfunction nnoremap <key> :<C-u>call BreakHere()<CR>\n\nThe easiest way I've found to split lines in Vim is the normal mode command gq (type both letters in quick succession in normal or visual mode):\n\nIn visual mode, it will split whatever is selected.\n\nIn normal mode, you follow gq with a motion.\n\nFor example, gql will split one line to the currently set width. To set the width of the split lines to be different from your current setting, you can use\n\n:set textwidth=<n>\n\nWhere n=number of characters you want in a line, e.g., 10, and change back to your normal width when you're done.\n\nGot this information from a Youtube video by Kholidfu that shows how to join and split lines in normal mode using a motion: Vim Tutorial - Join and Split Lines.\n\nYou can use the s substitute request with the \\r carriage return. Consider a file with this sentence at line one:\n\nThis is sentence one. This is sentence two.\n\nThen this will split the sentences into two lines:\n\n:1s/\\. /\\r/\n\nYou can record a macro:\n\nin normal mode type \"q+\" to start the record. press \"i\", the macro you want to record. then press \"q\" again to stop recording.\n\nto use the macro go to normal mode and type \"@+letter\".\n\nin my case I used the \"b\" to use this macro: to record type in normal mode \"qbiq\" to use type in normal mode \"@b\""
+    }
+}

@@ -1,0 +1,35 @@
+{
+    "id": "dbpedia_114_2",
+    "rank": 35,
+    "data": {
+        "url": "https://gis.stackexchange.com/questions/194921/neighborhood-analyses-with-grass-qgis-using-aster-gdem",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Neighborhood analyses with GRASS/QGIS using ASTER GDEM",
+        "top_image": "https://cdn.sstatic.net/Sites/gis/Img/apple-touch-icon@2.png?v=54e3ab1edcf3",
+        "meta_img": "https://cdn.sstatic.net/Sites/gis/Img/apple-touch-icon@2.png?v=54e3ab1edcf3",
+        "images": [
+            "https://cdn.sstatic.net/Sites/gis/Img/logo.svg?v=524ba4e921b1",
+            "https://i.sstatic.net/bzBg3.png",
+            "https://www.gravatar.com/avatar/a007be5a61f6aa8f3e85ae2fc18dd66e?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/4ee4e8d493c91af6b4398781a5929d8f?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/pRSma.jpg?s=64",
+            "https://gis.stackexchange.com/posts/194921/ivc/31d9?prg=3ef8b4ba-0c54-4ed0-9ce1-228a7096588e"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2016-05-25T14:00:54",
+        "summary": "",
+        "meta_description": "I have a problem related with this question (Old question without answer: R.Neighbors with large neighborhoods?).\n\nBasically, I want to estimate roughness of a given area, for which I was using QGI...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/gis/Img/favicon.ico?v=6e585ede6bca",
+        "meta_site_name": "Geographic Information Systems Stack Exchange",
+        "canonical_link": "https://gis.stackexchange.com/questions/194921/neighborhood-analyses-with-grass-qgis-using-aster-gdem",
+        "text": "I have a problem related with this question (Old question without answer: R.Neighbors with large neighborhoods?).\n\nBasically, I want to estimate roughness of a given area, for which I was using QGIS, but I want to change the neigborhood size, so I'm using GRASS now because I didn't find a way to do that in QGIS. I am working with ASTER GDEM v2.\n\nSo I want to explore a circular neighborhood of aprox. 500m around each pixel and, since each pixel of ASTER GDEM v2 has aprox. 30m of width, I believe my neighborhood size should be of 17, right?\n\nI selected \"use circular neighborhood\" and for method \"average\". The program runs and creates a new layer but then I cannot open the raster file. The \"Map Display\" shows a blank screen when I perform \"zoom to selected maps\" of the result layer. I tried to save the file as .tiff and open it in QGIS but I obtain, again, a blank screen, and the raster has no values (nan-nan).\n\nCan someone help me please? I don't know if this problem is related with the parameters I am using or if it is related with the software!\n\nUPDATE: After running r.info, I got this:\n\nThe fact that the range is NAN is no good as it means: no data there :)\n\nIn GRASS GIS, the concept of computational region applies, i.e. in computations, raster input maps are automatically cropped/padded and rescaled (using nearest neighbour resampling) to match the actual computational region (bounding box and current raster resolution) in order to produce the output raster map or to query values. Subsequently, raster maps created through a computation in a GRASS GIS session have their bounds and resolution equal to those of the actual computational region. The advantage is that you can do quick computations in a sub-region even when the input maps are huge.\n\nYou will have to set the computational region first to the raster map to consider it completely at its native resolution:\n\ng.region raster=ASTGTM2_N42W002_dem -p\n\nand this then followed by the computation (in your case the \"r.neighbors\" command).\n\nanswered Jun 9, 2016 at 13:09\n\nmarkusNmarkusN\n\n13k3131 silver badges4848 bronze badges"
+    }
+}

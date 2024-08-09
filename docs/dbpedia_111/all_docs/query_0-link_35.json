@@ -1,0 +1,45 @@
+{
+    "id": "dbpedia_111_0",
+    "rank": 35,
+    "data": {
+        "url": "https://softwareengineering.stackexchange.com/questions/148677/why-is-80-characters-the-standard-limit-for-code-width",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Why is 80 characters the 'standard' limit for code width?",
+        "top_image": "https://cdn.sstatic.net/Sites/softwareengineering/Img/apple-touch-icon@2.png?v=1ef7363febba",
+        "meta_img": "https://cdn.sstatic.net/Sites/softwareengineering/Img/apple-touch-icon@2.png?v=1ef7363febba",
+        "images": [
+            "https://cdn.sstatic.net/Sites/softwareengineering/Img/logo.svg?v=e86f7d5306ae",
+            "https://i.sstatic.net/wAh9i.png?s=64",
+            "https://i.sstatic.net/bQZof.png?s=64",
+            "https://i.sstatic.net/XvPKy.jpg",
+            "https://www.gravatar.com/avatar/d6db99aa846a8217f7e2aba6fa198e7c?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/Au4eT.png?s=64",
+            "https://www.gravatar.com/avatar/a007be5a61f6aa8f3e85ae2fc18dd66e?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/4sdGf.png?s=64",
+            "https://www.gravatar.com/avatar/6c2dd6a39d3f38f1bb47a8c1fe8325e2?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/78140b18051cbf367d39f10d10ef2c8b?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/a711bea966a6ffd9b095ef5aac3f666c?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/88d8444f517ef2fa91f31f9aac4fc1b5?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/52cf65b0dc151987ad696735bcd06a19?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/a97d264efd23906abfdb28924ff20485?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/d1a3e7b36482809a45ca56b32d95c089?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://softwareengineering.stackexchange.com/posts/148677/ivc/642f?prg=8513d40a-a0be-4704-a8db-212588661a31"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2012-05-15T10:43:56",
+        "summary": "",
+        "meta_description": "Why is 80 characters the \"standard\" limit for code width? Why 80 and not 79, 81 or 100? What is the origin of this particular value?",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/softwareengineering/Img/favicon.ico?v=c4f35a1e3900",
+        "meta_site_name": "Software Engineering Stack Exchange",
+        "canonical_link": "https://softwareengineering.stackexchange.com/questions/148677/why-is-80-characters-the-standard-limit-for-code-width",
+        "text": "As oded mentioned, this common coding standard is a result of the IBM's 1928 80 column punched card format, since many coding standards date back to a time when programs were written on punch cards, one card/line at a time, and even the transition to wider screens didn't alter the fact that code gets harder to read the wider it becomes.\n\nFrom the wikipedia page on punched cards:\n\nCultural Impact\n\nA legacy of the 80 column punched card format is that a display of 80 characters per row was a common choice in the design of character-based terminals. As of November 2011 some character interface defaults, such as the command prompt window's width in Microsoft Windows, remain set at 80 columns and some file formats, such as FITS, still use 80-character card images.\n\nNow the question is, why did IBM chose 80 column cards in 1928, when Herman Hollerith had previously used 24 and 45 column cards?\n\nAlthough I can't find a definitive answer, I suspect that the choice was based on the typical number of characters per line of typewriters of the time.\n\nMost of the historical typewriters I've seen had a platen width of around 9 inches, which corresponds with the standardisation of paper sizes to around 8\"-8.5\" wide (see Why is the standard paper size in the U.S. 8 ½\" x 11\"? and the History of ISO216 A series paper standard).\n\nAdd a typical typewriter pitch of 10-12 characters per inch and that would lead to documents with widths of between 72 and 90 characters, depending on the size of the margins.\n\nAs such, 80 characters per line would have represented a good compromise between hole pitch (small rectangular vs. larger round holes) and line length, while maintaining the same card size.\n\nIncidentally, not everywhere specifies an 80 character line width in their coding standards. Where I work has a 132 character limit, which corresponds to the width of typical wide line printers of yore, a 12pt landscape A4 printout and the typical line width remaining in an editor window of Eclipse (maximised on a 1920x1200 screen) after Package Explorer and Outline views are taken into account.\n\nEven so, I still prefer 80 character wide code as it it makes it easier to compare three revisions of a file side-by-side without either scrolling sideways (always bad) or wrapping lines (which destroys code formatting). With 80 character wide code, you only need a 240 character wide screen (1920 pixels at 8 pixels per character) to see a full three-way-merge (common ancestor, local branch and remote branch) comfortably on one screen.\n\nI'd say that's also because old terminals were (mostly) 80x24 characters in size: Back in the days of 80x24 terminals...\n\nEDIT:\n\nTo answer more precisely and more thoroughly to the question, 80 characters is the current \"universally accepted\" limit to code width inside editors because 80x24 and 80x25 formats were the most common screen modes in early I/O terminals and personal computers (VT52 - thanks to Sandman4).\n\nThis limit is still valid and somehow important IMHO for two main reasons: the default geometry that many Linux distros assign to newly spawned terminal windows is still 80x24 and many people use them as-is, without resizing. Moreover, kernel, real-time and embedded programmers often work in a \"headless\" environment without any window manager. Again, the default screen resolution is often 80x24 (or 80x25), and, in these situations, it may even be difficult to change this default setting.\n\nSo if you are a kernel, real-time or embedded programmer you should force yourself to respect this limit, just to be a little more \"friendly\" towards any programmer that should read your code."
+    }
+}

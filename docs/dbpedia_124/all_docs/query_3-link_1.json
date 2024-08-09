@@ -1,0 +1,38 @@
+{
+    "id": "dbpedia_124_3",
+    "rank": 1,
+    "data": {
+        "url": "https://en.wikipedia.org/wiki/Security_level",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Security level",
+        "top_image": "https://en.wikipedia.org/static/favicon/wikipedia.ico",
+        "meta_img": "https://en.wikipedia.org/static/favicon/wikipedia.ico",
+        "images": [
+            "https://en.wikipedia.org/static/images/icons/wikipedia.png",
+            "https://en.wikipedia.org/static/images/mobile/copyright/wikipedia-wordmark-en.svg",
+            "https://en.wikipedia.org/static/images/mobile/copyright/wikipedia-tagline-en.svg",
+            "https://upload.wikimedia.org/wikipedia/en/thumb/9/96/Symbol_category_class.svg/16px-Symbol_category_class.svg.png",
+            "https://login.wikimedia.org/wiki/Special:CentralAutoLogin/start?type=1x1",
+            "https://en.wikipedia.org/static/images/footer/wikimedia-button.svg",
+            "https://en.wikipedia.org/static/images/footer/poweredby_mediawiki.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Contributors to Wikimedia projects"
+        ],
+        "publish_date": "2016-12-30T13:08:34+00:00",
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "/static/apple-touch/wikipedia.png",
+        "meta_site_name": "",
+        "canonical_link": "https://en.wikipedia.org/wiki/Security_level",
+        "text": "This article is about strength in cryptography. For business security policy, see security level management.\n\nMeasure of cryptographic strength\n\nIn cryptography, security level is a measure of the strength that a cryptographic primitive — such as a cipher or hash function — achieves. Security level is usually expressed as a number of \"bits of security\" (also security strength),[1] where n-bit security means that the attacker would have to perform 2n operations to break it,[2] but other methods have been proposed that more closely model the costs for an attacker.[3] This allows for convenient comparison between algorithms and is useful when combining multiple primitives in a hybrid cryptosystem, so there is no clear weakest link. For example, AES-128 (key size 128 bits) is designed to offer a 128-bit security level, which is considered roughly equivalent to a RSA using 3072-bit key.\n\nIn this context, security claim or target security level is the security level that a primitive was initially designed to achieve, although \"security level\" is also sometimes used in those contexts. When attacks are found that have lower cost than the security claim, the primitive is considered broken.[4][5]\n\nIn symmetric cryptography\n\n[edit]\n\nSymmetric algorithms usually have a strictly defined security claim. For symmetric ciphers, it is typically equal to the key size of the cipher — equivalent to the complexity of a brute-force attack.[5][6] Cryptographic hash functions with output size of n bits usually have a collision resistance security level n/2 and a preimage resistance level n. This is because the general birthday attack can always find collisions in 2n/2 steps.[7] For example, SHA-256 offers 128-bit collision resistance and 256-bit preimage resistance.\n\nHowever, there are some exceptions to this. The Phelix and Helix are 256-bit ciphers offering a 128-bit security level.[5][8] The SHAKE variants of SHA-3 are also different: for a 256-bit output size, SHAKE-128 provides 128-bit security level for both collision and preimage resistance.[9]\n\nIn asymmetric cryptography\n\n[edit]\n\nThe design of most asymmetric algorithms (i.e. public-key cryptography) relies on neat mathematical problems that are efficient to compute in one direction, but inefficient to reverse by the attacker. However, attacks against current public-key systems are always faster than brute-force search of the key space. Their security level isn't set at design time, but represents a computational hardness assumption, which is adjusted to match the best currently known attack.[6]\n\nVarious recommendations have been published that estimate the security level of asymmetric algorithms, which differ slightly due to different methodologies.\n\nFor the RSA cryptosystem at 128-bit security level, NIST and ENISA recommend using 3072-bit keys[10][11] and IETF 3253 bits.[12][13] The conversion from key length to a security level estimate is based on the complexity of the GNFS.[14]: §7.5\n\nDiffie–Hellman key exchange and DSA are similar to RSA in terms of the conversion from key length to a security level estimate.[14]: §7.5\n\nElliptic curve cryptography requires shorter keys, so the recommendations for 128-bit are 256-383 (NIST), 256 (ENISA) and 242 bits (IETF). The conversion from key size f to security level is approximately f / 2: this is because the method to break the Elliptic Curve Discrete Logarithm Problem, the rho method, finishes in 0.886 sqrt(2f) additions.[15]\n\nTypical levels\n\n[edit]\n\nThe following table are examples of typical security levels for types of algorithms as found in s5.6.1.1 of the US NIST SP-800-57 Recommendation for Key Management.[16]: Table 2\n\nComparable Algorithm Strengths Security Bits Symmetric Key Finite Field/Discrete Logarithm\n\n(DSA, DH, MQV) Integer Factorization\n\n(RSA) Elliptic Curve\n\n(ECDSA, EdDSA, ECDH, ECMQV) 80 2TDEA[a] L = 1024, N = 160 k = 1024 160 ≤ f ≤ 223 112 3TDEA[a] L = 2048, N =224 k = 2048 224 ≤ f ≤ 255 128 AES-128 L = 3072, N = 256 k = 3072 256 ≤ f ≤ 383 192 AES-192 L = 7680, N = 384 k = 7680 384 ≤ f ≤ 511 256 AES-256 L = 15360, N = 511 k = 15360 f ≥ 512\n\nUnder NIST recommendation, a key of a given security level should only be transported under protection using an algorithm of equivalent or higher security level.[14]\n\nThe security level is given for the cost of breaking one target, not the amortized cost for group of targets. It takes 2128 operations to find a AES-128 key, yet the same number of amortized operations is required for any number m of keys. On the other hand, breaking m ECC keys using the rho method require sqrt(m) times the base cost.[15][17]\n\nMeaning of \"broken\"\n\n[edit]\n\nA cryptographic primitive is considered broken when an attack is found to have less than its advertised level of security. However, not all such attacks are practical: most currently demonstrated attacks take fewer than 240 operations, which translates to a few hours on an average PC. The costliest demonstrated attack on hash functions is the 261.2 attack on SHA-1, which took 2 months on 900 GTX 970 GPUs, and cost US$75,000 (although the researchers estimate only $11,000 was needed to find a collision).[18]\n\nAumasson draws the line between practical and impractical attacks at 280 operations. He proposes a new terminology:[19]\n\nA broken primitive has an attack taking ≤ 280 operations. An attack can be plausibly carried out.\n\nA wounded primitive has an attack taking between 280 and around 2100 operations. An attack is not possible right now, but future improvements are likely to make it possible.\n\nAn attacked primitive has an attack that is cheaper than the security claim, but much costlier than 2100. Such an attack is too far from being practical.\n\nFinally, an analyzed primitive is one with no attacks cheaper than its security claim.\n\nReferences\n\n[edit]\n\nFurther reading\n\n[edit]\n\nAumasson, Jean-Philippe (2020). Too Much Crypto (PDF). Real World Crypto Symposium.\n\nSee also\n\n[edit]"
+    }
+}

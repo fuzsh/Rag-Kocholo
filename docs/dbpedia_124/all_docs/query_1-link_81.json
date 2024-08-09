@@ -1,0 +1,31 @@
+{
+    "id": "dbpedia_124_1",
+    "rank": 81,
+    "data": {
+        "url": "https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/09-Testing_for_Weak_Cryptography/04-Testing_for_Weak_Encryption",
+        "read_more_link": "",
+        "language": "en",
+        "title": "OWASP Foundation",
+        "top_image": "https://owasp.org/www--site-theme/favicon.ico",
+        "meta_img": "https://owasp.org/www--site-theme/favicon.ico",
+        "images": [
+            "https://owasp.org/assets/images/logo.png",
+            "https://owasp.org/assets/images/logo.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "WSTG - Latest on the main website for The OWASP Foundation. OWASP is a nonprofit foundation that works to improve the security of software.",
+        "meta_lang": "en",
+        "meta_favicon": "https://owasp.org/www--site-theme/favicon.ico",
+        "meta_site_name": "",
+        "canonical_link": "https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/09-Testing_for_Weak_Cryptography/04-Testing_for_Weak_Encryption",
+        "text": "Testing for Weak Encryption\n\nID WSTG-CRYP-04\n\nSummary\n\nIncorrect uses of encryption algorithms may result in sensitive data exposure, key leakage, broken authentication, insecure session, and spoofing attacks. There are some encryption or hash algorithms known to be weak and are not suggested for use such as MD5 and RC4.\n\nIn addition to the right choices of secure encryption or hash algorithms, the right uses of parameters also matter for the security level. For example, ECB (Electronic Code Book) mode generally should not be used.\n\nTest Objectives\n\nProvide a guideline for the identification weak encryption or hashing uses and implementations.\n\nHow to Test\n\nBasic Security Checklist\n\nWhen using AES128 or AES256, the IV (Initialization Vector) must be random and unpredictable. Refer to FIPS 140-2, Security Requirements for Cryptographic Modules, section 4.9.1. random number generator tests. For example, in Java, java.util.Random is considered a weak random number generator. java.security.SecureRandom should be used instead of java.util.Random.\n\nFor asymmetric encryption, use Elliptic Curve Cryptography (ECC) with a secure curve like Curve25519 preferred.\n\nIf ECC can’t be used then use RSA encryption with a minimum 2048bit key.\n\nWhen uses of RSA in signature, PSS padding is recommended.\n\nWeak hash/encryption algorithms should not be used such MD5, RC4, DES, Blowfish, SHA1. 1024-bit RSA or DSA, 160-bit ECDSA (elliptic curves), 80/112-bit 2TDEA (two key triple DES)\n\nMinimum Key length requirements:\n\nUses of SSH, CBC mode should not be used.\n\nWhen symmetric encryption algorithm is used, ECB (Electronic Code Book) mode should not be used.\n\nWhen PBKDF2 is used to hash password, the parameter of iteration is recommended to be over 10000. NIST also suggests at least 10,000 iterations of the hash function. In addition, MD5 hash function is forbidden to be used with PBKDF2 such as PBKDF2WithHmacMD5.\n\nSource Code Review\n\nSearch for the following keywords to identify use of weak algorithms: MD4, MD5, RC4, RC2, DES, Blowfish, SHA-1, ECB\n\nFor Java implementations, the following API is related to encryption. Review the parameters of the encryption implementation. For example,\n\nFor RSA encryption, the following padding modes are suggested.\n\nSearch for ECB, it’s not allowed to be used in padding.\n\nReview if different IV (initial Vector) is used.\n\nSearch for IvParameterSpec, check if the IV value is generated differently and randomly.\n\nIn Java, search for MessageDigest to check if weak hash algorithm (MD5 or CRC) is used. For example:\n\nMessageDigest md5 = MessageDigest.getInstance(\"MD5\");\n\nFor signature, SHA1 and MD5 should not be used. For example:\n\nSignature sig = Signature.getInstance(\"SHA1withRSA\");\n\nSearch for PBKDF2. To generate the hash value of password, PBKDF2 is suggested to be used. Review the parameters to generate the PBKDF2 has value.\n\nThe iterations should be over 10000, and the salt value should be generated as random value.\n\nHard-coded sensitive information:\n\nVulnerability scanners such as Nessus, NMAP (scripts), or OpenVAS can scan for use or acceptance of weak encryption against protocol such as SNMP, TLS, SSH, SMTP, etc.\n\nUse static code analysis tool to do source code review such as klocwork, Fortify, Coverity, CheckMark for the following cases.\n\nReferences"
+    }
+}

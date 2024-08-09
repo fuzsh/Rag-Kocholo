@@ -1,0 +1,40 @@
+{
+    "id": "dbpedia_108_2",
+    "rank": 9,
+    "data": {
+        "url": "https://graphicdesign.stackexchange.com/questions/13148/which-fonts-have-the-same-width-for-every-character",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Which fonts have the same width for every character?",
+        "top_image": "https://cdn.sstatic.net/Sites/graphicdesign/Img/apple-touch-icon@2.png?v=5078cbcb62f3",
+        "meta_img": "https://cdn.sstatic.net/Sites/graphicdesign/Img/apple-touch-icon@2.png?v=5078cbcb62f3",
+        "images": [
+            "https://cdn.sstatic.net/Sites/graphicdesign/Img/logo.svg?v=c784e64edfd8",
+            "https://i.sstatic.net/70EYI.jpg?s=64",
+            "https://www.gravatar.com/avatar/54465abdf9fc5e96488558decd6adba5?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/9ehvG.gif",
+            "https://i.sstatic.net/2EbvX.gif",
+            "https://www.gravatar.com/avatar/a007be5a61f6aa8f3e85ae2fc18dd66e?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/bQaDf.png?s=64",
+            "https://lh5.googleusercontent.com/-vmDzgGXuJOo/AAAAAAAAAAI/AAAAAAAAAPY/j-hH5va_NtA/photo.jpg?sz=64",
+            "https://www.gravatar.com/avatar/23c08dc4289d93ed73695fa1e7782f4e?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/2c64ab72b42d05880e438ddef64b465b?s=64&d=identicon&r=PG",
+            "https://graphicdesign.stackexchange.com/posts/13148/ivc/642f?prg=f6356ce2-32e1-436e-b44d-a467c62bd541"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2012-12-04T04:48:36",
+        "summary": "",
+        "meta_description": "I would like to have a font with all characters the same width.\n\nFor example, a W is wider than an i in most fonts ...Is there any font that has all characters equally wide?",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/graphicdesign/Img/favicon.ico?v=2b79c1ccdc7c",
+        "meta_site_name": "Graphic Design Stack Exchange",
+        "canonical_link": "https://graphicdesign.stackexchange.com/questions/13148/which-fonts-have-the-same-width-for-every-character",
+        "text": "What to search for\n\nThe type style you're looking for is monospace. Wikipedia explains it well.\n\nA monospaced font, also called a fixed-pitch, fixed-width, or non-proportional font, is a font whose letters and characters each occupy the same amount of horizontal space. [...]\n\nExamples of monospaced fonts include Courier, Courier New, Lucida Console, Monaco, and Consolas. [...]\n\nUbiquitous options\n\nThese days, just about every computer has one or both of these fonts:\n\nFonts have 2 characteristics that will affect character spacing: width and kerning. Kerning determines when two adjacent characters can overlap. For instance, when you write AT, the leftmost part of the T bar may actually be positioned LEFT of the lowest part of the right branch of the A. Although fixed width fonts may allow kerning, it is rarely the case.\n\nAnyway, if you want to choose a fixed-width font, you can use the following text\n\nIIIIIIIIII\n\nHHHHHHHHHH\n\nAAAAATTTTT\n\nATATATATAT\n\nand look at the appearance using various fonts. If the first 2 lines have the same length, then it is fixed width. If the last 2 lines have the same length, then there is no kerning. I.e., you want all 4 lines to have the same length.\n\nIn Microsoft Word 2007 on Windows, the following fonts seem to be fixed-length, no kerning:\n\nBatangChe\n\nConsolas\n\nCourier New\n\nDFKai-SB\n\nDotunChe\n\nGulimChe\n\nGungSahChe\n\nKaiTi\n\nLucida Console\n\nMingLiU\n\nMS Gothic\n\nMS MinChe\n\nNSimSun\n\nSimHei\n\nSimplified Arabic Fixed\n\nSimSun\n\nSimSun-ExtB\n\nxlsfonts supplies information about fonts when the X Windows System is in use (commonly on Linux or similar systems; almost never on MSWindows). Its -l and -m options display several font metrics, including minimum character width and maximum character width. Using shell commands, one can compare those widths to detect fixed-width fonts. For example, xlsfonts -lm '*fang*' gives\n\nDIR MIN MAX EXIST DFLT PROP ASC DESC NAME --> * 33 *119 some 8481 25 10 1 -isas-fangsong ti-medium-r-normal--0-0-72-72-c-0-gb2312.1980-0 min(l,r,w,a,d) = (0,12,12,11,2) max(l,r,w,a,d) = (0,12,12,11,2) --> * 33 *119 some 8481 21 14 2 -isas-fangsong ti-medium-r-normal--16-160-72-72-c-160-gb2312.1980-0 min(l,r,w,a,d) = ( 0, 0,16, 0,-13) max(l,r,w,a,d) = (12,16,16,14, 2)\n\nFor both those fonts, the min w equals the max w value – 12, 12 for one, 16, 16 for the other – indicating both are fixed-width fonts. (Note, xlsfonts source code includes similar checks.)\n\nFrom a recent post of mine on usenet, here is a Python program checkFixed.py that automates the comparison. It reads xlsfonts-style data lines from stdin, compares w values, and prints results on stdout when min w equals max w. (Of course similar programs could be written in awk, perl, etc.)\n\n#!/usr/bin/env python # jiw - 2016 # This program reads `xlsfonts -lm`-style lines from stdin, and tests # for cases where the w elements of min and max tuples are the same from sys import stdout while True: try: r = raw_input() if r[0] == '-': # Font-lines start with --> m1 = int((raw_input().split(','))[6]) m2 = int((raw_input().split(','))[6]) if m1==m2: print r stdout.flush() except: break\n\nFor example, xlsfonts -ml | ./checkFixed.py | head -3 on my system printed out\n\n--> 0 255 some 0 29 14 5 -bitstream-courier 10 pitch-bold-i-normal--0-0-0-0-m-0-adobe-standard --> 0 255 some 0 29 15 5 -bitstream-courier 10 pitch-bold-i-normal--0-0-0-0-m-0-ascii-0 --> * 0 *255 some 0 29 15 5 -bitstream-courier 10 pitch-bold-i-normal--0-0-0-0-m-0-iso10646-1\n\nIn another example, xlsfonts -ml '*fixed*' | ./checkFixed.py | head -3 printed out\n\n--> * 33 *116 some 8481 25 11 1 -jis-fixed-medium-r-normal--0-0-75-75-c-0-jisx0208.1983-0 --> * 33 *116 some 8481 21 14 2 -jis-fixed-medium-r-normal--16-150-75-75-c-160-jisx0208.1983-0 --> * 33 *116 some 8481 21 14 2 -jis-fixed-medium-r-normal--16-150-75-75-c-160-jisx0208.1983-0"
+    }
+}

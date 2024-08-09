@@ -1,0 +1,35 @@
+{
+    "id": "dbpedia_45_2",
+    "rank": 68,
+    "data": {
+        "url": "https://superuser.com/questions/1160777/make-special-characters-available-on-us-keyboard-an-wayland",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Make special characters available on US keyboard an Wayland",
+        "top_image": "https://cdn.sstatic.net/Sites/superuser/Img/apple-touch-icon@2.png?v=e869e4459439",
+        "meta_img": "https://cdn.sstatic.net/Sites/superuser/Img/apple-touch-icon@2.png?v=e869e4459439",
+        "images": [
+            "https://cdn.sstatic.net/Sites/superuser/Img/logo.svg?v=4bc8a703ebac",
+            "https://i.sstatic.net/2RRcb.png?s=64",
+            "https://www.gravatar.com/avatar/a007be5a61f6aa8f3e85ae2fc18dd66e?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/141887020826bda8fc63529998faf765?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/io3di.png?s=64",
+            "https://superuser.com/posts/1160777/ivc/606f?prg=006e17f8-0705-4aa2-b8ed-5ce8d8f1c41e"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2016-12-27T20:38:15",
+        "summary": "",
+        "meta_description": "I have a US keyboard and layout but sometimes I need german special keys (äÄöÖüÜß).\nOf course I could switch keyboard layouts when I need it but I used to abuse \nthat uttery useless caps lock key to",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/superuser/Img/favicon.ico?v=4852d6fb3f5d",
+        "meta_site_name": "Super User",
+        "canonical_link": "https://superuser.com/questions/1160777/make-special-characters-available-on-us-keyboard-an-wayland",
+        "text": "Wayland uses XKB, but how to specify your layout varies based on your compositor (you can't use setxkbmap or xkbcomp as in Xorg). You'll probably want the altgr-intl variant of the standard us layout (US international layout) and possibly some options: Compose (aka Multi_key), perhaps on a Menu key? AltGr on the right Alt key? (The intl variant is similar but includes deadkeys on level 1; altgr-intl puts deadkeys on level 3, so they're out of the way but still accessible.)\n\nUnder this layout and variant, most of the symbols you've listed are available handily under the AltGr or Compose keys:\n\nAltGr+q = ä AltGr+Shift+a = Ä Compose+\",a = ä Compose+\",A = Ä AltGr+p = ö AltGr+Shift+p = Ö Compose+\",o = ö Compose+\",O = Ö AltGr+y = ü AltGr+Shift+y = Ü Compose+\",u = ü Compose+\",U = Ü AltGr+s = ß Compose+s,s = ß\n\nFor Weston, you'd add settings to $HOME/.config/weston.ini:\n\n[keyboard] keymap_rules=evdev keymap_layout=us keymap_variant=altgr-intl keymap_options=compose:menu,level3:ralt_switch\n\nFor sway (an i3-alike), you need to set environment variables before execution, either chained together on the commandline or in a helper script:\n\n#!/bin/sh export XKB_DEFAULT_LAYOUT=us export XKB_DEFAULT_VARIANT=altgr-intl export XKB_DEFAULT_OPTIONS=compose:menu,level3:ralt_switch sway\n\nUnder GNOME, you'll have to consult your favorite gsettings or dconf frontend. You can specify XKB options in /org/gnome/desktop/input-sources/xkb-options and specific layouts in /org/gnome/desktop/input-sources/sources. (These may have changed since the post; check your existing settings.)\n\ngsettings set org.gnome.desktop.input-sources sources \"[('xkb', 'us+altgr-intl')]\" gsettings set org.gnome.desktop.input-sources xkb-options \"['compose:menu','lv3:ralt_switch']\"\n\nKDE uses its own graphical control panel; you'll find it in System Settings > Hardware > Input Devices > Keyboard. The Layouts tab will allow you to configure the altgr-intl variant (it's listed as \"English (international AltGr dead keys)\"), and the XKB options are listed on the Advanced tab.\n\nOn current KDE Frameworks 5, this control panel stores settings in $HOME/.config/kxkbrc.\n\nIf your system uses systemd's localectl you might try setting that to what you'd want, and GNOME/KDE might be able to pick it up from there. That may only set things for Xorg at present, but I like having it as a fallback, and I hope Wayland compositors will use it in future releases to pick up systemwide preferences.\n\nsudo localectl set-x11-keymap us pc105 altgr-intl compose:menu,level3:ralt_switch (format: [layout] [model] [variant] [options])\n\nOne possibility might be to change your default keyboard from English (US) to English (International). I do this on all the computers I have sufficient control over, and it lets me use some punctuation as \"dead key\" accents to get common non-English characters.\n\nOn Windows, this converts the right Alt key into AltGr, and combining this with certain keystrokes gets me related non-English characters, such as AltGr+s for sharp-s, AltGr+t for the Icelandic thorn, AltGr+d for the Icelandic edh, and others.\n\nFor \"dead-key\", most punctuation doubles as accents - to get e-acute, type ' then e; o-acute ' then o, a-grave ` then a, u-umlaut \" then u, and so on. To get the punctuation, either press a character that it doesn't combine with as an accent, or press space - an apostrophe is ' then space; a double-quote/inch mark is \" then space, and so on. It's a little bit of an adjustment, but a lot easier than memorizing alt-codes (on Windows) or continually switching between layouts.\n\n(I've since done this in 'out-of-the-box' Linux Mint; modulo some minor differences in where some of the AltGr characters are located, ithas the same effect - but it's noy Wayland)."
+    }
+}

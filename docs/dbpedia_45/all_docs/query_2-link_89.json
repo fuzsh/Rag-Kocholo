@@ -1,0 +1,48 @@
+{
+    "id": "dbpedia_45_2",
+    "rank": 89,
+    "data": {
+        "url": "https://askubuntu.com/questions/1050672/gdm3-does-not-start-in-ubuntu-18-04",
+        "read_more_link": "",
+        "language": "en",
+        "title": "GDM3 does not start in Ubuntu 18.04",
+        "top_image": "https://cdn.sstatic.net/Sites/askubuntu/Img/apple-touch-icon@2.png?v=c492c9229955",
+        "meta_img": "https://cdn.sstatic.net/Sites/askubuntu/Img/apple-touch-icon@2.png?v=c492c9229955",
+        "images": [
+            "https://cdn.sstatic.net/Sites/askubuntu/Img/logo.svg?v=472cf2768bba",
+            "https://i.sstatic.net/jrI6J.jpg",
+            "https://i.sstatic.net/zqElV.png?s=64",
+            "https://lh6.googleusercontent.com/-fb5aXs2cbZE/AAAAAAAAAAI/AAAAAAAAABM/pQ6Js9zbQEc/photo.jpg?sz=64",
+            "https://i.sstatic.net/zqElV.png?s=64",
+            "https://i.sstatic.net/xiWd2.jpg?s=64",
+            "https://i.sstatic.net/hv0DE.jpg?s=64",
+            "https://i.sstatic.net/DUQAm.jpg?s=64",
+            "https://www.gravatar.com/avatar/51f225b4d3a960e591d86bd35b63cc7b?s=64&d=identicon&r=PG",
+            "https://lh6.googleusercontent.com/-fb5aXs2cbZE/AAAAAAAAAAI/AAAAAAAAABM/pQ6Js9zbQEc/photo.jpg?sz=64",
+            "https://i.sstatic.net/J3qsZ.png?s=64",
+            "https://www.gravatar.com/avatar/05dcba3ac082189c3e6e2bd229229691?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/aiaHD.png?s=64",
+            "https://i.sstatic.net/ypy8w.png?s=64",
+            "https://lh4.googleusercontent.com/-lsuHuWOZ4QE/AAAAAAAAAAI/AAAAAAAAAHs/D-Shgv8Ln-Q/photo.jpg?sz=64",
+            "https://i.sstatic.net/92eWy.jpg?s=64",
+            "https://www.gravatar.com/avatar/5328bb2afb038ad831f38cb22dcba04f?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/L3Pxs.jpg?s=64",
+            "https://askubuntu.com/posts/1050672/ivc/606f?prg=781dc091-1728-471f-a684-c92b611cd041"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2018-06-29T09:48:05",
+        "summary": "",
+        "meta_description": "I recently upgraded my laptop from Ubuntu 17.04 to 18.04. It worked perfectly well and I have been using it without any problem, but yesterday I issued sudo apt upgrade and it upgraded some packages.",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/askubuntu/Img/favicon.ico?v=928dfb7c1990",
+        "meta_site_name": "Ask Ubuntu",
+        "canonical_link": "https://askubuntu.com/questions/1050672/gdm3-does-not-start-in-ubuntu-18-04",
+        "text": "I had a similar problem updating from 16.04 to 18.04.\n\nThe solution in my particular case was to deactivate Wayland modifying /etc/gdm3/custom.conf uncommenting or enabling WaylandEnable=false so the GNOME display manager will always load the GNOME desktop environment from gnome-desktop and not Wayland. This is because Wayland usually has errors with some graphics drivers.\n\nThis can be done easily from an Ubuntu live USB or if possible start in Recovery mode from the grub menu.\n\nI was a victim of this issue for some time with Ubuntu 18.04 on a Dell Latitude 5580 which uses nvidia. I think gdm is not fully compatible with this spec.\n\nAfter trying many solutions, including reinstalling Ubuntu several times, I decided to shift to LightDM and that fixed the issue.\n\nIn the booting screen press Alt+F2 and execute these commands:\n\nsudo apt-get install lightdm sudo dpkg-reconfigure lightdm\n\nThis worked for me. Good luck :)\n\nI had a similar issue. This error in syslog finally lead me to my solution:\n\n(EE) systemd-logind: failed to get session: PID 10023 does not belong to any known session\n\nAs a result of that error, gdm-x-session fails further along in the gdm3 start up process and aborts:\n\n/usr/lib/gdm3/gdm-x-session[2849]: dbus-daemon[3479]: [session uid=136 pid=3479] Activating service name='org.freedesktop.systemd1' requested by ':1.0' (uid=136 pid=2849 comm=\"/usr/lib/gdm3/gdm-x-session gnome-session --autost\" label=\"unconfined\") /usr/lib/gdm3/gdm-x-session[2849]: dbus-daemon[3479]: [session uid=136 pid=3479] Activated service 'org.freedesktop.systemd1' failed: Process org.freedesktop.systemd1 exited with status 1 gdm-x-session: could not fetch environment: GDBus.Error:org.freedesktop.DBus.Error.Spawn.ChildExited: Process org.freedesktop.systemd1 exited with status 1 gdm3: GdmManager: trying to register new display gdm3: GdmManager: Error while retrieving session id for sender: Error getting session id from systemd: No data available gdm-x-session: Could not register display: GDBus.Error:org.freedesktop.DBus.Error.AccessDenied: No display available\n\nThe gdm3 service just keeps trying to start gdm-x-session over and over again, flooding syslog. I fixed it by adding this line to /etc/pam.d/gdm-launch-environment:\n\nsession optional pam_systemd.so\n\nMy theory on the real problem is that pam-auth-update is run during some package installs and it would have added pam_systemd to /etc/pam.d/common-session. However, I had done manual edits to at least one /etc/pam.d/common-* file, in which case pam-auth-update aborts if \"--force\" is not specified.\n\nI had the same issues with gdm3, it simply would not start after installing ubuntu-desktop.\n\nKandy's solution above worked for me, with a couple of small adjustments:\n\nAlt+F2 to get to a prompt as the boot cycle is ending (it looks like your desktop display is about to start)\n\nsudo apt update sudo apt upgrade sudo add-apt-repository main sudo add-apt-repository universe sudo add-apt-repository restricted sudo add-apt-repository multiverse sudo apt install lightdm\n\nAt the end of the lightdm install it popped up a screen to give me the choice of using either lightdm or gdm3, I picked lightdm. Some places I saw mentioned that you needed to run sudo dpkg-reconfigure lightdm, but this only took me back to the popup screen to let me choose which display manager to use.\n\nWhen I rebooted I got a message that no display manager was selected (which I ignored) and everything seems to be OK now, the \"normal\" desktop display appeared and everything seems to work fine. I haven't rebooted again yet, I am curious to see if I continue to get the message about no display manager selected. I will just continue to ignore tho until I have some spare time to research."
+    }
+}

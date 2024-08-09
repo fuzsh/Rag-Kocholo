@@ -1,0 +1,35 @@
+{
+    "id": "dbpedia_124_2",
+    "rank": 94,
+    "data": {
+        "url": "https://crypto.stackexchange.com/questions/9877/strength-of-cbc-with-ciphertext-stealing",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Strength of CBC with Ciphertext Stealing",
+        "top_image": "https://cdn.sstatic.net/Sites/crypto/Img/apple-touch-icon@2.png?v=fff48bebc5fd",
+        "meta_img": "https://cdn.sstatic.net/Sites/crypto/Img/apple-touch-icon@2.png?v=fff48bebc5fd",
+        "images": [
+            "https://cdn.sstatic.net/Sites/crypto/Img/logo.svg?v=87c028c5e448",
+            "https://i.sstatic.net/2IPua.jpg?s=64",
+            "https://i.sstatic.net/EYsPh.png?s=64",
+            "https://i.sstatic.net/VIYKv.png?s=64",
+            "https://i.sstatic.net/mYIzP.png?s=64",
+            "https://crypto.stackexchange.com/posts/9877/ivc/31d9?prg=33954550-719a-42cc-83bb-c5aab6134704"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2013-08-20T18:14:43",
+        "summary": "",
+        "meta_description": "Is CBC with Ciphertext Stealing (CTS) considerably weaker than CBC with padding such as PKCS7?\n\nI would imagine the most common situation where CTS is necessary would be due to some size constraint...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/crypto/Img/favicon.ico?v=e5444c0e7c0b",
+        "meta_site_name": "Cryptography Stack Exchange",
+        "canonical_link": "https://crypto.stackexchange.com/questions/9877/strength-of-cbc-with-ciphertext-stealing",
+        "text": "In their 2012 paper \"The Security of Ciphertext Stealing\", Phillip Rogaway, Mark Wooding and Haibin Zhang prove that all the NIST-approved ciphertext stealing modes provide the same level of security as ordinary CBC mode, i.e. ciphertext indistinguishability under a chosen-plaintext attack. To quote their abstract:\n\n\"Abstract. We prove the security of CBC encryption with ciphertext stealing. Our results cover all versions of ciphertext stealing recently recommended by NIST. The complexity assumption is that the underlying blockcipher is a good PRP, and the security notion achieved is the strongest one commonly considered for chosen-plaintext attacks, indistinguishability from random bits (ind\\$-security). We go on to generalize these results to show that, when intermediate outputs are slightly delayed, one achieves ind\\$-security in the sense of an online encryption scheme, a notion we formalize that focuses on what is delivered across an online API, generalizing prior notions of blockwise-adaptive attacks. Finally, we pair our positive results with the observation that the version of ciphertext stealing described in Meyer and Matyas's well-known book (1982) is not secure.\"\n\nIn particular, in section 3 of the paper, the authors write:\n\n\"Turning now to the CBC-CS modes, we claim that these inherit CBC's security with no quantitative degradation. The needed observation is that $\\text{CBC-CS1}^{IV}_K(P)$ is just $\\text{CBC}^{IV}_K(P\\ 0^∗)$ (minimal padding to the next multiple of $b$ bits) with some bits excised and some bits reordered. Which bits are excised and how bits are rearranged depends only on $|P|$. Thus if $\\text{CBC}^{IV}_K(·)$ looks random, so too will look $\\text{CBC-CS1}^{IV}_K(·)$. The same comments hold for CBC-CS2 and CBC-CS3; these are just diﬀerent rearrangements of the bits of $\\text{CBC}^{IV}_K(P\\ 0^∗)$. The observation and proof are formalized by the proposition below.\"\n\nEdit: It should be noted that all these indistiguishability results assume that the length of the plaintext (and corresponding ciphertext) is fixed and known to the attacker. If used to encrypt variable-length messages, all the commonly used block cipher modes of operation leak information about the length of the plaintext.\n\nAs you correctly note, CBC mode without ciphertext stealing does leak slightly less information about the plaintext length than other modes (like CFB, OFB, CTR or CBC-CS), since in traditional CBC mode the message is padded to the next multiple of the cipher block size (usually 8 or 16 bytes). However, this incidental side effect isn't really something you should generally rely on to conceal your plaintext lengths, at least unless you can be sure that just knowing whether or not, say, a message is less than 16 bytes long won't ever be the critical piece of information the attacker is looking for. Instead, if you do care about concealing the length of the plaintext, you should pad your messages yourself to some fixed length before encrypting them."
+    }
+}

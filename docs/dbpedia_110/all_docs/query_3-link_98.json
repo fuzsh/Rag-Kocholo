@@ -1,0 +1,44 @@
+{
+    "id": "dbpedia_110_3",
+    "rank": 98,
+    "data": {
+        "url": "https://community.blueprism.com/t5/Product-Forum/Data-Extraction-from-Text/td-p/51814",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Data Extraction from Text",
+        "top_image": "https://community.blueprism.com/html/assets/blue-lines-600x450px.png",
+        "meta_img": "https://community.blueprism.com/html/assets/blue-lines-600x450px.png",
+        "images": [
+            "https://community.blueprism.com/html/@C46E6CADBAC2910D89ABAB24AF21B4AB/assets/SSC-blueprism-2col-logo-rgb.svg",
+            "https://community.blueprism.com/t5/image/serverpage/avatar-name/mo-0195_User_Blue/avatar-theme/candy/avatar-collection/Blue_Prism/avatar-display-size/profile/version/2?xdesc=1.0",
+            "https://community-stage.blueprism.com/html/assets/enterprise.png",
+            "https://community.blueprism.com/legacyfs/online/blueprism_avatars/1502.JPG",
+            "https://community.blueprism.com/t5/image/serverpage/avatar-name/robometro/avatar-theme/candy/avatar-collection/robots/avatar-display-size/profile/version/2?xdesc=1.0",
+            "https://community.blueprism.com/legacyfs/online/blueprism_avatars/8.JPG",
+            "https://community.blueprism.com/legacyfs/online/blueprism_avatars/544.JPG",
+            "https://community.blueprism.com/t5/image/serverpage/image-id/20607i8446F9F5FE3E8C4A/image-size/large?v=v2&px=999",
+            "https://community.blueprism.com/t5/image/serverpage/image-id/20606i6FB9E9893716C857/image-size/large?v=v2&px=999",
+            "https://community.blueprism.com/t5/image/serverpage/image-id/20609i8FBEA0F1F24C7C4B/image-size/large?v=v2&px=999",
+            "https://community.blueprism.com/skins/images/A88C12D8BE9165055C467C88D43B1468/responsive_peak/images/icon_anonymous_message.png",
+            "https://community.blueprism.com/skins/images/B2DF9E34BDCFC37347FCA758C9280E60/responsive_peak/images/powered_by_khoros.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "community.blueprism.com",
+            "user-id"
+        ],
+        "publish_date": "2022-05-19T09:18:00+00:00",
+        "summary": "",
+        "meta_description": "Hi Everyone, I have a data item(Data type is TEXT) that is extracted from PDF, so the text after extracting is like below: Maverick Sample (May 12,",
+        "meta_lang": "en",
+        "meta_favicon": "https://community.blueprism.com/html/@8204A8E9B57EBE8DBEFB59F51242095F/assets/favicon.ico",
+        "meta_site_name": "",
+        "canonical_link": "https://community.blueprism.com/t5/Product-Forum/Data-Extraction-from-Text/td-p/51814",
+        "text": "Hi Everyone,\n\nI have a data item(Data type is TEXT) that is extracted from PDF, so the text after extracting is like below:\n\nMaverick Sample (May 12, 2022, 13:29 CDT) Maverick Sample\n\nMaverick\n\nSample\n\n04/30/2022\n\n1 2 3 4 5 6 7 8\n\n4\n\n111 AAA st 1111111111\n\nLondon YY 78979\n\nsample@email.com\n\n4\n\n4\n\n05/12/2022\n\nI need to extract and save it to a data item as follows:\n\nSignature: Maverick Sample (May 12, 2022 13:29 CDT) Maverick Sample\n\nFirst Name: Maverick\n\nLast Name: Sample\n\nDate: 04/30/2022\n\nEmployee ID: 1 2 3 4 5 6 7 8\n\n4\n\nAddress: 111 AAA st\n\nPhone No: 1111111111\n\nCity: London\n\nState: YY\n\nZip Code: 78979\n\nEmail: sample@email.com\n\n4\n\n4\n\nSeparation Date: 05/12/2022\n\nHere 4 4 4 appearing between the lines come from PDF after considering the file as text. Any help will be highly appreciable.\n\n@devneetmohanty07 FYI\n\nThanks!\n\n​\n\n------------------------------\n\nChakkravarthi PR\n\n------------------------------\n\nHey @ChakkravarthiPR,\n\nYou can create a custom code in the \"Code\" stage for the same (C# VB.net).\n\nI had used regex to create groups from the result of the string I was getting.\n\nThe only condition you require for creating the regex is the pattern of the input string should always remain the same.\n\nYou can use the website Regex101.com for creating the regex pattern.\n\n(Note you can also eliminate the unrequired characters which are coming in your input string)\n\nRegards\n\n​\n\n------------------------------\n\nRushabh Dedhia\n\nSenior Consultant - Team Lead\n\nWonderBotz LLC\n\nAhmedabad\n\n+91 9428860307\n\n------------------------------\n\nRushabh Dedhia Founder, Biznessology (https://www.linkedin.com/company/biznessology/) +91 9428860307\n\n@Chakkravarthi PR,\n\nYou could also use BP's Utility - Strings VBO which has a \"Regex Replace\" action which can do the trick?\n\nAs @Rushabh Dedhia pointed out, you should be sure that the PDF will always produce that data you are looking for. If the data is produced in a PDF from a form with proper validation, this usually is not a problem. If the data is not in that format for a minority of cases, you can always do a quick check (\"Test Regex Match\" action) to see if the Regex pattern matches and throw an exception if it doesn't.\n\nBefore\n\nAfter\n\nSearch Pattern:\n\n(.*)[\\r\\n]+(.*)[\\r\\n]+(.*)[\\r\\n]+(\\d{2}/\\d{2}/\\d{4})[\\r\\n]+([\\d\\s]*?)[\\r\\n]+.*?[\\r\\n]+(.+)\\s(\\S+)[\\r\\n]+(.*)\\s(.*)\\s(\\S+)[\\r\\n]+(.*\\@.*\\..*)[\\r\\n]+.*?[\\r\\n]+.*?[\\r\\n]+(\\d{2}/\\d{2}/\\d{4})​\n\n​Replacement Pattern:\n\nSignature: $1\n\nFirst Name: $2\n\nLast Name: $3\n\nDate: $4\n\nEmployee ID: $5\n\nAddress: $6\n\nPhone No: $7\n\nCity: $8\n\nState: $9\n\nZip Code: $10\n\nEmail: $11\n\nSeparation Date: $12\n\n​\n\n------------------------------\n\nMicheal Charron\n\nSenior Manager\n\nRBC\n\nAmerica/Toronto\n\n------------------------------\n\nMicheal Charron\n\nRBC\n\nToronto, Ontario\n\nCanada"
+    }
+}

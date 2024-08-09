@@ -1,0 +1,43 @@
+{
+    "id": "dbpedia_109_3",
+    "rank": 11,
+    "data": {
+        "url": "https://superuser.com/questions/1537462/what-is-the-purpose-of-these-nul-characters",
+        "read_more_link": "",
+        "language": "en",
+        "title": "What is the purpose of these `NUL` characters?",
+        "top_image": "https://cdn.sstatic.net/Sites/superuser/Img/apple-touch-icon@2.png?v=e869e4459439",
+        "meta_img": "https://cdn.sstatic.net/Sites/superuser/Img/apple-touch-icon@2.png?v=e869e4459439",
+        "images": [
+            "https://cdn.sstatic.net/Sites/superuser/Img/logo.svg?v=4bc8a703ebac",
+            "https://i.sstatic.net/Pew9p.png",
+            "https://i.sstatic.net/bZnyC8zU.jpg?s=64",
+            "https://i.sstatic.net/7Y3n2.jpg?s=64",
+            "https://i.sstatic.net/yqZ5o.png",
+            "https://i.sstatic.net/UIp1b.png",
+            "https://i.sstatic.net/g9odq.png",
+            "https://i.sstatic.net/6OwOc.png",
+            "https://i.sstatic.net/tpq5E.png",
+            "https://www.gravatar.com/avatar/a9e1eb6e25803528d25f57f3df79e115?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/wYhz5.png?s=64",
+            "https://i.sstatic.net/bZnyC8zU.jpg?s=64",
+            "https://i.sstatic.net/5nyqa.jpg?s=64",
+            "https://superuser.com/posts/1537462/ivc/642f?prg=6162ab09-30f6-4115-8b05-2f3dfdd2776a"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2020-03-31T10:13:14",
+        "summary": "",
+        "meta_description": "This is purely out of academic curiosity, but I’ve often found files on both Windows (Windows 10 Pro; 64bit) as well as Android that are not obfuscated, but contain a bunch of NUL characters betwee...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/superuser/Img/favicon.ico?v=4852d6fb3f5d",
+        "meta_site_name": "Super User",
+        "canonical_link": "https://superuser.com/questions/1537462/what-is-the-purpose-of-these-nul-characters",
+        "text": "This is a binary file which contains characters outside the set of printable ASCII characters.\n\nBecause these characters are \"not printable\", Notepad++ displays them as a descriptive block. You'll likely see others, as shown below. Here you see all of the values from binary 0 / 0x00 to 255 / 0xFF (which is the largest value that can be stored in a single byte).\n\nThe values shown on lines 1, 2 and 3 are typically referred to as \"Control Characters\", and are used to influence the terminal, cursor placement, etc... a NUL has the value 0 / 0x00. The BS control character is \"Backspace\", and instructs the application to remove one character and move the cursor back one space. Worthy of note are the \"missing\" or invisible characters between BS and VT... in here are the \"Horizontal Tab\" and \"Line Feed\" characters - the former is fairly self explanatory, and the latter will makes the text flow on to the next line.\n\nOn lines 4 and 5 you can see the entire set of printable ASCII characters. A space ( ) has the binary values 32 / 0x20, an exclaimation point has the values 33 / 0x21, etc... The funny square box on the end of line 5 is the DEL control character - 127 / 0x7F.\n\nAll values including and above 128 are either \"Extended ASCII\", or also non-printable, and these are displayed from line 6 onwards as their raw value - e.g: x80. There isn't a good way to determine how to interpret these - some DOS applications used some of these characters to produce frames around \"windows\", boxes or areas on the terminal.\n\nFor more information, see the \"Character Groups\" section of the wiki page.\n\nViewing the same file as above in a \"Hex Editor\", you will typically see the raw binary values alongside the ASCII representation.\n\nWhen the file contains data other than plain text (e.g: it's an application, or other binary file), you'll see a lot of non-print characters, because they were never intended for human consumption... In such files, the data is laid out in binary, usually following a strict structure or format. In some cases the data represents large numbers (by concatenating a number of bytes together), in other cases they might represent \"machine code\" or raw instructions that are presented directly to a processor.\n\nYou might be able to see strings inside such binary files, but this is more \"by accident\" than on purpose - the application itself has to know what to print to the screen when you see a message, and this will be that.\n\nThere are a couple of common ways that strings are encoded in binary files.\n\n1. C String\n\nThis format makes use of 8-bit characters, and terminates the string with a NUL character. The string is immediately visible in the file, as shown below - note the terminating NUL.\n\n2. UTF-16\n\nThis format makes use of 16-bit characters (i.e: two bytes concatenated), and can represent a portion of the code points described by Unicode. Here, you see that the string is somewhat visible, if you read between the NUL characters... This format is very common in applications that target Windows.\n\nCan you see the string Logical Disks on the second line?\n\nBinary files can also store other resources inside them - for example images, sounds, XML, JSON, Archives, etc... the application can then extract the resources to disk at runtime if necessary, or may often process them directly from memory.\n\nIt's often possible to extract these resources using tools in an automated fashion, but in some cases the file is not designed to an open / common standard, and some manual intervention is required."
+    }
+}
