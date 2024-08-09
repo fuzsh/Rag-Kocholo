@@ -10,8 +10,8 @@ config = {
     "recreate_index": False,
     "create_sample_queries": False,
     "add_score": False,
-    "fetch_documents": True,
-    "get_urls": False
+    "fetch_documents": False,
+    "get_urls": True
 }
 
 if __name__ == '__main__':
@@ -59,16 +59,16 @@ if __name__ == '__main__':
             # print(queries)
         # get the documents for the queries
         crawler(queries)
-    #
-    # if config["get_urls"]:
-    #     dataset_name = "DBpedia"
-    #     kg, gt = load_dataset(dataset_name=dataset_name, dataset_file="kg_modified.json")
-    #
-    #     # fix identifiers
-    #     kg = [(f"{dataset_name.lower()}_{i[0]}", i[1]) for i in kg]
-    #
-    #     for knowledge_graph in kg:
-    #         get_article_from_query(knowledge_graph)
+
+    if config["get_urls"]:
+        dataset_name = "DBpedia"
+        kg, gt = load_dataset(dataset_name=dataset_name, dataset_file="kg_modified.json")
+
+        # fix identifiers
+        kg = [(f"{dataset_name.lower()}_{i[0]}", i[1]) for i in kg]
+
+        for knowledge_graph in kg:
+            get_article_from_query(knowledge_graph)
     #
     # if config["create_sample_queries"]:
     #     # this code doesn't work if the directory already exists and the sample queries are already created
