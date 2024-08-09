@@ -1,0 +1,28 @@
+{
+    "id": "dbpedia_191_1",
+    "rank": 90,
+    "data": {
+        "url": "https://forum.mothur.org/t/problem-with-classify-seq-and-remove-lineage/2274",
+        "read_more_link": "",
+        "language": "en",
+        "title": "PROBLEM WITH CLASSIFY.SEQ AND REMOVE.LINEAGE",
+        "top_image": "https://global.discourse-cdn.com/standard10/uploads/mothur/original/1X/914f5c101f60b23ade6abca64dc20299959e3ce4.png",
+        "meta_img": "https://global.discourse-cdn.com/standard10/uploads/mothur/original/1X/914f5c101f60b23ade6abca64dc20299959e3ce4.png",
+        "images": [],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2015-03-03T12:43:29+00:00",
+        "summary": "",
+        "meta_description": "Hi, \nI am working on ITS sequences. I have done classify.seqs with my samples and subsequently used remove.lineage to remove the taxon which are not classified at any kingdom level. I used that file to do classify.seqs. &hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://global.discourse-cdn.com/standard10/uploads/mothur/optimized/1X/914f5c101f60b23ade6abca64dc20299959e3ce4_2_32x32.png",
+        "meta_site_name": "mothur",
+        "canonical_link": "https://forum.mothur.org/t/problem-with-classify-seq-and-remove-lineage/2274",
+        "text": "Hi,\n\nI am working on ITS sequences. I have done classify.seqs with my samples and subsequently used remove.lineage to remove the taxon which are not classified at any kingdom level. I used that file to do classify.seqs. But i found that again there is unclassifed sequences (They are classified up to order level earlier). Knidly let me know what to do! Please find following classification for the same sequence after and before removal of unclassified lineage.\n\nBefore removal of unclassified lineage\n\nOZA2F_00241_00762 k__Fungi(100);p__Ascomycota(85);c__Dothideomycetes(83);o__Pleosporales(81);unclassified;unclassified;unclassified;\n\nAfter removal of unclassified lineage\n\nOZA2F_00241_00762 k__Fungi(100);unclassified;unclassified;unclassified;unclassified;unclassified;unclassified;\n\nYour help would appreciated to figure out this problem!\n\nThanks!\n\nPlease find following commands which i have used,\n\nmothur > classify.seqs(fasta=current, group=current, name=current, template=UNITE_public_mothur_30.12.2014.fasta, taxonomy=UNITE_public_mothur_30.12.2014_taxonomy.txt, cutoff=80, processors=1)\n\nmothur > remove.lineage(fasta=current, name=current, group=current, taxonomy=current, taxon=k__Fungi;unclassified;unclassified;unclassified;unclassified;unclassified;unclassified;)\n\nmothur > summary.seqs(fasta=current)\n\nmothur > count.groups(group=current)\n\nmothur > split.abund(fasta=current, list=current, group=current, name=current, cutoff=5)\n\nmothur > summary.seqs(fasta=ITS.unique.pick.pick.pick.0.03.abund.fasta)\n\nmothur > count.groups(group=ITS.pick.pick.pick.pick.0.03.abund.groups)\n\nmothur > sub.sample(fasta=ITS.unique.pick.pick.pick.0.03.abund.fasta, group=ITS.pick.pick.pick.pick.0.03.abund.pick.groups, size=403, persample=T)\n\nmothur > summary.seqs(fasta=ITS.unique.pick.pick.pick.0.03.abund.subsample403.fasta)\n\nmothur > list.seqs(fasta=ITS.unique.pick.pick.pick.0.03.abund.subsample403.fasta)\n\nmothur > get.seqs(accnos=current, name=current)\n\nmothur > classify.seqs(fasta=ITS.unique.pick.pick.pick.0.03.abund.subsample403.fasta, group=ITS.pick.pick.pick.pick.0.03.abund.pick.subsample403.groups, name=ITS.pick.pick.pick.pick.subsample403.names, template=UNITE_public_mothur_30.12.2014.fasta, taxonomy=UNITE_public_mothur_30.12.2014_taxonomy.txt, cutoff=80, processors=1)\n\nSo that explains why it wasn’t removed. What is likely going on is the bootstrapping results in the second run are just below your cutoff of 80. Bootstrapping results can vary, because mothur is choosing a subset of the kmers, and then classifying those to see how many iterations match the original classification. If the bootstrap falls below the cutoff, mothur will report it as unclassified. You can confirm this by running the second classify.seqs command without a cutoff, and then running:\n\nget.lineage(fasta=current, name=current, group=current, taxonomy=current, taxon=k__Fungi;unclassified;unclassified;unclassified;unclassified;unclassified;unclassified;)"
+    }
+}
