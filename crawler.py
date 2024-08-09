@@ -183,7 +183,7 @@ def get_article_from_query(kg, search_engine="google"):
     # TODO: FIX - count the number of files in the directory, if it is greater than 100, skip | BULLSHIT IDEA
     files = os.listdir(f"docs/{identifier}/all_docs")
     files_length = len(files)
-    if files_length > 150:
+    if files_length > 50:
         log.info(f"Skipping {identifier} with {files_length} files")
         return
 
