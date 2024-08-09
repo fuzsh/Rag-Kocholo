@@ -19,17 +19,16 @@ for filename in os.listdir('./docs'):
     total += count_files
 
 
-def create_bar(percentage, length=20):
+def create_bar(percentage, length=10):
     filled_length = int(length * percentage // 100)
     bar = '█' * filled_length + '-' * (length - filled_length)
     return bar
 
 
-print("====================================")
 print(f"FactBench\t: {factBench} out of 2800 \t {create_bar(factBench / 2800 * 100)}")
 print(f"YAGO\t\t: {yago} out of 1386 \t {create_bar(yago / 1386 * 100)}")
 print(f"DBpedia\t\t: {dbPedia} out of 9344 \t {create_bar(dbPedia / 9344 * 100)}")
 print("=====================================")
-print(f"Total\t\t: {total} documents fetched")
-print("======================================")
 print(f"Remaining\t: {len(os.listdir('./docs')) - (factBench + yago + dbPedia)}")
+print(f"Total\t\t: {total} documents fetched")
+print("=====================================")
