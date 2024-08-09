@@ -1,0 +1,34 @@
+{
+    "id": "dbpedia_162_3",
+    "rank": 5,
+    "data": {
+        "url": "https://stackoverflow.com/questions/44036019/average-genre-per-movie-in-genre-sql-server-2012",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Average Genre per Movie in Genre SQL Server 2012",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/b4779212f57ff2e9549ea90a4499c2d7?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/5bc1cd5253f2157f731a38ade773f932?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/eab31dc9cf9842a9013741e4cb0a08f7?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/qn1zS.jpg?s=64",
+            "https://stackoverflow.com/posts/44036019/ivc/c219?prg=cd0c4a80-8353-4f19-aed0-ca8f31a699dc"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2017-05-17T22:57:04",
+        "summary": "",
+        "meta_description": "Stumbled across this problem that I could not find the solution too, need some help or point me in the right direction.\n\nThe tables categorize several movies into multiple genres, for example: Toy ...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/44036019/average-genre-per-movie-in-genre-sql-server-2012",
+        "text": "Stumbled across this problem that I could not find the solution too, need some help or point me in the right direction.\n\nThe tables categorize several movies into multiple genres, for example: Toy Story is in the genres; Children's, Comedy and Animation.\n\nI am trying to find out which genres are most clear-cut and which are so muddled that they tend to be listed among several others for a typical movie.\n\nFor each genre in the data set, how many genres are the movies in that genre in, on average. For example, a Action movie is in 1.3 genres and the average Adventure movie is in 2.9 genres, so an Action movie is a better defined genre.\n\nBelow are samples of the tables but here is a sql editor with the tables and values in them for reference: https://blazerme.herokuapp.com/queries/new\n\n3 tables:\n\ngenre table:\n\nid name 1 Action 2 Adventure 3 Animation 4 Children's 5 Comedy\n\ngenre_movies table:\n\nid movie_id genre_id 1 1(Toy Story) 3(Animation) 2 1(Toy Story) 4(Children's) 3 1(Toy Story) 5(Comedy) 4 2(GoldenEye) 1(Action) 5 2(GoldenEye) 2(Adventure) 6 2(GoldenEye) 16(Thriller)\n\nmovies table:\n\nid title release_date 1 Toy Story (1995) 1995-01-01 2 GoldenEye (1995) 1995-01-01 3 Four Rooms (1995) 1995-01-01\n\nMy best effort so far is I try to Avg over the count of the genre_id. See below:\n\nSELECT name, AVG(c.count) FROM (SELECT g.name AS name, COUNT(gm.genre_id) AS count FROM genres g INNER JOIN genres_movies gm ON g.id = gm.genre_id INNER JOIN movies m ON m.id = gm.movie_id GROUP BY g.name) c GROUP BY name"
+    }
+}
