@@ -1,0 +1,48 @@
+{
+    "id": "dbpedia_380_3",
+    "rank": 10,
+    "data": {
+        "url": "https://community.esri.com/t5/arcgis-pro-questions/display-case-on-map-match-abbreviation-dictionary/td-p/1277725",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Display case on map match abbreviation dictionary in ArcGIS Pro",
+        "top_image": "https://community.esri.com/t5/image/serverpage/image-id/67965i31108E08AF962AF5?v=v2",
+        "meta_img": "https://community.esri.com/t5/image/serverpage/image-id/67965i31108E08AF962AF5?v=v2",
+        "images": [
+            "https://community.esri.com/html/assets/langTrFlag.PNG",
+            "https://community.esri.com/legacyfs/online/esri/avatars/a1025_24.png",
+            "https://community.esri.com/t5/image/serverpage/image-id/34019i5DA19988ECF94EF6/image-dimensions/50x50/image-coordinates/0%2C0%2C1084%2C1084/constrain-image/false?v=v2",
+            "https://communitystg.esri.com/html/@09C70CF6BB92070325EF7BBC54D73CCB/rank_icons/esri-logo-40.png?version=preview",
+            "https://community.esri.com/t5/image/serverpage/image-id/68195iC2108B2FDC7DB602/image-size/large?v=v2&px=999",
+            "https://community.esri.com/t5/image/serverpage/image-id/68199iA4514725604B70DE/image-size/medium?v=v2&px=400",
+            "https://community.esri.com/t5/image/serverpage/image-id/34019i5DA19988ECF94EF6/image-dimensions/50x50/image-coordinates/0%2C0%2C1084%2C1084/constrain-image/false?v=v2",
+            "https://communitystg.esri.com/html/@09C70CF6BB92070325EF7BBC54D73CCB/rank_icons/esri-logo-40.png?version=preview",
+            "https://community.esri.com/t5/image/serverpage/image-id/67965i31108E08AF962AF5/image-size/large?v=v2&px=999",
+            "https://community.esri.com/legacyfs/online/esri/avatars/a1025_24.png",
+            "https://community.esri.com/t5/image/serverpage/image-id/34019i5DA19988ECF94EF6/image-dimensions/50x50/image-coordinates/0%2C0%2C1084%2C1084/constrain-image/false?v=v2",
+            "https://communitystg.esri.com/html/@09C70CF6BB92070325EF7BBC54D73CCB/rank_icons/esri-logo-40.png?version=preview",
+            "https://community.esri.com/t5/image/serverpage/image-id/68195iC2108B2FDC7DB602/image-size/large?v=v2&px=999",
+            "https://community.esri.com/t5/image/serverpage/image-id/68199iA4514725604B70DE/image-size/medium?v=v2&px=400",
+            "https://community.esri.com/legacyfs/online/esri/avatars/a1025_24.png",
+            "https://community.esri.com/skins/images/92DA528C6F8748BAC1E0E57E4598A46A/responsive_peak/images/icon_anonymous_message.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "community.esri.com",
+            "user-id"
+        ],
+        "publish_date": "2023-04-12T10:36:19.312000+00:00",
+        "summary": "",
+        "meta_description": "Solved: I have created an abbreviation dictionary in ArcGIS Pro that contains independent country names and territories. I would like the country names to be",
+        "meta_lang": "en",
+        "meta_favicon": "https://www.esri.com/content/dam/esrisites/en-us/common/favicon/esri-favicon-180.png",
+        "meta_site_name": "Esri Community",
+        "canonical_link": "https://community.esri.com/t5/arcgis-pro-questions/display-case-on-map-match-abbreviation-dictionary/td-p/1277725",
+        "text": "A Translation entry in an abbreviation dictionary always changes the matched word or phrase to the new value. But you can have another abbreviation dictionary entry for the translated word. So in this case you might have a Translation entry that changes TAIWAN to Taiwan, and another Keyword dictionary entry that changes Taiwan to Tai. if there isn't enough space.\n\nIn the screenshot below you can see an abbreviation dictionary that has 1 Keyword entry for AFGHANISTAN that will change it to AFG only if needed. Then BERMUDA and TAIWAN each have 2 entries - one Translation and one Keyword. The translation entry will always kick in, and if there is not enough space for the translated word then the Keyword translation will be used. (Pardon the geographic impossibilities of this map.)\n\nHere you can see from the attribute table that the data contains all upper case names. TAIWAN is translated to Taiwan because there is room, and AFGHANISTAN is abbreviated to AFG because there isn't enough room for the full word.\n\nZooming out more and shifting the coverage area shows that TAIWAN now uses the Keyword translation and AFGHANISTAN doesn't use any translation.\n\nRegarding your comment about AFGHANISTAN being changed to Afghanistan - setting Text case to Normal wouldn't change data that's stored in upper case to Mixed/Title case - rather the Normal setting doesn't make any adjustment to the source text. A few things to investigate are:\n\nIs the source text in the attribute table stored in upper case or title case?\n\nDoes the label expression use the field containing the upper case name?\n\nDo you have an abbreviation dictionary Translation entry for AFGHANISTAN that would be converting the label to Afghanistan?\n\nThis makes sense now the way you described it above. You should consider adding this to the abbreviation and truncate labels help page as it is more descriptive.\n\nMy only issue is that when I use this method in the abbreviation dictionary, it does not try to fit the entire label first if it can. It just automatically assigns the abbreviation. For example I have Taiwan that I want to be abbreviated Tai. when the feature is too small to fit the entire name, but it always assigns the abbreviation. Is it supposed to work that way?\n\nI should have also mentioned that I had the text case assigned to upper case for the layer, because I want most of the labels to be upper case. I have about 70 or so that I need to be mixed case (smaller islands, territories) When I assign \"normal\" to the text case it makes all my labels that I want uppercase, mixed case. AFGHANISTAN becomes Afghanistan. What I am looking to do is keep AFGHANISTAN if it fits in the polygon, but if it becomes too small then the abbreviation of AFG. should kick in. Same with \"Bermuda\". I want it to display Bermuda if it fits and if it doesn't then make it \"Berm.\" Is there a way to do this?\n\nYou cannot use translation if you have multiple abbreviations, correct. That's another issue I'm running into using translation.\n\nA Translation entry in an abbreviation dictionary always changes the matched word or phrase to the new value. But you can have another abbreviation dictionary entry for the translated word. So in this case you might have a Translation entry that changes TAIWAN to Taiwan, and another Keyword dictionary entry that changes Taiwan to Tai. if there isn't enough space.\n\nIn the screenshot below you can see an abbreviation dictionary that has 1 Keyword entry for AFGHANISTAN that will change it to AFG only if needed. Then BERMUDA and TAIWAN each have 2 entries - one Translation and one Keyword. The translation entry will always kick in, and if there is not enough space for the translated word then the Keyword translation will be used. (Pardon the geographic impossibilities of this map.)\n\nHere you can see from the attribute table that the data contains all upper case names. TAIWAN is translated to Taiwan because there is room, and AFGHANISTAN is abbreviated to AFG because there isn't enough room for the full word.\n\nZooming out more and shifting the coverage area shows that TAIWAN now uses the Keyword translation and AFGHANISTAN doesn't use any translation.\n\nRegarding your comment about AFGHANISTAN being changed to Afghanistan - setting Text case to Normal wouldn't change data that's stored in upper case to Mixed/Title case - rather the Normal setting doesn't make any adjustment to the source text. A few things to investigate are:\n\nIs the source text in the attribute table stored in upper case or title case?\n\nDoes the label expression use the field containing the upper case name?\n\nDo you have an abbreviation dictionary Translation entry for AFGHANISTAN that would be converting the label to Afghanistan?"
+    }
+}
