@@ -1,0 +1,30 @@
+{
+    "id": "dbpedia_337_2",
+    "rank": 29,
+    "data": {
+        "url": "https://forum.weaviate.io/t/broadcast-abort-transaction-broadcast-tx-abort-failed/1751",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Broadcast_abort_transaction: broadcast tx abort failed",
+        "top_image": "https://global.discourse-cdn.com/standard10/uploads/weaviate/original/1X/1e4f79946085f797748d20c51e18000db67735b2.png",
+        "meta_img": "https://global.discourse-cdn.com/standard10/uploads/weaviate/original/1X/1e4f79946085f797748d20c51e18000db67735b2.png",
+        "images": [
+            "https://static.scarf.sh/a.png?x-pxid=a41b0758-a3a9-4874-a880-8b5d5a363d40"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "bug"
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2024-03-18T12:42:34+00:00",
+        "summary": "",
+        "meta_description": "Context \nThis happens while updating a collection. My weaviate instance is running on GKE and this is the 1st time I encountered the issue since last 15 days. I have two collections(Benchmark and Benchmark_test). \nimport&hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://global.discourse-cdn.com/standard10/uploads/weaviate/optimized/1X/1e4f79946085f797748d20c51e18000db67735b2_2_32x32.png",
+        "meta_site_name": "Weaviate Community Forum",
+        "canonical_link": "https://forum.weaviate.io/t/broadcast-abort-transaction-broadcast-tx-abort-failed/1751",
+        "text": "Context\n\nThis happens while updating a collection. My weaviate instance is running on GKE and this is the 1st time I encountered the issue since last 15 days. I have two collections(Benchmark and Benchmark_test).\n\nimport weaviate import weaviate.classes as wvc client = weaviate.connect_to_custom( http_host=\"*.*.*.*\", http_port=80, http_secure=False, grpc_host=\"*.*.*.*\", grpc_port=50051, grpc_secure=False, ) articles = client.collections.get(\"Benchmark\") articles.aggregate.over_all(total_count=True) # AggregateReturn(properties={}, total_count=11172946) # articles = client.collections.get(\"Benchmark_test\") # articles.aggregate.over_all(total_count=True) # AggregateReturn(properties={}, total_count=141195)\n\nUpdate the collection\n\narticles.config.update( replication_config=wvc.config.Reconfigure.replication( factor=2 ) )\n\nOR\n\narticles.config.update( vector_index_config=wvc.config.Reconfigure.VectorIndex.hnsw(ef=256) )\n\nERROR\n\n{ action: \"broadcast_abort_transaction\" error: \"host \"*.*.*.*:7001\": send http request: Delete \"http://*.*.*.*:7001/schema/transactions/ba832d25-3213-2322-13ds-3cefa2ewewc15\": context deadline exceeded\" id: \"ba832d25-3213-2322-13ds-3cefa2ewewc15\" level: \"error\" msg: \"broadcast tx abort failed\" }\n\nQuery is working fine but Ingestion also seems to have some issue. I see this messages in the log for all the props.\n\nbenchmark-ann-modified | {'error': [{'message': \"update inverted indices: put inverted indices props: no bucket for prop '**content**' found\"}]}\n\nAlso tried:\n\nadditional_config = weaviate.config.AdditionalConfig(timeout=(300, 600))\n\nThe issue started flashing after I fired both the update command (replication_config and vector_index_config) in parallel. Did it lock something internally?\n\nLooking forward getting help in understanding where did it get wrong and how can I fix it.\n\nThis ticket can be closed. My incomplete findings.\n\n16.8.5 was the helm chart version, I was using.\n\nI tried bumping the helm version. Didn’t help\n\nI tried deleting the helm release and reinstalling. PVC was not deleted, and upon reinstalling pods, they were trying to connect to the existing PVC. 2 out of 4 replicas were successful, but the third was failing.\n\nThen, in my last iteration,. I deleted the release and manually deleted the PVC. After a fresh installation,. I lost my data (intended); everything was working fine and I couldn’t reproduce the issue."
+    }
+}
