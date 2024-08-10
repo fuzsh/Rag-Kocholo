@@ -1,0 +1,36 @@
+{
+    "id": "dbpedia_475_1",
+    "rank": 92,
+    "data": {
+        "url": "https://stackoverflow.com/questions/45770231/change-the-caption-title-of-a-figure-in-markdown",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Change the caption title of a figure in markdown",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://cdn.sstatic.net/Img/teams/teams-promo.svg?v=e507948b81bf",
+            "https://www.gravatar.com/avatar/cb00eb78a73eedb238d8ca48c84896f8?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/cTijO.png",
+            "https://i.sstatic.net/6cZaz.jpg?s=64",
+            "https://i.sstatic.net/G0I0R.jpg",
+            "https://i.sstatic.net/ao2Pm.jpg?s=64",
+            "https://stackoverflow.com/posts/45770231/ivc/909a?prg=c668daa7-cfca-415b-a9e2-0ca9325acf54"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2017-08-19T10:05:43",
+        "summary": "",
+        "meta_description": "I'm currently writing a small report in German. Hence I want my figure caption titles to be changed from Figure 1 to Abbildung 1 and so on.\n\n---\ntitle: \"Untitled\"\nauthor: \"me\"\ndate: '`r format(Sys....",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/45770231/change-the-caption-title-of-a-figure-in-markdown",
+        "text": "If you are writing in any language other than English, you can change the language options of the outputted pdf with the lang YAML option. This will override all the captions, labels, table of contents etc.\n\n--- output: pdf_document lang: de --- ```{r iris, fig.cap='Iris sepal lengths'} hist(iris$Sepal.Length) ```\n\nOther language options include fr (French), it (Italian) etc. See http://pandoc.org/MANUAL.html#language-variables for more details.\n\nFollowing the example from this question, you can define your own tex file where you can change figure caption defaults.\n\nheader.tex:\n\n\\usepackage{caption} \\captionsetup[figure]{name=Abbildung}\n\nThis is the main .Rmd file:\n\n--- title: \"Untitled\" author: \"me\" date: '`r format(Sys.time(), \"%d %B, %Y\")`' output: pdf_document: includes: in_header: header.tex --- ```{r iris, fig.cap='Iris sepal lengths'} hist(iris$Sepal.Length) ```"
+    }
+}

@@ -1,0 +1,44 @@
+{
+    "id": "dbpedia_476_0",
+    "rank": 60,
+    "data": {
+        "url": "https://communities.sas.com/t5/ODS-and-Base-Reporting/proc-report-error-adjust-column-width-or-line-size/td-p/40015",
+        "read_more_link": "",
+        "language": "en",
+        "title": "proc report error: adjust column width or line size",
+        "top_image": "https://communities.sas.com/html/assets/sas-comm-social-blue.png",
+        "meta_img": "https://communities.sas.com/html/assets/sas-comm-social-blue.png",
+        "images": [
+            "https://communities.sas.com/t5/image/serverpage/avatar-name/ball/avatar-theme/candy/avatar-collection/toys/avatar-display-size/message/version/2?xdesc=1.0",
+            "https://communities.sas.com/html/rank_icons/rank8-quartz-4dots.png",
+            "https://communities.sas.com/legacyfs/online/a1120_carpenter.png",
+            "https://communities.sas.com/html/rank_icons/rank12-rhodocrosite-2dots.png",
+            "https://communities.sas.com/t5/image/serverpage/image-id/48165i677A113D7AE78DF0/image-dimensions/40x40?v=v2",
+            "https://communities.sas.com/html/rank_icons/super-freq-rank.png",
+            "https://img.youtube.com/vi/wofLgDskv0E/0.jpg",
+            "https://communities.sas.com/t5/image/serverpage/image-id/91612i245D732FF24B323D/image-size/small?v=v2&px=200",
+            "https://communities.sas.com/t5/image/serverpage/image-id/48165i677A113D7AE78DF0/image-dimensions/16x16?v=v2",
+            "https://communities.sas.com/legacyfs/online/a1120_carpenter.png",
+            "https://communities.sas.com/t5/image/serverpage/avatar-name/ball/avatar-theme/candy/avatar-collection/toys/avatar-display-size/favicon/version/2?xdesc=1.0",
+            "https://communities.sas.com/skins/images/26C45990C7674E1D7FF30308D9AB5A98/responsive_peak/images/powered_by_khoros.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "communities.sas.com",
+            "user-id"
+        ],
+        "publish_date": "2011-08-01T23:14:41.685000+00:00",
+        "summary": "",
+        "meta_description": "I'm currently receiving the following error for my &quot;bar&quot; variable. The max value of per_osha11 is 24. How do I fix this error? Thank you.",
+        "meta_lang": "en",
+        "meta_favicon": "https://communities.sas.com/html/@86D798D128D0FA03C10624935AA29945/assets/favicon.ico",
+        "meta_site_name": "",
+        "canonical_link": "https://communities.sas.com/t5/ODS-and-Base-Reporting/proc-report-error-adjust-column-width-or-line-size/td-p/40015",
+        "text": "I'm currently receiving the following error for my \"bar\" variable.\n\nThe max value of per_osha11 is 24.\n\nHow do I fix this error?\n\nThank you.\n\nERROR: The width of bar is not between 1 and 98. Adjust the column width or line size.\n\nNOTE: This affects LISTING output.\n\nproc report data=task_tot3 nowd contents=\"Claims\" out=test\n\nstyle(header)=[font_weight=bold background=CX90D9D7]\n\nstyle(report)=[frame=void rules=none cellpadding=1 cellspacing=0];\n\noptions missing='0';\n\ncolumn bar task1 tot_osha11 per_osha11;\n\ndefine task1 / 'Task';\n\ndefine bar / '' style(column)=[cellwidth=75mm font_size=4pt font_face=webdings vjust=middle just=left cellpadding=0];\n\ndefine tot_osha11 / analysis \"Total 2011\" style(column)={background=CXE599A7};\n\ndefine per_osha11 / analysis \"% of 2010 Total\" style(column)={borderrightcolor=black borderrightwidth=1pt};\n\nrbreak after / summarize;\n\ncompute bar / char length=100;\n\nbarsize=round(per_osha11.sum*50);\n\nif barsize gt 0 then\n\nbar=repeat('67'x,barsize);\n\nendcomp;\n\ncompute per_osha11;\n\nif _break_=\"_RBREAK_\" then per_osha11.sum=100;\n\nendcomp;\n\ncompute tot_osha11;\n\nif _break_=\"_RBREAK_\" then call define(_row_,\"style\",\"style=[background=CXE599A7]\");\n\nif _break_=\"_RBREAK_\" then task1=\"Total 2010 - 2011\";\n\nendcomp;\n\nrun;\n\nWithout asking why; you want a repeated character up to 100 times in the first column, but is that what you want?\n\nIf the error is a listing destination error and you are not using the listing destination, turn it off ( ods listing close;)\n\nMy memory says that in the listing destination a given column cannot be wider than the width of the paper (LINESIZE= system option). So increasing the LINESIZE might change the error.\n\nIn the COMPUTE BAR block you multiply per_osha11 by 50, any value of per_osha11>2 (it can be up to 24) would give a total gt 100. any value of barsize>99 will give a bar with ge 100 characters."
+    }
+}
