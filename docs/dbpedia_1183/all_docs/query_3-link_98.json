@@ -1,0 +1,52 @@
+{
+    "id": "dbpedia_1183_3",
+    "rank": 98,
+    "data": {
+        "url": "https://stackoverflow.com/questions/3290424/set-a-cookie-to-never-expire",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Set a cookie to never expire",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://cdn.sstatic.net/Img/teams/teams-promo.svg?v=e507948b81bf",
+            "https://www.gravatar.com/avatar/b9997d9b359bca67b8bd753ef05e3da6?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/SKnoL.jpg?s=64",
+            "https://www.gravatar.com/avatar/f7facc1c82803bd3a209d27b63adf3ba?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/8958ac5b8cba5f5f05e9ada9f65ba3f2?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/D0BCG.jpg?s=64",
+            "https://www.gravatar.com/avatar/7bfc7728cf3e556a8b9da88e662f4fd3?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/4b89c5d4ce1642b9a785aca0f26c6b1a?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/620e460c7b7fb4a356745dbb1aaa168a?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/a05c4bbf680308f438e618cba19e7b09?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/b2e32010617d608bca8ed2efe43ea308?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/MkKo5.jpg?s=64",
+            "https://www.gravatar.com/avatar/f5a4dbc315b49a914d6b20d0154d2697?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/aee3b44e5f0b4dfa0e2da672897b3751?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/46cd787194691de922ad5790f1648ad5?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/BKD7l.jpg?s=64",
+            "https://i.sstatic.net/wKqlC.png?s=64",
+            "https://i.sstatic.net/dOpj1.jpg?s=64",
+            "https://i.sstatic.net/sW3ZS.jpg?s=64",
+            "https://www.gravatar.com/avatar/6927f282ab1f970a4a30eae0fb41f993?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/c6b1faf9d1166744459269938999d5b1?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/0b70227f26083789fa33a0e525af20cc?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/3290424/ivc/5788?prg=8d0b2bdb-9e2a-4568-8406-6e78856eef0e"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2010-07-20T13:29:51",
+        "summary": "",
+        "meta_description": "Looking at the php documentation on setting a cookie I see that I can set an expiration date for the cookie.  You can set the cookie to expire at the end of the browser session or at some time in the",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/3290424/set-a-cookie-to-never-expire",
+        "text": "All cookies expire as per the cookie specification, so this is not a PHP limitation.\n\nUse a far future date. For example, set a cookie that expires in ten years:\n\nsetcookie( \"CookieName\", \"CookieValue\", time() + (10 * 365 * 24 * 60 * 60) );\n\nNote that if you set a date past 2038 in 32-bit PHP, the number will wrap around and you'll get a cookie that expires instantly.\n\nEdit: As in 2023, obeying the max depends on the web browsers. As of Chrome release M104 (August 2022) cookies can no longer set an expiration date of more than 400 days in the future.\n\nMaximum value: 2147483647\n\nsetcookie(\"CookieName\", \"CookieValue\", 2147483647);\n\nTo avoid integer overflow the timestamp should be set to:\n\n2^31 - 1 = 2147483647 = 2038-01-19 04:14:07\n\nSetting a higher value might cause problems with older browsers.\n\nAlso see the RFC about cookies:\n\nMax-Age=value OPTIONAL. The value of the Max-Age attribute is delta-seconds, the lifetime of the cookie in seconds, a decimal non-negative integer. To handle cached cookies correctly, a client SHOULD calculate the age of the cookie according to the age calculation rules in the HTTP/1.1 specification [RFC2616]. When the age is greater than delta-seconds seconds, the client SHOULD discard the cookie. A value of zero means the cookie SHOULD be discarded immediately.\n\nand RFC 2616, 14.6 Age:\n\nIf a cache receives a value larger than the largest positive integer it can represent, or if any of its age calculations overflows, it MUST transmit an Age header with a value of 2147483648 (2^31).\n\nhttp://www.faqs.org/rfcs/rfc2616.html\n\nMy privilege prevents me making my comment on the first post so it will have to go here.\n\nConsideration should be taken into account of 2038 unix bug when setting 20 years in advance from the current date which is suggest as the correct answer above.\n\nYour cookie on January 19, 2018 + (20 years) could well hit 2038 problem depending on the browser and or versions you end up running on.\n\nAs of whenever the link here was posted, Chrome cookies can, at max, live as long as 400 days. Chrome is a big deal at the time of this response, so I would make a cookie's expiration be in 400 days or less.\n\nIf you don't want to click on the link, it says, in summary:\n\nWhen cookies are set with an explicit Expires/Max-Age attribute the value will now be capped to no more than 400 days in the future. Previously, there was no limit and cookies could expire as much as multiple millennia in the future.\n\nWhile that isn't exactly possible you could do something similar to what Google does and set your cookie to expire Jan 17, 2038 or something equally far off.\n\nIn all practicality you might be better off setting your cookie for 10 years or 60*60*24*365*10, which should outlive most of the machines your cookie will live on.\n\nNever and forever are two words that I avoid using due to the unpredictability of life.\n\nThe latest time since 1 January 1970 that can be stored using a signed 32-bit integer is 03:14:07 on Tuesday, 19 January 2038 (231-1 = 2,147,483,647 seconds after 1 January 1970). This limitation is known as the Year 2038 problem\n\nsetCookie(\"name\", \"value\", strtotime(\"2038-01-19 03:14:07\"));\n\nYou shouldn't do that and that's not possible anyway, If you want you can set a greater value such as 10 years ahead.\n\nBy the way, I have never seen a cookie with such requirement :)"
+    }
+}
