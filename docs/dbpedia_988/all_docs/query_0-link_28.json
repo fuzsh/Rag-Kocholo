@@ -1,0 +1,54 @@
+{
+    "id": "dbpedia_988_0",
+    "rank": 28,
+    "data": {
+        "url": "https://www.html5gamedevs.com/topic/46349-performance-advice-and-basic-concepts/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Performance advice and basic concepts",
+        "top_image": "https://www.html5gamedevs.com/uploads/monthly_2020_10/image.thumb.png.8243d3b1ee2573aaf695641f5f55debc.png",
+        "meta_img": "",
+        "images": [
+            "https://www.html5gamedevs.com/fun/logo.png",
+            "https://www.html5gamedevs.com/uploads/monthly_2021_11/1_Newbie.svg",
+            "https://www.html5gamedevs.com/uploads/monthly_2021_11/1_Newbie.svg",
+            "https://www.html5gamedevs.com/uploads/monthly_2021_11/4_Contributor.svg",
+            "https://www.html5gamedevs.com/uploads/monthly_2021_11/4_Contributor.svg",
+            "https://www.html5gamedevs.com/uploads/reactions/react_thanks.png",
+            "https://www.html5gamedevs.com/uploads/monthly_2021_11/1_Newbie.svg",
+            "https://www.html5gamedevs.com/uploads/monthly_2021_11/1_Newbie.svg",
+            "https://www.html5gamedevs.com/uploads/monthly_2021_11/4_Contributor.svg",
+            "https://www.html5gamedevs.com/uploads/monthly_2021_11/4_Contributor.svg",
+            "https://www.html5gamedevs.com/uploads/monthly_2021_11/1_Newbie.svg",
+            "https://www.html5gamedevs.com/uploads/monthly_2021_11/1_Newbie.svg",
+            "https://www.html5gamedevs.com/uploads/monthly_2020_10/image.thumb.png.8243d3b1ee2573aaf695641f5f55debc.png",
+            "https://www.html5gamedevs.com/uploads/monthly_2021_11/1_Newbie.svg",
+            "https://www.html5gamedevs.com/uploads/monthly_2021_11/1_Newbie.svg",
+            "https://www.html5gamedevs.com/uploads/monthly_2020_10/image.thumb.png.8243d3b1ee2573aaf695641f5f55debc.png",
+            "https://www.html5gamedevs.com/uploads/monthly_2021_11/4_Contributor.svg",
+            "https://www.html5gamedevs.com/uploads/monthly_2021_11/4_Contributor.svg",
+            "https://www.html5gamedevs.com/uploads/monthly_2020_10/image.thumb.png.8243d3b1ee2573aaf695641f5f55debc.png",
+            "https://www.html5gamedevs.com/uploads/monthly_2021_11/1_Newbie.svg",
+            "https://www.html5gamedevs.com/uploads/monthly_2021_11/1_Newbie.svg",
+            "https://www.html5gamedevs.com/uploads/set_resources_1/84c1e40ea0e759e3f1505eb1788ddf3c_default_photo.png",
+            "https://www.html5gamedevs.com/public/style_images/photonstorm.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "ShoemakerSteve"
+        ],
+        "publish_date": "2020-10-20T17:59:54+00:00",
+        "summary": "",
+        "meta_description": "Biggest Community of developers and publishers on HTML5 Game Devs and GameMonetize. We're a place where coders share ideas. Join our Developer community!",
+        "meta_lang": "en",
+        "meta_favicon": "",
+        "meta_site_name": "HTML5 Game Devs Forum",
+        "canonical_link": "https://www.html5gamedevs.com/topic/46349-performance-advice-and-basic-concepts/",
+        "text": "Hello, I'm brand new to the world of graphics programming and just starting to jump into Pixi.js for a personal hobby project I'm starting. The documentation for Pixi however seems very scarce though, especially for v5, so I'm kind of having trouble knowing where to start.\n\nTo keep it simple, my project is essentially Conway's Game of Life, though I'll be adding more onto it after I get my performance sorted out. Basically it's a grid with squares, and the squares can either be black or white depending on their state (alive or dead, respectively). The game runs fine at a full 60 fps for smaller grids, but if I try a 150x200 square grid, the performance degrades quite a bit. And I actually want to go quite further than that, with maybe 1000 x 1000 if that's even possible. I'm using Graphics to draw the squares using the same instance and calling clear() on each frame, but honestly my implementation isn't really the point of this post, I'm more interested in what you would do.\n\nSo that said, I'll be asking two things:\n\nWhat are the best options for rendering a large number of squares that are all the same, but with different colours depending on their state? Any common performance pitfalls to watch out for?\n\nConsiderations:\n\nThey will very often switch back and forth on each frame, but a large portion of the grid might stay static half or more of the time\n\nI would ideally not write a custom shader, because I don't know how to do that or what a shader is\n\nCan you give a rundown of when to use Graphics, Sprites, Textures, and Meshes? And maybe what they are?\n\nIf I were to try and explain what I think they are, I would say:\n\nGraphics: Draws shapes and lines\n\nSprites: Represents an \"actor\" on the stage, textures are used to represent them\n\nTextures: Basically images that sprites use for visuals?\n\nMesh: Combines many textures? I'm not actually sure\n\nAm I close? Probably not. It's fine. At least I tried. You don't need to go into tons of detail because I'm sure books have probably been written about this, but I just want a basic idea of what they are and when I should use them.\n\nHopefully I'm not asking for too much, thanks a lot!\n\nVery simple optimization. Instead of graphics use sprites with single white rectangle as their basetexture. Then apply tint to them to color the sprite. That way the squares can be rendered as a batch. That should be good enough for 150*200 squares (30k sprites). But for 1000 x 1000 (1M squares) you need to go deep into webgl rendering or have some other optimization strategy. Or would those squares be all visible at the same time? If not, then that would be doable by separating logic from rendering and only rendering a subsection of the whole area.\n\nAnd here's a little rundown about different graphic objects:\n\n- Graphics: Dynamically drawn content. Use when you need to draw lines, shapes etc. Be aware that updating graphics every frame might be costly depending on the complexity.\n\n- Sprites: Sprites are basically just to tell what texture to draw and where, with this rotation, tint and scale. Sprites are among the cheapest objects in pixi.\n\n- Textures: Textures are a region of baseTexture. They tell you what part of a baseTexture should be drawn. When using spritesheets the difference between texture and baseTexture is very noticable. When using just regular images then usually textures point just to a baseTexture and say that I want to render that whole thing.\n\n- Basetexture: Basetextures represent a single image in memory.\n\n- Mesh: Meshes are renderables that have customizable vertices. You could think that sprite is also a mesh that has 4 vertex points (topleft, topright, bottomright and bottomleft). With Meshes you can control how your polygons get formed. There are some premade mesh classes that provide premade useful meshes: SimpleRope, SimpleMesh and SimplePlane. Those abstract some of the complexity away.\n\nAnd when to use them:\n\nGraphics: Dynamic drawn content.\n\nSprites: Images with basic affine transformations (scale, rotation, position) and basic color transformation (tint, alpha).\n\nTextures & BaseTexture: Pretty much always if you have some images to use. Very often these get handled automatically.\n\nMesh: When you need deformations.\n\nAlso here's a short instruction on shaders:\n\nModern computer graphics cards have a pipeline where you tell what program (vertex + fragment shader) you want to use, what vertices it gets as input and what uniforms (+ other stuff that I wont go into at this point). Then for each vertex it runs the vertex shader program. This basically calculates where on the screen should the point be. Then for the polygons formed by these vertices it runs the fragment shader for each pixel that is inside the polygon. The fragment shader returns the color value for that pixel. The uniforms mentioned beforehand are values that stay the same for both vertex and fragment shader on all vertex & pixel values. They are used to give values that are needed to calculate the output values. In sprite fragment shader \"tint\" is an uniform that is multiplied with the texture value.\n\nSo basically your gpu renders wegbl like this (simplified): list of points to draw -> vertex shader -> find out what pixels are affected -> fragment shader -> pixel to screen."
+    }
+}

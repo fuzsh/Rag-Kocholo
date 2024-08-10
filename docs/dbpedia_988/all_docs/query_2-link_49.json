@@ -1,0 +1,30 @@
+{
+    "id": "dbpedia_988_2",
+    "rank": 49,
+    "data": {
+        "url": "http://www-evasion.imag.fr/Membres/Fabrice.Neyret/Etudiants/sujet3Master2009_10-X.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "http://www-evasion.imag.fr/Membres/Fabrice.Neyret/Etudiants/images/sujetM2R-10_3.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "",
+        "meta_favicon": "",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "Master 2009-2010 project:\n\nAmplifying smoke simulation with animated details\n\nfor special effects and video games\n\nPolytechnics fields: Algorithmic, Image Processing, Miscelleaneous\n\nReal fields: Computer Graphics, Simulation\n\nAdvisor\n\nFabriceNEYRET (Fabrice.Neyret@imag.fr) - ARTIS team, LJK lab, at INRIA-Montbonnot, Grenoble, FRANCE\n\nContext\n\nSimulation of dense smoke, clouds, avalanches relies on 3D fluid mechanics, which numerical solving (CFD) is extremely costly. These animated elements are more and more important in Computer Graphics applications (special effects and games), but CG requires very high resolution. In the scope of Computer Graphics, new algorithms allow for faster and stable simulation at the price of accuracy. Still, the 3D simulation is way to costly for interactive animation, and even storing the high-res 3D data is an issue. Moreover, CG does not aim at blind simulation: the graphist user wants some control on the look of the result. To cope with all these constraints, a new approach consists in separating the problem into a classical coarse 3D fluid simulation (supposedly known), and a mechanism able to add high-res details to it (which is our focus of interest here). Our teams already studied several such approaches in the past, mostly in 2D. In particular, texture advection (the texture pattern is an animated Perlin noise), either all over the scene (texture coordinates are advected with the flow), or using a sum of local deformed sprites advected with the flow. The purpose of this project is to revisit this approach and to adapt to 3D, in the case of dense opaque core inside transparent environment (such as dense smoke). Our team also works on real-time rendering of clouds, which lack animation, andof large detailed volumes, which could be used to visualize animated 3D fluid sprites.\n\nDescription of the subject\n\nDetails are represented as a collection of 3D “sprites”, which can deform thanks to a small 3D grid which nodes are advected along the coarse flow. Each sprite is associated with a piece of 3D texture, which is not an image but a function to be evaluated on the fly during rendering. Sprites can be seen as thick particles, which must cover evenly all the places where the smoke, the clouds or the avalanche appears (nothing in transparent air, and if possible nothing in internal or hidden areas, which is one of the strengthes of the approach). Thus, sprites much appear and disappear so as to keep their distribution even, and to replace sprites which are too distorted (according to a metric to be defined). These two aspects are key issues to elaborate.\n\nMoreover, efficient coarse fluid simulators as well as our real-time volume rendering engine run entirely on GPU. Thus, it is interesting to also have the 3D texture advection algorithm also running on GPU, especially knowing it is potentially very data-parallel (list of independent nodes, lists of independent sprites, etc). Nowadays, it is easy to write such multithread-able algorithm in generic high level GPU language such CUDA (very close to C) and to benefit from the incredible computational power of modern graphics card. Thus, we would like to obtain an algorithm with properties compatible with good parallelism (the not obvious part is the resampling of sprite distribution). If possible, the final version (or before!) could be directly written in CUDA and run on GPU, which would ease the final visualization.\n\nPrerequisites\n\nC/C++, OpenGL.\n\nNotions of parallelism (multithreading) or GPU programming would be a plus, but these can be learn easily during the practice.\n\nReferences"
+    }
+}

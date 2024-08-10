@@ -1,0 +1,39 @@
+{
+    "id": "dbpedia_988_0",
+    "rank": 96,
+    "data": {
+        "url": "https://forum.godotengine.org/t/how-to-blend-separate-sprites-or-can-textures-in-shader-be-moved-around/72960",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How to blend separate sprites? or can textures in shader be moved around?",
+        "top_image": "https://forum.godotengine.org/uploads/default/optimized/3X/1/3/1332c56dcfe1ca1b8d0ec07ed21521c2567bbc18_2_1024x341.jpeg",
+        "meta_img": "https://forum.godotengine.org/uploads/default/optimized/3X/1/3/1332c56dcfe1ca1b8d0ec07ed21521c2567bbc18_2_1024x341.jpeg",
+        "images": [
+            "https://forum.godotengine.org/uploads/default/optimized/3X/1/3/1332c56dcfe1ca1b8d0ec07ed21521c2567bbc18_2_690x230.jpeg",
+            "https://forum.godotengine.org/letter_avatar_proxy/v4/letter/s/f1d935/48.png",
+            "https://forum.godotengine.org/letter_avatar_proxy/v4/letter/s/f1d935/48.png",
+            "https://forum.godotengine.org/uploads/default/optimized/3X/4/5/45f619d2977fe93e4e925508ff0331a59402740c_2_690x310.png",
+            "https://forum.godotengine.org/images/emoji/twitter/laughing.png?v=12",
+            "https://bcalabs.org/favicon.png",
+            "https://bcalabs.org/subject/2d-transformation-in-computer-graphics/opengraph-image-14z17r?0757eb7e49f60197"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "gd-shader",
+            "godot-4",
+            "gdscript",
+            "2d"
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2024-07-20T15:36:27+00:00",
+        "summary": "",
+        "meta_description": "Godot 4 \nHi! I want to force godot to render blending modes for separate sprites. I need this because I want to allow players to change base color of character sprite AND on top of that I want to allow them to add a patt&hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://forum.godotengine.org/uploads/default/optimized/2X/6/6aa102e258d388445ee33e276c62cec922ccb756_2_32x32.png",
+        "meta_site_name": "Godot Forum",
+        "canonical_link": "https://forum.godotengine.org/t/how-to-blend-separate-sprites-or-can-textures-in-shader-be-moved-around/72960",
+        "text": "Godot 4\n\nHi! I want to force godot to render blending modes for separate sprites. I need this because I want to allow players to change base color of character sprite AND on top of that I want to allow them to add a pattern that also can be colored, moved around and scaled.\n\nI tried two aproaches:\n\nMaking every layer as a seprate sprite2D. It allowed easy color manipulation and on top of that player could move and scale the pattern. Unfortunetly the blending modes were not working.\n\nMaking a shader. It allowed smooth blending but I don’t see a way to a) apply pattern on top of base layer b) allow pattern to be moved around and scaled\n\nMy question is: how to aproach this issue? Can I blend separate sprites togheter or is it possible to impelement pattern inside a shader? Or maybe there is another third secret way I haven’t thought about?\n\nThanks in advance!\n\nBoth your approaches are valid.\n\nI assume you added a canvas material to the sprite? I did a quick test and it works fine.\n\nWhatever your secondary pattern is ( procedural or texture ). You would blend them within the fragment function.\n\nI would start with the base color and then provide a uniform of type sampler2d for your pattern texture. Then also provide parameters for any transforms. Calculate the pixel you want to sample from the secondary texture and blend it with your primary fragment.\n\nIn the end you will always be using some form of shader either built in like the canvas material, or your own custom shader.\n\nThank you! Sorry I am writing back this late, I had to take a break from it cos I started to question my life choise during development of my project\n\nI didn’t know it was possible to blend images like that, but I will look into it! thank you ^^\n\nI’m not sure how it’s done in the visual shader but to provide a control from CPU side is a modifier called uniform once added to a global variable within the shader you should the be able to access it via code and in the inspector panel under the shader resource.\n\nTo “move” a texture we need to offset the sample position. Usually you have a one-to-one texture(sampler2d,vec2). The sampler2d is the secondary texture and the vec2 is the position you wish to sample.\n\nTo move the image left or right you can take the vec2 and add to the x or y to offset the sample up down left or right.\n\nTo scale the image you multiply the vec2 by the ba an amount on x and y.\n\nTo rotate, there is a way but it’s a little more complicated.\n\nTo sheer, is also a little more complicated but there is a way.\n\nBasically you modify the vec2 you use when sampling the sampler2d. If i were to take it I would setup a matrix transform and use the vec2 multiplied by the transform matrix to product the sample point vec2 to use."
+    }
+}

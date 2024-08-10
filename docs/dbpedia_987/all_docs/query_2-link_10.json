@@ -1,0 +1,38 @@
+{
+    "id": "dbpedia_987_2",
+    "rank": 10,
+    "data": {
+        "url": "https://gamedev.stackexchange.com/questions/22772/how-can-i-handle-sprite-sheets-with-nonuniform-sprite-dimensions",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How can I handle sprite sheets with nonuniform sprite dimensions?",
+        "top_image": "https://cdn.sstatic.net/Sites/gamedev/Img/apple-touch-icon@2.png?v=9bca23db2259",
+        "meta_img": "https://cdn.sstatic.net/Sites/gamedev/Img/apple-touch-icon@2.png?v=9bca23db2259",
+        "images": [
+            "https://cdn.sstatic.net/Sites/gamedev/Img/logo.svg?v=c61a0bba5264",
+            "https://i.sstatic.net/muw51.png",
+            "https://www.gravatar.com/avatar/8897b53b1e49b299fca74740d6d10515?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/80d284e717d5720063a38d8e49739c87?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/TNP7g.jpg",
+            "https://www.gravatar.com/avatar/32236ab5f5f6f5007d4aeaf95884af7a?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/005cdf432c942d83fb9bf90d89548a76?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/fb3b09f895e6453c0619b5769ef7ebd3?s=64&d=identicon&r=PG",
+            "https://gamedev.stackexchange.com/posts/22772/ivc/6189?prg=5741f70b-322e-4fd5-bc05-f3fbb12cd277"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2012-01-22T15:30:55",
+        "summary": "",
+        "meta_description": "For a spritesheet with non-uniform sprite dimensions, how can I get the bounding-rectangles for each individual sprite (i.e. the blue boxes in the following image / I only drew a few examples)?\n\nWh...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/gamedev/Img/favicon.ico?v=7d1a3cf2e788",
+        "meta_site_name": "Game Development Stack Exchange",
+        "canonical_link": "https://gamedev.stackexchange.com/questions/22772/how-can-i-handle-sprite-sheets-with-nonuniform-sprite-dimensions",
+        "text": "Most sprite sheets of non-identical dimensions usually have some kind of meta data with where the anchor of the sprite is. There are a lot of tools that do things like strip out full alpha pixels and give you the data you need so that this data isn't manually generated.\n\nIf you don't have this meta data you have to author it yourself. The most accurate way is the one you said in your question, which is to just do it by hand. It may take a while, but it's probably faster than making new sprites.\n\nYou can perform analysis on the image to locate the bounding rectangles of each sprite, sort those bounding rectangles (perhaps by increasing minimum X, then Y) and you'll have a set of bounding regions that correspond to the frames of the sprite sheet.\n\nBecause this process can be relatively expensive, you will probably want to do this offline, for example as part of the build process for your game. You can then serialize the bounding region information into a file that you store with the corresponding sprite sheet image. At runtime you load both the image and the boundary definition file and you have the information you need to access each individual sprite.\n\nThat is easier said than done, though. Essentially you'll want to do feature detection and specifically blob detection which are machine vision problems. You could also threshold the image (to black and white) and use an edge detection technique. The relevant math behind those techniques is explained far better on those links than I could, and in the case where you don't feel up to implementing that math yourself, there are a few libraries available that can assist you. The following set of links seemed the most promising to me:\n\nAForge has a machine vision component (for C#); here's a relevant usage example\n\nOpenCV (a C++ library with a C# wrapper)\n\nThis thread provides a blob detection library for the C# wrapper for OpenCV.\n\nspritebuddy.com has worked great for me. Couldn't find any help on the site itself, but this Google Groups post explains it really well. It auto-guesses the bounds for your sprites, lets you adjust it, AND lets you arrange them into animation sequences. Then it spits out a metadata file for all this in either JSON or XML. Then all you have to do is parse that data file in your game to get the correct bounding rectangles."
+    }
+}
