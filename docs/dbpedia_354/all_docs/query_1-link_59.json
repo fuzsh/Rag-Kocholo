@@ -1,0 +1,30 @@
+{
+    "id": "dbpedia_354_1",
+    "rank": 59,
+    "data": {
+        "url": "https://www.notepage.net/mobile/novar-controls-integration.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Novar Controls Integration",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://www.notepage.net/mobile/assets/images/np-logo-color-133x128.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "Steps to send Text and SMS Messages from Novar Controls.",
+        "meta_lang": "",
+        "meta_favicon": "assets/images/np-logo-color-133x128.png",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "Send Text and SMS Messages from Novar Controls\n\nAdvanced Polling with Novar Control Software\n\nThese are the Advanced Polling options you may want to use with Novar Control Software. The end result will be that from the following example message, PageGate will:\n\n1.) Look for the Recipient in the first line between \"SYSTEM \" and \"EP\", use the Lookup Table, then substitute \"3001\" with the name of a PageGate Recipient.\n\n2.) PageGate will use the entire text of the file as the message.\n\nYou should increase the \"Max Characters\" setting for each Recipient, because the message below exceeds the default (240) setting.\n\nMessage text will be truncated, because the example message below is around 290 characters long without any text following the \"Assign Code:\", \"Notes:\" or \"Instructions:\" lines.\n\n****** EXAMPLE MESSAGE ******\n\nSYSTEM 3001 EP 1 ALARM\n\nEP #1 - Critical Monitor Alarm #3\n\nSystem :3001 - \"Test Panel \"\n\nName :\"AHU-1 MA Temp\"\n\nLocation :Module 0, Point 3 Setpoint :Below 34.75 Degf\n\nOccurred :9/30/03 08:29\n\nReceived :9/30/03 08:29\n\nAssign Code :\n\nNotes :\n\nInstructions:\n\n****** END EXAMPLE MESSAGE ******\n\nSettings for 'GetAscii' - 'Advanced Polling' -\n\n'Files' -\n\n(Add)\n\nRecipient = * (asterisk)\n\nFrom = *\n\nFiles = *.tmp (asterisk period file extension)\n\nPath = Polling Directory Path (where files ar being written)\n\nFile Type = Custom\n\n'Record' -\n\nStart Pattern = SYSTEM (all caps)\n\nStart Offset = 0 (zero)\n\nEnd Pattern = ~ (tilde)\n\nEnd Offset = 0 (zero)\n\n'Recipient' -\n\nDynamic Recipient = checked (true)\n\nStart Pattern = SYSTEM (all caps)\n\nStart Offset = 7 End Pattern = EP (all caps)\n\nEnd Offset = -3 (negative three)\n\nUse Lookup Table = checked (true)\n\n'Edit Table'\n\nData In = 3001\n\nData Out = Recipient (which ever PageGate recipient that you want \"3001\" alarms to go to. Must match existing PageGate Recipient in database)\n\n'Sender'\n\nStatic Sender = checked (true)\n\nSender = Novar Control (can be anything)\n\n'Message'\n\nDynamic Message = checked (true)\n\nStart Pattern = SYSTEM (all caps)\n\nStart Offset = 0 End Pattern = ~ (tilde)\n\nEnd Offset = 0 (negative three)\n\nUse Lookup Table = unchecked (false)\n\nIt is possible to eliminate unused lines (in the example message \"Assign Code:\", \"Notes:\" and \"Instructions:\" had no additional information). This will help eliminate unnecessary characters from messages.\n\nThe \"Message\" Lookup Table would contain these entries:\n\nData In = *Instructions:\\013\\010*\n\nData Out = \\013\\010\"\n\nData In = *Notes :\\013\\010*\n\nData Out = \\013\\010\"\n\nData In = *Assign Code :\\013\\010*\n\nData Out = \\013\\010\"\n\nData In = *Received :\\013\\010*\n\nData Out = \\013\\010\"\n\nData In = *Occurred :\\013\\010*\n\nData Out = \\013\\010\"\n\nData In = *Setpoint :\\013\\010*\n\nData Out = \\013\\010\"\n\nData In = *Location :\\013\\010*\n\nData Out = \\013\\010\"\n\nData In = *Name :\\013\\010*\n\nData Out = \\013\\010\"\n\nData In = *System :\\013\\010*\n\nData Out = \\013\\010\""
+    }
+}
