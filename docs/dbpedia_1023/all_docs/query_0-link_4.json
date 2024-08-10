@@ -1,0 +1,48 @@
+{
+    "id": "dbpedia_1023_0",
+    "rank": 4,
+    "data": {
+        "url": "https://stackoverflow.com/questions/4012085/invert-rounded-corner-in-css",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Invert rounded corner in CSS?",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://i.sstatic.net/tbOa9.jpg",
+            "https://i.sstatic.net/pl411.jpg",
+            "https://www.gravatar.com/avatar/58f9884421d1af250a816ac3eaaa5a13?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/92fe4ccb7e5c842fa66ccc7490f62db6?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/925854a3a886d50549018cd6c9fe3033?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/74a5bd659b3a8af09a336a932eebe3b1?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/9da1bebfbc4a216a9e4a5126357516d9?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/707c7034a6de4ceaca076ec8c16e134f?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/58f9884421d1af250a816ac3eaaa5a13?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/aa29f413861548d005cc6959cc30d602?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/hiM8o.jpg",
+            "https://i.sstatic.net/Jtx0O.jpg?s=64",
+            "https://www.gravatar.com/avatar/e72a9400d44a936cc3436e504b265946?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/oxFjF.png",
+            "https://i.sstatic.net/WSmLn.png?s=64",
+            "https://www.gravatar.com/avatar/ac735fe8d5aeb074595a878e2d720577?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/Ryqtb.jpg?s=64",
+            "https://i.sstatic.net/tQf0i.jpg?s=64",
+            "https://stackoverflow.com/posts/4012085/ivc/a288?prg=79583a76-aa31-4718-ad20-ff55120e176c"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2010-10-25T05:46:46",
+        "summary": "",
+        "meta_description": "I have a css code:\n\n-moz-border-radius-topleft:50px;\r\nI get the result:\r\nIs there any possibilities to give like this:",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/4012085/invert-rounded-corner-in-css",
+        "text": "Just to update this, it seems you can in multiple ways.\n\nLea Verou posted a solution\n\nHere is mine using border-image\n\nUsing border image\n\nhtml\n\n<div><img src=\"https://s3.amazonaws.com/resized-images-new/23292454-E6CD-4F0F-B7DA-0EB46BC2E548\" /></div>\n\ncss\n\ndiv { width: 200px; border-width: 55px; -moz-border-image: url(http://i47.tinypic.com/2qxba03.png) 55 repeat; -webkit-border-image: url(http://i47.tinypic.com/2qxba03.png) 55 repeat; -o-border-image: url(http://i47.tinypic.com/2qxba03.png) 55 repeat; border-image: url(http://i47.tinypic.com/2qxba03.png) 55 repeat; margin: 50px auto; }\n\nUsing radial gradient\n\nLea Verou's solution\n\nhtml\n\n<div class=\"inner-round\"></div>\n\ncss\n\n.inner-round { background-image: radial-gradient(circle at 0 0, rgba(204,0,0,0) 14px, #c00 15px), radial-gradient(circle at 100% 0, rgba(204,0,0,0) 14px, #c00 15px), radial-gradient(circle at 100% 100%, rgba(204,0,0,0) 14px, #c00 15px), radial-gradient(circle at 0 100%, rgba(204,0,0,0) 14px, #c00 15px); }\n\nYou can also use and inline svg with a path element:\n\nbody{background:url('http://i.imgur.com/RECDV24.jpg');background-size:cover;} svg{width:30%;}\n\n<svg viewbox=\"0 0 10 10\"> <path d=\"M9 1 V9 H1 V3 Q3 3 3 1\" fill=\"#fff\"/> </svg>\n\nIn this example, I use a cubic bezier curve for the inverted round edge.\n\nWith this approach, you can also fill the shape with an image or gradient:\n\nbody{background:url('http://i.imgur.com/RECDV24.jpg');background-size:cover;} svg{width:30%;}\n\n<svg viewbox=\"0 0 10 6.7\"> <defs> <clipPath id=\"clip\"> <path d=\"M9 1 V6.7 H1 V3 Q3 3 3 1\" fill=\"#fff\"/> </clipPath> </defs> <image xlink:href=\"http://i.imgur.com/qi5FGET.jpg\" x=\"0\" y=\"0\" height=\"6.7\" width=\"10\" clip-path=\"url(#clip)\"/> </svg>\n\nFor a plain background-color, you actually can, using pseudo element and box shadow to draw background-color instead, and it will not hide backgrounds of parent's container, you will actually see them through.\n\nWhat you need is a browser that understands :before/:after and box-shadow :) ...\n\nFor IE8 , you can draw hudge borders instead shadows. http://codepen.io/anon/pen/fFgDo\n\nbox-shadow approach : http://codepen.io/anon/pen/FwLnd\n\ndiv { margin:2em; /* keep it away from sides to see result */ padding:2em;/* for test to size it when empty */ position:relative; /* reference to set pseudo element where you wish */ overflow:hidden;/* you do not want the box-shadow all over the page */ } div:before { content:''; position:absolute; width:80px; height:80px; top:-40px; left:-40px; border-radius:100%; box-shadow:0 0 0 2000px #1D005D;/* here draw the shadow inside its parent , maybe z-index will be required for content */ }\n\npseudo element can take any shape, and transform via css and set any where in its element to draw kind of holes through : examples : http://codepen.io/gc-nomade/pen/nKAka\n\nUpdate: There are a plethora of options available now. Check out one of the other answers.\n\nOriginal answer:\n\nUnfortunately, there is currently not a solution based on official or implemented CSS Specs :(\n\nHowever, as other people have added, there are possible solutions (or cheats?) you can do to achieve the same effect using JS libraries or complex HTML/CSS implementations. I came across this issue whilst looking for a way to make even more complex corners than the OP without using images.\n\nI have filed a bug (Feature Request) over at the webkit site - as there does not appear to be one filed already.\n\nBug 62458 - Feature Request: Inverse rounded corners\n\nThere are ways you could solve this issue by using just CSS - however it would depend on the colour of your background (if solid its easier) if you have a pattern for background it might be slightly more complex.\n\nI cover a basic example here of how to make an Inverse Border Radius in CSS (here). This uses a trick with the size of Border to use the inside, you might have to do some positioning to get it to work properly however as you can see its possible. Especially if you specify a background-color for each span.\n\nIf you want all 4 corners you would have to add a separate class for each span inside your div, and each class would simulate a corner, top left, top right etc."
+    }
+}
