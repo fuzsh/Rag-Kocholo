@@ -1,0 +1,36 @@
+{
+    "id": "dbpedia_315_1",
+    "rank": 84,
+    "data": {
+        "url": "https://serverfault.com/questions/255615/how-does-thunderbird-discover-e-mail-servers",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How does Thunderbird discover e-mail servers?",
+        "top_image": "https://cdn.sstatic.net/Sites/serverfault/Img/apple-touch-icon@2.png?v=9b1f48ae296b",
+        "meta_img": "https://cdn.sstatic.net/Sites/serverfault/Img/apple-touch-icon@2.png?v=9b1f48ae296b",
+        "images": [
+            "https://cdn.sstatic.net/Sites/serverfault/Img/logo.svg?v=43f5b6d5f65b",
+            "https://www.gravatar.com/avatar/f7428a9d3413b6f7817d8fd24fdf15fd?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/aq9Ax.jpg?s=64",
+            "https://www.gravatar.com/avatar/a007be5a61f6aa8f3e85ae2fc18dd66e?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/a0e0fe20ae197882d05956ce14a685b8?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/GpZsR.jpg?s=64",
+            "https://serverfault.com/posts/255615/ivc/f71b?prg=d52d9164-f18f-4fa9-93b5-688ba7bf9555"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2011-04-04T19:47:29",
+        "summary": "",
+        "meta_description": "We are deploying some test e-mail servers with the subdomain mail (i.e., mail.example.com). Now, it seems that Thunderbird discovers that e-mail server when we are configuring e-mail.\n\nHow does",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/serverfault/Img/favicon.ico?v=18e9cc4f2aea",
+        "meta_site_name": "Server Fault",
+        "canonical_link": "https://serverfault.com/questions/255615/how-does-thunderbird-discover-e-mail-servers",
+        "text": "As Zypher commented, according to https://wiki.mozilla.org/Thunderbird:Autoconfiguration (emphasis mine):\n\nTry to find the config at the Mozilla server (if the email provider does not provide the configuration)\n\nFetch https://live.mozillamessaging.com/autoconfig/emailaddressdomain , e.g. https://live.mozillamessaging.com/autoconfig/example.com . (Email address of user is not passed, otherwise Mozilla would have a list of email addresses of all users.)\n\nThat file contains the mail configuration. Content is described on ConfigFileFormat.\n\nThis service will have the configuration for all the major ISPs and email providers, so there's a 90+% hit rate\n\nIt will not work for corporate email accounts.\n\nIf a provider disagrees with a setting there, it can override the configuration by simply providing the config server in step 2.\n\nNoting what I've emphasised above (which will be the case for your servers, as they won't be registered with Mozilla):\n\nIf we couldn't find any configuration file, we try to guess the configuration using some heuristics. We try imap.domain, pop.domain, pop3.domain, smtp.domain and mail.domain, and for each, try the common 2-3 ports. We check whether SSL is available, which authentication algorithms are announces by the server in the CAPABILITIES etc..\n\nSo in order it will try:\n\nimap.domain\n\npop.domain\n\npop3.domain\n\nsmtp.domain\n\nmail.domain"
+    }
+}

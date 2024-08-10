@@ -1,0 +1,32 @@
+{
+    "id": "dbpedia_315_2",
+    "rank": 66,
+    "data": {
+        "url": "https://stackoverflow.com/questions/71426482/how-to-execute-access-local-file-from-thunderbird-webextension",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How to execute / access local file from Thunderbird WebExtension?",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://i.sstatic.net/KeEXO.jpg?s=64",
+            "https://i.sstatic.net/KeEXO.jpg?s=64",
+            "https://stackoverflow.com/posts/71426482/ivc/f71b?prg=32db4fcb-26df-464a-b67b-adab3f7b742a"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2022-03-10T15:13:48",
+        "summary": "",
+        "meta_description": "I like to write a Thunderbird AddOn that encrypts stuff. For this, I already extracted all data from the compose window. Now I have to save this into files and run a local executable for encryption...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/71426482/how-to-execute-access-local-file-from-thunderbird-webextension",
+        "text": "The answer is, that WebExtensions are currently not able to execute local files. Also, saving to some local folder on the disk is also not possible.\n\nInstead, you need to add some WebExtension Experiment to your project and there use the legacy APIs. There you can use the IOUtils and FileUtils extensions to reach your goal:\n\nExecute a file:\n\nIn your background JS file:\n\nvar ret = await browser.experiment.execute(\"/usr/bin/executable\", [ \"-v\" ]);\n\nIn the experiment you can execute like this:\n\nvar { ExtensionCommon } = ChromeUtils.import(\"resource://gre/modules/ExtensionCommon.jsm\"); var { FileUtils } = ChromeUtils.import(\"resource://gre/modules/FileUtils.jsm\"); var { XPCOMUtils } = ChromeUtils.import(\"resource://gre/modules/XPCOMUtils.jsm\"); XPCOMUtils.defineLazyGlobalGetters(this, [\"IOUtils\"); async execute(executable, arrParams) { var fileExists = await IOUtils.exists(executable); if (!fileExists) { Services.wm.getMostRecentWindow(\"mail:3pane\") .alert(\"Executable [\" + executable + \"] not found!\"); return false; } var progPath = new FileUtils.File(executable); let process = Cc[\"@mozilla.org/process/util;1\"].createInstance(Ci.nsIProcess); process.init(progPath); process.startHidden = false; process.noShell = true; process.run(true, arrParams, arrParams.length); return true; },\n\nSave an attachment to disk:\n\nIn your backround JS file you can do like this:\n\nvar f = messenger.compose.getAttachmentFile(attachment.id) var blob = await f.arrayBuffer(); var t = await browser.experiment.writeFileBinary(tempFile, blob);\n\nIn the experiment you can then write the file like this:\n\nasync writeFileBinary(filename, data) { // first we need to convert the arrayBuffer to some Uint8Array var uint8 = new Uint8Array(data); uint8.reduce((binary, uint8) => binary + uint8.toString(2), \"\"); // then we can save it var ret = await IOUtils.write(filename, uint8); return ret; },\n\nIOUtils documentation:\n\nhttps://searchfox.org/mozilla-central/source/dom/chrome-webidl/IOUtils.webidl\n\nFileUtils documentation:"
+    }
+}
