@@ -1,0 +1,43 @@
+{
+    "id": "dbpedia_992_2",
+    "rank": 2,
+    "data": {
+        "url": "https://stackoverflow.com/questions/3390175/most-efficient-way-to-determine-if-a-string-length-0",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Most efficient way to determine if a string length != 0?",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://i.sstatic.net/MjIHM.jpg?s=64",
+            "https://www.gravatar.com/avatar/3b2d29ed2ef517760c49fba78c0bd796?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/6d8ebb117e8d83d74ea95fbdd0f87e13?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/0b5ab789d3e28d1fad880f3fd1765b66?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/68175c95b0ed231f35bb3e1be2805169?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/f7facc1c82803bd3a209d27b63adf3ba?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/hXT0U.jpg?s=64",
+            "https://lh6.googleusercontent.com/-5zlt3pWzcc8/AAAAAAAAAAI/AAAAAAAAASA/5YyL9Zk1MlQ/photo.jpg?sz=64",
+            "https://www.gravatar.com/avatar/ba3674aa402bae7945f41fb3aba9435e?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/LZdzA.jpg?s=64",
+            "https://www.gravatar.com/avatar/3bb44c97113fc6bdee9b7caea2f304b7?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/hXT0U.jpg?s=64",
+            "https://www.gravatar.com/avatar/59f0d04a693abf3e50c9262764339cc3?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/3390175/ivc/6189?prg=ecfaa618-02e5-4477-8cf2-1b27f4b4d37a"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2010-08-02T17:22:32",
+        "summary": "",
+        "meta_description": "I'm trying to speed up the following:\n\nstring s; //--&gt; s is never null\n\nif (s.Length != 0)\n{\n   &lt;do something&gt;\n}\r\nProblem is, it appears the .Length actually counts the characters in the s...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/3390175/most-efficient-way-to-determine-if-a-string-length-0",
+        "text": "EDIT: Now that you've provided some more context:\n\nTrying to reproduce this, I failed to find a bottleneck in string.Length at all. The only way of making it faster was to comment out both the test and the body of the if block - which isn't really fair. Just commenting out the condition slowed things down, i.e. unconditionally copying the reference was slower than checking the condition.\n\nAs has been pointed out, using the overload of string.Split which removes empty entries for you is the real killer optimization.\n\nYou can go further, by avoiding creating a new char array with just a space in every time. You're always going to pass the same thing effectively, so why not take advantage of that?\n\nEmpty arrays are effectively immutable. You can optimize the null/empty case by always returning the same thing.\n\nThe optimized code becomes:\n\nprivate static readonly char[] Delimiters = \" \".ToCharArray(); private static readonly string[] EmptyArray = new string[0]; public static string[] SplitOnMultiSpaces(string text) { if (string.IsNullOrEmpty(text)) { return EmptyArray; } return text.Split(Delimiters, StringSplitOptions.RemoveEmptyEntries); }\n\nString.Length absolutely does not count the letters in the string. The value is stored as a field - although I seem to remember that the top bit of that field is used to remember whether or not all characters are ASCII (or used to be, anyway) to enable other optimisations. So the property access may need to do a bitmask, but it'll still be O(1) and I'd expect the JIT to inline it, too. (It's implemented as an extern, but hopefully that wouldn't affect the JIT in this case - I suspect it's a common enough operation to potentially have special support.)\n\nIf you already know that the string isn't null, then your existing test of\n\nif (s.Length != 0)\n\nis the best way to go if you're looking for raw performance IMO. Personally in most cases I'd write:\n\nif (s != \"\")\n\nto make it clearer that we're not so much interested in the length as a value as whether or not this is the empty string. That will be slightly slower than the length test, but I believe it's clearer. As ever, I'd go for the clearest code until you have benchmark/profiling data to indicate that this really is a bottleneck. I know your question is explicitly about finding the most efficient test, but I thought I'd mention this anyway. Do you have evidence that this is a bottleneck?\n\nEDIT: Just to give clearer reasons for my suggestion of not using string.IsNullOrEmpty: a call to that method suggests to me that the caller is explicitly trying to deal with the case where the variable is null, otherwise they wouldn't have mentioned it. If at this point of the code it counts as a bug if the variable is null, then you shouldn't be trying to handle it as a normal case."
+    }
+}

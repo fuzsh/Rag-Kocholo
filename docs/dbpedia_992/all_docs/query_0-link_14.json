@@ -1,0 +1,37 @@
+{
+    "id": "dbpedia_992_0",
+    "rank": 14,
+    "data": {
+        "url": "https://forum.qiime2.org/t/reduced-sequences-after-joining-paired-ends/10077",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Reduced sequences after joining paired ends",
+        "top_image": "https://cdck-file-uploads-global.s3.dualstack.us-west-2.amazonaws.com/flex002/uploads/qiime21/original/2X/7/78042d598ca8457855b0376d89e39dc0b347c8fb.png",
+        "meta_img": "https://cdck-file-uploads-global.s3.dualstack.us-west-2.amazonaws.com/flex002/uploads/qiime21/original/2X/7/78042d598ca8457855b0376d89e39dc0b347c8fb.png",
+        "images": [
+            "https://forum.qiime2.org/letter_avatar_proxy/v4/letter/r/bb73d2/48.png",
+            "https://forum.qiime2.org/letter_avatar_proxy/v4/letter/r/bb73d2/48.png",
+            "https://forum.qiime2.org/letter_avatar_proxy/v4/letter/r/bb73d2/48.png",
+            "https://forum.qiime2.org/user_avatar/forum.qiime2.org/benjjneb/48/1602_2.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "joining"
+        ],
+        "tags": null,
+        "authors": [
+            "rlhughes (Riley)",
+            "Nicholas_Bokulich (Nicholas Bokulich)",
+            "system (system) Closed"
+        ],
+        "publish_date": "2019-06-03T22:21:50+00:00",
+        "summary": "",
+        "meta_description": "Hello, \nI have an issue after merging paired reads. I used cutadapt to trim barcodes and primers, imported to qiime 2, then used vsearch join-pairs to merge forward and reverse reads. However, compared to non-joined read&hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdck-file-uploads-global.s3.dualstack.us-west-2.amazonaws.com/flex002/uploads/qiime21/optimized/2X/4/40e5c7277f765f014410ddf5656592d4830b7bf0_2_32x32.png",
+        "meta_site_name": "QIIME 2 Forum",
+        "canonical_link": "https://forum.qiime2.org/t/reduced-sequences-after-joining-paired-ends/10077",
+        "text": "Hello,\n\nI have an issue after merging paired reads. I used cutadapt to trim barcodes and primers, imported to qiime 2, then used vsearch join-pairs to merge forward and reverse reads. However, compared to non-joined reads, this resulted in a BIG loss of sequences. Per this previous forum post, I checked the quality of reads and they have good quality so I'm not sure what's causing this big decrease. If it helps diagnose the problem, I also demultiplexed using cutadapt without trimming barcodes/primers, imported, and joined, and did not observe this big decrease in sequence number so I don't know if that means anything...attached are the paired-end-demux.qzv (non-joined) and demux-joined.qzv (joined) files. Any help is appreciated! Thank you\n\ndemux-joined.qzv (295.0 KB)\n\npaired-end-demux.qzv (293.2 KB)\n\nAre you sure your reads are long enough to overlap effectively? We see this problem a lot (on the forum and in our own data) — check the lengths of your reads, the expected length distribution of your amplicons, and figure out if R1 + R2 - minimum overlap >= max expected length.\n\nNow that is weird... I wonder if the trimming is resulting in reads being truncated to the point that they no longer have enough length to overlap? That does not really make sense under normal circumstances (since even if an adapter is being trimming from the 3' end, presumably the paired read should still overlap), but maybe cutadapt is trimming your sequences in the wrong spot? You should spot-check a few of the sequences that are not joining, both before and after cutadapt. Are these being trimmed in unexpected ways???"
+    }
+}
