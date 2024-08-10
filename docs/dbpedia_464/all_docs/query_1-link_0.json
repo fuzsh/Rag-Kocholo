@@ -1,0 +1,39 @@
+{
+    "id": "dbpedia_464_1",
+    "rank": 0,
+    "data": {
+        "url": "https://stackoverflow.com/questions/2394983/is-unix-coded-in-c-or-c-or-both",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Is Unix coded in C or C++ or both?",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://i.sstatic.net/WtEI9.png?s=64",
+            "https://www.gravatar.com/avatar/932e1b8f19a462c8eade11eb7e25da04?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/92a1203dd766cfafabdfa21c3b196454?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/bf6eddcd47c263a1a5d31bdb4f7b6424?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/22e6b394507541a710de929823a93b08?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/7881f3cacd278fb65ca3342307e4275b?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/a910ad61c5827193f003a11be5dacb14?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/d8962238339d771f0348967be6f97b1b?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/49d047b1c62e3971af07db31389a9f6b?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/2394983/ivc/511b?prg=e5e9bb4e-3ffc-48c0-ae2b-26d62e7bde24"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2010-03-07T03:01:44",
+        "summary": "",
+        "meta_description": "Many system calls in Unix use overloading and default variables. This concept is absent in C, so Unix is coded in C++ also right?",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/2394983/is-unix-coded-in-c-or-c-or-both",
+        "text": "Unix was first created at Bell Labs in 1969, well before C++ was conceived. (Src: Unix), you can confirm this by reading Lions' Commentary on Unix, or the BSD 4.4-Lite (which is similar to BSD Net/2) which is available in tarball or via cvs (from FreeBSD). Or the archives from The Unix Heritage Society which is from the very old Bell Labs / AT&T versions.\n\nBjarne Stroustrup created C++ in approximately 1983, prior to that he worked on \"C with Classes\", according to History of C++. Confirmed from Bjarne Stroustrup's FAQ, and the earliest date for C with Classes was 1979.\n\nI hope that clarifies the impossibility of the idea that Unix was based upon C++. Note that Object-Oriented languages have been around since 1960s in Simula 67, so don't confuse objects and classes with C++.\n\nPretty much straight C all the way down...\n\nAll major versions of Unix use entirely straight C for the kernel. (Well, Mac OS X has a little C++ in one interface.)\n\nIf you don't count the desktop layer, then without more than a few exceptions, the core libraries and utilities are in C as well. The only core utility that I can think of that is written in C++ is groff.\n\nNow, with packages, it's a different story...\n\nWhen you talk about kernels for Unix-y operating systems like Linux, Solaris, Mac OS X, NetBSD, FreeBSD, etc. - they're typically all C. And I also am not sure what you mean by overloading or default variables - certainly not in kernel calls.\n\nI was surprised when DigitalRoss said Mac OS X has Objective C in the kernel sources, so I downloaded the MacOS X 10.6.2 version of the Darwin xnu kernel sources, and indeed, there was no Objective C. I was, however, slightly shocked to discover a little C++.\n\nAnyway, a lot of things \"user-space\" (non-kernel) programs rely on, like virtual memory, exception handling, device I/O, and so on, are done by the kernel. But the kernel can't use itself for those things, just like you can't lift yourself up in the air by picking up your shoes with your hands.\n\nObject-oriented languages like C++ and Objective C make extensive use of exactly the things kernels can't do for themselves. That's why kernels are mostly written in C. In the case of that C++ I saw in the xnu sources, I'm sure it's very, very carefully written to avoid doing things that aren't safe in the kernel.\n\nAs far as user-space programs being written in C vs. C++, I think it's mostly tradition, personal preference, and what people are used to. As someone who's proficient in both languages, I think it's rather silly myself.\n\nA few OS kernels have been written in C++. I believe the Chorus kernel (for one example) is written (almost?) exclusively in C++ (it's somewhat like Mach: a microkernel that's used almost exclusively via a UNIX emulator running as a user-mode server).\n\nThere have been a few other semi-experimental systems in C++ as well. One fairly recent one is named Hybrid. A much older one was posted on comp.sources.misc (in four consecutive posts) years ago -- I'm pretty sure it'd take a fair amount of work to get it to compile with a current C++ compiler. This one runs on a virtual machine, and includes source to emulate the hardware."
+    }
+}

@@ -1,0 +1,30 @@
+{
+    "id": "dbpedia_465_1",
+    "rank": 68,
+    "data": {
+        "url": "https://winocm.com/xnu/projects/2013/07/16/porting_xnu_to_arm/index.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "iOS) kernel to ARM – winocmblag",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://winocm.com/images/xnuboot.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2013-07-16T00:00:00",
+        "summary": "",
+        "meta_description": "The XNU kernel is used widely on many Apple devices, ranging from the iMac, to the iPhone. It is a kernel based on Ma...",
+        "meta_lang": "en",
+        "meta_favicon": "/favicon.ico",
+        "meta_site_name": "winocmblag",
+        "canonical_link": "http://winocm.com/xnu/projects/2013/07/16/porting-xnu-to-arm/",
+        "text": "Porting the XNU (Mac OS X/iOS) kernel to ARM\n\nThe XNU kernel is used widely on many Apple devices, ranging from the iMac, to the iPhone. It is a kernel based on Mach 4.3 but also uses a lot of BSD code. Contrary to Mach’s original design, XNU is not a microkernel, but rather a very large monolithic one. This article isn’t really for debate against which kernel design is better, that’s for somewhere else.\n\nApple does maintain a version of XNU for ARM devices, but this version is proprietary, and was never released on Apple’s open source software portal. Only the i386/x86_64 version and earlier, the PowerPC version, is/was open source. (If you care about PowerPC, the last version of it you’ll find is xnu-1504.9.37, or Darwin 10.7/Snow Leopard).\n\nBootloader Fun\n\nOn ARM/embedded platforms, Apple uses a bootloader called iBoot. This bootloader initializes the hardware and brings it up to a usable state. Then, it can load a kernelcache over a USB connection or over TFTP. A kernelcache is a LZSS compressed container that has all of the kernel extensions needed for boot built-in. Since I am working on a BeagleBoard xM, I obviously did not have iBoot on my platform.\n\nTo solve this problem, I made two bootloaders. One that acts as a shim between u-boot (the native Linux bootloader), and the XNU kernel, and an additional one that uses UEFI to bootstrap the kernel directly. Both contain code to flatten the plist (yes, real Property Lists) based device-tree and to add additional memory nodes if necessary. The Linux shim-bootloader also will pass along any initrd or commandline arguments to the XNU kernel if necessary, which makes development a lot easier. Moving a micro-SD card over and over from machine to machine gets very tiring.\n\nI boot my kernel/bootloader combination over TFTP using the following configuration in u-boot. The device-tree and kernel image are attached to the end of the shim bootloader, sort of analogous to a dtbImage in the world of Linux.\n\nI also have a configuration very much like this for booting UEFI, but I placed that under the user.txt file for booting.\n\nCore Bringup\n\nInitially, I had to write a lot of the platform code. This included things such as spinlocks, thread setup, exception handlers, physical memory mapper and so on. For functions I did not implement, I simply stubbed them out by using the C preprocessor and GNU assembler.\n\nWhen starting, the kernel just worked, except for one thing. On TI OMAP3530, an external abort is asserted whenever an exclusive instruction (i.e. ldrex, strex, clrex, etc) is used. This caused the kernel to hang before it could print anything to the serial console. However, for platforms that do not support semihosting, all console output is sent to an internal buffer. Said buffer can then be dumped from a JTAG board.\n\nTo work around this issue, and to make my life easier when I port the kernel to ARMv6 or ARMv5, I removed instances of the exclusive stores/loads. This wouldn’t really matter on this platform as it is uniprocessor anyway. To prevent these routines from being interrupted during context switches, for example, I added interrupt barriers. This solved the issue and allowed me to boot.\n\nPlatform Expert\n\nThe platform expert is a core component of XNU. It contains all of the hardware specific subroutines for any specified machine configuration. On ARM systems, this includes setting up the interrupt controller, timers, framebuffer, serial UARTs and other core peripherals. My version of the XNU kernel does this by making SoC plugins for each board configuration.\n\nThis allows me to have one SoC dispatch table per board configuration and one standard API to use when communicating with basic hardware peripherals.\n\nSystem Initialization\n\nWith all of the necessary pieces in place, I was able to boot the kernel to a semi-usable state, at least to the point where the root file system could at least be mounted.\n\nGetting the kernel up to userland is now the next step, not very much remains other than fixing everything. It needs a lot of work to get there. But hey, at least it works, and I’m happy that it got as far as it did.\n\nShare"
+    }
+}

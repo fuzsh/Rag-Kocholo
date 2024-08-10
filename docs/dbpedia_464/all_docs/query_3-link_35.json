@@ -1,0 +1,36 @@
+{
+    "id": "dbpedia_464_3",
+    "rank": 35,
+    "data": {
+        "url": "https://stackoverflow.com/questions/6990885/assembly-language-in-os-x",
+        "read_more_link": "",
+        "language": "en",
+        "title": "assembly language in os x",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://i.sstatic.net/xEJu4.jpg?s=64",
+            "https://www.gravatar.com/avatar/207f780c69d3a617c2af1996841e41d0?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/PckCW.png?s=64",
+            "https://www.gravatar.com/avatar/a007be5a61f6aa8f3e85ae2fc18dd66e?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/18baac9732cb20cf9b4ec25b3cb49546?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/cceaf49e409fa9a34cec43201647e1e2?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/6990885/ivc/505b?prg=4e2f41b2-3d1f-492c-a0e0-9b0658789e87"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2011-08-09T02:48:03",
+        "summary": "",
+        "meta_description": "I used assembly language step by step to learn assembly language programming on linux. I recently got a Mac, on which int 0x80 doesn't seem to work (illegal instruction). \n\nSo just wanted to know if",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/6990885/assembly-language-in-os-x",
+        "text": "For practical purposes, this answer shows how to compile a hello world application using nasm on OSX.\n\nThis code can be compiled for linux as is, but the cmd-line command to compile it would probably differ:\n\nsection .text global mystart ; make the main function externally visible mystart: ; 1 print \"hello, world\" ; 1a prepare the arguments for the system call to write push dword mylen ; message length push dword mymsg ; message to write push dword 1 ; file descriptor value ; 1b make the system call to write mov eax, 0x4 ; system call number for write sub esp, 4 ; OS X (and BSD) system calls needs \"extra space\" on stack int 0x80 ; make the actual system call ; 1c clean up the stack add esp, 16 ; 3 args * 4 bytes/arg + 4 bytes extra space = 16 bytes ; 2 exit the program ; 2a prepare the argument for the sys call to exit push dword 0 ; exit status returned to the operating system ; 2b make the call to sys call to exit mov eax, 0x1 ; system call number for exit sub esp, 4 ; OS X (and BSD) system calls needs \"extra space\" on stack int 0x80 ; make the system call ; 2c no need to clean up the stack because no code here would executed: already exited section .data mymsg db \"hello, world\", 0xa ; string with a carriage-return mylen equ $-mymsg ; string length in bytes\n\nAssemble the source (hello.nasm) to an object file:\n\nnasm -f macho hello.nasm\n\nLink to produce the executable:\n\nld -o hello -e mystart hello.o\n\nThis question will likely help: List of and documentation for system calls for XNU kernel in OSX.\n\nUnfortunately, it looks like the book mentioned there is the only way to find out. As for int 0x80, I doubt it will work because it is a pretty Linux specific API that is built right into the kernel.\n\nThe compromise I make when working on an unfamiliar OS is to just use libc calls, but I can understand that even that may be too high level if you're just looking to learn."
+    }
+}

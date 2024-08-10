@@ -1,0 +1,36 @@
+{
+    "id": "dbpedia_464_1",
+    "rank": 81,
+    "data": {
+        "url": "https://unix.stackexchange.com/questions/12930/best-way-to-get-into-kernel-programming",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Best way to get into Kernel programming?",
+        "top_image": "https://cdn.sstatic.net/Sites/unix/Img/apple-touch-icon@2.png?v=32fb07f7ce26",
+        "meta_img": "https://cdn.sstatic.net/Sites/unix/Img/apple-touch-icon@2.png?v=32fb07f7ce26",
+        "images": [
+            "https://cdn.sstatic.net/Sites/unix/Img/logo.svg?v=eb6eb2b9e73c",
+            "https://lh4.googleusercontent.com/-wBY-4a1-0jo/AAAAAAAAAAI/AAAAAAAAAfc/4BCoMMK1rqg/photo.jpg?sz=64",
+            "https://www.gravatar.com/avatar/909e92fec1cc6e6eb3cea328c2049973?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/8be3dabbe9a0b869052c16fa925a81fc?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/F718f.jpg?s=64",
+            "https://www.gravatar.com/avatar/1902eca515e77d84a832bb40ceb756a8?s=64&d=identicon&r=PG",
+            "https://unix.stackexchange.com/posts/12930/ivc/511b?prg=1cb5794a-0b0c-4f34-8a85-9be7eb35cae9"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2011-05-10T13:15:07",
+        "summary": "",
+        "meta_description": "Not so much asking what books (although if you know of any guides/tutorials that'd be helpful) but what is the best way to start doing kernel programming and is there a particular distribution that...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/unix/Img/favicon.ico?v=fb86ccabb921",
+        "meta_site_name": "Unix & Linux Stack Exchange",
+        "canonical_link": "https://unix.stackexchange.com/questions/12930/best-way-to-get-into-kernel-programming",
+        "text": "Firstly:\n\nFor the baby stages, writing various variations on \"hello world\" modules, and virtual hardware drivers, are the best way to start (real hardware introduces real world problems best faced when you have more of an idea what you are doing).\n\n\"Linux Device Drivers\" is an excellent book and well worth starting with: http://lwn.net/Kernel/LDD3/\n\nLDD (used to, at least) have exercises where you wrote virtual drivers, e.g. RAM disks, and virtual network devices.\n\nSecondly:\n\nsubscribe to https://lkml.org/ or to the mailing list of a sub-system you will be hacking in. Lurk for a bit, scanning over threads, reading code review (replies to patches) to see what kind of things people stumble on or pick up on.\n\nSee if you can obtain (cheap) hardware for a device that is not yet supported, or not yet supported well. Good candidates are cheap-ish USB NICs or similar, low-cost USB peripherals. Something with an out-of-date, or out-of-tree driver, perhaps vendor written, perhaps for 2.4.x, is ideal, since you can start with something that works (sort-of), and gradually adapt it/rewrite it, testing as you go. My first driver attempt was for a Davicom DM9601 USB NIC. There was a 2.4-series vendor-written kernel driver that I slowly adapted to 2.6. (Note: the driver in mainline is not my driver, in the end someone else wrote one from scratch).\n\nAnother good way in is to look at the Kernel Newbies site, specifically the \"kernel janitors\" todo: http://kernelnewbies.org/KernelJanitors/Todo This is a list of tasks that a beginner should be able to tackle.\n\nThere are many kernels in existence.\n\nLinux is not the only game out there, but it's the most widely used. Some people recommend the minix kernel to understand operating system concepts. I would go with Linux 2.6.x series as it's the most common and it won't be wasted on something (almost) nobody uses. Solaris, XNU (Mac), FreeBSD and Dragonfly are notable.1\n\nFind something super simple (serial port, usb, etc.) and make it do something else. For an extra challenge, try writing a kernel module for something that doesn't yet have one. (Be sure to google the suspect by pci sudo lspci -nn and/or usb id sudo lsusb first.)\n\nUpdate: Don't do this directly on your primary system, use virtual machines (VM) (computer in a computer) as mentioned. VirtualBox can provide this and it's free. Also, I don't want it to seem overwhelming, but try VM snapshots so you can go back in case something breaks the VM itself.\n\nUpdate 2: The note about Git (DVCSes inc. mercurial, fossil, bazaar, darcs) is a good idea, mostly for code and small, important files. Try not to use Git to backup music, videos and such unless you know the implications. ;)\n\nFind a module or driver you want to modify or start with a null / hello world type of module and build from there. Specifically work with a module because it will allow you to load, unload, recompile and reload the code into a running kernel. Later you can get into the core bits, but basically modules have all kinds of and you can do pretty much whatever you like.\n\nSecond, use a VM. Setup a guest machine under VirtualBox or some over VM and do your kernel testing in there for a while. That way you won't kill your main system when you break something, and restarting, backtracking to a working snapshot, etc is really easy.\n\nThird, learn git."
+    }
+}

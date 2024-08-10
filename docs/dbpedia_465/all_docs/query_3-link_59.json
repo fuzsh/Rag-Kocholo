@@ -1,0 +1,36 @@
+{
+    "id": "dbpedia_465_3",
+    "rank": 59,
+    "data": {
+        "url": "https://discourse.julialang.org/t/using-plots-takes-20-seconds-or-more/7061",
+        "read_more_link": "",
+        "language": "en",
+        "title": "'using Plots' takes 20 seconds or more",
+        "top_image": "https://global.discourse-cdn.com/julialang/original/3X/4/d/4d76a1d8062ed9397f2f00f22abdd69926b51785.png",
+        "meta_img": "https://global.discourse-cdn.com/julialang/original/3X/4/d/4d76a1d8062ed9397f2f00f22abdd69926b51785.png",
+        "images": [
+            "https://emoji.discourse-cdn.com/twitter/+1.png?v=12",
+            "https://emoji.discourse-cdn.com/twitter/sweat_smile.png?v=12",
+            "https://emoji.discourse-cdn.com/twitter/slight_smile.png?v=12",
+            "https://global.discourse-cdn.com/julialang/original/3X/0/d/0ddddaa933869477158c7ff5fe39b2c2d9ac823d.png",
+            "https://emoji.discourse-cdn.com/twitter/slight_smile.png?v=12",
+            "https://emoji.discourse-cdn.com/twitter/grinning.png?v=12",
+            "https://global.discourse-cdn.com/julialang/original/3X/3/0/30036412619c67276df07546611c6d51c3d5e172.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "plotting"
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2017-11-14T08:12:33+00:00",
+        "summary": "",
+        "meta_description": "I’ve read that calls to using Plots can sometimes be slow but I wonder if as slow as I’m seeing is normal. On 3 trials after starting Julia from the command line I @timed this taking between 35 and 40 seconds. \nAfter som&hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://global.discourse-cdn.com/julialang/optimized/3X/5/2/52e282d46eadd4022c458057bb740061d8efad72_2_32x32.png",
+        "meta_site_name": "Julia Programming Language",
+        "canonical_link": "https://discourse.julialang.org/t/using-plots-takes-20-seconds-or-more/7061",
+        "text": "I’ve read that calls to using Plots can sometimes be slow but I wonder if as slow as I’m seeing is normal. On 3 trials after starting Julia from the command line I @timed this taking between 35 and 40 seconds.\n\nAfter some Googling, I learned how to build my system image. After doing that I’m getting more like 19.7 seconds so that definitely makes a difference but 20 seconds still seems awfully long.\n\nAlso of note, using -j 2 tends to approximately double the time to run the using command.\n\nIs there something I’m missing or is this just par for the course?\n\nJulia Version 0.6.1 Commit 0d7248e (2017-10-24 22:15 UTC) Platform Info: OS: macOS (x86_64-apple-darwin14.5.0) CPU: Intel(R) Core(TM) i5-4258U CPU @ 2.40GHz WORD_SIZE: 64 uname: Darwin 16.7.0 Darwin Kernel Version 16.7.0: Wed Oct 4 00:17:00 PDT 2017; root:xnu-3789.71.6~1/RELEASE_X86_64 x86_64 i386 Memory: 8.0 GB (605.25 MB free) Uptime: 1.069672e6 sec Load Avg: 2.2373046875 2.3759765625 2.30517578125 Intel(R) Core(TM) i5-4258U CPU @ 2.40GHz: speed user nice sys idle irq #1 2400 MHz 625768 s 0 s 393018 s 2275837 s 0 s #2 2400 MHz 329560 s 0 s 164461 s 2800507 s 0 s #3 2400 MHz 620082 s 0 s 329063 s 2345384 s 0 s #4 2400 MHz 340340 s 0 s 168468 s 2785719 s 0 s\n\nUsing master of Plots.jl is faster as it is precompiled, but still slow:\n\njulia> @time using Plots 6.168379 seconds (4.04 M allocations: 219.459 MiB, 1.31% gc time) julia> @time plot(1:3) 16.983929 seconds (10.69 M allocations: 569.126 MiB, 1.96% gc time)\n\nthen it still takes another 6s or so for the plot to show (pyplot backend). I use PyPlot.jl because I can’t be bothered to wait; that takes about 6s to first plot.\n\nYou should be able to make it fast (<1s) with a custom userimg. But for that you need to make sure all the important functions get compiled. Have a look at the readme of SnoopCompile.\n\nI should write a tutorial on how to use Plotly,js with Pages.js. There is an undocumented Plotly.js example in Pages.jl (master). It is super fast and interactive\n\nEdit: I should qualify “super fast” with this group I did not compare to other packages so it was more of an absolute statement about general satisfaction with the speed. I wouldn’t try anything super complicated and expect great performance. There are other great packages that are probably faster the plotly\n\nI’ve been working on this problem in MakiE, which is a new design prototype for Plots, with only the glvisualize backend for now.\n\nI just did the following benchmarks:\n\nPlotting one million points in 3s start to end\n\nThe trick is to make your package precompile save and use snoop compile, to emit precompile statements to tell julia what functions to compile binary for, when included in the system image.\n\nI will create a package and instructions for what I did to make loading fast! This could be part of Pkg.build().\n\nPlots has good speed on the second plot as we all know, unlike the (slight) second-plot issue I discovered with another package:\n\nhttps://github.com/mbaz/Gaston.jl/issues/133\n\nThere’s no real need to do this redundantly (might still happen in real-world code), but using only gets stable (allocations/speed) on third use (unlike for Gaston, where it only applies to the plot):\n\njulia> @time using Plots 9.869769 seconds (7.44 M allocations: 422.704 MiB, 2.78% gc time) julia> @time using Plots 1.492128 seconds (1.70 M allocations: 80.019 MiB, 1.90% gc time) julia> @time using Plots 0.000298 seconds (276 allocations: 14.859 KiB)"
+    }
+}

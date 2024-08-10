@@ -1,0 +1,33 @@
+{
+    "id": "dbpedia_465_0",
+    "rank": 80,
+    "data": {
+        "url": "https://virtuallyfun.com/2013/08/14/qemu-version-1-6-0-rc3-is-out/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "QEMU version 1.6.0-rc3 is out!",
+        "top_image": "https://virtuallyfun.com/wp-content/uploads/2013/08/Screen-Shot-2013-08-14-at-1.49.10-PM-1024x638.png",
+        "meta_img": "",
+        "images": [
+            "https://virtuallyfun.com/wp-content/uploads/2024/01/ultima-7-banner-AmigaCaptainBlood.jpg",
+            "https://virtuallyfun.com/wp-content/uploads/2013/08/Screen-Shot-2013-08-14-at-1.49.10-PM-1024x638.png",
+            "https://secure.gravatar.com/avatar/?s=68&d=robohash&r=g",
+            "https://secure.gravatar.com/avatar/b8fb96a30c2dd7b94c60ef1a548ff149?s=39&d=robohash&r=g"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2013-08-14T00:00:00",
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "",
+        "meta_site_name": "",
+        "canonical_link": "https://virtuallyfun.com/2013/08/14/qemu-version-1-6-0-rc3-is-out/",
+        "text": "You canÂ download the source code forÂ it at Qemu.org.\n\nWell this version runs surprisingly well on OS X.\n\nDarwin 124244241046.ctinets.com 12.4.0 Darwin Kernel Version 12.4.0: Wed May 1 17:57:12 PDT 2013; root:xnu-2050.24.15~1/RELEASE_X86_64 x86_64), along with clang 421 (Apple clang version 4.0 (tags/Apple/clang-421.0.57) (based on LLVM 3.1svn)\n\nI’m using glib-2.23.6, along with my older notes, which are somewhat PowerPC specific, but work fine on OS X. Â First remember to setup your environment for glib2\n\nPKG_CONFIG_PATH=/usr/local/lib/pkgconfig\n\nexport PKG_CONFIG_PATH\n\nI ran into some issue with picking up libiconv with gconvert.c . Â I just commented out the error message.\n\n#if defined(USE_LIBICONV_GNU) && !defined (_LIBICONV_H)\n\n#error GNU libiconv in use but included iconv.h not from libiconv\n\n#endif\n\n#if !defined(USE_LIBICONV_GNU) && defined (_LIBICONV_H)\n\n//#error GNU libiconv not in use but included iconv.h is from libiconv\n\n#endif\n\nI also built it without GTK+ as building that looks simply overwhelming on OS X. Â I had to build the included pixman with –disable-gtk flags. Â In the configure script make it look like this:\n\n#PKG_PROG_PKG_CONFIG\n\n#if test $enable_gtk = auto ; then\n\n# PKG_CHECK_EXISTS(gtk+-2.0, enable_gtk=yes, enable_gtk=no)\n\n#fi\n\n#if test $enable_gtk = yes ; then\n\n# PKG_CHECK_MODULES(GTK, gtk+-2.0)\n\n#fi\n\n# if test “x$enable_gtk” = xyes; then\n\n# HAVE_GTK_TRUE=\n\n# HAVE_GTK_FALSE=’#’\n\n#else\n\nHAVE_GTK_TRUE=’#’\n\nHAVE_GTK_FALSE=\n\n#fi\n\nFinally while the AdLib card is enabled by default now (yay) I kept on receiving the following error:\n\nAssertion failed: (pio->offset >= off_last), function portio_list_add, file /usr/src/qemu-1.6.0-rc3/ioport.c, line 240.\n\nSo I just commented out the assert in ioport.c and I’ve been running Doom 1.1 for a few minutes without issue. Â I’ve also been able to install Windows NT 4.0 on Qemu"
+    }
+}

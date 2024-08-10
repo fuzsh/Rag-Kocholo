@@ -1,0 +1,28 @@
+{
+    "id": "dbpedia_465_0",
+    "rank": 79,
+    "data": {
+        "url": "https://malware.news/t/an-overview-of-macos-kernel-debugging/29481",
+        "read_more_link": "",
+        "language": "en",
+        "title": "An overview of macOS kernel debugging",
+        "top_image": "https://malware.news/uploads/default/original/3X/8/0/80d2bf25cc801aa713055c8c5cc6db0c4360bbaa.png",
+        "meta_img": "https://malware.news/uploads/default/original/3X/8/0/80d2bf25cc801aa713055c8c5cc6db0c4360bbaa.png",
+        "images": [],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2019-05-07T11:15:17+00:00",
+        "summary": "",
+        "meta_description": "The terms macOS kernel,\nDarwin\nkernel and XNU are used\ninterchangeably throughout the posts. References are provided for XNU\n4903.221.2 from macOS\n10.14.1,\nthe latest available sources at the time of writing. \n\nWhat is a&hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://malware.news/uploads/default/optimized/3X/a/0/a0086c91da850eb004fb4af82117ab347b9e272a_2_32x32.png",
+        "meta_site_name": "Malware Analysis, News and Indicators",
+        "canonical_link": "https://malware.news/t/an-overview-of-macos-kernel-debugging/29481",
+        "text": "Detailed account of kernel-debugger interactions over KDP\n\nFor the even more curious, this section documents thoroughly what happens when LLDB attaches to XNU via KDP; reading is not required to follow the rest of the post. References are provided for LLDB 8.0.0.\n\nAssuming that the kernel has been properly set up for debugging and the debug boot-arg has been set to DB_HALT, at some point during the XNU startup an IOKernelDebugger object will call kdp_register_send_receive() [15]. This routine, after parsing the debug boot-arg, executes kdp_call() [16][17] to generate an EXC_BREAKPOINT trap [18], which in turn triggers the execution of trap_from_kernel() [19], kernel_trap() [20] and kdp_i386_trap() [21][22][23]. This last function calls handle_debugger_trap() [24][25] and eventually kdp_raise_exception() [26][27] to start kdp_debugger_loop() [28][29]. Since no debugger is connected (yet), the kernel stops at kdp_connection_wait() [30][31], printing the string ‘Waiting for remote debugger connection.’ [32] and then waiting to receive a KDP_REATTACH request followed by a KDP_CONNECT [33].\n\nIn LLDB, the kdp-remote plug-in handles the logic for connecting to a remote KDP server. When the kdp-remote command is executed by the user, LLDB initiates the connection to the specified target by executing ProcessKDP::DoConnectRemote() [34], which sends in sequence the two initial requests KDP_REATTACH [35][36] and KDP_CONNECT [37][38].\n\nUpon receiving the two requests, kdp_connection_wait() terminates [39][40] and kdp_handler() is entered [41][42]. Here, requests from the client are received [43], processed using a dispatch table [44][45] and responded [46] in a loop until either a KDP_RESUMECPUS or a KDP_DISCONNECT request is received [47][48].\n\nCompleted the initial handshake, LLDB then sends three more requests (KDP_VERSION [49][50], KDP_HOSTINFO [51][52] and KDP_KERNELVERSION [53][54]) to extract information about the debuggee. If the kernel version string (an example is ‘Darwin Kernel Version 16.0.0: Mon Aug 29 17:56:21 PDT 2016; root:xnu-3789.1.32~3/DEVELOPMENT_X86_64; UUID=3EC0A137-B163-3D46-A23B-BCC07B747D72; stext=0xffffff800e000000’) is recognised as coming from a Darwin kernel [55][56], then the darwin-kernel dynamic loader plug-in is loaded. At this point, the connection to the remote target is established and the attach phase is completed [57][58] by eventually instanciating the said plug-in [59][60], which tries to locate the kernel load address [61][62] and the kernel image [63][64]. Finally, the Darwin kernel module is loaded [65][66][67][68], which first searches the local file system for an on-disk file copy of the kernel using its UUID [69][70] and then eventually loads all kernel extensions [71][72].\n\nAfter attaching, LLDB waits for commands from the user, which will be translated into KDP requests and sent to the kernel:\n\ncommands register read and register write generate KDP_READREGS [73] and KDP_WRITEREGS [74] requests;\n\ncommands memory read and memory write generate KDP_READMEM [75] and KDP_WRITEMEM [76] requests (respectively KDP_READMEM64 and KDP_WRITEMEM64 for 64-bit targets);\n\ncommands breakpoint set and breakpoint delete generate KDP_BREAKPOINT_SET and KDP_BREAKPOINT_REMOVE [77] requests (respectively KDP_BREAKPOINT_SET64 and KDP_BREAKPOINT_REMOVE64 for 64-bit targets);\n\ncommands continue and step both generate KDP_RESUMECPUS [78] requests; in case of single-stepping, the TRACE bit of the RFLAGS register is set [79][80][81] with a KDP_WRITEREGS request before resuming, which later causes a type-1 interrupt to be raised by the CPU after the next instruction is executed."
+    }
+}

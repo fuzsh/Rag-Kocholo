@@ -1,0 +1,30 @@
+{
+    "id": "dbpedia_464_1",
+    "rank": 95,
+    "data": {
+        "url": "https://flylib.com/books/en/3.126.1.66/1/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Section 6.1. xnu Source",
+        "top_image": "https://flylib.com/tpl/fly/images/favicon.png",
+        "meta_img": "https://flylib.com/tpl/fly/images/favicon.png",
+        "images": [
+            "https://flylib.com/icons/5545-small.jpg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "Mac OS X Internals: A Systems Approach,2006,  (isbn 0321278542, ean 0321278542), by Singh A",
+        "meta_lang": "en",
+        "meta_favicon": "/tpl/fly/images/favicon.png",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "6.1. xnu Source\n\nIn Chapter 5, we visited various parts of the kernel as we traced the execution of kernel code during system startup. Let us now take a brief tour of the xnu kernel source to better understand how the source is organized. Since the xnu package contains close to 3000 files, it is impractical to visit each file. We will only look at major directories in the xnu source tree to enumerate the components implemented within.\n\nIn this section, file and directory names are listed relative to the top-level directory in the xnu source archive. For example, given that the xnu-<version>.tar.gz Darwin package will unpack into a top-level directory called xnu-<version>, we refer to a file xnu-<version>/foo/bar as foo/bar.\n\nAt the topmost level, xnu contains the directories listed in Table 61. Besides these, there exist a few other miscellaneous files and directories that are not important in the current discussion. We will look at some of them later in this chapter in the context of kernel compilation (Section 6.10).\n\nTable 62 lists some contents of the bsd/ directory. Section 2.4.2 provides an overview of the functionality implemented in the kernel's BSD portion.\n\n[a] Yarrow gets its name from a flowering plant with distinctive flat flower heads and lacy leaves. In China, its stalks have been used as a randomizer in divination since the second millennium B.C.\n\nTable 63 lists some contents of the iokit/ directory. Section 2.4.3 provides an overview of the I/O Kit's functionality.\n\nTable 64 lists some contents of the libkern/ directory. Section 2.4.4 provides an overview of libkern's functionality.\n\nlibkern is part of the Kernel framework (Kernel.framework), which is exposed to the developer. Its headers are located in /System/Library/Frameworks/Kernel.framework/Headers/libkern/. Table 65 shows the important classes contained in this library.\n\nTable 66 lists some contents of the libsa/ directory. Section 2.4.5 provides an overview of libsa's functionality.\n\nRecall from Chapter 2 that the libsa stand-alone library is used only for loading kernel extensions during system startup. In a typical booting scenario, when the kernel extension daemon (kextd) is started, it sends a kIOCatalogRemoveKernelLinker message to the I/O Catalog in the kernel. This message notifies the I/O Catalog that kextd is ready to handle the loading of kernel extensions from user space. Moreover, the message triggers the I/O Catalog to invoke destructors for the kernel's __KLD segment and to deallocate it. The __KLD segment contains libsa's code. The kernel's __LINKEDIT segment is also deallocated.\n\nSection 2.4.1 provides an overview of the functionality implemented in the Mach portion of xnu. Table 67 lists the important components of the osfmk/ directory.\n\nSection 2.4.6 provides an overview of the functionality of the Platform Expert. Table 68 lists the important components of the pexpert/ directory.\n\nTable 68. Primary Contents of the pexpert/ Directory\n\nDirectory or File\n\nDescription\n\npexpert/gen/bootargs.c\n\nBoot-argument parsing routines.\n\npexpert/gen/device_tree.c\n\nRoutines for accessing device tree entries and their properties.\n\npexpert/gen/pe_gen.c\n\nMiscellaneous functions, including an 8-bit color lookup table used during bootstrapping.\n\npexpert/i386/\n\nMachine identification, debugging output support, keyboard driver, generic interrupt handler, polled-mode serial port driver, and other platform-dependent routines such as for reading the timestamp counter, setting and clearing interrupts, generating a fake device tree, etc.\n\npexpert/pexpert/\n\nMiscellaneous platform headers, including those containing image data for the rotating gearwheel image shown at startup to indicate boot progress.\n\npexpert/ppc/\n\nMachine identification, debugging output support, clock speed determination by running timed loops, timebase value retrieval, and other platform functions."
+    }
+}

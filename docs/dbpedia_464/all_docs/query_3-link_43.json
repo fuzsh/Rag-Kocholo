@@ -1,0 +1,38 @@
+{
+    "id": "dbpedia_464_3",
+    "rank": 43,
+    "data": {
+        "url": "https://srd.cx/xnu-image-fuzzer/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Security Research & Defense",
+        "top_image": "https://srd.cx/wp-content/uploads/2024/05/hoyts-apple-security-research-device-project-image.jpeg",
+        "meta_img": "https://srd.cx/wp-content/uploads/2024/05/hoyts-apple-security-research-device-project-image.jpeg",
+        "images": [
+            "https://srd.cx/wp-content/uploads/2024/05/hoyts-apple-security-research-device-project-image.jpeg",
+            "https://i0.wp.com/srd.cx/wp-content/uploads/2024/02/xnuimagefuzzer-arm64e-sample-output-files_app-sample-file-render-iphone14promax-001.png?resize=472%2C1024&ssl=1",
+            "https://i0.wp.com/srd.cx/wp-content/uploads/2024/02/xnuimagefuzzer-arm64e-sample-output-files_app-sample-file-render-iphone14promax-002.png?resize=472%2C1024&ssl=1",
+            "https://i0.wp.com/srd.cx/wp-content/uploads/2024/02/fuzzed_image_16bit_depth.png?resize=32%2C32&ssl=1",
+            "https://i0.wp.com/srd.cx/wp-content/uploads/2024/02/fuzzed_image_non_premultiplied_alpha_series3.png?resize=344%2C408&ssl=1",
+            "https://i0.wp.com/srd.cx/wp-content/uploads/2024/02/fuzzed_image_non_premultiplied_alpha.png?resize=32%2C32&ssl=1",
+            "https://i0.wp.com/srd.cx/wp-content/uploads/2024/02/xnuimagefuzzer-sample-output-pmg-image-rendering-horizontal-presentaion.png?resize=352%2C32&ssl=1"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "h02332"
+        ],
+        "publish_date": "2024-06-20T21:38:56+00:00",
+        "summary": "",
+        "meta_description": "XNU Image Fuzzer - Proof of Concept iOS App for Fuzzing with Objective-C Code working with Raw Data and UTI Image File Types.",
+        "meta_lang": "en",
+        "meta_favicon": "https://i0.wp.com/srd.cx/wp-content/uploads/2022/01/cropped-54805-apple_srd_public_domain.png?fit=32%2C32&ssl=1",
+        "meta_site_name": "Security Research & Defense",
+        "canonical_link": "https://srd.cx/xnu-image-fuzzer/",
+        "text": "Search\n\nEstimated reading time: 4 minutes\n\nExecutive Summary\n\nThe Source Code contains a proof of concept implementation of an image fuzzer designed for XNU environments. It aims to demonstrate basic fuzzing techniques on image data to uncover potential vulnerabilities in image processing routines. The Objective-C Code implements 12 CGCreateBitmap & CGColorSpace Functions working with Raw Data and String Injection that are User Controllable Inputs.\n\nwhoami\n\nDavid Hoyt is an independent, authoritative source for Best Practices & Transparency of Telecommunications, Legal & Regulatory Matters since 1994.\n\nStart\n\nProject Documentation\n\nClick to Open the Xcode Project\n\nRun\n\nBig Picture\n\nMy Code\n\nThis\n\nProof of Concept\n\nNative Rendering of Fuzzed Images\n\nCommand Line Version\n\nRuns on x86_64 or arm\n\nFuzzed Image File Collection\n\nhttps://github.com/xsscx/macos-research/tree/main/code/iOSOnMac\n\nFuzz with Jackalope\n\nRun the Fuzzed Images through multiple Fuzzers\n\nhttps://github.com/xsscx/macos-research/tree/main/code/imageio\n\nRender\n\nSeeds\n\nBackground\n\nI had been using Jackalope for Fuzzing and to confirm that it could find easy to identify Bugs. Looking deeper at Jackalope, I found minor UAF, OOB, NPTR that impacted some results given the Seeding.\n\nI wrote this Objective-C Code for A/B Testing along side Jackalope using the Command Line version of this Code. Stitch together your Fuzzed Images into a Malicious Movie and then Fuzz with the VideoToolbox Interposing Code.\n\nThe Command Line version is preferred for Fuzzing and Collecting the post-processed Images. The example Code provides the ability to change a few Numbers in a Function() and further Modify the Program Behavior, perhaps you will get a good Crash.\n\n#pragma mark - Fuzzing Functions /** Applies a color shift fuzzing method to the specified pixel data. This method randomly increases or decreases the RGB values of a pixel to simulate color distortions that might reveal handling errors in image processing. @param data The raw image data. @param index The index of the pixel to be modified. */ void applyColorShift(unsigned char *data, size_t index) { for (int i = 0; i < 3; i++) { // Affecting RGB channels int shift = (arc4random_uniform(2) == 0) ? -15 : 15; // Randomly decide to increase or decrease color value int newValue = data[index + i] + shift; data[index + i] = (unsigned char)fmax(0, fmin(255, newValue)); // Ensure the new value is within the byte range } } /** Randomly scrambles the RGB values of a pixel. This method swaps the values of two RGB channels at the given pixel index, which can help in uncovering issues related to incorrect channel processing or assumptions in color models. @param data The raw image data. @param index The index of the pixel where the RGB channels will be scrambled. */ void applyPixelScramble(unsigned char *data, size_t index) { unsigned char temp; int swapIndex = arc4random_uniform(3); // Choose a random channel to swap with another temp = data[index + swapIndex]; data[index + swapIndex] = data[index + (swapIndex + 1) % 3]; data[index + (swapIndex + 1) % 3] = temp; }\n\nPurpose of Using Fuzzed Images in Fuzzing\n\nUse your fuzzed files for analyzing & rendering to identify potential vulnerabilities in software that processes or displays PNG images.\n\nEmbedding fault mechanisms into a generic image and further processing it through fuzzing enhances the effectiveness of testing by uncovering edge cases and potential vulnerabilities in image processing software.\n\nThe presence of unexpected or non-standard chunks could potentially be exploited to execute arbitrary code, cause denial-of-service (DoS) conditions, or lead to information disclosure if the software does not properly handle such anomalies.\n\nWorkflow\n\nPrepare the Image:\n\nStart with a generic image.\n\nApply initial fuzzing to introduce random mutations.\n\nEmbed specific fault mechanisms to target vulnerabilities.\n\nSubmit to Fuzzing Harness:\n\nLoad the processed image into a fuzzing framework like Jackalope or AFL.\n\nConfigure the tool to use the image as a seed for further automated fuzzing.\n\nMonitor and Analyze:\n\nMonitor for crashes, hangs, and other signs of vulnerabilities.\n\nCollect and analyze the results to identify and understand the bugs found.\n\nCrash Analysis"
+    }
+}

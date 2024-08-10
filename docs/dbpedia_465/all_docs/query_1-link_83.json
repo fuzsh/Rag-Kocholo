@@ -1,0 +1,33 @@
+{
+    "id": "dbpedia_465_1",
+    "rank": 83,
+    "data": {
+        "url": "https://root-forum.cern.ch/t/simple-function-working-with-6-28-04-but-not-with-6-30-04/58975",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Simple function working with 6.28/04 but not with 6.30/04",
+        "top_image": "https://root-forum.cern.ch/uploads/default/original/3X/e/f/efe4f24398fd8ffeb76bccb6ecc46d9d9c003376.png",
+        "meta_img": "https://root-forum.cern.ch/uploads/default/original/3X/e/f/efe4f24398fd8ffeb76bccb6ecc46d9d9c003376.png",
+        "images": [
+            "https://root-forum.cern.ch/letter_avatar_proxy/v4/letter/a/838e76/48.png",
+            "https://root-forum.cern.ch/letter_avatar_proxy/v4/letter/a/838e76/48.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "system Closed"
+        ],
+        "publish_date": "2024-04-12T17:37:36+00:00",
+        "summary": "",
+        "meta_description": "Hello, \nI’ve been using a very simple function to check the value (zero or one) of a digit in an int variable. I just discovered that my code which worked in the past few years doesn’t work anymore with root 6.30/04 whil&hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://root-forum.cern.ch/uploads/default/optimized/2X/5/545acb64199d12b11bc2c230cbb664c825525dd4_2_32x32.ico",
+        "meta_site_name": "ROOT Forum",
+        "canonical_link": "https://root-forum.cern.ch/t/simple-function-working-with-6-28-04-but-not-with-6-30-04/58975",
+        "text": "Hello,\n\nI’ve been using a very simple function to check the value (zero or one) of a digit in an int variable. I just discovered that my code which worked in the past few years doesn’t work anymore with root 6.30/04 while it worked with several previous root version (for example you can check with 6.28/04).\n\nThe code is the following:\n\n//==================================================== bool checkBit(int value, int posFromRight) { int val = abs(value); posFromRight++; while (--posFromRight) val /= 10; val %= 10; //cout << \"aCHECKBIT \" << val << endl; if( val == 1 ) return true; else return false; } //==================================================== int val[5] = {100,101,1,10,11}; void testCheckBit() { Int_t muo0id; TFile *out_all_TreeFile = new TFile(\"out.root\",\"RECREATE\"); TTree * fTree = new TTree (\"ana\", \"CMSSW anaFind tree\"); fTree->Branch(\"muo0id\", &muo0id, \"muo0id/I\"); for(int n=0;n<5; n++) { muo0id=val[n]; out_all_TreeFile->cd(); fTree->Fill(); } out_all_TreeFile->Write(); out_all_TreeFile->Close(); TFile *f = TFile::Open(\"out.root\"); TTree *ana = (TTree*)f->Get(\"ana\"); ana->Scan(\"muo0id:checkBit(muo0id,0)\"); f->Close(); }\n\nIf I run this code with ROOT version 6.28/04 this is what I get:\n\n------------------------------------------------------------------ | Welcome to ROOT 6.28/04 https://root.cern | | (c) 1995-2022, The ROOT Team; conception: R. Brun, F. Rademakers | | Built for linuxx8664gcc on May 08 2023, 02:44:07 | | From tags/v6-28-04@v6-28-04 | | With g++ (GCC) 11.3.0 | | Try '.help'/'.?', '.demo', '.license', '.credits', '.quit'/'.q' | ------------------------------------------------------------------ Processing testCheckBit.cpp... ************************************ * Row * muo0id * checkBit( * ************************************ * 0 * 100 * 0 * * 1 * 101 * 1 * * 2 * 1 * 1 * * 3 * 10 * 0 * * 4 * 11 * 1 * ************************************\n\nAnd everything looks ok… while if I run it with ROOT 6.30/04 all bits are zero:\n\n------------------------------------------------------------------ | Welcome to ROOT 6.30/04 https://root.cern | | (c) 1995-2024, The ROOT Team; conception: R. Brun, F. Rademakers | | Built for macosxarm64 on Jan 31 2024, 08:17:06 | | From heads/master@tags/v6-30-04 | | With Apple clang version 15.0.0 (clang-1500.3.9.4) | | Try '.help'/'.?', '.demo', '.license', '.credits', '.quit'/'.q' | ------------------------------------------------------------------ root [0] Processing testCheckBit.cpp... ************************************ * Row * muo0id * checkBit( * ************************************ * 0 * 100 * 0 * * 1 * 101 * 0 * * 2 * 1 * 0 * * 3 * 10 * 0 * * 4 * 11 * 0 * ************************************\n\nCould someone explain to me what’s going on ?\n\nThanks\n\nAttilio\n\nDear @as5365 ,\n\nThanks for reaching out to the forum!\n\nI have just tried your example on lxplus, with ROOT 6.30.02 (LCG_105) and the latest nightly build (dev3). With the former, I reproduce the error you are seeing. With the latter, the error is not there and the checkBit column reports the correct values. Could you maybe also try yourself and confirm?\n\nMy suspect is that we are missing a backport of this fix Readjust the representation of CallFunc arguments to match the callee signature by vgvassilev · Pull Request #14888 · root-project/root · GitHub to ROOT 6.30 patch series.\n\nCheers,\n\nVincenzo\n\nHello,\n\nthanks for the explanation… what would you suggest to have a working function on my mac? As far as I know homebrew doesn’t offer a simple way to switch to a previous version… I tried to install root 6.28.12 from binaries from the repository but they didint work [0]. Before to install from source (which always take a lot of time) is there any other option? And in case source is the only option is it better to go for root 6.28.12 or download from git the last buid?\n\nThanks\n\nAttilio\n\n[0] My mac is using Sonoma 14.4.1 (23E224) and the last version of XCode 15 so I tried to use https://root.cern/download/root_v6.28.12.macos-14.3-arm64-clang150.pkg but I got a lot of errors when I run root"
+    }
+}

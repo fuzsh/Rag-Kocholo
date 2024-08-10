@@ -1,0 +1,32 @@
+{
+    "id": "dbpedia_465_0",
+    "rank": 70,
+    "data": {
+        "url": "https://forum.golangbridge.org/t/strange-behaviour-with-c-includes/20090",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Strange behaviour with C-Includes",
+        "top_image": "https://forum.golangbridge.org/uploads/default/original/2X/6/6b6f61695802d46a78779bc1cf515a7ae109df2b.png",
+        "meta_img": "https://forum.golangbridge.org/uploads/default/original/2X/6/6b6f61695802d46a78779bc1cf515a7ae109df2b.png",
+        "images": [],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Max_Mustermann (Max Mustermann)",
+            "NobbZ (Norbert Melzer)",
+            "system (system) Closed"
+        ],
+        "publish_date": "2020-08-12T15:48:07+00:00",
+        "summary": "",
+        "meta_description": "Ok here is the Smaller Version … does not even need a container to replicate the Behaviour \nTested on a Mac (and a Ubuntu Container) \n\nDarwin desktop-gv38ou7.uniserv.de 19.5.0 Darwin Kernel Version 19.5.0: Tue May 26 20:&hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://forum.golangbridge.org/uploads/default/optimized/2X/5/5ad234f7c3dbc68b6cc72d338ce4f2973d9fd81c_2_32x32.png",
+        "meta_site_name": "Go Forum",
+        "canonical_link": "https://forum.golangbridge.org/t/strange-behaviour-with-c-includes/20090",
+        "text": "Ok here is the Smaller Version … does not even need a container to replicate the Behaviour\n\nTested on a Mac (and a Ubuntu Container)\n\nDarwin desktop-gv38ou7.uniserv.de 19.5.0 Darwin Kernel Version 19.5.0: Tue May 26 20:41:44 PDT 2020; root:xnu-6153.121.2~2/RELEASE_X86_64 x86_64\n\ngo version go1.14.4 darwin/amd64\n\nWe need 2 Files\n\nFile demo.go\n\npackage main\n\n// #include <stdio.h>\n\n// #include “demo.h”\n\n// void answer(){\n\n// fprintf(stderr,“the answer to life universe and everything is: %d\\n”,ANSWER);\n\n// }\n\nimport “C”\n\nfunc main() {\n\nC.answer();\n\n}\n\nand a File demo.h\n\n#define ANSWER 43\n\nNow running the Programm using go run demo.go will give me the output\n\nthe answer to life universe and everything is: 43\n\nChanging the Value ANSWER in demo.h to 42 and running it again with go run demo.go does NOT give me back the Value 42, it still gives me back\n\nthe answer to life universe and everything is: 43\n\nbut should be “42” … I even can change the File to invalid C-Code and I still get the Value\n\nthe answer to life universe and everything is: 43\n\nAm I getting something wrong ?"
+    }
+}

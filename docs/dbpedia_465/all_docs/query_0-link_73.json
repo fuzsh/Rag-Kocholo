@@ -1,0 +1,40 @@
+{
+    "id": "dbpedia_465_0",
+    "rank": 73,
+    "data": {
+        "url": "https://docstore.mik.ua/orelly/unix3/mac/ch07_02.htm",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Getting the Source Code (Mac OS X for Unix Geeks)",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://docstore.mik.ua/orelly/unix3/mac/gifs/smbanner.gif",
+            "https://docstore.mik.ua/orelly/unix3/gifs/txtpreva.gif",
+            "https://docstore.mik.ua/orelly/unix3/gifs/txtnexta.gif",
+            "https://docstore.mik.ua/orelly/unix3/gifs/txtpreva.gif",
+            "https://docstore.mik.ua/orelly/unix3/gifs/txthome.gif",
+            "https://docstore.mik.ua/orelly/unix3/gifs/txtnexta.gif",
+            "https://docstore.mik.ua/orelly/unix3/gifs/index.gif",
+            "https://docstore.mik.ua/orelly/unix3/gifs/navbar.gif"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Brian Jepson",
+            "Ernest E. Rothman"
+        ],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "",
+        "meta_favicon": "",
+        "meta_site_name": "",
+        "canonical_link": "https://docstore.mik.ua/orelly/unix3/mac/ch07_02.htm",
+        "text": "7.2.1. Using CVS\n\nWhen you register with Apple, you choose a username and password. You'll need to use that username and password when you log into CVS. The first step is setting your CVSROOT environment variable. Under tcsh, issue this command:\n\nsetenv CVSROOT :pserver:username@anoncvs.opensource.apple.com:/cvs/Darwin\n\nUnder bash or zsh, use this command:\n\nexport CVSROOT=:pserver:username@anoncvs.opensource.apple.com:/cvs/Darwin\n\nReplace username with your username. After you set this environment variable, you can log into CVS with cvs login:\n\n% cvs login (Logging in to username@anoncvs.opensource.apple.com) CVS password: ********\n\n7.2.1.1. Checking out sources\n\nTo check out the source code for a module, use the checkout command:\n\ncvs -z3 checkout [-r VERSION] modulename\n\nThe -z3 option tells CVS to use compression when transferring files.\n\n7.2.1.2. Updating sources\n\nTo bring a module into sync with the latest changes to the repository, use the update command:\n\ncvs -z3 update -P -d modulename\n\nThe -d option tells CVS to pick up any directories that were recently added, and -P tells CVS to prune any directories that were recently removed.\n\nTIP: If you use modulename with the update command, you need to be in the same directory where you originally issued the checkout command. This will be the parent directory of the module's top-level source directory. If you don't specify a modulename, CVS will update only the files in and below your current working directory.\n\nHere is an example session in which a module is checked out, its contents perused, and its source updated to the latest version:\n\n% cvs checkout testmodule cvs checkout: Updating testmodule U testmodule/Makefile U testmodule/bar.c U testmodule/foo.c % cd testmodule/ % ls -l total 24 drwxr-xr-x 5 bjepson staff 126 Apr 10 13:23 CVS -rw-r--r-- 1 bjepson staff 3 Apr 10 13:22 Makefile -rw-r--r-- 1 bjepson staff 2 Apr 10 13:22 bar.c -rw-r--r-- 1 bjepson staff 2 Apr 10 13:22 foo.c *** time passes *** % cvs update -P -d cvs update: Updating . U bar.c % ls -l bar.c -rw-r--r-- 1 bjepson staff 2 Apr 10 13:23 bar.c\n\n7.2.2. Getting the Right Version\n\nThe only version of Darwin that should work with your copy of Mac OS X is the same one that Apple used. Your mileage may vary if you try to use an older or newer version. So, before you try anything like that, get the correct version and use that as a dry run to verify that you can build and install a working kernel.\n\nFirst, find your Darwin version with the uname -v command. The output you're looking for is the xnu (Darwin kernel) version, shown in italic type:\n\n% uname -v Darwin Kernel Version 6.0: Sat Jul 27 13:18:52 PDT 2002; root:xnu/xnu-344.obj~1/RELEASE_PPC\n\nYou need to translate that number into an Apple CVS tag, by replacing the period (.) with a dash (-) and prefixing the version with Apple-. So, the Apple CVS tag for the xnu version previously shown would be Apple-344. This is the version you must supply with the -r flag. Now that you know the CVS tag, you can check it out:\n\ncvs -z3 checkout -r APPLE_CVS_TAG modulename\n\nWhere APPLE_CVS_TAG is the CVS tag you computed, and modulename is xnu. For example:\n\n% cvs -z3 checkout -r Apple-344 cvs server: Updating xnu U xnu/APPLE_LICENSE U xnu/Makefile U xnu/PB.project U xnu/README . . .\n\nTIP: The CVS tags are symbolic names associated with a snapshot of the source code in time. An easy way to browse the available tags is through the Darwin CVSWeb archive, available at http://www.opensource.apple.com/tools/cvs/. You will need to provide your registered username and password to access the archive. You can also use CVSWeb to peruse the archive and view the source code."
+    }
+}
