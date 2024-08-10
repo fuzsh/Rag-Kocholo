@@ -1,0 +1,41 @@
+{
+    "id": "dbpedia_365_2",
+    "rank": 97,
+    "data": {
+        "url": "https://stackoverflow.com/questions/20962923/column-abc-does-not-belong-to-table",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Column abc does not belong to table?",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/f983f7a23d33aa383453583cbf20bf2a?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/CfMus.jpg?s=64",
+            "https://www.gravatar.com/avatar/be28b9ed62ca545448609ad374959efd?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/f627a296b8fd3dc39be2d416073b8221?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/3wEeP.jpg?s=64",
+            "https://www.gravatar.com/avatar/2c7aff22cf5197af75e04feb5ad52f3c?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/e641068cd67e69097e7b8af84264e41a?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/EYylF.jpg?s=64",
+            "https://graph.facebook.com/10153596545541134/picture?type=large",
+            "https://www.gravatar.com/avatar/8aa1d219c8f9cd52129a12ffc6dc0366?s=64&d=identicon&r=PG",
+            "https://lh6.googleusercontent.com/-jiAi1uatamE/AAAAAAAAAAI/AAAAAAAAABQ/bNPhmQQexmg/photo.jpg?sz=64",
+            "https://stackoverflow.com/posts/20962923/ivc/609a?prg=8266d4ff-ef5c-4804-92fb-e6712285861d"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2014-01-07T02:30:01",
+        "summary": "",
+        "meta_description": "I am iterating a DataTable in my C# code. I try to get the contents using of a column named \"columnName\" of row named \"row\" using - \n\nobject value = row[\"ColumnName\"];\r\nI get this error - \r\n  Error:",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/20962923/column-abc-does-not-belong-to-table",
+        "text": "I am guessing your code is iteration supposed to be something like this\n\nDataTable table = new DataTable(); foreach (DataRow row in table.Rows) { foreach (DataColumn col in table.Columns) { object value = row[col.ColumnName]; } }\n\nIf this is the case, row[\"ColumnName\"] in each iteration looks for the same column with name ColumnName which obviously does not exists in your table.\n\nThe correct way is row[ColumnName] or row[col.ColumnName] in iteration above\n\nI had a similar issue on my c# code, using a dataset which I had successfully initialized and populated with data from the DB.\n\nSo my return set was:\n\ndata = new Byte[0];\n\ndata = (Byte[])(dataset.Tables[0].Rows[0][\"systemLogo_img\"]);\n\nOf course the error was in t finding the column 'systemLogo_img'.\n\nI noted that you simply do NOT have to call /qualify the column name. So the correction is:\n\ndata = new Byte[0];\n\ndata = (Byte[])(dataset.Tables[0].Rows[0].ItemArray[0]);\n\nSimply put: use \"ItemArray\" at position.\n\nThanks\n\nIf you want to check if the column exists in the DataRow before accessing the value the following block can help...\n\nif (dataRow.Table.Columns.Contains(\"theColumnName\")) { // do work string text = string.Empty; if (dataRow[\"theColumnName\"] != System.DBNull.Value) { text = Convert.ToString(dataRow[\"theColumnName\"]); } }\n\nIf it doesn't exist and it needs to be added to the data table you can add the column using @Karthick Ganesan's example\n\n// add a column dataTable.Columns.Add(\"theColumnName\", typeof(string));"
+    }
+}
