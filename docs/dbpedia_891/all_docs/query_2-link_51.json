@@ -1,0 +1,45 @@
+{
+    "id": "dbpedia_891_2",
+    "rank": 51,
+    "data": {
+        "url": "https://stackoverflow.com/questions/32911977/prevent-autocomplete-in-visual-studio-code",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Prevent autocomplete in Visual Studio Code",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/1b2b5d5007262ea3f9e21ab5b15f8b75?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/jPpjt.jpg?s=64",
+            "https://www.gravatar.com/avatar/bdaf14cd9b5ee9373f0b4c801c339dd9?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/RIZKi.png?s=64",
+            "https://www.gravatar.com/avatar/184e60cff99bac88109dee3f4bd191f0?s=64&d=identicon&r=PG",
+            "https://lh4.googleusercontent.com/-r3ocQbM_fgs/AAAAAAAAAAI/AAAAAAAAAAw/R48S5OAnokw/photo.jpg?sz=64",
+            "https://lh3.googleusercontent.com/-UJLJkmrVzUw/AAAAAAAAAAI/AAAAAAAAAnw/3QzwVkIbZn4/photo.jpg?sz=64",
+            "https://i.sstatic.net/RIZKi.png?s=64",
+            "https://i.sstatic.net/vV6JS.jpg?s=64",
+            "https://www.gravatar.com/avatar/8e65175344951a3b1f3cf7776b5ce864?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/SgPUf.png",
+            "https://i.sstatic.net/AJUCm.jpg?s=64",
+            "https://i.sstatic.net/93s1DAKN.png?s=64",
+            "https://www.gravatar.com/avatar/253887a3cbf0c0afd6cd7f122ea52279?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/74Azp.jpg?s=64",
+            "https://stackoverflow.com/posts/32911977/ivc/3009?prg=846c529b-5edf-4056-9ce4-781f8f1fa8d8"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2015-10-02T16:46:10",
+        "summary": "",
+        "meta_description": "I'm using the new Visual Studio Code.\nIn a SQL file, any time you type case, it automatically adds end, as if you were building a case block. Even if you're in a comment, or using Case as part of a...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/32911977/prevent-autocomplete-in-visual-studio-code",
+        "text": "By 2016, Visual Studio Code is pretty cool and ready for prime time. But I still haven't found a way to simply turn off autocompletion completely.\n\nBut they do have some things in their documentation: Customizing IntelliSense\n\nBasically, I put this in my settings.json to try and turn it off for the workspace. But I still have to evaluate this.\n\n// Place your settings in this file to overwrite default and user settings. { // Controls if quick suggestions should show up while typing \"editor.quickSuggestions\": { \"other\": false, \"comments\": false, \"strings\": false }, // Controls if suggestions should be accepted with \"Enter\" - in addition to \"Tab\". Helps to avoid ambiguity between inserting new lines and accepting suggestions. \"editor.acceptSuggestionOnEnter\": \"off\", // Controls the delay in ms after which quick suggestions will show up. \"editor.quickSuggestionsDelay\": 10, // Enable word based suggestions \"editor.wordBasedSuggestions\": false }\n\nThis isn't the correct answer, but it might be an even better option. Increase:\n\nEditor: Quick Suggestions Delay\n\nfrom 50 ms (default) to 500-1000 ms.\n\nIn this case, you'll have half a second to beat the autocomplete option, which may be enough for 95% of the time, and you won't lose the functionality that you might want in some cases.\n\nNote: To open settings.json, run Preferences: Open User Settings (JSON) in the command palette. To open defaultSettings.json, use Preferences: Open Default Settings (JSON), to open keybindings.json, use Preferences: Open Keyboard Shortcuts (JSON), and to open defaultKeybindings.json, use Preferences: Open Default Keyboard Shortcuts (JSON). You need to save after editing these files. Note that many settings support being overridden for specific language modes.\n\nTo prevent suggestions from appearing while typing\n\nIn settings.json:\n\n\"editor.suggestOnTriggerCharacters\": false, \"terminal.integrated.suggest.suggestOnTriggerCharacters\": false, \"editor.quickSuggestions\": { \"other\": \"off\", \"comments\": \"off\", \"strings\": \"off\" }, \"terminal.integrated.suggest.quickSuggestions\": false, \"[dockerfile][json][json]\": { // check defaultSettings.json or Settings UI to see which languages override editor.quickSuggestions and add them to the above list. \"editor.quickSuggestions\": { \"other\": \"off\", \"comments\": \"off\", \"strings\": \"off\" }, },\n\nTo unbind default keybindings that trigger suggestions:\n\n(\"trigger\" means to make the suggestion widget / inline suggestions appear)\n\nThese might change in the future. You can search for these command IDs in defaultKeybindings.json to see what they are bound to. Put the following in keybindings.json:\n\n{ \"key\": \"ctrl+i\", \"command\": \"-editor.action.triggerSuggest\", }, { \"key\": \"cmd+i\", \"command\": \"-editor.action.triggerSuggest\", }, { \"key\": \"ctrl+space\", \"command\": \"-editor.action.triggerSuggest\", }, { \"key\": \"cmd+space\", \"command\": \"-editor.action.triggerSuggest\", }, // editor.action.inlineSuggest.trigger currently not bound to anything by default\n\nSee also:\n\n\"editor.inlineSuggest.enabled\": false, \"editor.suggest.preview\": false, // \"editor.inlineSuggest.suppressSuggestions\": false \"editor.snippetSuggestions\": \"none\", \"editor.wordBasedSuggestions\": \"off\", \"editor.suggest.show*\": true, // replace \"*\" with the thing you don't want to show. You can trigger suggestions here to see the list of options. \"debug.console.historySuggestions\": false, \"terminal.integrated.shellIntegration.suggestEnabled\": false, // pre v1.90 \"terminal.integrated.suggest.enabled\": false, // v1.90+ \"workbench.commandPalette.experimental.suggestCommands\": false,\n\nTo unbind default keybindings that accept suggestions:\n\n(\"accept\" means to confirm usage of the selected suggestion option from the suggestion widget / inline suggestion widget)\n\nIn settings.json:\n\n\"editor.acceptSuggestionOnEnter\": \"off\", \"editor.acceptSuggestionOnCommitCharacter\": false, // \"debug.console.acceptSuggestionOnEnter\": \"off\",\n\nIn keybindings.json:\n\n{\"key\": \"tab\", \"command\": \"-acceptSelectedSuggestion\",}, {\"key\": \"enter\", \"command\": \"-acceptSelectedSuggestion\",}, {\"key\": \"shift+tab\", \"command\": \"-acceptAlternativeSelectedSuggestion\",}, {\"key\": \"shift+enter\", \"command\": \"-acceptAlternativeSelectedSuggestion\",}, {\"key\": \"tab\", \"command\": \"-insertNextSuggestion\",}, {\"key\": \"shift+tab\", \"command\": \"-insertPrevSuggestion\",}, {\"key\": \"tab\", \"command\": \"-editor.action.inlineSuggest.commit\",}, {\"key\": \"ctrl+right\", \"command\": \"-editor.action.inlineSuggest.acceptNextWord\",}, {\"key\": \"cmd+right\", \"command\": \"-editor.action.inlineSuggest.acceptNextWord\",}, {\"key\": \"tab\", \"command\": \"-workbench.action.terminal.acceptSelectedSuggestion\",}, {\"key\": \"enter\", \"command\": \"-workbench.action.terminal.acceptSelectedSuggestion\",}, // I'd list things for extensions like GitHub Copilot, but at that point... why would you be using those extensions? :P\n\nTo prevent automatic pairings\n\nSince the question post mentioned case causing end to appear in SQL, see also these settings, or search for \"autoclosing\" in the Settings UI.\n\n\"editor.occurrencesHighlight\": \"multiFile\", \"editor.autoClosingBrackets\": \"never\", \"editor.autoClosingComments\": \"never\", \"editor.autoClosingOvertype\": \"never\", \"editor.autoClosingQuotes\": \"never\", \"html.autoClosingTags\": false, \"javascript.autoClosingTags\": false, \"typescript.autoClosingTags\": false,\n\nNote that you'll still be able to trigger suggestions and inline suggestions from the command palette."
+    }
+}

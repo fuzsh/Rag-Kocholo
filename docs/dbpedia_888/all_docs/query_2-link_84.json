@@ -1,0 +1,35 @@
+{
+    "id": "dbpedia_888_2",
+    "rank": 84,
+    "data": {
+        "url": "https://github.com/Raphael-Boichot/JANAF-thermochemical-tables-to-NASA-Glenn-coefficients-converter",
+        "read_more_link": "",
+        "language": "en",
+        "title": "converter: Matlab codes to generate NASA Glenn Coefficients from JANAF thermochemical tables or any other source",
+        "top_image": "https://opengraph.githubassets.com/1574e9b365b42bf7856e8827ca73c59595a541a40e1f22ab6734327e6b5b0b04/Raphael-Boichot/JANAF-thermochemical-tables-to-NASA-Glenn-coefficients-converter",
+        "meta_img": "https://opengraph.githubassets.com/1574e9b365b42bf7856e8827ca73c59595a541a40e1f22ab6734327e6b5b0b04/Raphael-Boichot/JANAF-thermochemical-tables-to-NASA-Glenn-coefficients-converter",
+        "images": [
+            "https://github.com/Raphael-Boichot/JANAF-thermochemical-tables-to-NASA-Glenn-coefficients-converter/raw/main/Documentation/Example.png",
+            "https://github.com/Raphael-Boichot/JANAF-thermochemical-tables-to-NASA-Glenn-coefficients-converter/raw/main/Documentation/Polynomials.png",
+            "https://github.com/Raphael-Boichot/JANAF-thermochemical-tables-to-NASA-Glenn-coefficients-converter/raw/main/Documentation/Polynomials_txt.png",
+            "https://github.com/Raphael-Boichot/JANAF-thermochemical-tables-to-NASA-Glenn-coefficients-converter/raw/main/Codes/NASA_fitting.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Raphael-Boichot"
+        ],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "Matlab codes to generate NASA Glenn Coefficients from JANAF thermochemical tables or any other source - Raphael-Boichot/JANAF-thermochemical-tables-to-NASA-Glenn-coefficients-converter",
+        "meta_lang": "en",
+        "meta_favicon": "https://github.com/fluidicon.png",
+        "meta_site_name": "GitHub",
+        "canonical_link": "https://github.com/Raphael-Boichot/JANAF-thermochemical-tables-to-NASA-Glenn-coefficients-converter",
+        "text": "These codes allows to generate NASA Glenn Coefficients from JANAF (Joint Army-Navy-Air Force) thermochemical tables or any other thermochemical table formatted like the JANAF tables found on the NIST Chemistry Notebook or your own data found by ab-initio calculations for example. The text formatting of the NASA polynomials is rather strict and can found in some old edition of the Chemkin manual - See table III.\n\nNote than JANAF is sometimes spelled JANNAF for Joint Army-Navy-NASA-Air Force, but this is a less common way of citing this fitting method. Recent implementation of the method uses a more complete formalism.\n\nThe deal is to turn this ugly table into some fancy polynomials. Of course it has been made for many usual gases that are yet introduced into databases, but some remains under this form, and no luck, you could need them for your calculations.\n\nH stands for enthalpy, S for entropy and Cp for heat capacity (R being the gas constant). H and S are always given relative to a reference state at 298 K and 1 bar.\n\nThe NASA formalism assumes that any set of thermochemical data on a large range of temperature can be fitted in chunks with 4th order polynoms. As H and S are functions of Cp and T, polynomial coefficients are common between them except for a6 (standard heat of formation at 298 K time R) and a7 (standard-state entropy at 298K times R). For better accuracy, the data are divided in two sets: low and high temperature. The limit between the two is a free parameter to change in order to increase fitting accruracy (what the code does). Dividing all data by R avoids the mismatch between Calories and Joules units, which is a common source of error, as there is less than an order of magnitude difference between them.\n\nThe text output must exactly follow this formalism to be red by Chemkin and codes using Chemkin as core for solving chemistry (like ANSYS Fluent or CFD-Ace for example).\n\nThe code is quite simple to use: provide a text file with T, H/(RT), Cp/R and S/R in columns and it will calculate the low temperature and high temperature polynomials, then format a text output compatible with NASA Glenn coefficients formalism. It also allows verifying this file integrity (or any other) and plotting the entropy, enthalpy and heat capacity as a function of temperature.\n\nIn details, the code first search for the best temperature limit between low and high temperature to minimize residuals with the two polynomials, then performs a final fitting with a fixed optimal limit. Minimization of residuals between data and polynomials is performed with a simple Nelder-Mead algorithm as this is not a particularly wicked problem. At the junction between polynomials, the code forces continuity of slopes and values of Cp. As Cp is then integrated to obtain H and S, slope continuity with Cp ensures slope continuity with its integrals. I'm not that sure Cp slope continuity is a mandatory condition regarding NASA standards but I heard it was years ago from people having a past working experience at NASA in the 90's. It's in fact not that difficult to code. Finally, the code formats data to comply with NASA Glenn Coefficients shape. It generates a text output on Matlab prompt, a formatted file and some fancy outputs to verify than everything gone smoothly during optimization.\n\nCO2 L 7/88C 1O 2 0 0G 200.00 6000.00 1130.00 1 +4.67221863e+00+2.69721740e-03-9.76836469e-07+1.56959938e-10-8.94332238e-15 2 -4.90459094e+04-2.14746323e+00+2.38296917e+00+8.84846213e-03-7.00533303e-06 3 +2.64397355e-09-3.47724832e-13-4.83748900e+04+9.78656006e+00 4\n\nThis code was made for my own use at work, for juggling between thermochemical databases and Chemkin. I decline any responsibility in the event of a rocket launch failure or a satellite crash on Mars following the misuse of these codes."
+    }
+}
