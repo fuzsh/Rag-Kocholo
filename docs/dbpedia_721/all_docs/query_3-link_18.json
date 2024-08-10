@@ -1,0 +1,32 @@
+{
+    "id": "dbpedia_721_3",
+    "rank": 18,
+    "data": {
+        "url": "https://stackoverflow.com/questions/60356181/found-a-strange-hitbox-bug-in-pygame-if-the-player-dies-in-my-game-the-hitbox",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Found a strange hitbox bug in pygame. If the player dies in my game, the hitbox stays which creates some problems",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/08b70f275ee893bd49f0e6d3e54019d7?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/Sxn9i.png?s=64",
+            "https://stackoverflow.com/posts/60356181/ivc/f21e?prg=60f19d25-7e29-4ded-83ab-1a81f7ceb268"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2020-02-22T19:54:14",
+        "summary": "",
+        "meta_description": "I found the sprite.kill() method by messing around with what pygame had to offer. However, I found out that for some reason the hitbox of the player stays wherever the player was killed if I use this",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/60356181/found-a-strange-hitbox-bug-in-pygame-if-the-player-dies-in-my-game-the-hitbox",
+        "text": "That is not a bug. If you have a reference to the a Sprite object somewhere else than in a Group, then the object stays still a live (of course), even if you kill it. kill does not destroy the object, it just removes the object fora all Groups.\n\nThat causes the object is not updated through the pygame.sprite.Group.update() mechanism and all its attributes stay untouched.\n\nIf a Sprite is not part of a Group then you have to update the object yourself. No one will change the attributes magically and of course the \"hitbox stays\"\n\nA solution would be to override the kill method and to reset some attributes (like the hit box) in the derived class:"
+    }
+}
