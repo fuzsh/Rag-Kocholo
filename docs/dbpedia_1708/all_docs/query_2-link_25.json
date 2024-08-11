@@ -1,0 +1,35 @@
+{
+    "id": "dbpedia_1708_2",
+    "rank": 25,
+    "data": {
+        "url": "https://stackoverflow.com/questions/46302871/relationship-between-cell-and-range-in-vba-with-activecell",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Relationship between Cell and Range() in VBA with ActiveCell",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/2bea5e3d584368d0f24d02568fbd52c0?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/9xlEi.jpg?s=64",
+            "https://graph.facebook.com/583799829/picture?type=large",
+            "https://stackoverflow.com/posts/46302871/ivc/03cb?prg=4e98d16b-4a68-414a-92ca-a0897849f0c7"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Yu Chen"
+        ],
+        "publish_date": "2017-09-19T14:17:36",
+        "summary": "",
+        "meta_description": "I learning VBA and am really confused as to what exactly Range() takes in for VBA. I have a pretty solid grasp of OOP and languages like Java / Python, but VBA is throwing me a bit for a loop here....",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/46302871/relationship-between-cell-and-range-in-vba-with-activecell",
+        "text": "Range is looking for a string that represents a cell address or two range objects that note the extent of the range.\n\nActiveCell is a range object in itself. So when using it inside Range:\n\nRange(ActiveCell.End(xlDown))\n\nThe range is looking for the second range object.\n\nYou can return the address as a string:\n\nRange(ActiveCell.End(xlDown).Address)\n\nWhich will work but will force vbe to do a lot of conversions. It is like converting DC power to AC back to DC to charge your phone.\n\nSimply using:\n\nActiveCell.End(xlDown)\n\nas the range object works.\n\nSet MyRange = Range(ActiveCell, ActiveCell.End(xlDown))\n\nThis is the reason Range(\"A2\", Range(\"A2\").End(xlDown).End(xlToRight)) works. you are returning two range objects. vbe assumes the \"A2\" in the first place of the range to be Range(\"A2\")\n\nRange(Range(\"A2\"), Range(\"A2\").End(xlDown).End(xlToRight))\n\nWorks as each of the interior ranges are using the string to create the range object.\n\nYour first is like:\n\nRange(\"A2\", Range(Range(\"A2\")).End(xlDown).End(xlToRight))\n\nAs you can see the second Range is now trying to find a range with only one range object and it would need two to be a viable range."
+    }
+}
