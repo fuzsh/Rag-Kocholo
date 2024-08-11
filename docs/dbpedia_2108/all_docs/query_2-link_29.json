@@ -1,0 +1,34 @@
+{
+    "id": "dbpedia_2108_2",
+    "rank": 29,
+    "data": {
+        "url": "https://magento.stackexchange.com/questions/222307/issue-while-importing-tablerates-csv",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Issue while importing tablerates.csv",
+        "top_image": "https://cdn.sstatic.net/Sites/magento/Img/apple-touch-icon@2.png?v=25680b5de058",
+        "meta_img": "https://cdn.sstatic.net/Sites/magento/Img/apple-touch-icon@2.png?v=25680b5de058",
+        "images": [
+            "https://cdn.sstatic.net/Sites/magento/Img/logo.svg?v=39db58a118b2",
+            "https://i.sstatic.net/oT1VF.png",
+            "https://www.gravatar.com/avatar/8a4b81a05edb0ab2f999c191d7867a95?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/mOobj.jpg?s=64",
+            "https://magento.stackexchange.com/posts/222307/ivc/5ed9?prg=11e57671-73c5-44e5-915a-e490a4aecc1e"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2018-04-14T17:49:07",
+        "summary": "",
+        "meta_description": "I need to add Nigerian regions/states to the database. So I created and successfully imported the \"directory_country_region.csv\" and \"directory_country_region_name.csv\" files to the \"",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/magento/Img/favicon.ico?v=b58a99ab1d61",
+        "meta_site_name": "Magento Stack Exchange",
+        "canonical_link": "https://magento.stackexchange.com/questions/222307/issue-while-importing-tablerates-csv",
+        "text": "You are going about this completely wrong. The first problem here is that you have added items to the database outside of Magento, ie: phpMyAdmin. The next issue is that you have not followed the proper CSV format required for importing the rates. You'll need to consider an extension for tablerates, such as this one that I had used in the past called matrixrates, i think it was by webshopapps. Here is an example of the data it accepted:\n\nhttp://support.webshopapps.com/matrixrate/matrixrate-csv-configuration/\n\nUpdate\n\nI didn't realize you were using Magento 2. While my initial answer may not change, I am going to have to admit that I may not actually be able to answer this with the proper understanding and knowledge to feel confident of my answers.\n\nI can assure you of one thing, updating raw data in the database is a problem unless you are fully certain of what you are doing.\n\nConsider following Magento's documentation for tablerates:\n\nhttp://docs.magento.com/m2/ce/user_guide/shipping/shipping-table-rate.html\n\nCurious have you applied the NGA ISO country code for Nigeria?\n\nCould you post your tablerates.csv or an example of some of the data?\n\nI hope that nothing has gone wrong because of the SQL updates done within phpMyAdmin.\n\nUpdate #2\n\nYour data should not contain any data beyond the datatypes required by the import. This means, let's be certain that numbers for weight are exactly that -- numbers. Remove kg. The unit of weight should be specified within some other area of the system configuration.\n\nBe sure that you also are setting wildcard values at the bottom of the list, and using them where appropriate. Currently, it is apparent that you have the list in ascending alphabetical order by state. It also appears that the zipcode/postal code should be * for each of states. I'm guessing that zip code details are only needed where a state may have multiple prices split across it and usage of the zipcode would help specify that difference.\n\nPrimary Issue\n\nThe issue you have with the states and likely your primary problem, is that there should be ISO Codes used, and not the name of the state.\n\nhttps://en.wikipedia.org/wiki/ISO_3166-2:NG will list the codes for each of the applicable states/territories. I would suggest not using the \"NG-\" part of the codes, but you may want to double-check that, or test both scenarios.\n\nFor example:\n\nFC, Abuja Federal Capital Territory\n\nAB, Abia\n\nAD, Adamawa\n\nAK, Akwa Ibom\n\nAN, Anambra\n\netc..\n\nTo simplify your tests and get a better understanding of the issues, use a limited test data set -- three to five rows only."
+    }
+}
