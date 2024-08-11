@@ -1,0 +1,34 @@
+{
+    "id": "dbpedia_1734_1",
+    "rank": 17,
+    "data": {
+        "url": "https://community.render.com/t/event-sourcing-kafka/1726",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Event-sourcing (kafka)",
+        "top_image": "https://global.discourse-cdn.com/business6/uploads/render/original/2X/1/11352202c8503f736bea5efb59684f678d7c860c.svg",
+        "meta_img": "https://global.discourse-cdn.com/business6/uploads/render/original/2X/1/11352202c8503f736bea5efb59684f678d7c860c.svg",
+        "images": [
+            "https://emoji.discourse-cdn.com/apple/slight_smile.png?v=9",
+            "https://emoji.discourse-cdn.com/apple/stuck_out_tongue.png?v=9",
+            "https://emoji.discourse-cdn.com/apple/wink.png?v=9",
+            "https://emoji.discourse-cdn.com/apple/slight_smile.png?v=9",
+            "https://emoji.discourse-cdn.com/apple/australia.png?v=12"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2021-05-19T12:55:26+00:00",
+        "summary": "",
+        "meta_description": "Just wondering what the ideas are around running kafka or similar streaming systems :slight_smile: \nAt the moment I’m stuck at running my own kafka containers, but I’d much rather have Render run them :stuck_out_tongue:",
+        "meta_lang": "en",
+        "meta_favicon": "https://global.discourse-cdn.com/business6/uploads/render/optimized/2X/f/f64330fd3eabb910a0f081235d16159032e38392_2_32x32.png",
+        "meta_site_name": "Render",
+        "canonical_link": "https://community.render.com/t/event-sourcing-kafka/1726",
+        "text": "Just wondering what the ideas are around running kafka or similar streaming systems\n\nAt the moment I’m stuck at running my own kafka containers, but I’d much rather have Render run them\n\nHi @harmw,\n\nThat’s a great question. I haven’t personally deployed kafka on Render, but I believe a single-node cluster would be relatively straighforward to run. An multi-node/multi-broker cluster would be a little more complicated. Since Render services with persistent disks can only have one instance, each node/broker would need to be a new Render service and setting up service discovery would likely be a bit more manual (since you can’t just refer to the nth instance of a multi-instance service).\n\nAnother snag you might run into is automatic rolling deploys. If you configure automatic deploys and have each node’s service backed by the same git repo (which seems like the most likely approach), they’d all get updated simultaneously. I don’t know the details of kafka’s multi-node architecture, so it may be resilient to this, but if it’s like etcd, you’ll want each node to update one-at-a-time.\n\nIf you make progress on this, I’d love to hear about it! And I’m happy to answer any questions that come up if you decide to move forward with experimenting.\n\nI know we are frequently thinking about what managed services make sense to build out, but as far as I know, we aren’t currently planning anything for event sourcing. I also checked https://feedback.render.com/features and couldn’t find any feature requests, but I encourage you to add one with details on your use case and what would be most valuable for you, since that definitely helps us prioritize new features"
+    }
+}

@@ -1,0 +1,33 @@
+{
+    "id": "dbpedia_1743_3",
+    "rank": 10,
+    "data": {
+        "url": "https://stackoverflow.com/questions/50545408/error-uploading-image-using-postman-in-django-rest-framework",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Error uploading image using postman in django rest framework",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://lh5.googleusercontent.com/-0HaftkmqHAY/AAAAAAAAAAI/AAAAAAAAAGI/0B3bOS4KrAw/photo.jpg?sz=64",
+            "https://www.gravatar.com/avatar/1123adbe09cc110b30617ba96465a207?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://lh5.googleusercontent.com/-0HaftkmqHAY/AAAAAAAAAAI/AAAAAAAAAGI/0B3bOS4KrAw/photo.jpg?sz=64",
+            "https://stackoverflow.com/posts/50545408/ivc/318f?prg=15017133-728a-4f1b-8222-dea61d2c49ed"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2018-05-26T17:35:20",
+        "summary": "",
+        "meta_description": "I'm trying to create an endpoint to upload images(using postman) to a specific folder using django rest framework. This is my settings for the folder,\n\nMEDIA_URL = '/media/'\nMEDIA_ROOT = os.path.join(",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/50545408/error-uploading-image-using-postman-in-django-rest-framework",
+        "text": "You are using serializer = UserMediaSerializer(request.data) but you should call it by serializer = UserMediaSerializer(data=request.data)\n\nFor uploading images in Django rest framework you should either upload images on S3 and pass s3 url in DRF API or use base64 field in serializer and send base64 encoded value of image in API\n\nimport uuid import base64 import imghdr from django.utils.translation import ugettext_lazy as _ from django.core.files.base import ContentFile from rest_framework import serializers ALLOWED_IMAGE_TYPES = ( \"jpeg\", \"jpg\", \"png\", \"gif\" ) class Base64ImageField(serializers.ImageField): \"\"\" A django-rest-framework field for handling image-uploads through raw post data. It uses base64 for en-/decoding the contents of the file. \"\"\" def to_internal_value(self, base64_data): # Check if this is a base64 string if not base64_data: return None if isinstance(base64_data, basestring): # Try to decode the file. Return validation error if it fails. try: decoded_file = base64.b64decode(base64_data) except TypeError: raise serializers.ValidationError(_(\"Please upload a valid image.\")) # Generate file name: file_name = str(uuid.uuid4())[:12] # 12 characters are more than enough. # Get the file name extension: file_extension = self.get_file_extension(file_name, decoded_file) if file_extension not in ALLOWED_IMAGE_TYPES: raise serializers.ValidationError(_(\"The type of the image couldn't been determined.\")) complete_file_name = file_name + \".\" + file_extension data = ContentFile(decoded_file, name=complete_file_name) return super(Base64ImageField, self).to_internal_value(data) raise serializers.ValidationError('This is not an base64 string') def to_representation(self, value): # Return url including domain name. return value.name def get_file_extension(self, filename, decoded_file): extension = imghdr.what(filename, decoded_file) extension = \"jpg\" if extension == \"jpeg\" else extension return extension\n\nUpdated\n\nYou should use ImageField (not FileField) for images.\n\nYou can use above field directly in serializer like any other field."
+    }
+}

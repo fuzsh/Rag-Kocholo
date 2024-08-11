@@ -1,0 +1,35 @@
+{
+    "id": "dbpedia_1734_3",
+    "rank": 3,
+    "data": {
+        "url": "https://stackoverflow.com/questions/39514167/retrieve-timestamp-based-data-from-kafka",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Retrieve Timestamp based data from Kafka",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/2ee3ca320bf04bcd802873566282c7ec?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/HwySN.jpg?s=64",
+            "https://i.sstatic.net/ahp5i.jpg?s=64",
+            "https://i.sstatic.net/gEV5L.jpg?s=64",
+            "https://i.sstatic.net/SapKf.jpg?s=64",
+            "https://stackoverflow.com/posts/39514167/ivc/c74a?prg=b33c6e12-ba63-4db4-b391-83309d4515e5"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2016-09-15T14:50:38",
+        "summary": "",
+        "meta_description": "How can I get messages or data from the Kafka cluster for a specified day. For example 13 September, can anyone provide me code for this. I have googled it and found only theory but I want the code",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/39514167/retrieve-timestamp-based-data-from-kafka",
+        "text": "There is no access method for this. Also, before Kafka v0.10 messages do not contain any timestamp information, thus, it is impossible to know when a message was written into a topic.\n\nAs of Kafka v0.10 each message contains a meta data timestamp attribute, that is either set by the producer on message creation time, or by the broker on message insertion time. A time-based index is planned, but not available yet. Thus, you need to consume the whole topic and check the timestamp field (and ignore all messaged you are not interested in). To find the beginning, you could also do a binary search with regard to offsets and timestamps to find the first message faster.\n\nUpdate:\n\nKakfa 0.10.1 adds a time-based index. It allows to seek to the first record with a timestamp equals or larger of the given timestamp. You can use it via KafkaConsumer#offsetsForTime(). This will return the corresponding offsets and you can feed them into KafkaConsumer#seek(). You can just consume the data and check the records timestamp field via ConsumerRecord#timestamp() to see when you can stop processing.\n\nNote, that data is strictly ordered by offsets but not by timestamp. Thus, during processing, you might get \"late\" records with smaller timestamp than your start timestamp (you could simple skip over those records though).\n\nA more difficult problem is late arriving record at the end of your search interval though. After you got the first timestamp with a larger timestamp than your search interval, there might still be records with timestamp that are part of your search interval later on (if those records did got appended to the topic \"late\"). There is no way to know that though. Thus, you might want to keep reading \"some more\" records and check if there are \"late\" records. How much \"some records\" means, is a design decision you need to make by yourself.\n\nThere is not general guideline though -- if you have additional knowledge about your \"write pattern\" it can help to define a good strategy to how many records you want to consumer after your search interval \"ended\". Of course there are two default strategies: (1) stop at the very first record with larger timestamp than you search interval (and effectively ignore any late arriving records -- if you use \"log append time\" configuration this is of course a safe strategy); (2) you read to the end of the log -- this is the safest strategy with regard to completeness but might result in prohibitive overhead (also note, as record can be appended any time and if record \"delay\" could be arbitrary large, a late record might even be append after you reach end-of-log).\n\nIn practice, it might be a good idea to think about a \"max expected delay\" and read until you get a record with larger timestamp than this upper delay bound."
+    }
+}
