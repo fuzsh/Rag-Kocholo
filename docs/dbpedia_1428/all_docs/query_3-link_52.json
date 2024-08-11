@@ -1,0 +1,44 @@
+{
+    "id": "dbpedia_1428_3",
+    "rank": 52,
+    "data": {
+        "url": "https://forum.image.sc/t/a-problem-running-imagej-in-headless-mode/3909",
+        "read_more_link": "",
+        "language": "en",
+        "title": "A problem running ImageJ in headless mode",
+        "top_image": "https://global.discourse-cdn.com/business4/uploads/imagej/original/2X/4/4904e8fe196486eabdbe0d9d185e94dfcab74e10.png",
+        "meta_img": "https://global.discourse-cdn.com/business4/uploads/imagej/original/2X/4/4904e8fe196486eabdbe0d9d185e94dfcab74e10.png",
+        "images": [
+            "https://sea1.discourse-cdn.com/business4/user_avatar/forum.image.sc/ctrueden/48/13505_2.png",
+            "https://avatars.discourse-cdn.com/v4/letter/a/e0b2c6/48.png",
+            "https://sea1.discourse-cdn.com/business4/user_avatar/forum.image.sc/dietzc/48/73_2.png",
+            "https://sea1.discourse-cdn.com/business4/user_avatar/forum.image.sc/ctrueden/48/13505_2.png",
+            "https://avatars.discourse-cdn.com/v4/letter/a/e0b2c6/48.png",
+            "https://avatars.discourse-cdn.com/v4/letter/a/e0b2c6/48.png",
+            "https://avatars.discourse-cdn.com/v4/letter/a/e0b2c6/48.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "imagej",
+            "batch-processing",
+            "linux"
+        ],
+        "tags": null,
+        "authors": [
+            "Avital_Steinberg (Avital Steinberg)",
+            "Christian_Tischer (Christian Tischer)",
+            "ctrueden (Curtis Rueden)",
+            "imagejan (Jan Eglinger)",
+            "dietzc (Christian Dietz)"
+        ],
+        "publish_date": "2017-01-27T09:13:25+00:00",
+        "summary": "",
+        "meta_description": "Hi,  I have a problem running ImageJ  1.51i java 1.8.0_112 (64 bit) in the headless mode on LinuxMint 17 Qiana.  I think the problem is with the ImageJ launcher. When I run the following command: \n\n [path_to_ImageJ]/ij.j&hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://global.discourse-cdn.com/business4/uploads/imagej/optimized/2X/4/4b3d366e9bd1c4abfb68ca23f7596edd29cb2f4a_2_32x32.png",
+        "meta_site_name": "Image.sc Forum",
+        "canonical_link": "https://forum.image.sc/t/a-problem-running-imagej-in-headless-mode/3909",
+        "text": "Hi,\n\nI have a problem running ImageJ 1.51i java 1.8.0_112 (64 bit) in the headless mode on LinuxMint 17 Qiana.\n\nI think the problem is with the ImageJ launcher. When I run the following command:\n\n[path_to_ImageJ]/ij.jar helloImageJ.py -b &\n\nIt works. (helloImageJ.py just prints hello to the console)\n\nOn the other hand, when I write the following command:\n\n[path_to_ImageJ]/ImageJ helloImageJ.py -b &\n\nI get the following error message:\n\nJava HotSpot(TM) 64-Bit Server VM warning: ignoring option PermSize=128m; support was removed in 8.0 Unrecognized option: -b Warning: falling back to System JVM Unrecognized option: -b Error: Could not create the Java Virtual Machine. Error: A fatal exception has occurred. Program will exit.\n\nAny idea how to fix this problem? I need to work in batch mode, because the goal is to obviously run my image analysis script in headless mode. (rather than the hello world program)\n\nThanks,\n\nAvital\n\nThanks, Jan - when I try to use the double dash:\n\n[path_to_ImageJ]/ImageJ --ij2 --headless --run helloImageJ.py -b &\n\nI get the following error message:\n\nWithout ij-launcher, ‘-ijjarpath’ cannot be handled\n\nAny other ideas how I can make ImageJ work? And I do need it to work in batch mode, because I want to process images.\n\nThanks.\n\nAvital\n\nThanks for pointing that out, @Avital_Steinberg. I believe this is a bug, which has already been fixed in the code, but not yet released.\n\nI will be cutting a new release of ImageJ2 within the next few days, so this issue should be fixed very soon.\n\nSorry for the inconvenience.\n\nI upgraded ImageJ to version 2.0.0-rc-56 and since the daily build was 1.51h, I updated it to the 1.51i daily build. (I need this build) The problem is that it didn’t work. When I tried to run the script called printArgs.js, which has the following contents:\n\n//@String NAME importClass(Packages.ij.IJ); var ARGS = NAME.split(\"-\"); var STRSKIP = parseInt(ARGS[0]); var STRUNTIL = parseInt(ARGS[1]); var SKIP = parseInt(STRSKIP); var UNTIL = parseInt(STRUNTIL); IJ.log(\"SKIP: \" + SKIP + \" and UNTIL: \" + UNTIL);\n\nUsing the following command:\n\n[path_to_ImageJ]/ImageJ-linux64 --ij2 --headless --[path_to_script]/printArgs.js 'NAME=\"0-1\"' > [path_to_log]/PrintArgs &\n\nI got the following error message:\n\nFile is not in a supported format, a reader plugin is not available, or it was not found. [path_to_ImageJ]/NAME=\"0-1\"\n\nAny idea how I can get it to work?\n\nThanks,\n\nAvital\n\nThanks, Curtis - now I can run that script, but if I try to use the RoiManager, it gives me an error message.\n\nWhen I run the command:\n\n[path_to_ImageJ]/ImageJ-linux64 --ij2 --headless --run [path_to_script]/printArgs.js 'NAME=\"0-1\"' > [path_to_log]/PrintArgs &\n\nWhen the script is:\n\n//@String NAME importClass(Packages.ij.plugin.frame.RoiManager); importClass(Packages.ij.IJ); var ARGS = NAME.split(\"-\"); var STRSKIP = parseInt(ARGS[0]); var STRUNTIL = parseInt(ARGS[1]); var SKIP = parseInt(STRSKIP); var UNTIL = parseInt(STRUNTIL); IJ.log(\"SKIP: \" + SKIP + \" and UNTIL: \" + UNTIL); var rm = new RoiManager();// initiating the ROI manager if (rm==null)\n\nI get the following error message:\n\nJava HotSpot(TM) 64-Bit Server VM warning: ignoring option PermSize=128m; support was removed in 8.0 Java HotSpot(TM) 64-Bit Server VM warning: Using incremental CMS is deprecated and will likely be removed in a future release java.awt.HeadlessException at java.awt.GraphicsEnvironment.checkHeadless(GraphicsEnvironment.java:204) at java.awt.Window.<init>(Window.java:536) at java.awt.Frame.<init>(Frame.java:420) at ij.plugin.frame.PlugInFrame.<init>(PlugInFrame.java:13) at ij.plugin.frame.RoiManager.<init>(RoiManager.java:76) at jdk.nashorn.internal.scripts.Script$4$printArgs.:program(/media/elusers/users/avital/Scripts/printArgs.js:13) at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:640) at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:228) at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393) at jdk.nashorn.api.scripting.NashornScriptEngine.evalImpl(NashornScriptEngine.java:446) at jdk.nashorn.api.scripting.NashornScriptEngine.evalImpl(NashornScriptEngine.java:403) at jdk.nashorn.api.scripting.NashornScriptEngine.evalImpl(NashornScriptEngine.java:399) at jdk.nashorn.api.scripting.NashornScriptEngine.eval(NashornScriptEngine.java:150) at javax.script.AbstractScriptEngine.eval(AbstractScriptEngine.java:249) at org.scijava.script.ScriptModule.run(ScriptModule.java:176) at org.scijava.module.ModuleRunner.run(ModuleRunner.java:167) at org.scijava.module.ModuleRunner.call(ModuleRunner.java:126) at org.scijava.module.ModuleRunner.call(ModuleRunner.java:65) at org.scijava.thread.DefaultThreadService$2.call(DefaultThreadService.java:191) at java.util.concurrent.FutureTask.run(FutureTask.java:266) at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142) at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617) at java.lang.Thread.run(Thread.java:745)\n\nWe were running it headless using Java 6 with Xvfb before, and now we’d like to use ImageJ Java 8. How can we do that?\n\nThanks,\n\nAvital\n\nFor now at least, you will still need to use xvfb. The ImageJ Legacy component does not patch IJ1’s ROI Manager to work headless—it only patches the main ImageJ window and the GenericDialog. The Headless page explains somewhat, if you have not seen it already.\n\nAlternately, it might be possible to store your ROIs as overlays instead of using a RoiManager object. I did not look carefully, though."
+    }
+}

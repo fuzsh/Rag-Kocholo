@@ -1,0 +1,34 @@
+{
+    "id": "dbpedia_1428_2",
+    "rank": 12,
+    "data": {
+        "url": "https://stackoverflow.com/questions/7083272/what-does-fatal-you-are-on-a-branch-yet-to-be-born-mean-in-this-context",
+        "read_more_link": "",
+        "language": "en",
+        "title": "What does \"fatal: You are on a branch yet to be born\" mean in this context",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://i.sstatic.net/WmJNSJwX.png?s=64",
+            "https://www.gravatar.com/avatar/0db87ba322d224635f857df87c33baa1?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/1c9b7128b63f0a8d36ac2f3cc060dfca?s=64&d=identicon&r=PG",
+            "https://graph.facebook.com/829983118/picture?type=large",
+            "https://stackoverflow.com/posts/7083272/ivc/374a?prg=5b348c9e-2650-45e8-aa08-d03f1c3dddf1"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2011-08-16T18:38:45",
+        "summary": "",
+        "meta_description": "I was migrating a svn repo to git. I created a clean temp dir, used git svn init to get stuff in there and then added the remote and pushed it. Now on the other actual source dir (which I had clone...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/7083272/what-does-fatal-you-are-on-a-branch-yet-to-be-born-mean-in-this-context",
+        "text": "I believe it was because your fetch, which only fetches remote refs and commits, didn't give you a local master branch to checkout. Since you were in an empty repo, you were never on a branch, so your git checkout had no master branch to go to.\n\nYou could directly checkout the remote master by explicitly naming it with git checkout origin/master but that will leave you in a detached head state.\n\nOnce you did the pull, it fetched and merged, the pull created a local master to track the remote master.\n\nI was having the same error trying to migrate svn to git. Here was my fix.\n\nConfirm you've initialized the git repo:\n\ngit init\n\nConfirm you actually had a valid migration from svn:\n\ngit branch --remote #You should see this output: #git-svn\n\nCreate a detached head:\n\ngit checkout git-svn\n\nConvert the detached head into the master branch:\n\ngit checkout -b master\n\nAt this point your git repo will function normally."
+    }
+}
