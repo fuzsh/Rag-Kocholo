@@ -1,0 +1,38 @@
+{
+    "id": "dbpedia_1532_3",
+    "rank": 60,
+    "data": {
+        "url": "http://www.kamsky.org/stupid-tricks-with-mongodb/using-aggregation-framework-to-reshape-schema",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Stupid Tricks with MongoDB",
+        "top_image": "http://cdn2.editmysite.com/images/site/footer/og-image-placeholder-blank.png",
+        "meta_img": "http://cdn2.editmysite.com/images/site/footer/og-image-placeholder-blank.png",
+        "images": [
+            "http://cdn2.editmysite.com/images/old/bg_feed.gif",
+            "http://cdn2.editmysite.com/images/site/footer/footer-toast-published-image-1.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "MongoDB",
+            "noSQL",
+            "performance",
+            "aggregation",
+            "10gen",
+            "internals",
+            "replication",
+            "sharding"
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "When I first started playing with MongoDB aggregation framework queries, I quickly realized that '$project' stage could be hugely useful to completely reshape documents in cases where you structured...",
+        "meta_lang": "en",
+        "meta_favicon": "",
+        "meta_site_name": "Asya's Collection of Random Stuff",
+        "canonical_link": "http://www.kamsky.org/1/post/2013/04/using-aggregation-framework-to-reshape-schema.html",
+        "text": "When I first started playing with MongoDB aggregation framework queries, I quickly realized that '$project' stage could be hugely useful to completely reshape documents in cases where you structured them one way, but you need to get the results shaped differently.\n\nI thought it would be particularly helpful if you could map keys (aka field names) to be field values and vice versa. This feature did not exist (and still doesn't) so I filed a request for it in MongoDB issue tracking system.\n\nMeanwhile, as I show here it is still possible to do this \"projection\" via aggregation if you know the names of the fields in advance.\n\nBut what if you get the names of fields dynamically, rather than always knowing they will be field1, field2?\n\nI'm going to show how you can generate the appropriate aggregation framework pipeline programmatically based on the set of field names passed in. I'm going to use Javascript in the shell as the most general example, but you can translate this into your language of choice and adjust accordingly.\n\nMy sample documents and schema will be like this:\n\n{\n\n\"_id\" : 1,\n\n\"attr\" : [\n\n{ \"k\": \"firstName\",\n\n\"v\": \"Asya\" },\n\n{ \"k\": \"lastName\",\n\n\"v\": \"Kamsky\" },\n\n{ \"k\": \"employer\",\n\n\"v\": \"10gen, the MongoDB company\" },\n\n{ \"k\": \"URL\",\n\n\"v\": \"http://www.kamsky.org\" }\n\n]\n\n}\n\nThis is a pretty standard way of storing dynamic attributes - properties of the document that can't be easily enumerated in advance either because they are not all known, because they can vary widely for different types of documents or both. It makes it possible to index the attributes by creating a compound index on {\"attr.k\":1,\"attr.v\":1} fields and now querying on something like {\"attr.k\":\"color\",\"attr.v\":\"blue\"} will use the index. An alternative way of storing keys as field names and values as field values has other advantages but it makes it difficult to have a good indexing strategy as you may end up with a large number of indexes and every time you add a new type of attribute you have to create a new index to support it. Sparse indexes can help, but they can create their own challenges worthy of a separate blog post.\n\nNow imagine I want to output documents which have this shape:\n\n{\n\n\"_id\" : 1,\n\n\"firstName\" : \"Asya\",\n\n\"lastName\" : \"Kamsky\",\n\n\"employer\" : \"10gen, the MongoDB company\"\n\n}\n\nGiven I will be passed an array called 'fields' which contains values 'firstName', 'lastName' and 'employer' here is how I will build the pipeline stages for my aggregation.\n\n/* my array of wanted fields */\n\nfields = [ \"firstName\", \"lastName\", \"employer\"];\n\n/* first I unwind the attributes array in each document */\n\nunwind = {\"$unwind\" : \"$attr\"};\n\n/* I only keep the attributes I want to return */\n\nmatch = { \"$match\" : { \"attr.k\" : { \"$in\" : fields } } };\n\n/* I create new fields by setting correct value if key *\n\n* matches, or some known value I can \"skip\" later */\n\nproject = { \"$project\" : { } } ;\n\nfields.forEach( function(f) {\n\nproject[\"$project\"][f] = { \"$cond\" :\n\n[ { \"$eq\" : [ f, \"$attr.k\" ] },\n\n\"$attr.v\", \" skip\"\n\n] };\n\n} );\n\n/* I regroup the original document using $max to *\n\n* trick it into keeping only non-skip value */\n\ngroup = { \"$group\" : { \"_id\" : \"$_id\" } } ;\n\nfields.forEach( function(f) {\n\ngroup[\"$group\"][f] = { \"$max\" : \"$\" + f };\n\n} );\n\n/* now run the aggregation */\n\ndb.collection.aggregate( unwind, match, project, group );\n\n{\n\n\"result\" : [\n\n{\n\n\"_id\" : 1,\n\n\"firstName\" : \"Asya\",\n\n\"lastName\" : \"Kamsky\",\n\n\"employer\" : \"10gen, the MongoDB company\"\n\n}\n\n],\n\n\"ok\" : 1\n\n}"
+    }
+}
