@@ -1,0 +1,43 @@
+{
+    "id": "dbpedia_1569_2",
+    "rank": 74,
+    "data": {
+        "url": "https://blogs.sw.siemens.com/simcenter/hil-simulation-framework-uav/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "HiL and realistic environment simulations for your UAV",
+        "top_image": "https://blogs.sw.siemens.com/wp-content/uploads/sites/6/2023/07/Main-picture-1-1024x512.jpg",
+        "meta_img": "https://blogs.sw.siemens.com/wp-content/uploads/sites/6/2023/07/Main-picture-1-1024x512.jpg",
+        "images": [
+            "https://blogs.sw.siemens.com/wp-content/uploads/sites/6/2023/07/Main-picture-1-scaled.jpg",
+            "https://blogs.sw.siemens.com/wp-content/uploads/sites/6/2023/07/HiLSchemePicture-1024x402.png",
+            "https://blogs.sw.siemens.com/wp-content/uploads/sites/6/2023/07/Amesim-1024x643.png",
+            "https://blogs.sw.siemens.com/wp-content/uploads/sites/6/2023/07/Prescan-1024x445.png",
+            "https://blogs.sw.siemens.com/wp-content/uploads/sites/6/2023/07/QGroundControl-1024x480.jpg",
+            "https://blogs.sw.siemens.com/wp-content/uploads/sites/6/2023/07/PixhawkTrajectory-1024x892.png",
+            "https://blogs.sw.siemens.com/wp-content/uploads/sites/6/2023/07/2023-07-21-11_00_38-Urban-air-mobility-future-_-Advanced-air-mobility-_-Siemens-_-Siemens-Software.png",
+            "https://blogs.sw.siemens.com/wp-content/uploads/sites/6/2023/07/2023-07-21-11_02_47-Aerospace-Engineering-Podcasts.png",
+            "https://blogs.sw.siemens.com/wp-content/uploads/sites/6/2023/07/2023-07-21-11_03_54-VTOL-Aircraft-_-Certification-_-Siemens-Software.png",
+            "https://blogs.sw.siemens.com/wp-content/uploads/sites/6/2023/06/Main-Picture-395x222.jpg",
+            "https://blogs.sw.siemens.com/wp-content/uploads/sites/6/2023/04/Main-picture-1-395x222.png",
+            "https://blogs.sw.siemens.com/wp-content/uploads/sites/6/2021/10/Simcenter-Autonomous-Drone-Software-Enhancements-350x160.jpg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "David Pla Guerrero"
+        ],
+        "publish_date": "2023-07-21T08:53:43-04:00",
+        "summary": "",
+        "meta_description": "For a UAV to fly safely, its autonomous flight functions and localization capabilities must be flawless. Read this blog to learn through a use case how to implement a HiL simulation framework into your development process.",
+        "meta_lang": "en",
+        "meta_favicon": "",
+        "meta_site_name": "Simcenter",
+        "canonical_link": "https://blogs.sw.siemens.com/simcenter/hil-simulation-framework-uav/",
+        "text": "By David Pla Guerrero\n\nTo ensure the safe operation of autonomous unmanned aerial vehicles and advanced air mobility vehicles, the flight control systems with their autonomous flight functions such as detect-and-avoid and localization functions need to be extensively validated for diverse flight scenarios and operational conditions. Therefore, a digital twin is highly valuable as part of an efficient development process that ensures a safe product.\n\nWithin the MARLOC project, we have investigated a simulation framework based on Simcenter Amesim and Simcenter Prescan software for the development and validation of flight controllers with localization capabilities for autonomous air systems. To evaluate the localization capabilities accurately, a realistic flight trajectory needs to be simulated. To accomplish this, we have created a hardware-in-the-loop (HiL) simulation framework where a physical Pixhawk flight controller was integrated with the digital twin.\n\nSimulation framework\n\nThe overall architecture of the HiL simulation developed is shown in Figure 1. Simcenter Amesim was used to model flight dynamics together with propulsion systems. While Simcenter Prescan was used to create the virtual environment and model the camera sensors attached to the vehicle. A ROS network was used to establish communication between the simulation software and the flight controller hardware. In order to start the simulation, a set of waypoints are specified and sent to the Pixhawk via the QGroundControlStation software which is running on a separate laptop. The flight controller will then try to steer the vehicle following a trajectory connecting these waypoints. The aircraft dynamics will be simulated in Simcenter Amesim based on the input given to the motors of the UAV model by the Pixhawk. The new position will be computed and sent to Simcenter Prescan to update the location of the aircraft in the environment. While the aircraft flies, the camera sensor simulated in Simcenter Prescan will produce the camera feed that will be later forwarded to a pose estimation algorithm running on the flight computer.\n\nUse case\n\nThe digital twin model of the drone developed in Simcenter Amesim is shown in Figure 2. This model was created based on an existing drone from FlandersMake research institute, partner in the MARLOC project. Considering the size, mass and inertia properties, propeller and motor parameters obtained from experimental testing, the physical dynamics of the unmanned vehicle are rigorously modeled.\n\nThe cosimulation block will specify the data exchange with the other components in the framework. In this manner, on the right side of the block, Simcenter Amesim receives from the Pixhawk flight controller the four throttle inputs to the motor models. On its left side are determined the states computed in Simcenter Amesim, based on the commanded throttle, to be sent through the framework.\n\nAnother aspect of the framework is the environment model. In order to create realistic camera images and fly in the same environment specified by the trajectory in QGroundControl, a model of the London Bridge area, shown in Figure 3, was created. This environment was developed using satellite data available from OpenStreetMaps to create the buildings and to apply the texture over the 3D model.\n\nFigure 4 shows the waypoints that were specified, creating a trajectory for the Pixhawk to fly around the London Bridge area using QGroundControl software which runs on the Ground Control laptop. Matching with the 3D model created in Simcenter Prescan, the trajectory that the vehicle will follow and the images generated by the camera will be consistent with the real environment.\n\nIn the simulation, the drone model was able to follow the trajectory by receiving the steering commands from the flight controller. The results obtained are shown in Figure 5, where the resulting trajectory followed by the UAV is marked as a dashed black line on top of the trajectory specified by the waypoints in QGroundControl.\n\nIn conclusion…\n\nIt has been demonstrated that the simulation framework can be used to integrate real hardware such as a flight controller to test its functionality. The main challenge, which was for the UAV model in Simcenter Amesim to compute flight data that was compliant with the operation of the flight controller at the required rates, was successfully achieved. Additionally, diverse sensors can be simulated in Simcenter Prescan in order to validate autonomous functions such as detecting and avoiding or simultaneous localization and mapping algorithms.\n\nIn future work, the trajectories obtained from the HiL simulation will be used to evaluate a visual simultaneous localization and mapping (SLAM) algorithm under different weather conditions."
+    }
+}
