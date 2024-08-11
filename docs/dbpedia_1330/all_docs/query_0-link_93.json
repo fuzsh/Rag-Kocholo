@@ -1,0 +1,30 @@
+{
+    "id": "dbpedia_1330_0",
+    "rank": 93,
+    "data": {
+        "url": "https://owfs.org/index_php_page_solar-heating-control----christian-schumann-and-christian-magnusson.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "owfs Development Site",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://owfs.org/uploads/images/sommer.jpg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "Solar Heating Control\n\nOverview of Christian Schumann's Solarsystem\n\nDesign\n\nI have helped Christian Schumann with scripts to control his Solar-panel + rainwater buffer with switches and water-pump.\n\nThere are several cronjobs which run every minute, and one of the scripts frequently return “Data error” when reading a DS2890. Reading the sensor second time works almost every time.\n\nChristian Schumann created a quick overview of the system, and I added the temperature’s and sensors in the picture with imagemagick.\n\nTake a look at: http://home.mag.cx/sommer/\n\nCode\n\nMy scripts looks like this when reading the data:\n\n#!/bin/ash\n\nreadsensor () (\n\nVAL=`owread -s 3002 $1/$2 2>&1`\n\nERR=$?\n\n[ $ERR != 0 ] &&\n\n}\n\n# save last value to a file as well (mostly for web-server)\n\n[ \"$2\" = \"temperature\" ] && echo \"$VAL\" > /tmp/last_val.$1.$2\n\necho \"$VAL\"\n\ntrue;\n\n)\n\nwritesensor () (\n\nVAL=`owwrite -s 3002 $1/$2 $3 2>&1`\n\nERR=$?\n\n[ $ERR != 0 ] &&\n\n}\n\ntrue;\n\n)\n\nVAL=`readsensor $SENSOR PIO`\n\nERR=$?\n\n[ $ERR != 0 ] && exit 1\n\nPlatform\n\nIt’s run on a Asus WL500gd with openwrt 0.9.\n\nExtensions\n\nI have made a simple web-interface to control some switches and potentiometers via cgi-scripts too, but it’s still a major hack and under development.\n\nPerhaps I can show it in a few days. I don’t want to give out the URL to Christian Schumann’s web-interface even if it’s password protected."
+    }
+}
