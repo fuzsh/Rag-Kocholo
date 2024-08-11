@@ -1,0 +1,31 @@
+{
+    "id": "dbpedia_1545_3",
+    "rank": 45,
+    "data": {
+        "url": "https://docs.daml.com/daml/intro/11_StdLib.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "The Daml Standard Library — Daml SDK 2.9.3 documentation",
+        "top_image": "https://docs.daml.com/_static/images/daml-logo-mark-light.svg",
+        "meta_img": "https://docs.daml.com/_static/images/daml-logo-mark-light.svg",
+        "images": [
+            "https://docs.daml.com/_static/images/Daml_Logo_Blue.svg",
+            "https://docs.daml.com/_static/images/Search.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "../../_static/images/daml-logo-mark-light.svg",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "TuplesÂ¶\n\nIn addition to the 2-tuple you have already seen, the Prelude contains definitions for tuples of size up to 15. Tuples allow you to store mixed data in an ad-hoc fashion. Common use-cases are return values from functions consisting of several pieces or passing around data in folds, as you saw in Folds. An example of a relatively wide Tuple can be found in the test modules of the Exception Handling project. Test.Intro.Asset.TradeSetup.tradeSetup returns the allocated parties and active contracts in a long tuple. Test.Intro.Asset.MultiTrade.testMultiTrade puts them back into scope using pattern matching:\n\nreturn(alice,bob,usdbank,eurbank,usdha,usdhb,eurha,eurhb,usdCid,eurCid)\n\n(alice,bob,usdbank,eurbank,usdha,usdhb,eurha,eurhb,usdCid,eurCid)<-tradeSetup\n\nTuples, like lists have some syntactic magic. Both the types as well as the constructors for tuples are (,,,) where the number of commas determines the arity of the tuple. Type and data constructor can be applied with values inside the brackets, or outside, and partial application is possible:\n\nt1:(Int,Text)=(1,\"a\") t2:(,)IntText=(1,\"a\") t3:(Int,Text)=(1,)\"a\" t4:a->(a,Text)=(,\"a\")\n\nNote\n\nWhile tuples of great lengths are available, it is often advisable to define custom records with named fields for complex structures or long-lived values. Overuse of tuples can harm code readability.\n\nEitherÂ¶\n\nEither is used in cases where a value should store one of two types. It has two constructors, Left and Right, each of which take a value of one or the other of the two types. One typical use-case of Either is as an extended Optional where Right takes the role of Some and Left the role of None, but with the ability to store an error value. Either Text, for example behaves just like Optional, except that values with constructor Left have a text associated to them.\n\nNote\n\nAs with tuples, itâs easy to overuse Either and harm readability. Consider writing your own more explicit type instead. For example if you were returning South a vs North b using your own type over Either would make your code clearer.\n\nActionsÂ¶\n\nActions were already covered in Add Constraints to a Contract. One way to think of them is as ârecipesâ for a value, which need to be âexecuted to get at that value. Actions are always Functors (and Applicative Functors). The intuition for that is simply that fmap f x is the recipe in x with the extra instruction to apply the pure function f to the result.\n\nThe really important Actions in Daml are Update and Script, but there are many others, like [], Optional, and Either a.\n\nSearch for Functions by NameÂ¶\n\nSay you come across some functions you havenât seen before, like the ones in the ensure clause of the MultiTrade.\n\nensure(lengthbaseAssetCids==lengthbaseAssets)&& (lengthquoteApprovalCids==lengthquoteAssets)&& not(nullbaseAssets)&& not(nullquoteAssets)\n\nYou may be able to guess what not and null do, but try searching those names in the documentation search. Search results from the Standard Library will show on top. not, for example, gives\n\nnot : Bool -> Bool Boolean ânotâ\n\nSignature (including type constraints) and description usually give a pretty clear picture of what a function does.\n\nSearch for Functions by SignatureÂ¶\n\nThe other very common use case for the search is that you have some values that you want to do something with, but donât know the standard library function you need. On the MultiTrade template we have a list baseAssets, and thanks to your ensure clause we know itâs non-empty. In the original Trade we used baseAsset.owner as the signatory. How do you get the first element of this list to extract the owner without going through the motions of a complete pattern match using case?\n\nThe trick is to think about the signature of the function thatâs needed, and then to search for that signature. In this case, we want a single distinguished element from a list so the signature should be [a] -> a. If you search for that, youâll get a whole range of results, but again, Standard Library results are shown at the top.\n\nScanning the descriptions, head is the obvious choice, as used in the let of the MultiTrade template.\n\nYou may notice that in the search results you also get some hits that donât mention [] explicitly. For example:\n\nThe reason is that there is an instance for Foldable [a].\n\nLetâs try another search. Suppose you didnât want the first element, but the one at index n. Remember that (!!) operator from Functional Programming 101? There are now two possible signatures we could search for: [a] -> Int -> a and Int -> [a] -> a. Try searching for both. Youâll see that the search returns (!!) in both cases. You donât have to worry about the order of arguments."
+    }
+}
