@@ -1,0 +1,33 @@
+{
+    "id": "dbpedia_2123_3",
+    "rank": 8,
+    "data": {
+        "url": "https://stackoverflow.com/questions/5761874/xslt-xslsort-issue",
+        "read_more_link": "",
+        "language": "en",
+        "title": "XSLT xsl:sort issue",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/f08547a29c105f06c377da2ae98a6912?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/4b16cc2b4d3191b4be495087dfb35e77?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/Txewo.jpg?s=64",
+            "https://stackoverflow.com/posts/5761874/ivc/9e18?prg=3f63b921-2c85-487b-b0a5-b9d809188a35"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2011-04-23T03:04:40",
+        "summary": "",
+        "meta_description": "I have an XML file that I need to sort. Worked great until the dev consuming it told me to change the XML to items that I had with attributes of type=label to label nodes. Not great at XSLT. Need t...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/5761874/xslt-xslsort-issue",
+        "text": "I have an XML file that I need to sort. Worked great until the dev consuming it told me to change the XML to items that I had with attributes of type=label to label nodes. Not great at XSLT. Need to sort on the 'sort' node.\n\nThe (simplified) XML looks like this:\n\n<rss> <channel> <title>This is the title</title> <link>http://www.mydomain.com/</link> <description>The Description</description> <label> <title>Another Label</title> <sort>4</sort> </label> <item> <title>An Item</title> <sort>2</sort> </item> <item> <title>One Item</title> <sort>3</sort> </item> <label> <title>A Label</title> <sort>1</sort> </label> </channel> </rss>\n\nThe old XSL (when I was just sorting 'items') looks something like this:\n\n<xsl:stylesheet xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" version=\"1.0\"> <xsl:output method=\"xml\" encoding=\"UTF-8\" indent=\"yes\" /> <xsl:template match=\"channel\"> <rss> <channel> <xsl:copy-of select=\"title\"/> <xsl:copy-of select=\"link\"/> <xsl:copy-of select=\"description\"/> <xsl:apply-templates select=\"item\"> <xsl:sort select=\"sort\" data-type=\"number\"/> </xsl:apply-templates> </channel> </rss> </xsl:template> <xsl:template match=\"item\"> <xsl:copy-of select=\".\" /> </xsl:template> </xsl:stylesheet>\n\nTried this thinking it would work and it mostly does, but I get all sorts of \"stragglers\".\n\n<xsl:stylesheet xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" version=\"1.0\"> <xsl:output method=\"xml\" encoding=\"UTF-8\" /> <xsl:template match=\"channel\"> <rss> <channel> <xsl:copy-of select=\"title\"/> <xsl:copy-of select=\"link\"/> <xsl:copy-of select=\"description\"/> <xsl:apply-templates> <xsl:sort select=\"sort\"/> </xsl:apply-templates> </channel> </rss> </xsl:template> <xsl:template match=\"item\"> <xsl:copy-of select=\".\" /> </xsl:template> <xsl:template match=\"label\"> <xsl:copy-of select=\".\" /> </xsl:template> </xsl:stylesheet>\n\nThe \"stragglers\" look like this when all is said and done using the latest XSL:\n\n<rss xmlns:st=\"http://ww2.startribune.com/rss/modules/base/\"> <channel> <title>A Title</title> <link>http://www.mydomain.com/</link> <description>The Description</description> A Title http://www.mydomain.com/ The Description <label>... <item>...\n\nTo avoid having to 'hard-code' the names of specific 'stragglers', which would be otherwise picked up by the default matching template, you could add you own default template in this case, to simply ignore such nodes.\n\n<xsl:template match=\"@*|node()\"> <xsl:apply-templates /> </xsl:template>\n\nThis matches any non-specific node, and simply ignores it, and carries on processing the child nodes (so that when it matches the 'rss' node, it can then go on to match the 'channel' node). You specific template matches for 'channel', 'item' and 'label' will take priority over this.\n\nThus, if you take the following XSLT\n\n<xsl:stylesheet xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" version=\"1.0\"> <xsl:output method=\"xml\" encoding=\"UTF-8\"/> <xsl:template match=\"channel\"> <rss> <channel> <xsl:copy-of select=\"title\"/> <xsl:copy-of select=\"link\"/> <xsl:copy-of select=\"description\"/> <xsl:apply-templates> <xsl:sort select=\"sort\"/> </xsl:apply-templates> </channel> </rss> </xsl:template> <xsl:template match=\"item\"> <xsl:copy-of select=\".\"/> </xsl:template> <xsl:template match=\"label\"> <xsl:copy-of select=\".\"/> </xsl:template> <xsl:template match=\"@*|node()\"> <xsl:apply-templates/> </xsl:template> </xsl:stylesheet>\n\nAnd apply it to your simplified XML, you should get the following output\n\n<rss> <channel> <title>This is the title</title> <link>http://www.mydomain.com/</link> <description>The Description</description> <label> <title>A Label</title> <sort>1</sort> </label> <item> <title>An Item</title> <sort>2</sort> </item> <item> <title>One Item</title> <sort>3</sort> </item> <label> <title>Another Label</title> <sort>4</sort> </label> </channel> </rss>\n\nanswered Apr 23, 2011 at 10:08\n\nTim CTim C\n\n70.4k1414 gold badges7575 silver badges9393 bronze badges"
+    }
+}

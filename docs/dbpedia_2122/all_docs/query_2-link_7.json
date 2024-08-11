@@ -1,0 +1,33 @@
+{
+    "id": "dbpedia_2122_2",
+    "rank": 7,
+    "data": {
+        "url": "https://stackoverflow.com/questions/63541420/string-matching-best-worst-case-big-oh-complexity",
+        "read_more_link": "",
+        "language": "en",
+        "title": "string matching - best/worst case big-Oh complexity",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/1631c2f10103066817ede7ad2682ffba?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/53bcb9317116c37e31d8ed550baeb4e0?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/1631c2f10103066817ede7ad2682ffba?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://stackoverflow.com/posts/63541420/ivc/9e18?prg=80a0cc97-af11-4aaa-9f99-15a30419933e"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2020-08-22T21:47:11",
+        "summary": "",
+        "meta_description": "I'm a bit stuck on this and don't really understand how to solve it. I've looked at YouTube et al. and can't understand how to answer this.\ndef PatternMatch(text, searchspace):\n    for pattern in",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/63541420/string-matching-best-worst-case-big-oh-complexity",
+        "text": "Let us assume k patterns of equal length m and a text of length n.\n\nThe best case seems easy: if the first comparison with the first pattern succeeds immediately, the answer is returned after m character comparisons, where m is the length of the first pattern. Anyway, you could get a faster result if all pattern tests concluded \"no match\" as soon as possible, which can be achieved in n-m+1 character comparisons, hence after k(n-m+1) comparisons in total. Though unlikely, k(n-m+1) < m is possible.\n\nThe worst case is a little more difficult. We can imagine that it occurs when the match fails for all patterns, so that k matches need to be performed. Now the maximal time to conclude a mismatch is when all offsets lead to a failure, while the string comparisons are carried as far as possible.\n\nThis occurs when you search a pattern like xxxxxxxy inside xxxxxxxxxxxxxxxxxxxx: the string comparisons must always be performed in full.\n\nSo we have a total worst-case of k(n-m+1)m character comparisons. If the lengths are not constant, precise analysis becomes pretty difficult.\n\nThis does vary quite a bit based on the sizes of the pattern and the tested strings. I'm assuming that both are of length n (for computational simplicity, since the actual case should have the same time complexity) and there are k strings being tested Each character comparison takes O(1) time, and you perform, per string being matched, n string comparisons of length 1..n (i.e. 1..n character comparisons). This is (n^2+n)/2 comparisons = O(n^2). Since there are k of these tests, the complexity is O(n^2k)."
+    }
+}
