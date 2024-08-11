@@ -1,0 +1,44 @@
+{
+    "id": "dbpedia_1889_3",
+    "rank": 81,
+    "data": {
+        "url": "https://www.trekview.org/blog/what-direction-are-you-facing/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "What Direction are you Facing?",
+        "top_image": "https://www.trekview.org/assets/images/blog/2020-01-17/tourer-connection-heading-calculation-meta.jpg",
+        "meta_img": "https://www.trekview.org/assets/images/blog/2020-01-17/tourer-connection-heading-calculation-meta.jpg",
+        "images": [
+            "https://www.trekview.org/assets/images/global/logo.png",
+            "https://www.trekview.org/assets/images/global/staff/david-g.jpg",
+            "https://www.trekview.org/assets/images/blog/2020-01-17/3d-latitude-longitude-elevation-graph.jpg",
+            "https://www.trekview.org/assets/images/blog/2020-01-17/haversine-formula.png",
+            "https://www.trekview.org/assets/images/blog/2020-01-17/tourer-pitch-calculation.png",
+            "https://www.trekview.org/assets/images/blog/2020-01-17/azimuth-altitude-schematic.png",
+            "https://www.trekview.org/assets/images/blog/2020-01-17/tourer-photo-heading-calculation.png",
+            "https://www.trekview.org/assets/images/blog/2020-01-17/tourer-connection-heading-calculation.png",
+            "https://www.trekview.org/assets/images/blog/2020-01-17/tourer-pannellum-scene-connection.png",
+            "https://www.trekview.org/assets/images/blog/2020-01-17/tourer-adjusted-connection-heading-calculation.png",
+            "https://www.trekview.org/assets/images/global/slack-screenshot.jpg",
+            "https://i.creativecommons.org/l/by-sa/4.0/88x31.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "David G",
+            "Chief Explorer"
+        ],
+        "publish_date": "2020-01-17T00:00:00+00:00",
+        "summary": "",
+        "meta_description": "North, South, East or, West? Calculating bearings between photos.",
+        "meta_lang": "en",
+        "meta_favicon": "/assets/images/icons/favicon.png",
+        "meta_site_name": "Trek View",
+        "canonical_link": "https://www.trekview.org/blog/what-direction-are-you-facing/",
+        "text": "North, South, East or, West? Calculating bearings between photos.\n\nMe? North (in my home office).\n\nA heading of about 5 degrees, if you want me to be more accurate.\n\nNow look at the 50th photo (roughly) you took on your phone. Any idea of the heading?\n\nWhat about the pitch?\n\nProbably not.\n\nAnd it is very unlikely your phone will have the answer either.\n\nUsually you will find it tagged with where the photo was taken using GPS (latitude, longitude and elevation), but I’m not aware of a phone that logs the heading (prove me wrong!).\n\nThere’s good reason for this; rarely is it important.\n\nThough in some case it’s life or death. This is no exaggeration.\n\nTake Bellingcat. Their crowdsourced work often involves taking a photograph and determining the location, heading, and even time (using shadows) it was taken to aid their investigations (like the downing of MH17).\n\nBecause the Trek Pack camera (GoPro Fusion) does not support heading or pitch when shooting timelapse tours, we needed to manually calculate this information when building some of our software.\n\nNow you might be wondering why pitch or heading is important. “Surely a user can define where they want to be looking using a 360-degree photo viewer?”, you might be asking. This is true. Though when trying to link 360-degree photos in a tour (e.g what direction is the next photo?), this information is vital.\n\nOn many newer cameras, the gyroscope and compass built into the camera alongside the GPS receiver will automatically record the pitch, roll, and heading of each frame.\n\nBut we use an older GoPro Fusion for our camera packs and shoot in time lapse mode (because of battery and heat issues). Whilst the Fusion has a an gyroscope and compass, the pitch, roll, and heading data is only included video captures.\n\nUsing the latitude, longitude, and altitude values captured by the GoPro Fusion GPS receiver you have all the information needed to make an fairly accurate calculation of these variables when shooting in time lapse mode.\n\nTake a moment to visualise this as a 3D map. The latitude (x) and longitude (y) gives the horizontal position. The elevation (z) gives us the vertical position.\n\nDistance\n\nTo calculate distance, you can use the Haversine formula to find the distance between two points on a sphere (Earth) given their longitudes and latitudes.\n\nTwo things to note: 1) this is probably overkill as the curvature of the earth is minuscule at short distances (e.g. 3 metres) and, 2) it does not account for elevation change between points, although again given distances in question, this will be small.\n\nPitch\n\nDownload this diagram.\n\nThe best way to think about this calculation is to visualise the photos as points in a line from left to right (first photo to last).\n\nNow you can turn to trigonometry (“sohcahtoa”), to calculate the missing values for these right angled triangles we’ve visualised;\n\nSine = Opposite / Hypotenuse\n\nCosine = Adjacent / Hypotenuse\n\nTangent = Opposite / Adjacent\n\nGiven this; pitch(θ) = tan(θ) = opposite / adjacent\n\nWe have the adjacent measurement (distance between photos), you just need the opposite value (elevation change between photos).\n\nThe GPS logs the elevation, so you can work this out; source photo elevation - destination photo elevation = elevation change (note, can be positive or negative).\n\nSo now you have; pitch(θ) = tan(θ) = opposite / adjacent = elevation change / distance.\n\nHeading\n\nDownload this diagram.\n\nHeading or orientation is generally measured from North (0°), and is often referred to as the azimuth.\n\nIf I’m facing magnetic North my heading is 0°. If I’m facing magnetic South my heading is 180°. And so on.\n\nAll our tours are currently shot in time order. The start / end of the tour is the first / last photo.\n\nGiven photos are generally less than 3m apart and our Trek Pack cameras are always facing forward / backwards in the same direction, you can make an assumption that the camera is facing in the direction of the next photo (by time). Note, this will not always be correct, for example, if Trekker turns 90° between start and destination photo (but this is rare, so we’re overlooking it for now in favour of simplicity).\n\nNow you can calculate the heading of the current photo by measuring the heading (angle) from North to the next photo (by time), as shown in the diagram.\n\nThere is a slight problem with this approach, you cannot get the heading of the last photo (because there is not a next photo by time). As a simple approach, you could just copy the heading calculated for the last photo in the sequence.\n\nMultiple Headings\n\nDownload this diagram.\n\nNow you have an estimate for what direction the camera was facing when the photo was taken.\n\nIn some cases, you might have multiple connections. For example, at a fork where two paths intersect – one going forward, two others off to each side.\n\nSo you not only need to know the heading to the next photo based on time, but also the direction to all connected photos so that a user can move through a tour virtually (think Google Street View).\n\nFirst you need to consider what photos are connected. In some of our software photos are considered connected if the horizontal distance between photos is <=10 metres of the elevation change is <=+/-5 (both these values calculated earlier).\n\nSo you can use the same logic as before to work out heading for all connected photos.\n\nAs with pitch, you’ll notice in the diagram there is a forward and backward connection heading (P1 - P2 and P2 - P1) for each connected photo. And like with pitch, it is so you can move forward and backwards between photos.\n\nAdjusted Headings\n\nOne final calculation (I promise); adjusted heading.\n\nThis is useful for connections, where the software has no concept of true North.\n\nDownload this diagram.\n\nIn such case, we must therefore adjust the heading to connected photos to the centre of the source 360-degree photo (it’s heading from North) in these scenarios.\n\nThis an easy calculation to estimate using existing heading fields; adjusted heading = heading of source photo - heading of connection photo.\n\nYou will see there is no adjusted heading for the next photo by time (e.g P2 to P3). It does exist, but is not shown in the diagram because the adjusted photo heading for the next photo by time (heading) will always be 0. For example, heading from P2 to P3 = x, and adjusted heading for P2 to P3 = x (heading) - x (connection heading) = 0."
+    }
+}

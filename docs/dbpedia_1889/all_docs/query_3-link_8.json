@@ -1,0 +1,34 @@
+{
+    "id": "dbpedia_1889_3",
+    "rank": 8,
+    "data": {
+        "url": "https://stackoverflow.com/questions/4632966/using-lattitude-and-longitude-of-the-current-location-and-destination-location",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Using lattitude and longitude of the current location and destination location , how can we get the direction in iphone",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://cdn.sstatic.net/Img/survey-cta.svg?v=171e02557b0d",
+            "https://www.gravatar.com/avatar/9a7bf023303de77dbb6634e2de92ae09?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/0ec7a11a127dd10d98e1a9a64fb86f1f?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/a132e196ccd54ebc448f573b8f5b8537?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/4632966/ivc/600f?prg=63861703-879b-4949-b2b7-bbab35860f3e"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2011-01-08T07:46:29",
+        "summary": "",
+        "meta_description": "I am working in 1 iphone app where we need to show the direction from 1 place to other place \nThat is from current location in which direction (N or E or W or S or NE or NW or SE or SW ) the destin...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/4632966/using-lattitude-and-longitude-of-the-current-location-and-destination-location",
+        "text": "Do you know the coordinates of the two locations?\n\nLook at CLLocationCoordinate2D:\n\nlatitude The latitude in degrees. Positive values indicate latitudes north of the equator. Negative values indicate latitudes south of the equator.\n\nlongitude The longitude in degrees. Measurements are relative to the zero meridian, with positive values extending east of the meridian and negative values extending west of the meridian.\n\nLatitude is therefore quite simple, if the destination's latitude is less than the current location's latitude then it lies to the north, if it is greater than the current location's latitude then it lies to the south.\n\nlatitudinal_distance = destination.latitude - origin.latitude\n\nLongitude is slightly more complex as you should consider that a destination three quarters of the way around the Earth to the east is probably better expressed as being to the west. Again compare the longitude values, consider the distance both east and west, handle crossing the meridian, and choose the shorter distance.\n\ndistance_east = (origin.longitude > 0 && destination.longitude < 0) ? 180 - origin.longitude + destination.longitude - -180 : destination.longitude - origin.longitude; if (distance_east < 0) distance_east += 360\n\ndistance_west = (origin.longitude < 0 && destination.longitude > 0) ? -180 - origin.longitude - 180 - destination.longitude : origin.longitude - destination.longitude; if (distance_west < 0) distance_west += 360\n\nlongitudinal_distance = min(distance_east, distance_west)\n\nOnce you know how many degrees of latitude and longitude separate your two points you can calculate a heading to your destination and decide which heading should be show as which compass points. On a compass with only four points (N, E, S, W) each point would cover 90 degrees. On a compass with 8 points each point would cover 45 degrees. Hopefully you get the idea.\n\nheading = arctan(longitudinal_distance / latitudinal_distance) if (heading >= -45 || heading < 45) return 'N'; else if (heading >= 45 && heading < 135) return 'E'; else if ...\n\nIt's late here and I'm not testing those expressions so if they seem useful please make sure you understand and test them instead of trying to apply them blindly. The odds that I transposed a sign or coordinate pair are unfortunately high."
+    }
+}
