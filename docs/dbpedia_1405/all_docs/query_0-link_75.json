@@ -1,0 +1,32 @@
+{
+    "id": "dbpedia_1405_0",
+    "rank": 75,
+    "data": {
+        "url": "https://forum.arduino.cc/t/where-is-my-code-atmel-studio-7/541126",
+        "read_more_link": "",
+        "language": "en",
+        "title": "WHERE IS \"MY\" CODE ?? ATmel Studio 7",
+        "top_image": "https://europe1.discourse-cdn.com/arduino/original/3X/1/f/1f6eb1c9b79d9518d1688c15fe9a4b7cdd5636ae.svg",
+        "meta_img": "https://europe1.discourse-cdn.com/arduino/original/3X/1/f/1f6eb1c9b79d9518d1688c15fe9a4b7cdd5636ae.svg",
+        "images": [
+            "https://europe1.discourse-cdn.com/arduino/original/4X/0/f/0/0f05aa1294a274848a79f532a62e49fdce1bb536.png",
+            "https://europe1.discourse-cdn.com/arduino/original/4X/d/4/3/d435706d2341b1efd35831626627861697109b3c.jpeg",
+            "https://europe1.discourse-cdn.com/arduino/optimized/4X/f/b/4/fb44b7af244eca55a27ec6831e612d88eebbaafa_2_690x345.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2018-08-11T20:40:15+00:00",
+        "summary": "",
+        "meta_description": "HI \nI have downloaded ATMEL studio 7 (AT S 7) and installed it. (takes approx. 2 1/2 hour!) . \nFirst I connect my Ard UNO (with a running LCD-display program), then I start AT ST 7. I go to TOOLS --&gt; DEVICE PROGRAMMING .&hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://europe1.discourse-cdn.com/arduino/optimized/3X/c/c/cc4b0921af3d89006e843364a2b18989ad72f83e_2_32x32.png",
+        "meta_site_name": "Arduino Forum",
+        "canonical_link": "https://forum.arduino.cc/t/where-is-my-code-atmel-studio-7/541126",
+        "text": "HI\n\nI have downloaded ATMEL studio 7 (AT S 7) and installed it. (takes approx. 2 1/2 hour!) .\n\nFirst I connect my Ard UNO (with a running LCD-display program), then I start AT ST 7. I go to TOOLS --> DEVICE PROGRAMMING . The TOOL says SIMULATOR and I pick the ATMega 328P from the drop-down list and presses APPLY.\n\nTo check that it works I press READ in DEVICE SIGNATURE.\n\nNo problem about this:\n\nI then press MEMORIES in the right LIST and get a kind of menu on the right side.\n\nFlash (32Kb)\n\nEEPROM (1 Kb).\n\nWhen I Press READ for FLASH-memory a pop-up ask for a filename. I enter a filename (eg. doc_222.HEX) and presses OK. A few seconds later I open DOC_222.hex and scan it.\n\nNothing but FF's in the data field in the hex-file.\n\nAccording to my knowledge (and what I have read recently), the LCD-display program should be in FLASH-memory, but apparently IT is not !\n\nI Just wonder :\n\nWhere IS my code (\"LCD-program\") or is the AT S 7 program not able to READ the flash memory without a programming unit (eg. AVR ISPmk II or equivalent) or have I got It all wrong ????\n\nBut where is \"my\" code ?? and How do I read/get it ?\n\nKRIS aka snestrup2016\n\nYou can use the bootloader to read the flash.\n\nThe command is something like\n\navrdude -p atmega328p -c arduino -P (SERIL_PORT_ARDUINO_IS_AT) -b 115200 -U flash:r:ldc_display.hex\n\nYou can even set up AS7 to use avrdude as an ISP tool, but frankly why bother. I will let someone else explain how to use the avrdude tool from the Arduino IDE on Windows, for myself I setup WSL with Ubuntu\n\nthen add the following packages to the Ubuntu install after the updates.\n\nsudo apt-get update sudo apt-get upgrade sudo apt-get install git gcc-avr binutils-avr gdb-avr avr-libc avrdude\n\nThat is all you need to build AVR programs. I have doubts that Microchip is going to keep Atmel Studio going if what I read is true (e.g. AVR is being added to MPLAB). AS7 is huge as you have seen, which is its undoing. You might want to look at VSC, which is quite wonderful. You will have to link it to the AVR library's to make intellisense and completion work, but it is a treat to use."
+    }
+}
