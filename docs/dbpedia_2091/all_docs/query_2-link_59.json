@@ -1,0 +1,34 @@
+{
+    "id": "dbpedia_2091_2",
+    "rank": 59,
+    "data": {
+        "url": "https://stackoverflow.com/questions/38042188/where-exactly-is-the-red-zone-on-x86-64",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Where exactly is the red zone on x86-64?",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://i.sstatic.net/hXLnN.jpg?s=64",
+            "https://i.sstatic.net/hN6jT.png?s=64",
+            "https://www.gravatar.com/avatar/703f62ead2e305b1dff62066065a0554?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/hXLnN.jpg?s=64",
+            "https://stackoverflow.com/posts/38042188/ivc/5f99?prg=83b558d4-6e5b-4dfc-a0fe-ca0c741b8296"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2016-06-26T19:07:08",
+        "summary": "",
+        "meta_description": "From Wikipedia:\r\n  In computing, a red zone is a fixed-size area in a function's stack frame beyond the return address which is not preserved by that function. The callee function may use the red z...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/38042188/where-exactly-is-the-red-zone-on-x86-64",
+        "text": "The Wikipedia article about the Red Zone was wrong, thus creating the ambiguity.\n\nI had modified the article in April 2017 to fix the issue. As of that update the Wikipedia article reads:\n\nIn computing, a red zone is a fixed-size area in a function's stack frame beyond the current stack pointer which is not preserved by that function. The callee function may use the red zone for storing local variables without the extra overhead of modifying the stack pointer. This region of memory is not to be modified by interrupt/exception/signal handlers. The x86-64 ABI used by System V mandates a 128-byte red zone, which begins directly under the current value of the stack pointer. The OpenRISC toolchain assumes a 128-byte red zone\n\nThis brings the Wikipedia article more in line with the 64-bit System V ABI definition. With the ambiguity above resolved, regarding the question:\n\nSince this red zone is relative to RSP, does it move downward with each push and does it move upward with each pop?\n\nThe Red Zone is always the 128 bytes just below RSP. As RSP changes (by PUSH/POP/MOV etc) so too does the location of the Red Zone."
+    }
+}
