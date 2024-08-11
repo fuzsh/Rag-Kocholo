@@ -1,0 +1,35 @@
+{
+    "id": "dbpedia_1257_0",
+    "rank": 49,
+    "data": {
+        "url": "https://community.spiceworks.com/t/sonicwall-shows-samsung-phones-with-murata-mfg-wifi-are-smurf-attacking/737997",
+        "read_more_link": "",
+        "language": "en",
+        "title": "SonicWall shows Samsung phones with Murata Mfg. WiFi are Smurf attacking",
+        "top_image": "https://global.discourse-cdn.com/spiceworks/original/1X/7a73606d7df2f794c4789897e49693fb3c471b23.png",
+        "meta_img": "https://global.discourse-cdn.com/spiceworks/original/1X/7a73606d7df2f794c4789897e49693fb3c471b23.png",
+        "images": [
+            "https://secure.intelligence52.com/795141.png",
+            "https://zdbb.net/l/z0WVjCBSEeGLoxIxOQVEwQ/"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "firewalls",
+            "question"
+        ],
+        "tags": null,
+        "authors": [
+            "jimtac (Jimtac)",
+            "bethers (Bethers)"
+        ],
+        "publish_date": "2019-11-06T20:30:12+00:00",
+        "summary": "",
+        "meta_description": "I’m the new IT/Security/SysAdmin/CatchAll here at my new company, and I’ve caught a couple of actual attacks on our network, but I’m stumped as to what to do about these Samsung phones that are showing up as performing s&hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://global.discourse-cdn.com/spiceworks/optimized/1X/a254df83358a951c43ed6ee756b5e0011a8d58bc_2_32x32.png",
+        "meta_site_name": "Spiceworks Community",
+        "canonical_link": "https://community.spiceworks.com/t/sonicwall-shows-samsung-phones-with-murata-mfg-wifi-are-smurf-attacking/737997",
+        "text": "I’m the new IT/Security/SysAdmin/CatchAll here at my new company, and I’ve caught a couple of actual attacks on our network, but I’m stumped as to what to do about these Samsung phones that are showing up as performing smurf attacks in the logs of our SonicWall NSA2650.\n\nThere are 3 devices and all are Samsung phones with WiFi chips from Murata Manufacturing, 2 Galaxy S10’s and a Note 10. None of the ones with any other chip provider are doing this, so I figure it’s a bad firmware on them, and Samsung doesn’t care, since the phones in question are not mine.\n\nHas anyone here seen this? I’ve looked for weeks for any other info on this to no avail.\n\nI’ve so far segregated them to a guest network & VLAN, but it’s just one of those things that I’d like to shutdown rather than work around.\n\nThanks!\n\nI’ve seen this before, years ago. Sonicwall tend to think that ICMP Broadcasts by Android phones on the local lan segment are DDOS Smurf Attacks because of how they format the packets using their LTE wan IP if the cell data connection is enabled at the same time. It’s an annoying quirk of Android. Some 3rd party ROM builds actually have this remedied, but many stock manufacturer ROMs do not.\n\nThe only hardware I’ve even read about having high counts of false positives with this are Sonicwall devices. Smurf Amplification is fairly easy to defeat as well.\n\nDisable IP-directed broadcasts on your gateway\n\nDisallow ICMP responses to IP broadcast requests\n\nSet the perimeter firewall to disallow pings originating from outside your network.\n\nSonicWall does seem to have a lot of, shall we say, “quirks”… All of the packets are getting dropped and not affecting the network, since implementing those rules (and others) when I came aboard.\n\nEven with them all having the latest updates, I still find it odd that it’s only the Samsungs that have the chips from Murata, the other ones, including another S10 and Note 10 with their own networking hardware are not doing this.\n\nI guess I’ll just have to chalk it up to one of those peculiarities of one OEM with multiple hardware vendors missing something, and whack those moles when I find them.\n\nThanks\n\nAbout Murata… Discovered these device details about my own phone. Doing a routine check of my home network, some Murata manufacturer was displayed where Samsung’s name should’ve been. A quick search about this mystery led me here.\n\nThanks for the information! One thing’s for sure, I’d appreciate any help understanding the potential security risks. Basically, do I pose a threat to others by using this thing?\n\nThe discussion is over my head, so only scary terms are jumping out as I read through the thread. It sounds like I’m stuck with a smurf attacker S10+ with dud firmware.\n\nI apologize for barging-in here with my tech illiterate freak-out session. Since there’s something inherently wrong with the make of my phone chip, I suppose there’s no fix…c’est la vie. I’m not going to stay up any longer past my bedtime looking this up on the internet.\n\nAny suggestions on a better phone replacement? Samsung’s already emailed my Flip 2 reservation saying, “I’m #1 in line to pre-order!” ugh. Gee, this night keeps getting better."
+    }
+}

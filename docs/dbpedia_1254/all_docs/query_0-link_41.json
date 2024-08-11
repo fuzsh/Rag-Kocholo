@@ -1,0 +1,40 @@
+{
+    "id": "dbpedia_1254_0",
+    "rank": 41,
+    "data": {
+        "url": "https://webapps.stackexchange.com/questions/103895/which-formats-does-telegram-internal-video-player-support",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Which formats does Telegram internal video player support?",
+        "top_image": "https://cdn.sstatic.net/Sites/webapps/Img/apple-touch-icon@2.png?v=f700edad5c7b",
+        "meta_img": "https://cdn.sstatic.net/Sites/webapps/Img/apple-touch-icon@2.png?v=f700edad5c7b",
+        "images": [
+            "https://cdn.sstatic.net/Sites/webapps/Img/logo.svg?v=574064086075",
+            "https://www.gravatar.com/avatar/2dee5458dd0803b1c0e6f9715dab604d?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/91dc06df1cf4d54f7e29a5384443d1c6?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/2TZw1.jpg?s=64",
+            "https://i.sstatic.net/bSrAF.jpg?s=64",
+            "https://i.sstatic.net/ple4E.png",
+            "https://www.gravatar.com/avatar/427c6a77e7f80bba936f0f5a025558b7?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/aCLHn.jpg?s=64",
+            "https://www.gravatar.com/avatar/a8a8a66547b9369435e6efe436676fbc?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/ee0b8b04a3fcb52a65c3d6ace1bbfbb7?s=64&d=identicon&r=PG",
+            "https://webapps.stackexchange.com/posts/103895/ivc/0248?prg=0231d8e6-0a5c-4aad-8451-fc6afb5cb447"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2017-03-07T19:20:38",
+        "summary": "",
+        "meta_description": "I know that we can install many applications to support many new video formats. My question is:\r\nDoes Telegram have an internal video player? (Does the software itself come with a player?)\nIf yes, ...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/webapps/Img/favicon.ico?v=86885cf72560",
+        "meta_site_name": "Web Applications Stack Exchange",
+        "canonical_link": "https://webapps.stackexchange.com/questions/103895/which-formats-does-telegram-internal-video-player-support",
+        "text": "The data provided in this answer is relevant to Telegram web and Android application Telegram X as of 10/06/2018.\n\nTl;DR - Video: Baseline 3.0 640x360 ~800 kbps VBR single pass Audio aac 128 VBR\n\nWhile there is an official statement, it is outdated.\n\nAs the answer above stated: Telegram indeed uses H.264 and MPEG-4 is a must as a container.\n\nIf you upload a video file from computer, in the case the file exceeds 10 MB it will be marked as a file and will not be playable by Web app or Android app. It still will be playable on iPhone however. Bitrate and resolution don't make any difference in that specific case.\n\nWhen uploading a video file from the phone, unless you specifically choose to upload as uncompressed file, which will disable playback, the Android application will encode your video for you (even if you used better encoding) to the following format:\n\nVideo: Baseline 3.0 640x360 ~800 VBR single pass\n\nAudio aac 128 VBR\n\nWhat can you do?\n\nYou can create a file on the pc, send it to yourself as a file, and upload it to telegram using your phone. As an example I can provide a video that was uploaded to Telegram using this method: Original video:\n\n1:04:02, Main 3.1, 1280x720, 700 kbps VBR double pass, AAC 128 VBR total file size - 379 MB\n\nAfter uploading to Telegram:\n\n1:04:02, Baseline 3.0 640x360 798 kbps VBR (pressumably single pass), AAC 125 VBR, total file size - 424.2 MB\n\nAs a result, the video lost some quality and gained 11.87% to its size but is playable using the build in player which is neat, since it supports picture in picture.\n\nI have found an article on telegram website about the media requirements. The article is for Blackberry but worked for me for Web browser and Android as well.\n\nVideo dimensions must be set to 480x320 (320x480 for vertical videos).\n\nH.264 and MPEG-4 should be used as the codec and container.\n\nAfter converting my video to 480x270 resolution (.mp4 format) telegram started to show it as a playable video rather than just a file to download (both on web and android).\n\nWith this resolution my video file size also dropped to 8mb, not sure if telegram takes the file size into account.\n\nI used resolution 480x270 instead of 480x320 to preserve the original 16:9 aspect ratio.\n\nRecommendations on ffmpeg commands to optimize a video to run in the Telegram player\n\nEssential\n\nVideo codec: x264 (avc) or x265 (hevc)\n\naudio codec: aac\n\naudio channels: up to 2\n\nRecommended\n\nmax_muxing_queue_size 9999 - prevents memory allocation error during encoding for high-resolution videos. (Too many packets buffered for output stream)\n\nc:v libx264 - x264 codec, requires less CPU, avoiding crashes on old smartphones\n\nmaxrate 4.5M - Establishes maximum peak bitrate in complex scenes, to avoid crashes on a modest internet connection.\n\ncrf 23 - Establishes a constant quality factor. Can be overridden by bitrate setting\n\npreset faster - image optimization filter presets in the encode, which impacts the final size in a negative correlation with processing time. \"Faster\" delivers the best cost-benefit tradeoff according to the trainer and author Jan Ozer\n\nflags +global_header - Adds global metadata to the file, useful to the player\n\npix_fmt yuv420p - Greater compatibility with older smartphones\n\nprofile:v baseline - Greater compatibility with older smartphones\n\nmovflags +faststart - Rearranges the output file so that essential metadata is placed at the beginning of the file\n\nc:a aac - Audio codec required by Telegram\n\nac 2 - Limits up to 2 audio channels (stereo). Above that, Telegram does not execute the file.\n\nFinal command example:\n\nffmpeg -i \"input.mkv\" -max_muxing_queue_size 9999 -c:v libx264 -crf 23 -maxrate 4.5M -preset faster -flags +global_header -pix_fmt yuv420p -profile:v baseline -movflags +faststart -c:a aac -ac 2 \"output.mp4\"\n\nFor batch video optimization\n\nVIDQA - Python library that performs batch video optimizations, compatible with Telegram"
+    }
+}

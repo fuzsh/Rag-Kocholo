@@ -1,0 +1,32 @@
+{
+    "id": "dbpedia_1255_1",
+    "rank": 73,
+    "data": {
+        "url": "https://stackoverflow.com/questions/55061020/aws-video-on-demand-on-aws-template-portrait-problems-mediacoder",
+        "read_more_link": "",
+        "language": "en",
+        "title": "AWS video-on-demand-on-aws template portrait problems - MediaCoder",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://cdn.sstatic.net/Img/teams/teams-promo.svg?v=e507948b81bf",
+            "https://i.sstatic.net/wDsZ1.jpg?s=64",
+            "https://stackoverflow.com/posts/55061020/ivc/0248?prg=c6a8e37f-79a8-4ad8-a544-8c963350827b"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2019-03-08T10:15:00",
+        "summary": "",
+        "meta_description": "I have deployed the video-on-demand-on-aws template and modified it a bit - removing DASH and MP4 output, and removing some of the HLS low-res outputs.\n\nInitially videos recorded by iPhone in portr...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/55061020/aws-video-on-demand-on-aws-template-portrait-problems-mediacoder",
+        "text": "I have deployed the video-on-demand-on-aws template and modified it a bit - removing DASH and MP4 output, and removing some of the HLS low-res outputs.\n\nInitially videos recorded by iPhone in portrait were transcoded to landscape by the MediaConvert. Starting from 28 Feb, the MediaConvert supports rotation, but ignores the Rotation metadata.\n\nI had to modify the “encode” Lambda function – by adding “Rotate”: “90” to the “VideoSelector” section, updating the aws-sdk version (the deployed solution used an old version not supporting the Rotate tag), repackaging and uploading the zip.\n\nNow MediaConvert doesn’t ignore the rotation metadata (but it doesn’t pass it through), but it rotates the video – but not as expected!\n\nI have this two problems:\n\nThe video is rotated but not correctly – the portrait video if fitted to the landscape (1280x720) frame with a lot of black space on the sides, instead of “REAL” rotation (1280x720 with rotation metadata -> 720x1280 without rotation tag). Is there a way to get a “REAL” rotation, like flip the whole video by 90 degrees\n\nThe transcoded HLS segments (I need only the HLS output, DASH and MP4 outputs are deleted) are buggy – they freeze – for example a 20 second video tends to have 1-3 freezes – verified by downloading the .TS files and playing them VLC, Potplayer and others. The freezing happens playing the stream (m3u8) over Cloudfront via Windows (Firefox, Edge, Chrome), MacOS (Safari), iOS native player (I have tested with those). So why does MedaConvert cause this freezes in the output? The input is perfect.\n\nI would appreciate any help :)"
+    }
+}
