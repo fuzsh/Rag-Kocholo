@@ -1,0 +1,32 @@
+{
+    "id": "dbpedia_1870_2",
+    "rank": 93,
+    "data": {
+        "url": "https://stackoverflow.com/questions/66580867/how-to-concatenate-the-query-arguments-to-the-query-in-a-scope-in-laravel-using",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How to concatenate the query arguments to the query in a scope in Laravel using Eloquent?",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://cdn.sstatic.net/Img/teams/teams-promo.svg?v=e507948b81bf",
+            "https://www.gravatar.com/avatar/9b42add04645d88c0bb4ff660e7e6b82?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/66580867/ivc/614f?prg=14d51a4f-9aa9-4b43-900f-5d84e95de7c1"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2021-03-11T10:38:53",
+        "summary": "",
+        "meta_description": "I'm trying to build a complicate query where there is an unknown number of postalcode areas posted to my api. At the moment I almost found the solution, but I can't concatenate my whereBetween para...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/66580867/how-to-concatenate-the-query-arguments-to-the-query-in-a-scope-in-laravel-using",
+        "text": "I'm trying to build a complicate query where there is an unknown number of postalcode areas posted to my api. At the moment I almost found the solution, but I can't concatenate my whereBetween parameters to the Query in the scope. I get the error query can't be casted to string, which also makes sense.\n\nThe array passed to the scope has the following structure: $plz = [[10000, 11000], [34200, 34500]];\n\nHere is my code in the scope:\n\npublic function scopePlz($query, $plz) { $queryString = ''; foreach ($plz as $index => $single) { $queryString .= $index == 0 ? \"->whereBetween('postalcode_int', [$single[0], $single[1]])\" : \"->orWhereBetween('postalcode_int', [$single[0], $single[1]])\"; } return $query . $queryString; }\n\nYou could solve it like this:\n\npublic function scopePlz($query, $plz) { $first = array_shift($plz); $query->whereBetween('postalcode_int', [$first[0], $first[1]]); foreach ($plz as $single) { $query->orWhereBetween('postalcode_int', [$single[0], $single[1]]); } return $query; }\n\nGet the first item from the array, add it like a where and then run the rest of the array through a foreach.\n\nIf you want one big where statement for all these postal codes, wrap this scope in an separate where method.\n\nanswered Mar 11, 2021 at 10:47\n\nDouwe de HaanDouwe de Haan\n\n6,58433 gold badges3333 silver badges5050 bronze badges"
+    }
+}
