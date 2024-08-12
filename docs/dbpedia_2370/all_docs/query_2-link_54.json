@@ -1,0 +1,51 @@
+{
+    "id": "dbpedia_2370_2",
+    "rank": 54,
+    "data": {
+        "url": "https://www.gimp-forum.net/Thread-How-do-you-copy-paste-in-a-normal-human-way",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How do you copy paste in a normal human way?",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://www.gimp-forum.net/images/logo.png",
+            "https://www.gimp-forum.net/images/nav_bit.png",
+            "https://www.gimp-forum.net/images/default_avatar.png",
+            "https://www.gimp-forum.net/images/buddy_offline.png",
+            "https://www.gimp-forum.net/images",
+            "https://www.gimp-forum.net/images",
+            "https://www.gimp-forum.net/images/default_avatar.png",
+            "https://www.gimp-forum.net/images/buddy_offline.png",
+            "https://www.gimp-forum.net/images/star.png",
+            "https://www.gimp-forum.net/images/star.png",
+            "https://www.gimp-forum.net/images/star.png",
+            "https://www.gimp-forum.net/images/star.png",
+            "https://www.gimp-forum.net/uploads/avatars//avatar_2.png?dateline=1684260079",
+            "https://www.gimp-forum.net/images/buddy_offline.png",
+            "https://www.gimp-forum.net/images/star.png",
+            "https://www.gimp-forum.net/images/star.png",
+            "https://www.gimp-forum.net/images/star.png",
+            "https://www.gimp-forum.net/images/star.png",
+            "https://www.gimp-forum.net/images/star.png",
+            "https://www.gimp-forum.net/images/star.png",
+            "https://www.gimp-forum.net/images/star.png",
+            "https://www.gimp-forum.net/attachment.php?thumbnail=9182"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "I have two layers. I use the lasso tool in one layer to select some portion of an image in layer 1. I now want to copy it and paste it into layer 2. This seems utterly impossible. Ctrl+c should copy w",
+        "meta_lang": "en",
+        "meta_favicon": "",
+        "meta_site_name": "",
+        "canonical_link": "https://www.gimp-forum.net/Thread-How-do-you-copy-paste-in-a-normal-human-way",
+        "text": "tonedef\n\nNewbie\n\nPosts: 1\n\nThreads: 1\n\nJoined: Dec 2022\n\nReputation: 0\n\nOperating system(s):\n\nWindows Vista or 7, 8, 10 (64-bit)\n\nOSX/macOS\n\nGimp version: 3.0\n\nI have two layers. I use the lasso tool in one layer to select some portion of an image in layer 1. I now want to copy it and paste it into layer 2. This seems utterly impossible. Ctrl+c should copy what's lassoed. Ctrl+v should paste what was copied into whatever layer I have selected no? Why doesn't it? This seems overly complicated to perform in Gimp.\n\nReally what I want to do is select the inverse of what I select in layer 1 and DELETE it. E.g. I trace the edges of a flower, select the inverse of it, and delete it, and should now be left with a intricate flower, with no background beyond the border I just drew, so that whatever image lies underneath it shines through (i.e. what I deleted is now transparent). But that seems impossible. I have to choose an actual color? Why doesn't delete, delete and fill, fill?\n\nThere has to be some menu/option system I'm missing. There is no way this is how it's designed.\n\nzeuspaul\n\nSeasoned Gimper\n\nPosts: 162\n\nThreads: 16\n\nJoined: Sep 2021\n\nReputation: 7\n\nOperating system(s):\n\nWindows Vista or 7, 8, 10 (64-bit)\n\nGimp version: 2.10\n\nAre you referring to free select? I am not familiar with the lasso tool. Using free select I first make the selection and then Ctrl+c. Then I select the layer I want to copy to. Then Ctrl+v. The copied selection appears as a floating selection. Then from the layer menu I select to new layer and now the selection has its own layer just above the layer I want it on. Then after I position the selection with the move tool I select merge down from the layer menu.\n\nOfnuts\n\nAdministrator\n\nPosts: 6,182\n\nThreads: 268\n\nJoined: Oct 2016\n\nReputation: 551\n\nOperating system(s):\n\nLinux\n\nGimp version: 2.10\n\n(12-22-2022, 02:53 AM)tonedef Wrote: I have two layers. I use the lasso tool in one layer to select some portion of an image in layer 1. I now want to copy it and paste it into layer 2. This seems utterly impossible. Ctrl+c should copy what's lassoed. Ctrl+v should paste what was copied into whatever layer I have selected no? Why doesn't it? This seems overly complicated to perform in Gimp.\n\nIf you are talking about the \"Floating selection\", then it's a leftover from a time where memory was expensive and layers a luxury. So instead of creating a layer, you get a temporary layer that you can transform '(move, scle, rotate) before merging it in its destination (aka \"anchoring\", Ctrl-H). In modern times (Gimp 2.10) you just learn to add a Layer > To new layer (Ctrl-Shift-N) to the Ctrl-C, Ctrl-V. In future times, (Gimp 3.0), the floating selection is gone, at least when doing copy paste in layers, but they still don't know how to handle a paste to a channel.\n\nQuote:Really what I want to do is select the inverse of what I select in layer 1 and DELETE it. E.g. I trace the edges of a flower, select the inverse of it, and delete it, and should now be left with a intricate flower, with no background beyond the border I just drew, so that whatever image lies underneath it shines through (i.e. what I deleted is now transparent). But that seems impossible. I have to choose an actual color? Why doesn't delete, delete and fill, fill?\n\nVery likely because your layer has no \"alpha-channel\". To have transparent parts, a layer needs to have a 4th channel (called \"Alpha\", often noted \"A\") in addition to the three color channels. When you load an image form a format that doesn't support transparency (such as JPG), there is no alpha channel in the image, and Gimp doesn't add one because if you create transparencies and export back the image to its source file, the transparencies are going to be filled anyway. So this is a way to prevent disappointment. When needed you add an alpha channel with Layer > Transparency > Add alpha channel. In most other cases you get the alpha channel by default (loading other image formats, creating new layers, etc...).\n\nYou can tell that a layer has no alpha channel because its name is in boldface in the layers list:"
+    }
+}

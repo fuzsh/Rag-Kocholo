@@ -1,0 +1,38 @@
+{
+    "id": "dbpedia_2370_2",
+    "rank": 81,
+    "data": {
+        "url": "https://raspberrypi.stackexchange.com/questions/13011/how-do-i-change-the-desktop-wallpaper-from-the-cli",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How do I change the Desktop wallpaper from the cli",
+        "top_image": "https://cdn.sstatic.net/Sites/raspberrypi/Img/apple-touch-icon@2.png?v=38b7cb40765d",
+        "meta_img": "https://cdn.sstatic.net/Sites/raspberrypi/Img/apple-touch-icon@2.png?v=38b7cb40765d",
+        "images": [
+            "https://cdn.sstatic.net/Sites/raspberrypi/Img/logo.svg?v=3a5627199637",
+            "https://www.gravatar.com/avatar/cfe09f716044a26bb98b5b56dd1bc6ca?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/084afd13d153437d38b052b7c4358fac?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/a2hM0.png?s=64",
+            "https://i.sstatic.net/mEdEQ.jpg?s=64",
+            "https://www.gravatar.com/avatar/d05e0c2140af9c60dda6e17e7b5a7b65?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/320d3e246381143b41cd9dd759cdeede?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/6c7093e08c06820a8cecaaed689334ce?s=64&d=identicon&r=PG",
+            "https://raspberrypi.stackexchange.com/posts/13011/ivc/fc99?prg=ab4e135f-d162-46d4-b1e6-4a3dbb8cefb2"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2014-01-16T10:48:34",
+        "summary": "",
+        "meta_description": "I've tried gconftool and gconftool-2 to change the background on my Wheezy, but nothing happens. It would be nice to be able to do this from the command line.",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/raspberrypi/Img/favicon.ico?v=bcf66a10ef1d",
+        "meta_site_name": "Raspberry Pi Stack Exchange",
+        "canonical_link": "https://raspberrypi.stackexchange.com/questions/13011/how-do-i-change-the-desktop-wallpaper-from-the-cli",
+        "text": "None of the above worked for me. So here is the solution for Raspbian Stretch\n\npcmanfm --set-wallpaper yourfile.jpg\n\nThe file can be on any path that is available to read by the user. Here I have assumed it to be /home/pi.\n\nI've been trying to find a solution to this for ages - with all other attempts failing - and finally came up with a solution what works!\n\nCaveat: This is using Buster on a RasPi4, and I've not tested on the other OSs or Pis.\n\nSteps:\n\nLocate your desktop-items-*.conf file. Mine are in ~/.config/pcmanfm/LXDE-pi.\n\nUse sed to replace the filename in the config file(s). (I have two as I'm using two monitors).\n\nReload pcmanfm\n\nThe Command:\n\nsed -i 's/\\(rpd-wallpaper\\/\\).*/\\1fjord.jpg/g' desktop-items-*.conf && pcmanfm --reconfigure\n\nIn this case, replace fjord.jpg with your desired file.\n\nI'm planning to set this up as a cron job which runs every (n) minutes, but have not tested this yet.\n\nThis depends somewhat on which DE you are using. Raspbian by default uses LXDE, so if you search online for \"LXDE change background\" you will find some suggestions, such as right-clicking on the desktop.\n\nSomething which tends to work universally, in my experience, is:\n\ndisplay -window root /your/image/file\n\nIf the display command is not found, apt-get install imagemagick.\n\nHowever, ideally you should use LXDE's mechanism (presuming LXDE really is your desktop environment), if you can find it, since this will make it easier to keep permanent.\n\nAs goldilocks sayed, to simply change your desktop background on linux :\n\ndisplay -window root /your/image/file\n\nTo change your lock-screen background Manually on linux debian (here wheezy version) :\n\n1 - Verify that symbolic link on lock-screen background exists : sudo ls -l /etc/alternatives/desktop-background ;\n\n2 - change manually the symbolic link to link the new background : sudo unlink /etc/alternatives/desktop-background ; sudo ln -s /home/MyFirstUserHome/background-fake/a_background.jpg /etc/alternatives/desktop-background\n\n3 - Try to lock your screen to see if the changes took effect\n\nIf this solution doesn't work, it means that an xml file probably handle different resolutions associated with their own shortcut to their image_file (on wheezy debian obviously...).\n\nSo you need to verify your resolution (Settings -> Display), and try to add your configuration in the file with your favourite editor : (Example using gedit for the example)\n\n1 - sudo apt-get install gedit ; 2 - sudo cat /usr/share/images/desktop-base/joy.xml ;\n\n<background> <static> <duration>8640000.0</duration> <file> (.....the configuration per resolution ...) </file> </static> </background>\n\n3 - search the configuration line corresponding to your resolution : Example if my display resolution is 1920x975 :\n\n<size width=\"1920\" height=\"975\">here_is_the_path/background.svg</size>\n\nNote : If you can't find the line corresponding to your resolution, add the line with a text-editor because the width and height values of the configuration line must correspond exactly to your display resolution setting.\n\n4 - replace the background-path of the line or create the line if necessary :\n\n<size width=\"1920\" height=\"975\">/home/Me/background/test.jpg</size>\n\n5 - Save the file and try again to look the lock-screen background !\n\n4 - If all of that doesn't work it seems to be a big mistake !\n\nHoping that helped .."
+    }
+}
