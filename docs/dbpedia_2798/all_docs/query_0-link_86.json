@@ -1,0 +1,35 @@
+{
+    "id": "dbpedia_2798_0",
+    "rank": 86,
+    "data": {
+        "url": "https://www.eduid.cz/en/tech/wayf/sp",
+        "read_more_link": "",
+        "language": "en",
+        "title": "DS for Service Providers [eduID.cz]",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://www.eduid.cz/lib/tpl/eduid/images/logo.svg",
+            "https://www.eduid.cz/lib/tpl/eduid/images/logo-cesnet.svg",
+            "https://www.eduid.cz/lib/exe/indexer.php?id=en%3Atech%3Awayf%3Asp&1723478436"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "en",
+            "tech",
+            "wayf",
+            "sp"
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "cs",
+        "meta_favicon": "/lib/tpl/eduid/images/favicon.ico",
+        "meta_site_name": "",
+        "canonical_link": "https://www.eduid.cz/en/tech/wayf/sp",
+        "text": "WAYF/DS for Service Providers\n\nIf the service is in an internal federation (eg CESNET-int) that only contains a single IdP, there is no point in using WAYF! In that case you need to set up authentication against that one specific IdP and avoid using WAYF.\n\nThe script that checks the return parameter does not download the metadata of the internal federations, so the check ends with an error!\n\nSee also a page with general information about eduID.cz WAYF/DS.\n\nIdentity Providers Available for Login\n\nWithout any configuration, WAYF shows all the IdPs available in the federation the SP belongs to. It is possible to define a list of IdPs to be shown making use of one of the two parameters – either filter attribute or efilter attribute.\n\nfilter\n\nUsing filter attribute leads to a direct filter. In this case the list of IdPs to show is defined as a value in filter parameter.\n\nExample of a direct filter:\n\nfilter=eyAgImFsbG93SG9zdGVsIjogdHJ1ZSwgImFsbG93SG9zdGVsUmVnIjogZmFsc2V9\n\nefilter\n\nUsing efilter attribute leads to an external filter. In this case the list of IdPs to show is defined in a file at a URL linked in efilter parameter.\n\nExample of an external filter:\n\nefilter=www.example.com/filter\n\nContent of www.example.com/filter:\n\neyAgImFsbG93SG9zdGVsIjogdHJ1ZSwgImFsbG93SG9zdGVsUmVnIjogZmFsc2V9\n\nefilter approach is a solution for HTTP servers limiting HTTP GET parameters such as Suhosin extension for PHP language allowing only 255 characters at a maximum.\n\nFilter generator\n\nA filter generator is available at https://ds.eduid.cz/filter.php.\n\nAll IdPs in a federation\n\nIn order for WAYF to display all the IdPs in a particular federation, just select the appropriate checkbox next to the corresponding federation name. It is possible to choose more federations at once.\n\nFiltering by entity categories\n\nList of IdPs can be filtered by entity categories. Move entity category from gray box into green one or red one. Green box is positive filter. IdPs in list must have all entity categories from green box and mustn't have any entity category from red box.\n\nIndividual IdPs\n\nYou can create whitelist or blacklist of IdPs per federation. It is even possible to have this whitelist or blacklist for onlz some selected federations.\n\nSetup\n\nWAYF supports sites where login is required as well as sites where login is optional (= lazy sessions).\n\nThe following examples require either Shibboleth SP 2.5+ or SimpleSAMLphp 1.14+.\n\nLogin Required\n\nIn the following configuration example, a user is redirected to WAYF prior displaying the accessed web page in order to select home organization and login.\n\nAlter <SSO> element in shibboleth2.xml configuration file accordingly.\n\n<SSO discoveryProtocol=\"SAMLDS\" discoveryURL=\"https://ds.eduid.cz/wayf.php?filter=eyJhbGxvd0hvc3RlbCI6dHJ1ZSwiYWxsb3dIb3N0ZWxSZWciOnRydWV9Cg==&amp;lang=en\"> SAML2 SAML1 </SSO>\n\nLogin Optional (Lazy Sessions)\n\nReturn parameter check\n\nDO NOT USE WAYF FOR INTERNAL FEDERATIONS WITH ONE IDP!\n\nFor internal federations (e.g. CESNET-int), metadata for checking the return parameter is not processed, so the check always ends with an error.\n\nFor security reasons, WAYF checks the value of the return parameter. It is the URL to which the user's browser is redirected after selecting IdP. The parameter value must match the metadata value for that SP. If different, the WAYF displays an error message and does not allow the user to continue logging on."
+    }
+}

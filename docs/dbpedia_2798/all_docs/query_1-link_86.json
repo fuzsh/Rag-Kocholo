@@ -1,0 +1,28 @@
+{
+    "id": "dbpedia_2798_1",
+    "rank": 86,
+    "data": {
+        "url": "http://shibboleth.net/pipermail/users/2021-February/049158.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "IDP proxing for vendors non-DS/Wayf capabilities",
+        "top_image": "",
+        "meta_img": "",
+        "images": [],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "",
+        "meta_favicon": "",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "Jehan PROCACCIA jehan.procaccia at tem-tsp.eu\n\nThu Feb 4 14:29:15 UTC 2021\n\nPrevious message (by thread): IDP proxing for vendors non-DS/Wayf capabilities\n\nNext message (by thread): IDP proxing for vendors non-DS/Wayf capabilities\n\nMessages sorted by: [ date ] [ thread ] [ subject ] [ author ]\n\nI'am glad to know that I hit a bug , and that it can be easily worked around on my side by removing \"myLDAP\" connector as I don't really use ldap attributes in the context of the IDPProxy, it just pass-through attributes sent from upstreamIDPs. So now that I removed \"myLDAP\" connector (which produced no value, and hence the bug) , the whole workflow works fine ;-) , here's the log for the record ... 2021-02-04 09:13:52,444 -- DEBUG [net.shibboleth.idp.authn.impl.AttributeSourcedSubjectCanonicalization:171] - Profile Action AttributeSourcedSubjectCanonicalization: Using attribute canonicalName string value jehan.procaccia at imtbs-tsp.eu as input to transforms 2021-02-04 09:13:52,445 -- DEBUG [net.shibboleth.idp.authn.AbstractSubjectCanonicalizationAction:218] - Profile Action AttributeSourcedSubjectCanonicalization: trimming whitespace of input string 'jehan.procaccia at imtbs-tsp.eu' 2021-02-04 09:13:52,451 -- DEBUG [net.shibboleth.idp.authn.impl.FinalizeAuthentication:118] - Profile Action FinalizeAuthentication: Canonical principal name was established as 'jehan.procaccia at imtbs-tsp.eu' 2021-02-04 09:13:52,456 -- DEBUG [net.shibboleth.idp.session.impl.UpdateSessionWithAuthenticationResult:222] - Profile Action UpdateSessionWithAuthenticationResult: Creating new session for principal jehan.procaccia at imtbs-tsp.eu Great, now that the workflow seems operational, back to the initial purpose of all this => having an IDPproxy \"to serve them all\" ;-) How can I tell in the 1rst place to IDPproxy, to select the user's origin IDP school (DS/WAYF) ? I understand that until now I forced only one UpstreamIDP in authn.SAML.discoveryFunction (authn/saml-authn-config.xml): <bean id=\"shibboleth.authn.SAML.discoveryFunction\" parent=\"shibboleth.Functions.Constant\" c:target=\"https://upstreamIDP.domain.fr/idp/shibboleth\" /> --> How can I tell discoveryFunction to target each of my schools IDPs ? enumerate as many targets as there are IDPs ? point c:target to a DS/WAYF ? , I've done that blindly , of course it fails with \"No Metadata for ...WAYF.php ! : 2021-02-04 14:36:35,223 -- INFO [org.opensaml.saml.common.binding.impl.SAMLMetadataLookupHandler:167] - Message Handler: No metadata returned for https://shibds.domain.fr/wayf/WAYF.php in role {urn:oasis:names:tc:SAML:2.0:metadata}IDPSSODescriptor with protocol urn:oasis:names:tc:SAML:2.0:protocol thanks . Jehan . ----- Mail original ----- De: \"Cantor, Scott\" <cantor.2 at osu.edu> À: \"users\" <users at shibboleth.net> Envoyé: Mercredi 3 Février 2021 23:52:18 Objet: Re: IDP proxing for vendors non-DS/Wayf capabilities On 2/3/21, 4:56 PM, \"users on behalf of Jehan PROCACCIA\" <users-bounces at shibboleth.net on behalf of jehan.procaccia at tem-tsp.eu> wrote: > Until now everything seems righ, but then, next log line, it fails : That's a bug, you can't use the exporting feature with connectors that produce no data until it's fixed. Just don't do the exporting trick for now if they occasionally produce no results. > Am I failing somewhere in my Subject canonicalization ? or I hit something wrong ? (I use IDP 4.0.1 ) Nothing to do with c14n, it's an unrelated bug but comes up a lot in that scenario. All of this c14n setup is optimized out in 4.1 as well but that's beside the point. -- Scott -- For Consortium Member technical support, see https://wiki.shibboleth.net/confluence/x/coFAAg To unsubscribe from this list send an email to users-unsubscribe at shibboleth.net\n\nPrevious message (by thread): IDP proxing for vendors non-DS/Wayf capabilities\n\nNext message (by thread): IDP proxing for vendors non-DS/Wayf capabilities\n\nMessages sorted by: [ date ] [ thread ] [ subject ] [ author ]\n\nMore information about the users mailing list"
+    }
+}

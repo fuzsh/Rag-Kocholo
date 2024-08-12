@@ -1,0 +1,39 @@
+{
+    "id": "dbpedia_2798_1",
+    "rank": 28,
+    "data": {
+        "url": "https://blog.aniljohn.com/2013/01/how-wayf-implements-informed-consent.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How WAYF implements informed consent for attribute release without storing PII",
+        "top_image": "https://blog.aniljohn.com/img/PrivacyProxy_hash.png",
+        "meta_img": "https://blog.aniljohn.com/img/PrivacyProxy_hash.png",
+        "images": [
+            "https://blog.aniljohn.com/img/anil-john-logo.png",
+            "https://blog.aniljohn.com/img/anil-header-headshot.jpg",
+            "https://blog.aniljohn.com/img/1x1.png",
+            "https://blog.aniljohn.com/img/1x1.png",
+            "https://blog.aniljohn.com/img/aniljohn150px.jpg",
+            "https://blog.aniljohn.com/img/anil.john-webfinger.png",
+            "https://blog.aniljohn.com/img/FARE-Logo-300x93.png",
+            "https://blog.aniljohn.com/img/Nat_park_foundat_logo.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Anil John"
+        ],
+        "publish_date": "2013-01-01T18:00:00-05:00",
+        "summary": "",
+        "meta_description": "How consent for attribute release can be implemented without storing personal data using the WAYF model",
+        "meta_lang": "en",
+        "meta_favicon": "/img/favicon.ico",
+        "meta_site_name": "Anil John | Blog",
+        "canonical_link": "https://blog.aniljohn.com/2013/01/how-wayf-implements-informed-consent.html",
+        "text": "Share Print Email\n\nA series of posts on the IDMGOV Info site Part 1, Part 2, Part 3 discussed the data minimization principles of anonymity, unlinkability and unobservability and their relationship to identity federation, walked through a proxy architecture that provides those principles in a federated authentication system, and discussed how the need for verified attributes for user enrollment affected the data minimization principles. In this blog post, I would like to discuss an alternate flow that eliminates the need to maintain identifier mappings at the proxy, and how consent for attribute release can be implemented without storing personal data.\n\nIn comments on the above series, David Simonsen pointed to WAYF.dk, a publicly funded federation hub in Denmark. A paper he co-authored âTrusted third party based ID federation, lowering the barrier for connecting and enhancing privacyâ (PDF) describes their implementation of a Trusted Third Party (TTP).\n\nFrom the paper:\n\nâThe attribute eduPersonTargetedID (EPTID) is centrally calculated (a hash value) based on three set of parameters: the service name (service specific), user data (user specific) and the institution name. As the user data is not stored at the TTP, the result cannot be recalculated by the TTP without the data about the user kept at the institution. The institution cannot do the calculation since it does not have the exact formula (kept secret by the TTP). The service only receives the user pseudonym (EPTID) and has no chance of reveling the true identity of the user, since it has neither the original attributes nor the formula for calculating.â\n\nIn the interest of comparing apples to apples, let me translate the terminology from the WAYF paper to the Proxy model used on the IDMGOV Blog:\n\nInstitution = IdP/CSP\n\nService = RP\n\nTTP = Proxy\n\nEPTID ~ PAI [Strictly speaking, EPTID is not âanonymousâ but rather âpseudonymousâ]\n\nIn this model the Proxy does not store any identifier mappings but instead stores a one-way hash of the combination of IdP Name, PPID and RP Name [NOTE: Ignoring security specific implementation details such as use of a salt generated using a CSPRNG, or a keyed hash algorithm with keys stored in an external HSM etc].\n\nIn the area of attribute movement, WAYF worked around the finger pointing of who collects and stores the consent of the user (the IdP or the RP) for attribute release. The TTP provide a central consent and consent administration service that can persist information without storing direct PII (personally identifiable data)!\n\nFrom the paper:\n\nâFirst time a user is trying to access a service, he/she is prompted for his/her consent to the attribute release. The purpose of the service is presented along with the actual values of the data to be transferred. The user can either decline (and hence not access the service) or accept the data transfer. Furthermore the user may choose to let the TTP store information about the consent, in order not to be asked every time the same service is accessed.\n\nThe problem now is how to do this without storing personal data? The solution is use of destructive one-way encryption (hash-values). These are calculated, based on the name of the service name and the usersâ personal information, each time attributes are received following successful authentication at an institution. The resulting hash-value, acting as a digital fingerprint, is then looked up in the central database. If present, the user has not only previously consented but also asked to have the consent stored in order not to be asked for consent again - which is why the newly received attributes can be released to the service immediately. If the value is not found in the database, the user has either not previously consented or not asked for the consent to be stored. In this case the user is prompted for his/her consent to the data release - which is of course also true in the event of the database server being unreachable.â\n\nTranslating the above to the proxy model [NOTE: Focus here is on data flows rather than re-directs etc. in the interest of conveying the concept]:\n\nThe three key aspects of this architecture are:\n\nNo identifier information stored at the proxy\n\nExistence of a centralized consent service that does not store direct PII\n\nA consent-driven front-channel push model for attribute movement<\n\nSomething that is as important (or even more so) than the technical elegance of the WAYF solution, is the legal status of the TTP as a âdata processorâ on behalf of the connected institutions. As noted in the paper:\n\nâThis places the responsibility for the usersâ personal information with the institutions and consequently lowers the audit requirements for the TTP - which is not an insignificant detail when running a federation. A step to further consolidate the status of âdata processorâ, in the case of WAYF, is the decision not keep any decipherable data about the users for longer than 8 hours. It is generally well received that WAYF in principle is a simple messenger for authentication requests and responses: a true data processor.â\n\nThis, I believe, will continue to be at the core of why a Proxy/TTP/Hub architecture is attractive to many. To make identity federation work at scale, technology while important, is less critical than business models that provide clarity around roles and responsibilities, and the value derived by each of the parties involved (e.g. as a platform in a two-sided market).\n\nRELATED INFO\n\nTrusted third party based ID federation, lowering the barrier for connecting and enhancing privacy (PDF)\n\nEconomic tussles in federated identity management\n\nWhite paper on consent dialogues and management system implemented by WAYF (PDF)\n\nThis blog post first appeared on Anil John | Blog (https://blog.aniljohn.com). The opinions expressed here are my own and do not represent my employerâs view in any way.\n\nTopic(s): Privacy.\n\nBy Anil John on January 01, 2013 06:00 PM | Permalink"
+    }
+}

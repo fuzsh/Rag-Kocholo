@@ -1,0 +1,38 @@
+{
+    "id": "dbpedia_2798_2",
+    "rank": 12,
+    "data": {
+        "url": "https://groups.google.com/g/simplesamlphp/c/_ekO4xWe6KA",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Getting SimpleSAML to show a wayf page",
+        "top_image": "https://www.gstatic.com/images/branding/product/1x/groups_32dp.png",
+        "meta_img": "https://www.gstatic.com/images/branding/product/1x/groups_32dp.png",
+        "images": [
+            "https://fonts.gstatic.com/s/i/productlogos/groups/v9/web-48dp/logo_groups_color_1x_web_48dp.png",
+            "https://lh3.googleusercontent.com/a-/ALV-UjVTyIHuNIjMW3Trc6aahxpQLRb_2u1HDaP4UzcooRTJRHsX9g=s40-c",
+            "https://lh3.googleusercontent.com/a-/ALV-UjUEBpDg5AxD2oj8GzRaVqvRhTcie2LF-M7eLPHOZbRyJXTUTQ=s40-c",
+            "https://lh3.googleusercontent.com/a-/ALV-UjVTyIHuNIjMW3Trc6aahxpQLRb_2u1HDaP4UzcooRTJRHsX9g=s40-c",
+            "https://lh3.googleusercontent.com/a-/ALV-UjVTyIHuNIjMW3Trc6aahxpQLRb_2u1HDaP4UzcooRTJRHsX9g=s40-c",
+            "https://lh3.googleusercontent.com/a-/ALV-UjUEBpDg5AxD2oj8GzRaVqvRhTcie2LF-M7eLPHOZbRyJXTUTQ=s40-c",
+            "https://lh3.googleusercontent.com/a-/ALV-UjUEBpDg5AxD2oj8GzRaVqvRhTcie2LF-M7eLPHOZbRyJXTUTQ=s40-c",
+            "https://lh3.googleusercontent.com/a/default-user=s40-c",
+            "https://lh3.googleusercontent.com/a-/ALV-UjVTyIHuNIjMW3Trc6aahxpQLRb_2u1HDaP4UzcooRTJRHsX9g=s40-c"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "//www.gstatic.com/images/branding/product/1x/groups_32dp.png",
+        "meta_site_name": "",
+        "canonical_link": "https://groups.google.com/g/simplesamlphp/c/_ekO4xWe6KA",
+        "text": "Hi There,\n\nI'm currently hacking on my multiple-authentication project , and I'd\n\nlike to use the IdP discovery page from SimpleSAMLphp in order to allow\n\nthe user to choose which IdP to use.\n\nI'll just copy paste some authentication code from the current source:\n\n$as = SimpleSAML_Auth_Source::getById($authId);\n\nif ($as === NULL) {\n\nthrow new Exception('Invalid authentication\n\nsource: ' . $authId);\n\n}\n\ntry {\n\n$as->authenticate($state);\n\n} catch (SimpleSAML_Error_Exception $e) {\n\nSimpleSAML_Auth_State::throwException($state, $e);\n\n} catch (Exception $e) {\n\n$e = new\n\nSimpleSAML_Error_UnserializableException($e);\n\nSimpleSAML_Auth_State::throwException($state, $e);\n\n}\n\nself::loginCompleted($state);\n\nThis is fine, but I'd like SimpleSAMLphp to show the IdP discovery page\n\nin order to change authId into a sensible value.\n\nCan anybody tell me how to do so?\n\nI've been grepping the source for a while, but it's not very clear to\n\nme how this is actually done.\n\nCheers,\n\nBoudewijn\n\n>> This is fine, but I'd like SimpleSAMLphp to show the IdP discovery page\n\n>> in order to change authId into a sensible value.\n\n>>\n\n>> Can anybody tell me how to do so?\n\n>> I've been grepping the source for a while, but it's not very clear to\n\n>> me how this is actually done.\n\n>>\n\n>\n\n> It is handled inside the saml (and saml2) authentication sources. They\n\n> will send the user to the discovery service page if no IdP is specified.\n\n>\n\n>\n\nHi Olaf,\n\nThank you for pointing that out.\n\nSo I see that I should create an sspmod_saml2_Auth_Source_SP object,\n\nwhich I've done, but when calling the constructor of this Object, I need\n\nto pass on some data.\n\nFrom the java-doc like documentation at the contructor:\n\n/**\n\n* Constructor for SAML 2.0 SP authentication source.\n\n*\n\n* @param array $info Information about this authentication source.\n\n* @param array $config Configuration.\n\n*/\n\nWhere to get these?\n\nI've searched the sources for instantiation of such an object, but I\n\ncan't find one of these.\n\nCan you please help me out?\n\nCheers,\n\nBoudewijn Ector"
+    }
+}
