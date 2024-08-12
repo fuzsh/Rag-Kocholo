@@ -1,0 +1,38 @@
+{
+    "id": "dbpedia_2838_3",
+    "rank": 26,
+    "data": {
+        "url": "https://stackoverflow.com/questions/20577123/alignment-and-resizing-of-various-thumbnail-images-with-fixed-width-and-height-c",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Alignment and resizing of various thumbnail images with fixed width and height container",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://i.sstatic.net/vROSO.png",
+            "https://i.sstatic.net/lQMX2.jpg?s=64",
+            "https://www.gravatar.com/avatar/a007be5a61f6aa8f3e85ae2fc18dd66e?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/sm0tl.jpg?s=64",
+            "https://www.gravatar.com/avatar/9fcb0203f3dda5acc41d4709edb6b232?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/bN8eT.png?s=64",
+            "https://www.gravatar.com/avatar/05463d616d56d33fd6a61df100fbbb94?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/rq91g.jpg?s=64",
+            "https://stackoverflow.com/posts/20577123/ivc/399b?prg=060852f9-1a6f-4776-9014-61466be47ffb"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2013-12-13T22:28:54",
+        "summary": "",
+        "meta_description": "I'm looking for an easy solution to implement the below. Thumbnails will not be cropped but the container they are in will always be the same height/width.\n\nThe idea is that images larger than the",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/20577123/alignment-and-resizing-of-various-thumbnail-images-with-fixed-width-and-height-c",
+        "text": "A pure CSS solution:\n\ndemo\n\n.container { display: inline-block; position: relative; width: 8em; height: 10em; } .container img { position: absolute; top: 50%; left: 50%; width: auto; height: auto; max-width: 100%; max-height: 100%; transform: translate(-50%, -50%); }\n\nThe images keep their natural size (width: auto; height: auto;) unless they are bigger than the container (max-width: 100%; max-height: 100%;), in which case they are going to take the size of the container that they exceed and scale the other one accordingly.\n\nPositioning the images in the middle of the container: give them position: absolute and put their top left corner in the middle of the container (top: 50%; left: 50%;). Then translate them left and up by half their computed dimensions, whatever those would be (transform: translate(-50%, -50%);).\n\nThis solution works in browsers supporting 2D transforms. Sadly, this excludes IE8 and older and Opera Mini.\n\nA better compatibility solution (that I cannot actually test right now in IE8, so I'm just assuming it should work there too) would be:\n\ndemo\n\n.container { display: inline-block; width: 8em; height: 10em; text-align: center; white-space: nowrap; } .container img { display: inline-block; width: auto; height: auto; max-width: 100%; max-height: 100%; vertical-align: middle; } .container:after { display: inline-block; height: 100%; width: 0; vertical-align: middle; content: \"\"; }\n\nFirst of all, give images display: inline-block;.\n\nSet text-align: center; on container so that images that are less wide than the container get centred horizontally.\n\nNow to make sure they are in the middle vertically as well. Give them vertical-align: middle;, but that's not enough. inline-block elements are vertically aligned with respect to their inline-block siblings and we have no siblings in this case. So we also need another middle vertically-aligned inline-block element that has the same height as the container. Or a pseudo-element on the container, it's the same thing.\n\nThis pseudo-element is going to have height: 100%; so that its vertical middle coincides to that of its parent and width: 0; so that it doesn't affect the horizontal alignment of the image (when the image's natural width < the container's width). It's also going to have display: inline-block; and vertical-align: middle; just like the image."
+    }
+}
