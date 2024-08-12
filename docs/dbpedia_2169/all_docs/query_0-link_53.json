@@ -1,0 +1,44 @@
+{
+    "id": "dbpedia_2169_0",
+    "rank": 53,
+    "data": {
+        "url": "https://forum.arduino.cc/t/making-a-smartband-with-an-arduino-nano/1217753",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Making a smartband with an arduino nano",
+        "top_image": "https://europe1.discourse-cdn.com/arduino/original/3X/1/f/1f6eb1c9b79d9518d1688c15fe9a4b7cdd5636ae.svg",
+        "meta_img": "https://europe1.discourse-cdn.com/arduino/original/3X/1/f/1f6eb1c9b79d9518d1688c15fe9a4b7cdd5636ae.svg",
+        "images": [
+            "https://dub1.discourse-cdn.com/arduino/user_avatar/forum.arduino.cc/arc_29/48/1039147_2.png",
+            "https://dub1.discourse-cdn.com/arduino/user_avatar/forum.arduino.cc/arc_29/48/1039147_2.png",
+            "https://dub1.discourse-cdn.com/arduino/user_avatar/forum.arduino.cc/arc_29/48/1039147_2.png",
+            "https://emoji.discourse-cdn.com/twitter/grinning.png?v=12",
+            "https://emoji.discourse-cdn.com/twitter/+1.png?v=12",
+            "https://emoji.discourse-cdn.com/twitter/coffee.png?v=12",
+            "https://emoji.discourse-cdn.com/twitter/australia.png?v=12",
+            "https://dub1.discourse-cdn.com/arduino/user_avatar/forum.arduino.cc/arc_29/48/1039147_2.png",
+            "https://emoji.discourse-cdn.com/twitter/grinning.png?v=12",
+            "https://emoji.discourse-cdn.com/twitter/+1.png?v=12",
+            "https://emoji.discourse-cdn.com/twitter/coffee.png?v=12",
+            "https://emoji.discourse-cdn.com/twitter/australia.png?v=12"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "system Closed",
+            "jim-p"
+        ],
+        "publish_date": "2024-01-30T10:07:26+00:00",
+        "summary": "",
+        "meta_description": "Hi guys! I&#39;m new here and i want to ask. Can you guide me in making a smartband that detects vital signs(heart rate,body temperature and blood oxygen level). And it alarms a buzzer(active buzzer) when it detects an abnor&hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://europe1.discourse-cdn.com/arduino/optimized/3X/c/c/cc4b0921af3d89006e843364a2b18989ad72f83e_2_32x32.png",
+        "meta_site_name": "Arduino Forum",
+        "canonical_link": "https://forum.arduino.cc/t/making-a-smartband-with-an-arduino-nano/1217753",
+        "text": "#include <Wire.h>\n\n#include <U8g2lib.h>\n\n#include <MAX30100_PulseOximeter.h>\n\n#define BUZZER_PIN 8 // Replace with the actual pin connected to the buzzer\n\n#define BUTTON_PIN 7 // Replace with the actual pin connected to the manual override switch\n\n#define LM35_PIN A0 // Analog input pin for LM35\n\n#define LOW_BATTERY_THRESHOLD 3.5 // Adjust this threshold based on your battery specifications\n\nMAX30100_PulseOximeter pox;\n\nunsigned long previousMillis = 0;\n\nconst long interval = 60000; // 1 minute\n\nconst long buzzerDuration = 180000; // 3 minutes\n\nconst long sleepDelay = 60000; // 1 minute of inactivity before entering sleep mode\n\nbool isBuzzerActivated = false;\n\nvoid setup() {\n\nSerial.begin(9600);\n\npinMode(BUZZER_PIN, OUTPUT);\n\npinMode(BUTTON_PIN, INPUT_PULLUP); // Using internal pull-up resistor\n\nif (!pox.begin()) while (1);\n\n}\n\nvoid loop() {\n\nunsigned long currentMillis = millis();\n\n// Check manual override switch\n\nif (digitalRead(BUTTON_PIN) == LOW) {\n\ndeactivateBuzzer();\n\nisBuzzerActivated = false;\n\n}\n\nif (currentMillis - previousMillis >= interval) {\n\npreviousMillis = currentMillis;\n\npox.update();\n\n// Check for abnormal heart rate or oxygen levels if (pox.getHeartRate() > 100 || pox.getSpO2() < 95) { if (!isBuzzerActivated) { activateBuzzer(); isBuzzerActivated = true; } alertUser(\"Abnormal heart rate or oxygen level!\"); } else { if (isBuzzerActivated) { deactivateBuzzer(); isBuzzerActivated = false; } } // Check for abnormal temperature (replace with LM35 code) float temperature = readTemperatureFromLM35(); Serial.print(\"Temperature: \"); Serial.print(temperature); Serial.println(\"°C\"); if (temperature > 38.0) { if (!isBuzzerActivated) { activateBuzzer(); isBuzzerActivated = true; } alertUser(\"Abnormal body temperature!\"); } else { if (isBuzzerActivated) { deactivateBuzzer(); isBuzzerActivated = false; } } // Check for low battery float batteryVoltage = readBatteryVoltage(); if (batteryVoltage < LOW_BATTERY_THRESHOLD) { if (!isBuzzerActivated) { activateBuzzer(); isBuzzerActivated = true; } alertUser(\"Low battery warning!\"); } else { if (isBuzzerActivated) { deactivateBuzzer(); isBuzzerActivated = false; } }\n\n}\n\n// Check for inactivity to enter sleep mode\n\nif (currentMillis - previousMillis >= sleepDelay) {\n\nenterSleepMode();\n\n}\n\n}\n\nvoid alertUser(const char* message) {\n\nSerial.println(message);\n\n// Add code to display the message on the OLED or take other appropriate actions\n\n}\n\nvoid activateBuzzer() {\n\ndigitalWrite(BUZZER_PIN, HIGH);\n\n}\n\nvoid deactivateBuzzer() {\n\ndigitalWrite(BUZZER_PIN, LOW);\n\n}\n\nvoid enterSleepMode() {\n\n(set to low battery consumption) // Code to prepare for sleep (e.g., turn off components, set pins to low)\n\n// Add any additional preparation steps here...\n\n// Enter sleep mode\n\nset_sleep_mode(SLEEP_MODE_PWR_DOWN);\n\nsleep_enable();\n\n// Attach an interrupt to wake up the Arduino on button press\n\nattachInterrupt(digitalPinToInterrupt(BUTTON_PIN), wakeUp, LOW);\n\n// Put the Arduino to sleep\n\nsleep_mode();\n\n// Upon waking up, disable sleep and detach the interrupt\n\nsleep_disable();\n\ndetachInterrupt(digitalPinToInterrupt(BUTTON_PIN));\n\n}\n\nvoid wakeUp() {\n\n// This function will be called when the interrupt occurs (button press)\n\n}\n\nThis is my code. Can you tell me if it is correct or is there any mistake. This is my code for my research project the smartband\n\nHi, @arc_29\n\nWelcome to the forum.\n\nTry it, see what happens, if it doesn't work then do some trouble shooting and get back to us.\n\nCan you please post a copy of your circuit, a picture of a hand drawn circuit in jpg, png?\n\nHand drawn and photographed is perfectly acceptable.\n\nPlease include ALL hardware, power supplies, component names and pin labels.\n\nWe need to know what hardware and how it is connected.\n\nThanks.. Tom.."
+    }
+}
