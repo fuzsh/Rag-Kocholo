@@ -1,0 +1,43 @@
+{
+    "id": "dbpedia_2920_2",
+    "rank": 8,
+    "data": {
+        "url": "https://codeabove.dev/index.php/2023/01/14/cubesat-space-protocol-first-steps/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Cubesat Space Protocol – first steps – CodeAbove",
+        "top_image": "https://codeabove.dev/wp-content/uploads/2022/09/cropped-CodeAbove-logo-z-ikona-32x32.png",
+        "meta_img": "https://codeabove.dev/wp-content/uploads/2022/09/cropped-CodeAbove-logo-z-ikona-32x32.png",
+        "images": [
+            "https://codeabove.dev/wp-content/uploads/2023/01/csp_server_client-1.png",
+            "https://codeabove.dev/wp-content/uploads/2023/01/code1-962x1024.png",
+            "https://codeabove.dev/wp-content/uploads/2023/01/code2.png",
+            "https://codeabove.dev/wp-content/uploads/2023/01/code3-1024x594.png",
+            "https://codeabove.dev/wp-content/uploads/2023/01/code4-1024x261.png",
+            "https://codeabove.dev/wp-content/uploads/2023/01/code6-1024x525.png",
+            "https://codeabove.dev/wp-content/uploads/2023/01/IMG_20230124_093738-1024x1024.jpg",
+            "https://codeabove.dev/wp-content/uploads/2023/01/addr0-1-1024x657.png",
+            "https://codeabove.dev/wp-content/uploads/2023/01/addr1-1-1024x645.png",
+            "https://codeabove.dev/wp-content/uploads/2023/01/addr_code.png",
+            "https://codeabove.dev/wp-content/uploads/2023/01/uart_comms-1024x438.png",
+            "https://secure.gravatar.com/avatar/75450d2da78cac650e037debd1f1f2b8?s=75&d=mm&r=g",
+            "https://secure.gravatar.com/avatar/fe7a12c3b4a0211dcc27a3948937da04?s=75&d=mm&r=g",
+            "https://secure.gravatar.com/avatar/defe6ad4998b038087d97ce034e1469e?s=75&d=mm&r=g"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2023-01-14T00:00:00",
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "https://codeabove.dev/wp-content/uploads/2022/09/cropped-CodeAbove-logo-z-ikona-32x32.png",
+        "meta_site_name": "",
+        "canonical_link": "https://codeabove.dev/index.php/2023/01/14/cubesat-space-protocol-first-steps/",
+        "text": "Recently, I have been wondering about the communication protocols used in small satellites like CubeSats. After all, these satellites are made up of multiple modules that must communicate effectively with each other in order to successfully carry out their mission. Furthermore, the entire satellite must also establish a connection with the ground station in order to receive telecommands sent to it and to send back telemetry data in response. While searching for phrases such as “satellite communication protocols” or “cubesat communication protocols”, I came across terms such as CCSDS, AX.25, KISS and finally, CSP.\n\nWhat is Cubesat Space Protocol?\n\nCSP, a small network-layer delivery protocol developed by a group of students from Aalborg University in 2008, was further developed for the AAUSAT3 CubeSat mission that was launched in 2013. It is designed to ease communication between distributed embedded systems in smaller networks, such as CubeSats, by enabling a service-oriented network topology in which there is no distinction between master and slaves. All subsystems can communicate with each other. The implementation is written in C for 8-bit AVR and 32-bit ARM microcontrollers.[,]\n\nSome key features:\n\nAPI similar to Berkeley sockets\n\nFreeRTOS and Linux support\n\nCAN, I2C and KISS interfaces\n\nZero-copy buffer and queue system\n\nCubesat Space Protocol is still actively maintained by Johan de Claville Christiansen.\n\nClone and build\n\nTo avoid making a mess on my main operating system, I installed a fresh version of Ubuntu 22.04 LTS within VirtualBox. This way, I can also check the dependencies and additional modules that I need to install in order to work with the protocol. In my development directory, I began by cloning the CSP source code repository and attempting to build examples using the existing script prepared by the authors. At the time of writing this post, I obtained the [b2996d2] commit from the development branch.\n\ngit clone https://github.com/libcsp/libcsp.git && cd libcsp ./examples/buildall.py\n\nOf course, I ran into some missing module errors. It took me a few tries to finally get everything built successfully. Here is a command to install all the needed modules.\n\nsudo apt install python3 python-is-python3 build-essential pkg-config libsocketcan2 libsocketcan-dev libzmq3-dev libzmq5\n\nRun\n\nThe first time I ran the csp_server_client example, I got an encouraging view.\n\n./build/examples/csp_server_client\n\nThis is an output from server and client tasks communicating with each other via the loopback interface. I could see that something was happening, but to really understand how it was done, I took a look into the code.\n\nWhat’s in the code\n\nAt the beginning, the application parses command-line arguments if applied. Although I found out the application is a little bit outdated and missing some things, it is possible (or at least was in the past) to set things like:\n\nlocal address\n\nserver address\n\ninterface devices (KISS, ZMQ, CAN)\n\nrouting table\n\nNext, the CubeSat Space Protocol is initialized and a router task is started. From now on, the router is checking for incoming packets. If a destination address matches the local node ID, some additional checks are done before delivering the packet. However, if there is a destination address mismatch, then the router tries to pass on the packet to the recipient using the proper interface found in the routing table.\n\nDepending on the command-line arguments used, the appropriate interfaces are configured. For example, if the name of the USB<->UART converter is provided during startup, the KISS interface will be configured as the default. For example, during startup, it is enough to add -k/dev/ttyUSB0, so that the router starts directing sent packets to that device.\n\n./build/examples/csp_server_client -k/dev/ttyUSB0\n\nThen, in lines 235-246, if the user runs the application with their own routing table specified, it is loaded. In other cases, the default interface is used for the configuration table, to which all outgoing traffic is directed. If such an interface does not exist, all packet transfer will take place through an internal loopback.\n\nAnd finally, after all the initialization routines, both the client and server tasks are started. The former periodically sends a message to the server and tries to utilize its services, while the latter prints incoming messages and handles all requested services.\n\nCommunication over UART\n\nAfter successful application run, I decided to go one step further and try to establish communication between two instances of the application, one functioning as a client and the other as a server. To achieve this, I used two USB <-> UART converters, between which I crossed the TX and RX lines.\n\nIn the application code, I had to make a small fix. When running it with a specified local address through the -a argument, I noticed that despite providing different values, the local address always took the value of 0.\n\nMost likely, the setting of the local address has been mistakenly removed. I added the setting of the local address for the default interface, if it is created.\n\nAs a result, after running separate instances for the client and server, communication was established.\n\nFurther steps\n\nThis is not the end of playing with CSP. Since I have several WeAct BlackPill F411CE boards, I would now like to build an imitation of a small satellite consisting of 3 modules (OBC, COM, EPS) and communicate them with the application running on the computer, as if it were a ground station (GS). Of course, all using the CSP protocol.\n\nFirst, I will try to establish a connection between the COM module and the GS application. To do this, I will connect the TX/RX outputs of the USB<->UART converter to the appropriate pins on the BlackPill board. Only later will I expand the set with additional OBC and EPS modules, connecting them together with the COM module via the I2C interface. This will also require adding another interface in CSP and configuring the correct routing tables on each module.\n\nMore about this in the next post 🙂\n\nReferences"
+    }
+}

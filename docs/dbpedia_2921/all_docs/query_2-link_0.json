@@ -1,0 +1,37 @@
+{
+    "id": "dbpedia_2921_2",
+    "rank": 0,
+    "data": {
+        "url": "https://en.wikipedia.org/wiki/Cubesat_Space_Protocol",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Cubesat Space Protocol",
+        "top_image": "https://en.wikipedia.org/static/favicon/wikipedia.ico",
+        "meta_img": "https://en.wikipedia.org/static/favicon/wikipedia.ico",
+        "images": [
+            "https://en.wikipedia.org/static/images/icons/wikipedia.png",
+            "https://en.wikipedia.org/static/images/mobile/copyright/wikipedia-wordmark-en.svg",
+            "https://en.wikipedia.org/static/images/mobile/copyright/wikipedia-tagline-en.svg",
+            "https://login.wikimedia.org/wiki/Special:CentralAutoLogin/start?type=1x1",
+            "https://en.wikipedia.org/static/images/footer/wikimedia-button.svg",
+            "https://en.wikipedia.org/static/images/footer/poweredby_mediawiki.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Contributors to Wikimedia projects"
+        ],
+        "publish_date": "2010-04-26T11:40:42+00:00",
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "/static/apple-touch/wikipedia.png",
+        "meta_site_name": "",
+        "canonical_link": "https://en.wikipedia.org/wiki/Cubesat_Space_Protocol",
+        "text": "Small network-layer delivery protocol for cubesats\n\nCubeSat Space ProtocolOriginal author(s)Johan de Claville ChristiansenDeveloper(s)SpaceInventor, GomSpaceInitial release26 April 2010Stable release\n\n1.6 / April 17, 2020; 4 years ago ( )\n\nWritten inC, PythonOperating systemFreeRTOS, Linux, Mac OS X, Microsoft WindowsTypeProtocolLicenseGNU Lesser General Public LicenseWebsiteCubeSat Space Protocol Github Library\n\nCubeSat Space Protocol (CSP) is a small network-layer delivery protocol designed for CubeSats.[citation needed] The idea was developed by a group of students from Aalborg University in 2008, and further developed for the AAUSAT3 CubeSat mission that was launched in 2013. The protocol is based on a 32-bit header containing both network and transport layer information. Its implementation is designed for embedded systems such as the 8-bit AVR microprocessor and the 32-bit ARM and AVR from Atmel. The implementation is written in C and is ported to run on FreeRTOS and POSIX and pthreads-based operating systems such as Linux. The three-letter acronym CSP was adopted as an abbreviation for CAN Space Protocol because the first MAC-layer driver was written for CAN-bus. The physical layer has since been extended to include several other technologies, and the name was therefore extended to the more general CubeSat Space Protocol without changing the abbreviation.\n\nThe protocol and the implementation is still actively maintained by Johan de Claville Christiansen, Space Inventor and GomSpace. The source code is available under an LGPL license and hosted on GitHub.\n\nDescription\n\n[edit]\n\nThe CubeSat Space Protocol enables distributed embedded systems to deploy a service-oriented network topology.[citation needed] The layering of CSP corresponds to the same layers as the TCP/IP model. The implementation supports a connection oriented transport protocol (Layer 4), a router-core (Layer 3), and several network-interfaces (Layer 1–2). A service-oriented topology eases the design of satellite subsystems, since the communication bus itself is the interface to other subsystems. This means that each subsystem developer only needs to define a service-contract, and a set of port-numbers their system will be responding on. Furthermore, subsystem inter-dependencies are reduced, and redundancy is easily added by adding multiple similar nodes to the communication bus.\n\nKey features include: [citation needed]\n\nSimple API similar to Berkeley sockets.\n\nRouter core with static routes. Supports transparent forwarding of packets over e.g. spacelink.\n\nSupport for both connectionless operation (similar to UDP), and connection oriented operation (based on RUDP).\n\nService handler that implements ICMP-like requests such as ping and buffer status.\n\nSupport for loopback traffic. This can e.g. be used for Inter-process communication between subsystem tasks.\n\nOptional support for broadcast traffic if supported by the physical interface.\n\nOptional support for promiscuous mode if supported by the physical interface.\n\nOptional support for encrypted packets with XTEA in CTR mode.\n\nOptional support for HMAC authenticated packets with truncated SHA-1 HMAC.\n\nOperating systems supported\n\n[edit]\n\nCSP should compile on all platforms that have a recent version of the gcc compiler. CSP requires support for C99 features such as inline functions and designated initializers.\n\nFreeRTOS – Tested on AVR8, AVR32 and ARM7.\n\nLinux – Tested on x86, x86-64 and Blackfin.\n\nMac OS X\n\nMicrosoft Windows\n\nPhysical layer drivers\n\n[edit]\n\nCSP supports several physical layer technologies. The LGPL licensed source code contains an implementation of a fragmenting CAN interface and drivers for SocketCAN and the Atmel AT90CAN128, AT91SAM7A1 and AT91SAM7A3 processors. From version 1.1 onwards, CSP also includes interfaces for I2C and RS-232. Interfaces need only to implement a function to transmit a packet, and insert received packets into the protocol stack with the csp_new_packet function. CSP has been successfully tested on top of the following layers:\n\nCAN\n\nI2C\n\nRS-232 using the KISS_(TNC)[1] protocol\n\nCCSDS 131.0-B-1-S[2]/131.0-B-2[3] space link protocol\n\nUDP/IP\n\nSPI[4]\n\nProtocol header\n\n[edit]\n\nVersion 1\n\n[edit]\n\nThe port range is divided into three adjustable segments. Ports 0 to 7 are used for general services such as ping and buffer status, and are implemented by the CSP service handler. The ports from 8 to 47 are used for subsystem specific services. All remaining ports, from 48 to 63, are ephemeral ports used for outgoing connections. The bits from 28 to 31 are used for marking packets with HMAC, XTEA encryption, RDP header and CRC32 checksum.\n\nCSP Header 1.x Bit offset 31 30 29 28 27 26 25 24 23 22 21 20 19 18 17 16 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1 0 0 Priority Source Destination Destination\n\nPort Source\n\nPort Reserved H\n\nM\n\nA\n\nC X\n\nT\n\nE\n\nA R\n\nD\n\nP C\n\nR\n\nC 32 Data (0 – 65,535 bytes)\n\nVersion 2\n\n[edit]\n\nCSP Header 2.x Bit offset 47 46 45 44 43 42 41 40 39 38 37 36 35 34 33 32 31 30 29 28 27 26 25 24 23 22 21 20 19 18 17 16 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1 0 0 Priority Destination Source Destination\n\nPort Source\n\nPort Reserved H\n\nM\n\nA\n\nC X\n\nT\n\nE\n\nA R\n\nD\n\nP C\n\nR\n\nC 48 Data (0 – 65,535 bytes)\n\nReferences\n\n[edit]"
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "id": "dbpedia_2924_3",
+    "rank": 78,
+    "data": {
+        "url": "https://sequelize.org/docs/v6/core-concepts/paranoid/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Sequelize",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://sequelize.org/img/logo.svg",
+            "https://sequelize.org/img/logo.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2024-08-03T06:40:54+00:00",
+        "summary": "",
+        "meta_description": "Sequelize supports the concept of paranoid tables. A paranoid table is one that, when told to delete a record, it will not truly delete it. Instead, a special column called deletedAt will have its value set to the timestamp of that deletion request.",
+        "meta_lang": "en",
+        "meta_favicon": "",
+        "meta_site_name": "",
+        "canonical_link": "https://sequelize.org/docs/v6/core-concepts/paranoid/",
+        "text": "Paranoid\n\nSequelize supports the concept of paranoid tables. A paranoid table is one that, when told to delete a record, it will not truly delete it. Instead, a special column called deletedAt will have its value set to the timestamp of that deletion request.\n\nThis means that paranoid tables perform a soft-deletion of records, instead of a hard-deletion.\n\nTo make a model paranoid, you must pass the paranoid: true option to the model definition. Paranoid requires timestamps to work (i.e. it won't work if you also pass timestamps: false).\n\nYou can also change the default column name (which is deletedAt) to something else.\n\nWhen you call the destroy method, a soft-deletion will happen:\n\nIf you really want a hard-deletion and your model is paranoid, you can force it using the force: true option:\n\nThe above examples used the static destroy method as an example (Post.destroy), but everything works in the same way with the instance method:\n\nTo restore soft-deleted records, you can use the restore method, which comes both in the static version as well as in the instance version:\n\nEvery query performed by Sequelize will automatically ignore soft-deleted records (except raw queries, of course).\n\nThis means that, for example, the findAll method will not see the soft-deleted records, fetching only the ones that were not deleted.\n\nEven if you simply call findByPk providing the primary key of a soft-deleted record, the result will be null as if that record didn't exist."
+    }
+}

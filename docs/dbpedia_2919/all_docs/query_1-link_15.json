@@ -1,0 +1,45 @@
+{
+    "id": "dbpedia_2919_1",
+    "rank": 15,
+    "data": {
+        "url": "https://www.s5lab.space/index.php/decoding-simba/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Decoding SIMBA",
+        "top_image": "https://www.s5lab.space/wp-content/uploads/2021/08/cropped-TERRA_DEF-S5LAB-LOGO-32x32.png",
+        "meta_img": "https://www.s5lab.space/wp-content/uploads/2021/08/cropped-TERRA_DEF-S5LAB-LOGO-32x32.png",
+        "images": [
+            "https://www.s5lab.space/wp-content/uploads/2021/08/TERRA_DEF-S5LAB-LOGO.png",
+            "https://www.s5lab.space/wp-content/uploads/2021/06/International_Astronautical_Federation_logo.png",
+            "https://www.s5lab.space/wp-content/uploads/2021/06/gk_logo_white.png",
+            "http://cubesats.s5lab.space/wp-content/uploads/2021/06/radio_example_0.jpg",
+            "https://www.s5lab.space/wp-content/uploads/2021/06/gnuradio_screenshot_0-1.png",
+            "https://www.s5lab.space/wp-content/uploads/2021/06/soundmodem_01.png",
+            "http://cubesats.s5lab.space/wp-content/uploads/2021/06/photo_clean_room_1.png",
+            "https://www.s5lab.space/wp-content/uploads/2018/06/3.png",
+            "https://www.s5lab.space/wp-content/uploads/2021/06/ksa_logo_transparency.png",
+            "https://www.s5lab.space/wp-content/uploads/2021/06/machakos_transparency.png",
+            "https://www.s5lab.space/wp-content/uploads/2021/06/universiy_nair_transp.png",
+            "https://www.s5lab.space/wp-content/uploads/2021/06/sapienza_transparency-1.png",
+            "https://www.s5lab.space/wp-content/uploads/2021/06/Razzo2.png",
+            "https://www.s5lab.space/wp-content/gallery/simba_slideshow/IMG_20210212_184353.jpg",
+            "https://www.s5lab.space/wp-content/gallery/simba_slideshow/IMG_20210212_235228.jpg",
+            "https://www.s5lab.space/wp-content/gallery/simba_slideshow/IMG_6632.JPG"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "https://www.s5lab.space/wp-content/uploads/2021/08/cropped-TERRA_DEF-S5LAB-LOGO-32x32.png",
+        "meta_site_name": "",
+        "canonical_link": "https://www.s5lab.space/index.php/decoding-simba/",
+        "text": "WildTrackCube-SIMBA transmits in UHF at frequency 435.410 MHz (TBC) using GMSK modulation at 1200, 4800 or 9600 baud. Typically, 9600 baud is used. Any tool used for receiving 1KUNS-PF can be used to receive WildTrackCube-SIMBA as well, since they use the same transceiver – the AX100 from GomSpace. This transceiver is common among CubeSats and several tools exist to receive and interpret the packets.\n\nData Link Layer\n\nThe data link layer uses an Attached Sync Marker (ASM) to determine the beginning of a packet. The marker is C9D08A7B (MSB).\n\nThe next field after the ASM is the Golay-encoded length. This is a 3-byte length field with FEC provided by the Golay 24,12 code.\n\nThe rest of the packet is scrambled with the typical G3RUH scrambler.\n\nNetwork Link Layer\n\nThe packet uses the Cubesat Space Protocol (CSP). The header contains information on the source and destination of the packet; the end of the packet is composed of a CRC32, which provides a checksum of the data, and a Reed Solomon (223, 255) field.\n\nTools to receive the satellite\n\nGNURadio\n\nThe satellite can be received using a Software Defined Radio (SDR) and GNURadio. To aid in this, one can use the Out-Of-Tree module gr-satellites developed by Daniel Estevez.\n\nSeveral branches are made to support the different GNURadio versions. An example script that can receive the satellite with an SDR is shown here.\n\nThe team is working on an ad-hoc block to interpret the telemetry and the pictures, based on the one developed for 1KUNS-PF.\n\nUZ7HO SoundModem\n\nSoundModem is a popular tool to receive Packet Radio, developed by UZ7HO. A version of SoundModem, made to receive 1KUNS-PF, can also be used to receive WildTrackCube-SIMBA.\n\nThis version can be found in the other_versions.zip file on the webpage of UZ7HO\n\nFormats\n\nTelemetry\n\nThe telemetry is sent either via a Beacon, which is sent periodically every 15 seconds, or by request from the ground station.\n\nThe telemetry is identified by CSP Destination Port 8 and has a length of 121 bytes (data only).\n\nBytes Content Unit 2 Telemetry Identifier 2 Millisecond part of the unix time ms 4 On-board unix time s 2 Time taken to process the telemetry ms 2 Voltage of X axis solar panels mV 2 Voltage of Y axis solar panels mV 2 Current of X axis solar panels mA 2 Current of Y axis solar panels mA 1 EPS bootcause 1 EPS battery mode 2 Temperature of X axis MPPT °C 2 Temperature of Y axis MPPT °C 2 Temperature of EPS board °C 2 Temperature of batteries °C 2 Total current coming from solar panels mA 2 Total current absorbed by system mA 2 Battery voltage mV 2 EPS boot count 1 Status of EPS outputs 2 EPS output #1 current 2 EPS output #2 current 2 EPS output #3 current 2 EPS output #4 current 2 EPS output #5 current 2 EPS output #6 current 2 Temperature of transceiver PA °C x10 4 Transceiver total TX count 4 Transceiver total RX count 2 Last radio-contact RSSI dBm 2 Radio bootcounter 1 Current attitude mode 3 Unused 4 Payload RX count 2 OBC bootcounter 2 OBC temperature °C x10 2 Gyroscope X °/s x100 2 Gyroscope Y °/s x100 2 Gyroscope Z °/s x100 2 Magnetometer X mG 2 Magnetometer Y mG 2 Magnetometer Z mG 2 Temperature of +X solar panel °C x100 2 Temperature of +Y solar panel °C x100 2 Temperature of -X solar panel °C x100 2 Temperature of -Y solar panel °C x100 2 Coarse Sun sensor +X mV 2 Coarse Sun sensor +Y mV 2 Coarse Sun sensor +Z mV 2 Coarse Sun sensor -X mV 2 Coarse Sun sensor -Y mV 2 Coarse Sun sensor -Z mV 1 Status of the LEDs 2 Temperature of the Reaction Wheel (internal) °C x100 2 Temperature of the Reaction Wheel (external) °C x100 4 Speed of the Reaction Wheel RPM x10 2 Reference speed of the Reaction Wheel RPM 2 Reference torque of the Reaction Wheel 1 Status of the Reaction Wheel\n\nPictures"
+    }
+}

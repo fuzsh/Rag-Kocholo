@@ -1,0 +1,35 @@
+{
+    "id": "dbpedia_2919_1",
+    "rank": 11,
+    "data": {
+        "url": "https://groups.google.com/g/cubesat-space-protocol/c/W5OqApuyxlM",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Queries on CSP usage",
+        "top_image": "https://www.gstatic.com/images/branding/product/1x/groups_32dp.png",
+        "meta_img": "https://www.gstatic.com/images/branding/product/1x/groups_32dp.png",
+        "images": [
+            "https://fonts.gstatic.com/s/i/productlogos/groups/v9/web-48dp/logo_groups_color_1x_web_48dp.png",
+            "https://lh3.googleusercontent.com/a-/ALV-UjVReq3vxAk8Gdc4ezOLtAebdCqvwgP0tGhf_Cioekp8ybK50E0=s40-c-mo",
+            "https://lh3.googleusercontent.com/a/default-user=s40-c",
+            "https://lh3.googleusercontent.com/a-/ALV-UjVReq3vxAk8Gdc4ezOLtAebdCqvwgP0tGhf_Cioekp8ybK50E0=s40-c-mo",
+            "https://lh3.googleusercontent.com/a/default-user=s40-c",
+            "https://lh3.googleusercontent.com/a-/ALV-UjVReq3vxAk8Gdc4ezOLtAebdCqvwgP0tGhf_Cioekp8ybK50E0=s40-c-mo"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "//www.gstatic.com/images/branding/product/1x/groups_32dp.png",
+        "meta_site_name": "",
+        "canonical_link": "https://groups.google.com/g/cubesat-space-protocol/c/W5OqApuyxlM",
+        "text": "On 2011-01-28 15:30, Alpha wrote:\n\n> Hi,\n\nHi,\n\n> I am quite new to the Cubesat Space Protocol(or network layer for embedded)\n\n> and am actually trying to understand the fundamentals, will really\n\n> appreciate if you could help me out.\n\nFirst of all, thank you for showing interest in CSP!\n\n> I have attached a draft of my system and basically my questions are :\n\n>\n\n> 1) is CSP software needed for the subsystem? My guess is YES. if No, how do\n\n> we configure the address at subsystem?\n\nWell, you don't *need* CSP, but it's a viable option. You configure the\n\nCSP addresses when you initialize CSP with csp_init() on the individual\n\nhosts. Your I2C addresses will be configured in your device driver/CSP\n\ninterface.\n\n> 2) How do we address the passive system(no microcontroller) on the same I2C\n\n> bus? does it mean they cant be addressed using the CSP protocol? are they\n\n> allowed to be on the same bus that uses the CSP protocol to communicate?\n\nIt is possible to both CSP and non-CSP devices on the same bus. You need\n\nto distinguish between CSP addresses and I2C addresses. They are not\n\nnecessarily the same. CSP supports mapping to I2C addresses, when\n\nsetting up the routing table. If you want to access non-CSP devices on\n\nthe bus, you don't use CSP.\n\n> 3) in the CSP documentation, how does the sample server code and client code\n\n> correspond to the compenents in the attached diagram? the main system uses\n\n> server code and subsystem client code?\n\nIt depends entirely on the functionality of your system. If your\n\nsubsystems provide some type of service to the main computer (say\n\nmeasurement data), the subsystems will run servers. In this case, the\n\nmain computer will be the client.\n\nMost likely, you will run servers on both the subsystems and on the main\n\ncomputer.\n\nI hope this answers your questions.\n\nBest regards,\n\nJeppe\n\nOn 2011-01-28 17:22, Alpha wrote:\n\n> Okay, so your recommendation is that I address the passive device\n\n> directly using the default I2C address (the fixed I2C address in\n\n> datasheet) ?\n\nYes, I guess that is your only option since you cannot access them using\n\nCSP.\n\n> I have checked out the GomSpace systems and will like to know:\n\n>\n\n> on default configuration, is nanomind the client and the subsystems\n\n> (nanocam, nanopower, nanocom) the servers? since they(subsystem) are\n\n> feeding measurements when queried by nanomind. or does the subsystems\n\n> also act as client and initiate a connection as well?\n\nBoth the NanoMind and the subsystems are running servers and both sides\n\ninitiate connections. As an example, the NanoMind can fetch housekeeping\n\ndata from the NanoPower and the NanoPower can send event log messages to\n\nthe NanoMind.\n\nThe NanoCom is a bit special, since it acts as a router between the\n\ninternal satellite bus (CAN or I2C) and the space link, and thus has two\n\ninterfaces.\n\nBest regards,\n\nJeppe"
+    }
+}

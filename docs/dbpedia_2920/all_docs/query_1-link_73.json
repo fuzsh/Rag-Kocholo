@@ -1,0 +1,28 @@
+{
+    "id": "dbpedia_2920_1",
+    "rank": 73,
+    "data": {
+        "url": "https://docs.kubos.com/1.2.0/apis/libcsp/csp.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "CSP API — Kubos v1.2.0 documentation",
+        "top_image": "",
+        "meta_img": "",
+        "images": [],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "../../_static/kubos_favicon.ico",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "Read data from a connection This fuction uses the RX queue of a connection to receive a packet If no packet is available and a timeout has been specified The call will block.\n\nDo NOT call this from ISR\n\nReturn\n\nReturns pointer to csp_packet_t, which you MUST free yourself, either by calling csp_buffer_free() or reusing the buffer for a new csp_send.\n\nParameters\n\nconn: pointer to connection\n\ntimeout: timeout in ms, use CSP_MAX_DELAY for infinite blocking time\n\nRead data from a connection-less server socket This fuction uses the socket directly to receive a frame If no packet is available and a timeout has been specified the call will block.\n\nDo NOT call this from ISR\n\nReturn\n\nReturns pointer to csp_packet_t, which you MUST free yourself, either by calling csp_buffer_free() or reusing the buffer for a new csp_send.\n\nCall the router worker function manually (without the router task) This must be run inside a loop or called periodically for the csp router to work.\n\nUse this function instead of calling and starting the router task.\n\nReturn\n\n-1 if no packet was processed, 0 otherwise\n\nParameters\n\ntimeout: max blocking time\n\nEnable promiscuous mode packet queue This function is used to enable promiscuous mode for the router.\n\nIf enabled, a copy of all incoming packets are placed in a queue that can be read with csp_promisc_get(). Not all interface drivers support promiscuous mode.\n\nParameters\n\nbuf_size: Size of buffer for incoming packets\n\nGet packet from promiscuous mode packet queue Returns the first packet from the promiscuous mode packet queue.\n\nThe queue is FIFO, so the returned packet is the oldest one in the queue.\n\nParameters\n\ntimeout: Timeout in ms to wait for a new packet\n\nIf the given packet is a service-request (that is uses one of the csp service ports) it will be handled according to the CSP service handler.\n\nThis function will either use the packet buffer or delete it, so this function is typically called in the last “default” clause of a switch/case statement in a csp_listener task. In order to listen to csp service ports, bind your listener to the CSP_ANY port. This function may only be called from task context.\n\nParameters\n\nconn: Pointer to the new connection\n\npacket: Pointer to the first packet, obtained by using csp_read()"
+    }
+}

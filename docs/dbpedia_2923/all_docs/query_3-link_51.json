@@ -1,0 +1,28 @@
+{
+    "id": "dbpedia_2923_3",
+    "rank": 51,
+    "data": {
+        "url": "https://docs.amplify.aws/gen1/react/build-a-backend/auth/admin-actions/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Set up admin actions",
+        "top_image": "https://docs.amplify.aws/assets/classic-og.png",
+        "meta_img": "https://docs.amplify.aws/assets/classic-og.png",
+        "images": [],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "Learn how to expose administrative actions for your Cognito User Pool to your end user applications. AWS Amplify Documentation",
+        "meta_lang": "en",
+        "meta_favicon": "/assets/icon/apple-icon-57x57.png",
+        "meta_site_name": "",
+        "canonical_link": "https://docs.amplify.aws/gen1/react/build-a-backend/auth/admin-actions/",
+        "text": "Admin Actions allow you to execute queries and operations against users and groups in your Cognito user pool.\n\nFor example, the ability to list all users in a Cognito User Pool may provide useful for the administrative panel of an app if the logged-in user is a member of a specific Group called \"Admins\".\n\nThis is an advanced feature that is not recommended without an understanding of the underlying architecture. The associated infrastructure which is created is a base designed for you to customize for your specific business needs. We recommend removing any functionality which your app does not require.\n\nThe Amplify CLI can setup a REST endpoint with secure access to a Lambda function running with limited permissions to the User Pool if you wish to have these capabilities in your application, and you can choose to expose the actions to all users with a valid account or restrict to a specific User Pool Group.\n\nEnable Admin Queries\n\nWhen ready, run amplify push to deploy the changes.\n\nThis will configure an API Gateway endpoint with a Cognito Authorizer that accepts an Access Token, which is used by a Lambda function to perform actions against the User Pool. The function is example code which you can use to remove, add, or alter functionality based on your business case by editing it in the amplify/backend/function/AdminQueriesXXX/src directory and running an amplify push to deploy your changes. If you choose to restrict actions to a specific Group, custom middleware in the function will prevent any actions unless the user is a member of that Group.\n\nAdmin Queries API\n\nThe default routes and their functions, HTTP methods, and expected parameters are below\n\naddUserToGroup: Adds a user to a specific Group. Expects username and groupname in the POST body.\n\nremoveUserFromGroup: Removes a user from a specific Group. Expects username and groupname in the POST body.\n\nconfirmUserSignUp: Confirms a users signup. Expects username in the POST body.\n\ndisableUser: Disables a user. Expects username in the POST body.\n\nenableUser: Enables a user. Expects username in the POST body.\n\ngetUser: Gets specific user details. Expects username as a GET query string.\n\nlistUsers: Lists all users in the current Cognito User Pool. You can provide an OPTIONAL limit (between 0 and 60) as a GET query string, which returns a NextToken that can be provided as a token query string for pagination.\n\nlistGroups: Lists all groups in the current Cognito User Pool. You can provide an OPTIONAL limit (between 0 and 60) as a GET query string, which returns a NextToken that can be provided as a token query string for pagination.\n\nlistGroupsForUser: Lists groups to which current user belongs to. Expects username as a GET query string. You can provide an OPTIONAL limit (between 0 and 60) as a GET query string, which returns a NextToken that can be provided as a token query string for pagination.\n\nlistUsersInGroup: Lists users that belong to a specific group. Expects groupname as a GET query string. You can provide an OPTIONAL limit (between 0 and 60) as a GET query string, which returns a NextToken that can be provided as a token query string for pagination.\n\nsignUserOut: Signs a user out from User Pools, but only if the call is originating from that user. Expects username in the POST body.\n\nExample\n\nTo leverage this functionality in your app you would call the appropriate route from Amplify.API after signing in. The following example adds the user \"richard\" to the Editors Group and then list all members of the Editors Group with a pagination limit of 10:\n\nAdding Admin Actions\n\nTo add additional admin actions that are not included by default but are enabled by Amazon Cognito, you will need to update the Lambda function code that is generated for you. The change will include adding a route handler for the action and creating a route for it. You will then associate the route handler to the route within the Express app.\n\nBelow is an example of how to add an admin action that will allow you to update a user's attributes.\n\nOnce the route handler is defined, you will then add a route with the correct HTTP method to the Express app and associate the route handler to the route. Be sure to make the route unique."
+    }
+}
