@@ -1,0 +1,38 @@
+{
+    "id": "dbpedia_2862_3",
+    "rank": 5,
+    "data": {
+        "url": "https://askubuntu.com/questions/864722/where-is-journalctl-data-stored",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Where is \"journalctl\" data stored?",
+        "top_image": "https://cdn.sstatic.net/Sites/askubuntu/Img/apple-touch-icon@2.png?v=c492c9229955",
+        "meta_img": "https://cdn.sstatic.net/Sites/askubuntu/Img/apple-touch-icon@2.png?v=c492c9229955",
+        "images": [
+            "https://cdn.sstatic.net/Sites/askubuntu/Img/logo.svg?v=472cf2768bba",
+            "https://i.sstatic.net/xNPjb.png?s=64",
+            "https://i.sstatic.net/daMab.jpg?s=64",
+            "https://i.sstatic.net/xNPjb.png?s=64",
+            "https://i.sstatic.net/gBtGx.jpg?s=64",
+            "https://i.sstatic.net/gw49Zw5I.jpg?s=64",
+            "https://www.gravatar.com/avatar/bb243975f97e6a87a3cd79afed25c83d?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/2SXNl.jpg?s=64",
+            "https://askubuntu.com/posts/864722/ivc/0edf?prg=f0837986-74a8-4f6c-ab47-ccc217bb7294"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2016-12-26T15:40:58",
+        "summary": "",
+        "meta_description": "When I issue journalctl I get a massive log of all system services, but where is all this information stored?",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/askubuntu/Img/favicon.ico?v=928dfb7c1990",
+        "meta_site_name": "Ask Ubuntu",
+        "canonical_link": "https://askubuntu.com/questions/864722/where-is-journalctl-data-stored",
+        "text": "From man systemd-journald:\n\nFILES /etc/systemd/journald.conf Configure systemd-journald behavior. See journald.conf(5). /run/log/journal/machine-id/*.journal, /run/log/journal/machine-id/*.journal~, /var/log/journal/machine-id/*.journal, /var/log/journal/machine-id/*.journal~ systemd-journald writes entries to files in /run/log/journal/machine-id/ or /var/log/journal/machine-id/ with the \".journal\" suffix. If the daemon is stopped uncleanly, or if the files are found to be corrupted, they are renamed using the \".journal~\" suffix, and systemd-journald starts writing to a new file. /run is used when /var/log/journal is not available, or when Storage=volatile is set in the journald.conf(5) configuration file.\n\nAnd as man journalctl says:\n\njournalctl may be used to query the contents of the systemd(1) journal as written by systemd-journald.service(8).\n\nThese logs are managed by the systemd-journald service, so a more appropriate term would be \"journald logs\".\n\nShort answer\n\nUsually the storage directory is /var/log/journal or /run/log/journal, but it doesn't have to necessarily exist in your system.\n\nIf you just want to check the amount of space that the journal is currently occupying on your disk, simply type:\n\n$ journalctl --disk-usage\n\nLong answer\n\nThe storage directory depends on journald configuration.\n\nConfiguration files are:\n\n/etc/systemd/journald.conf /etc/systemd/journald.conf.d/*.conf /run/systemd/journald.conf.d/*.conf /usr/lib/systemd/journald.conf.d/*.conf\n\nThere the \"Storage=\" option controls whether to store journal data or not, and where. Possible values are \"volatile\", \"persistent\", \"auto\" and \"none\". Defaults to \"auto\".\n\nIf \"volatile\", journal log data will be stored only in memory, i.e. below the /run/log/journal hierarchy (which is created if needed).\n\nIf \"persistent\", data will be stored preferably on disk, i.e. below the /var/log/journal hierarchy (which is created if needed), with a fallback to /run/log/journal (which is created if needed), during early boot and if the disk is not writable.\n\n\"auto\" is similar to \"persistent\" but the directory /var/log/journal is not created if needed, so that its existence controls where log data goes.\n\n\"none\" turns off all storage, all log data received will be dropped.\n\nNote however that Ubuntu is not using a persistent journald log file by default. Only the volatile /run/log/journal/<machine-id>/*.journal[~] is kept until the next boot. All is lost at each reboot.\n\nYou may see a list of boot retained in the log with:\n\njournalctl --list-boot\n\nThe logs are still kept in a text file under /var/log unless you have activated the use of persistent journald log by creating /var/log/journal directory."
+    }
+}
