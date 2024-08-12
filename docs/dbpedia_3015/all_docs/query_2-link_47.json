@@ -1,0 +1,36 @@
+{
+    "id": "dbpedia_3015_2",
+    "rank": 47,
+    "data": {
+        "url": "https://stackoverflow.com/questions/65791801/get-more-general-category-from-the-category-of-a-wikipedia-page",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Get more general Category from the Category of a Wikipedia page",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://i.sstatic.net/VOb3Y.png",
+            "https://www.gravatar.com/avatar/d0133b17dabc3055c1dffaca3fbf91d9?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/4317a6c4af486878dd8eded6c251e41a?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/7cca5c3dcfdb11eed67a39f977646f7c?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/65791801/ivc/5ddf?prg=1497cbf7-466f-4c62-85ba-5ac423d817f0"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Paolo Magnani"
+        ],
+        "publish_date": "2021-01-19T12:46:02",
+        "summary": "",
+        "meta_description": "I'm using Python wikipedia library to obtain the list of the categories of a page. I saw it's a wrapper of MediaWiki API.\nAnyway I'm wondering how to generalize the categories to marco categories, ...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/65791801/get-more-general-category-from-the-category-of-a-wikipedia-page",
+        "text": "This is a very hard task, since Wikipedia's category graph is a mess (technically speaking :-)). Indeed, in a tree you would expect to get to the root node in logarithmic time. But this is not a tree, since any node can have multiple parents!\n\nFurthermore, I think that it can't be accomplished only using categories, because, as you can see in the example, you are very likely going to get unexpected results. Anyway I tried to reproduce something similar to what you asked.\n\nExplanation of the code below:\n\nStart from a source page (the hardcoded one is \"Hamburger\");\n\nGo back visiting recursively all the parent categories;\n\nCache all the met categories, in order to avoid visiting twice the same category (and this solves also the cycles problem);\n\nCut the current branch if you find a target category;\n\nStop when the backlog is empty.\n\nStarting from a given page you are likely getting more than one target category, so I organized the result as a dictionary that tells you how many times a target category you have been met with.\n\nAs you may imagine, the response is not immediate, so this algorithm should be implemented in offline mode. And it can be improved in many ways (see below).\n\nThe code\n\nimport requests import time import wikipedia def get_categories(title) : try : return set(wikipedia.page(title, auto_suggest=False).categories) except requests.exceptions.ConnectionError : time.sleep(10) return get_categories(title) start_page = \"Hamburger\" target_categories = {\"Academic disciplines\", \"Business\", \"Concepts\", \"Culture\", \"Economy\", \"Education\", \"Energy\", \"Engineering\", \"Entertainment\", \"Entities\", \"Ethics\", \"Events\", \"Food and drink\", \"Geography\", \"Government\", \"Health\", \"History\", \"Human nature\", \"Humanities\", \"Knowledge\", \"Language\", \"Law\", \"Life\", \"Mass media\", \"Mathematics\", \"Military\", \"Music\", \"Nature\", \"Objects\", \"Organizations\", \"People\", \"Philosophy\", \"Policy\", \"Politics\", \"Religion\", \"Science and technology\", \"Society\", \"Sports\", \"Universe\", \"World\"} result_categories = {c:0 for c in target_categories} # dictionary target category -> number of paths cached_categories = set() # monotonically encreasing backlog = get_categories(start_page) cached_categories.update(backlog) while (len(backlog) != 0) : print(\"\\nBacklog size: %d\" % len(backlog)) cat = backlog.pop() # pick a category removing it from backlog print(\"Visiting category: \" + cat) try: for parent in get_categories(\"Category:\" + cat) : if parent in target_categories : print(\"Found target category: \" + parent) result_categories[parent] += 1 elif parent not in cached_categories : backlog.add(parent) cached_categories.add(parent) except KeyError: pass # current cat may not have \"categories\" attribute result_categories = {k:v for (k,v) in result_categories.items() if v>0} # filter not-found categories print(\"\\nVisited categories: %d\" % len(cached_categories)) print(\"Result: \" + str(result_categories))\n\nResults for your example\n\nIn your example, the script would visit 12176 categories (!) and would return the following result:\n\n{'Education': 21, 'Society': 40, 'Knowledge': 17, 'Entities': 4, 'People': 21, 'Health': 25, 'Mass media': 25, 'Philosophy': 17, 'Events': 17, 'Music': 18, 'History': 21, 'Sports': 6, 'Geography': 18, 'Life': 13, 'Government': 36, 'Food and drink': 12, 'Organizations': 16, 'Religion': 23, 'Language': 15, 'Engineering': 7, 'Law': 25, 'World': 13, 'Military': 18, 'Science and technology': 8, 'Politics': 24, 'Business': 15, 'Objects': 3, 'Entertainment': 15, 'Nature': 12, 'Ethics': 12, 'Culture': 29, 'Human nature': 3, 'Energy': 13, 'Concepts': 7, 'Universe': 2, 'Academic disciplines': 23, 'Humanities': 25, 'Policy': 14, 'Economy': 17, 'Mathematics': 10}\n\nAs you may notice, the \"Food and drink\" category has been reached only 12 times, while, for instance, \"Society\" has been reached 40 times. This tells us a lot about how weird the Wikipedia's category graph is.\n\nPossible improvements\n\nThere are so many improvements for optimizing or approximating this algorithm. The first that come to my mind:"
+    }
+}
