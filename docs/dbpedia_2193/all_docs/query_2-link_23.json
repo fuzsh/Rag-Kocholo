@@ -1,0 +1,34 @@
+{
+    "id": "dbpedia_2193_2",
+    "rank": 23,
+    "data": {
+        "url": "https://stackoverflow.com/questions/4143713/retrieve-another-language-of-a-wikipedia-page",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Retrieve another language of a Wikipedia page",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/d2c5a0f2653e7d11d518b584f4c46536?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/MMZTJ.jpg?s=64",
+            "https://i.sstatic.net/qZwGx.jpg?s=64",
+            "https://www.gravatar.com/avatar/0e9087f2672b0e4f28d91266acf9ce57?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/4143713/ivc/9998?prg=622e95cd-6d55-4e65-81a6-9e39cf150eb3"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2010-11-10T10:56:41",
+        "summary": "",
+        "meta_description": "Task: We have Wikipedia English page and need to retrieve the same page address in Russian.\n\nI know the Semantic Web solution - use simple query to DbPedia, but I am curious whether  there are",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/4143713/retrieve-another-language-of-a-wikipedia-page",
+        "text": "Sometimes, when finding the Japanese (ja) title equivalence for page, https://en.wikipedia.org/wiki/Aframomum_corrorima\n\nimport json import requests site = \"enwiki\" # For English queries, set `&sites=enwiki` page = \"Aframomum_corrorima\" trg_lang = \"ja\" url = f\"https://www.wikidata.org/w/api.php?action=wbgetentities&sites={site}&titles={page}&languages={trg_lang}&format=json\" result = json.loads(requests.get(url).content.decode('utf8')) translations = [result['entities'][k]['labels'] for k in result['entities']] print(translations)\n\n[out]:\n\n[{'ja': {'language': 'ja', 'value': 'コロリマ'}}]\n\nThen you'll find that the https://ja.wikipedia.org/w/index.php?title=コロリマ isn't written yet but the wikidata API is able to find the right entity translation.\n\nTo extract all the possible links, do something like:\n\nurl = f\"https://www.wikidata.org/w/api.php?action=wbgetentities&sites={site}&titles={page}&prop=langlinks&format=json\" result = json.loads(requests.get(url).content.decode('utf8')) links = [result['entities'][e]['sitelinks'] for e in result['entities'].keys()] print(json.dumps(links))\n\n[out]:"
+    }
+}
