@@ -1,0 +1,47 @@
+{
+    "id": "dbpedia_2236_2",
+    "rank": 26,
+    "data": {
+        "url": "https://copasi.org/Support/User_Manual/Methods/Steady_State_Calculation/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Steady State Calculation",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://copasi.org/images/COPASI-light.png",
+            "https://copasi.org/images/previous.png",
+            "https://copasi.org/images/up.png",
+            "https://copasi.org/images/next.png",
+            "https://copasi.org/images/house.png",
+            "https://copasi.org/images/Forum.png",
+            "https://copasi.org/images/Mastodon_42x42.png",
+            "https://copasi.org/images/YouTube_42x42.png",
+            "https://copasi.org/images/GitHub-Mark-32px.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "Modeling",
+            "Simulation",
+            "Biochemical Networks",
+            "Biochemical Pathways",
+            "Systems Biology",
+            "Time Course",
+            "Steady state",
+            "Optimization",
+            "Parameter Fitting",
+            "Software"
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "COPASI is a software application for simulation and analysis of biochemical networks and their dynamics.",
+        "meta_lang": "",
+        "meta_favicon": "/images/ico/favicon.ico",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "The steady state is the state in which the state variables of the model, e.g. the species concentrations do not change in time. Mathematically this is expressed by setting the differential equations that describe the time evolution of the metabolic system to zero. This forms a system of algebraic non-linear equations. To solve them, COPASI can use a series of strategies using more than one numerical method.\n\nAll calculations are done based on particle numbers and particle number rates rather than concentrations internally. The reduced model (see Deterministic Interpretation of the Model) is used. The Jacobian (which is used in the Newton method and when eigenvalues of the Jacobian are requested) is calculated using finite differences. The Eigenvalues of the Jacobian are calculated using LAPACK.\n\nOptions for Steady State Analysis\n\nUse Newton\n\nThis parameter is a Boolean value to determine whether to use the damped Newton method on the non-linear algebraic equations defining the steady-state. The initial concentrations set by the user are taken as guesses for the solution. A value of '1' (the default) indicates that COPASI shall use the damped Newton method.\n\nThe damped Newton method is a variant of the famous Newton method for the solution of systems of non-linear equations. The solution is obtained from an iterative procedure that refines an initial guess until the residual error is smaller than required. If a limit number of iterations is reached without an acceptable solution, the method halts without a solution.\n\nThe iteration of the plain Newton method is:\n\n$x_{i} = x_{i-1}-\\frac{f(x_{i-1})}{f'(x_{i-1})}$\n\nIn the damped method if $x_{i-1}$ has a larger residual error than $x_{i}$ one looks at:\n\n$x_{i}=x_{i-1}-\\frac{f(x_{i-1})}{f'(x_{i-1})}\\cdot2^{-n}$ where $n=0, \\ldots, 32$\n\nand accepts the first such value that has a smaller residual error than $x_{i}$. If none is found, the procedure halts without a solution (because it is at a local minimum).\n\nUse Integration\n\nThis parameter is a Boolean value to determine whether to use the deterministic ODE solver to follow the time course defined by the differential equations until a steady state is reached. If at $10^{10}$ units of time no steady state has been reached the method halts with no solution. If Use Newton is '1' an attempt to find the Steady-state via the damped Newton method is made at each intermediate time point. A value of '1' (the default) indicates that COPASI shall use integration.\n\nUse Back Integration\n\nThis parameter is a Boolean value to determine whether to use the deterministic ODE solver to reverse the time course (going backwards in time) defined by the differential equations until a steady state is reached. If at $10^{10}$ units of time no Steady-State has been reached the method halts with no solution. If Use Newton is '1' an attempt to find the steady-state via the damped Newton method is made at each intermediate time point. A value of '1' indicates that COPASI shall use back integration.\n\nAccept Negative Concentrations\n\nThis parameter is a boolean value to determine whether to accept a steady-state, which contains negative concentrations. A value of '1' indicates that negative concentrations are acceptable whereas a value of '0' (the default) indicates that such states are discarded.\n\nIteration Limit\n\nThis parameter is a positive integer to determine the maximum number of iterations the damped Newton method shall perform before it fails. The default is '50'.\n\nDerivation Factor\n\nThis is a numeric value to determine the step size used to calculate $f'(x_{i-1})$. The default is '0.001'.\n\nResolution\n\nThis is a positive numeric value to determine the resolution used to decide whether the current state is acceptable as a steady-state. If the absolute change of each state variable is smaller than the resolutions the state is accepted. The default is $10^{-9}$.\n\nNote, this value is interpreted as a concentration value, even though the calculation internally uses particle numbers. The reason for that is purely heuristic: In many cases the modeler will choose the units in a way that concentration values are neither extremely large nor extremely small numerically so that the default value for this parameter leads to useful results. However generally it is not save to just keep the default value without checking.\n\nTarget Criterion\n\nThis selection list, specifies under what circumstances to accept the steady state. Valid options are:\n\nRate: the largest of all the right-hand side of the ODEs needs to be smaller than the Resolution specified (in concentration units)\n\nDistance: the Newton method increment needs to be smaller than the Resolution specified\n\nDistance and Rate: both of the above criteria have to be satisfied. This is the default method selected so as to avoid false positives."
+    }
+}

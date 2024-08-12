@@ -1,0 +1,42 @@
+{
+    "id": "dbpedia_2236_3",
+    "rank": 18,
+    "data": {
+        "url": "https://groups.google.com/g/copasi-user-forum/c/RiteXY1XloY",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Sensitivity analysis using COPASI",
+        "top_image": "https://www.gstatic.com/images/branding/product/1x/groups_32dp.png",
+        "meta_img": "https://www.gstatic.com/images/branding/product/1x/groups_32dp.png",
+        "images": [
+            "https://fonts.gstatic.com/s/i/productlogos/groups/v9/web-48dp/logo_groups_color_1x_web_48dp.png",
+            "https://lh3.googleusercontent.com/a/default-user=s40-c",
+            "https://lh3.googleusercontent.com/a/default-user=s40-c",
+            "https://lh3.googleusercontent.com/a/default-user=s40-c",
+            "https://lh3.googleusercontent.com/a/default-user=s40-c",
+            "https://lh3.googleusercontent.com/a/default-user=s40-c",
+            "https://lh3.googleusercontent.com/a/default-user=s40-c",
+            "https://lh3.googleusercontent.com/a/default-user=s40-c",
+            "https://lh3.googleusercontent.com/a/default-user=s40-c",
+            "https://lh3.googleusercontent.com/a/default-user=s40-c",
+            "https://lh3.googleusercontent.com/a/default-user=s40-c",
+            "https://lh3.googleusercontent.com/a-/ALV-UjVlECEw4LEBfJTvE0oYDsTKUZdDuMIKk_HIlNQz-51jcVEKUuSd=s40-c",
+            "https://lh3.googleusercontent.com/a/default-user=s40-c"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "//www.gstatic.com/images/branding/product/1x/groups_32dp.png",
+        "meta_site_name": "",
+        "canonical_link": "https://groups.google.com/g/copasi-user-forum/c/RiteXY1XloY",
+        "text": "Pedro Mendes\n\nunread,\n\nto copasi-u...@googlegroups.com\n\nDear Quan,\n\njust to expand on what Stefan described: Sensitivity analysis is indeed\n\ninfinitesimal, however since 5% is still a small change you can use the\n\nresults of sensitivity to give you a feeling of which parameter has the\n\nstrongest effect on butanol. The result of sensitivities indicates what\n\nwould be the change in butanol for 1% change in the parameters (so a\n\n*draft* estimate would be that time 5, but note that this is an\n\napproximation and it would not be the correct value).\n\nWith parameter scan you can indeed find out the exact value of the\n\nchanges in butanol with 5% change in each parameter. For that\n\nessentially you change one parameter by 5% and see what is now butanol.\n\nParameter scan allows you to do all the changes in one go. For this you\n\nwould chose time course or steady state in the subtask for parameter\n\nscan (I prefer to look at steady state values, but time course is ok\n\ntoo, depends on what your question, of course). Then add each one of the\n\nparameters as a \"scan\" and set each one to have the minimum value to be\n\nequal to what you have it in the model, the maximum value to be that\n\nvalue + 5%, and finally set the number of intervals to 2. You also need\n\nto create a report file that contains the parameter values and the\n\nsteady state concentration of butanol (the variable you care about).\n\nWhen you run this you will get the results you want, but notice that you\n\nwill also get a lot more combinations of multiple parameters changed. so\n\nlook for the lines that have only one parameter changed by 5%.\n\nNow, looking at your model (that you sent me in a private email), I see\n\nthat your model is closed and most of the fluxes are zero (of course,\n\nbecause there is no force maintaining the steady state). This results\n\nthat there is no increase in butanol since its value is at equilibrium\n\nno matter the constants... I suggest that you should look at your model\n\nand set the pathway substrate and final product to be constant (rather\n\nthan depend on reactions), otherwise you will not get any meaningful\n\nresults out of this model.\n\nPedro\n\n\n\nPedro Mendes\n\nProfessor of Computational Systems Biology\n\nSchool of Computer Science\n\nManchester Centre for Integrative Systems Biology\n\nUniversity of Manchester\n\nManchester Institute of Biotechnology\n\n131 Princess Street\n\nManchester, M1 7DN, U.K.\n\nPedro Mendes\n\nunread,\n\nto copasi-u...@googlegroups.com\n\nQuan,\n\nno, you should not set all species to fixed. If you do this then there\n\nwill be no model at all, just constants. You should only set to fixed\n\nthe entry points in the pathway and the exits. I am not sure what these\n\nshould be, but looking at a quick diagram of your reactions, I think\n\nthese are most likely:\n\nF6P (since you don't have glucose, this looks like the entry of carbon)\n\nlactate (obviously a product)\n\nacetate (not sure about this one, but it is not made from anything in\n\nyour pathway, so likely a substrate too)\n\ninactivecell (this is clearly an end product)\n\nA (only has reactions producing it, so it will accumulate if you don't\n\nfix it)\n\nB (same as A)\n\nE (same as A)\n\nAcet (only has reactions consuming it, so it must be a substrate)\n\nX (only has reactions consuming it, so it must be a substrate)\n\nBut, of course, I don't know much about your model...\n\nPedro\n\n\n\n> --\n\n> You received this message because you are subscribed to the Google\n\n> Groups \"COPASI User Forum\" group.\n\n> To unsubscribe from this group and stop receiving emails from it, send\n\n> an email to copasi-user-fo...@googlegroups.com\n\n> <mailto:copasi-user-fo...@googlegroups.com>.\n\n> To post to this group, send email to copasi-u...@googlegroups.com\n\n> <mailto:copasi-u...@googlegroups.com>.\n\n> To view this discussion on the web visit\n\n> https://groups.google.com/d/msgid/copasi-user-forum/85f8f1f1-2613-4fe8-8787-45ef3ae6fe1a%40googlegroups.com\n\n> <https://groups.google.com/d/msgid/copasi-user-forum/85f8f1f1-2613-4fe8-8787-45ef3ae6fe1a%40googlegroups.com?utm_medium=email&utm_source=footer>.\n\n> For more options, visit https://groups.google.com/d/optout.\n\n"
+    }
+}

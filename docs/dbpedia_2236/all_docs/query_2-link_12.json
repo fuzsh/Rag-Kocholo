@@ -1,0 +1,38 @@
+{
+    "id": "dbpedia_2236_2",
+    "rank": 12,
+    "data": {
+        "url": "https://groups.google.com/g/copasi-user-forum/c/adhnZrfC1Ww",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Some help with elementary set-up in Copasi",
+        "top_image": "https://www.gstatic.com/images/branding/product/1x/groups_32dp.png",
+        "meta_img": "https://www.gstatic.com/images/branding/product/1x/groups_32dp.png",
+        "images": [
+            "https://fonts.gstatic.com/s/i/productlogos/groups/v9/web-48dp/logo_groups_color_1x_web_48dp.png",
+            "https://lh3.googleusercontent.com/a-/ALV-UjU3vq2IBlQqDMtJgQI7br-pSLitM9QXlf4w_9u0RSSOmqVPpw=s40-c",
+            "https://lh3.googleusercontent.com/a-/ALV-UjVZEn3hROHuCEkk-jfGNVwIHmUO76tBvDyTxe_xsKJFzf02eQ=s40-c",
+            "https://lh3.googleusercontent.com/a-/ALV-UjU3vq2IBlQqDMtJgQI7br-pSLitM9QXlf4w_9u0RSSOmqVPpw=s40-c",
+            "https://lh3.googleusercontent.com/a-/ALV-UjU3vq2IBlQqDMtJgQI7br-pSLitM9QXlf4w_9u0RSSOmqVPpw=s40-c",
+            "https://lh3.googleusercontent.com/a-/ALV-UjVZEn3hROHuCEkk-jfGNVwIHmUO76tBvDyTxe_xsKJFzf02eQ=s40-c",
+            "https://lh3.googleusercontent.com/a-/ALV-UjU3vq2IBlQqDMtJgQI7br-pSLitM9QXlf4w_9u0RSSOmqVPpw=s40-c",
+            "https://lh3.googleusercontent.com/a/default-user=s40-c",
+            "https://lh3.googleusercontent.com/a-/ALV-UjVZEn3hROHuCEkk-jfGNVwIHmUO76tBvDyTxe_xsKJFzf02eQ=s40-c"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "//www.gstatic.com/images/branding/product/1x/groups_32dp.png",
+        "meta_site_name": "",
+        "canonical_link": "https://groups.google.com/g/copasi-user-forum/c/adhnZrfC1Ww",
+        "text": "I believe you need to assign all your variables as global. I would use;\n\nk1f,k1r,K1\n\nk2f,k2r,K2\n\netc.\n\nTo replace one of the rate constants for a reaction with a function of the equilibrium constant you set the one to be replaced as “assignment” (on the “Global Quantities” list), then double click that row to get to the assignment dialog. Then in the equation box put the proper ratio, e.g.;\n\nValues[k1f].InitalValue/Values[K1].InitalValue\n\nNo equal sign and you need to use the Copasi logo button to get to the parameter lists. If Copasi likes the formula the box turns blue. If it can’t parse the formula the box is pink.\n\nThe other parameters for that reaction, k1f and K1, are assigned initial values in the Global Quantities list. When you change one the dependent calculated value should automatically change as well.\n\nNow when you create equation one as “reversible mass action” you can click on the rate constants in the “Mapping” column and point them at the appropriate global variable (k1f and k1r).\n\nI hope that helps.\n\njim\n\nTo clarify; Copasi won’t “auto-complete” but it does parse the expression and changes the box’s background color depending on if it parses as a valid expression (to Copasi). You can manually enter the expression but the syntax for species, globals etc. is a bit tricky so I find it much easier to use the Copasi button. The click-path is [Copasi][Global Quantities][Initial values][your global var]. Note that once a valid equation has been entered the next time you go to edit the expression the Copasi button is gone and you need to first click the button that is where the Copasi button was before, it has a square with a partial diagonal as the button’s symbol. The mouse-over note for the button is “edit expression”\n\nFor your equation 3 the syntax is {Values[k3f].InitialValue}/{Values[K3].InitialValue}, which is easiest to enter via the Copasi button and will give a blue box when it is completely entered.\n\nIf you want to include a concentration in the expression the usual click path is [Copasi][Species][Transient Concentrations][your species(t)]\n\njim\n\nVic-\n\nThanks for the articles. You clearly are way ahead of me on modeling solubility and already know of the challenges and alternative viewpoints. If you have any other questions on getting Copasi to do what you want feel free to email me.\n\nJim"
+    }
+}

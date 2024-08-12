@@ -1,0 +1,57 @@
+{
+    "id": "dbpedia_2236_3",
+    "rank": 82,
+    "data": {
+        "url": "http://virtualabs.ist.utl.pt/COPASI/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Example of an Isothermal Continuous Reactor with COPASI",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "http://virtualabs.ist.utl.pt/COPASI/abstract0x.png",
+            "http://virtualabs.ist.utl.pt/COPASI/abstract1x.png",
+            "http://virtualabs.ist.utl.pt/COPASI/abstract2x.png",
+            "http://virtualabs.ist.utl.pt/COPASI/abstract3x.png",
+            "http://virtualabs.ist.utl.pt/COPASI/abstract4x.png",
+            "http://virtualabs.ist.utl.pt/COPASI/abstract5x.png",
+            "http://virtualabs.ist.utl.pt/COPASI/abstract6x.png",
+            "http://virtualabs.ist.utl.pt/COPASI/abstract7x.png",
+            "http://virtualabs.ist.utl.pt/COPASI/abstract8x.png",
+            "http://virtualabs.ist.utl.pt/COPASI/11.png",
+            "http://virtualabs.ist.utl.pt/COPASI/12.png",
+            "http://virtualabs.ist.utl.pt/COPASI/abstract9x.png",
+            "http://virtualabs.ist.utl.pt/COPASI/13.png",
+            "http://virtualabs.ist.utl.pt/COPASI/14.png",
+            "http://virtualabs.ist.utl.pt/COPASI/15.png",
+            "http://virtualabs.ist.utl.pt/COPASI/16.png",
+            "http://virtualabs.ist.utl.pt/COPASI/17.png",
+            "http://virtualabs.ist.utl.pt/COPASI/18.png",
+            "http://virtualabs.ist.utl.pt/COPASI/19.png",
+            "http://virtualabs.ist.utl.pt/COPASI/10.png",
+            "http://virtualabs.ist.utl.pt/COPASI/110.png",
+            "http://virtualabs.ist.utl.pt/COPASI/abstract10x.png",
+            "http://virtualabs.ist.utl.pt/COPASI/abstract11x.png",
+            "http://virtualabs.ist.utl.pt/COPASI/2.png",
+            "http://virtualabs.ist.utl.pt/COPASI/22.png",
+            "http://virtualabs.ist.utl.pt/COPASI/abstract12x.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Av. Rovisco Pais"
+        ],
+        "publish_date": "2014-01-23T22:45:00",
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "",
+        "meta_favicon": "",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "Contents\n\n1 Introduction\n\nCOPASI is a software application for simulation and analysis of chemical/biochemical networks and their dynamics [2].\n\nSystem A general CSTR dynamics can is described as:\n\nwhere:\n\nV - reactor volume\n\nCi - Concentration of i specie\n\nQ - Volumetric flow rate\n\nνi - Stoichiometric coeficiente of the i specie in the stoichiometric equation r(Cin) - rate of reaction n - reaction order\n\nCase For COPASI demonstration purpose, suppose a particular simple case:\n\nLiquid System. We can consider = 0 and = V\n\nThe reaction is elementary and is A → B irreversible.\n\nThe system is isothermic,\n\nSo, the mass balance becomes\n\nwhere we can identify three terms: a source Q∕V ⋅ Cio, a sink Q∕V ⋅ Ci and a reaction k ⋅ Ci\n\nValidation\n\nAnalitical Solution This example is very simple and has a analytical solution for Ci(t = 0) = Co that is:\n\nOther Solutions For more complex systems, like reaction orders different of zero or one, or more than one reaction, we need numerical methods to solve them, but its always possible to achieve a stationary state solution, given by:\n\nThat for first order is easy to solve in order to Ci\n\n(1)\n\nwhere CiS is the outlet concentration of A at stationary state.\n\nFor orders (n) different from zero or one, we need to solve the equation\n\nThe V∕Q, spatial time, it will be a tricky part to input to COPASI, has we will see the implementation later on.\n\n2 First order isothermal CSTR\n\nLet’s assume the following system:\n\nk = 0.15 s-1\n\nthe inverse of spatial time, the spatial velocity Q∕V = 2 s-1\n\nInitial concentration in the reactor Co = 1 M\n\nInlet concentration of reactant, constant and equal to Cio = 2\n\nand implement it in COPASI\n\nFirst we need to define the units Figure 1. For our case time is in s, volume in L, quantity is mol and time interval 10 (20 spacial time, a stiff thing!).\n\nSecondly, lets create a compartment, say for instance, reactor, with fixed type and volume 1 L, Figure 2.\n\nFor the elementary reaction\n\nwe need four species (A, B, In and Out) and the tricky part, four reactions (reaction, SourceA, OutA and OutB).\n\nLets begin with the reactions first. The first one is the reaction itself as seen in Figure 3.\n\nThe second is not really a reaction but the inlet of A (SourceA) to the reactor as seen in Figure 4.\n\nSV is a global quantity and is the spatial velocity (Q/V). We can introduce a numerical value or for commodity we can define it in Global Quantities section as seen in Figure 5\n\nIf nothing more comes to the reactor its now necessary to define the sink, the outlets of A and B, like in Figures 6 and 7.\n\nWe need to define the inlet concentration of A, Figure 8\n\nAnd finally defining the initial condition, the concentration of A inside the reactor at time=0, Figure 9.\n\nNow, we can solve the system Runing the task Time Course after the creation of a output with the Output Assistant (plots - Concentrations, Volumes and ...), Figure 10.\n\nAnd an automatic plot is generated, Figure 11\n\nThe easiest way to validate the result is to calculate the stationary concentration of A that in Figure 11 is shown as approx. 1.86 mol/l and can be calculated as said before eq. 1,\n\n3 Second order isothermal CSTR\n\nFor simplicity, let’ say that everything stays the same with the late example of first order except, obviously, the kinetic equation, which will now be\n\nThe only thing to do is to change the reaction in the Reaction section to have a rate expression of second order, Figure 12\n\nRun again the Time Course Task and the automatic generated plot will appear, Figure 13.\n\nWe can now validate the results by solving the system with a ODE solver like the odeint of the scipy.integrate of Python gets a CiS = 1.611 that is fully compatible with the COPASI solution (CiS = 1.61).\n\nBy solving the ODE with other mean, it is necessary to emphasise that COPASI resolved the mass balance\n\n4 Conclusions\n\nThe examples seem to take a lot of work for such a easy task as to solve a ODE. But the reader must make attention to the possibilities of COPASI, namely the easy implementation of other systems with very complex mechanisms and its strong ability to make Parameter Estimation.\n\nWe regret the absence of the implementation of non-isothermal systems but understand that is not usually a biochemical problem.\n\nThis paper is only intended to explain how to extend the huge COPASI capacity to CSTR’s and perhaps other open systems of Chemical Engineering.\n\nReferences\n\nThis document in pdf\n\nThe COPASI file example\n\nA little Python file for Example Validation"
+    }
+}
