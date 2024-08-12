@@ -1,0 +1,43 @@
+{
+    "id": "dbpedia_2557_2",
+    "rank": 13,
+    "data": {
+        "url": "https://live.paloaltonetworks.com/t5/custom-signatures/pokemon-go/td-p/96642",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Solved: LIVEcommunity",
+        "top_image": "https://live.paloaltonetworks.com/html/@B09EB55777348FEBBB51B90839A41B20/assets/PAN_Logo_White.png",
+        "meta_img": "",
+        "images": [
+            "https://live.paloaltonetworks.com/html/@3ED993240B214CCB84957D8890090F3C/assets/PANW_Red_BW.png",
+            "https://live.paloaltonetworks.com/html/@E5AF36E8ADFF42398AB32C75C8A2488A/assets/LC-logo-BW.png",
+            "https://live.paloaltonetworks.com/legacyfs/online/a11988_lime_cat_big.png",
+            "https://live.paloaltonetworks.com/t5/image/serverpage/image-id/5896iA25E7109C4D28116/image-dimensions/40x40/image-coordinates/20%2C0%2C220%2C200?v=v2",
+            "https://live.paloaltonetworks.com/t5/image/serverpage/avatar-name/robojapan/avatar-theme/candy/avatar-collection/robots/avatar-display-size/message/version/2?xdesc=1.0",
+            "https://live.paloaltonetworks.com/t5/image/serverpage/image-id/5896iA25E7109C4D28116/image-dimensions/40x40/image-coordinates/20%2C0%2C220%2C200?v=v2",
+            "https://live.paloaltonetworks.com/legacyfs/online/a11988_lime_cat_big.png",
+            "https://live.paloaltonetworks.com/t5/image/serverpage/image-id/8978iE6F3FEC0939CAC27/image-dimensions/40x40/image-coordinates/168%2C0%2C832%2C664?v=v2",
+            "https://live.paloaltonetworks.com/skins/images/7DC91DC60B773465C2A05DD98F1C9800/responsive_peak/images/icon_anonymous_message.png",
+            "https://live.paloaltonetworks.com/html/@B09EB55777348FEBBB51B90839A41B20/assets/PAN_Logo_White.png",
+            "https://live.paloaltonetworks.com/html/assets/Khoros-awards-2022-2.jpg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "live.paloaltonetworks.com",
+            "user-id"
+        ],
+        "publish_date": "2016-07-12T04:04:26.689000+00:00",
+        "summary": "",
+        "meta_description": "Solved: With the rise in popularity of the new Pokemon GO app, has anyone had the opportunity to build a signature or possibly even gather a - 96642",
+        "meta_lang": "en",
+        "meta_favicon": "https://live.paloaltonetworks.com/html/@AF88D457713207EDCC5EEBCB342CACE0/assets/favicon.ico",
+        "meta_site_name": "",
+        "canonical_link": "https://live.paloaltonetworks.com/t5/custom-signatures/pokemon-go/td-p/96642",
+        "text": "With the rise in popularity of the new Pokemon GO app, has anyone had the opportunity to build a signature or possibly even gather a pcap of the traffic that could be shared (the site is not allowing signups right now so I am unable to produce my own test traffic to collect).\n\nI have received complaints from as high as our CIO, that too many people are walking around playing this game and we need to report on it and block is ASAP.\n\nAny help is appreciated,\n\n-adam\n\nThanks for all the feedback. I can confirm that I also see the app attempting to use the following URLs:\n\npgorelease.nianticlabs.com\n\n- Using a *.nianticlabs.com certificate\n\nappload.ingest.crittercism.com\n\n- Using a *.ingest.critterciscm.com certificate\n\nThe latter URL appears to be a third party app analytics company. I've yet to receive an executive order to authorize blocking, but I believe tboire is likely correct that blocking the Niantic URL will prevent connections. Should I get approval to block, that is my next course of action.\n\nThanks everyone.\n\nHi @aelmore @tboire @BenjAudy.MTL\n\nI know I am late in this thread, but I wanted to share this two options with you all.\n\nOption 1: URL filtering\n\nSimply blacklist the following url: pgorelease.nianticlabs.com (this is used to make API calls by the APP)\n\nOption 2: Create a custom application which looks for the SNI string\n\nset application pokemon-go default port tcp/443\n\nset application pokemon-go signature PG-SSL and-condition \"And Condition 1\" or-condition \"Or Condition 1\" operator pattern-match pattern pgorelease.nianticlabs.com\n\nset application pokemon-go signature PG-SSL and-condition \"And Condition 1\" or-condition \"Or Condition 1\" operator pattern-match context ssl-req-client-hello\n\nset application pokemon-go signature PG-SSL scope protocol-data-unit\n\nset application pokemon-go signature PG-SSL order-free no\n\nset application pokemon-go signature PG-SSL comment “Pattern match against the SNI for Pokemon Go\"\n\nset application pokemon-go category media\n\nset application pokemon-go subcategory gaming\n\nset application pokemon-go technology client-server\n\nset application pokemon-go description \"Pokemon Go is a social game released in 2016 by Niantic Labs.\"\n\nset application pokemon-go risk 1\n\nset application pokemon-go parent-app ssl"
+    }
+}
