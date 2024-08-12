@@ -1,0 +1,39 @@
+{
+    "id": "dbpedia_2541_1",
+    "rank": 60,
+    "data": {
+        "url": "https://www.mathworks.com/matlabcentral/answers/2143589-errors-integrating-arduino-c-code-into-simulink-using-s-function-builder",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Errors integrating Arduino C++ code into Simulink using S-Function Builder",
+        "top_image": "https://www.mathworks.com/content/dam/mathworks/mathworks-dot-com/images/responsive/thumbnails/generic-og-thumbnail.jpg",
+        "meta_img": "https://www.mathworks.com/content/dam/mathworks/mathworks-dot-com/images/responsive/thumbnails/generic-og-thumbnail.jpg",
+        "images": [
+            "https://www.mathworks.com/etc.clientlibs/mathworks/clientlibs/customer-ui/templates/common/resources/images/pic-header-mathworks-logo.20240628143916730.svg",
+            "https://www.mathworks.com/etc.clientlibs/mathworks/clientlibs/customer-ui/templates/common/resources/images/pic-header-mathworks-logo.20240628143916730.svg",
+            "https://www.mathworks.com/responsive_image/100/100/0/0/0/cache/matlabcentral/profiles/25183871_1641274439927_DEF.jpg",
+            "https://www.mathworks.com/etc.clientlibs/mathworks/clientlibs/customer-ui/templates/common/resources/images/pic-header-mathworks-logo.20240628143916730.svg",
+            "https://www.mathworks.com/etc.clientlibs/mathworks/clientlibs/customer-ui/templates/common/resources/images/ico-facebook.20240628143916730.svg",
+            "https://www.mathworks.com/etc.clientlibs/mathworks/clientlibs/customer-ui/templates/common/resources/images/ico-twitter.20240628143916730.svg",
+            "https://www.mathworks.com/etc.clientlibs/mathworks/clientlibs/customer-ui/templates/common/resources/images/ico-instagram.20240628143916730.svg",
+            "https://www.mathworks.com/etc.clientlibs/mathworks/clientlibs/customer-ui/templates/common/resources/images/ico-youtube.20240628143916730.svg",
+            "https://www.mathworks.com/etc.clientlibs/mathworks/clientlibs/customer-ui/templates/common/resources/images/ico-linkedin.20240628143916730.svg",
+            "https://www.mathworks.com/etc.clientlibs/mathworks/clientlibs/customer-ui/templates/common/resources/images/ico-rss.20240628143916730.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "Errors integrating Arduino C++ code into... Learn more about arduino, s-function, simulink, embedded coder Simulink",
+        "meta_lang": "en",
+        "meta_favicon": "/etc.clientlibs/mathworks/clientlibs/customer-ui/templates/common/resources/images/favicon.20240628143916730.ico",
+        "meta_site_name": "",
+        "canonical_link": "https://www.mathworks.com/matlabcentral/answers/2143589-errors-integrating-arduino-c-code-into-simulink-using-s-function-builder",
+        "text": "Hi all,\n\nI am currently attempting to integrate Arduino C++ code into my Simulink model using the S-Function builder. I am starting simple by essentially following this tutorial line for line to create a custom function that writes HIGH to a pin of choice on the Arduino board. I had a decent amount of success at first following the tutorial. I am able to compile functions written into C to Matlab executables, and even integrate them into my model to do things like basic things like double an input signal without any errors. However, I have issues as soon as I try to call functions from the standard Arduino library. Here is my header for the S-Function Builder:\n\n/* Includes_BEGIN */\n\n#include <math.h>\n\n# ifndef MATLAB_MEX_FILE\n\n# include <Arduino.h>\n\n# endif\n\n/* Includes_END */\n\nAgain, this is just following the guide I linked earlier. This S-Function also successfully builds and compiles into a Mex file, but when I try to run this model in Simulink using Monitor and Tune, I am slammed with dozens of error messages. Most the error messages however are basically identical, they either look like this:\n\nC:/ProgramData/MATLAB/SupportPackages/R2023b/aIDE/hardware/arduino/avr/cores/arduino/Arduino.h:137:16: error: unknown type name 'uint8_t'; did you mean 'uint8_T'?\n\nint analogRead(uint8_t pin);\n\n^~~~~~~\n\nuint8_T\n\nOr like this:\n\nC:/ProgramData/MATLAB/SupportPackages/R2023b/aIDE/hardware/arduino/avr/cores/arduino/Arduino.h:170:30: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'digital_pin_to_bit_mask_PGM'\n\nextern const uint8_t PROGMEM digital_pin_to_bit_mask_PGM[];\n\n^~~~~~~~~~~~~~~~~~~~~~~~~~~\n\nAt first I thought this was because I was trying to call C++ functions from a C source file. The workaround to this seems to be to rename the wrapper function file to have .cpp file extension, and insert 'extern \"C\"' before the two function declarations in the file. However after trying this fix, I just get this error message after running in Simulink:\n\nUnable to find S-function module 'example_wrapper.c'. S-function modules must exist as either source files or pre-compiled object files on the MATLAB path."
+    }
+}

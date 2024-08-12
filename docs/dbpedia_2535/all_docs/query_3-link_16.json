@@ -1,0 +1,39 @@
+{
+    "id": "dbpedia_2535_3",
+    "rank": 16,
+    "data": {
+        "url": "https://discuss.elastic.co/t/winlogbeat-events-not-showing-in-aws-elasticsearch/144572",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Winlogbeat events not showing in AWS Elasticsearch",
+        "top_image": "https://global.discourse-cdn.com/elastic/original/3X/5/4/5461df8fd2fe783981b0180332821184b729980e.png",
+        "meta_img": "https://global.discourse-cdn.com/elastic/original/3X/5/4/5461df8fd2fe783981b0180332821184b729980e.png",
+        "images": [
+            "https://emoji.discourse-cdn.com/twitter/slight_smile.png?v=5",
+            "https://emoji.discourse-cdn.com/twitter/slight_smile.png?v=5",
+            "https://avatars.discourse-cdn.com/v4/letter/f/6a8cbe/48.png",
+            "https://emoji.discourse-cdn.com/twitter/slight_smile.png?v=12",
+            "https://emoji.discourse-cdn.com/twitter/smile.png?v=12",
+            "https://emoji.discourse-cdn.com/twitter/scream.png?v=5"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "winlogbeat"
+        ],
+        "tags": null,
+        "authors": [
+            "fionamacd (Fiona)",
+            "andrewkroh (Andrew Kroh)",
+            "system (system) Closed"
+        ],
+        "publish_date": "2018-08-15T18:51:13+00:00",
+        "summary": "",
+        "meta_description": "Hi, \nI am just starting out with ELK and setting it up on AWS and using AWS ElasticSearch Service. \nI have configured Filebeat to send files from my AWS Windows instance to an AWS Ubuntu instance running Logstash on it. &hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://global.discourse-cdn.com/elastic/optimized/3X/3/7/37d58c6890e29b4d96eae5c67db6cf3db36b0181_2_32x32.png",
+        "meta_site_name": "Discuss the Elastic Stack",
+        "canonical_link": "https://discuss.elastic.co/t/winlogbeat-events-not-showing-in-aws-elasticsearch/144572",
+        "text": "Hi,\n\nI am just starting out with ELK and setting it up on AWS and using AWS ElasticSearch Service.\n\nI have configured Filebeat to send files from my AWS Windows instance to an AWS Ubuntu instance running Logstash on it. This then sends them into an index in AWS ES.\n\nNow I am trying to do the same thing, but for Windows Event logs using winlogbeat. I want to send the events to the same logstash and then have it forward them into ES.\n\nOn the logstash instance I run in debug mode and I can see the winlogbeat events coming in - and no errors reported. When I go to Kibana on AWS I do not see any events have been loaded into any indexes.\n\nLogstash input is:\n\ninput {\n\nbeats {\n\nport => 5044\n\n}\n\noutput is:\n\noutput {\n\namazon_es {\n\nhosts => \"search-cksw-es-iog34u5nroxxxx.us-east-1.es.amazonaws.com\"\n\nregion => \"us-east-1\"\n\nport => \"443\"\n\nindex => \"test2\"\n\naws_access_key_id => \"AKIxxxx\"\n\naws_secret_access_key => \"gfcxxxx\"\n\nflush_size => 5\n\n}\n\n}\n\nIn the debug I can see lots of events like this:\n\n[DEBUG] 2018-08-15 18:49:18.311 [Ruby-0-Thread-7@[main]>worker0: :1] pipeline - output received {\"event\"=>{\"event_data\"=>{\"param1\"=>\"%%860\", \"param4\"=>\"1.1.14305.0\", \"param5\"=>\"1.255.236.0\", \"param2\"=>\"4.10.209.0\"}, \"beat\"=>{\"version\"=>\"6.3.2\", \"name\"=>\"winlogbeat\", \"hostname\"=>\"DEV-CNK-01\"}, \"opcode\"=>\"Info\", \"host\"=>{\"name\"=>\"winlogbeat\"}, \"type\"=>\"wineventlog\", \"record_number\"=>\"105272\", \"event_id\"=>1150, \"@timestamp\"=>2017-10-30T12:07:50.000Z, \"log_name\"=>\"System\", \"message\"=>\"Endpoint Protection client is up and running in a healthy state.\\n \\tPlatform version: 4.10.209.0\\n \\tEngine version: 1.1.14305.0\\n \\tSignature version: 1.255.236.0\", \"fields\"=>{\"env\"=>\"staging\"}, \"tags\"=>[\"service-X\", \"web-tier\", \"beats_input_codec_plain_applied\"], \"computer_name\"=>\"DEV-CNK-01.ev.internal\", \"source_name\"=>\"Microsoft Antimalware\", \"level\"=>\"Information\", \"keywords\"=>[\"Classic\"], \"@version\"=>\"1\"}}\n\nNot sure what to check now?\n\nFiona\n\nThanks, but it is sending the filebeat input successfully to the AWS ES, just can't get the winlogbeat to also go there.\n\nI did try changing the output as you suggested, but either with or without the port appended to the URL it failed to make the connection. I think it is because you need to use signed requests which is what the amazon_es output lets you set up.\n\nHere was an error:\n\n[WARN ] 2018-08-16 15:21:42.463 [Ruby-0-Thread-4: :1] elasticsearch - Attempted to resurrect connection to dead ES instance, but got an error. {:url=>\"https://search-cksw-es-ixxxxx.us-east-1.es.amazonaws.com:9200/\", :error_type=>LogStash::Outputs::ElasticSearch::HttpClient::Pool::HostUnreachableError, :error=>\"Elasticsearch Unreachable: [https://search-cksw-es-ioxxxx.us-east-1.es.amazonaws.com:9200/][Manticore::ConnectTimeout] connect timed out\"}\n\nI modified the actual URL above for security reasons\n\nI will give AWS Support a ping and see if they know anything."
+    }
+}
