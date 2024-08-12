@@ -1,0 +1,32 @@
+{
+    "id": "dbpedia_2918_2",
+    "rank": 4,
+    "data": {
+        "url": "https://space.stackexchange.com/questions/20730/cubesat-space-protocol-and-ax-25",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Cubesat Space Protocol and AX.25",
+        "top_image": "https://cdn.sstatic.net/Sites/space/Img/apple-touch-icon@2.png?v=bb39c00dba34",
+        "meta_img": "https://cdn.sstatic.net/Sites/space/Img/apple-touch-icon@2.png?v=bb39c00dba34",
+        "images": [
+            "https://www.gravatar.com/avatar/ed3869d6844bc2376e58cc99b6660959?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/58e52acbd2f48dac7e2020d7c7486287?s=64&d=identicon&r=PG",
+            "https://space.stackexchange.com/posts/20730/ivc/0d1f?prg=3f5957d3-0abc-4f8c-9422-be26187502ba"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2017-03-20T11:12:25",
+        "summary": "",
+        "meta_description": "Are there any good sources to understand how to use Cubesat Space Protocol (CSP) and AX.25? I am supposed to use them for the network in an MSP430 microcontroller between a transceiver (which has a...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/space/Img/favicon.ico?v=8d04dd5f2a39",
+        "meta_site_name": "Space Exploration Stack Exchange",
+        "canonical_link": "https://space.stackexchange.com/questions/20730/cubesat-space-protocol-and-ax-25",
+        "text": "I must admit I'd have my doubts AX.25 is my \"protocol\" of choice for anything designed post-1980. However, there's so much amateur radio material out there that I'll leave it up to you to find a project that vaguely resembles what you need to build. Still, if possible, I'd recommend using a modern protocol; AX.25 is suboptimal in many was, not the least being the strange checksum and packet format.\n\nIn any case, Cubesat Space protocol is its own network layer protocol. It's fairly versatile, not totally unlike what people designed TCP/IP for. I think you can use KISS (which is related to AX.25) as physical layer for CSP. I'd, again, recommend not doing that. For a ground/space/ground link, CCSCP 131.0-B is probably the PHY layer you're looking for.\n\nCSP's transmission is also specified for I²C. Since your OCB talks I²C, you'll have to teach your MSP430 to do that, too. But that's normally integrated in the hardware, just use the I²C interface instead of SPI.\n\nThe obvious source for all CSP-related information is the original university's source code and specs:\n\nhttps://github.com/libcsp/libcsp\n\nLook in the \"doc/\" directory."
+    }
+}
