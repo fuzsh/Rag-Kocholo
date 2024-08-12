@@ -1,0 +1,31 @@
+{
+    "id": "dbpedia_2235_0",
+    "rank": 43,
+    "data": {
+        "url": "https://sbml.org/software/libsbml/5.18.0/docs/formatted/cpp-api/set_id_from_names_8cpp-example.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "libSBML C++ API: setIdFromNames.cpp",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://sbml.org/software/libsbml/5.18.0/docs/formatted/cpp-api/search/mag_sel.png",
+            "https://sbml.org/software/libsbml/5.18.0/docs/formatted/cpp-api/search/close.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "",
+        "meta_favicon": "",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "#include <iostream>\n\n#include <sstream>\n\n#include <vector>\n\n#include <string>\n\n#include \"util.h\"\n\nusing namespace std;\n\nclass NameIdTransformer : public IdentifierTransformer\n\n{\n\npublic:\n\nNameIdTransformer(const vector<string> &ids)\n\n: IdentifierTransformer()\n\n, existingIds(ids)\n\n{\n\n}\n\nint transform(SBase* element)\n\n{\n\nstring newId = getValidIdForName(element->getName());\n\nelement->setId(newId);\n\nexistingIds.push_back(newId);\n\n}\n\nprivate:\n\nstd::string nameToSbmlId(const std::string & name)\n\n{\n\nstd::ostringstream IdStream;\n\nstd::string::const_iterator it = name.begin();\n\nstd::string::const_iterator end = name.end();\n\nif ('0' <= *it && *it <= '9')\n\n{\n\nIdStream << '_';\n\n}\n\nfor (; it != end; ++it)\n\n{\n\nif (0x80 == (*it & 0xc0))\n\n{\n\ncontinue;\n\n}\n\nif (('0' <= *it && *it <= '9') ||\n\n('a' <= *it && *it <= 'z') ||\n\n('A' <= *it && *it <= 'Z'))\n\n{\n\nIdStream << *it;\n\n}\n\nelse\n\n{\n\nIdStream << '_';\n\n}\n\n}\n\nstd::string Id = IdStream.str();\n\nif (Id[Id.length() - 1] != '_')\n\n{\n\nreturn Id;\n\n}\n\nreturn Id.substr(0, Id.length() - 1);\n\n}\n\nstring getValidIdForName(const string& name)\n\n{\n\nstring base = nameToSbmlId(name);\n\nstring id(base);\n\nint count = 1;\n\nwhile (containsId(id))\n\n{\n\nstd::ostringstream idStream;\n\nidStream << base << \"_\" << count;\n\nid = idStream.str();\n\n++count;\n\n}\n\nreturn id;\n\n}\n\nbool containsId(string &id)\n\n{\n\nvector<string>::const_iterator it = existingIds.begin();\n\nwhile(it != existingIds.end())\n\n{\n\nif ((*it) == id) return true;\n\n++it;\n\n}\n\nreturn false;\n\n}\n\nvector<string> existingIds;\n\n};\n\nvector<string> getAllIds(List* allElements)\n\n{\n\nvector<string> result;\n\nif (allElements == NULL || allElements->getSize() == 0)\n\nreturn result;\n\nfor (unsigned long int i = 0; i < allElements->getSize(); ++i)\n\n{\n\nconst SBase* current = static_cast<const SBase*>(allElements->get(i));\n\n{\n\nresult.push_back(current->getId());\n\n}\n\n}\n\nreturn result;\n\n}\n\nint\n\nmain (int argc, char* argv[])\n\n{\n\nif (argc != 3)\n\n{\n\ncout << endl << \"Usage: setIdFromNames filename output\" << endl << endl;\n\nreturn 1;\n\n}\n\nconst char* filename = argv[1];\n\nconst char* output = argv[2];\n\n#ifdef __BORLANDC__\n\nunsigned long start, stop;\n\n#else\n\nunsigned long long start, stop;\n\n#endif\n\nstart = getCurrentMillis();\n\ndocument = reader.readSBML(filename);\n\nstop = getCurrentMillis();\n\ncout << endl;\n\ncout << \" filename: \" << filename << endl;\n\ncout << \" read time (ms): \" << stop - start << endl;\n\nif (errors > 0)\n\n{\n\ncout << \" error(s): \" << errors << endl;\n\ndocument->printErrors(cerr);\n\ndelete document;\n\nreturn errors;\n\n}\n\nstart = stop;\n\nconst vector<string>& allIds = getAllIds(allElements);\n\nNameIdTransformer trans(allIds);\n\ndocument->getModel()->renameIDs(allElements, &trans);\n\nstop = getCurrentMillis();\n\ncout << \" rename time (ms): \" << stop - start << endl;\n\nstart = stop;\n\nwriteSBMLToFile(document, output);\n\nstop = getCurrentMillis();\n\ncout << \" write time (ms): \" << stop - start << endl;\n\ncout << endl;\n\ndelete document;\n\nreturn errors;\n\n}"
+    }
+}

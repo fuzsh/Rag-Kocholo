@@ -1,0 +1,34 @@
+{
+    "id": "dbpedia_2232_3",
+    "rank": 7,
+    "data": {
+        "url": "https://groups.google.com/g/copasi-user-forum/c/vlYXvki5lEo",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Installing Copasi on Manjaro Linux: Problem and Solution",
+        "top_image": "https://www.gstatic.com/images/branding/product/1x/groups_32dp.png",
+        "meta_img": "https://www.gstatic.com/images/branding/product/1x/groups_32dp.png",
+        "images": [
+            "https://fonts.gstatic.com/s/i/productlogos/groups/v9/web-48dp/logo_groups_color_1x_web_48dp.png",
+            "https://lh3.googleusercontent.com/a-/ALV-UjUjOr-c8srA1dvJGR6bmCdTFemz_Bc8lCnRDbS4FNHpdFiP0Lpn=s40-c",
+            "https://lh3.googleusercontent.com/a-/ALV-UjWegRgbT-tkqj0gqunJubPa0sTIuWAHWR_L8kP91TZ8OfWKc6y79A=s40-c",
+            "https://lh3.googleusercontent.com/a-/ALV-UjX9ZNp0gyHW2PNF-PsdbG_f9J9g0rfGoBRLdLe-6hKWe7WRMRt0=s40-c",
+            "https://lh3.googleusercontent.com/a-/ALV-UjUjOr-c8srA1dvJGR6bmCdTFemz_Bc8lCnRDbS4FNHpdFiP0Lpn=s40-c"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "//www.gstatic.com/images/branding/product/1x/groups_32dp.png",
+        "meta_site_name": "",
+        "canonical_link": "https://groups.google.com/g/copasi-user-forum/c/vlYXvki5lEo",
+        "text": "Melanie Stefan\n\nunread,\n\nto COPASI User Forum\n\nHi all,\n\ntl;dr: I tried installing Copasi on Manjaro Linux, it didn't work at first, but then it did, so I am sharing what I did for anyone else who may find themselves in the same situation.\n\nFull story:\n\n- I am running Manjaro Linux 21.3.6, downloaded the installer for Copasi 4.36 (Build 260) for 64-bit Linux. The installation ran without any obvious problems.\n\n- BUT navigating to the relevant directory and typing\n\n./CopasiUI\n\ngives the following error message:\n\nThis application failed to start because it could not find or load the Qt platform plugin \"xcb\"\n\nin \"<path_to_copasi_dir>/share/copasi/lib/plugins\"\n\nAvailable platform plugins are: xcb.\n\nReinstalling the application may fix this problem.\n\n- (Narrator: Reinstalling the application did not fix this problem).\n\n- But after a bit of searching around I found (here: https://forum.manjaro.org/t/undefined-symbol-ft-done-mm-var/36461) that this may work:\n\nLD_PRELOAD=/usr/lib/libfreetype.so ./CopasiUI\n\n- And this did work! You can make this part of an alias in your .bashrc or .zshrc or wherever you do this kind of stuff.\n\nalias CopasiUI='LD_PRELOAD=/usr/lib/libfreetype.so <path_to_CopasiUI>'\n\n(I don't understand this well enough to explain. It has to do with telling the system where it should look for libraries first (?), but honestly I don't know. I just spent the day googling and trying random things like a monkey with a keyboard. And am hoping this post will save someone else some time.)\n\nBest wishes,\n\nMelanie"
+    }
+}

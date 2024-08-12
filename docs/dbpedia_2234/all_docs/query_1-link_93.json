@@ -1,0 +1,31 @@
+{
+    "id": "dbpedia_2234_1",
+    "rank": 93,
+    "data": {
+        "url": "https://stackoverflow.com/questions/77947861/scientific-linux-7-4-undefined-symbol-ompi-mpi-logical8-error",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Scientific Linux 7.4: undefined symbol: ompi_mpi_logical8 error",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://lh3.googleusercontent.com/a/ACg8ocKuqwywO4MQ8o8iThSqoJkqxIWSjhmHx1-LwP6cVeGtgVXo=k-s64",
+            "https://stackoverflow.com/posts/77947861/ivc/6e18?prg=a5d24832-32a4-401b-ac3e-34d623471512"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2024-02-06T12:55:32",
+        "summary": "",
+        "meta_description": "I am trying to run a Python Package that uses MPI for running tasks in parallel.\nas per the package's guidelines; I installed MPICH 4.2.0, followed my mpi4py.\nHowever, after running their example c...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/77947861/scientific-linux-7-4-undefined-symbol-ompi-mpi-logical8-error",
+        "text": "I am trying to run a Python Package that uses MPI for running tasks in parallel.\n\nas per the package's guidelines; I installed MPICH 4.2.0, followed my mpi4py.\n\nHowever, after running their example command, I get the following response:\n\nTraceback (most recent call last): File \"sGC_parameter_estimation.py\", line 8, in <module> from mpi4py.futures import MPIPoolExecutor File \"/home/people/hkaya/.local/lib/python3.6/site-packages/mpi4py/futures/__init__.py\", line 20, in <module> from .pool import MPIPoolExecutor File \"/home/people/hkaya/.local/lib/python3.6/site-packages/mpi4py/futures/pool.py\", line 14, in <module> from . import _lib File \"/home/people/hkaya/.local/lib/python3.6/site-packages/mpi4py/futures/_lib.py\", line 20, in <module> from .. import MPI ImportError: /home/people/hkaya/.local/lib/python3.6/site-packages/mpi4py/MPI.cpython-36m-x86_64-linux-gnu.so: undefined symbol: ompi_mpi_logical8\n\nwhen I run \"ldd\" for the said .so file; here is the output:\n\nldd /home/people/hkaya/.local/lib/python3.6/site-packages/mpi4py/MPI.cpython-36m-x86_64-linux-gnu.so linux-vdso.so.1 => (0x00007ffefd45f000) libdl.so.2 => /lib64/libdl.so.2 (0x00002b8515af4000) libpython3.6m.so.1.0 => /lib64/libpython3.6m.so.1.0 (0x00002b8515cf9000) libpthread.so.0 => /lib64/libpthread.so.0 (0x00002b8516221000) libc.so.6 => /lib64/libc.so.6 (0x00002b851643d000) /lib64/ld-linux-x86-64.so.2 (0x000055806dd65000) libutil.so.1 => /lib64/libutil.so.1 (0x00002b8516801000) libm.so.6 => /lib64/libm.so.6 (0x00002b8516a04000)\n\nAlthough running -objdump -tT gives a very long list, where ompi_mpi_logical8 is included with an \"UND\" tag.\n\nI also tried reinstalling mpi4py as suggested here, which did not resolve my issue. In fact, I noticed that mpi4py was installed in a different directory /usr/local/lib64/python3.6/site-packages from the one that the package was trying to import MPI from.\n\nSo, I am guessing that there is a clash between two mpi4py versions. But I cannot say for sure.\n\nmpiexec --version gives two different outputs for when I am root vs not.\n\nIn root:\n\nmpiexec (OpenRTE) 4.1.2\n\nReport bugs to http://www.open-mpi.org/community/help/\n\nWhen I'm in my local home directory:\n\nHYDRA build details: Version: 4.2.0rc2 Release Date: Tue Jan 16 14:53:48 CST 2024 CC: gcc -std=gnu99\n\nConfigure options: '--disable-option-checking' '--prefix=/home/people/hkaya/mpich-install' '--with-hwloc=embedded' '--cache-file=/dev/null' '--srcdir=/home/people/hkaya/Downloads/mpich-4.2.0rc2/src/pm/hydra' 'CC=gcc -std=gnu99' 'CFLAGS= -O2' 'LDFLAGS=' 'LIBS=' 'CPPFLAGS= -DNETMOD_INLINE=netmod_inline_ofi -I/temp/hkaya/mpich-4.1.2/src/mpl/include -I/home/people/hkaya/Downloads/mpich-4.2.0rc2/src/mpl/include -I/home/people/hkaya/Downloads/mpich-4.2.0rc2/modules/json-c -I/temp/hkaya/mpich-4.1.2/modules/json-c -I/home/people/hkaya/Downloads/mpich-4.2.0rc2/modules/hwloc/include -I/temp/hkaya/mpich-4.1.2/modules/hwloc/include -D_REENTRANT -I/temp/hkaya/mpich-4.1.2/src/mpi/romio/include -I/home/people/hkaya/Downloads/mpich-4.2.0rc2/src/pmi/include -I/temp/hkaya/mpich-4.1.2/src/pmi/include -I/temp/hkaya/mpich-4.1.2/modules/yaksa/src/frontend/include -I/home/people/hkaya/Downloads/mpich-4.2.0rc2/modules/yaksa/src/frontend/include -I/temp/hkaya/mpich-4.1.2/modules/libfabric/include -I/home/people/hkaya/Downloads/mpich-4.2.0rc2/modules/libfabric/include' Process Manager: pmi Launchers available: ssh rsh fork slurm ll lsf sge manual persist Topology libraries available: hwloc Resource management kernels available: user slurm ll lsf sge pbs cobalt Demux engines available: poll select\n\nSo, my question is: how can solve this contradiction?\n\nThanks in advance"
+    }
+}
