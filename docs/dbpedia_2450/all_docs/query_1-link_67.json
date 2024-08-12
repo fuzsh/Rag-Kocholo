@@ -1,0 +1,35 @@
+{
+    "id": "dbpedia_2450_1",
+    "rank": 67,
+    "data": {
+        "url": "https://kaustubhrakhade.medium.com/shors-factoring-algorithm-94a0796a13b1",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Shor’s Algorithm (for Dummies)",
+        "top_image": "https://miro.medium.com/v2/resize:fit:1199/1*npFOEP8zxBaSoUyKVSb9sA.png",
+        "meta_img": "https://miro.medium.com/v2/resize:fit:1199/1*npFOEP8zxBaSoUyKVSb9sA.png",
+        "images": [
+            "https://miro.medium.com/v2/resize:fill:64:64/1*dmbNkD5D-u45r44go_cf0g.png",
+            "https://miro.medium.com/v2/resize:fill:88:88/1*tmUvN-uSK4brzTo5hBO12A.jpeg",
+            "https://miro.medium.com/v2/resize:fill:144:144/1*tmUvN-uSK4brzTo5hBO12A.jpeg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Kaustubh Rakhade",
+            "kaustubhrakhade.medium.com"
+        ],
+        "publish_date": "2020-10-23T07:37:35.409000+00:00",
+        "summary": "",
+        "meta_description": "The Shor's Algorithm is one of the best algorithms for Quantum Computers to factor large numbers which could potentially break RSA Encryption. In this story, I'll explain the whole process step-by-step with examples.",
+        "meta_lang": "en",
+        "meta_favicon": "https://miro.medium.com/v2/1*m-R_BkNf1Qjr1YbyOIJY2w.png",
+        "meta_site_name": "Medium",
+        "canonical_link": "https://kaustubhrakhade.medium.com/shors-factoring-algorithm-94a0796a13b1",
+        "text": "The Shor’s Algorithm\n\nThis is a Step-By-Step explanation of the whole process with an example\n\nStep 1\n\nLet the number to be factorized be N. Make sure it fulfills all conditions.\n\nEg- Let’s factorize 15. So N=15.\n\nStep 2\n\nChoose randomly a number between 1 and N. Call this number 'k’.\n\nEg- We have to choose a number between 1 and 15. Let’s take 7. So, k=7.\n\nStep 3\n\nFind GCD (N, k). You could calculate it using Euclid’s Division Algorithm. If GCD is not equal to one, then congratulations! The GCD is a factor of N, so we are done.\n\nIf, however, GCD = 1, then proceed to Step 4.\n\nEg- GCD (15, 7) = 1\n\nSo, we move on to the next step.\n\nStep 4\n\nWe need to find smallest positive integer r such that if\n\nf(x) = kˣ mod N, then f(a) = f(a+r)\n\nBut don’t get overwhelmed by the mathness of the above statement, just follow the following steps to find r:\n\nStep 4.1\n\nDefine a new variable q = 1.\n\nStep 4.2\n\nFind (q×k) mod N.\n\nIf the remainder is 1, proceed to Step 4.3. If not, set the value of 'q' to the value of the remainder we got. Repeat this step till you get remainder = 1 and keep track of how many times you did the transformation. Remember to change the value of 'q' every time.\n\nEg-\n\nWe did the transformation 4 times.\n\nStep 4.3\n\nThe number of transformations you did in Step 4.2 is your value of r.\n\nEg- We did Step 4.2 four times. So, r = 4\n\nStep 5\n\nIf r is odd, go back to Step 2 and choose a different value of k.\n\nEg- r = 4 is even, so we move on.\n\nStep 6\n\nDefine p = remainder in (r/2)th transformation.\n\nIf p + 1 = N, then go back to Step 2 and choose a different value of k.\n\nIf not, proceed to Step 7.\n\nEg-\n\np will be the remainder in (4/2)th, i.e., 2nd transformation.\n\np = 4\n\n4 + 1 = 5 is not equal to 15\n\nSo we can proceed.\n\nStep 7\n\nThis is the final step. The factors of N are\n\nf₁ = GCD (p+1, N)\n\nf₂ = GCD (p-1, N)\n\nEg-\n\nf₁ = GCD (p+1, N)\n\n= GCD (5, 15)\n\n= 5\n\nf₂ = GCD (p-1, N)\n\n= GCD (3, 15)\n\n= 3\n\nTherefore, 3 and 5 are factors of 15.\n\nExample:\n\n(chosen such that it covers all possible situations)\n\nLet’s factorize N = 357\n\nWe randomly pick k = 205\n\nGCD (357, 205) = 1\n\nTherefore, r = 3\n\nr is odd. So, we need to choose another value of k.\n\nWe randomly pick k = 152\n\nGCD (357, 152) = 1\n\nTherefore, r = 6\n\nr is even. So, we can move on.\n\np will be the remainder in (6/2)th, i.e., 3rd transformation.\n\np = 356\n\nNow we check if p + 1 = N\n\n356 + 1 is equal to 357\n\nSo, we need to choose another value of k.\n\nWe randomly pick k = 52.\n\nGCD (357, 52) = 1\n\nTherefore, r = 6\n\nr is even. So, we can move on.\n\np will be the remainder in (6/2)th, i.e., 3rd transformation.\n\np = 307\n\nNow we check if p + 1 = N.\n\n307 + 1 is not equal to 357.\n\nSo, now we can do the final step.\n\nf₁ = GCD (308, 357) = 7\n\nf₂ = GCD (306, 357) = 51\n\nTherefore, 7 and 51 are factors of 357.\n\nThe Quantum World & Encryption\n\nThe Shor’s Algorithm is designed to run on a Quantum Computer and not on a classical computer as we did. On a Quantum Computer, the algorithm works waaa....aaay faster. Why?\n\nSteps 1, 2, 3, 5, 6, and 7 can be done quite efficiently on a classical computer. But when it comes to Step 4, i.e., finding the value of subroutine r, classical computers fall short. This step takes the most amount of time in the whole algorithm. But Quantum Computers are an edge above! You can read more about How Quantum Computers Calculate Subroutine here. But before you begin to read it, I would like you to appreciate the efficiency of Quantum Computation.\n\nBelow is a rough time vs number graph comparing classical and quantum computation. It shows the amount of time required to factor in a number.\n\nSo for large integers, quantum computation is more suitable.\n\nThis may seem like a breakthrough (which it is) in computation and mathematics, but poses a possible threat to encryption. How?\n\nWell, RSA - one of the most used schemes in encryption, depends on the assumption that factoring large numbers is practically impossible. If however, we could factor them, RSA would be broken. Research on encryption schemes that are quantum-proof had already begun to come up with alternatives to RSA. This led to the birth of something called post-quantum cryptography!\n\nBut no need to worry about your online security. Quantum Computation is still in its infancy. It would take at least a decade or two to build a practical, stable, Quantum Computer with sufficient memory to actually try to break encryption.\n\nWe have a lot of time…, don’t we?"
+    }
+}

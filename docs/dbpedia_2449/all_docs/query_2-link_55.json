@@ -1,0 +1,39 @@
+{
+    "id": "dbpedia_2449_2",
+    "rank": 55,
+    "data": {
+        "url": "https://blog.computationalcomplexity.org/2024/07/the-story-of-shors-algorithm.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Computational Complexity: The Story of Shor's Algorithm",
+        "top_image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj26KOMyvXsFHWmkkQDqdYyo_phnQvygcxMObQ7-UeSuq1XuBrf0EhFoRBw8oDn11SL4cPDz1TtPLSFZzwL5JvTvA7hd8Xl9UGrgGg1Ht5G0m7lg1CwjKzoz6-Z0dtpqe8ChElzr2O3fJOIO-jLQ25cY-MiRvtKKiujgXsiKSingTrG6_N6aZ0V/w1200-h630-p-k-no-nu/pic3.jpg",
+        "meta_img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj26KOMyvXsFHWmkkQDqdYyo_phnQvygcxMObQ7-UeSuq1XuBrf0EhFoRBw8oDn11SL4cPDz1TtPLSFZzwL5JvTvA7hd8Xl9UGrgGg1Ht5G0m7lg1CwjKzoz6-Z0dtpqe8ChElzr2O3fJOIO-jLQ25cY-MiRvtKKiujgXsiKSingTrG6_N6aZ0V/w1200-h630-p-k-no-nu/pic3.jpg",
+        "images": [
+            "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj26KOMyvXsFHWmkkQDqdYyo_phnQvygcxMObQ7-UeSuq1XuBrf0EhFoRBw8oDn11SL4cPDz1TtPLSFZzwL5JvTvA7hd8Xl9UGrgGg1Ht5G0m7lg1CwjKzoz6-Z0dtpqe8ChElzr2O3fJOIO-jLQ25cY-MiRvtKKiujgXsiKSingTrG6_N6aZ0V/s320/pic3.jpg",
+            "https://resources.blogblog.com/img/icon18_email.gif",
+            "https://resources.blogblog.com/img/icon18_edit_allbkg.gif",
+            "https://www.blogger.com/img/blogger_logo_round_35.png",
+            "https://resources.blogblog.com/img/blank.gif",
+            "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiEIuN6pp7ij_aly2XVp0FwB-irxDABh-YvSc4uGlxjm69XeJ55Lr8kmZupW9dMhBKjBNUdBlUD2n7m4vejV9mwUIR3JTyECgvY0TZsw5AVXEFIZ0TKr5nOU8IS1DClmC0/s45-c/fortnow.jpg",
+            "https://pup-assets.imgix.net/onix/images/9780691175782.jpg?w=640",
+            "https://i.creativecommons.org/l/by-nc/4.0/88x31.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Lance Fortnow"
+        ],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "The quantum factoring algorithm of Peter Shor ( FOCS  1994, SIAM Review  1999) turns thirty this year. Before his algorithm, quantum computi...",
+        "meta_lang": "en",
+        "meta_favicon": "https://blog.computationalcomplexity.org/favicon.ico",
+        "meta_site_name": "",
+        "canonical_link": "https://blog.computationalcomplexity.org/2024/07/the-story-of-shors-algorithm.html",
+        "text": "The quantum factoring algorithm of Peter Shor (FOCS 1994, SIAM Review 1999) turns thirty this year. Before his algorithm, quantum computing lacked the killer app, something practical that quantum could do that seems hard for classical computers. Back in 1994, I said Shor's algorithm bought quantum computing another twenty years. How I misjudged the longevity of quantum hype.\n\nPeter got the idea for his algorithm from a paper by Daniel Simon solving a theoretical complexity problem. The quantum factoring algorithm is a great example of how a complexity result can open doors to new algorithmic ideas.\n\nSimon came up with a beautifully simple example of a problem that required exponential-time on a probabilistic machine but polynomial-time on a quantum computer. Let's define addition over the \\(n\\)-bit strings, for \\(x\\) and \\(y\\) in \\(\\{0,1\\}^n\\), \\(x+y\\) is the bitwise parity of \\(x\\) and \\(y\\). For example if \\(x\\) is 0110 and \\(y\\) is 1100, \\(x+y = 1010\\).\n\nSuppose we have a Boolean function \\(f:\\{0,1\\}^n\\rightarrow\\{0,1\\}^n\\) (maps \\(n\\) bits to \\(n\\) bits) with the property that \\(f(x)=f(y)\\) iff \\(x=y+z\\) for some fixed \\(z\\). The problem is given \\(f\\) as an oracle or a circuit, find the \\(z\\). A classical machine would need exponential steps in to find \\(z\\) in the worst case.\n\nSimon gave a simple quantum algorithm that would with a single query output a random w such that \\(w\\cdot z=0\\). With \\(n = \\log N\\) linearly independent \\(w\\), you can solve for \\(z\\).\n\nShor's asked what if we could do the same for regular integer addition instead of bitwise parity. Suppose you have a function \\(f(x)=f(y)\\) iff \\(x-y\\) is a multiple of \\(z\\) for a fixed \\(z\\). (In Simon's case over bits the only multiples are zero and one.) That means \\(f\\) is periodic and \\(z\\) is the period. Shor knew that by an algorithm by Miller, finding a period leads to factoring.\n\nLet m be an odd number with multiple prime factors. Consider \\(f(x)=a^x\\bmod m\\) for a randomly chosen \\(a\\) relatively prime to \\(m\\). If this function has a period \\(z\\), then \\(a^z\\bmod m=a\\), \\(a^{z-1}\\bmod m=1\\) and with probability at least one-half, the gcd of \\(a^{\\frac{z-1}{2}}\\) and \\(m\\) will be a nontrivial factor of m.\n\nGetting all this to work on a quantum computer requires a number of addition tricks beyond what Simon did but once Shor had the inspiration the rest followed.\n\nPeter Shor really understood the landscape of theory from complexity to cryptography, a curiosity for quantum computing and the vision to see how it all connected together to get the quantum algorithm that almost single-handedly brought billions of dollars to the field."
+    }
+}
