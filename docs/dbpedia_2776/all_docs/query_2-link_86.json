@@ -1,0 +1,36 @@
+{
+    "id": "dbpedia_2776_2",
+    "rank": 86,
+    "data": {
+        "url": "http://inversed.ru/AIS.htm",
+        "read_more_link": "",
+        "language": "en",
+        "title": "VALIS Classifier",
+        "top_image": "http://inversed.ru/favicon.ico",
+        "meta_img": "http://inversed.ru/favicon.ico",
+        "images": [
+            "http://inversed.ru/Images/Twitter_Logo.png",
+            "http://inversed.ru/AIS/VALIS_Performance_pv.png",
+            "http://inversed.ru/AIS/Visualization_pv.jpg",
+            "http://inversed.ru/AIS/Iris_Dim_Pairs_pv.jpg",
+            "http://inversed.ru/AIS/Wine_PCA_pv.jpg"
+        ],
+        "movies": [
+            "https://www.youtube.com/embed/nxW_ZtqqgXo"
+        ],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "",
+        "meta_favicon": "favicon.ico",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "Algorithm\n\nExperiments\n\nVisualization\n\nSource code\n\nPublications\n\nAlgorithm\n\nVALIS (Vote Allocating Immune System) is a supervised learning algorithm inspired by the immune system. Classification is performed by a population of local rules (antibodies) that can bind to the data samples (antigens). In case of multiple bound antibodies, classification result (immune response) is determined through a vote allocation process with each antibody voting with its class distribution.\n\nTraining is performed in a generational manner, with each generation consisting of selection, reproduction and replacement steps. Reproduction is performed by means of crossover and mutation operators. During the replacement step, a fraction of the antibodies with low values of the fitness function is replaced by the newly created offsprings. An antibody's fitness is determined by its accuracy and a sharing factor. The latter is introduced to simulate the competition for limited resources. As soon as a large number of antibodies starts to accumulate in the same area, their sharing factors drop. This mechanism forces the system to explore other regions and to cover the training data more uniformly.\n\nOverall, the training process resembles a genetic algorithm with niching. However, unlike the genetic algorithm, the ultimate goal of VALIS is creating a population that acts as a whole and solves the problem cooperatively. The training is driven entirely by self-organization. A coherent global behaviour emerges from purely local antibody-antigen interactions.\n\nExperiments\n\nEarly version of the system was tested on a character recognition problem. The training data consisted of randomly scaled (x0.9 .. x1.1) and rotated (±15°) numerals from 0 to 9. Classification accuracy of 99% was achieved with 300 antibodies. The system can be considered to be a kind of distributed memory. Classification is performed collectively, so there is a significant degree of robustness to antibody deletion. After 80% of the antibodies were deleted at random, classification accuracy dropped only slightly to 96%.\n\nIn another experiment, the system was trained to distinguish between 6 different programming languages given a piece of source code. 96% classification accuracy was achieved. Examples of antibodies corresponding to different languages:\n\nAssembler@, mov, lf Basic$ Cfp, {#13, }, <, \\n Fortran#10c Lisp;;, ), ))#13 Pascalen, in#13, :=\n\nA recent revision of the algorithm was tested on 6 benchmark problems and compared to a number of algorithms implemented in the scikit-learn package. VALIS performed on par with or better than many well-established algorithms, including k nearest neighbours (kNN), logistic regression (LR), linear and quadratic discriminant analysis (LDA, QDA), naive Bayes (NB), AdaBoost (AB), decision trees (CART), random forests (RF) and support vector machines (SVM). Overall, it ranked first by both the geometric mean and the minimum of normalized accuracies.\n\nGM Min VALIS 0.956 0.926 SVM 0.956 0.855 kNN (k = 1) 0.953 0.918 RF 0.940 0.817 kNN (k = 3) 0.938 0.870 LDA 0.933 0.838 LR 0.922 0.832 kNN (k = 5) 0.920 0.863 kNN (k = 7) 0.907 0.831 CART 0.883 0.778 AB 0.820 0.600 NB 0.747 0.394 QDA 0.722 0.174\n\nVisualization\n\nAnother notable feature of VALIS is the ability to visualize the state of the population during the training. A rendering of the population can be obtained by slicing it with a plane. Alternatively, antibody centers and the input data can be projected onto a plane and the bindings can be depicted by lines. The plane can be defined by a pair of the original variables or by the data's principal components. The visualization provides a unique insight into the algorithm's behaviour.\n\nSource code\n\nThe latest version of VALIS is hosted on Github.\n\nPublications\n\nÐÐ°ÑÐ¿Ð¾Ð² Ð. Ð. ÐÐ¾Ð²ÑÐ¹ Ð¸Ð¼Ð¼ÑÐ½Ð¾Ð¿Ð¾Ð´Ð¾Ð±Ð½ÑÐ¹ Ð°Ð»Ð³Ð¾ÑÐ¸ÑÐ¼ ÐºÐ»Ð°ÑÑÐ¸ÑÐ¸ÐºÐ°ÑÐ¸Ð¸ ÑÐ¸Ð¿Ð° \"Ð¾Ð±ÑÑÐµÐ½Ð¸Ðµ Ñ ÑÑÐ¸ÑÐµÐ»ÐµÐ¼\" VALIS / VALIS, a novel immune-inspired classification algorithm // XII Ð½Ð°ÑÐ¸Ð¾Ð½Ð°Ð»ÑÐ½Ð°Ñ ÐºÐ¾Ð½ÑÐµÑÐµÐ½ÑÐ¸Ñ Ð¿Ð¾ Ð¸ÑÐºÑÑÑÑÐ²ÐµÐ½Ð½Ð¾Ð¼Ñ Ð¸Ð½ÑÐµÐ»Ð»ÐµÐºÑÑ Ñ Ð¼ÐµÐ¶Ð´ÑÐ½Ð°ÑÐ¾Ð´Ð½ÑÐ¼ ÑÑÐ°ÑÑÐ¸ÐµÐ¼ ÐÐÐ-2010 (20-24 ÑÐµÐ½ÑÑÐ±ÑÑ 2010 Ð³., Ð¢Ð²ÐµÑÑ, Ð Ð¾ÑÑÐ¸Ñ): Ð¢ÑÑÐ´Ñ ÐºÐ¾Ð½ÑÐµÑÐµÐ½ÑÐ¸Ð¸. Ð 4-Ñ., Ð: Ð¤Ð¸Ð·Ð¼Ð°ÑÐ»Ð¸Ñ, 2010, Ð¢.2, Ñ.325-334. PDF (Russian), presentation: English / Russian"
+    }
+}

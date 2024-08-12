@@ -1,0 +1,35 @@
+{
+    "id": "dbpedia_2775_3",
+    "rank": 21,
+    "data": {
+        "url": "https://github.com/MathOnco/valis",
+        "read_more_link": "",
+        "language": "en",
+        "title": "MathOnco/valis: Virtual Alignment of pathoLogy Image Series",
+        "top_image": "https://repository-images.githubusercontent.com/444523406/83dc1554-3478-4242-9d39-22a93136ee82",
+        "meta_img": "https://repository-images.githubusercontent.com/444523406/83dc1554-3478-4242-9d39-22a93136ee82",
+        "images": [
+            "https://camo.githubusercontent.com/c6bbd448ae4cb1165ec13d8421aec84408e555e202829f02b9fa4be7c06009c2/68747470733a2f2f72656164746865646f63732e6f72672f70726f6a656374732f76616c69732f62616467652f3f76657273696f6e3d6c6174657374",
+            "https://github.com/MathOnco/valis/workflows/CI/badge.svg?branch=main",
+            "https://camo.githubusercontent.com/ce7d2a55e1bac73b67ecbac842c88d68a9cf68dd3efc545dff850a0944145833/68747470733a2f2f62616467652e667572792e696f2f70792f76616c69732d7773692e737667",
+            "https://camo.githubusercontent.com/4d026de40ed1bcf44b3beb3da157644e0edefb378956bc31b0ef2d5a6516dd03/68747470733a2f2f7a656e6f646f2e6f72672f62616467652f3434343532333430362e737667",
+            "https://github.com/MathOnco/valis/raw/main/docs/_images/banner.gif",
+            "https://github.com/MathOnco/valis/raw/main/docs/_images/pipeline.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "Virtual Alignment of pathoLogy Image Series. Contribute to MathOnco/valis development by creating an account on GitHub.",
+        "meta_lang": "en",
+        "meta_favicon": "https://github.com/fluidicon.png",
+        "meta_site_name": "GitHub",
+        "canonical_link": "https://github.com/MathOnco/valis",
+        "text": "VALIS, which stands for Virtual Alignment of pathoLogy Image Series, is a fully automated pipeline to register whole slide images (WSI) using rigid and/or non-rigid transformtions. A full description of the method is described in the paper by Gatenbee et al. 2023. VALIS uses Bio-Formats, OpenSlide, libvips, and scikit-image to read images and slides, and so is able to work with over 300 image formats. Registered images can be saved as ome.tiff slides that can be used in downstream analyses. ome.tiff format is opensource and widely supported, being readable in several different programming languages (Python, Java, Matlab, etc...) and software, such as QuPath, HALO by Idica Labs, etc...\n\nThe registration pipeline is fully automated and goes as follows:\n\nImages/slides are converted to numpy arrays. As WSI are often too large to fit into memory, these images are usually lower resolution images from different pyramid levels.\n\nImages are processed to single channel images. They are then normalized to make them look as similar as possible. Masks are then created to focus registration on the tissue.\n\nImage features are detected and then matched between all pairs of image.\n\nIf the order of images is unknown, they will be optimally ordered based on their feature similarity. This increases the chances of successful registration because each image will be aligned to one that looks very similar.\n\nImages will be aligned towards (not to) a reference image. If the reference image is not specified, it will automatically be set to the image at the center of the stack.\n\nRigid registration is performed serially, with each image being rigidly aligned towards the reference image. That is, if the reference image is the 5th in the stack, image 4 will be aligned to 5 (the reference), and then 3 will be aligned to the now registered version of 4, and so on. Only features found in both neighboring slides are used to align the image to the next one in the stack. VALIS uses feature detection to match and align images, but one can optionally perform a final step that maximizes the mutual information between each pair of images. This rigid registration can optionally be updated by matching features in higher resolution versions of the images (see micro_rigid_registrar.MicroRigidRegistrar).\n\nThe registered rigid masks are combined to create a non-rigid registration mask. The bounding box of this mask is then used to extract higher resolution versions of the tissue from each slide. These higher resolution images are then processed as above and used for non-rigid registration, which is performed either by:\n\naligning each image towards the reference image following the same sequence used during rigid registration.\n\nusing groupwise registration that non-rigidly aligns the images to a common frame of reference. Currently this is only possible if SimpleElastix is installed.\n\nOne can optionally perform a second non-rigid registration using an even higher resolution versions of each image. This is intended to better align micro-features not visible in the original images, and so is referred to as micro-registration. A mask can also be used to indicate where registration should take place.\n\nError is estimated by calculating the distance between registered matched features in the full resolution images.\n\nThe transformations found by VALIS can then be used to warp the full resolution slides. It is also possible to merge non-RGB registered slides to create a highly multiplexed image. These aligned and/or merged slides can then be saved as ome.tiff images. The transformations can also be use to warp point data, such as cell centroids, polygon vertices, etc...\n\nIn addition to registering images, VALIS provides tools to read slides using Bio-Formats and OpenSlide, which can be read at multiple resolutions and converted to numpy arrays or pyvips.Image objects. One can also slice regions of interest from these slides and warp annotated images. VALIS also provides functions to convert slides to the ome.tiff format, preserving the original metadata. Please see examples and documentation for more details.\n\nFull documentation with installation instructions and examples can be found at ReadTheDocs."
+    }
+}
