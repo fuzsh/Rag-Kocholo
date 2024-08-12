@@ -1,0 +1,34 @@
+{
+    "id": "dbpedia_2442_2",
+    "rank": 79,
+    "data": {
+        "url": "https://stackoverflow.com/questions/68457976/get-point-between-two-points-crossing-the-180-degree-meridian-at-180-degrees",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Get point between two points crossing the 180 degree meridian at 180 degrees",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://i.sstatic.net/yFVLk.png?s=64",
+            "https://i.sstatic.net/vV6JS.jpg?s=64",
+            "https://i.sstatic.net/yFVLk.png?s=64",
+            "https://stackoverflow.com/posts/68457976/ivc/0f9a?prg=5b02490d-1804-4d64-87eb-7e1ecb370797",
+            "https://stackoverflow.com/js-false.gif"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2021-07-20T15:58:39",
+        "summary": "",
+        "meta_description": "I am plotting a line on a MapboxGL (js) world map that follows the path of orbital objects. I do this by adding a new set of decimal longitude/latitude coordinates to a line geometry array as the o...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/68457976/get-point-between-two-points-crossing-the-180-degree-meridian-at-180-degrees",
+        "text": "The simple way to split a line in this way would be to use Turf's lineSplit function. Something like:\n\nconst meridian = turf.lineString([[180, -90], [180, 90]]); const linePieces = turf.lineSplit(myline, meridian);\n\nI haven't tried this, so not sure if Turf itself has any weirdness at the meridian. If it does, you might have to temporarily translate the coordinates elsewhere or something.\n\nBetter than doing your own trigonometry in any case, especially since it may introduce errors with the world not being flat.\n\nSOLVED! With basic Trig (while writing the question - so I am posting it anyway, just incase it helps someone else):\n\nWe are basically playing with two right triangles: p1 to p2, and the smaller right triangle where the opposite side stops at the meridian, both with the same hypotenuse angle. So, we have:\n\n+170 | p2 /| | / | | / | 180 -|-----/ pX? -- 180° meridian | /: | (lng) | / : A | | / B: | -170 |_/___:___|___ p1 x? (lat)\n\nWhere A is our p1 to p2 right angle triangle and B is the triangle from p1 longitude to the meridian, whose adjacent side we need to work out.\n\nPythagoras basically teaches us that all we need is two points of data (other then the right angle) of a right triangle to solve any other.\n\nWe already have the opposite and adjacent lengths of A:\n\n+170 | p2 /| | /α| | / | 180 -|-- / | -- 180° meridian | / | (lng) | / A | oppositeA | / | -170 |_/β______|___ p1 adjacentA (lat)\n\nSo from here we need to calculate the hypotenuse of A to get the angle of the hypotenuse of A (α) so we can use it later:\n\n// add 360 to a negative longitude to shift lng from -180/+180, to 0/360 p1 = { lng: p1.lng < 0 ? p1.lng + 360 : p1.lng, lat: p1.lat } p2 = { lng: p2.lng < 0 ? p2.lng + 360 : p2.lng, lat: p2.lat } let oppositeA = Math.abs(p2.lng - p1.lng) // get A opposite length let adjacentA = Math.abs(p2.lat - p1.lat) // get A adjacent length let hypotenuseA = Math.sqrt(Math.pow(oppositeA,2) + Math.pow(adjacentA,2)) // calc A hypotenuse let angleA = Math.asin(oppositeA / hypotenuseA) // calc A hypotenuse angle\n\nNow we need the new opposite of B (p1.lng to 180) and our calculated angle of A to work out the new hypotenuse of B so we can get the new adjacent of B:\n\n+170 | p2 / | / | / 180 -|-- / -- 180° meridian | /: B (lng) | /α: | / : oppositeB -170 |_/___:___ ___ p1 adjacentB (lat)\n\nlet oppositeB = Math.abs(180 - p1.lng) // get B opposite let hypotenuseB = oppositeB / Math.cos(angleA) // calc B hypotenuse using A angle let adjacentB = Math.sqrt(Math.pow(oppositeB,2) + Math.pow(hypotenuseB,2)); calc B adjacent\n\nNow we add the new adjacent to p1 latitude, and we have x! So:\n\nlet pX = { lng: 180, lat: p1.lat + adjacentB }\n\nEnd the last line array and start the next with pX, and the gap is perfectly closed!\n\nHighschool math (well, the genius of Pythagoras) to the rescue! I knew it was rattling around in that old-man-brain somewhere ....."
+    }
+}
