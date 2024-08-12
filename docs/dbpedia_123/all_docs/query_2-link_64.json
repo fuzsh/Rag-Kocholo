@@ -1,0 +1,38 @@
+{
+    "id": "dbpedia_123_2",
+    "rank": 64,
+    "data": {
+        "url": "https://quantumcomputing.stackexchange.com/questions/21860/could-the-hamiltonian-of-a-2x2-rubiks-cube-be-simulated-with-a-nisq-device",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Could the Hamiltonian of a 2x2 Rubik's Cube be simulated with a NISQ device?",
+        "top_image": "https://cdn.sstatic.net/Sites/quantumcomputing/Img/apple-touch-icon@2.png?v=6a4d4eaaa901",
+        "meta_img": "https://cdn.sstatic.net/Sites/quantumcomputing/Img/apple-touch-icon@2.png?v=6a4d4eaaa901",
+        "images": [
+            "https://cdn.sstatic.net/Sites/quantumcomputing/Img/logo.svg?v=16f36d5eaa05",
+            "https://i.sstatic.net/odN8l.png",
+            "https://i.sstatic.net/96LMb.png",
+            "https://i.sstatic.net/lDVpk.jpg",
+            "https://i.sstatic.net/vYnWx.png",
+            "https://www.gravatar.com/avatar/f4cbddc229f2f15c13aded0e5bd0bfed?s=64&d=identicon&r=PG",
+            "https://quantumcomputing.stackexchange.com/posts/21860/ivc/9d1b?prg=10230059-0e03-4622-bd97-2f8ded0d56e5"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Mark Spinelli"
+        ],
+        "publish_date": "2021-11-09T12:52:56",
+        "summary": "",
+        "meta_description": "Consider the four cells on each of the six faces of the 2x2x2 Rubik's cube (the pocket cube).  We can construct and simulate a quarter-turn Hamiltonian as below. $^*$\n\nLet $\\langle F_1,U_1,R_1\\rang...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/quantumcomputing/Img/favicon.ico?v=d36ec9c2a788",
+        "meta_site_name": "Quantum Computing Stack Exchange",
+        "canonical_link": "https://quantumcomputing.stackexchange.com/questions/21860/could-the-hamiltonian-of-a-2x2-rubiks-cube-be-simulated-with-a-nisq-device",
+        "text": "Consider the four cells on each of the six faces of the 2x2x2 Rubik's cube (the pocket cube). We can construct and simulate a quarter-turn Hamiltonian as below. $^*$\n\nLet $\\langle F_1,U_1,R_1\\rangle$ be the quarter-turn moves that rotate each of the front face, the upper face, and the right face in the clockwise direction. Similarly let $\\langle F_3,U_3,R_3\\rangle$ be the counter-clockwise generators; let the half-turns be $\\langle F_2,U_2,R_2\\rangle.$\n\nIf we hold the cube such that the face with cells $\\mathrm{A},\\mathrm{B},\\mathrm{C},\\mathrm{D}$ is in the front, we have the SWAP circuits for example as above. Each of $F_1,F_2,F_3$ act on twelve qudits, where each of $\\vert\\mathrm{A}\\rangle,\\vert\\mathrm{B}\\rangle,\\ldots,\\vert\\mathrm{V}\\rangle$ are registers that can be in a superposition of six different colors; thus the pocket cube has natural $k=12$-local, $d=6$-dimensional Hamiltonian $\\mathcal{H}$. Both $F_1$ and $F_3$ use nine SWAPs, while $F_2$ only uses six.\n\nWe know that the order of each of the quarter-turn moves is four, and we can use this to construct circuits for the square-root of a quarter-turn move.\n\nIndeed, following the recipe outlined in this question, we can prepare circuits for the roots of each generator; $\\sqrt{F_1}$ is an example as above. This uses $9+6+6+9=30$ controlled-SWAP (CSWAP) gates with $H$ and $S$ gates for the quantum phase estimation. The two reusable ancillae store the phases of the eigenspace, while $\\vert\\psi\\rangle$ is a register of $24$ six-dimensional qudits (or $24\\times 3=72$ qubits).\n\nFrom here, we can Trotterize to simulate the quarter-turn Hamiltonian of the 2x2 Rubik's cube, with two iterations of each of the roots:\n\n$$e^{-i \\mathcal{H}t}\\approx\\big (\\sqrt{F_1}\\sqrt{U_1}\\sqrt{R_1}\\sqrt{F_3}\\sqrt{U_3}\\sqrt{R_3}\\big )^2=:W.$$\n\nBy squaring square roots, our Trotter factor is two; with six generators and thirty CSWAPs per generator, we can simulate the Hamiltonian with only $2\\times 6\\times 30=360$ six-dimensional CSWAP gates. $^\\dagger$\n\nWith $V$ being a circuit to prepare the initial state $\\vert\\psi\\rangle$ for example to the starting position of the cube, we can do a Hadamard test on $W$ as below.\n\nHere, each Fredkin gate would be upgraded to a CCSWAP gate (as we'd need to control on both the measured, answer qubit as well as on the ancillae qubits for when we take the square roots).\n\nBut my specific question is: is it realistic to suppose that a circuit with a couple hundred CCSWAPs is small enough to fit into present or near-future NISQ-era devices?\n\nI suspect that most of the loss in fidelity would come from these CCSWAP gates, and not from the $H$ or $S$ gates, or from the state-preparation circuit $V$. If the overhead to compile/transcribe such a controlled-$W$ circuit to the native gates and topology of a NISQ device is not too bad, the overall fidelity may still be appreciably greater than zero, and a post-classical signal may be observed.\n\nWith transmon processors approaching or exceeding three-nine's nowadays for the fidelity of two-qubit gates, an overall circuit fidelity of a circuit with a thousand(ish) two-qubit gates, acting on less than a hundred qubits, might be appreciably above zero, even accounting for all of the necessary SWAP gates due to specific connectivity of the transmon processors.\n\n$^*$ Compared to the previous question, here we (1) reduce our Trotter factor to two instead of four, (2) iterate only over the roots of the quarter-turn generators instead of both the quarter-turn and half-turn generators, (3) prepare our initial state into a fixed basis state as opposed to a superposition of a difference of two states, and (4) ask only about a Hadamard test instead of the full quantum phase estimation. Perhaps these simplifications are enough to squeeze into a NISQ device while still offering some post-classical advantage."
+    }
+}

@@ -1,0 +1,28 @@
+{
+    "id": "dbpedia_109_2",
+    "rank": 30,
+    "data": {
+        "url": "https://dicom.nema.org/dicom/2013/output/chtml/part05/sect_6.2.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "6.2Â Value Representation (VR)",
+        "top_image": "",
+        "meta_img": "",
+        "images": [],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "",
+        "meta_favicon": "",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "Character strings representing person names are encoded using a convention for PN value representations based on component groups with 5 components.\n\nFor the purpose of writing names in ideographic characters and in phonetic characters, up to 3 component groups may be used. The delimiter of the component group shall be the equals character \"=\" (3DH). The three component groups in their order of occurrence are: an alphabetic representation, an ideographic representation, and a phonetic representation.\n\nAny component group may be absent, including the first component group. In this case, the person name may start with one or more \"=\" delimiters. Delimiters are also required for interior null component groups. Trailing null component groups and their delimiters may be omitted.\n\nThe first component group (identified by DICOM as \"alphabetic\") shall be encoded using the character set specified by the Attribute Specific Character Set (0008,0005), value 1. If Attribute Specific Character Set (0008,0005) is not present, the default Character Repertoire ISO-IR 6 shall be used. ISO 2022 escapes for Code Extension shall not be used in this component group. When Specific Character Set (0008,0005) value 1 specifies a multi-byte character set without Code Extension (i.e., Unicode in UTF-8, GB18030 or GBK), the characters of this component group may be encoded with multiple bytes, but shall be drawn from the code points U+0000 through U+1FFF of ISO/IEC 10646.\n\nThe second group shall be used for ideographic characters. The character sets used will usually be those from Attribute Specific Character Set (0008,0005), value 2 through n, and may use ISO 2022 escapes.\n\nThe third group shall be used for phonetic characters. The character sets used shall be those from Attribute Specific Character Set (0008,0005), value 1 through n, and may use ISO 2022 escapes.\n\nDelimiter characters \"^\" and \"=\" are taken from the character set specified by value 1 of the Attribute Specific Character Set (0008,0005). If Attribute Specific Character Set (0008,0005), value 1 is not present, the default Character Repertoire ISO-IR 6 shall be used.\n\nAt the beginning of the value of the Person Name data element, the following initial condition is assumed: if Attribute Specific Character Set (0008,0005), value 1 is not present, the default Character Repertoire ISO-IR 6 is invoked, and if the Attribute Specific Character Set (0008,0005), value 1 is present, the character set specified by value 1 of the Attribute is invoked.\n\nAt the end of the value of the Person Name data element, and before the component delimiters \"^\" and \"=\", the character set shall be switched to the default character repertoire ISO-IR 6, if value 1 of the Attribute Specific Character Set (0008,0005) is not present. If value 1 of the Attribute Specific Character Set (0008,0005) is present, the character set shall be switched to that specified by value 1 of the Attribute.\n\nThe value length of each component group is 64 characters maximum, including the delimiter for the component group. Each combining character (e.g., diacritics or vowel marks) shall be considered a separate character for this maximum length, regardless of how an application may display such combining characters (i.e., combined into the glyph for the base character, or rendered separately)."
+    }
+}

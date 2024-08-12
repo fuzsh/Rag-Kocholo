@@ -1,0 +1,37 @@
+{
+    "id": "dbpedia_162_3",
+    "rank": 22,
+    "data": {
+        "url": "https://stackoverflow.com/questions/34125465/find-the-genre-with-longest-average-movie-length-sql",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Find the genre with longest average movie length. SQL",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/e514b017977ebf742a418cac697d8996?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/FGOoc.jpg?s=64",
+            "https://www.gravatar.com/avatar/ed6991f13be59c3996322a3afd84708e?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/766ef5655ff9c6aba5af06ac300cbecf?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/DYbRS.png?s=64",
+            "https://i.sstatic.net/FGOoc.jpg?s=64",
+            "https://www.gravatar.com/avatar/d9191eb70a61a935908c034eef4f67f6?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/34125465/ivc/995b?prg=c6fc7b41-ca6d-41d8-922e-0b423767c995"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2015-12-07T02:24:14",
+        "summary": "",
+        "meta_description": "I am new to SQL and i was trying to get this problem solved on mySQL.\nwhich is finding the genre with longest average movie length. I have got the the genre &amp; movies lengths lined up below but ...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/34125465/find-the-genre-with-longest-average-movie-length-sql",
+        "text": "I am new to SQL and i was trying to get this problem solved on mySQL. which is finding the genre with longest average movie length. I have got the the genre & movies lengths lined up below but I am really confused on how to go about taking the average of each genre. Genre:\n\nAction,\n\nComedy,\n\nDrama,\n\nSci-Fi,\n\nThriller and\n\nAdventure\n\ntaking the avg of there individual genres and displaying the max avg of them. Any help would be greatly appreciated thanks\n\nSELECT tblGenre.Genre, tblMovie.Length FROM tblMovie, tblMovieGenre, tblGenre WHERE (((tblMovie.movie_ID)=[tblMovieGenre].[Movie]) AND ((tblMovieGenre.Genre)=[tblGenre].[genre_ID])) GROUP BY tblGenre.Genre, tblMovie.Length;\n\nOutPut\n\nGenre Length Action 81 Action 97 Action 110 Action 130 Action 136 Action 145 Action 152 Action 165 Adventure 90 Adventure 109 Adventure 111 Adventure 132 Adventure 145 Adventure 178 Adventure 179 Adventure 201 Comedy 87 Comedy 90 Comedy 97 Comedy 109 Comedy 111 Drama 80 Drama 81 Drama 90 Drama 91 Drama 93 Drama 95 Drama 102 Drama 109 Drama 111 Drama 130 Drama 132 Drama 139 Drama 151 Drama 152 Drama 161 Drama 175 Drama 194 Sci-Fi 110 Sci-Fi 136 Sci-Fi 145 Thriller 84 Thriller 91 Thriller 93 Thriller 99 Thriller 110 Thriller 151 Thriller 165\n\nMaybe what do you want something like this. to get average movie length you can use AVG(Column).\n\nSELECT tblGenre.Genre, AVG(tblMovie.Length) FROM tblMovie, tblMovieGenre, tblGenre WHERE tblMovie.movie_ID = tblMovieGenre.Movie AND tblMovieGenre.Genre = tblGenre.genre_ID GROUP BY tblGenre.Genre;\n\nto get the longest movie length from average movie length\n\nSELECT tblGenre.Genre, tblMovie.Length FROM tblMovie, tblMovieGenre, tblGenre WHERE tblMovie.movie_ID = tblMovieGenre.Movie AND tblMovieGenre.Genre = tblGenre.genre_ID AND tblMovie.Length > (SELECT tblGenre.Genre, AVG(tblMovie.Length) FROM tblMovie, tblMovieGenre, tblGenre WHERE tblMovie.movie_ID = tblMovieGenre.Movie AND tblMovieGenre.Genre = tblGenre.genre_ID GROUP BY tblGenre.Genre);\n\nanswered Dec 7, 2015 at 2:39\n\nvidukaviduka\n\n15311 silver badge88 bronze badges"
+    }
+}

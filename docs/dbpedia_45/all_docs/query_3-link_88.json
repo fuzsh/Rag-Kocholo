@@ -1,0 +1,28 @@
+{
+    "id": "dbpedia_45_3",
+    "rank": 88,
+    "data": {
+        "url": "https://www.reddit.com/r/linux/comments/wwsiaf/writing_a_wayland_compositor_is_much_harder_than/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Dive into anything",
+        "top_image": "",
+        "meta_img": "",
+        "images": [],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "https://www.redditstatic.com/shreddit/assets/favicon/64x64.png",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "Don't get me wrong. I understand that, over the course of its long existence, Xorg has slowly but surely become an unmaintainable mess. I understand that much of what was deemed essential when Xorg came to life -- like X Logical Font Description, primitive rendering etc -- is no longer used, except in very old programs. I understand the need for an X replacement.\n\nBut after years of trying to write a Wayland compositor, I've come to the conclusion that Wayland is not a suitable replacement for X.\n\nSurely when the Wayland team came up with weston, its reference implementation, they should have noticed the code was far larger than it was reasonable to expect from implementers. But surely they would be able to re-use much of weston's code, right? Soon enough it became clear the answer was no. They did create libweston later on, but as its own documentation admits, \"In current form, libweston is an amalgam of various APIs mashed together and currently it needs a large clean-up and re-organization and possibly, a split into class-specific files.\" Just reading this was enough to convince me to stay as far away from libweston as I possibly can.\n\nThen, you might have expected them to go back to the drawing board and come up with something better. Re-inventing a graphics stack is no easy matter by any means, and surely people would understand that the first attempt had failed, and had to be re-designed.\n\nInstead, they pushed on and insisted on their error.\n\nX is a gigantic code behemoth, and it seems that has led Wayland creators to err on the side of minimalism. Unfortunately, Wayland is far too minimal to be actually useful. The truth is, if you want a Wayland compositor, Wayland is just one of the several libraries and systems you'll have to deal with. You'll also need to deal with DRM, libinput, logind, D-Bus... the list goes on.\n\nAnd that's not to mention the Wayland protocol itself refused to incorporate many useful use-cases: screen capture? Extension. Clipboard support? Extension. (EDIT: this one is actually part of the core protocol) Detecting lack of input for some time to take an appropriate action (e.g. lock the screen)? Extension. It looks as though they were not willing to add these actual use-cases to Wayland, lest it would corrupt their general, pure library. But a general solution that doesn't even properly solve the problems where it's normally used barely deserves to be called a solution.\n\nBut not all is lost. We have wlroots, right?\n\nI don't mean to criticize wlroots -- it made it so the task of creating a Wayland compositor is actually feasible for smaller teams. I'm sure that if it wasn't for it, GNOME and KDE would have been the only ones to ever implement server-side support for Wayland. But the fact is, even using wlroots, creating a Wayland compositor is still a daunting task.\n\nTake a look at sway's code and you'll see how much wlroots leaves for compositors to do: you have to take care of input and output devices being plugged / unplugged, you have to manage seats, you don't have wlroots functions to get or set the currently focused window -- hell, wlroots doesn't even give you a type to represent graphical windows. Even using wlroots, Wayland compositors still have a lot of non-WM (window management) stuff to care about.\n\nI've tried to remedy this situation by creating a new library on top of wlroots, one that would be made by refactoring sway code to making most of its non-WM and non-sway specific code readily available. My attempt was called wlstem. I've spent a year or so refactoring sway code, only to come to a point that is far, far from where I wanted this library to be. For a few months now, I've been telling myself I should get back to work on wlstem, but I haven't, and quite frankly, I won't, because I know full well it might take two or three years to finally get all the features I wanted in wlstem. Not to mention wlstem is using an outdated version of wlroots, which would be even more outdated when I finally finished. And that's before I even wrote a single line of the compositor itself.\n\nSo today I'm officially giving up. I've decided I no longer care about Wayland. I'll either make a new X window manager or take one of those extremely configurable ones, like xmonad, and configure it until it does what I want it to.\n\nAnd to anyone who wishes to write a Wayland compositor, heed my warning: it's not impossible (thanks to wlroots), but it's honestly not worth the hassle.\n\nEDIT: small corrections for the sake of clarity"
+    }
+}

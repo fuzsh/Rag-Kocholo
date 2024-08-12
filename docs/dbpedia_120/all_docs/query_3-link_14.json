@@ -1,0 +1,49 @@
+{
+    "id": "dbpedia_120_3",
+    "rank": 14,
+    "data": {
+        "url": "https://reference.wolfram.com/language/howto/PerformAMonteCarloSimulation.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Perform a Monte Carlo Simulation—Wolfram Language Documentation",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://reference.wolfram.com/common/framework/img/spikey.en.png",
+            "https://reference.wolfram.com/common/framework/img/wolfram.en.png",
+            "https://reference.wolfram.com/common/framework/img/slogan.en.png",
+            "https://reference.wolfram.com/language/howto/Files/PerformAMonteCarloSimulation.en/1.png",
+            "https://reference.wolfram.com/language/howto/Files/PerformAMonteCarloSimulation.en/2.png",
+            "https://reference.wolfram.com/language/howto/Files/PerformAMonteCarloSimulation.en/3.png",
+            "https://reference.wolfram.com/language/howto/Files/PerformAMonteCarloSimulation.en/4.png",
+            "https://reference.wolfram.com/language/howto/Files/PerformAMonteCarloSimulation.en/5.png",
+            "https://reference.wolfram.com/language/howto/Files/PerformAMonteCarloSimulation.en/6.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "approximating pi",
+            "approximation",
+            "Bayesian analysis",
+            "Gibbs sampler",
+            "Gibbs sampling",
+            "mixture distribution",
+            "monte carlo",
+            "PerformAMonteCarloSimulation",
+            "random process",
+            "random walk",
+            "simulation",
+            "stochastic simulation"
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "Monte Carlo methods use randomly generated numbers or events to simulate random processes and estimate complicated results. For example, they are used to model financial systems, to simulate telecommunication networks, and to compute results for high-dimensional integrals in physics. Monte Carlo simulations can be constructed directly by using the Wolfram Language 's built-in random number generation functions.",
+        "meta_lang": "en",
+        "meta_favicon": "",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "Monte Carlo methods use randomly generated numbers or events to simulate random processes and estimate complicated results. For example, they are used to model financial systems, to simulate telecommunication networks, and to compute results for high-dimensional integrals in physics. Monte Carlo simulations can be constructed directly by using the Wolfram Language's built‐in random number generation functions.\n\nA sequence of random numbers can be a very simple Monte Carlo simulation. For instance, a list of random numbers generated independently from a normal distribution with mean 0 can simulate a white noise process.\n\nUse RandomVariate with NormalDistribution to generate a sequence of 20 numbers following a normal distribution with mean 0 and standard deviation 1:\n\nUse ListPlot to visualize the data:\n\nYou can now construct a random walk from the data:\n\nTo start the walk at zero, prepend it to the list:\n\nUse Accumulate to sequentially sum the data, which is then visualized with ListLinePlot:\n\nThe following definition puts the preceding commands together to generate a random walk that you can use to simulate many random walks and analyze their properties.\n\nDefine a function randomWalk that generates a random walk of length n:\n\nHere, Table is used to create five random walks, each with length 100. They are then visualized with ListLinePlot:\n\nNow generate 1000 walks, each with length 100. The output is suppressed with a semicolon (;) since seeing it is not necessary:\n\nYou can now calculate descriptive statistics on any aspect of the random walks. Here, the final position of each walk is analyzed.\n\nUse [[ ]] (the short form of the Part function) to get the final data point of each random walk:\n\nCalculate various statistics on the final data points from the 1000 random walks:\n\nMonte Carlo methods can also be used to approximate values such as constants or numeric integrals. For instance, the following approximates the value of by generating random points in a square around a circle of radius 1, and then using the relationship between the area of the square and the circle.\n\nGenerate 10,000 points in a square bounded by {-1,-1} and {1,1}:\n\nView the generated points:\n\nTo approximate , multiply the area of the square by the percentage of points falling within a circle of radius 1 that is centered at the origin.\n\nMultiply the area of the square (4) by the fraction of points in the circle:\n\nUsing more points or averaging several approximations will typically give a better approximation.\n\nDefine the function approxPi to approximate from a sample of size :\n\nApproximate using a million points:\n\nApproximate by averaging 50 approximations from samples of size 10000:\n\nMonte Carlo simulations are most useful in cases where the nature of the system of interest is complicated. In Bayesian analysis, you often want to mix distributions, with the parameters of two distributions following each other to generate a bivariate distribution. Because the individual distributions are interrelated, points must be iteratively generated and inserted into the other distribution to sample from the bivariate distribution.\n\nThis type of mixture is called a Gibbs sampler. After a period of iteration, the points generated will closely follow this mixture. The period of iteration is referred to as the burn-in period.\n\nAs an example, you might have a normal distribution where the mean is known, but the standard deviation is not. However, you know that the standard deviation follows a beta distribution that has one known shape parameter, and another shape parameter that is related to the normal distribution where the mean is known.\n\nDefine a function that generates random numbers according to this normal distribution:\n\nDefine a function that generates random numbers for the beta distribution. The second shape parameter of the beta distribution will be the absolute value of a normal variate:\n\nYou can simulate a point from the bivariate distribution by choosing a starting value for the normal standard deviation, and then sequentially generating random numbers from the normal and beta distributions. A normal variate is generated using the starting value for the normal standard deviation. A beta variate is then generated by using that normal variate as the unknown shape parameter for the beta distribution. This beta variate is then used as the unknown standard deviation for a new normal distribution, and so on. This process is carried out for some number of iterations, and the final normal and beta variates are the coordinates of the simulated point.\n\nGenerate 500 points starting with a standard deviation value of .5 and using 1000 iterations as the burn-in period:\n\nVisualize the resulting points using ListPlot:\n\nVisualize the density of the points using Histogram3D:\n\nOther examples of Monte Carlo methods for estimation include optimization and high-dimensional integration. NMinimize and NIntegrate have methods for optimization and numeric integration using these techniques."
+    }
+}

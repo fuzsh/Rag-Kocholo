@@ -1,0 +1,32 @@
+{
+    "id": "dbpedia_120_3",
+    "rank": 52,
+    "data": {
+        "url": "https://quant.stackexchange.com/questions/71494/can-i-use-the-quantlib-monte-carlo-engine-to-price-american-options-using-heavy",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Can I use the QuantLib Monte Carlo engine to price American options using heavy/fat tailed-distributed random numbers?",
+        "top_image": "https://cdn.sstatic.net/Sites/quant/Img/apple-touch-icon@2.png?v=efa988ad16f2",
+        "meta_img": "https://cdn.sstatic.net/Sites/quant/Img/apple-touch-icon@2.png?v=efa988ad16f2",
+        "images": [
+            "https://cdn.sstatic.net/Sites/quant/Img/logo.svg?v=6edc2035d622",
+            "https://i.sstatic.net/KKHXz.jpg?s=64",
+            "https://quant.stackexchange.com/posts/71494/ivc/9d1b?prg=a4c72f7d-360e-46a9-832e-66d9612c943e"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2022-07-05T01:36:50",
+        "summary": "",
+        "meta_description": "This might be silly, but I’m seeking to use QuantLib to price vanilla American call and put options using a Black-Scholes-Merton process and the Monte Carlo pricing engine based on the Longstaff Sc...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/quant/Img/favicon.ico?v=cf49f8cc6afd",
+        "meta_site_name": "Quantitative Finance Stack Exchange",
+        "canonical_link": "https://quant.stackexchange.com/questions/71494/can-i-use-the-quantlib-monte-carlo-engine-to-price-american-options-using-heavy",
+        "text": "This might be silly, but I’m seeking to use QuantLib to price vanilla American call and put options using a Black-Scholes-Merton process and the Monte Carlo pricing engine based on the Longstaff Schwartz algorithm.\n\nMy question is: Am I confined to Gaussian pseudorandom numbers in this engine? Or can I use pseudo RNs drawn from some other underlying distribution, like Student T, or some other distribution I can generate via the inverse CDF?\n\nPut another way, how do I define a pricing engine for American call and put options that uses random numbers drawn from a student t (or custom) distribution based on mcamericanengine.hpp in QuantLib?\n\nI recognize that I may only have the volatility parameter to modify the shape of my distribution. After investigating the Monte Carlo framework in Quantlib and reading over chapter 6 of “Implementing QuantLib”, here’s what I think I need to do:\n\n• Define a distribution function (mydistribution.cpp and mydistribution.hpp) in math/distributions with a InverseCumulativeMyDistribution class\n\n• Instantiate a class template in rngtraits.hpp\n\n• Define a new SingleVariate traits class in mctraits.hpp\n\n• Define (I think) a MonteCarloModel as in montecarlomodel.hpp\n\n• Do I need to make changes to mcsimulation.hpp, mclongstaffschwartzengine.hpp, and mcamericanengine.hpp as well?\n\nAm I on the right track here? Please pardon my ignorance on this framework as I’m very new to both QuantLib and cpp programming. If by some miracle I get this working, how do I take the extra step and expose this new pricing engine in python via QuantLib-SWIG? I’m willing to put in the work! For reference I have vs 1.25 of QuantLib and QuantLib-Python installed on Windows 10 and confirmed both are working."
+    }
+}
