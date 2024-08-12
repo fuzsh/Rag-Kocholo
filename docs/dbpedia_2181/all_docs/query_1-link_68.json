@@ -1,0 +1,34 @@
+{
+    "id": "dbpedia_2181_1",
+    "rank": 68,
+    "data": {
+        "url": "https://dba.stackexchange.com/questions/325870/does-acid-guarantee-locking-semaphore-until-the-transaction-is-commited",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Does ACID guarantee locking (semaphore) until the transaction is commited?",
+        "top_image": "https://cdn.sstatic.net/Sites/dba/Img/apple-touch-icon@2.png?v=246e2cb2439c",
+        "meta_img": "https://cdn.sstatic.net/Sites/dba/Img/apple-touch-icon@2.png?v=246e2cb2439c",
+        "images": [
+            "https://cdn.sstatic.net/Sites/dba/Img/logo.svg?v=d844126b2d09",
+            "https://www.gravatar.com/avatar/bccbf882b8e158e25f5960e4613f3780?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/6c5b0663c367fc401502f289688f1ec6?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/1ee974306d2def46eb69534fbcf95cc5?s=64&d=identicon&r=PG",
+            "https://dba.stackexchange.com/posts/325870/ivc/5959?prg=8be0a7e3-dc65-4498-a8b9-c403b797ee30"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2023-04-11T13:42:38",
+        "summary": "",
+        "meta_description": "I have following interaction (pseudocode):\nstart transaction\n  select delivery for update                     # semaphore\n  select delivery_items where processed = false  # get unprocessed data and",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/dba/Img/favicon.ico?v=fccaf00a9c8c",
+        "meta_site_name": "Database Administrators Stack Exchange",
+        "canonical_link": "https://dba.stackexchange.com/questions/325870/does-acid-guarantee-locking-semaphore-until-the-transaction-is-commited",
+        "text": "You understand the locking logic correctly, however I suspect the nested transactions are causing your problem. (Without seeing your actual code it is hard to be sure, but the following is a likely explanation.)\n\nIf your first SELECT statement in a transaction is not the locking SELECT ... FOR UPDATE then you are going to have issues, given that the default transaction isolation level is READ-REPEATABLE.\n\nAssuming that you do have an earlier SELECT in your transaction, then the whole transaction is taking a snapshot of the database state at the moment, and negating the benefit of the locking.\n\nIn detail, here is what I think is causing your race conditions:\n\nStep 1. Request1: SELECT statement without FOR UPDATE (snapshot is taken here)\n\nStep 2. Request1: SELECT ... FOR UPDATE starts a lock\n\nStep 3. Request1: SELECT processed=false\n\nStep 4. Request2: SELECT statement without FOR UPDATE (snapshot is taken here)\n\nStep 5. Request2: SELECT ... FOR UPDATE waits for Request1 to finish\n\nStep 6. Request1: UPDATE processed=true\n\nStep 7. Request1: COMMIT\n\nStep 8. Request2: SELECT processed=false (will see the database at it was at step 4, BEFORE the processed rows were changed, so the query will return the same rows as Request1 did)\n\nCreating a SAVEPOINT will not prevent this issue.\n\nI wrote about this issue in the past on stackoverflow.\n\nYou psuedocode says you aren't doing that, but the comment about nested transactions suggests that you may already have an open transaction at the time your psuedocode starts, which is causing an \"incorrect\" snapshot to be taken for your needs.\n\nMy advice is the same as in my linked post: Make sure your transaction starts with the SELECT ... FOR UPDATE statement. That means committing the earlier transaction, rather than using the nesting logic, as simply making a SAVEPOINT as Doctrine does won't suffice to make sure you are working from the correct snapshot of data.\n\nIf you are using nested transactions in an attempt to wrap an entire HTTP request in a transaction, and then using nested transactions deeper down in the request, then this is an expected problem, and I suggest not trying to wrap an entire request like that. (I only mention that because I used to naively think it was a good idea to wrap an entire request like that... and then discovered the hard way issues like I outlined in this answer.)"
+    }
+}

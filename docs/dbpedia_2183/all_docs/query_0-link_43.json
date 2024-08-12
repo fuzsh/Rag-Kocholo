@@ -1,0 +1,35 @@
+{
+    "id": "dbpedia_2183_0",
+    "rank": 43,
+    "data": {
+        "url": "https://stackoverflow.com/questions/64517440/in-databases-is-row-level-locking-an-example-of-acid-optimistic-concurrency-o",
+        "read_more_link": "",
+        "language": "en",
+        "title": "In databases, is row level locking an example of ACID, optimistic concurrency, or both?",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://cdn.sstatic.net/Img/teams/teams-promo.svg?v=e507948b81bf",
+            "https://i.sstatic.net/XG309.png?s=64",
+            "https://i.sstatic.net/12PVX.jpg?s=64",
+            "https://stackoverflow.com/posts/64517440/ivc/5959?prg=fef7fb2c-9e41-4e81-a1a4-e1ce1f8ac645"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Ridhwaan Shakeel"
+        ],
+        "publish_date": "2020-10-24T19:52:13",
+        "summary": "",
+        "meta_description": "simultaneous writes\nAlso what happens in a nosql database?",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/64517440/in-databases-is-row-level-locking-an-example-of-acid-optimistic-concurrency-o",
+        "text": "I'll ignore the NoSQL part, otherwise I would have to close the question as too unfocused.\n\nRow level locking is a technique that relational databases use to provide isolation, which is the I of ACID. Isolation means that concurrent database sessions are isolated from each other – the database tries to keep them from being influenced by each other's activities.\n\nSpecifically, if two concurrent sessions try to modify the same data row, they have to “take turns”: the second one has to wait until the transaction of the first session is done. This wait is usually very short and does not hurt, but it prevents inconsisiencies (consistency is the C of ACID).\n\nRow level locking, and locking in general, are part of pessimistic locking: you lock a row to prevent other sessions from messing with the row while you are working on it. It is done with SELECT ... FOR UPDATE. It is called “pessimistic” because it reflects a mindset like “I expect someone will try to modify the row while I am working on it, so let's lock it to be sure”.\n\nOptimistic locking is ill-named, because no locks are actually taken. You don't prevent concurrent transactions from modifying the row you are interested in. Instead you check afterwards if the row has been modified by a concurrent transaction or not, and if it has, you try the operation again."
+    }
+}

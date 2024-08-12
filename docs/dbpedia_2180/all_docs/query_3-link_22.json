@@ -1,0 +1,32 @@
+{
+    "id": "dbpedia_2180_3",
+    "rank": 22,
+    "data": {
+        "url": "https://stackoverflow.com/questions/64422850/multiple-processes-of-reading-and-modifying-transaction-on-the-same-table",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Multiple processes of reading and modifying transaction on the same table",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/0057daa45489573fe0d7831fe65455e8?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/2d543fea93438358ca064e6fde79206b?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/64422850/ivc/5959?prg=8d775495-f48f-4293-a8a5-f0d889c5314b"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2020-10-19T07:26:58",
+        "summary": "",
+        "meta_description": "I think this is typical question for how modern database handle the concurrency issue.\nSay we have a process P1 of modifying db transaction(insert or delete) for the table. Transaction would begin ...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/64422850/multiple-processes-of-reading-and-modifying-transaction-on-the-same-table",
+        "text": "This behavior depends on database implementation details and timing. In general, until P1 is committed, its results are not valid, so it will not have exclusively locked the table for reading. P2 will most likely not encounter any lock and read the old data.\n\nI'm saying \"most likely\" because this also depends on configured isolation levels in the database. No serious production database survives for long when configured to be \"serializable\", implying perfect isolation between transaction. So, depending on the situation, a \"phantom read\" or other weird things may occur. This is the trade-off between locking continuously or accepting a potential weirdness every now and then."
+    }
+}

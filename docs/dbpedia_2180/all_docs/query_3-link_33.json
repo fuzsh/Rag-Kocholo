@@ -1,0 +1,42 @@
+{
+    "id": "dbpedia_2180_3",
+    "rank": 33,
+    "data": {
+        "url": "https://dba.stackexchange.com/questions/5014/what-risks-are-there-if-we-enable-read-committed-snapshot-in-sql-server",
+        "read_more_link": "",
+        "language": "en",
+        "title": "What risks are there if we enable read committed snapshot in sql-server?",
+        "top_image": "https://cdn.sstatic.net/Sites/dba/Img/apple-touch-icon@2.png?v=246e2cb2439c",
+        "meta_img": "https://cdn.sstatic.net/Sites/dba/Img/apple-touch-icon@2.png?v=246e2cb2439c",
+        "images": [
+            "https://cdn.sstatic.net/Sites/dba/Img/logo.svg?v=d844126b2d09",
+            "https://www.gravatar.com/avatar/a007be5a61f6aa8f3e85ae2fc18dd66e?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/82a4a4116738aaf76bca092f95b26049?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/c358a8edbaf5de680bdb55262a2a0a8f?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/4190f05bc2af559580aa220d0139e9f8?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/3c875d38659c069d3e8e931dc3717695?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/c358a8edbaf5de680bdb55262a2a0a8f?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/9761a1654956bd5f9c76647cd8a979e4?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/a007be5a61f6aa8f3e85ae2fc18dd66e?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/ZxMtC.jpg?s=64",
+            "https://i.sstatic.net/5hguA.png?s=64",
+            "https://www.gravatar.com/avatar/1f9f192b163499caf95f4d67351c5087?s=64&d=identicon&r=PG",
+            "https://dba.stackexchange.com/posts/5014/ivc/5959?prg=dc5fa127-0b0c-4421-88b4-3bca59c1c463"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2011-08-25T04:45:31",
+        "summary": "",
+        "meta_description": "I have read here that some extra data will be stored per row so we might see a performance degradation but what other risks are there?\n\neg.\nWill this affect recovery of the database?\nIs there anyth...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/dba/Img/favicon.ico?v=fccaf00a9c8c",
+        "meta_site_name": "Database Administrators Stack Exchange",
+        "canonical_link": "https://dba.stackexchange.com/questions/5014/what-risks-are-there-if-we-enable-read-committed-snapshot-in-sql-server",
+        "text": "Summary\n\nIf you have locking problems then you have a problem with your code: it isn't the database engine\n\nIt isn't a magic bullet\n\nYou may add more problems\n\nLoad\n\nIt will also increase load on your tempdb and CPU. Also see:\n\n\"Performance Impact: The Potential Cost of Read_Committed_Snapshot\" (Linchi Shea)\n\nSafety\n\nMost important, snapshot isolations are not safe in many cases by default. Read \"Snapshot isolation\" (Wikipedia) for more on write-skew anomalies. The next section is \"Making Snapshot Isolation Serializable\" to get around this.\n\nIn general, therefore, snapshot isolation puts some of the problem of maintaining non-trivial constraints onto the user, who may not appreciate either the potential pitfalls or the possible solutions. The upside to this transfer is better performance.\n\nAlso see:\n\n\"The Potential Dangers of the Read Committed Snapshot Isolation Level\" (JimMcLeod, disputed in comments by Alex Kuznetsov)\n\nDeadlocked!: \"read committed snapshot\" Explained (Nick Berardi)\n\nSerializable vs. Snapshot Isolation Level, the Marble problem (Craig Freedman)\n\nReads involving UDFs under READ_COMMITTED_SNAPSHOT may seem inconsistent (Alex Kuznetsov)\n\nI know this is an old thread but I would say to a large degree snapshot isolation is a magic bullet. It will eliminate all of your blocking between readers and writers. It will however not prevent writers from blocking other writers. There is no way around that.\n\nIn my experience, the additional load on the TEMPDB is negligible and the benefits of row versioning in reducing blocked readers is huge.\n\nFor reference, row versioning (snapshot isolation) is the method Oracle has used for decades to achieve isolation without blocking readers and the Oracle DBs I've worked on for nearly 20 years experience far less blocking issues than SQL Server does. Most SQL developers are hesitant to use snapshot isolation though because they've only tested their code against databases that use the default setting.\n\nCouple of additional points to add to the other answers:\n\nSET ALLOW_SNAPSHOT_ISOLATION ON only enables snapshot isolation in a database. To take advantage of it you have to recode and SET TRANSACTION ISOLATION LEVEL SNAPSHOT for the transactions you want it to apply to. The calling code will need to be changed to handle update conflict errors.\n\nAfter SET READ_COMMITTED_SNAPSHOT ON, statements at read committed use row-versioning. Note, this is statement level row-versioning for reads only. For updates, the \"real\" row is retrieved and update locks applied. See the Summary of Behaviour section in Understanding Row-Versioning based Isolation Levels\n\nEither route, without exhaustive testing you're likely to introduce a completely new set of problems to the system.\n\nI believe this will give us something closer to oracle where if one transaction is updating other transactions can still read the old data. Is this correct?\n\nYes, this is correct.\n\nWell worth reading the links in gbn's answer and I believe the same applies to Oracle's default MVCC as to SQL Server in Snapshot Isolation mode. I would add that if you understand the potential pitfalls, IMO the benefits far outweigh the added difficulties (speaking from an Oracle perspective) - and of course some locking problems legitimately go away, that is the point of MVCC (there is also a class of locking problems that will not go away due to code issues, but I am assuming you understand this).\n\nWe are using SNAPSHOT ISOLATION in all of our projects that use SQL Server DB. No more 1205 SQL Errors, that are caused not because of wrong application code, but from default page locking and row locking behaviour.\n\nPerformance impact is minimal and so far 7 years have passed, hundreds of millions operations have been processed in different systems, with no problems regarding SNAPSHOT ISOLATION.\n\nSituations where several different threads are updating business critical information in single row in parallel are extremely exceptional, and the chances that SNAPSHOT ISOLATION will be the cause of any inconsistency problem are very much near zero.\n\nIf you have an OLTP system, that by design updates single row based on current row data in many threads, of course SNAPSHOTS are not acceptable in such cases."
+    }
+}

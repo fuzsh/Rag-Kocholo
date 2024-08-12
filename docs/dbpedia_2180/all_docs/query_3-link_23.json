@@ -1,0 +1,34 @@
+{
+    "id": "dbpedia_2180_3",
+    "rank": 23,
+    "data": {
+        "url": "https://dba.stackexchange.com/questions/157193/where-is-read-committed-insufficient",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Where is Read Committed insufficient?",
+        "top_image": "https://cdn.sstatic.net/Sites/dba/Img/apple-touch-icon@2.png?v=246e2cb2439c",
+        "meta_img": "https://cdn.sstatic.net/Sites/dba/Img/apple-touch-icon@2.png?v=246e2cb2439c",
+        "images": [
+            "https://cdn.sstatic.net/Sites/dba/Img/logo.svg?v=d844126b2d09",
+            "https://i.sstatic.net/69caC.png?s=64",
+            "https://www.gravatar.com/avatar/68ca58fb153529f3ade636d895c4ab24?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/c358a8edbaf5de680bdb55262a2a0a8f?s=64&d=identicon&r=PG",
+            "https://dba.stackexchange.com/posts/157193/ivc/5959?prg=a338e7c8-4653-44fc-89e2-8da0223aff5f"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2016-12-05T09:56:41",
+        "summary": "",
+        "meta_description": "Wikipedia says that Read Committed is prone to non-repeatable reads. However, I can simply cache the first read result in my transaction (make a snapshot) and release the DB lock to let other",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/dba/Img/favicon.ico?v=fccaf00a9c8c",
+        "meta_site_name": "Database Administrators Stack Exchange",
+        "canonical_link": "https://dba.stackexchange.com/questions/157193/where-is-read-committed-insufficient",
+        "text": "The choice of isolation level is driven by the guarantees your application requires from the database. Full ACID isolation is only provided by serializable isolation; all other isolation levels provide a lesser degree of protection for transactions.\n\nRead Committed admits inconsistent results in repeated reads\n\nThe only guarantee provided by read committed isolation is that only committed data will be read (dirty reads are disallowed). Anything beyond that is implementation specific.\n\nFor example, in SQL Server, read committed using row versioning (RCSI) also guarantees statement-level repeatable reads and a statement-level point in time view of the database. To be clear, neither of those are guaranteed across multiple statements within the same transaction under RCSI (this is provided by Snapshot Isolation).\n\nSQL Server's implementation of read committed using locking allows repeated reads within the same statement to encounter different values, and allows the database to return data from different points in time.\n\nTo emphasise: a single statement that touches the same row more than once may encounter different values. The multiple reads may not be apparent from inspecting the SQL alone, since the query optimizer has considerable freedom in constructing a physical execution strategy.\n\nI can simply cache the first read result in my transaction and let other transactions to update...\n\nThis is a valid approach, if it meets the isolation requirements of whatever it is you are doing with (or based on) the data.\n\nNothing bad can happen and I can feel as safe as Repeated Read isolation, right?\n\nNot generally, no. Repeatable read (RR) isolation provides more guarantees than read committed (RC) isolation. Specifically, RR guarantees that data will not change for the life of the transaction once the data item has been read for the first time. RR does not guarantee that reads will in fact be entirely repeatable because new data may appear in subsequent reads (phantoms).\n\nNote that implementations are free to exceed the base requirements of each isolation level, so some products may in fact provide equal guarantees under RC as RR (this is not the case for SQL Server). Indeed, an implementation could make all isolation levels equal to serializable, and still be in compliance with the standard.\n\nNo, I guess that holding a read lock for the data I read helps to prevent some undesirable scenarios...\n\nLocking is an implementation detail. It is better to think about the degree of isolation your use of the data requires to behave correctly in all circumstances (when multiple concurrent data changes are possible).\n\n...to prevent some undesirable scenarios in booking reservations, probably. Which ones?\n\nThe ways in which multiple concurrent database transactions can interact unhelpfully are limited only by one's imagination.\n\nFor example, using RC and caching the value read could result in a lost update, where another transaction updates based on the stored value, before your transaction does the same thing. In terms of histories for two transactions running x:= x + 1:\n\ntransaction 1 reads x (=1) transaction 2 reads x (=1) transaction 2 writes [x:=x + 1] (=2) transaction 2 commits transaction 1 writes [x:=x + 1] (=2) transaction 1 commits\n\nOnly serializable isolation guarantees that if a transaction that can be shown to produce correct results with no concurrent activity, it will continue to do so when competing with any combination of concurrent transactions.\n\nNote that this does not mean that concurrent serializable transactions actually execute sequentially, just that they will have the same effects as if they had (in some unspecified order).\n\nSpecifying any other isolation level involves a trade-off: potentially higher performance and/or concurrency with fewer isolation guarantees. Exactly what the trade-off is varies significantly between implementations.\n\nChoosing the appropriate isolation level requires comparing the needs of your application with the guarantees available. In addition, you may need to consider other factors, for example whether the transaction requires a point-in-time view of the data or not."
+    }
+}
