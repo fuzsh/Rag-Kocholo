@@ -1,0 +1,52 @@
+{
+    "id": "dbpedia_2600_1",
+    "rank": 34,
+    "data": {
+        "url": "https://superuser.com/questions/89809/how-to-force-refresh-without-cache-in-google-chrome",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How to force refresh without cache in Google Chrome?",
+        "top_image": "https://cdn.sstatic.net/Sites/superuser/Img/apple-touch-icon@2.png?v=e869e4459439",
+        "meta_img": "https://cdn.sstatic.net/Sites/superuser/Img/apple-touch-icon@2.png?v=e869e4459439",
+        "images": [
+            "https://cdn.sstatic.net/Sites/superuser/Img/logo.svg?v=4bc8a703ebac",
+            "https://www.gravatar.com/avatar/ec198cb6fc38d98bb88dd390e0bed8e3?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/c621039e41aef415ad25054da3bf3f9a?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/h9x8Q.png?s=64",
+            "https://www.gravatar.com/avatar/8e40b955ba72299d98374726cdc1573d?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/HEXbN.png",
+            "https://www.gravatar.com/avatar/534a8ee0be53e5677ff82ba76b2d6206?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/2f6e7cd458b8595317d4161b0c67b4a3?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/f4Ipf.png?s=64",
+            "https://i.sstatic.net/zKem1.png",
+            "https://i.sstatic.net/f4Ipf.png?s=64",
+            "https://www.gravatar.com/avatar/18f724aa14e2a340058517656584dec4?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/5578790f0ffe6f074245cb22673700d0?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/dea29233fa03ea84f8a853102deb0344?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/3594283af496f16e89964e6ce3ebf817?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/6e79441beebac4be15a229f6bd0bb3ba?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/Xf8iY.png?s=64",
+            "https://www.gravatar.com/avatar/4ba4cea65ade011ddd368aaa46ca4e61?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/35fd1376594483b92703f134471dfe6e?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/8qWKd.png?s=64",
+            "https://www.gravatar.com/avatar/4682131237529ddab7e7165c916e6330?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/497264ce9a02fdd795e3029e7302639d?s=64&d=identicon&r=PG",
+            "https://superuser.com/posts/89809/ivc/5dda?prg=28b1df78-6963-44e5-9e54-e6d26da42587"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2009-12-31T15:29:52",
+        "summary": "",
+        "meta_description": "Does Chrome have an equivalent to Firefox's Ctrl+F5 refresh? I can't seem to find one.\n\nI changed my gravatar last night, and I can see the new one in Firefox after a Ctrl+F5 refresh, but Chrome se...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/superuser/Img/favicon.ico?v=4852d6fb3f5d",
+        "meta_site_name": "Super User",
+        "canonical_link": "https://superuser.com/questions/89809/how-to-force-refresh-without-cache-in-google-chrome",
+        "text": "Chrome documentation states that Ctrl+F5 or Shift+F5 should do \"Reloads your current page, ignoring cached content. \"\n\nIf it is not working, you can file a bug report, but it looks like quite a few other people are having the same issue.\n\n[Existing bug log on this issue] Closed as a duplicate, the issue remmains:\n\n[Issue: 94090]\n\nOn a Mac, it's Shift+Command+R, or holding down Shift while clicking the reload button (as opposed to Command+R or a normal click for a regular refresh).\n\nSome more details:\n\nFor Shift+Command+R, cache is simply ignored and resources are requested like no cache existed.\n\nFor Command+R, Chrome will issue If-Modified-Since or Etag requests to the web server, even for things that are actually cached. For most, if not all, content the server should then respond with 304 Not Modified. This is true for most, if not all, modern browsers.\n\nThe only way to force relying on the cache (without the browser even asking for possible changes) seems to be clicking a link on the web page, or by following a bookmarked link, or by going into the URL location bar and hitting Return there (Command+L, Return).\n\nHowever: a longstanding known issue in Chrome, Chrome Forced Refresh does not ignore cache (and the more recent Reload/Refresh does not refresh), or maybe actually a feature in WebKit, Dynamically inserted subresources aren't revalidated even when the containing document is reloaded, makes Chrome not clear ALL related caches when using the above methods. A Chromium developer explains:\n\nThe network tab of the developer tools show a waterfall of all resources as they are loaded. There are two vertical lines at the right hand side... one of them is labeled \"Load event fired\" on hover. Anything loading after that point is not officially part of the page (a page can keep issuing requests for hours) [...] so it will NOT be \"refreshed\" with any combination of f5. This is by design.\n\n[...]\n\nCaching [of any resource, before and after the \"Load event fired\" line] is determined by the HTTP headers of the response, not by the time the request was issued.\n\nAlso note a @ChromiumDev's tweet:\n\nChrome DevTools' Disable Cache invalidates the disk cache (great for developing!), but.. only while devtools is visible.\n\nThere definitely is no simple way to do this in Chrome like other browsers. The documentation may say that CTRL+F5 or SHIFT+F5 should reload and ignore cache, but it simply doesn't. I have a flash slideshow that stores the settings/configuration in an .xml file, and after updating the XML file, Chrome will still load the cached version unless I purge the cache. I always have to run another browser when updating the slideshow so I don't have to clear my Chrome cache all the time."
+    }
+}

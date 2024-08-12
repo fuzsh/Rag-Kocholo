@@ -1,0 +1,49 @@
+{
+    "id": "dbpedia_2600_1",
+    "rank": 13,
+    "data": {
+        "url": "https://stackoverflow.com/questions/528368/datetime-compare-how-to-check-if-a-date-is-less-than-30-days-old",
+        "read_more_link": "",
+        "language": "en",
+        "title": "DateTime.Compare how to check if a date is less than 30 days old?",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/200cc24cc0555d1c6bd14b5a7fe8f852?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/fdd630f72eef3790bfb4ef38d08c7f85?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/d84b29dc73a93ad476560a640e2c253c?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/da30a9875ef06859fa7798a553693d3a?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/529ba429a58902bef56c2fcb672d5ccb?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/D29fm.jpg?s=64",
+            "https://www.gravatar.com/avatar/35cf71263d56e83098663925b4915349?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/9e25be383b5d238545e101a3c937fdab?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/M3Hy5.png?s=64",
+            "https://www.gravatar.com/avatar/bfc52cb788b02f41232ba14e3bc3ed46?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/200cc24cc0555d1c6bd14b5a7fe8f852?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/5ad220889a65d1289a5b3f3e32fc98ab?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/a67e4847f8113220f71c880b7f78d97d?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/91dbdfef7cae4e64732a1f78989f8ffb?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/7b4b03719c0b2a544c405dd4fdf1085c?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/YJBo4.jpg?s=64",
+            "https://www.gravatar.com/avatar/975f73ae4cdbfacfeab70a65bbd98e2a?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/528368/ivc/5dda?prg=9cdefc40-c506-4b31-a74f-bb40fcb811d2"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "James May James May"
+        ],
+        "publish_date": "2009-02-09T14:36:33",
+        "summary": "",
+        "meta_description": "I'm trying to work out if an account expires in less than 30 days. Am I using DateTime Compare correctly?\n\nif (DateTime.Compare(expiryDate, now) &lt; 30)\n\n{\n     matchFound = true;\n}",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/528368/datetime-compare-how-to-check-if-a-date-is-less-than-30-days-old",
+        "text": "Am I using DateTime Compare correctly?\n\nNo. Compare only offers information about the relative position of two dates: less, equal or greater. What you want is something like this:\n\nif ((expiryDate - DateTime.Now).TotalDays < 30) matchFound = true;\n\nThis subtracts two DateTimes. The result is a TimeSpan object which has a TotalDays property.\n\nAdditionally, the conditional can be written directly as:\n\nbool matchFound = (expiryDate - DateTime.Now).TotalDays < 30;\n\nNo if needed.\n\nAlternatively, you can avoid naked numbers by using TimeSpan.FromDays:\n\nbool matchFound = (expiryDate - DateTime.Now) < TimeSpan.FromDays(30);\n\nThis is slightly more verbose but I generally recommend using the appropriate types, and the appropriate type in this case is a TimeSpan, not an int.\n\nNo, the Compare function will return either 1, 0, or -1. 0 when the two values are equal, -1 and 1 mean less than and greater than, I believe in that order, but I often mix them up.\n\nActually none of these answers worked for me. I solved it by doing like this:\n\nif ((expireDate.Date - DateTime.Now).Days > -30) { matchFound = true; }\n\nWhen i tried doing this:\n\nmatchFound = (expiryDate - DateTime.Now).Days < 30;\n\nToday, 2011-11-14 and my expiryDate was 2011-10-17 i got that matchFound = -28. Instead of 28. So i inversed the last check."
+    }
+}

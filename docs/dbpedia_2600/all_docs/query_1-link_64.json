@@ -1,0 +1,43 @@
+{
+    "id": "dbpedia_2600_1",
+    "rank": 64,
+    "data": {
+        "url": "https://stackoverflow.com/questions/19038240/media-query-styles-not-overriding-original-styles",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Media Query Styles Not Overriding Original Styles",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/0ec801c084270284f83f365580313225?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/136ffe572f4889123332293d8a442bec?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/gcX4o.jpg?s=64",
+            "https://www.gravatar.com/avatar/0b4d6f0ba0224444707107a806da4c01?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/12ce9b9ec9f98fdbe2b3c47eedfbfcc9?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/EaD9a.jpg?s=64",
+            "https://lh3.googleusercontent.com/a-/AOh14GiFXTiRbEIveUQDDihp3Xwfw005NYUQnhMaKN148g=k-s64",
+            "https://www.gravatar.com/avatar/cd5bbfb05852f45d638354ca133fc9c9?s=64&d=identicon&r=PG",
+            "https://lh3.googleusercontent.com/a-/AOh14Gjv5-9S3fGk53Rz6jOGNQONFzt2DY-QhcFa86pfvA=k-s64",
+            "https://i.sstatic.net/AndBj.png?s=64",
+            "https://i.sstatic.net/Ojci5.png?s=64",
+            "https://lh4.googleusercontent.com/-2EVMPpTLubo/AAAAAAAAAAI/AAAAAAAAAAA/AMZuucnRRTQHfCamD-Lq35pVm92E2U6u7A/s96-c/photo.jpg?sz=64",
+            "https://stackoverflow.com/posts/19038240/ivc/9d1b?prg=4ba05189-049c-45f0-ac2f-c014d4386a5e",
+            "https://stackoverflow.com/js-false.gif"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2013-09-26T20:37:01",
+        "summary": "",
+        "meta_description": "I'm attempting to use some media queries for a website I'm building. The problem I'm having however, is while the media query styles are actually being applied, they're being overridden. I can't fo...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/19038240/media-query-styles-not-overriding-original-styles",
+        "text": "The selectors in your original CSS have the same specificity as the selectors within your media queries (the first declarations are also targeting the same property - width) and because the media query rule set is being overridden I'm going to assume that it appears before the original rule set.\n\nThe second media query selector works because it's targeting a property that wasn't set in your original CSS, so specificity isn't relevant.\n\nTo have the first media query selector take precedence, prepend an ancestor element to it:\n\n@media screen and (max-width:1024px) { body #global-wrapper-outer > #global-wrapper-inner { width: 100%; } #global-wrapper-outer > #global-wrapper-inner > nav { display: none; } }\n\nI have been at least 2 hours trying to find the override CSS problem till I found that my line comments where wrong... And the second definition of CSS wasn't working:\n\nSo, don't be so stupid as I !:\n\n/* LITTLE SCREENS */ @media screen and (max-width: 990px) { ... whatever ... } /* BIG SCREENS */ @media screen and (min-width: 990px) { ... whatever more ... }\n\nnever use: Double bar as I did:\n\n// This is not a comment in CSS! /* This is a comment in CSS! */\n\nHere is the answer. (at least what worked for me)\n\nI've had this problem before, and it took me a while to realize what I did, but once I figured it out it's actually pretty easy.\n\nOk so imagine I have this as the html\n\n<main> <div class = \"child1\"> </div> <div class = \"child2\"> </div> </main>\n\nand then this as the CSS\n\nmain .child1{ height: 50px; } /* now let's try to use media quaries */ @media only screen and (max-width: 768px) { .child1{ width: 75%; } }\n\nThe code above won't affect the .child. Just like someone mentioned above, the main .child1 overrides .child1. So the way you make it work is to select the element just like we did at the very beginning of the CSS above.\n\n/* this will work */ @media only screen and (max-width: 768px) { main .child1{ width: 75%; } }\n\nSo as a conclusion... select the elements the same way every time. Meaning ... for example in the above code, in your CSS, you should either select it as main .child1throughout the whole CSS or .child1 or else they get mixed up, one ends up overriding the other.\n\nCheck if your media query braces are equal.\n\nSometimes it is very subtle but when you miss a single brace the rest of the media queries mentioned for certain break points will not work\n\nexample:\n\n@media(min-width: 768px) and (max-width: 991px){ @media (max-width: 767px){ .navbar-brand p { font-size: .6em; margin-top: 12px;} .navbar-brand img {height: 20px;} #collapsable-nav a { font-size: 1.2em; } #collapsable-nav a span { font-size: 1.2em;} }\n\nHere you can see i have started the braces for max-width:991px but forgot to end so the next set of codes in media query for max-width:767px will not work. It is a very simple mistake but took hours because of lot of braces in the codes. Hope it helps. Happy Coding!\n\nThere can be some reasons because of which this type of error may occur. I myself faced this issue where I was not able to understand what I am needed to do and was confused that, does media query just overrides the elements. Here's what I understood:\n\nMEDIA QUERY CSS:\n\n@media screen and (max-width:1024px) { #global-wrapper-outer > #global-wrapper-inner { width: 100%; } #global-wrapper-outer > #global-wrapper-inner > nav { display: none; } }\n\nhere you were able to override #global-wrapper-inner > nav i.e., 2nd media query selector, by display: none; because you never added the display line in the original css, because of which there was nothing to override you just have given that display type should be none. Whereas just in the 1st media query selector you already had given width:80%; Basically media query doesn't override as far as I have understood but it take precedence, like already explained by one of them by which media query comes to work: https://stackoverflow.com/a/19038303/15394464\n\nalso if still did not get your doubt clear, https://www.youtube.com/watch?v=acqN6atXVAE&t=288s then this might help."
+    }
+}
