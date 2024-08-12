@@ -1,0 +1,38 @@
+{
+    "id": "dbpedia_2670_1",
+    "rank": 33,
+    "data": {
+        "url": "https://github.com/British-Oceanographic-Data-Centre/COAsT",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Centre/COAsT: A Coastal Ocean Assessment Tool built as an extendable python framework for nemo models",
+        "top_image": "https://opengraph.githubassets.com/da210fccf6c6fbfbe1c29f3c3a80e3725fbc5cbcf5afe561b9875c59c10835ef/British-Oceanographic-Data-Centre/COAsT",
+        "meta_img": "https://opengraph.githubassets.com/da210fccf6c6fbfbe1c29f3c3a80e3725fbc5cbcf5afe561b9875c59c10835ef/British-Oceanographic-Data-Centre/COAsT",
+        "images": [
+            "https://camo.githubusercontent.com/9077ce8febcae5e10c12e698f2c14899dc9f55827575f4619dcf35582862c5a4/68747470733a2f2f62616467652e667572792e696f2f70792f636f6173742e737667",
+            "https://camo.githubusercontent.com/a7f697a221e2516103a1a8b54b462e75580d207ec3ee1a943afc5ea53cacc85d/68747470733a2f2f696d672e736869656c64732e696f2f636f6e64612f762f626f64632f636f6173742e737667",
+            "https://camo.githubusercontent.com/b4f2fa7fe2416b989c3fc92809f80380d99125d77c4f6e14ba231225791db3ab/68747470733a2f2f616e61636f6e64612e6f72672f626f64632f636f6173742f6261646765732f6c61746573745f72656c656173655f72656c61746976655f646174652e737667",
+            "https://camo.githubusercontent.com/f9d486ab2f2a000b290b38b591ed48746f3846cc5e69a355e2b3f11d34348597/68747470733a2f2f7a656e6f646f2e6f72672f62616467652f444f492f31302e353238312f7a656e6f646f2e343034313431332e737667",
+            "https://camo.githubusercontent.com/7d770c433d6198d89f8c1e2f187b904a9721d176259d0e97157337741cc8e837/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f636f64652532307374796c652d626c61636b2d3030303030302e737667",
+            "https://camo.githubusercontent.com/ada7a1c309bfc21f43f966137d21033ab191f689bd50380739359f6756167c48/68747470733a2f2f62616467652e667572792e696f2f70792f434f4173542e737667",
+            "https://camo.githubusercontent.com/5b7db64b5c4e81d01ba22939977a1724ba8a417d3fd333132ef6ff4166752b00/68747470733a2f2f616e61636f6e64612e6f72672f626f64632f636f6173742f6261646765732f76657273696f6e2e737667"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "British-Oceanographic-Data-Centre"
+        ],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "A Coastal Ocean Assessment Tool built as an extendable python framework for nemo models  - GitHub - British-Oceanographic-Data-Centre/COAsT: A Coastal Ocean Assessment Tool built as an extendable python framework for nemo models",
+        "meta_lang": "en",
+        "meta_favicon": "https://github.com/fluidicon.png",
+        "meta_site_name": "GitHub",
+        "canonical_link": "https://github.com/British-Oceanographic-Data-Centre/COAsT",
+        "text": "COAsT is Diagnostic and Assessment toolbox for kilometric scale regional models. It's aim is to deliver a flexible, community-ready framework for assessing kilometric scale ocean models. The focus, initially, is be on delivering novel diagnostics for processes that are emergent at the kilometric scale and with NEMO model output. The framework leans heavily on xarray.\n\nDocumentation can be found here.\n\nCOAsT is an object-orientated package, meaning that data is stored within Python object structures. In addition to data storage, these objects contain methods (subroutines) which allow for manipulation of this data. An example of such an object is the Gridded object, which allows for the storage and manipulation of (e.g.) NEMO output and domain data. It is important to understand how to load data using COAsT and the structure of the resulting objects.\n\nA Gridded object is created and initialised by passing it the paths of the domain and data files. Ideally, the grid type should also be specified (T, U, V or F in the case of NEMO). For example, to load in data from a file containing data on a NEMO T-grid:\n\nIdeally, Gridded model output data should be in grid-specific files, i.e. containing output variables situated on a NEMO T, U, V or F grid, whereas the grid variables are in a single domain file. On loading into COAsT, only the grid specific variables appropriate for the paired data are placed into the Gridded object. A Gridded object therefore contains grid-specific data and all corresponding grid variables. One of the file names can be omitted (to get a data-only or grid only object), however functionality in this case will be limited.\n\nOnce loaded, data is stored inside the object using an xarray.dataset object. Following on from the previous code example, this can be viewed by calling:\n\nThis reveals all netcdf-type aspects of the data and domain variables that were loaded, including dimensions, coordinates, variables and attributes. For example:\n\nVariables may be obtained in a number of ways. For example, to get temperature data, the following are all equivalent:\n\nThese commands will all return an xarray.dataarray object. Manipulation of this object can be done using xarray commands, for example indexing using [] or xarray.isel. Be aware that indexing will preserve lazy loading, however and direct access or modifying of the data will not. For this reason, if you require a subset of the data, it is best to index first.\n\nThe names of common grid variables are standardised within the COAsT package using JSON configuration files. For example, the following lists COAsT internal variable followed by the typical NEMO variable names:\n\nlongitude [glamt / glamu / glamv / glamf]\n\nlatitude [gphit / gphiu / gphiv / gphif]\n\ntime [time_counter]\n\ne1 [e1t / e1u / e1v / e1f] (dx variable)\n\ne2 [e1t / e1u / e1v / e1f] (dy variable)\n\ne3_0 [e3t_0 / e3u_0 / e3v_0 / e3f_0] (dz variable at time 0)\n\nLongitude, latitude and time are also set as coordinates. You might notice that dimensions are also standardised:\n\nx_dim The dimension for the x-axis (longitude)\n\ny_dim The dimension for the y-axis (latitude)\n\nt_dim The dimension for the time axis\n\nz_dim The dimension for the depth axis.\n\nWherever possible, the aim is to ensure that all of the above is consistent across the whole COAsT toolbox. Therefore, you will also find the same names and dimensions in, for example observation objects. Future objects, where applicable, will also follow these conventions. If you (as a contributor) add new objects to the toolbox, following the above template is strongly encouraged. This includes using xarray dataset/dataarray objects where possible, adopting an object oriented approach and adhering to naming conventions."
+    }
+}
