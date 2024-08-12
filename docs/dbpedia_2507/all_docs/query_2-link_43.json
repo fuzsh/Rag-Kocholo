@@ -1,0 +1,39 @@
+{
+    "id": "dbpedia_2507_2",
+    "rank": 43,
+    "data": {
+        "url": "https://stackoverflow.com/questions/286876/how-to-best-create-a-test-db-when-doing-tdd",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How to best create a test DB when doing TDD?",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/8c86435ef45475f9895a1561e5576eea?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/5f1a1d3e883676684f288f4ed973f9aa?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/2wMCa.jpg?s=64",
+            "https://www.gravatar.com/avatar/0ae4fefee3b78c0c9b1df83b3f1fd13a?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/b840efbf93da64f1c63a1f62ebc9b4fd?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/e8f633354cd3fb6025fe4ff6b972b3c7?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/5f1a1d3e883676684f288f4ed973f9aa?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/1aa48f7606f5b08595b0a0356a61e8b6?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/3f3c952a1a31a12fc2ac49528888c073?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/286876/ivc/0d1a?prg=8c9ca98c-40cb-4590-949e-1f95982ea76b"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2008-11-13T13:13:25",
+        "summary": "",
+        "meta_description": "what's the best practice for creating test persistence layers when doing an ASP.NET site (eg. ASP.NET MVC site)?\n\nMany examples I've seen use Moq (or another mocking framework) in the unit test pro...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/286876/how-to-best-create-a-test-db-when-doing-tdd",
+        "text": "Assuming you're using the Repository pattern from Rob Conery's MVC Store Front:\n\nhttp://blog.wekeroad.com/mvc-storefront/mvc-storefront-part-1/\n\nI followed Rob Conery's tutorial but ran into the same want as you. Best thing to do is move the Mock Repositories you've created into a seperate project called Mocks then you can swap them out pretty easily with the real ones when you instantiate your service. If your feeling adventurous you could create a factory that takes a value from the config file to instantiate either a mock or a real repository,\n\ne.g.\n\npublic static ICatalogRepository GetCatalogRepository(bool useMock) { if(useMock) return new FakeCatalogRepository(); else return new SqlCatalogRepository(); }\n\nor use a dependency injection framework :)\n\ncontainer.Resolve<ICatalogRepository>();\n\nGood luck!\n\nEDIT: In response to your comments, sounds like you want to use a list and LINQ to emulate a db's operations e.g. GetProducts, StoreProduct. I've done this before. Here's an example:\n\npublic class Product { public int Identity { get; set; } public string Name { get; set; } public string Description { get; set; } //etc } public class FakeCatalogRepository() { private List<Product> _fakes; public FakeCatalogCatalogRepository() { _fakes = new List<Product>(); //Set up some initial fake data for(int i=0; i < 5; i++) { Product p = new Product { Identity = i, Name = \"product\"+i, Description = \"description of product\"+i }; _fakes.Add(p); } } public void StoreProduct(Product p) { //Emulate insert/update functionality _fakes.Add(p); } public Product GetProductByIdentity(int id) { //emulate \"SELECT * FROM products WHERE id = 1234 var aProduct = (from p in _fakes.AsQueryable() where p.Identity = id select p).SingleOrDefault(); return aProduct; } }\n\nDoes that make a bit more sense?\n\nBoring or not, I think you're on the right track. I assume you're creating a fakeRepository that is a concrete implementation of your IRepository which in turn is injected into your service layer. This is nice because at some point in the future when you're happy with the shape of your entities and the behavior of your services, controllers, and views, you can then test drive your real Repositories that will use the database to persist those entities. Of course the nature of those tests will be integration tests, but just as important if not more so.\n\nOne thing that may be less boring for you when the time comes to create your real repositories is if you use nHibernate for your persistence you will be able let nhibernate generate your database after you create the nhibernate maps for your entities, assuming you don't have to use a legacy schema.\n\nFor instance, I have the following method that is called by my SetUpFixture to generate my db schema:\n\npublic class SchemaBuilder { public static void ExportSchema() { Configuration configuration = new Configuration(); configuration.Configure(); new SchemaExport(configuration).Create(true, true); } }\n\nand my SetUpFixture is as follows:\n\n[SetUpFixture] public class SetUpFixture { [SetUp] public void SetUp() { SchemaBuilder.ExportSchema(); DataLoader.LoadData(); } }\n\nwhere DataLoader is responsible for creating all of my seed data and test data using the real respoitory.\n\nThis probably doesn't answer your questions but I hope it serves to reassure you in your approach.\n\nGreg\n\nI am using a complete in memory database with SQLite and ActiveRecord. Basically we delete and re-create the database before every integration test is being run, so that the data is always in a known state. The contents of the database are inserted through code. So an example would be like this:\n\nActiveRecord.Initalize(lots of parameters) ActiveRecord.DropSchema(); ActiveRecord.CreateSchema();\n\nand then we just add lots of customers or whatever, DDD style:\n\ncustomerRepository.Save(customer);\n\nAnother way to solve this could be using NDbUnit to maintain the state of the database.\n\nI know this question is a bit old, but I've finally come up with an answer :)\n\nFirstly, use RavenDb (Embedded). It's part of the RavenDb Document Database. Its a fully in memory database and works perfectly with unit tests :) I've done it with MSTest, NUnit and xUnit.\n\nSecondly, you can use NHibernate with SqlLite if you don't want to use RavenDb. Ayende has a post about using this.\n\nI've gone the route of creating tables and data during a setup method in a unit test class, running tests, then doing clean up during the teardown. Yes, this method works, but if you really end up using your unit tests for debugging purposes, invariably you will run the setup, debug something then stop in the middle without doing the teardown. It's very brittle and you will probably end up (in the long run) with bad data in your test database and/or unusable unit tests. I personally think its best to mock the database layer using a mocking framework. I do understand that sometimes it's best to do logic in the database. For these cases you can use a tool like DBFit to write tests for your database layer."
+    }
+}
