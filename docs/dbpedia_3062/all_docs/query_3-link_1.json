@@ -1,0 +1,35 @@
+{
+    "id": "dbpedia_3062_3",
+    "rank": 1,
+    "data": {
+        "url": "https://snird.medium.com/do-not-use-node-js-optimization-flags-blindly-3cc8dfdf76fd",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Node.js optimization flags lesson from production",
+        "top_image": "https://miro.medium.com/v2/resize:fit:562/1*PuvehXz7bAaSgwLigbD3qg.png",
+        "meta_img": "https://miro.medium.com/v2/resize:fit:562/1*PuvehXz7bAaSgwLigbD3qg.png",
+        "images": [
+            "https://miro.medium.com/v2/resize:fill:64:64/1*dmbNkD5D-u45r44go_cf0g.png",
+            "https://miro.medium.com/v2/resize:fill:88:88/1*4xCYfAHNOPmEn0QoZjxmqw.jpeg",
+            "https://miro.medium.com/v2/resize:fill:144:144/1*4xCYfAHNOPmEn0QoZjxmqw.jpeg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Snir David",
+            "snird.medium.com"
+        ],
+        "publish_date": "2018-03-19T09:20:00.207000+00:00",
+        "summary": "",
+        "meta_description": "Coming to set up Node.js for production, there are some articles recommending usage of various v8 flags to optimize the runtime (e.g https://blog.heroku.com/node-habits-2016#7-avoid-garbage ) If you…",
+        "meta_lang": "en",
+        "meta_favicon": "https://miro.medium.com/v2/1*m-R_BkNf1Qjr1YbyOIJY2w.png",
+        "meta_site_name": "Medium",
+        "canonical_link": "https://snird.medium.com/do-not-use-node-js-optimization-flags-blindly-3cc8dfdf76fd",
+        "text": "Coming to set up Node.js for production, there are some articles recommending usage of various v8 flags to optimize the runtime (e.g https://blog.heroku.com/node-habits-2016#7-avoid-garbage )\n\nThese usually mention the --optimize_for_size , --gc_interval=100 , and --max_old_space_size flags.\n\nIf you use any of these flags in production, I want to encourage you to experiment with them and find what is optimal for your application. In my company services, we found --optimize_for_size to generally be a good thing to include, as otherwise RAM usage might sometimes go out of hand and causing long breaks for GC.\n\nBut for one service, it was actually harmful. This service typically have low RAM footprint, or at least, a footprint that the default settings can manage well enough.\n\nI have removed the --optimize_for_size flag from one of our deployed servers, and here is the compared CPU usage (the server changed is 102)\n\nThe CPU usage went from 35%~ at this time of load to 20%~. This is a big change.\n\nAnd what about memory?\n\nAh. not so bad.\n\nWe use google cloud compute engine, with the high-cpu servers, so these servers have the lowest RAM amount possible in this configuration.\n\nThis is a big win for such a small change. But I feel compelled to say, the change can be also significant to the other side. It’s all depends on the specific code you are running, so experiment with it, it’s not one size fits all."
+    }
+}
