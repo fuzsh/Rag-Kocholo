@@ -1,0 +1,36 @@
+{
+    "id": "dbpedia_3936_3",
+    "rank": 6,
+    "data": {
+        "url": "https://stackoverflow.com/questions/13934209/best-solution-for-custom-live-search-task",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Best solution for custom live search task",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://cdn.sstatic.net/Img/teams/teams-promo.svg?v=e507948b81bf",
+            "https://www.gravatar.com/avatar/a007be5a61f6aa8f3e85ae2fc18dd66e?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/a87578d978e02d1eb32aa0d7fbbe417b?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/f2f3a5c87c28be1e3d1d31281c613deb?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/bd0a1f6e3de136eb18d7e2981bf4b195?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/0443c545df47b56085731e6d4cd9aa5a?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/13934209/ivc/0e4f?prg=9fa6edae-ffbd-47fb-9f36-4a53a0ab40cd"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2012-12-18T13:35:56",
+        "summary": "",
+        "meta_description": "I'm going to add simple live search to website (tips while entering text in input box).\n\nMain task:\r\n39k plain text lines for search into (~500 length of each line, 4Mb total size)\n1k online users ...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/13934209/best-solution-for-custom-live-search-task",
+        "text": "Put your data in a database (SQLite should do just fine, but you can also use a more heavy-duty RDBMS like MySQL or Postgres), and put an index on the column or columns that will be searched.\n\nOnly do the absolute minimum, which means that you should not use a framework, an ORM, etc. They will just slow down your code.\n\nCreate a PHP file, grab the search text and do a SELECT query using a native PHP driver, such as SQLite, MySQLi, PDO or similar.\n\nAlso, think about how the search box will work. You can prevent many requests if you e.g. put a minimum character limit (it does not make sense to search only for one or two characters), put a short delay between sending requests (so that you do not send requests that are never used), and so on.\n\nWhether or not to use an extension such as Solr depends on your circumstances. If you have a lot of data, and a lot of requests, then maybe you should look into it. But if the problem can be solved using a simple solution then you should probably try it out before making it more complicated.\n\nI have implemented 'live search' many times, always using AJAX with querying the database (MySQL) and haven't had/observed any speed or large load issues yet.\n\nAnyway I saw an implementations using Solr but cannot suggest whether it was quicker or consumed less resources.\n\nIt completely depends on the HW the server will run on, IMO. As I wrote somewhere, I had seen a server with very slow filesystem so implementing live search while reading and parsing from txt files (or using Solr) could be slower than when querying the database. On the other hand You can host on poor shared webhosting with slow DB connection (that gets even slower with more concurrent connections) so this won't be the best solution.\n\nMy suggestion: use MySQL with AJAX (look at this jquery plugin or this article), set proper INDEXes on the searched columns and if this is found slow You still can move to a txt file."
+    }
+}

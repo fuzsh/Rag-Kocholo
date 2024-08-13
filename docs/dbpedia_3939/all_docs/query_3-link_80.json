@@ -1,0 +1,34 @@
+{
+    "id": "dbpedia_3939_3",
+    "rank": 80,
+    "data": {
+        "url": "https://drupal.stackexchange.com/questions/180472/creating-live-search-from-database-text-field-in-profile-content-field-drupal",
+        "read_more_link": "",
+        "language": "en",
+        "title": "creating \"live search\" from database text field in Profile Content field Drupal 6",
+        "top_image": "https://cdn.sstatic.net/Sites/drupal/Img/apple-touch-icon@2.png?v=5d949c166061",
+        "meta_img": "https://cdn.sstatic.net/Sites/drupal/Img/apple-touch-icon@2.png?v=5d949c166061",
+        "images": [
+            "https://cdn.sstatic.net/Sites/drupal/Img/logo.svg?v=6cfa92df6243",
+            "https://i.sstatic.net/G7HMF.png?s=64",
+            "https://www.gravatar.com/avatar/e16cf8050105e7ae84c22a5363bcf13d?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/4680ff3484fe0659bd70dbcbf3eaf5f0?s=64&d=identicon&r=PG",
+            "https://drupal.stackexchange.com/posts/180472/ivc/cc0e?prg=5837fce2-3341-4708-b208-e0c73d6de268"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2015-11-10T13:33:19",
+        "summary": "",
+        "meta_description": "I'm new to Drupal development. I have inherited a Drupal 6 site. I would like to add to the content-profile fields a \"live search\" text field that will give the user options from a database based o...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/drupal/Img/favicon.ico?v=8ff8e595d909",
+        "meta_site_name": "Drupal Answers",
+        "canonical_link": "https://drupal.stackexchange.com/questions/180472/creating-live-search-from-database-text-field-in-profile-content-field-drupal",
+        "text": "You're asking how to make an Ajax search request from a textfield.\n\nI'm not going to answer your exact question but you need some javascript to fill in the results from your sql query into the search field. Here is an example which fills in an HTML <options> list from a Drupal sql search:\n\njQuery(function($) { $('#edit-field-survey-program-und option:gt(0)').remove(); $('#edit-field-survey-program-und').attr('disabled', 'disabled'); // When a country is selected. Find the Academic Programs within that // country from an SQL lookup. Then fill in the options values and // make that options list enabled for the site visitor. $(\"#edit-field-survey-country-und\").click(function() { var selected_country = $(\"#edit-field-survey-country-und\").val(); if (selected_country != '_none') { // Do our SQL lookup from a service enpoint with a search parameter. $.ajax({ type:'GET', url: '/eap-ajax/eap-country-programs/' + selected_country, data: '', success:function(data){ // Replace values of target form element with found results. // Enable for enduser. $('#edit-field-survey-program-und option:gt(0)').remove(); $.each(data, function(key, value) { $('#edit-field-survey-program-und').append( '<option value=\"' + key + '\">' + value + '</option>' ); }); $('#edit-field-survey-program-und').removeAttr('disabled'); } }); } }); });\n\nThe above example is the same 3 pieces for any AJAX thing.\n\nMake a click event listener function\n\nDo your SQL business logic\n\nInject your results somewhere back into the page\n\nFor a full writeup feel free to see my more complete writeup: http://blog.arvixe.com/drupal-ajax-autocomplete-dependant-form-elements-using-jquery/"
+    }
+}
