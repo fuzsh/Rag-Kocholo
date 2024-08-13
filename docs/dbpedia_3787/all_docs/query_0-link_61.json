@@ -1,0 +1,44 @@
+{
+    "id": "dbpedia_3787_0",
+    "rank": 61,
+    "data": {
+        "url": "https://docs.datadoghq.com/metrics/distributions/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Distributions",
+        "top_image": "https://datadog-docs.imgix.net/images/og-default/og-thumbnails-generic4.png",
+        "meta_img": "https://datadog-docs.imgix.net/images/og-default/og-thumbnails-generic4.png",
+        "images": [
+            "https://datadog-docs.imgix.net/img/dd_logo_n_70x75.png?ch=Width,DPR&fit=max&auto=format&w=70&h=75",
+            "https://datadog-docs.imgix.net/img/dd-logo-n-200.png?ch=Width,DPR&fit=max&auto=format&h=14&auto=format&w=807",
+            "https://datadog-docs.imgix.net/img/datadog_rbg_n_2x.png?fm=png&auto=format&lossless=1",
+            "https://datadog-docs.imgix.net/images/icons/nav_home.png?ch=Width%2cDPR&fit=max&auto=format&w=807",
+            "https://datadog-docs.imgix.net/images/icons/nav_docs.png?ch=Width%2cDPR&fit=max&auto=format&w=807",
+            "https://datadog-docs.imgix.net/images/icons/nav_mobile_api.png?ch=Width%2cDPR&fit=max&auto=format&w=807",
+            "https://datadog-docs.imgix.net/images/metrics/distributions/percentile_qvw.79931614b96d1264e7fb26d3607d201d.jpg?auto=format",
+            "https://datadog-docs.imgix.net/images/metrics/distributions/percentile_monitor.5c8f0dbb69dbc1639106abbfa9117e6d.jpg?auto=format",
+            "https://datadog-docs.imgix.net/images/metrics/distributions/threshold_SLO.b7c9c58385039fb858c7732ca3657642.jpg?auto=format",
+            "https://datadog-docs.imgix.net/images/metrics/distributions/dist_manage.f2eeee61c6d883f90441dc3bf21a91f7.jpg?auto=format",
+            "https://datadog-docs.imgix.net/images/icons/list-group-whats-next-arrow-1.png?ch=Width%2cDPR&fit=max&auto=format&w=807",
+            "https://datadog-docs.imgix.net/images/icons/list-group-whats-next-arrow-2.png?ch=Width%2cDPR&fit=max&auto=format&w=807",
+            "https://datadog-docs.imgix.net/images/icons/help-druids.svg",
+            "https://datadog-docs.imgix.net/images/icons/icon-pencil.svg?ch=Width%2cDPR&fit=max&auto=format&w=807",
+            "https://datadog-docs.imgix.net/images/dd-logo-white.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "Compute global percentiles across your entire dataset.",
+        "meta_lang": "en",
+        "meta_favicon": "https://docs.datadoghq.com/favicon.ico",
+        "meta_site_name": "Datadog Infrastructure and Application Monitoring",
+        "canonical_link": "https://docs.datadoghq.com/metrics/distributions/",
+        "text": "Overview\n\nDistributions are a metric type that aggregate values sent from multiple hosts during a flush interval to measure statistical distributions across your entire infrastructure.\n\nGlobal distributions instrument logical objects, like services, independently from the underlying hosts. Unlike histograms which aggregate on the Agent-side, global distributions send all raw data collected during the flush interval and the aggregation occurs server-side using Datadog’s DDSketch data structure.\n\nDistributions provide enhanced query functionality and configuration options that aren’t offered with other metric types (count, rate, gauge, histogram):\n\nCalculation of percentile aggregations: Distributions are stored as DDSketch data structures that represent raw, unaggregated data such that globally accurate percentile aggregations (p50, p75, p90, p95, p99 or any percentile of your choosing with up to two decimal points) can be calculated across the raw data from all your hosts. Enabling percentile aggregations can unlock advanced query functionalities such as:\n\nSingle percentile value over any timeframe:\n\n“What has the 99.9th percentile load time for my application been over the past week?”\n\nStandard deviation over any timeframe:\n\n“What is the standard deviation (stddev) of my application’s CPU consumption over the past month?”\n\nPercentile thresholds on metric monitors:\n\n“Alert me when the p95 of my application’s request latency is greater than 200 ms for the last 5 min.”\n\nThreshold Queries:\n\n“I’d like to define a 30-day SLO where 95% of requests to my service are completed in under 5 seconds.”\n\nCustomization of tagging: This functionality allows you to control the tagging scheme for custom metrics for which host-level granularity is not necessary (for example, transactions per second for a checkout service).\n\nSee the Developer Tools section for more implementation details.\n\nNote: Because distributions are a new metric type, they should be instrumented under new metric names during submission to Datadog.\n\nEnabling advanced query functionality\n\nLike other metric types, such as gauges or histograms, distributions have the following aggregations available: count, min, max, sum, and avg. Distributions are initially tagged the same way as other metrics, with custom tags set in code. They are then resolved to host tags based on the host that reported the metric.\n\nHowever, you can enable advanced query functionality such as the calculation of globally accurate percentile aggregations for all queryable tags on your distribution on the Metrics Summary page. This provides aggregations for p50, p75, p90, p95, and p99 or any user-defined percentile of your choosing (with up to two decimal points such as 99.99). Enabling advanced queries also unlocks threshold queries and standard deviation.\n\nAfter electing to apply percentile aggregations on a distribution metric, these aggregations are automatically available in the graphing UI:\n\nYou can use percentile aggregations in a variety of other widgets and for alerting:\n\nSingle percentile value over any timeframe\n\n“What has the 99.9th percentile request duration for my application been over the past week?”\n\nPercentile thresholds on metric monitors “Alert me when the p95 of my application’s request latency is greater than 200 ms for the last 5 min.”\n\nThreshold Queries\n\nThreshold queries are in public beta.\n\nEnabling DDSketch-calculated globally-accurate percentiles on your distribution metrics unlocks threshold queries where you can count the number of raw distribution metric values if they exceed or fall below a numerical threshold. You can use this functionality to count the number of errors or violations compared to an anomalous numerical threshold on dashboards. Or you can also use threshold queries to define SLOs like “95% of requests were completed in under 10 seconds over the past 30 days”.\n\nWith threshold queries for distributions with percentiles, you do not need to predefine a threshold value prior to metric submission, and have full flexibility to adjust the threshold value in Datadog.\n\nTo use threshold queries:\n\nEnable percentiles on your distribution metric on the Metrics Summary page.\n\nGraph your chosen distribution metric using the “count values&mldr;” aggregator.\n\nSpecify a threshold value and comparison operator.\n\nYou can similarly create a metric-based SLO using threshold queries:\n\nEnable percentiles on your distribution metric on the Metrics Summary page.\n\nCreate a new Metric-Based SLO and define the numerator as the number of “good” events with a query on your chosen distribution metric using the “count values&mldr;” aggregator.\n\nSpecify a threshold value and comparison operator.\n\nCustomize tagging\n\nDistributions provide functionality that allows you to control the tagging for custom metrics where host-level granularity does not make sense. Tag configurations are allowlists of the tags you’d like to keep.\n\nTo customize tagging:\n\nClick on your custom distribution metric name in the Metrics Summary table to open the metrics details sidepanel.\n\nClick the Manage Tags button to open the tag configuration modal.\n\nClick the Custom&mldr; tab to customize the tags you’d like to keep available for query.\n\nNote: The exclusion of tags is not supported in the allowlist-based customization of tags. Adding tags starting with ! is not accepted.\n\nAudit events\n\nAny tag configuration or percentile aggregation changes create an event in the event explorer. This event explains the change and displays the user that made the change.\n\nIf you created, updated, or removed a tag configuration on a distribution metric, you can see examples with the following event search:\n\nIf you added or removed percentile aggregations to a distribution metric, you can see examples with the following event search:\n\nFurther reading"
+    }
+}

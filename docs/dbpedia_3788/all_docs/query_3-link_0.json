@@ -1,0 +1,40 @@
+{
+    "id": "dbpedia_3788_3",
+    "rank": 0,
+    "data": {
+        "url": "https://stackoverflow.com/questions/1026337/how-do-i-get-link-to-an-image-on-wikipedia-from-the-infobox",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How do I get link to an image on wikipedia from the infobox?",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://cdn.sstatic.net/Img/teams/teams-promo.svg?v=e507948b81bf",
+            "https://www.gravatar.com/avatar/d2c5a0f2653e7d11d518b584f4c46536?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/377d44d45030f5c2b4f5ec95cc97fc6d?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/71769ccb36542192a8e45a13bc89979a?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/a26iy.png?s=64",
+            "https://www.gravatar.com/avatar/9c3e155fb9505b3a19b36bb9d5ce3775?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/d2c5a0f2653e7d11d518b584f4c46536?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/qk9vC.jpg?s=64",
+            "https://www.gravatar.com/avatar/b85709a4bbdbf14c18ed0ef1b5aaab65?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/95be0000c8d6d890b3b2f1d6346b2295?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/1026337/ivc/3fcb?prg=9ef69c81-519e-48fa-8a50-edcb433dacfa"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2009-06-22T09:50:09",
+        "summary": "",
+        "meta_description": "I'm parsing wikipedia infoboxes and I noticed that some infoboxes have image fields - these fields hold names of image files stashed on wikipedia somewhere. However they just contain the name of th...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/1026337/how-do-i-get-link-to-an-image-on-wikipedia-from-the-infobox",
+        "text": "According to What are the strangely named components in Wikipedia file paths, you need to run md5 to find out url. Now wikipedia allows hotlinking, so:\n\nIf you have utf-8 encoded $name, you need to do the following:\n\n$filename = replace($name, ' ', '_'); $digest = md5($filename); $folder = $digest[0] . '/' . $digest[0] . $digest[1] . '/' . urlencode($filename); $url = 'http://upload.wikimedia.org/wikipedia/commons/' . $folder;\n\nThe same can be used for thumbnails.\n\nThere is now a simpler way to hotlink the files on Wikipedia using the Special:FilePath page. Hence, if you want to link the file Example.jpg on English Wikipedia, you can use https://en.wikipedia.org/wiki/Special:FilePath/Example.jpg.\n\nSimilar links should work for other Wikimedia Foundation sites (e. g. Wikimedia Commons).\n\nDetails and recommendations regarding hotlinking can be found on Wikimedia's Commons:Reusing_content_outside_Wikimedia.\n\nHere is a JavaScript implementation of a working PHP answer (credits to Yuri Baburov):\n\nvar name = \"filename.jpg\"; var filename = name.replace(/ /g, \"_\"); var digest = md5(filename); var folder = digest[0] + '/' + digest[0] + digest[1] + '/' + encodeURIComponent(filename); var url = 'http://upload.wikimedia.org/wikipedia/commons/' + folder;\n\nNote that you must include external md5() function (https://github.com/blueimp/JavaScript-MD5); it is not native to JS.\n\nHave you tried http://en.wikipedia.org/wiki/File:filename.jpg ? Even if the files are located on Wikimedia Commons, the above URL should still work.\n\nEdit: Are you trying to hotlink the image? If so, Wikipedia prohibits hotlinking. http://commons.wikimedia.org/wiki/Commons:Reusing_content_outside_Wikimedia#Hotlinking\n\nUpdate 10-Jan-2019: Hotlinking is now permitted:\n\nHotlinking or InstantCommons: It is possible to use files directly on Commons within another website, by setting up a MediaWiki wiki with InstantCommons, ..."
+    }
+}
