@@ -1,0 +1,42 @@
+{
+    "id": "dbpedia_3264_0",
+    "rank": 10,
+    "data": {
+        "url": "https://britastro.org/forums/topic/plate-solving-with-astroimagej-a-question-of-ansvr",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Plate solving with AstroImageJ – a question of ANSVR – British Astronomical Association",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://britastro.org/wp-content/uploads/2021/11/baa_logo_100.png",
+            "https://britastro.org/wp-content/uploads/2018/09/picture-8621-1537263177-14x14.jpg",
+            "https://britastro.org/wp-content/uploads/2015/10/picture-1288-1444678447-80x80.jpg",
+            "https://britastro.org/wp-content/uploads/2018/09/picture-8621-1537263177-80x80.jpg",
+            "https://britastro.org/wp-content/uploads/2015/10/picture-1288-1444678447-80x80.jpg",
+            "https://britastro.org/wp-content/uploads/2018/05/picture-1911-1525901722-80x80.jpg",
+            "https://britastro.org/wp-content/uploads/2015/10/picture-1288-1444678447-80x80.jpg",
+            "https://britastro.org/wp-content/uploads/2018/05/picture-1911-1525901722-80x80.jpg",
+            "https://britastro.org/wp-content/uploads/2018/09/picture-8621-1537263177-80x80.jpg",
+            "https://britastro.org/wp-content/uploads/2018/05/picture-1911-1525901722-80x80.jpg",
+            "https://britastro.org/wp-content/uploads/2018/09/picture-8621-1537263177-80x80.jpg",
+            "https://britastro.org/wp-content/plugins/wp-dark-mode/assets/images/btn-1/light.png",
+            "https://britastro.org/wp-content/plugins/wp-dark-mode/assets/images/btn-1/dark.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "",
+        "meta_site_name": "",
+        "canonical_link": "https://britastro.org/forums/topic/plate-solving-with-astroimagej-a-question-of-ansvr",
+        "text": "I ve been following tutorials on the web, and notes for exoplanet and variable star projects. Only one reference mentions the use of ansvr, the Astrometry.net local server, The notes are here on the BAA. I decided i would rather use this than the well known on-line solver. My problem is that no plate solution is found for my images with AIJ. Here is what i have done, and this may prove helpful as a summary of the operation thus far.\n\nDownloaded and installed ansvr local server (ansvr-setup-0.22) and ran the index downloader. I installed the indexes from 0.1 up to 7 degrees. The ansvr program and batch files are in All programs. I put the indexes in a folder on the C drive (this is optional).\n\nStart AIJ and drop an image onto the tool bar. This opens and WCS is then selected from the menu bar. Use “plate solving with options”. Select the check box to use Custom Server http://127.0.0.1:8080.&nbsp; Also check the box to auto save and the box to show the result log.\n\nNow go into All Programs and select “start ansvr”. Go back to WCS and click plate solve. AIJ finds the stars and puts a blue ring around them. The default number of stars is 50. Ive use 70 and 100, but no change.\n\nI have not been able to input the field size and orientation ( I thought the solver was blind)\n\nSo the solver doesnt seem to work and the solved file is not written – any suggestions please as what i should try next?\n\nOne other observation if i load a file with WCS positions then to solver logs the fact, so i know the file is being read by AIJ. Im sure there has to be a setting somewhere that ive not found.\n\nThanks Xilman. i believe i have the answer now. The secret is on the AIJ WCS settings page, where there is a tick box to constrain the search area to RA-Dec and the radius. Turn this off. Also uncheck the tick box to specify the pixel size. One should be able to specify this exactly, but turning it off works. I also entered the correct RA-DEC centre and constrained the search. The solves is lot quicker, as one might suppose. Hopefully im now in a position to solve any field in AIJ\n\nAnother hint is to start “Watch ansvr.log”. This runs in a cmd window. From this i was able to see the progress of the solve. Im sure you’r already up to speed on this, but i note it here for anyone else ascending the same incline !\n\nCheers…\n\nAstrometry.net is a blind solver, but it runs much faster if you give it a guess at the field centre RA/Dec or have an idea how big your field of view is.\n\nI used to use ansvr, but I realised that the version of astometry.net implemented is quite out of date compared to the Linux version and was sometimes failing to find a solution when a friend’s more recent Linux version succeeded. However, when I had a problem the ansvr author was quite helpful – as were the guys who wrote astrometry.net.\n\nCould you test ansvr from a command line?\n\nIf you are able to use Python – or similar – its worth installing the W10 WSL2 option and running a Linux astometry.net session from W10. Its how I now work – the start up time for WSL2 sessions is quite small (will be even better in W11).\n\nI was finding astrometry.net could take up to 30s on a frame if it had no idea of your field size nor where it was pointing.\n\nHowever, for a 2700×2200 sensor its taking about 8 seconds per frame (using a Celeron 2 core 2.1GHz) if it knows the approx field location and size. But I was supplying it with coordinates for up to 2000 stars – looking for anything vaguely star shaped with an SNR>10. With a Lodestar that dropped to 2.5s.\n\nA lot of pieces of software don’t seem to consider a slowly moving target.\n\nSilly question, would it be possible to edit the index files so that (say) all declinations further south than -20 were not included. That would improve the search time for blind searches. Has anyone done that?"
+    }
+}
