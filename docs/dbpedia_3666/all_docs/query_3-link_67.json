@@ -1,0 +1,38 @@
+{
+    "id": "dbpedia_3666_3",
+    "rank": 67,
+    "data": {
+        "url": "https://stackoverflow.com/questions/18207772/how-to-wait-for-all-goroutines-to-finish-without-using-time-sleep",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How to wait for all goroutines to finish without using time.Sleep?",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/ba33250479c0ae45c6214ad3d1046885?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/cda9ff7487b553eb5af7e5ca39a78938?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/7eaf66425265e29a7f93dbab25360f67?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/tNl4E.jpg?s=64",
+            "https://i.sstatic.net/87s45.jpg?s=64",
+            "https://i.sstatic.net/1vAzo.jpg?s=64",
+            "https://i.sstatic.net/CJL0b.png?s=64",
+            "https://www.gravatar.com/avatar/b5819a933ceb7cf3f50edec18a4480fc?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://stackoverflow.com/posts/18207772/ivc/590a?prg=a49bc0ec-ed72-4342-90d0-b067739fdb1a"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2013-08-13T11:22:40",
+        "summary": "",
+        "meta_description": "This code selects all xml files in the same folder, as the invoked executable and asynchronously applies processing to each result in the callback method (in the example below, just the name of the...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/18207772/how-to-wait-for-all-goroutines-to-finish-without-using-time-sleep",
+        "text": "Although sync.waitGroup (wg) is the canonical way forward, it does require you do at least some of your wg.Add calls before you wg.Wait for all to complete. This may not be feasible for simple things like a web crawler, where you don't know the number of recursive calls beforehand and it takes a while to retrieve the data that drives the wg.Add calls. After all, you need to load and parse the first page before you know the size of the first batch of child pages.\n\nI wrote a solution using channels, avoiding waitGroup in my solution the the Tour of Go - web crawler exercise. Each time one or more go-routines are started, you send the number to the children channel. Each time a go routine is about to complete, you send a 1 to the done channel. When the sum of children equals the sum of done, we are done.\n\nMy only remaining concern is the hard-coded size of the the results channel, but that is a (current) Go limitation.\n\n// recursionController is a data structure with three channels to control our Crawl recursion. // Tried to use sync.waitGroup in a previous version, but I was unhappy with the mandatory sleep. // The idea is to have three channels, counting the outstanding calls (children), completed calls // (done) and results (results). Once outstanding calls == completed calls we are done (if you are // sufficiently careful to signal any new children before closing your current one, as you may be the last one). // type recursionController struct { results chan string children chan int done chan int } // instead of instantiating one instance, as we did above, use a more idiomatic Go solution func NewRecursionController() recursionController { // we buffer results to 1000, so we cannot crawl more pages than that. return recursionController{make(chan string, 1000), make(chan int), make(chan int)} } // recursionController.Add: convenience function to add children to controller (similar to waitGroup) func (rc recursionController) Add(children int) { rc.children <- children } // recursionController.Done: convenience function to remove a child from controller (similar to waitGroup) func (rc recursionController) Done() { rc.done <- 1 } // recursionController.Wait will wait until all children are done func (rc recursionController) Wait() { fmt.Println(\"Controller waiting...\") var children, done int for { select { case childrenDelta := <-rc.children: children += childrenDelta // fmt.Printf(\"children found %v total %v\\n\", childrenDelta, children) case <-rc.done: done += 1 // fmt.Println(\"done found\", done) default: if done > 0 && children == done { fmt.Printf(\"Controller exiting, done = %v, children = %v\\n\", done, children) close(rc.results) return } } } }\n\nFull source code for the solution\n\nsync.WaitGroup has several disadvantages:\n\nerror handling must be implemented manually\n\ngoroutine execution results must be collected manually\n\nerrgroup.Group solves the problem with error handling:\n\nts := time.Now() var urls = []string{ \"http://www.golang.org\", \"http://www.google.com\", \"http://www.invalid.link\", } wg := new(errgroup.Group) for _, url := range urls { url := url wg.Go(func() error { resp, err := http.Get(url) if err == nil { fmt.Println(url, resp.Status, time.Since(ts)) } return err }) } err := wg.Wait() fmt.Println(err, time.Since(ts)) // http://www.google.com 200 OK 67.23525ms // http://www.golang.org 200 OK 872.941833ms // Get \"http://www.invalid.link\": dial tcp: lookup www.invalid.link: no such host 873.001375ms\n\nNice, but it doesn't solve the problem with return values.\n\nYou may also notice that the error did not return immediately, but only after the parallel goroutines were executed.\n\nHowever, to conveniently work with parallelism in go it is better to use specialized libraries...\n\nPipers solves the problems described above and provides some useful methods, such as .Concurrency(n) and .Context(ctx)\n\nimport github.com/kozhurkin/pipers func main() { ts := time.Now() urls := []string{ \"http://www.golang.org\", \"http://www.google.com\", \"http://stackoverflow.com/404\", } pp := pipers.FromArgs(urls, func(i int, url string) (int, error) { resp, err := http.Get(url) if err != nil { return 0, err } return resp.StatusCode, nil }) results, err := pp.Resolve() fmt.Println(results, err, time.Since(ts)) // [200 200 404] <nil> 899.973292ms }"
+    }
+}
