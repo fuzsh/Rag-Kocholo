@@ -1,0 +1,33 @@
+{
+    "id": "dbpedia_3248_3",
+    "rank": 21,
+    "data": {
+        "url": "https://superuser.com/questions/447736/debugging-windows-7-system-that-has-lost-ability-to-enter-sleep-state-on-its-own",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Debugging Windows 7 system that has lost ability to enter Sleep state on its own",
+        "top_image": "https://cdn.sstatic.net/Sites/superuser/Img/apple-touch-icon@2.png?v=e869e4459439",
+        "meta_img": "https://cdn.sstatic.net/Sites/superuser/Img/apple-touch-icon@2.png?v=e869e4459439",
+        "images": [
+            "https://cdn.sstatic.net/Sites/superuser/Img/logo.svg?v=4bc8a703ebac",
+            "https://www.gravatar.com/avatar/74e3d13a0e3b7fa8ce55fbe007642e65?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/74e3d13a0e3b7fa8ce55fbe007642e65?s=64&d=identicon&r=PG",
+            "https://superuser.com/posts/447736/ivc/5d89?prg=f01377fb-4a95-4c35-ada5-f7eaad16f9df"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2012-07-11T17:51:16",
+        "summary": "",
+        "meta_description": "I have read articles here and elsewhere looking for the root cause of this problem. The system is a Win7/32 desktop used as a media center. The application is SageTV. The system has been running and",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/superuser/Img/favicon.ico?v=4852d6fb3f5d",
+        "meta_site_name": "Super User",
+        "canonical_link": "https://superuser.com/questions/447736/debugging-windows-7-system-that-has-lost-ability-to-enter-sleep-state-on-its-own",
+        "text": "I have read articles here and elsewhere looking for the root cause of this problem. The system is a Win7/32 desktop used as a media center. The application is SageTV. The system has been running and operating fine for several years, and has always automatically gone to sleep. It is configured to enter sleep mode after 40 minutes of inactivity. About a month ago, it stopped going to sleep except by manual initiation. When it is awake, it remains awake.\n\nThe system will always enter sleep normally when manually initiated from the start menu. It always wakes normally at the time set by SageTV in the timers.\n\nThe SageTV program has not been updated for about a year. Nothing about it has changed since this problem started.\n\nI am familiar with the POWERCFG utility. \"POWERCFG -requests\" returns:\n\nDISPLAY: None. SYSTEM: None. AWAYMODE: None.\n\nThings I have tried that have not fixed the problem:\n\nReboot computer\n\nVerify no files on remote computers are open, and no remote computer has files open here.\n\nRemoved every non-essential startup program (even though it used to sleep with them running)\n\nRe-set parameters of power plan.\n\nCreate new power plan.\n\nStop/start print spooler.\n\nVerify desktop theme is saved.\n\nTurn off media sharing and disable media sharing service.\n\nIs there any setting or fix that I have missed?\n\nIs there any \"deeper\" technique for understanding why the system is not sleeping? I'm able to write a utility to access the Windows API, but I'm not sure where to look.\n\nI finally found the root cause of the problem. In SageTV, we had added a folder on a server as a source for photos to be shown in the SageTV system. Even though the system is idle and not accessing files, apparently having an application open a folder on a server is enough to permanently inhibit sleep.\n\nIt is possible to leave an explorer window open on a server, and it will still allow the system to sleep.\n\nIHMO, this points to a Windows issue, because \"POWERCFG -requests\" does not report this as a condition that prevents sleep.\n\nAlso, my second question is still relevant. Is there any more capable program or utility that can reveal things about the power state that POWERCFG fails to report?\n\nanswered Jul 14, 2012 at 17:17\n\ntim11gtim11g\n\n1,60877 gold badges2424 silver badges4242 bronze badges"
+    }
+}
