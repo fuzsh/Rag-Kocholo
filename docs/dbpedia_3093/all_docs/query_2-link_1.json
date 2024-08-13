@@ -1,0 +1,34 @@
+{
+    "id": "dbpedia_3093_2",
+    "rank": 1,
+    "data": {
+        "url": "https://stackoverflow.com/questions/17533009/error-sending-request-for-last-fm-album-artwork",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Error Sending Request for Last.FM Album Artwork",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://cdn.sstatic.net/Img/teams/teams-promo.svg?v=e507948b81bf",
+            "https://i.sstatic.net/oQua9.png?s=64",
+            "https://i.sstatic.net/ifxwX.jpg?s=64",
+            "https://i.sstatic.net/oQua9.png?s=64",
+            "https://stackoverflow.com/posts/17533009/ivc/ce48?prg=9408fb8c-bb5d-4d07-9c4d-eefa99ae110e"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2013-07-08T17:56:49",
+        "summary": "",
+        "meta_description": "Currently, I am attempting to use the metadata from our streaming provider, StreamOn to send a request out to Last.FM to get the original sized album artwork. I am new to the world of APIs so it is",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/17533009/error-sending-request-for-last-fm-album-artwork",
+        "text": "According to your reply in the comments, my hypothesis is confirmed.\n\nBecause you are requesting the Last.FM API to return JSON, you get the error:\n\nFatal error: Uncaught exception 'Exception' with message 'String could not be parsed as XML\n\nBecause it is JSON, not XML.\n\nYou can fix this in two ways. Either change the response format to XML or do not use SimpleXML but json_decode() instead.\n\nThe first is probably the easiest to adjust. Try to change the &format=json part to &format=xml\n\nI haven't tested this but highly probably that this will be supported by Last.fm.\n\nAlso note that you don't supply an image size, and \"image_mega\" the default value is not a valid value (see API specs @ http://www.last.fm/api/show/artist.getInfo). You probably want want to use \"mega\" not \"image_mega\"\n\nUpdated, working code using JSON:\n\n<?php class LastFM { const API_KEY = \"7facb82a2a573dd483d931044030e30c\"; public static $size_map = array(\"small\" => 0, \"medium\" => 1, \"large\" => 2, \"extralarge\" => 3, \"mega\" => 4); public static function getArtwork($artist, $return_image = false, $size = \"mega\", $album) { $artist = urlencode($artist); $album = urlencode($album); $returnedInfo = \"http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&api_key=\" . self::API_KEY . \"&artist=\" . $artist . \"&album=\" . $album . \"&image=\" . self::$size_map[$size] . \"&format=json\"; $returnedInfo = @file_get_contents($returnedInfo); if(!$returnedInfo) { return; // Artist lookup failed. } $json = json_decode($returnedInfo, true); $albumArt = $json[\"artist\"][\"image\"][self::$size_map[$size]][\"#text\"]; return (!$return_image) ? print_r($json) : '<img src=\"' . $albumArt . '\" alt=\"' . urldecode($artist) . '\" />'; } } $artist = \"Daft Punk\"; $album = \"Random Access Memories\"; $size = \"mega\"; $artwork = LastFM::getArtwork($artist, true, $size, $album); if($artwork) { echo $artwork; } else{ return; }\n\nI know I rock. I choose JSON because I find it easier to work with. It returns exactly what you want, e.g.:\n\n<img src=\"http://userserve-ak.last.fm/serve/500/10923145/Daft+Punk+6a00e398210d13883300e55ui6.png\" alt=\"Daft Punk\" />\n\nFinally, I added urlencoding() for the album name, since I had issues with that in my example."
+    }
+}

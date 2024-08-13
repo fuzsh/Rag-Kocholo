@@ -1,0 +1,33 @@
+{
+    "id": "dbpedia_3098_2",
+    "rank": 59,
+    "data": {
+        "url": "https://web.dev/patterns/clipboard/paste-images",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How to paste images",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://www.gstatic.com/devrel-devsite/prod/vd185cef2092d5507cf5d5de6d49d6afd8eb38fe69b728d88979eb4a70550ff03/web/images/lockup.svg",
+            "https://www.gstatic.com/devrel-devsite/prod/vd185cef2092d5507cf5d5de6d49d6afd8eb38fe69b728d88979eb4a70550ff03/web/images/lockup.svg"
+        ],
+        "movies": [
+            "https://web.dev/frame/patterns/clipboard/paste-images/index_5d7b9243fbb7b46d3731c692aec4b50f26f30351686aca48689462221f8d1c23.frame"
+        ],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "https://www.gstatic.com/devrel-devsite/prod/vd185cef2092d5507cf5d5de6d49d6afd8eb38fe69b728d88979eb4a70550ff03/web/images/favicon.png",
+        "meta_site_name": "web.dev",
+        "canonical_link": "https://web.dev/patterns/clipboard/paste-images",
+        "text": "The modern way\n\nUsing the Async Clipboard API\n\nTo read images from the user's clipboard programmatically, that is, after a button click, you can use the read() method of the Async Clipboard API. If permission to read from the clipboard have not been granted yet, the call to navigator.clipboard.read() will request it upon the first call of the method.\n\nconst pasteButton = document.querySelector('#paste-button'); pasteButton.addEventListener('click', async () => { try { const clipboardItems = await navigator.clipboard.read(); for (const clipboardItem of clipboardItems) { const imageTypes = clipboardItem.types.find(type => type.startsWith('image/')) for (const imageType of imageTypes) { const blob = await clipboardItem.getType(imageType); // Do something with the image blob. } } } catch (err) { console.error(err.name, err.message); } });\n\nThe classic way\n\nListen for the paste event\n\nThe classic way to paste images is to use the (synchronous) Clipboard API, which gives you access to the clipboardData field inside the Document: paste event. However, this method comes with limitations, for example because it's synchronous, pasting large amounts of data can block the page.\n\ndocument.addEventListener('paste', async (e) => { e.preventDefault(); for (const clipboardItem of e.clipboardData.files) { if (clipboardItem.type.startsWith('image/')) { // Do something with the image file. } } });\n\nProgressive enhancement\n\nFor browsers that do not support the Async Clipboard API, it is impossible to access the user's clipboard programmatically (for example, on a button click). Thus for accessing a user's clipboard on a paste event, you can use the Async Clipboard API and fall back to the (synchronous) Clipboard API.\n\nThe ClipboardItem objects coming from navigator.clipboard.read have a types field which is an array, and File objects coming from event.clipboardData.files have a type field which is a string. You can conditionally check each of the type or types fields for images in the clipboard:\n\ndocument.addEventListener('paste', async (e) => { e.preventDefault(); const clipboardItems = typeof navigator?.clipboard?.read === 'function' ? await navigator.clipboard.read() : e.clipboardData.files; for (const clipboardItem of clipboardItems) { let blob; if (clipboardItem.type?.startsWith('image/')) { // For files from `e.clipboardData.files`. blob = clipboardItem // Do something with the blob. } else { // For files from `navigator.clipboard.read()`. const imageTypes = clipboardItem.types?.filter(type => type.startsWith('image/')) for (const imageType of imageTypes) { blob = await clipboardItem.getType(imageType); // Do something with the blob. } } } });\n\nFurther reading\n\nClipboard API on MDN\n\nUnblocking clipboard access on web.dev\n\nDemo"
+    }
+}
