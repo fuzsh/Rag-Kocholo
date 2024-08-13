@@ -1,0 +1,30 @@
+{
+    "id": "dbpedia_3822_3",
+    "rank": 31,
+    "data": {
+        "url": "https://developer.wordpress.org/reference/functions/add_image_size/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "add_image_size() – Function",
+        "top_image": "https://developer.wordpress.org/wp-content/themes/wporg-developer-2023/images/opengraph-image.png",
+        "meta_img": "https://developer.wordpress.org/wp-content/themes/wporg-developer-2023/images/opengraph-image.png",
+        "images": [
+            "https://s.w.org/style/images/code-is-poetry-for-dark-bg.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2015-06-28T15:58:40+00:00",
+        "summary": "",
+        "meta_description": "Registers a new image size.",
+        "meta_lang": "en",
+        "meta_favicon": "https://s.w.org/favicon.ico?2",
+        "meta_site_name": "WordPress Developer Resources",
+        "canonical_link": "https://developer.wordpress.org/reference/functions/add_image_size/",
+        "text": "More Information\n\nReserved Image Size Names\n\nThese are the reserved image size names recognized by WordPress: ‘thumb’, ‘thumbnail’, ‘medium’, ‘medium_large’, ‘large’, and ‘post-thumbnail’.\n\nThe names “thumb” & “thumbnail” are just aliases- they are exactly the same.\n\nFor a detailed explanation and “why”, read further inside the image_downsize() article.\n\nHowever, if needed, you can always set the options yourself:\n\nupdate_option( 'thumbnail_size_w', 160 ); update_option( 'thumbnail_size_h', 160 ); update_option( 'thumbnail_crop', 1 );\n\nCrop Mode\n\nSet the image size by resizing the image proportionally (without distorting it):\n\nadd_image_size( 'custom-size', 220, 180 ); // 220 pixels wide by 180 pixels tall, soft proportional crop mode\n\nSet the image size by cropping the image (not showing part of it):\n\nadd_image_size( 'custom-size', 220, 180, true ); // 220 pixels wide by 180 pixels tall, hard crop mode\n\nSet the image size by cropping the image and defining a crop position:\n\nadd_image_size( 'custom-size', 220, 220, array( 'left', 'top' ) ); // Hard crop left top\n\nWhen setting a crop position, the first value in the array is the x axis crop position, the second is the y axis crop position.\n\nx_crop_position accepts ‘left’ ‘center’, or ‘right’.\n\ny_crop_position accepts ‘top’, ‘center’, or ‘bottom’.\n\nBy default, these values default to ‘center’ when using hard crop mode.\n\nYou can find examples of the various crop types here.\n\nUsing the New Image Sizes\n\nNow that you’ve defined some custom image sizes, there are a variety of ways that you can use them.\n\nFor Featured Images\n\nTo use your custom image sizes for a post’s featured image, you can use the_post_thumbnail() in the appropriate theme template file…\n\nNote: To enable featured images the current theme must include add_theme_support( ‘post-thumbnails’ ); in its functions.php file. See also Post Thumbnails.\n\nif ( has_post_thumbnail() ) { the_post_thumbnail( 'your-custom-size' ); }\n\nFor Media Library Images (Admin)\n\nYou can also make your custom sizes selectable from your WordPress admin. To do so, you have to use the image_size_names_choose hook to assign them a normal, human-readable name…\n\nadd_filter( 'image_size_names_choose', 'my_custom_sizes' ); function my_custom_sizes( $sizes ) { return array_merge( $sizes, array( 'your-custom-size' => __( 'Your Custom Size Name' ), ) ); }\n\nFor General Media (PHP/Templates)\n\nYou can output images (by size) directly from the WordPress Media Library using PHP as well. To do this, simply use wp_get_attachment_image().\n\n// Assuming your Media Library image has a post id of 42... echo wp_get_attachment_image( 42, 'your-custom-size' );\n\nNote: If you just want the image URL instead of a pre-built tag, you can use wp_get_attachment_image_src() instead.\n\nOther Notes:\n\nUsing the ‘false’ setting will fail to produce a new image in the upload directory if one of the image dimensions of the uploaded image are equal to the new image size.\n\nIf a registered image size is removed from functions.php, then any image uploaded before that point and then deleted from the media library afterwards, does not have those auto-generated sizes deleted too. Only image sizes that exist in functions.php are deleted.\n\nAlthough height and width are not required parameters, their default values (0) will lead to unwanted behavior, so bear in mind that you should always define them. Use a value of 9999 to define the other dimension as the one to be considered when image resize is executed."
+    }
+}
