@@ -1,0 +1,42 @@
+{
+    "id": "dbpedia_3513_3",
+    "rank": 15,
+    "data": {
+        "url": "https://datascience.stackexchange.com/questions/5534/how-to-scrape-imdb-webpage",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How to scrape imdb webpage?",
+        "top_image": "https://cdn.sstatic.net/Sites/datascience/Img/apple-touch-icon@2.png?v=04de5a808425",
+        "meta_img": "https://cdn.sstatic.net/Sites/datascience/Img/apple-touch-icon@2.png?v=04de5a808425",
+        "images": [
+            "https://cdn.sstatic.net/Sites/datascience/Img/logo.svg?v=9ef28dd3a492",
+            "https://i.sstatic.net/8DjHv.jpg?s=64",
+            "https://www.gravatar.com/avatar/9971ee14af0dfc89076d95e86fbba3b8?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/8DjHv.jpg?s=64",
+            "https://www.gravatar.com/avatar/7aba600fee1da1de6390088e1e5252bb?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/13Fpq.png?s=64",
+            "https://www.gravatar.com/avatar/9971ee14af0dfc89076d95e86fbba3b8?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/0YKdu.jpg?s=64",
+            "https://i.sstatic.net/8DjHv.jpg?s=64",
+            "https://i.sstatic.net/03C6h.jpg?s=64",
+            "https://i.sstatic.net/LkbSZ.jpg?s=64",
+            "https://lh5.googleusercontent.com/-JyDcqnLgPI4/AAAAAAAAAAI/AAAAAAAAAAA/AMZuucnlzisbWzHBErqJC-AEAkCv90Zrmw/s96-c/photo.jpg?sz=64",
+            "https://datascience.stackexchange.com/posts/5534/ivc/ce8b?prg=331f9588-7730-4c58-9517-843f62130212"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2015-04-15T23:53:13",
+        "summary": "",
+        "meta_description": "I am trying to learn web scraping using Python by myself as part of an effort to learn data analysis. I am trying to scrape imdb webpage.\nI am using BeautifulSoup module. Following is the code I am...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/datascience/Img/favicon.ico?v=87b8c1ee733a",
+        "meta_site_name": "Data Science Stack Exchange",
+        "canonical_link": "https://datascience.stackexchange.com/questions/5534/how-to-scrape-imdb-webpage",
+        "text": "I have been able to figure out a solution. I thought of posting just in case it is of any help to anyone or if somebody wants to suggest something different.\n\nbs = BeautifulSoup(r.text) for movie in bs.findAll('td','title'): title = movie.find('a').contents[0] genres = movie.find('span','genre').findAll('a') genres = [g.contents[0] for g in genres] runtime = movie.find('span','runtime').contents[0] rating = movie.find('span','value').contents[0] year = movie.find('span','year_type').contents[0] imdbID = movie.find('span','rating-cancel').a['href'].split('/')[2] print title, genres,runtime, rating, year, imdbID\n\nThe output looks like this:\n\nThe Shawshank Redemption [u'Crime', u'Drama'] 142 mins. 9.3 (1994) tt0111161\n\nAs a bit of general feedback, I think you would do well to improve your output format. The problem with the format as it stands is there is not a transparent way to programmatically get the data. Consider instead trying:\n\nprint \"\\t\".join([title, genres,runtime, rating, year])\n\nThe nice thing about a tab delimited file is that if you end up scaling up, it can easily be read into something like impala (or at smaller scales, simple mySql tables). Additionally, you can then programatically read in the data in python using:\n\nline.split(\"\\t\")\n\nThe second bit of advice, is I would suggest getting more information than you think you need on your initial scrape. Disk space is cheaper than processing time, so rerunning the scraper every time you expand your analytic will not be fun.\n\nYou can get everything from div with class=\"rating rating-list\"\n\nAll you need to do is retrive attribute id: [id=\"tt1345836|imdb|8.5|8.5|advsearch\"] When you have this content, you split this string by '|', and you get:\n\nparameter: movie id\n\nparameter: movie score\n\nRegarding the movie id, the id is actually in the web page url of the actual movie.\n\nSo the steps you should follow are:\n\nfind the big table in which all the results are shown.\n\nfor each row, find the href in it (link) and simply make another request to that url.\n\nYou will find that the imdb urls have the following pattern:\n\nwww.imdb.com/tt{the actual imdb id}/\n\nE.g.,\n\nhttps://m.imdb.com/title/tt0800369/\n\nHere, the id is 0800369.\n\nThis makes it very easy to scrape each movie imdb has just by iterating through ids. You can build an entire database based on imdb using web scraping with Beautiful Soup and Django."
+    }
+}
