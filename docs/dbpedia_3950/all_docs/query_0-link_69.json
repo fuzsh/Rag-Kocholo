@@ -1,0 +1,34 @@
+{
+    "id": "dbpedia_3950_0",
+    "rank": 69,
+    "data": {
+        "url": "https://estrin.pw/bitrix-d7-snippets/s/catalog-group-prices/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Типы цен и цены на товары",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://mc.yandex.ru/watch/40039550",
+            "https://estrin.pw/include/adv/grain.menu.banner.jpg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "битрикс",
+            "bitrix",
+            "d7",
+            "ORM Магазин"
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "Работа с типами цен модуля &quot;Торговый каталог&quot; при помощи классов &quot;\\Bitrix\\Catalog\\GroupTable&quot;, &quot;\\Bitrix\\Catalog\\GroupLangTable&quot;, &quot;\\Bitrix\\Catalog\\GroupAccessTable&quot;, &quot;\\Bitrix\\Catalog\\PriceTable&quot;.\r\n\r\n&quot;\\Bitrix\\Catalog\\GroupTable&quot;: Таблица типов цен\r\n&quot;\\Bitrix\\Catalog\\GroupLangTable&quot;: Таблица языковых параметров типов цен\r\n&quot;\\Bitrix\\Catalog\\GroupAccessTable&quot;: Таблица прав доступа к типам цен\r\n&quot;\\Bitrix\\Catalog\\PriceTable&quot;: Таблица непосредственно цен на товары, но использовать вместо него нужно &quot;\\Bitrix\\Catalog\\Model\\Price&quot;, иначе в некоторых местах цена может не обновиться\r\n\r\nВыборка всех типов цен:",
+        "meta_lang": "ru",
+        "meta_favicon": "",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "$rsGroup = \\Bitrix\\Catalog\\GroupTable::getList();\n\nwhile($arGroup=$rsGroup->fetch())\n\n{\n\nprint_r($arGroup);\n\n}\n\n/*\n\nArray\n\n(\n\n[ID] => 1\n\n[NAME] => base_price\n\n[BASE] => Y\n\n[SORT] => 100\n\n[XML_ID] => base_price\n\n[TIMESTAMP_X] => Bitrix\\Main\\Type\\DateTime Object\n\n(\n\n[value:protected] => DateTime Object\n\n(\n\n[date] => 2018-09-13 01:27:38.000000\n\n[timezone_type] => 3\n\n[timezone] => Europe/Moscow\n\n)\n\n)\n\n[MODIFIED_BY] => 1\n\n[DATE_CREATE] => Bitrix\\Main\\Type\\DateTime Object\n\n(\n\n[value:protected] => DateTime Object\n\n(\n\n[date] => 2017-08-04 17:13:40.000000\n\n[timezone_type] => 3\n\n[timezone] => Europe/Moscow\n\n)\n\n)\n\n[CREATED_BY] => 1\n\n)\n\nArray\n\n(\n\n[ID] => 2\n\n[NAME] => action_price\n\n[BASE] => N\n\n[SORT] => 1001\n\n[XML_ID] => action_price\n\n[TIMESTAMP_X] => Bitrix\\Main\\Type\\DateTime Object\n\n(\n\n[value:protected] => DateTime Object\n\n(\n\n[date] => 2017-12-27 16:40:30.000000\n\n[timezone_type] => 3\n\n[timezone] => Europe/Moscow\n\n)\n\n)\n\n[MODIFIED_BY] => 1\n\n[DATE_CREATE] => Bitrix\\Main\\Type\\DateTime Object\n\n(\n\n[value:protected] => DateTime Object\n\n(\n\n[date] => 2017-11-08 18:12:20.000000\n\n[timezone_type] => 3\n\n[timezone] => Europe/Moscow\n\n)\n\n)\n\n[CREATED_BY] => 1\n\n)\n\n*/\n\nfunction savePrice($catalogGroupId,$price,$productId,$currency='RUB')\n\n{\n\nif(!$catalogGroupId || !$productId || !$currency)\n\nreturn array(\"Неверно заданы параметры\");\n\n$rsP = \\Bitrix\\Catalog\\Model\\Price::getList(array(\n\n'filter' => array('CATALOG_GROUP_ID'=>$catalogGroupId,'PRODUCT_ID'=>$productId),\n\n));\n\nif($arP=$rsP->fetch())\n\n{\n\nif($price)\n\n{\n\n$result = \\Bitrix\\Catalog\\Model\\Price::update($arP['ID'],array(\n\n'PRICE'=>$price,\n\n'PRICE_SCALE'=>$price,\n\n'CURRENCY'=>$currency,\n\n));\n\n}\n\nelse\n\n{\n\n$result = \\Bitrix\\Catalog\\Model\\Price::delete($arP['ID']);\n\n}\n\n}\n\nelse\n\n{\n\n$result = \\Bitrix\\Catalog\\Model\\Price::add(array(\n\n'CATALOG_GROUP_ID'=>$catalogGroupId,\n\n'PRODUCT_ID'=>$productId,\n\n'PRICE'=>$price,\n\n'PRICE_SCALE'=>$price,\n\n'CURRENCY'=>$currency,\n\n));\n\n}\n\nif($result->isSuccess())\n\n{\n\nreturn true;\n\n}\n\nelse\n\n{\n\nreturn $result->getErrorMessages();\n\n}\n\n}"
+    }
+}
