@@ -1,0 +1,32 @@
+{
+    "id": "dbpedia_3412_3",
+    "rank": 13,
+    "data": {
+        "url": "https://stackoverflow.com/questions/15191410/smalltalk-using-value-on-blockclosure",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Smalltalk, using 'value' on BlockClosure",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/bbba695ab844dbbd8f3b37ee59b6a0a5?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/9c5da6e05ae65fbd295344270feba072?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/15191410/ivc/fe89?prg=6a9e439b-e32a-40e3-b909-eb8b9f9c9830"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2013-03-03T22:00:58",
+        "summary": "",
+        "meta_description": "I am trying to create a method for the existing BlockClosure class. This is a method we wrote on the board in class, but it is not behaving exactly as I'd want it to. This is the code:\n\nBlockClosure",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/15191410/smalltalk-using-value-on-blockclosure",
+        "text": "I am trying to create a method for the existing BlockClosure class. This is a method we wrote on the board in class, but it is not behaving exactly as I'd want it to. This is the code:\n\nBlockClosure extend[ times: count[ count = 0 ifTrue: [^self value.] ifFalse: [self value. self times: count - 1.]. ] ].\n\nI tried testing it out by inputting this into the gst interpreter:\n\nst> x:= 5 5 st> y := [x-1] times: 4. a BlockClosure\n\nBut I want y to equal 1 in this case. Why is y's value becoming \"a BlockClosure\"?\n\nEDIT: The correct times method.\n\nBlockClosure extend[ times: count[ count = 0 ifFalse: [self value. ^self times: count - 1.]. ] ].\n\nFirst of all, you're missing the ^ in the ifFalse: branch of the conditional statement, which is preventing the return value from propagating back from the recursive call:\n\nifFalse: [self value. ^self times: count - 1]\n\nSecondly, this will actually set y to 4 instead, because you're computing x - 1 with the same x value each time. What you probably mean to do is reassign back to x each time:\n\ny := [x := x - 1] times: 4\n\nanswered Mar 3, 2013 at 23:39\n\nAsh WilsonAsh Wilson\n\n23.9k33 gold badges3535 silver badges4545 bronze badges"
+    }
+}
