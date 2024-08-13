@@ -1,0 +1,31 @@
+{
+    "id": "dbpedia_3758_2",
+    "rank": 72,
+    "data": {
+        "url": "https://dev.library.kiwix.org/content/stackoverflow_en_nopic_2021-08/questions/26232648/how-to-show-all-groups-in-first-page-in-jqgrid",
+        "read_more_link": "",
+        "language": "en",
+        "title": "how to show all groups in first page in jqgrid?",
+        "top_image": "https://dev.library.kiwix.org/content/stackoverflow_en_nopic_2021-08/apple-touch-icon.png",
+        "meta_img": "https://dev.library.kiwix.org/content/stackoverflow_en_nopic_2021-08/apple-touch-icon.png",
+        "images": [
+            "https://dev.library.kiwix.org/content/stackoverflow_en_nopic_2021-08/users/profiles/1878010.webp",
+            "https://dev.library.kiwix.org/content/stackoverflow_en_nopic_2021-08/users/profiles/6224242.webp"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2014-10-07T09:18:54.470000",
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "",
+        "meta_favicon": "../../favicon.ico",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "i used jqgrid for my asp.net mvc project. i have 25000 data with different department and i have grouped it by department, for each department there are 500+ data. i have done paging with 100 data per page, now problem is when data load then first 100 record are of same department so i can see only one group department. when i complete next 5 step then can see other department, now my requirement is i have to show all groups of department in same page when data load then on expand of group i have to do paging for that data, is this possible with jqGrid? if yes then how ? my current code is\n\njQuery(\"#ItemSoldReport\").jqGrid({ data: ParsedJson, datatype: \"local\", height: 'auto', width: 'auto', rowNum: 100, rowList: [10, 20, 30, 50, 100], colNames: ['Date', 'Time', 'UPC', 'Name', 'Department', 'Qty', 'Cost', 'Price', 'Margin'], colModel: [ { name: 'InvoiceDate', index: 'InvoiceDate', width: 90, sorttype: \"date\", summaryType: 'count', summaryTpl: '({0}) total', resizable: false, datefmt: \"m/d/Y h:i A\" }, { name: 'InvoiceTime', index: 'InvoiceTime', width: 90, resizable: false }, { name: 'Barcode', index: 'Barcode', width: 130, resizable: false, }, { name: 'ItemName', index: 'ItemName', width: 150, resizable: false, }, { name: 'DeptName', index: 'DeptName', width: 120, resizable: false }, { name: 'ItemQuantity', index: 'ItemQuantity', width: 50, align: \"right\", sorttype: \"int\", resizable: false, }, { name: 'CostPrice', index: 'CostPrice', width: 80, align: \"right\", sorttype: 'number', formatter: 'number', summaryType: 'sum', resizable: false, }, { name: 'SalesPrice', index: 'SalesPrice', width: 80, align: \"right\", sorttype: \"number\", summaryType: 'sum', formatter: \"number\", resizable: false, }, { name: 'ExtendedPriceMargin', index: 'ExtendedPriceMargin', width: 50, align: \"right\", resizable: false, }, ], pager: \"#ItemSoldPager\", viewrecords: true, sortorder: \"desc\", // caption: \"Item Sold Report\", //sortname: 'DeptName', grouping: true, hidegrid: false, groupingView: { groupField: ['DeptName'], groupDataSorted: false, groupText: ['<b>{0} - {1} department(s)</b>'], groupCollapse: true, groupOrder: ['asc'], groupSummary: [true], //groupSorted: false, }, footerrow: true, userDataOnFooter: true, onClickGroup: function (hid, collapsed) { //saveCollapsedStateToLocalStorage(hid, collapsed) var i; i = $.inArray(hid, expandedGroups) > -1; if (!collapsed && i == false) { expandedGroups.push(hid); } else if (collapsed && i == true) { //Grouphid.splice(i, 1); expandedGroups.splice($.inArray(hid, expandedGroups), 1); } }, loadComplete: function () { var $this = $(this), //sum = $this.jqGrid(\"getCol\", \"SalesPrice\", false, \"sum\"), $footerRow = $(this.grid.sDiv).find(\"tr.footrow\"), localData = $this.jqGrid(\"getGridParam\", \"data\"), totalRows = localData.length, totalSum = 0, totalCostSum = 0, $newFooterRow, i; for (i = 0; i < totalRows; i++) { totalSum += parseFloat(localData[i].SalesPrice, 10); totalCostSum += parseFloat(localData[i].CostPrice, 10); } $footerRow.find(\">td[aria-describedby=\" + this.id + \"_InvoiceDate]\") .text(\"Grand Total:\"); $footerRow.find(\">td[aria-describedby=\" + this.id + \"_SalesPrice]\") .text($.fmatter.util.NumberFormat(totalSum, $.jgrid.formatter.number)); $footerRow.find(\">td[aria-describedby=\" + this.id + \"_CostPrice]\") .text($.fmatter.util.NumberFormat(totalCostSum, $.jgrid.formatter.number)); if (expandedGroups.length > 0) { for (var i = 0; i <= expandedGroups.length; i++) { if (typeof (expandedGroups[i]) != \"undefined\") { $this.jqGrid(\"groupingToggle\", expandedGroups[i]); } } } } }); jQuery(\"#ItemSoldReport\").jqGrid('navGrid', '#ItemSoldPager', { add: false, edit: false, del: false }); jQuery(\"#ItemSoldReport\").setGridWidth(\"100\"); });"
+    }
+}

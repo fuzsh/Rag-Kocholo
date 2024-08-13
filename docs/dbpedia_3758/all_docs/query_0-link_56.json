@@ -1,0 +1,32 @@
+{
+    "id": "dbpedia_3758_0",
+    "rank": 56,
+    "data": {
+        "url": "https://stackoverflow.com/questions/26418821/binding-jquery-datatable-gives-error-requested-unknown-parameter-0-from-the-d",
+        "read_more_link": "",
+        "language": "en",
+        "title": "binding jquery datatable gives error \"Requested unknown parameter '0' from the data source for row 0\"",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://i.sstatic.net/EuzIX.jpg?s=64",
+            "https://i.sstatic.net/mDZaj.png?s=64",
+            "https://stackoverflow.com/posts/26418821/ivc/a90a?prg=4b996e58-a9dc-45bd-9cdd-64ab78b5966e"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2014-10-17T06:08:20",
+        "summary": "",
+        "meta_description": "i am creating json format for jquery datatable using jquery , \nbut it gives error \"DataTables warning (table id = 'tblDynamicModifierItems2'): Requested unknown parameter '0' from the data source f...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/26418821/binding-jquery-datatable-gives-error-requested-unknown-parameter-0-from-the-d",
+        "text": "You need to make the markup right. jQuery dataTables is very sensitive to that. It is important to define the headers, <th>, so dataTables have a chance to know how many columns it should expect in each row of data.\n\n<table id=\"tblDynamicModifierItems\" class=\"tblDynamicModifierItems table table-hover table-nomargin dataTable table-bordered dataTable-scroller dataTable-tools\"> <thead> <tr> <th>ModifierItemCode</th> <th>ModifierItem</th> <th>Delete</th> </tr> </thead> <tbody></tbody> </table>\n\nAlso, you must tell dataTables which part of each aaData item that should correspond to which column :\n\nvar oTable = $(\"#tblDynamicModifierItems\").dataTable({ \"aaData\": aaData, \"aoColumns\": [ { mDataProp : \"ModifierItemCode\" }, { mDataProp : \"ModifierItem\" }, { mDataProp : \"Delete\" } ] });\n\nyour code in a demo -> http://jsfiddle.net/s9Lag6mc/\n\nRegarding your \"aoColumns\": [{ \"bVisible\": false }, { \"sTitle\": \"Description\" }, null], I am not completely sure what you are trying to do, but if you want to hide the first column, just add bVisible: false to the first aoColumns item, and so on.\n\nAs for your fnCreatedRow problem : Think about it, you are inserting an object. So instead of alert(aData[0]) (or whatever) simply\n\nalert(aData.ModifierItemCode);"
+    }
+}
