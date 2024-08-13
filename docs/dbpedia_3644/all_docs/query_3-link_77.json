@@ -1,0 +1,28 @@
+{
+    "id": "dbpedia_3644_3",
+    "rank": 77,
+    "data": {
+        "url": "https://developer.myptv.com/en/documentation/geocoding-places-api/concepts/locations-text",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Locations by Text",
+        "top_image": "https://developer.myptv.com/themes/custom/myptv/public/favicons/favicon.ico",
+        "meta_img": "https://developer.myptv.com/themes/custom/myptv/public/favicons/favicon.ico",
+        "images": [],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "/themes/custom/myptv/public/favicons/favicon.ico",
+        "meta_site_name": "",
+        "canonical_link": "https://developer.myptv.com/en/documentation/geocoding-places-api/concepts/locations-text",
+        "text": "Allows finding locations (i.e. localities, postal codes, streets or houses) matching an address given as a single string.\n\nInput\n\nWhen input data is not separated into individual fields for postal code, city or street, all input data of an address can be combined into one single field. This is especially useful for interactive searches.\n\nThis endpoint also supports requesting a specific language and setting country filters.\n\nCountry filters reduce the search space of geocoding and can improve performance. Country codes should be ISO 3166-1 alpha-2 and separated by a comma. In countries such as US, RU, AU, CA, and IN results can also be filtered by country subdivision specified as ISO 3166-2. In case the requested subdivision is not available, the results are filtered by the country and a warning is attached to the response.\n\nOutput\n\nIf the request succeeds, the response is a list of records. The list is empty if no matching record is found. Each record contains the actual address and its geographical position, along with a matching score and the location type.\n\nGeographical Positions:\n\nEach returned record has one or two geographical positions:\n\nreference position: the rooftop position of the house, the centre of the city or the postal code area.\n\nroad access position (optional): the position where you would start driving.\n\n\"referencePosition\": { \"latitude\": 52.02085876464844, \"longitude\": 4.363800048828125 }, \"roadAccessPosition\": { \"latitude\": 52.020320892333984, \"longitude\": 4.364419937133789 },\n\nAddress Fields:\n\nAn address has the following fields. Depending on data availability and result type (e.g. city, address), some fields may be empty.\n\ncountry name\n\nstate\n\nprovince\n\npostal code\n\ncity\n\ndistrict\n\nsubdistrict\n\nstreet\n\nhouse number\n\ncountry code according to ISO 3166-1 alpha-2\n\ncountry code according to ISO 3166-1 alpha-3\n\ncountry code according to ISO 3166-2.\n\n\"address\": { \"countryName\": \"Nederland\", \"state\": \"Zuid-Holland\", \"province\": \"\", \"postalCode\": \"2612 XZ\", \"city\": \"Delft\", \"district\": \"\", \"subdistrict\": \"\", \"street\": \"Aan 't Verlaat\", \"houseNumber\": \"33F\", \"countryCodeIsoAlpha2\": \"NL\", \"countryCodeIsoAlpha3\": \"NLD\", \"countryCode\": \"NL\" }, \"formattedAddress\": \"Aan 't Verlaat 33F, 2612 XZ Delft\n\nThe returned address fields will be in the language spoken in that country or region unless otherwise requested by the language parameter.\n\nLocation Type:\n\nEach record has a location type, common location types are:\n\nlocality (e.g. Boston)\n\npostal code (e.g. 10557 Berlin)\n\nstreet section (e.g. Avenue des Champs-Élysées, 75008 Paris)\n\naddress (e.g. 10 Downing St, London SW1A 2AA)\n\n\"locationType\": \"EXACT_ADDRESS\"\n\nScore:\n\nThe total score value ranges from 100 (a perfect match) down to 0 and helps to determine if a geocoding result is precise enough to use in further processing steps. The total score is also used to sort the result list.\n\nThe address scores indicate how well each result field is matched by the corresponding input.\n\nAddress scores are only returned if the input parameter results includes the value ADDRESS_SCORES.\n\n\"quality\": { \"totalScore\": 100, \"addressScores\": { \"country\": 0, \"state\": 0, \"postalCode\": 0, \"city\": 100, \"street\": 100, \"houseNumber\": 100 } }\n\nFind a detailed explanation of the scores together with some examples in the Scores concept.\n\nTo allow for improvements, the actual score values may be subject to change."
+    }
+}

@@ -1,0 +1,37 @@
+{
+    "id": "dbpedia_3644_2",
+    "rank": 8,
+    "data": {
+        "url": "https://stackoverflow.com/questions/50845838/map-zip-codes-to-their-respective-city-and-state-in-r",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Map zip codes to their respective city and state in R?",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://cdn.sstatic.net/Img/teams/teams-promo.svg?v=e507948b81bf",
+            "https://www.gravatar.com/avatar/efb899e780520728cd277baf7924833f?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/T7xYC.png?s=64",
+            "https://i.sstatic.net/yJpwc.png",
+            "https://www.gravatar.com/avatar/c34bb5c34ebf82afc8e3ea93477c98cf?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/P81Mj.jpg?s=64",
+            "https://lh3.googleusercontent.com/-tQc7TVw_cB8/AAAAAAAAAAI/AAAAAAAAA80/U7Hj-ht54IY/photo.jpg?sz=64",
+            "https://stackoverflow.com/posts/50845838/ivc/9d8b?prg=e22486cb-808f-42ff-a69f-995972910463"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2018-06-13T20:32:53",
+        "summary": "",
+        "meta_description": "I have a data frame of zip codes that I'm looking to map to a city &amp; state for each specific zip code.  Currently, I have played around with the zipcode package a bit but I'm not sure that can ...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/50845838/map-zip-codes-to-their-respective-city-and-state-in-r",
+        "text": "Another Update - February 2023\n\nAnother package (zipcodeR) has been added that makes this easier. See below.\n\nAnswer updated - January 2020\n\nThe zipcode package seems to have disappeared, so this answer has been updated to show how to add lat-lon from an external file. New answer at bottom.\n\nOriginal answer\n\nYou can get the data from the zipcode package and just do a merge to look things up.\n\nzip = c(\"43031\", \"24517\", \"43224\", \"43832\", \"53022\", \"60185\", \"84104\", \"43081\", \"85226\", \"85193\", \"54656\", \"43215\", \"94533\", \"95826\", \"64804\", \"49548\", \"54467\") ZC = data.frame(zip) library(zipcode) data(zipcode) merge(ZC, zipcode) zip city state latitude longitude 1 24517 Altavista VA 37.12754 -79.27409 2 43031 Johnstown OH 40.15198 -82.66944 3 43081 Westerville OH 40.10951 -82.91606 4 43215 Columbus OH 39.96513 -83.00431 5 43224 Columbus OH 40.03991 -82.96772 6 43832 Newcomerstown OH 40.27738 -81.59662 7 49548 Grand Rapids MI 42.86823 -85.66391 8 53022 Germantown WI 43.21916 -88.12043 9 54467 Plover WI 44.45228 -89.54399 10 54656 Sparta WI 43.96977 -90.80796 11 60185 West Chicago IL 41.89198 -88.20502 12 64804 Joplin MO 37.04716 -94.51124 13 84104 Salt Lake City UT 40.75063 -111.94077 14 85193 Casa Grande AZ 32.86000 -111.83000 15 85226 Chandler AZ 33.31221 -111.93177 16 94533 Fairfield CA 38.26958 -122.03701 17 95826 Sacramento CA 38.55010 -121.37492\n\nIf you need to keep the rows in the same order, you can just set the rownames on the zipcode data and use that to select the desired rows and columns.\n\nrownames(zipcode) = zipcode$zip zipcode[zip, 1:3] zip city state 43031 43031 Johnstown OH 24517 24517 Altavista VA 43224 43224 Columbus OH 43832 43832 Newcomerstown OH 53022 53022 Germantown WI 60185 60185 West Chicago IL 84104 84104 Salt Lake City UT 43081 43081 Westerville OH 85226 85226 Chandler AZ 85193 85193 Casa Grande AZ 54656 54656 Sparta WI 43215 43215 Columbus OH 94533 94533 Fairfield CA 95826 95826 Sacramento CA 64804 64804 Joplin MO 49548 49548 Grand Rapids MI 54467 54467 Plover WI\n\nUpdated Answer - January 2020\n\nSince the zipcode package has disappeared, this shows how to add lat-lon information from a downloaded data set. The file that I am using exists today but the method should work for other files. See the GIS StackExchange for some leads on where to download data.\n\n## Original Data to match zip = c(\"43031\", \"24517\", \"43224\", \"43832\", \"53022\", \"60185\", \"84104\", \"43081\", \"85226\", \"85193\", \"54656\", \"43215\", \"94533\", \"95826\", \"64804\", \"49548\", \"54467\") ZC = data.frame(zip) ## Download source file, unzip and extract into table ZipCodeSourceFile = \"http://download.geonames.org/export/zip/US.zip\" temp <- tempfile() download.file(ZipCodeSourceFile , temp) ZipCodes <- read.table(unz(temp, \"US.txt\"), sep=\"\\t\") unlink(temp) names(ZipCodes) = c(\"CountryCode\", \"zip\", \"PlaceName\", \"AdminName1\", \"AdminCode1\", \"AdminName2\", \"AdminCode2\", \"AdminName3\", \"AdminCode3\", \"latitude\", \"longitude\", \"accuracy\") ## merge extra info onto original data fZC_Info = merge(ZC, ZipCodes[,c(2:6,10:11)]) head(ZC_Info) zip PlaceName AdminName1 AdminCode1 AdminName2 latitude longitude 1 24517 Altavista Virginia VA Campbell 37.1222 -79.2911 2 43031 Johnstown Ohio OH Licking 40.1445 -82.6973 3 43081 Westerville Ohio OH Franklin 40.1146 -82.9105 4 43215 Columbus Ohio OH Franklin 39.9671 -83.0044 5 43224 Columbus Ohio OH Franklin 40.0425 -82.9689 6 43832 Newcomerstown Ohio OH Tuscarawas 40.2739 -81.5940\n\nSecond Update - February 2023\n\nAnother package, zipcodeR, is now available that makes this easier. Here is some simple code to demonstrate it."
+    }
+}
