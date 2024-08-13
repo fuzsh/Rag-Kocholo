@@ -1,0 +1,34 @@
+{
+    "id": "dbpedia_3136_0",
+    "rank": 51,
+    "data": {
+        "url": "https://stackoverflow.com/questions/44044143/why-is-my-rsa-implementation-in-python-not-working",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Why is my RSA Implementation in Python not working?",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://i.sstatic.net/3uwDu.jpg?s=64",
+            "https://www.gravatar.com/avatar/a007be5a61f6aa8f3e85ae2fc18dd66e?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/3uwDu.jpg?s=64",
+            "https://lh6.googleusercontent.com/-hqqadaouoJQ/AAAAAAAAAAI/AAAAAAAAG8Y/RhhtQ90Epuw/photo.jpg?sz=64",
+            "https://stackoverflow.com/posts/44044143/ivc/cd88?prg=7211957a-e054-4a35-9cd3-ba7026264da3"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2017-05-18T09:41:01",
+        "summary": "",
+        "meta_description": "For learning purposes I am trying to implement RSA Public-Key Cryptography in Python. I already took some looks at sample code and searched trough whole stackoverflow trying to find an answer.\n\nMy",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/44044143/why-is-my-rsa-implementation-in-python-not-working",
+        "text": "For learning purposes I am trying to implement RSA Public-Key Cryptography in Python. I already took some looks at sample code and searched trough whole stackoverflow trying to find an answer.\n\nMy implementation is not working correctly and i have no clue why.\n\nI can easily generate a Public- and Private key. When i use the public key for encryption i get something like\n\n16102208556492\n\nWhich, i think, looks correct. When i now try to decrypt the ciphertext it gives me random ASCII symbols. So i thought decryption must be wrong but it also looks quite good.\n\nSince days i am trying to find the miscalculation!\n\nAll I started with are the mathematical algorithms from the book \"Guide to Elliptic Curve Cryptography\" by Darrel Hankerson, Alfred Menezes and Scott Vanstone.\n\nAlgorithm 1.1: RSA key pair Generation\n\nINPUT: Security parameter l OUTPUT: RSA public key e, private key d and n 1. Randomly select two primes p and q with same bitlength l/2 2. Compute n = pq and phi = (p-1)(q-1) 3. Select an arbitrary integer e with 1 < e < phi and gcd(e, phi)==1 4. Compute the integer d satisfying 1 < d < phi and ed == 1 mod phi 5. Return(n, e, d)\n\nAlgorithm 1.2: Basic RSA encryption\n\nINPUT: RSA public key e, n, plaintext m OUTPUT: Ciphertext c 1. Compute c = m**e mod n 2. Return(c)\n\nAlgorithm 1.3: Basic RSA decryption\n\nINPUT: RSA private d, n, ciphertext c OUTPUT: Plaintext m 1. Compute m = c**d mod n 2. Return(m)\n\nI understand how it works mathematically so I implemented it like this:\n\nAlgorithm 1.1 in Python\n\n# INPUT: Secure parameter l def Generation(l): # Randomly select 2 primes with same Bitlength l/2 p = Randomly_Select_Prime_w_Bitlength(l/2) q = Randomly_Select_Prime_w_Bitlength(l/2) # Compute n = p * q phi = (p - 1) * (q - 1) # Select an arbitrary integer e with 1 < e < phi and gcd(e,phi) == 1 e = int(Arbitrary_Int_e(phi)) # Compute the integer d satisfying 1 < d < phi and e*d == 1 % phi d = inverse(e, n) # Return n e d print(\"Public Key: \" + str(e)) print(\"Private Key: \" + str(d)) print(\"n = \" + str(n))\n\nAlgorithm 1.2 in Python\n\n# INPUT: RSA public key e, n, message m def Encryption(e, n, m): c = [pow(ord(char),e,n) for char in m] print(''.join(map(lambda x: str(x), c))) return c\n\nAlgorithm 1.3 in Python\n\n# INPUT: RSA private key d, n, ciphertext c def Decryption(d, n, c): m = [chr(pow(char, d, n)) for char in c] print(''.join(m)) return ''.join(m)\n\nIt does not seem to be very wrong what i am coding here, but anyway either here or in the other functions must be something wrong.\n\nHere is my full python code"
+    }
+}
