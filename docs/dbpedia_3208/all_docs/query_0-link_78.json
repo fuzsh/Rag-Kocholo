@@ -1,0 +1,47 @@
+{
+    "id": "dbpedia_3208_0",
+    "rank": 78,
+    "data": {
+        "url": "https://live.paloaltonetworks.com/t5/general-topics/windows-server-2003-with-agentless-user-id/td-p/378939",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Windows Server 2003 with Agentless User ID",
+        "top_image": "https://live.paloaltonetworks.com/html/@B09EB55777348FEBBB51B90839A41B20/assets/PAN_Logo_White.png",
+        "meta_img": "",
+        "images": [
+            "https://live.paloaltonetworks.com/html/@3ED993240B214CCB84957D8890090F3C/assets/PANW_Red_BW.png",
+            "https://live.paloaltonetworks.com/html/@E5AF36E8ADFF42398AB32C75C8A2488A/assets/LC-logo-BW.png",
+            "https://live.paloaltonetworks.com/t5/image/serverpage/avatar-name/skyscraper/avatar-theme/candy/avatar-collection/architecture/avatar-display-size/message/version/2?xdesc=1.0",
+            "https://live.paloaltonetworks.com/t5/image/serverpage/image-id/29451i352B52E33DF55D8B/image-dimensions/789x75/is-moderation-mode/true?v=v2",
+            "https://live.paloaltonetworks.com/t5/image/serverpage/image-id/29452i8332D0F778161179/image-size/medium/is-moderation-mode/true?v=v2&px=400",
+            "https://live.paloaltonetworks.com/t5/image/serverpage/image-id/29454i6A27E08334EB1301/image-dimensions/458x345/is-moderation-mode/true?v=v2",
+            "https://live.paloaltonetworks.com/t5/image/serverpage/image-id/29453iB85B1A9EC89BF9DD/image-size/medium/is-moderation-mode/true?v=v2&px=400",
+            "https://live.paloaltonetworks.com/t5/image/serverpage/image-id/29455iBC2F22E4B35EABC8/image-dimensions/454x338/is-moderation-mode/true?v=v2",
+            "https://live.paloaltonetworks.com/t5/image/serverpage/image-id/29456i27D53607C707B652/image-dimensions/708x46/is-moderation-mode/true?v=v2",
+            "https://live.paloaltonetworks.com/t5/image/serverpage/avatar-name/balloons/avatar-theme/candy/avatar-collection/toys/avatar-display-size/message/version/2?xdesc=1.0",
+            "https://live.paloaltonetworks.com/html/@0C650A98D0B3763596C3944B862C3352/rank_icons/Trophy.png",
+            "https://live.paloaltonetworks.com/t5/image/serverpage/avatar-name/skyscraper/avatar-theme/candy/avatar-collection/architecture/avatar-display-size/message/version/2?xdesc=1.0",
+            "https://live.paloaltonetworks.com/skins/images/B61902CBEF6DC304334187D3214C5355/responsive_peak/images/icon_anonymous_message.png",
+            "https://live.paloaltonetworks.com/html/@B09EB55777348FEBBB51B90839A41B20/assets/PAN_Logo_White.png",
+            "https://live.paloaltonetworks.com/html/assets/Khoros-awards-2022-2.jpg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "live.paloaltonetworks.com",
+            "user-id"
+        ],
+        "publish_date": "2021-01-11T12:12:12.036000+00:00",
+        "summary": "",
+        "meta_description": "Hi guys, I am setting up agentless user-id with Windows Server 2003 Active Directory. My PAN-OS version is 8.1.16. For the setup, i've - 378939",
+        "meta_lang": "en",
+        "meta_favicon": "https://live.paloaltonetworks.com/html/@AF88D457713207EDCC5EEBCB342CACE0/assets/favicon.ico",
+        "meta_site_name": "",
+        "canonical_link": "https://live.paloaltonetworks.com/t5/general-topics/windows-server-2003-with-agentless-user-id/td-p/378939",
+        "text": "Hi guys,\n\nI am setting up agentless user-id with Windows Server 2003 Active Directory. My PAN-OS version is 8.1.16.\n\nFor the setup, i've followed the guide here:\n\nhttps://knowledgebase.paloaltonetworks.com/KCSArticleDetail?id=kA10g000000ClGGCA0\n\nCurrently i am being hit by this error message:\n\nWhen I looked up for NT error code 0xc002001b, it shows that RPC had failed.\n\nRequesting for any experts for help on this error.\n\nBelow are some configurations screenshots that i've done following the guide mentioned above.\n\n1) Creation of service account on the AD with the correct members:\n\n2) Because it is Windows Server 2003, and does not have \"Event Log Readers\" in the member group, the panagent service account was added to the group policy below:\n\n3) Panagent permission:\n\n4) Basic config on the palo alto for the agentless user id:\n\n5) I've also permitted related firewall rules to allow the connection to pass successfully. I do not see any traffic being blocked for traffic between these two IPs. TCP 135, 4266, 389 were permitted.\n\n6) Other configurations that i've done (forgotten to capture screenshots):\n\n- Service route for User ID set to Eth 1/1 (where AD is located)\n\n- Enable User ID identification for the Zone.\n\n- Tried resetting passwords for the panagent and trying again but still not working.\n\nWith all these configurations, i am still unable to get the \"Status\" to show \"Connected\".\n\nNOTE: I've tried WBEMTEST to test the WMI connection towards the Windows Server 2003 Active Directory (AD) server and it connects without any issue.\n\nPS: apologies for the blur screenshots.\n\n@codemsittc,\n\nThe WMIC error you are getting is almost always permissions related on the account being used to read the logs, but 2003 can also run into a memory allocation error that you'll want to watch for even when you get this working. You really shouldn't be setting this up on a machine that hasn't been supported for years.\n\nThere's a specific process you need to go through to give non-admin accounts in 2003 the ability to read event logs, I don't think it's as easy as simply plugging them into some GPO. If memory serves properly you actually need to go in and modify some registry settings and the like to get it to function properly."
+    }
+}

@@ -1,0 +1,33 @@
+{
+    "id": "dbpedia_3207_1",
+    "rank": 89,
+    "data": {
+        "url": "https://stackoverflow.com/questions/19660123/why-does-system-drawing-image-getpropertyitem-behave-differently-on-windows-xp",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Why does System.Drawing.Image.GetPropertyItem behave differently on Windows XP / 2003 compared to Windows 7",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/5961f572e6bc1b595e642ea365ba7bb8?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/1aa48f7606f5b08595b0a0356a61e8b6?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/Gg9TK.png?s=64",
+            "https://stackoverflow.com/posts/19660123/ivc/9e88?prg=0144e260-23d5-4ff2-8974-cabafe37743b"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2013-10-29T13:52:12",
+        "summary": "",
+        "meta_description": "I am trying to read the orientation Exif value using System.Drawing.Image.GetPropertyItem(0x0112).\n\nThis works fine on Windows 7 and Windows 2008 R2, but fails on Windows XP / Windows Server 2003 (...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/19660123/why-does-system-drawing-image-getpropertyitem-behave-differently-on-windows-xp",
+        "text": "I am trying to read the orientation Exif value using System.Drawing.Image.GetPropertyItem(0x0112).\n\nThis works fine on Windows 7 and Windows 2008 R2, but fails on Windows XP / Windows Server 2003 (Get a 'Property Cannot Be Found' error).\n\nOn Windows XP / 2003, if I iterate over the available properties (using the PropertyItems property of System.Drawing.Image), I only get 0x5090 (PropertyTagLuminanceTable) and 0x5091 (PropertyTagChrominanceTable)\n\nWith the exact same image in Windows 7 / Windows 2008, I get 18 properties, one of which is 0x0112.\n\nI suspect this may be related to the fact that Vista and later versions of Windows have a newer version of GDI+. Is there any way to get this to work on Windows XP / 2003 without having to write code to read and write Exif data the hard way?\n\nThere is a library on NuGet called ExifReader and an accompanying CodeProject article here.\n\nThe following code should work for getting the orientation, and you can use the other enumerations of ExifTags to get other pieces of metadata:\n\nobject result; var reader = new ExifReader(\"c:\\\\temp\\\\test\\\\sample.jpg\"); reader.GetTagValue(ExifTags.Orientation, out result); var orientation = Convert.ToInt32(result);\n\nI have tested this with this image on Windows XP 32-Bit SP3 using .Net 4, and it returned an orientation of 1, which appears to be correct.\n\nJohn Saunders\n\n161k2626 gold badges249249 silver badges402402 bronze badges\n\nanswered Oct 29, 2013 at 14:30\n\nJMKJMK\n\n27.9k5555 gold badges169169 silver badges286286 bronze badges"
+    }
+}

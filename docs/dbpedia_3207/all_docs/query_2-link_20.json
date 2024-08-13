@@ -1,0 +1,36 @@
+{
+    "id": "dbpedia_3207_2",
+    "rank": 20,
+    "data": {
+        "url": "https://systemcenterdiary.wordpress.com/2021/05/18/rd-web-access-shows-all-collections-unfiltered/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "RD Web Access shows all collections unfiltered",
+        "top_image": "https://systemcenterdiary.wordpress.com/wp-content/uploads/2021/05/hans-peter-gauster-3y1zf4hipcg-unsplash.jpg?w=1200",
+        "meta_img": "https://systemcenterdiary.wordpress.com/wp-content/uploads/2021/05/hans-peter-gauster-3y1zf4hipcg-unsplash.jpg?w=1200",
+        "images": [
+            "https://systemcenterdiary.wordpress.com/wp-content/uploads/2021/05/hans-peter-gauster-3y1zf4hipcg-unsplash.jpg?w=816",
+            "https://systemcenterdiary.wordpress.com/wp-content/uploads/2021/05/rdweb_full_greyed.png?w=967",
+            "https://systemcenterdiary.wordpress.com/wp-content/uploads/2021/05/rdweb_part_greyed.png?w=948",
+            "https://0.gravatar.com/avatar/cdc438414a42c37bb9bc0452a0b4946da2e8c504d61321b4916c3dd01dbeef2e?s=100&d=identicon&r=G",
+            "https://s2.wp.com/i/logo/wpcom-gray-white.png",
+            "https://s2.wp.com/i/logo/wpcom-gray-white.png",
+            "https://pixel.wp.com/b.gif?v=noscript"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2021-05-18T00:00:00",
+        "summary": "",
+        "meta_description": "When working with a Remote Desktop Services farm which has a larger number of collections, you most likely want to provide user access via Remote Desktop Web Access instead of .rdp files or similar ways. RD Web Access has the advantage that it is dynamically created on the base of currently existing RD collections and…",
+        "meta_lang": "en",
+        "meta_favicon": "https://s1.wp.com/i/favicon.ico",
+        "meta_site_name": "systemcenterdiary",
+        "canonical_link": "https://systemcenterdiary.wordpress.com/2021/05/18/rd-web-access-shows-all-collections-unfiltered/",
+        "text": "When working with a Remote Desktop Services farm which has a larger number of collections, you most likely want to provide user access via Remote Desktop Web Access instead of .rdp files or similar ways. RD Web Access has the advantage that it is dynamically created on the base of currently existing RD collections and it only shows those collections a user has access to. Or at least it should.\n\nSymptom\n\nWhen logging into the RD Web Access homepage (https://<rdwa-server>/RDWeb), users can see all available RD collections, even those they do not have access to. They are not able to connect to those collections which means that the permissions are basically set correctly, but the number of collections makes the site quite confusing. Also, you might not want every user to know which collections there are (it’s a bit of a security/privacy concern).\n\nChanging group memberships of the users does not change a thing, so do different GPO sets, but you might experience that some Active Directory OUs behave differently (which means if you move a user to those OUs, they only see what they are supposed to see).\n\nAnalysis\n\nGo to one of the RD Web Access servers, make a backup of the file “%windir%\\web\\rdweb\\web.config”, then open it and search for the line <add name=\"TraceTSWA\" value=\"0\" />.\n\nSet the value to “2” (which means the log level is set to “Warning”). A few lines below, you will find a block containing <add name=”File Log” which is commented using <!-- at the start and --> at the end. Uncomment this section and restart the IIS.\n\nAs a result, after testing the login, the log “%windir%\\web\\rdweb\\App_Data\\rdweb.log” should be created, containing errors concerning the problem, like this one:\n\nError starting filtering: Could not initialize context from SID. SID: S-<...>, Error: 0x80070005\n\nCause\n\nThis behavior occurs when the RD Web Access servers lack permissions to check which permissions the users have. Though it sounds crazy, to quote the technet: “If the User Assignment Filter fails, the user will see all the Applications (By Design for Windows 2012/2012R2 onwards)”.\n\nSolution\n\nAdd the Active Directory Computer accounts of the RD Web Access servers to the BuiltIn AD group “Windows Authorization Access Group”, wait a few minutes and reboot them.\n\nThis is required because “This issue occurs when a domain is created by using the option Permissions compatible only with Windows 2000 or Windows Server 2003 operating systems. When this option is selected, the built-in Everyone group is not made a member of the “Pre-Windows 2000 Compatible Access” group. This issue also occurs if the membership of the group is later changed to no longer include the Everyone group as part of a domain security hardening procedure.“, (see https://docs.microsoft.com/en-us/troubleshoot/windows-server/remote/cannot-view-remoteapp-rd-session-host for details.)\n\nAfterwards, users a restricted to the collections they do have permissions to:"
+    }
+}

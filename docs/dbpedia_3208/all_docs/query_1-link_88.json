@@ -1,0 +1,31 @@
+{
+    "id": "dbpedia_3208_1",
+    "rank": 88,
+    "data": {
+        "url": "https://weblogs.asp.net/owscott/enabling-xp-and-windows-server-2003-to-search-all-files-types",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Enabling XP and Windows Server 2003 to Search All Files Types",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://aspblogs.blob.core.windows.net:443/media/owscott/Media/site-content/profile_picture-1.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "Windows Server",
+            "Windows XP"
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2008-04-04T00:00:00",
+        "summary": "",
+        "meta_description": "Searching for file content on your computer or server is a common task and one where you would expect accurate results.&nbsp; You, like so many of us, may have assumed that but found different&#160;&#8230;",
+        "meta_lang": "en",
+        "meta_favicon": "//weblogs-asp.azureedge.net/node3/favicon.ico?v=10891326340",
+        "meta_site_name": "",
+        "canonical_link": "https://weblogs.asp.net/owscott/enabling-xp-and-windows-server-2003-to-search-all-files-types",
+        "text": "Friday, April 4, 2008\n\nSearching for file content on your computer or server is a common task and one where you would expect accurate results. You, like so many of us, may have assumed that but found different results.\n\nWithin Windows 2000 Server, if you entered something in the windows search dialog and clicked \"Find\", it would find it. But, with Windows Server 2003 or Windows XP, there are a lot of searches that would come up empty, even if you were sure that you had files with the words in them that you were searching for.\n\nThe reason that the results are different in Windows Server 2003 and Windows XP is because Microsoft decided to only include certain types of files in the search to speed up the search. Even if you set the file type as \"All Files and Folders\", it ignores a large amount of files when doing a search. The reasoning is that it takes a long time to search every file on the server and binary type files like a jpg or gif or exe don't need to be searched for a plain text search term. Why include them if they aren’t going to turn up any results anyway.\n\nWhile I agree with it in part, if I want to find a file based on a keyword, I want it to search every file so that I can be sure that my search is accurate.\n\nThe fix is fairly easy as long as you don't mind making a registry change. My preferred method is to set Windows to index every file, even if it's an unknown exception. This is done by adding or changing a DWORD called FilterFilesWithUnknownExtensions in HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\ContentIndex. Set it to 1. (1 for on, 0 for off)\n\nIn fact I added it as part of the build process here at ORCS Web when Windows Server 2003 first came out a few years ago. The search on every server on our network will search every file type.\n\nHere is how I prefer to do it. Create a file called AddIndexingToAllFiles.reg (Or, I just call it abc.reg since I delete the file immediately after using it). Then put the following in it:\n\nWindows Registry Editor Version 5.00\n\n[HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\ContentIndex]\n\n\"FilterFilesWithUnknownExtensions\"=dword:00000001\n\nSave the file on your desktop and double click on it. After accepting the prompt and warning, the entry will be added to your registry. You can delete the registry file since you're done applying it.\n\nHere's a good Microsoft KB article on this with further details: http://support.microsoft.com/default.aspx?scid=KB;EN-US;309173. It also explains how you can add specific extensions rather than just indexing all files if you prefer to do that."
+    }
+}

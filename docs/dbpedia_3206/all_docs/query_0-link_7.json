@@ -1,0 +1,41 @@
+{
+    "id": "dbpedia_3206_0",
+    "rank": 7,
+    "data": {
+        "url": "https://community.spiceworks.com/t/upgrade-path-from-windows-sbs-2003/296049",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Upgrade path from Windows SBS 2003",
+        "top_image": "https://global.discourse-cdn.com/spiceworks/original/1X/7a73606d7df2f794c4789897e49693fb3c471b23.png",
+        "meta_img": "https://global.discourse-cdn.com/spiceworks/original/1X/7a73606d7df2f794c4789897e49693fb3c471b23.png",
+        "images": [
+            "https://secure.intelligence52.com/795141.png",
+            "https://global.discourse-cdn.com/spiceworks/optimized/4X/d/f/5/df50ff207e6a6ce3b4d58cdf0195308a0fb1e170_2_690x362.png",
+            "https://global.discourse-cdn.com/spiceworks/original/4X/8/0/d/80d5004992e71c06216055e37e4ab9a8594bb288.png",
+            "https://global.discourse-cdn.com/spiceworks/original/4X/a/8/3/a837c3deb16325422667b41d9702b9020aff76c9.png",
+            "https://global.discourse-cdn.com/spiceworks/original/4X/8/3/a/83a4d9fb1accdd70e26ed608397227a8a0b4dff1.png",
+            "https://global.discourse-cdn.com/spiceworks/original/4X/a/9/a/a9ab3b4a28efd466139ed6d53d7b3d572c13d746.jpeg",
+            "https://zdbb.net/l/z0WVjCBSEeGLoxIxOQVEwQ/"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "windows-server-essentials-sbs",
+            "discussion"
+        ],
+        "tags": null,
+        "authors": [
+            "billlepsch (billlepsch)",
+            "gregoryhhall (Gregory H Hall)",
+            "kevinroyalty (kevinroyalty-sbs_mvp)"
+        ],
+        "publish_date": "2014-04-17T20:30:59+00:00",
+        "summary": "",
+        "meta_description": "In my small business, our server is running Windows Small Business Server 2003. As that is nearing it’s end-of-support, we need options to upgrade the OS. We don’t use Exchange, SharePoint, IIS, WSUS, etc… The server is &hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://global.discourse-cdn.com/spiceworks/optimized/1X/a254df83358a951c43ed6ee756b5e0011a8d58bc_2_32x32.png",
+        "meta_site_name": "Spiceworks Community",
+        "canonical_link": "https://community.spiceworks.com/t/upgrade-path-from-windows-sbs-2003/296049",
+        "text": "In my small business, our server is running Windows Small Business Server 2003. As that is nearing it’s end-of-support, we need options to upgrade the OS. We don’t use Exchange, SharePoint, IIS, WSUS, etc… The server is used very simply for Domain Admin, DHCP control, and non-user-specific file sharing (one big shared partition). However, we have two softwares running that are critical. One is Trend Micro Worry Free Business Security. The other is a proprietary software installation that is our invoicing, A/R, inventory, etc,. system. Workstations in the shop connect to this software using an old IBM SBClient product.\n\nThe issue is that if we have to buy a whole new box or re-install on the existing box, we would have to bring in the company we bought the whole setup from in the first place. They’re going to tell us that our version of their software is no longer supported and that we need to upgrade to a new version at a cost of tens of thousands of dollars that we don’t have.\n\nI’m looking for options on how we can upgrade the OS without having to re-install the WFBS and proprietary software. Or, would it be possible to add a new server to the network to handle the usual server functions and WFBS while relegating the old dog server to handle just the proprietary system and hide it from the outside world?\n\nAny advice would be greatly appreciated.\n\nYou are at a crossroad and I am leaning on telling you to bite the bullet and purchase the new version, but if you need to buy time while you get the money together to do that then:\n\nGet a new physical server -\n\nhttp://www.dell.com/us/business/p/poweredge-t420/pd?~ck=anav\n\nInstall Windows 2012 R2 with the Hyper-V role\n\nSimple P2V conversion of the existing server to a VM host should solve all your problems.\n\nAdd an additional VM with new 2012 R2 server and promote it to the domain controller leaving the SBS as the PDC. Setup DNS, DHCP, and file storage on the new server to get the benefit of current hardware and the latest GPO.\n\nHyper-V\n\nI had to do this EXACT thing for a 24/7 shop. The network was failing so I had to jump in.\n\nBest guide I’ve seen yet:\n\nIf you are not using Exchange then just skip the migration of Exchange. I had to uninstall Exchange from SBS and it went fine (maybe I was blessed I don’t know). These steps are verbatim and worked for me. I had Google Apps so in order to clean up AD I had to uninstall Exchange the proper way. I also had to migrate SSRS 2005 to another SQL server 2008. There were a lot of business apps on this server that made it a royal pain. This was a swing migration and resulted in minimal if any downtime. As long as your replication between domain controllers is sound then you can safely bet you are going to be ok.\n\nAll, thanks for the replies. I have to admit, I’m a bookkeeper and not a trained IT pro, but I know enough to be dangerous. I learn a lot from trail, error, and Google…\n\nI do have some questions about some of the replies:\n\nP2V sound like the way to go. How do I know if I have an OEM license or otherwise?\n\nWhat is the acronym “PDC”? If it’s the primary domain controller, how does that work if I’ve promoted the 2012 R2 to the domain controller?\n\nUsing a virtualization will “hide” the old SBS from the outside world, but still allow my clients to log into the LoB software? The LoB software has no reason to go outside our network, ever, but the sompany that sold it to us does occasionally have to “dial in” to it to fix issues.\n\nSo the two VMs on the new physical hardware would each have their own IP address, name, etc. and act just as if they were separate, physical systems?\n\nWhy would I need a second VM? Wouldn’t the new physical server handle the DHCP, DNS, and file sharing while the VM handles the SBS?\n\nI’m also looking at implementing an Access 2013 App to help the sales people find reference data on our products lines and I believe that requires SharePoint 2013. Is that part of the 2012 R2, or would I need some other product? This is a bit of an “and another thing” and isn’t my primary worry. We get along with read-only Excel docs on the shared partition right now, but I’d like to do something where it’s easier to manage change and a bit more elegant for the users."
+    }
+}

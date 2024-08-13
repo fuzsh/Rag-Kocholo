@@ -1,0 +1,42 @@
+{
+    "id": "dbpedia_3206_1",
+    "rank": 7,
+    "data": {
+        "url": "https://community.spiceworks.com/t/windows-2003-licensing/255917",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Windows 2003 Licensing",
+        "top_image": "https://global.discourse-cdn.com/spiceworks/original/1X/7a73606d7df2f794c4789897e49693fb3c471b23.png",
+        "meta_img": "https://global.discourse-cdn.com/spiceworks/original/1X/7a73606d7df2f794c4789897e49693fb3c471b23.png",
+        "images": [
+            "https://secure.intelligence52.com/795141.png",
+            "https://sea1.discourse-cdn.com/spiceworks/user_avatar/community.spiceworks.com/rodgreen/48/162_2.png",
+            "https://sea1.discourse-cdn.com/spiceworks/user_avatar/community.spiceworks.com/rodgreen/48/162_2.png",
+            "https://sea1.discourse-cdn.com/spiceworks/user_avatar/community.spiceworks.com/cwestermann/48/725473_2.png",
+            "https://global.discourse-cdn.com/spiceworks/optimized/4X/d/f/5/df50ff207e6a6ce3b4d58cdf0195308a0fb1e170_2_690x362.png",
+            "https://zdbb.net/l/z0WVjCBSEeGLoxIxOQVEwQ/"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "windows-server",
+            "question"
+        ],
+        "tags": null,
+        "authors": [
+            "rodgreen (RodG)",
+            "nickc (Nick-C)",
+            "cwestermann (wegotIT)",
+            "billkindle (Little Green Man)",
+            "garydwilliams (Gary D Williams)"
+        ],
+        "publish_date": "2013-11-15T11:54:19+00:00",
+        "summary": "",
+        "meta_description": "I’ve set up a new Windows 2003 server. It currently has 9 CALs and is set up in per-server licensing mode. It’s mainly being used as an application server. I’ve been considering promoting it to an AD controller. We have &hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://global.discourse-cdn.com/spiceworks/optimized/1X/a254df83358a951c43ed6ee756b5e0011a8d58bc_2_32x32.png",
+        "meta_site_name": "Spiceworks Community",
+        "canonical_link": "https://community.spiceworks.com/t/windows-2003-licensing/255917",
+        "text": "I’ve set up a new Windows 2003 server. It currently has 9 CALs and is set up in per-server licensing mode. It’s mainly being used as an application server. I’ve been considering promoting it to an AD controller. We have 60-70 users. If I were to promote the server to a controller, would there be issues with it only having 9 CALs? Thanks for any input.\n\nWindows 2008 will work fine with Windows 2003 AD and it’ll allow you to migrate your AD from 2003 to 2008.\n\nRemember that Windows 2003 support ends in July 2015 - no more patches for it after that date.\n\nThese days you cannot directly buy Windows 2003 (either server or CAL licenses), you have to buy 2012 licenses and then make use of the downgrade rights to run 2003, although as Bill explained this is not a recommended choice, since you are having to buy 2012 licenses you can deploy 2012 as a DC and join it to your existing domain (providing your forest/domain are at least at 2003 functionality level).\n\nThe only issue with deploying 2008/2012 is that you would need to ensure every user has a new CAL as a 2003 CAL cannot be used to access a 2008 or 2012 server (although a 2012 CAL can be used with both 2003 and 2008 servers).\n\nDepending on your licenses scheme you may be able to do some sort of upgrade deal where you upgrade all your existing server licenses and CAL’s to 2012.\n\nJust because the ISO and license key show in your VL center account doesn’t mean you have enough licenses to deploy a new install, assuming you have been granted access to it check the Licenses > License Summary page in VLSC as this will actually tell you how many licenses you have for each product on your current agreement.\n\nThen you are fine to install 2003 using your downgrade rights, you will however come into trouble with your CALs as you need enough CAL’s to either cover every device (if you use device CALs), or every user (if you use User CALs). You need a CAL for every user/device that authenticates with your domain, be that to a DC or just a fileshare so considering you currently only have 13 CAL’s (9 existing plus the 4 new purchases), you will need to purchase a lot more to ensure all your users are covered.\n\nMost people buy User CAL’s as this normally the most cost effective licensing option (normally used where each user is assigned their own desktop and doesn’t share it with anyone), device CAL’s are less common but work out best in setups where you have multiple users hotdesking (for example with multiple shifts you can have 60 users working 2 shifts sharing 30 PC’s and only need 30 device CAL’s rather than needing 60 User CALs).\n\nRodG\n\nAre your other servers 2003 as well? Are your current 2003 CALs Per Server or Per Device.\n\nIf they are Per Device then, I don’t believe, you have a licensing issue as any current 2003 Per Device CAL can access any 2003 Server in your Domain. So adding a new 2003 Server would not be a problem.\n\n“With one CAL, a particular device or user can connect to any number of servers running products in the Windows Server 2003 family.”\n\nIf all your CAL’s are Per Server unless you are running Shifts and it makes sense to keep them Per Server you can change from Per Server to Per Device one time.\n\n“…because you can change once from Per Server mode to Per Device or Per User mode at no cost.”\n\nCurious what your final solution is as far as licensing is concerned.\n\nI am in the same boat, stuck with 2003, at least until the next budget year. I am putting together a “New” 2003 File Server and thought my Per Device Per User CALs had me covered. Or am I wrong.\n\nGood luck"
+    }
+}

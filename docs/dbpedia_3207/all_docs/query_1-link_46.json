@@ -1,0 +1,52 @@
+{
+    "id": "dbpedia_3207_1",
+    "rank": 46,
+    "data": {
+        "url": "https://msfn.org/board/topic/126879-adding-user-accounts-control-panel-on-windows-xpserver-2003/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Adding User Accounts Control Panel on Windows XP/Server 2003",
+        "top_image": "https://msfn.org/board/uploads/post-119948-1228342609.gif",
+        "meta_img": "https://msfn.org/board/uploads/post-119948-1228342609.gif",
+        "images": [
+            "https://msfn.org/board/uploads/monthly_2023_06/logo.png.98b2715426c085ba53040f3f230ee292.png",
+            "https://msfn.org/board/uploads/monthly_2016_03/member.png.17499d675553634b46a0b88559740f90.png",
+            "https://msfn.org/board/uploads/post-119948-1228342604_thumb.png",
+            "https://msfn.org/board/uploads/post-119948-1228342609_thumb.png",
+            "https://msfn.org/board/uploads/av-6960.jpg",
+            "https://msfn.org/board/uploads/av-6960.jpg",
+            "https://msfn.org/board/uploads/monthly_2016_03/patron.png.784d9dad95ec80740452668c5deb3ffb.png",
+            "https://msfn.org/board/uploads/monthly_2016_03/member.png.17499d675553634b46a0b88559740f90.png",
+            "https://msfn.org/board/uploads/av-6960.jpg",
+            "https://msfn.org/board/uploads/av-6960.jpg",
+            "https://msfn.org/board/uploads/monthly_2016_03/patron.png.784d9dad95ec80740452668c5deb3ffb.png",
+            "https://msfn.org/board/uploads/monthly_2016_03/member.png.17499d675553634b46a0b88559740f90.png",
+            "https://msfn.org/board/uploads/av-6960.jpg",
+            "https://msfn.org/board/uploads/av-6960.jpg",
+            "https://msfn.org/board/uploads/monthly_2016_03/patron.png.784d9dad95ec80740452668c5deb3ffb.png",
+            "https://msfn.org/board/uploads/monthly_2018_06/imported-photo-393017.thumb.jpeg.720fbffc7278495da276aa32f39f5790.jpeg",
+            "https://msfn.org/board/uploads/monthly_2018_06/imported-photo-393017.thumb.jpeg.720fbffc7278495da276aa32f39f5790.jpeg",
+            "https://msfn.org/board/uploads/monthly_2016_03/member.png.17499d675553634b46a0b88559740f90.png",
+            "https://msfn.org/board/uploads/monthly_2018_06/imported-photo-393017.thumb.jpeg.720fbffc7278495da276aa32f39f5790.jpeg",
+            "https://msfn.org/board/uploads/monthly_2018_06/imported-photo-393017.thumb.jpeg.720fbffc7278495da276aa32f39f5790.jpeg",
+            "https://msfn.org/board/uploads/monthly_2016_03/member.png.17499d675553634b46a0b88559740f90.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Ascii2"
+        ],
+        "publish_date": "2008-12-03T22:17:57+00:00",
+        "summary": "",
+        "meta_description": "Windows 2000/XP/Server 2003 family operating systems have a \"Users and Passwords\" (2000) or \"User Accounts\" (XP/Server 2003) control panel (will be referred to as \"accounts control panel\") that looks like the images I have attached to this post.At command line, the control panel may be run using:...",
+        "meta_lang": "en",
+        "meta_favicon": "",
+        "meta_site_name": "MSFN",
+        "canonical_link": "https://msfn.org/board/topic/126879-adding-user-accounts-control-panel-on-windows-xpserver-2003/",
+        "text": "Windows 2000/XP/Server 2003 family operating systems have a \"Users and Passwords\" (2000) or \"User Accounts\" (XP/Server 2003) control panel (will be referred to as \"accounts control panel\") that looks like the images I have attached to this post.\n\nAt command line, the control panel may be run using:\n\nrundll32.exe %SystemRoot%\\system32\\netplwiz.dll,UsersRunDll\n\nWindows XP and Windows Server 2003 do not have the classic \"User Accounts\" available by default in the Control Panel folder.\n\nWindows 2000/XP/Server 2003 all have the accounts control panel CLSID defined in the registry at:\n\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Classes\\CLSID\\{7A9D77BD-5403-11d2-8785-2E0420524153}]\n\nI noticed that Windows 2000 operating systems have a NameSpace entry for the accounts control panel, but is not present in Windows XP/Server 2003. The entry on Windows 2000 is the following:\n\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\ControlPanel\\NameSpace\\{7A9D77BD-5403-11d2-8785-2E0420524153}]\n\n@=\"{7A9D77BD-5403-11d2-8785-2E0420524153}\"\n\nI attempted to add the NameSpace entry from Windows 2000 to Windows XP and the accounts control panel appeared in the Control Panel folder (Web Content in folders was disabled). On reboot, however, the control panel disappeared. It seems that sometime during reboot Windows XP deleted the added NameSpace entry in the registry.\n\nI then researched on the Microsoft MSDN website for information about adding a control panel to the Control Panel folder. I found the folllowing pages of documentation:\n\nThe documentation applies to Windows 2000/XP/Server 2003/Vista. Unforunately, it seems that the docuentation does not describe how to add a control panel accessed via DLL entry point.\n\nHow can the accounts control panel be added to the Control Panel folder in Windows XP/Server 2003 permanently (or until manually removed) for both classic folder view and Web folder view (categories in Control Panel folder)?\n\nEdited December 3, 2008 by Ascii2\n\nI shall test the scripts provided by Kelsenellenelvian later today.\n\nThe scripts seem to do what I what I tried to do with a few notable exceptions: A new CLSID is created and populated with values instead of using the pre-existing accounts control panel CLSID key and a different open command is used to open the control panel (which I guess will calls the RUNDLL32 command).\n\nI wonder if the scripts would result in the same problem I have been receiving (control panel NameSpace being purged).\n\nEdited December 4, 2008 by Ascii2\n\nI have tested the scripts provided by Kelsenellenelvian and have found them to work.\n\nAfter concluding the scripts to work, I attempted to determine why what I had previously attempted failed.\n\nI believe to understand why the failure occurred. Windows seems to scan for the \"{7A9D77BD-5403-11d2-8785-2E0420524153}\" NameSpace key under [HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\ControlPanel\\NameSpace] and deletes any instance of it during the enabling or disabling of Web content in folders, or during reboot of the computer (possibly logging off and then logging in may be sufficient; I had not tested it). It seems that Microsoft Corporation did not want the older-style User Accounts control panel available in the Control Panel folder.\n\nThis means that unless a way to prevent Windows XP/Server 2003 from deleting the \"{7A9D77BD-5403-11d2-8785-2E0420524153}\" NameSpace key, a \"{7A9D77BD-5403-11d2-8785-2E0420524153}\" NameSpace key cannot be used to permanently add the accounts control panel to Control Panel. To workaround the problem, a new CLSID may be defined (or other existing CLSID modified) exhibiting the behavior of the \"{7A9D77BD-5403-11d2-8785-2E0420524153}\" CLSID, then add it to the Control Panel NameSpace. That is what Kelsenellenelvian's posted scripts do (although imperfectly). Note that when \"Control Userpasswords2\" is run, Control.exe should run \"rundll32.exe %SystemRoot%\\system32\\netplwiz.dll,UsersRunDll\".\n\nI thank Kelsenellenelvian for his assistance in this thread.\n\nEdited December 15, 2008 by Ascii2"
+    }
+}

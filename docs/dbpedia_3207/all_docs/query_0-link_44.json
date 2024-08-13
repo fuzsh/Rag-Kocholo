@@ -1,0 +1,33 @@
+{
+    "id": "dbpedia_3207_0",
+    "rank": 44,
+    "data": {
+        "url": "https://discuss.elastic.co/t/install-winlogbeat-on-windows-server-2003-without-powershell/102506",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Install winlogbeat on windows server 2003 without powershell",
+        "top_image": "https://global.discourse-cdn.com/elastic/original/3X/5/4/5461df8fd2fe783981b0180332821184b729980e.png",
+        "meta_img": "https://global.discourse-cdn.com/elastic/original/3X/5/4/5461df8fd2fe783981b0180332821184b729980e.png",
+        "images": [
+            "https://global.discourse-cdn.com/elastic/original/3X/c/a/ca331f4d6c7a154ff9e055a44f6ac3467c8b61c5.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "winlogbeat"
+        ],
+        "tags": null,
+        "authors": [
+            "system (system) Closed",
+            "andrewkroh (Andrew Kroh)"
+        ],
+        "publish_date": "2017-10-03T05:06:41+00:00",
+        "summary": "",
+        "meta_description": "I have a server with windows server 2003 installed and I need to forward that server windows event logs to logstash through winlogbeat. \nBut there is no powershell in windows server 2003. So  how can I install winlogbeat&hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://global.discourse-cdn.com/elastic/optimized/3X/3/7/37d58c6890e29b4d96eae5c67db6cf3db36b0181_2_32x32.png",
+        "meta_site_name": "Discuss the Elastic Stack",
+        "canonical_link": "https://discuss.elastic.co/t/install-winlogbeat-on-windows-server-2003-without-powershell/102506",
+        "text": "I have a server with windows server 2003 installed and I need to forward that server windows event logs to logstash through winlogbeat.\n\nBut there is no powershell in windows server 2003. So how can I install winlogbeat service without powershell ?\n\nThe New-Service powershell cmdlet is used by the script to create the winlogbeat service. You could try to install Powershell 2.0 and see if the script works. Microsoft's website doesn't have much information on Powershell 2.0 so I don't know if New-Service is present in the version.\n\nAnother option might be to use sc.exe to create the winlogbeat service. See https://support.microsoft.com/en-us/help/251192/how-to-create-a-windows-service-by-using-sc-exe\n\nNew-Service was added in 3.0. You can tell by going to https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.management/new-service and seeing what versions are listed in the dropdown at the top left.\n\nI don't think the docs for 2.0 are available on that site. The drop down doesn't contain a 2.0 option even for cmdlets that were available in 2.0 such as Get-ChildItem.\n\nI am able to install \"install-service-winlogbeat.ps1\" using Powershell v1.0 on windows server 2003.\n\nBut when I am going to start the winlogbeat service, it gives following error message. I try to fixed it but unfortunately no luck. Can any body give me a direction to fixed this issue.\n\nError code -> Error 216: 0xd8\n\nOnce I execute below command I received listed error message\n\nPS E:\\Graylog\\winlogbeat-5.4.0-windows-x86_64> .\\winlogbeat.exe -c .\\winlogbeat.\n\nyml -e -configtes\n\nReceived Below Error\n\nPS E:\\Graylog\\winlogbeat-5.4.0-windows-x86_64> .\\winlogbeat.exe -c .\\winlogbeat. yml -e -configtest Program 'winlogbeat.exe' failed to execute: The image file %1 is valid, but is for a machine type other than the current machine At line:1 char:17 + .\\winlogbeat.exe <<<< -c .\\winlogbeat.yml -e -configtest. At line:1 char:1 + . <<<< \\winlogbeat.exe -c .\\winlogbeat.yml -e -configtest"
+    }
+}

@@ -1,0 +1,37 @@
+{
+    "id": "dbpedia_3206_2",
+    "rank": 27,
+    "data": {
+        "url": "https://community.spiceworks.com/t/bandwidth-throttle-software/35829",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Bandwidth Throttle - Software",
+        "top_image": "https://global.discourse-cdn.com/spiceworks/original/1X/7a73606d7df2f794c4789897e49693fb3c471b23.png",
+        "meta_img": "https://global.discourse-cdn.com/spiceworks/original/1X/7a73606d7df2f794c4789897e49693fb3c471b23.png",
+        "images": [
+            "https://secure.intelligence52.com/795141.png",
+            "https://emoji.discourse-cdn.com/twitter/wink.png?v=12",
+            "https://zdbb.net/l/z0WVjCBSEeGLoxIxOQVEwQ/"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "windows-server",
+            "question"
+        ],
+        "tags": null,
+        "authors": [
+            "philip (philip)",
+            "markmckinlay (Mark McKinlay)",
+            "plj (Patrick Louis-Jean)"
+        ],
+        "publish_date": "2009-11-16T14:30:31+00:00",
+        "summary": "",
+        "meta_description": "I have been looking into this for a little bit and haven’t had any luck finding anything thus far. I am reaching out to Spiceworks to see if anyone has any software recommendation that will perform the following function&hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://global.discourse-cdn.com/spiceworks/optimized/1X/a254df83358a951c43ed6ee756b5e0011a8d58bc_2_32x32.png",
+        "meta_site_name": "Spiceworks Community",
+        "canonical_link": "https://community.spiceworks.com/t/bandwidth-throttle-software/35829",
+        "text": "I have been looking into this for a little bit and haven’t had any luck finding anything thus far. I am reaching out to Spiceworks to see if anyone has any software recommendation that will perform the following function.\n\nThrottle upload bandwidth on the localhost to a remote server\n\nHave a scheduling feature that will set #Mb/s for certain hours and #Mb/s on other hours\n\nRun as a service / without a user logged in\n\nBasically, I have a server that has to do a lot of file transfers using proprietary software, but I can’t have it eating all my bandwidth between two site. I am looking to max out the pipe at night and limit it during business hours.\n\nThanks for any insight.\n\nI think I need a make a few points that might help.\n\nThis traffic is going between two of our offices and I don’t believe it is going through the firewall.\n\nI don’t think I can use other software to transfer the files. If anyone is familiar with Shadow Protect, I am trying to transfer the compressed daily (the makeup of all the daily incrementals) backup file to an offsite location. This file has a kinda random file name, but ends with cd.\n\nOn the lowest level, I am looking for something would allow my server to adjust its throughput for a specified application at certain hours of the day.\n\nThanks for the help so far.\n\nShadow Protect looks similar to Acronis. Acronis user .tib files. I use VV to move these files (and others) around our network. VV allows you to schedule when you want to transfer files. Keep in mind that Martin is correct, DFS can do all of this too, and it is part of Windows Server 2003 R2 (new version of DFS, much better than R1 version).\n\nDFS is what you are looking for there then.\n\nHowever, if you have 2 buildings and no way to regulate traffic between them (no firewall) you may want to have your network guys look into that. But I am betting there is a router there, even if you do have a private line.\n\nHi,\n\nI haven’t tried the /IPG switch on the robocopy windows resource kit tool, but, I believe you should be able to do waht you want to do using this - the best approach would be to write a short batch file, which, you then schedule to run using a dedicated domain account created for this purpose. Robocopy is also smart enough to only copy files that are different on the target server than on the source (Using the correct switch)… oh… and it’s free.\n\nBE VERY CAREFUL WHEN USING ROBOCOPY AS IT IS VERY EASY TO ACCIDENTALLY DELETE FILES ON THE TARGET SERVER IF YOU USE THE WRONG SWITCHES - TEST EVERYTHING FIRST\n\nThere has to be a router in there assuming its a leased line and different sub net. Most routers do QOS. There is also nothing to say you still cant install Untangle, Monowall or any other fire wall of your choice to use the QOS. You just leave the ports all open and use the network and routing part. This would be my sugestion if you cant or dont have access to the router. You will be able to put policies in to limit all sorts of traffic.\n\nNot very familiar with it but you might want to take a look at Deltacopy. Its compresses data on transmit and might well have other QOS things built in."
+    }
+}

@@ -1,0 +1,45 @@
+{
+    "id": "dbpedia_3207_2",
+    "rank": 42,
+    "data": {
+        "url": "https://serverfault.com/questions/34692/windows-file-and-folder-attributes-a-or-c",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Windows File and Folder \"Attributes\" A or C",
+        "top_image": "https://cdn.sstatic.net/Sites/serverfault/Img/apple-touch-icon@2.png?v=9b1f48ae296b",
+        "meta_img": "https://cdn.sstatic.net/Sites/serverfault/Img/apple-touch-icon@2.png?v=9b1f48ae296b",
+        "images": [
+            "https://cdn.sstatic.net/Sites/serverfault/Img/logo.svg?v=43f5b6d5f65b",
+            "https://www.gravatar.com/avatar/bc36771183c613efa1030dc33b5d284c?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/7cd4abeedd6df6714aab89a196f56411?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/93da100a88bb4724145c5fd6883bb1fc?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/fe6c5931802371700bddfa845f8a4d86?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/dc1b4714364620088489e23b80e5ebb5?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/6eb13e72af7d9df244f611ae3472965e?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/L4ewU.jpg?s=64",
+            "https://www.gravatar.com/avatar/73c41f0fe7be15124dec8812dc9ad077?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/a007be5a61f6aa8f3e85ae2fc18dd66e?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/539e0f4cb4d200864e7fec6d22a2622a?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/1eea7cd4d91088ecb9d583fdf217afaa?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/956a6755664f140819da1ef2e644259e?s=64&d=identicon&r=PG",
+            "https://serverfault.com/posts/34692/ivc/9e88?prg=1ced688c-ae20-4a26-9ed0-7aea55747946"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Duane Duane"
+        ],
+        "publish_date": "2009-07-01T20:23:25",
+        "summary": "",
+        "meta_description": "In Windows Server 2003, in the \"Attributes\" column of windows explorer, some files have \"A\" or \"C\" or \"AC\" or others. What do these mean?",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/serverfault/Img/favicon.ico?v=18e9cc4f2aea",
+        "meta_site_name": "Server Fault",
+        "canonical_link": "https://serverfault.com/questions/34692/windows-file-and-folder-attributes-a-or-c",
+        "text": "Prior to windows 8/10 the attributes were:\n\nR = READONLY H = HIDDEN S = SYSTEM A = ARCHIVE C = COMPRESSED N = NOT INDEXED L = Reparse Points O = OFFLINE P = Sparse File I = Not content indexed T = TEMPORARY E = ENCRYPTED\n\nYou should pay special attention to the offline attribute because it may affect the behavior of your backup software. Files with the O attribute may be skipped entirely because the software may assume they are stored elsewhere.\n\nConsider these answers on SO and SF for additional information:\n\nhttps://superuser.com/questions/1214542/what-do-new-windows-8-10-attributes-mean-no-scrub-file-x-integrity-v-pinn/1215034\n\nhttps://superuser.com/questions/44812/windows-explorers-file-attribute-column-values\n\nWhen Windows 7 \"Backup and Restore\" creates a \"system image,\" it puts it in a root-level folder named WindowsImageBackup, which has the \"I\" attribute. Windows 7's \"help attrib\" command says:\n\nC:\\>help attrib Displays or changes file attributes. ATTRIB [+R | -R] [+A | -A ] [+S | -S] [+H | -H] [+I | -I] [drive:][path][filename] [/S [/D] [/L]] + Sets an attribute. - Clears an attribute. R Read-only file attribute. A Archive file attribute. S System file attribute. H Hidden file attribute. I Not content indexed file attribute. [drive:][path][filename] Specifies a file or files for attrib to process. /S Processes matching files in the current folder and all subfolders. /D Processes folders as well. /L Work on the attributes of the Symbolic Link versus the target of the Symbolic Link\n\nD is missing from the above list so in case you're wondering like I was, D stands for \"Directory.\" It's probably not included because the question focused on files, not directories, but I found this question in a search and had to continue my search to find out what D was, so, as a convenience to future readers, I added this answer.\n\nHere's the link to the answer that included D:\n\nWindows Explorers file attribute column values\n\nOthers are as follows;\n\nH = Hidden\n\nS = System File\n\nR = Read Only\n\nAHS and R can be set by the user or system, as user you can use the 'attrib' command to add/remove attributes. C is a system only attribute.\n\nTo find out more about the attrib command goto a command window and type 'attrib /?'\n\nBackup software can clear the archive bit which is set when a file is modified. That way, it can be used to do incremental backups in order to skip over files that have already been backed up.\n\nSince it can be set and unset at will, it's not necessarily the most reliable method and I think most backup software uses more sophisticated criteria for determining what to include in an incremental backup.\n\nThe A bit only shows up when you have backup software that sets it to indicate that file has been archived. When a user makes changes to a file, the operating system clears the archive bit, to indicate to the backup software that if it's doing an incremental or differential backup, it needs to backup that changed file and reset the A bit. Incremental backups reset the archive bit, so that the next incremental will only backup newly changed files. Differential backups do NOT reset the archive bit, so every differential backup grabs all the files that have changed since the previous full backup. So, to restore a system on Friday, an administrator would need the weekly backup from sunday and either the latest differential, or ALL the daily incrementals."
+    }
+}

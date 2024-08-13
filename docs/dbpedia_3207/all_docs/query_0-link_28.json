@@ -1,0 +1,36 @@
+{
+    "id": "dbpedia_3207_0",
+    "rank": 28,
+    "data": {
+        "url": "https://community.spiceworks.com/t/how-do-i-clone-an-exsisting-windows-server-2003-server-to-use-as-a-vmware-image/10723",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How do I clone an exsisting Windows Server 2003 server to use as a VMWare image?",
+        "top_image": "https://global.discourse-cdn.com/spiceworks/original/1X/7a73606d7df2f794c4789897e49693fb3c471b23.png",
+        "meta_img": "https://global.discourse-cdn.com/spiceworks/original/1X/7a73606d7df2f794c4789897e49693fb3c471b23.png",
+        "images": [
+            "https://secure.intelligence52.com/795141.png",
+            "https://global.discourse-cdn.com/spiceworks/original/4X/5/e/a/5ea0461fa0aeb97ca7814a3a98072c8810959dd2.png",
+            "https://zdbb.net/l/z0WVjCBSEeGLoxIxOQVEwQ/"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "virtualization",
+            "question"
+        ],
+        "tags": null,
+        "authors": [
+            "benisj (BenisJ)",
+            "mellerbeck (Mellerbeck)"
+        ],
+        "publish_date": "2008-07-31T05:24:13+00:00",
+        "summary": "",
+        "meta_description": "Hi I would like to start using a virtual environment. I want to start virtualizing the easy things like our Domain Controllers and I would like to find out how I can create a image of those servers to use in VMware?",
+        "meta_lang": "en",
+        "meta_favicon": "https://global.discourse-cdn.com/spiceworks/optimized/1X/a254df83358a951c43ed6ee756b5e0011a8d58bc_2_32x32.png",
+        "meta_site_name": "Spiceworks Community",
+        "canonical_link": "https://community.spiceworks.com/t/how-do-i-clone-an-exsisting-windows-server-2003-server-to-use-as-a-vmware-image/10723",
+        "text": "If you want to migrate a physical machine to a virtual then you’d need to use a physical to virtual utility. VMware should have one available. For Microsoft’s Virtual Server, System Center Virtual Machine Manager has that capability. If you are just wanting a image of a Windows server install you’d want to use sysprep and create a packaged image for deployment. That way the GUID and SID are recreated with each install. Hope this helps.\n\n242, are you using VMware Server 1.0 (or 2.0 beta)? Or ESX? If you’re using VMware Server you can simply use VMware Converter (see link above) to do your physical to virtual conversion. If you’re using ESX the free Converter tool won’t do it (though you could do physical to Server, then a second conversion from Server to ESX). If you have VirtualCenter they do have a conversion plugin that comes with the product that’ll do the conversion, and even if you don’t have VC you can download and install it for a 30-day trial (I’m pretty sure the converter is available in the trial, but don’t quote me). Also, while it is possible to do a P2V of a domain controller it’s usually considered best practice to do an old style migration of DC’s just to be safe. If you’re determine to do a conversion (and you may have half a dozen network tools that make a migration a pain, who knows?) then make sure to shut down all non-Microsoft services before you do the conversion. Also shut down any unnecessary Microsoft services. Then also shut down the Netlogon service. I’ve done this with a DC and had a successful DC conversion.\n\nVMWare server is free and runs under the Windows OS as an application with certain limitations. ESX is the Enterprise Level virtualization app from VMware that runs on it’s own, no prior OS is needed and can only be installed on qualifying hardware. ESX has some very high-end solutions like VMotion that VMware Server and even Microsoft does not offer. I would recommend staring with VMware Server to get a feel, use VMWare converter to convert images (works awesome) and once you get a pretty good understanding download the trial for VI3 and check out ESX 3.5\n\nI love VMware Server and have used both the Windows and Linux flavors (Linux performs A LOT better, and I’m a Windows guy!) but I hate to use it as a test platform for an eventual move to VI3 (ESX). Typically the performance is so different that people get soured on virtualization and don’t even look into ESX. If you’re going down this route (and I highly suggest you do) then use VMware Server with the grain of salt that there is very little performance similarities between the free and Enterprise products. Also, VI3 is it’s own world, requiring all kinds of specialized knowledge. I wouldn’t recommend using it until you’ve done some pretty extensive research. That said you can get into VI3 pretty cheaply, either using the built in ESXi products on Dell or HP servers or ESX Foundation (which goes for about $600). VI3 Enterprise is VERY expensive, requires a SAN or NFS server to take advantage of all it’s goodness and a bit of know-how on your part. As for server imaging, I’ve only ever used Symantec Backup Exec System Recovery (BESR) and it works really well allowing you to backup live servers, incremental image backups and restore to dissimilar hardware."
+    }
+}
