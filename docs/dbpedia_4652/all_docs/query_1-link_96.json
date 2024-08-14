@@ -1,0 +1,40 @@
+{
+    "id": "dbpedia_4652_1",
+    "rank": 96,
+    "data": {
+        "url": "https://askubuntu.com/questions/138194/cant-configure-5-1-audio-with-12-04",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Can't configure 5.1 audio with 12.04",
+        "top_image": "https://cdn.sstatic.net/Sites/askubuntu/Img/apple-touch-icon@2.png?v=c492c9229955",
+        "meta_img": "https://cdn.sstatic.net/Sites/askubuntu/Img/apple-touch-icon@2.png?v=c492c9229955",
+        "images": [
+            "https://cdn.sstatic.net/Sites/askubuntu/Img/logo.svg?v=472cf2768bba",
+            "https://i.sstatic.net/zCw2D.png",
+            "https://i.sstatic.net/HZbZd.png",
+            "https://www.gravatar.com/avatar/9e7ad650fc91b5910f3ff499babbc918?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/f9bf4810c7edd54fcc267e692a9c285f?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/a40ad624fb61af1d0614069260be32e1?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/0ed9f7f093bc4915bfe51e794e846ea2?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/9e7ad650fc91b5910f3ff499babbc918?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/630412c35d2cd905895c4f34ccae2bfb?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/d39d2a813c1faf89c9ca951f06144d2b?s=64&d=identicon&r=PG",
+            "https://askubuntu.com/posts/138194/ivc/9ebb?prg=40912c90-fb2e-464f-ace1-956b959647e6"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2012-05-17T03:49:20",
+        "summary": "",
+        "meta_description": "I have an Intel ALC892 and a Nvidia GT 520m connected to speakers via HDMI. \n\nOn lspci, I see\n\n00:1b.0 Audio device: Intel Corporation N10/ICH 7 Family High Definition Audio Controller (rev 02)",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/askubuntu/Img/favicon.ico?v=928dfb7c1990",
+        "meta_site_name": "Ask Ubuntu",
+        "canonical_link": "https://askubuntu.com/questions/138194/cant-configure-5-1-audio-with-12-04",
+        "text": "I solved this by changing a couple of lines in /etc/pulse/daemon.conf First, open the file for editing:\n\nsudo gedit /etc/pulse/daemon.conf\n\nThen make sure the following line is uncommented and set to 6\n\ndefault-sample-channels = 6\n\nalso uncomment and edit the following line to yes\n\nenable-lfe-remixing = yes\n\nThis enabled 5.1 audio on my Intel soundcard in 12.04\n\nAlthough I don't have 5.1 audio, I noticed that your alsamixer screen is showing settings for your Intel ALC892 audio and your second screenshot is trying to configure the sound through your HDMI port (Nvidia GT 520m). In order to switch the controls in alsamixer to your NVidia HDMI audio you have to press F6 (as it's written in the top right corner of alsamixer).\n\nIf everything is ok with the alsamixer settings and you still can't get any sound, I would try installing the paman package- Pulse Audio Manager. After you install it, open your console and write paman as the package is not installed with an menu entry. After you start the program you'll see 5 tabs - Server Information, Devices, Clients, Modules, Sample Cache. Go to the Devices tab. You'll see a list of Sinks and Sources. You should have 2 sinks by the way, one for your analog Intel output and one for the NVidia HDMI. At this point you should start your audio/video application that uses Pulse Audio for the output and that is configured to output 5.1 volume. Play a file that has a surround sound and you'll notice that new entry appears below one of your sinks in the form of #some_number (eg. #6) . If everything is configured properly in your audio/video application, the entry will appear below your HDMI sink entry. Click on the entry and press the properties button. A new panel appears. What you are trying to do whit all this is make sure that the volume is not set at 0%. Adjust the volume manually with the slider or press reset so that it's set at 100%. Also click on properties for the HDMI sink itself and check that the volume is also set at 100%.\n\nI don't know if this will help you, but it's worth trying it. I discovered Pulse Audio Manager 2 days ago while trying to solve a problem with a muted test sound in Skype- the test call was producing audio, while the test sound was completely silent.\n\nThis is the solution that worked for me and it solved my Microphone issues as well.\n\nsudo apt-get remove --purge alsa-base sudo apt-get remove --purge pulseaudio sudo apt-get install alsa-base sudo apt-get install pulseaudio sudo apt-get install gnome-alsamixer sudo apt-get install indicator-sound sudo alsa force-reload\n\nReboot computer after this point.. you will get 5.1 surround sound. To test it type\n\nsudo speaker-test -c6\n\nOh and after you reboot if you don't hear surround sound you might need to type\n\nalsamixer\n\nand change the setting there from 2 channel ( ch2 ) to 6 channel ( ch6 ). You will even need to edit the daemon.conf file to set it there too.\n\ngksu gedit /etc/pulse/daemon.conf\n\nChange the setting of default-sample-channels = 2\n\nto : default-sample-channels = 6 ( This might be commented out with ; or #, uncomment it )\n\nYou might need to reboot a second time after you edit that file and setup the alsamixer to 6 channels.\n\nUPDATE : Keep in mind, before you reboot that second time, make sure in alsamixer that you chose the correct sound card. You can do that in alsamixer first then you can use the tiny indicator speaker from that point on after the 2nd reboot.\n\nEDIT UPDATE 2 : I reread your comments and realized just now that you are speaking about sending 5.1 over HDMI. My apologies. I should have read it closer."
+    }
+}

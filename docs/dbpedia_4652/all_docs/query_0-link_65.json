@@ -1,0 +1,40 @@
+{
+    "id": "dbpedia_4652_0",
+    "rank": 65,
+    "data": {
+        "url": "https://askubuntu.com/questions/1044615/5-1-audio-via-hdmi-only-plays-on-two-channels",
+        "read_more_link": "",
+        "language": "en",
+        "title": "5.1 audio via HDMI only plays on two channels",
+        "top_image": "https://cdn.sstatic.net/Sites/askubuntu/Img/apple-touch-icon@2.png?v=c492c9229955",
+        "meta_img": "https://cdn.sstatic.net/Sites/askubuntu/Img/apple-touch-icon@2.png?v=c492c9229955",
+        "images": [
+            "https://cdn.sstatic.net/Sites/askubuntu/Img/logo.svg?v=472cf2768bba",
+            "https://i.sstatic.net/dVHJ0.png",
+            "https://i.sstatic.net/PTt1K.png",
+            "https://i.sstatic.net/tsvlM.png",
+            "https://www.gravatar.com/avatar/fc08967598c961bd2272c9ac11522468?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/fc08967598c961bd2272c9ac11522468?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/uGuGk.jpg?s=64",
+            "https://www.gravatar.com/avatar/5c9bf914b215acd8335255d8044926b5?s=64&d=identicon&r=PG",
+            "https://askubuntu.com/posts/1044615/ivc/9ebb?prg=889803d3-4f4c-439b-8047-fb3bc05f4a0d"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Dane Powell"
+        ],
+        "publish_date": "2018-06-07T21:51:36",
+        "summary": "",
+        "meta_description": "I have my Intel NUC54250 hooked up to my TV via HDMI, and then my TV is connected to my speakers via S/PDIF. I've configured Ubuntu 16.04 to output 5.1 surround sound via HDMI. Here's the configura...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/askubuntu/Img/favicon.ico?v=928dfb7c1990",
+        "meta_site_name": "Ask Ubuntu",
+        "canonical_link": "https://askubuntu.com/questions/1044615/5-1-audio-via-hdmi-only-plays-on-two-channels",
+        "text": "Ah, I figured it out!\n\ntl;dr: the problem was the S/PDIF link between my TV and speakers, which can only carry two uncompressed audio channels.\n\nWhat triggered my understanding and a very deep dive down the rabbit hole of various incompatible drivers, audio containers/codecs, and cable types was this forum post: http://www.tomsguide.com/forum/59518-6-working-connected-hdmi-optical#561415\n\nBasically, the problem is that when I do that speaker test, Ubuntu is outputting uncompressed 5.1 audio over HDMI. My TV receives that and tries to transmit it to my speakers over S/PDIF, but S/PDIF only supports 2 channels of uncompressed audio! So, it gets downsampled to only 2 channels.\n\nI was fooled into thinking this should work because I've obviously played 5.1 audio over S/PDIF prior to this, but what I didn't realize is that it was encoded via Dolby or DTS to work over S/PDIF.\n\nIt seems like my possible solutions are:\n\nContinue to output 5.1 uncompressed audio and replace my S/PDIF cable with an HDMI cable.\n\nChange PulseAudio to output 2 channel audio and enable DTS/AC3 passthru both in PulseAudio and Kodi, as described here: Enabling 7.1 audio passthru in 14.04 for Kodi\n\nI'm not sure that either has a particular advantage. Option 2 involves fewer cables, but if I try to play a file with 5.1 channel PCM encoding (I imagine that's pretty rare) I'll be out of luck.\n\nAnother thing that wasn't obvious to me in setting up PAVU Control is that Dolby technically AC3, and Dolby Plus is EAC3."
+    }
+}
