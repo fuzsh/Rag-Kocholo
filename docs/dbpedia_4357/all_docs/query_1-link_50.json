@@ -1,0 +1,32 @@
+{
+    "id": "dbpedia_4357_1",
+    "rank": 50,
+    "data": {
+        "url": "https://github.com/jellyfin/TMDbLib/issues/482",
+        "read_more_link": "",
+        "language": "en",
+        "title": "some rudimentary tooling to deal with provider ids · Issue #482 · jellyfin/TMDbLib",
+        "top_image": "https://opengraph.githubassets.com/a38684a49cb8104286f387146eb34f7806543b301511deba81473ab0fd6b4ef7/jellyfin/TMDbLib/issues/482",
+        "meta_img": "https://opengraph.githubassets.com/a38684a49cb8104286f387146eb34f7806543b301511deba81473ab0fd6b4ef7/jellyfin/TMDbLib/issues/482",
+        "images": [
+            "https://avatars.githubusercontent.com/u/79296037?s=80&u=37707d9d3304c3c0af4d1431a0edc4983a2b8be0&v=4",
+            "https://avatars.githubusercontent.com/u/79296037?s=80&u=37707d9d3304c3c0af4d1431a0edc4983a2b8be0&v=4",
+            "https://avatars.githubusercontent.com/u/79296037?s=52&v=4"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "# these funcs are rudimentary tooling to assist you in dealing with tmdb provider ids. # there are thousands of ids provided by the https://api.themoviedb.org/3/watch/providers/{type} # endpoint and they are not organized in a way that i...",
+        "meta_lang": "en",
+        "meta_favicon": "https://github.com/fluidicon.png",
+        "meta_site_name": "GitHub",
+        "canonical_link": "https://github.com/jellyfin/TMDbLib/issues/482",
+        "text": "# these funcs are rudimentary tooling to assist you in dealing with tmdb provider ids. # there are thousands of ids provided by the https://api.themoviedb.org/3/watch/providers/{type} # endpoint and they are not organized in a way that is logically useful. This script should not # be included in your program, but used to help you make your enums. This script allows you # to define two logical types of providers. Logical platform providers such as Netflix and Amazon, # which host streaming platforms, may or may not produce content, and may or may not be a logical # content seller. A content seller is any provider which allows content they produce to be # provided by a platform provider other than their own, if they have one. # Arranging the data this way allows us to cover three main use cases. # 1) All provider ids that represent all content on all platform (includeChannels = True) # 2) All provider ids that represent all content on all platforms EXCEPT addon channels. (includeChannels = False) # 3) All provider ids that represent all content by all creators. # Getting this far should allow you to get any id groups you want quickly with list comprehensions. # createIdToNameMap function reverses the outputs of the getProviders* functions to easily # lookup a particular id # Some notable errata not handled by this code: # 1) Netflix Kids (175) is included in the Netflix group # 2) At least Crave Starz and perhaps other Crave channels do not contain the string \"channel\" # 3) \"Watchbox\" (171) hits on \"HBO.\" Remove it from the HBO group. import httpx apiKey = \"abcdefg\" logicalContentSellers = [ \"HBO\", \"IFC\", \"MotorTrend\", \"Paramount\", \"Disney\" ] logicalPlatformProviders = [ 'Amazon', 'Apple', 'Disney', 'Google', 'HBO', 'Hulu', 'Microsoft', 'Netflix', 'Sky', 'Spectrum', 'Vudu', 'YouTube', 'Paramount' ] def getProvidersByType(_type: str) -> dict: _type = _type.lower() if _type not in ['tv','movie']: raise Exception(\"Function argument must be 'tv' or 'movie'\") allTypeProvidersRequest = httpx.get( f\"https://api.themoviedb.org/3/watch/providers/{_type}?language=en-US&api_key={apiKey}\" ) if allTypeProvidersRequest.status_code != 200: raise Exception(\"TMDB API Request Failed\") allTypeProvidersRawJson = allTypeProvidersRequest.json() return { x['provider_name'].lower(): x['provider_id'] for x in sorted( allTypeProvidersRawJson['results'], key=lambda x: x['provider_id'] ) } def getProvidersAll() -> dict: output = {} for _type in [\"movie\", \"tv\"]: output.update(getProvidersByType(_type)) return dict(sorted(output.items(), key=lambda x: x[1])) def createLogicalPlatformGroups(providers: dict, includeChannels: bool = False) -> dict: # this function takes the output from getProviders funcs as an argument # it will output a dict of {providers: [ids]} # if includeChannels is true, it will include ids of channels on each platform. output = {} for platform in logicalPlatformProviders: if includeChannels and platform not in logicalContentSellers: # don't show the channels of dual members output[platform] = [ providers[x] for x in providers if platform.lower() in x.lower() ] else: output[platform] = [ providers[x] for x in providers if platform.lower() in x.lower() and \"channel\" not in x.lower() ] return output def createLogicalProviderGroups(providers: dict) -> dict: # this function takes the output from getProviders funcs as an argument # it will output a dict of {providers: [ids]} # this function is different because channels become grouped with their # content creator instead of their platforms. output = {} for platform in logicalPlatformProviders: output[platform] = [ providers[x] for x in providers if platform.lower() in x.lower() and \"channel\" not in x.lower() ] for seller in logicalContentSellers: output[seller] = [ providers[x] for x in providers if seller.lower() in x.lower() ] return output def createIdToNameMap(providers: dict) -> dict: # this function takes the output from getProviders funcs as an argument # it will output a dict like {id: name for each provider in providers} # HINT: createIdToNameMap(getProvidersAll()) output = {} for provider in providers: # we are just switching the keys and values of providers output[providers[provider]] = provider return output"
+    }
+}

@@ -1,0 +1,52 @@
+{
+    "id": "dbpedia_4356_1",
+    "rank": 48,
+    "data": {
+        "url": "https://askubuntu.com/questions/3883/how-to-recover-deleted-files",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How to recover deleted files?",
+        "top_image": "https://cdn.sstatic.net/Sites/askubuntu/Img/apple-touch-icon@2.png?v=c492c9229955",
+        "meta_img": "https://cdn.sstatic.net/Sites/askubuntu/Img/apple-touch-icon@2.png?v=c492c9229955",
+        "images": [
+            "https://cdn.sstatic.net/Sites/askubuntu/Img/logo.svg?v=472cf2768bba",
+            "https://www.gravatar.com/avatar/fe47011419fe78b6f8411e909cee9215?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/51213ff24501673da7b045187bda1cce?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/QhMRI.png?s=64",
+            "https://www.gravatar.com/avatar/14aa87d6b153f80b733e8e54c3cb014f?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/kOHF4.jpg?s=64",
+            "https://www.gravatar.com/avatar/0da039e76644e8f98357e2c33af9b142?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/014c0ed9204e721a282ad5334f641ee4?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/kOHF4.jpg?s=64",
+            "https://www.gravatar.com/avatar/3d387bff15d000b3b66fbcc03abe49e9?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/04eae9ca4f0cd89c12996c97d486df9c?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/5c049595372be0a1a22f4192b490f032?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/c6841ee722672ddaf8d0ac914d7e7686?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/3d387bff15d000b3b66fbcc03abe49e9?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/c385338bf515baf08b69dbf8491d82c9?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/0ed9f7f093bc4915bfe51e794e846ea2?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/ef9dc2280ebf56882db34449186f4453?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/a45eed5814ce90917730db0930e07119?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/a31329d796ccde64fb48d9a11212d709?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/7ab20e25e86f7e6bc08fbb15738267f0?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://askubuntu.com/posts/3883/ivc/6cf8?prg=b1e08e74-7283-4caa-85b0-3c6d81808cd4"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "NewProggie NewProggie"
+        ],
+        "publish_date": "2010-09-09T01:40:38",
+        "summary": "",
+        "meta_description": "Are there any tools, methods, incantations to recover recently deleted files on Ubuntu?\n\nIf it makes any difference, I want to recover a Keepass 2.x database file. But would be better to have a met...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/askubuntu/Img/favicon.ico?v=928dfb7c1990",
+        "meta_site_name": "Ask Ubuntu",
+        "canonical_link": "https://askubuntu.com/questions/3883/how-to-recover-deleted-files",
+        "text": "TestDisk / PhotoRec\n\nTestDisk can sometimes recover recently deleted files using PhotoRec, which is part of TestDisk. Available on official repo and newer version on their site.\n\nTestDisk is powerful free data recovery software! It was primarily designed to help recover lost partitions and/or make non-booting disks bootable again when these symptoms are caused by faulty software: certain types of viruses or human error (such as accidentally deleting a Partition Table). Partition table recovery using TestDisk is really easy.\n\nPhotoRec is part of TestDisk, and is a file data recovery software designed to recover lost files including video, documents and archives from hard disks, CD-ROMs, and lost pictures (thus the Photo Recovery name) from digital camera memory. PhotoRec ignores the file system and goes after the underlying data, so it will still work even if your media's file system has been severely damaged or reformatted.\n\nI have used foremost to recover damaged hard disk both under NTFS (windows), FAT32 (Flashcard from a Nokia phone), and ext3 with great results. Command-line only, but quite it's easy, something like this:\n\nsudo foremost -i /dev/sda -o <dir where recovered files will be stored>\n\nIt will order the recovered files on folders by file-type. Openoffice docs are recovered as zip files. As you need to execute it as root (in order to directly access the hardware), output files are also owned by root, so you will likely need to change their ownership afterward.\n\nextundelete is really great if your file system is ext3 or ext4.\n\nNote: extundelete requires you to unmount your drive to work properly (this is a good idea to do ASAP anyway, to avoid potentially overwriting the hopefully-recoverable bytes in the deleted files).\n\nUnmounting the drive on a live system can be tricky... you'll often get the 'device is busy' message. To clear this 'properly' requires shutting down all processes accessing the file system. But... you were likely working in your home directory, and a zillion processes are hooked into your home directory, so good luck with that.\n\nThe trick to getting around this is to do a 'lazy' unmount:\n\n$ mount /dev/sda7 on /home type ext4 (rw) $ sudo umount -l /home\n\nwhere:\n\nthat example is for me prepping my /home mount for use with extundelete. You obviously need to replace /home with your mount of interest\n\nI did the mount command first to figure out what device (/dev/sda7) I need to pass to extundelete (output is truncated for brevity)\n\nthat is a lower case L in the -l option\n\nR-Linux(Recovery studio) is one of the best. I have used this tool many times before. I worked at a company where they used the commercial version, 9/10 times it recovers everything you want. Truly superb application. I saved mine and my friends behind many times before.\n\nR-Linux is a free file recovery utility for the Ext2/Ext3/Ext4 FS file system used in the Linux OS and several Unixes. R-Linux uses the same InteligentScan technology as R-Studio, and flexible parameter settings to provide the fastest and most reliable file recovery for the Linux platform. However, unlike R-Studio, R-Linux cannot recover data over a network or reconstruct RAIDs, or provide object copy.\n\nFeatures (from their website):\n\nR-Linux recover files:\n\nRemoved by virus attack, power failure, or system crash;\n\nAfter the partition with the files was reformatted, damaged, or deleted;\n\nWhen the partition structure on a disk was changed or damaged. In this case, R-Linux can scan the disk trying to find previously existing partitions and restore files from found partitions.\n\nFrom disks with bad sectors. In this case, R-Linux can first copy the entire disk or its part into an image file and then process the image file. This is especially useful when new bad sectors are constantly appearing on the disk, and the remaining information must be immediately saved.\n\nR-Linux Advanced features:\n\nStandard \"Windows Explorer\" - style interface.\n\nHost OS:\n\nLinux variant: Linux, kernel 2.6 and above\n\nWindows variant: Win2000, XP, 2003, Vista, Windows 7, Windows 8\n\nSupported file systems: Ext2/Ext3/Ext4 FS (Linux) only.\n\nRecognition and parsing Dynamic (Windows 2000/XP/Vista/Win7), Basic, GPT, and BSD (UNIX) partitions layout schema and Apple partition map. Dynamic partitions over GPT are supported as well as dynamic partitions over MBR.\n\nCreates image files for an entire hard drive, logical disk, or its part. Such image files can be processed like regular disks. Images can be either simple exact object copies (Plain images) compatible with the old versions of R-Linux, or compressed images that can be compressed, split into several parts, and password-protected. Such images are fully compatible with the images created by R-Drive Image, but incompatible with the old versions of R-Linux.\n\nRecognizes localized names.\n\nRecovered files can be saved on any (including network) disks accessible by the host operating system.\n\nIf using secondary internal HD (suspect the same for external HD) for recovered file import (from main HD, where the files originally were), it’s necessary to make a directory, into which the files will be put in on secondary HD. To do it, you need to have BIOS setting for booting from CD first! 1. Start Live Ubuntu Rescue-Remix CD, give command to boot, then when it boots into terminal, check your HDs by command – Code: sudo fdisk -l\n\nRealize what HD is main, and which is secondary, and what partition to check for files and into which to recover them – linux ext3 or Windows NTFS! Mine was Linux. Have enough room on it! (Then you can try to run Photorec (“sudo photorec”) and hopefully you’ll be able to see all your HDs. I was not that lucky, so I had to make directory and mount sec. HD.)\n\nMake directory for recovered files first, e.g. – media/disk. Give command – Code: sudo mkdir /media/disk\n\nIf alright, terminal prompt simply returns.\n\nMust mount secondary HD, or it’ll be invisible, even if “sudo fdisk -l” does show it. Give command for your secondary HD – Code: sudo mount -t ext3 /dev/sdb2 /media/disk\n\nIf alright, terminal prompt simply returns.\n\nRun Photorec by command – Code:\n\nsudo photorec\n\nGo thru settings, and only choose file types that you want, otherwise you’ll have thousands of files to sift thru!\n\nFor more details you may please visit: http:/www..ubuntumanual.org/posts/357/recover-your-deleted-files-in-ubuntu\n\nRecently I used ext3grep to recover a large SQLite 3 file that was deleted from an ext3 file system.\n\nI had tried many other undelete tools, all which couldn't recover the file (from a dd image of the disk).\n\nIn order to use ext3grep, I needed to download and compile the source. Carefully reading http://www.xs4all.nl/~carlo17/howto/undelete_ext3.html from top to bottom in order to understand how the ext3 file system works and how to use the journal to find where deleted files use to be on the disk was also required.\n\nThis is not a simple solution, but very, very powerful. If you're prepared to invest a few hours to study the document and compile the program, it's well worth it."
+    }
+}
