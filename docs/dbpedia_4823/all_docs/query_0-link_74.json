@@ -1,0 +1,53 @@
+{
+    "id": "dbpedia_4823_0",
+    "rank": 74,
+    "data": {
+        "url": "https://stackoverflow.com/questions/9049460/cron-jobs-and-random-times-within-given-hours",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Cron jobs and random times, within given hours",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/61292ea4b013ef2834a28f9ff390c6fd?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/9381700500c8a97c886e85945c483a57?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/vPNR9.png?s=64",
+            "https://www.gravatar.com/avatar/58ba118a8e130dbb9b9ecb06b6a15140?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/5442575d32c25dd47165166314a16f23?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/df253c3b6533949ea94f31f328f3e769?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/9dc7655e3512eb9cf4576c1990a4f775?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/61292ea4b013ef2834a28f9ff390c6fd?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/rBkMP.png?s=64",
+            "https://www.gravatar.com/avatar/0c90c87d523ed13d98e82a66a5daf058?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/7312030c3764faaa7e64974079283b0b?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/XKvTP.png?s=64",
+            "https://i.sstatic.net/6N2jp.png?s=64",
+            "https://www.gravatar.com/avatar/bcd4de16003a4d43591145515920b0de?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/agMKZ.png?s=64",
+            "https://lh3.googleusercontent.com/a-/AOh14GgKVuOKFDGIazKjhz0X2pb7h3MJqoFoeoLdFGpnGA=k-s64",
+            "https://lh6.googleusercontent.com/-OH0qZNY40Y4/AAAAAAAAAAI/AAAAAAAABbc/xAoU3i299E0/photo.jpg?sz=64",
+            "https://www.gravatar.com/avatar/ed2540c0d2c2c30c82a54fca7eed3d11?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://lh3.googleusercontent.com/-cA0O7OcK4tA/AAAAAAAAAAI/AAAAAAAAAAA/AKxrwcbJ6odpNh15Ibg0YbEPNE8FUQB-BA/mo/photo.jpg?sz=64",
+            "https://www.gravatar.com/avatar/fb158d2c21cd4d7969bdf740dbdf6eb4?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/cb0388d1c21590c716f03bed19bd36be?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/lim2b.jpg?s=64",
+            "https://stackoverflow.com/posts/9049460/ivc/693b?prg=68197219-043f-4c34-bd96-dc3fdea534cb",
+            "https://stackoverflow.com/js-false.gif"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2012-01-28T23:15:16",
+        "summary": "",
+        "meta_description": "I need the ability to run a PHP script 20 times a day at completely random times. I also want it to run only between 9am - 11pm.\n\nI'm familiar with creating cron jobs in linux.",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/9049460/cron-jobs-and-random-times-within-given-hours",
+        "text": "How to cron something at a random offset 20 times a day between 9am and 11pm? That's kinda tricky within cron, because you are dividing 14 hours by 20 execution times. I don't like the other answers very much because they require writing a bash wrapper script for your php script.\n\nHowever, if you'll allow me the liberty to ease the timing and frequency restriction to 13 times between 8:30am and 11:09pm, this might do the trick, and all within the confines of your crontab:\n\n30 8-21/* * * * sleep ${RANDOM:0:2}m ; /path/to/script.php\n\n${RANDOM:3:2} uses bash's $RANDOM that other people have mentioned above, but adds bash array slicing. Since bash variables are untyped, the pseudo-random signed 16-bit number gets truncated to the first 2 of its 5 decimal digits, giving you a succinct one-liner for delaying your cronjob between 10 and 99 minutes (though the distribution is biased towards 10 to 32).\n\nThe following might also work for you, but I found it do be \"less random\" for some reason (perhaps Benford's Law is triggered by modulating pseudo-random numbers. Hey, I don't know, I flunked math... Blame it on bash!):\n\n30 8-21/* * * * sleep $[RANDOM\\%90]m ; /path/to/script.php\n\nYou need to render modulus as '%' above because cron (well, at least Linux 'vixie-cron') terminates the line when it encounters an unescaped '%'.\n\nMaybe you could get the remaining 7 script executions in there by adding another line with another 7-hour range. Or relax your restriction to run between 3am and 11pm.\n\nIf I understand what you're looking for, you'll need to do something a bit messy, like having a cron job that runs a bash script that randomizes the run times... Something like this:\n\ncrontab:\n\n0 9 * * * /path/to/bashscript\n\nand in /path/to/bashscript:\n\n#!/bin/bash maxdelay=$((14*60)) # 14 hours from 9am to 11pm, converted to minutes for ((i=1; i<=20; i++)); do delay=$(($RANDOM%maxdelay)) # pick an independent random delay for each of the 20 runs (sleep $((delay*60)); /path/to/phpscript.php) & # background a subshell to wait, then run the php script done\n\nA few notes: this approach it a little wasteful of resources, as it fires off 20 background processes at 9am, each of which waits around for a random number of minutes (up to 14 hours, i.e. 11pm), then launches the php script and exits. Also, since it uses a random number of minutes (not seconds), the start times aren't quite as random as they could be. But $RANDOM only goes up to 32,767, and there are 50,400 seconds between 9am and 11pm, it'd be a little more complicated to randomize the seconds as well. Finally, since the start times are random and independent of each other, it's possible (but not very likely) that two or more instances of the script will be started simultaneously.\n\nat -f [file] [timespec]\n\nor\n\necho [command] | at [timespec]\n\nor\n\nat [timespec] ... and interactive specification like script's recording.\n\nCommand\n\nAt runs the text provide on stdin or in the file specified by -f [file].\n\nTimespec\n\nHere's the [timespec] grammar. It can be something like:\n\n24-hour time as 4-digit int, e.g. 0100, 2359, 1620\n\nnow + 10 minutes\n\n2071-05-31 - 5 hours 12 minutes UTC\n\nIf you're explicitly specifying the timezone, some versions of the timespec might only allow UTC for the optional timezone argument.\n\nExample\n\ncat script.sh | at now + $(($RANDOM % 10)) hours $(($RANDOM % 60)) minutes\n\nat -f script.sh now + $(($RANDOM % 10)) hours $(($RANDOM % 60)) minutes\n\nTry it out...\n\nYou can test the bash parsing by pre-pending echo and escaping the | (pipe).\n\necho cat script.sh \\| at now + $(($RANDOM % 10)) hours $(($RANDOM % 60)) minutes\n\necho at -f script.sh now + $(($RANDOM % 10)) hours $(($RANDOM % 60)) minutes\n\nTo see jobs scheduled, use atq and job contents (environment vars, setup, and command/script) with at -c [jobid].\n\nNote\n\nThe system is part of cron, and the interactive prompt actually captures the whole current state of your shell, so you can run commands without specifying absolute paths."
+    }
+}
