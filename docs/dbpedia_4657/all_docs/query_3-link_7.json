@@ -1,0 +1,36 @@
+{
+    "id": "dbpedia_4657_3",
+    "rank": 7,
+    "data": {
+        "url": "https://gamedev.stackexchange.com/questions/11642/game-object-design",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Game Object Design",
+        "top_image": "https://cdn.sstatic.net/Sites/gamedev/Img/apple-touch-icon@2.png?v=9bca23db2259",
+        "meta_img": "https://cdn.sstatic.net/Sites/gamedev/Img/apple-touch-icon@2.png?v=9bca23db2259",
+        "images": [
+            "https://cdn.sstatic.net/Sites/gamedev/Img/logo.svg?v=c61a0bba5264",
+            "https://www.gravatar.com/avatar/16d54b13e38ddacfb6140ecd0f07d036?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/a007be5a61f6aa8f3e85ae2fc18dd66e?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/80d284e717d5720063a38d8e49739c87?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/11e9aa2bdecec9533c4842d9ee3b4ed7?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/d240967f123c8b570ecfef7fb42fbb22?s=64&d=identicon&r=PG",
+            "https://gamedev.stackexchange.com/posts/11642/ivc/5cfa?prg=bafbac0e-a4c0-4e02-a298-5b9a9b58d326"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2011-04-26T04:00:10",
+        "summary": "",
+        "meta_description": "I'm having a problem with the way I designed my first simple game in C++.\n\nI have GameObject (abstract class) and ObjectA which inherits the update() and draw() methods from GameObject.\n\nMy main loop",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/gamedev/Img/favicon.ico?v=7d1a3cf2e788",
+        "meta_site_name": "Game Development Stack Exchange",
+        "canonical_link": "https://gamedev.stackexchange.com/questions/11642/game-object-design",
+        "text": "First off, don't use linked lists.\n\nSecond, your design should work, in theory. For the dying problem, an easy solution is to just have some kind of flag on your GameObject class that says whether or not the object is dead. Just set it in your concrete classes' update method when appropriate. Then after all of your updates are complete, remove the dead objects from the object list.\n\nSo in theory something like this (excuse my C++ it's been a while):\n\nfor_each( m_allEntites.begin(), m_allEntites.end(), mem_fun( &GameObject::update ) ); remove_if( m_allEntites.begin(), m_allEntites.end(), mem_fun( &GameObject::isDead ) ); for_each( m_allEntites.begin(), m_allEntites.end(), mem_fun( &GameObject::draw ) );\n\nThird, for your \"new game objects\" problem. What you want to do is use new on the ObjectA objects you create. If you can't modify the list while you're iterating over it, an easy solution is to create a temporary list (or vector, whatever) with the new objects you've created. Then when you're done with update, add the new objects to the list of all objects. A naive solution would just be that all GameObjects know about the class that contains them, but I wouldn't worry about the coupling that imposes at this point in time until you figure out the basics. So in your class that contains the list of all objects, and modifying the above structure, you can do something like this:\n\nfor_each( m_allEntites.begin(), m_allEntites.end(), mem_fun( &GameObject::update ) ); m_allEntites.insert( m_allEntities.end(), m_newEntities.begin(), m_newEntites.end() ); m_newEntites.clear(); remove_if( m_allEntites.begin(), m_allEntites.end(), mem_fun( &GameObject::isDead ) ); for_each( m_allEntites.begin(), m_allEntites.end(), mem_fun( &GameObject::draw ) );\n\nEdit: Just realized previous code would leak dead objects. I'm used to using ptr_vector instead of standard vector to maintain strict ownership rules. Using a standard vector you'd want to iterate over the list and delete dead objects. A common pattern I've used in the past was to also set their pointer to null then do a remove_if on null objects. Or you could do something fancy and keep GameObjects around in a bucket pattern to avoid allocations if that's the route you wanted to go down.\n\nActually why not use a vectors standard methods to add and remove objects? Basically its just an array of pointers to objects and when an object needs to die you simply remove it and the vector will decrease its size automatically. The nice thing is that you have a base class \"Object\" lets say and it doesnt matter to the vector what the derived types are as long as they are inherited from Object. This allows you to call update() draw() regardless of the objects type.\n\nstd::vector<Object *> objects; // Your list of pointers to objects\n\nWhen one needs to die:\n\nvoid ObjectManager::destroy(Object *o) { for(int i=0; i<objects.size(); i++) { if(objects[i] == o) { objects[i]->destroy(); // Define virtual method destroy delete objects[i]; // Delete the pointer (create with new) objects.erase(objects.begin() + i); // Erase from vector! return; } } }\n\nI hope this helps (albeit a year late lol). The destroy method is a good idea because derived classes wont have their destructors called when called through a base class pointer like this unless you define the destructors as virtual. Having default constructors should be fine depending on how you designed your objects but you could use an init() function as well that is virtual."
+    }
+}
