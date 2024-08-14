@@ -1,0 +1,33 @@
+{
+    "id": "dbpedia_4768_3",
+    "rank": 15,
+    "data": {
+        "url": "https://craftofcoding.wordpress.com/2017/04/29/the-evolution-of-if-i-from-fortran-i-to-algol-60/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "The evolution of if (i): pre-Fortran to Algol 60",
+        "top_image": "https://craftofcoding.wordpress.com/wp-content/uploads/2017/04/firstif.jpg",
+        "meta_img": "https://craftofcoding.wordpress.com/wp-content/uploads/2017/04/firstif.jpg",
+        "images": [
+            "https://craftofcoding.wordpress.com/wp-content/uploads/2017/04/firstif.jpg?w=1200",
+            "https://s2.wp.com/i/logo/wpcom-gray-white.png",
+            "https://s2.wp.com/i/logo/wpcom-gray-white.png",
+            "https://pixel.wp.com/b.gif?v=noscript"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2017-04-29T00:00:00",
+        "summary": "",
+        "meta_description": "Arguably one of the most important control structures to evolve is \"if\". Without it, programs couldn't make any sort of decisions. Few algorithmic languages, apart from Plankalkül (1948), contained conditional statements. Plankalkül formed conditional statements with the help of a symbol which was an arrow with a period above it, which was used in the following…",
+        "meta_lang": "en",
+        "meta_favicon": "https://s1.wp.com/i/favicon.ico",
+        "meta_site_name": "The Craft of Coding",
+        "canonical_link": "https://craftofcoding.wordpress.com/2017/04/29/the-evolution-of-if-i-from-fortran-i-to-algol-60/",
+        "text": "Arguably one of the most important control structures to evolve is “if“. Without it, programs couldn’t make any sort of decisions.\n\nFew algorithmic languages, apart from Plankalkül (1948), contained conditional statements. Plankalkül formed conditional statements with the help of a symbol which was an arrow with a period above it, which was used in the following manner:\n\nThe left side of the statement, B, signifies the condition (Bedingung) and is an expression with a boolean value, and the right side, a, is an arbitrary statement. If B evaluates to 0 (nein), then the statement ends here, otherwise if B is 1 (ja), then the statement continues with a. There is no “else” statement. Heinz Rutishauser’s Superplan (1949-1951), did not have a decision statement.\n\nDecision statements in programming languages are intrinsically linked to branch instructions in assembler. The first language to use something akin to the modern form of the if statement was likely Fortran I which used an if statement as a form of three-way goto statement.\n\nIF (E) L1, L2, L3\n\nThe expression, E is evaluated and one of the alternative paths of L1, L2, and L3 is chosen based on whether E is negative, zero or positive. This became known as the arithmetic if. This could be used to derive a three-way decision statement of the form:\n\nIF (X-Y) 10, 10, 30 10 MAXNUM = Y GO TO 20 30 MAXNUM = X 20 ...\n\nThis says that if X-Y is less than or equal to zero, then the maximum is Y, otherwise the maximum is X. This made sense in the context of unstructured jumps using go to. This allowed for a very limited decision structure, where the expression always had to be expressed in terms of some numeric output.\n\nIn 1957-58 John McCarthy, developer of Lisp, was writing a series of routines for legal chess moves in Fortran which prompted him to invent conditional expressions. He found the arithmetic if construct from Fortran I and II “awkward to use” [McCarthy81], and found it more natural to invent a Fortran function XIF(M,N1,N2) whose value was N1 or N2 based on whether M was zero or not (it was written in machine language). The function was likely not that efficient, as it required all three arguments to be evaluated before XIF() was entered. In Lisp, the conditional took the form of the cond function:\n\n(cond (condition1 result1) (condition2 result2) ... (T resultN))\n\nLater a more “traditional” like conditional operator was included into the specifications for Lisp, and appeared as follows:\n\nX = IF (N .EQ. 0, ICAR(Y), ICDR(Y))\n\nMcCarthy suggested the use of this concept in Algol 58 when he was a member of the Algol committee. In the Algol 58 preliminary report the if statement took the form:\n\nif (a>0); c:=a↑2↓×b↑2↓ if (a<0); c:=a↑2↓+b↑2↓ if (a=0); go to bed\n\nAlgol 58 did not really progress much, and was superseded by Algol 60. Algol 60 added the keyword then, to separate the logical expression from the statement to be executed. many considered this if-then combination to make the statement more readable. The Algol statement was also extended to include an “else” part. Here is an example of an if-then-else in Algol 60.\n\nif x > 0 then pos := pos + 1 else negzero := negzero + 1\n\nThis lead to the ambiguity we know today as the “dangling-else”. Whereas a statement such as:\n\nif x=0 then if y=0 then m:=m+1\n\nis not ambiguous, the following statement could be:\n\nif x=0 then if y=0 then m:=m+1 else n:=n-1\n\nIs 1 to be subtracted from n when x is non-zero, whatever the value of y, OR when x is zero but y is not? A conundrum.\n\nTo further add to the structural space, these if statements were constrained to the control of a single statement, which limited their usefulness. Algol 60 dealt with this through the use of the compound statement it had introduced using the keywords begin and end. For example, a piece of code to swap two numbers if x < y:\n\nif x<y then begin dummy:=x; x:=y; y:=dummy end\n\nOr, written in a more readable manner (many early languages crammed as much as they could on one line – blame punch-cards):\n\nif x<y then begin dummy:=x; x:=y; y:=dummy end\n\nThis structure could also be used to reduce the dangling-else problem:\n\nif x=0 then begin if y=0 then m:=m+1 else n:=n-1 end\n\nREF(S):\n\n[McCarthy81] McCarthy, J., “LISP Session”, History of Programming Languages, pp.173-197, ACM (1981)"
+    }
+}

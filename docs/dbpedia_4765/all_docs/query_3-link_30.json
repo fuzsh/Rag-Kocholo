@@ -1,0 +1,38 @@
+{
+    "id": "dbpedia_4765_3",
+    "rank": 30,
+    "data": {
+        "url": "https://stackoverflow.com/questions/1194630/should-i-use-crc-16-or-ip-checksum-rfc1071-for-an-embedded-application",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Should I use CRC-16 or IP checksum (RFC1071) for an embedded application?",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://i.sstatic.net/tGVIt.jpg?s=64",
+            "https://www.gravatar.com/avatar/b9106901e4706c95c5d0c8dc680f0a19?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/da582d6fbfa2ae515004ef49fcb7c281?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/dd5a7ef1476fb01998a215b1642dfd07?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/8576ec7c77c72dfa19e34187afae710c?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/54f226385450ee11f20bd512d15e3888?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/135a97c4150691234931a93f3a27a52f?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/1194630/ivc/acfa?prg=4c34a10b-9d87-4c2a-aa47-51972b374dce",
+            "https://stackoverflow.com/js-false.gif"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2009-07-28T14:49:02",
+        "summary": "",
+        "meta_description": "I'm writing an embedded application on an ARM7 processor and I need some form of checksum for data that I'm sending over a serial link as well for data that I'm storing in the flash.  I was wondering",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/1194630/should-i-use-crc-16-or-ip-checksum-rfc1071-for-an-embedded-application",
+        "text": "RFC1071 is a simple 16-bit sum of pairs of bytes. As such, it's possible that two errors could \"cancel out\", and still give a \"pass\" checksum. E.g. a bit error flips a bit from 1 to 0. Then another bit error 16 bits later flips a bit from 0 to 1. RFC1071 will not detect this. But the same double-bit-flip error, if being checked with a CRC, would be detected.\n\nThis sort of double-bit-flip error is possible in a serial transmission. (It is much more likely on a parallel cable especially if one wire is \"noisy\" but who uses parallel these days?) It's also possible in a Flash chip, especially if the PCB has a bad solder joint between micro and Flash chip. Overall, a CRC is statistically more robust at detecting errors because a single bit change in the input affects multiple bits in the CRC shift register.\n\nIn practice the other thing that's likely, that you want to detect, is an incomplete Flash upload, so a large chunk of the code is simply missing. For that, statistically a checksum is probably fine but I've always favoured a CRC in projects I've worked on. With a table-based CRC algorithm, we've been able to get the calculation speeds required.\n\nTake the best checksum you can afford in the situation. Flashing might not be done often, so the flash-checksum can be more sophisticated than the one for the serial communication.\n\nAdditional checksums I have in mind:\n\nCRC32\n\nMD5\n\nSHA1\n\nbut this depends entirely on the application you are doing and the harm that can be done if you don't detect an error.\n\nTake a look here for more input: http://en.wikipedia.org/wiki/List_of_checksum_algorithms"
+    }
+}

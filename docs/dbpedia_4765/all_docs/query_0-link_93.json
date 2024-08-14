@@ -1,0 +1,28 @@
+{
+    "id": "dbpedia_4765_0",
+    "rank": 93,
+    "data": {
+        "url": "https://www.ngiam.net/NRIC/outlinee.htm",
+        "read_more_link": "",
+        "language": "en",
+        "title": "",
+        "top_image": "",
+        "meta_img": "",
+        "images": [],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "",
+        "meta_favicon": "",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "Fun with numbers\n\nNgiam Shih Tung\n\nDecember 22, 2003\n\nBreaking the NRIC check digit algorithm\n\nIntroduction\n\nThe algorithm for computing the check digit for Singapore identity card numbers is unpublished\n\nAlgorithm is partially described in various open sources\n\nObjective of this exercise is to elucidate the complete algorithm from internet resources and virtual experimentation\n\nUIN/FIN structure\n\nThe National Registration Identity Card (NRIC) number is the Unique Identification Number (UIN) or Foreigner Identification Number (FIN)\n\nCentury prefix\n\nS, T - 19th and 20th letters of alphabet for UINs issued in 19xx and 20xx respectively\n\nF, G - Foreigners (not 7th and 8th century !)\n\nCheck digit (official reference)\n\nComputed from first eight characters of UIN/FIN\n\nDetects data entry errors\n\nHow do we calculate this ?\n\nUIN/FIN algorithm\n\nGovernment will release UIN/FIN algorithm for computing check digit, BUT\n\nApplication is open ONLY to Singapore-based organisations with the legitimate need for the UIN/FIN validation.\n\nYour application is subject to our final approval and our decision shall be final\n\nLicense agreement requires:\n\nThe Licensee agrees to take all reasonable steps to protect the Licensed Material from unauthorised copying, adaptation or use.\n\nLicense fee\n\nAlgorithm $200\n\nSample code $400\n\nSource: ICA website (http://app.ica.gov.sg/related_links/uin_fin/unifin_faq.asp)\n\nIP AnalysisCan the government really prohibit unauthorised use ?\n\nCopyright\n\nSource code is subject to copyright\n\nAlgorithms are not subject to copyright\n\nPatent\n\nAlgorithms are patentable, but\n\nPatent must be published\n\nPrior art probably exists in this case\n\nPatent, if any is long expired (> 20 yrs)\n\nTrade Secret\n\nMay be protectable under the license agreement\n\nBUT, no secret if the information is already publicly available or obtained via a different route\n\nModulo 11 checksum\n\nAlgorithm for S-series (old-style) NRIC numbers is well-known*\n\nd = [(d1 d2 d3 d4 d5 d6 d7)  (2 7 6 5 4 3 2 )] mod 11\n\n= ( 2d1 + 7d2 + 6d3 + 5d4 + 4d5 + 3d6 + 2d7 ) mod 11\n\nLookup d:\n\nWeights\n\n7-digit NRIC number\n\nDoes this work for F, G, T-prefix UIN/FINs ?\n\n* e.g. soc.culture.singapore newgroup postings (1995)\n\n1\n\nReverse Engineering the FIN algorithm\n\nFind a large set of FINs then reverse engineer the check digits to determine weights and mapping of checksum to letters\n\nMOM publishes a list of Registered Safety Officers on its website\n\n48 out of 1,287 Safety officers are foreigners with FINs\n\nBy inspection, same algorithm and same weights are used but with different check letters:\n\nFINs extracted from MOM website\n\nChecksums calculated using formula\n\n1\n\n21st century UINs - T & G prefix\n\nDifficult to obtain large list of T-and G-series UINs\n\nChildren born and foreigners registered during or after 2000\n\nSolution: Use a brute force approach and rely on the National Library web interface to check accuracy of guess\n\nVirtual ExperimentVerifying UIN/FIN check digits\n\nEnter Test UIN/FIN\n\nGuess check digit (letter)\n\ncorresponding to IC number\n\nGuess incorrect\n\nGuess correct !\n\nEnter any name / birth month\n\nNLB Online Services\n\nor\n\n21st century UIN/FIN check digit\n\nBy exhaustive search, we conclude for T-prefix UINs\n\nSame weighting factors and modulo 11 algorithm is used but\n\nMapping of check digits is shifted 4 places\n\nSimilar shift is observed for G-prefix FINs\n\nShift 4 places\n\nShift 4 places\n\nUniversal UIN/FIN Check Digit Algorithm\n\nFor any UIN/FIN of format\n\nP d1d2d3d4d5d6d7 C where P = Century prefix {S, T, F or G}\n\ndi = Number, i = 1..7\n\nC = Check Digit (letter)\n\nd = { d0 + [(d1 d2 d3 d4 d5 d6 d7)  (2 7 6 5 4 3 2 )] } mod 11\n\nd0 = 0 for P = S or F\n\n= 4 for P = T or G\n\nCheck digit is determined by prefix and value of d\n\nReferences\n\nUIN algorithm described in chapter 3 of course notes for NUS Coding Theory course (http://www.math.nus.edu.sg/~ma3218)\n\nS & T prefix algorithm confirmed\n\nNo known public references to F, G-prefix FIN algorithm\n\nOther checksum implementations\n\nHong Kong Identity Card\n\nHKID uses numerical check digit, e.g. B255241(3)\n\nCheck digit given by modulo 11 checksum with weights (8, 7, 6, 5, 4, 3, 2) where letter prefix is converted to number A=1, B=2, etc.\n\nUse X if remainder is 10\n\nInternational Standard Book Number (ISBN)\n\nISBN is 9 digit number with check digit given by modulo 11 checksum\n\nWeights (1, 2, 3, 4, 5, 6, 7, 8, 9)\n\nUse X if remainder is 10\n\nhttp://www.ghs.edu.hk/webtec/lindacws/CS/notes/theory/Data%20Control.pdf\n\nhttp://en.wikipedia.org/wiki/ISBN\n\nPoints to Ponder\n\nWhy modulo 11 ?\n\nFor numerical check digit, using modulo 11 allows checksum to be written as single digit (10 = X)\n\nFor alphabetic check digit, modulo 26 is more likely to detect errors\n\nWhy weights (2, 7, 6, 5, 4, 3, 2) ?\n\nIs there an optimal weighting scheme (compare to HKID, ISBN weighting factors) ?\n\nWhy ABCDEFGHIZJ for S-prefix UINs ?"
+    }
+}

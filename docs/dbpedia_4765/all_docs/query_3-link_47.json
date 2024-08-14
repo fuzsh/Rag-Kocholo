@@ -1,0 +1,43 @@
+{
+    "id": "dbpedia_4765_3",
+    "rank": 47,
+    "data": {
+        "url": "https://softwareengineering.stackexchange.com/questions/96211/what-is-a-faster-alternative-to-a-crc",
+        "read_more_link": "",
+        "language": "en",
+        "title": "What is a faster alternative to a CRC?",
+        "top_image": "https://cdn.sstatic.net/Sites/softwareengineering/Img/apple-touch-icon@2.png?v=1ef7363febba",
+        "meta_img": "https://cdn.sstatic.net/Sites/softwareengineering/Img/apple-touch-icon@2.png?v=1ef7363febba",
+        "images": [
+            "https://cdn.sstatic.net/Sites/softwareengineering/Img/logo.svg?v=e86f7d5306ae",
+            "https://www.gravatar.com/avatar/5b2c32394549cbfe730a2aa0dbc56486?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/4sdGf.png?s=64",
+            "https://i.sstatic.net/4sdGf.png?s=64",
+            "https://i.sstatic.net/4Nkc0.jpg?s=64",
+            "https://www.gravatar.com/avatar/0e41f852c5c471370a0d08ba8dc1c032?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/22e6b394507541a710de929823a93b08?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/a007be5a61f6aa8f3e85ae2fc18dd66e?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/1cd45919ed4f213ecff295cbfbd2ba9a?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/fcce03e637c52ecf0bd7fe0ae43826da?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/UNGHL.png?s=64",
+            "https://www.gravatar.com/avatar/c2e8ccb45261eff4a7085eac3a52e727?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/5NfT0.png?s=64",
+            "https://softwareengineering.stackexchange.com/posts/96211/ivc/acfa?prg=8effd4de-91e1-48fb-a9c6-c0828db0d9db"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2011-07-26T21:39:27",
+        "summary": "",
+        "meta_description": "I'm doing some data transmission from a dsPIC to a PC and I'm doing an 8-bit CRC to every block of 512 bytes to make sure there are no errors. With my CRC code enabled I get about 33KB/s, without i...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/softwareengineering/Img/favicon.ico?v=c4f35a1e3900",
+        "meta_site_name": "Software Engineering Stack Exchange",
+        "canonical_link": "https://softwareengineering.stackexchange.com/questions/96211/what-is-a-faster-alternative-to-a-crc",
+        "text": "While there may be faster options than CRC, such as Fletcher, if you use them then you are likely to end up sacrificing some degree of error detection capability. Depending on what your performance and error detection requirements are, an alternative may be to use CRC code optimised to your application instead.\n\nFor a comparison of CRC with other options, see the excellent answer by Martin Thompson.\n\nOne option to help with this is pycrc which is a tool (written in python1) which can generate C source code for dozens of combinations of crc model and algorithm. This allows you to optimise speed and size for your own application by selecting and benchmarking different combinations. 1: Requires Python 2.6 or later.\n\nIt supports the crc-8 model, but also supports crc-5, crc-16 and crc-32 amongst others. As for algorithms, it supports bit-by-bit, bit-by-bit-fast and table-driven.\n\nFor example (downloading the archive):\n\n$ wget --quiet http://sourceforge.net/projects/pycrc/files/pycrc/pycrc-0.8/pycrc-0.8.tar.gz/download $ tar -xf pycrc-0.8.tar.gz $ cd pycrc-0.8 $ ./pycrc.py --model=crc-8 --algorithm=bit-by-bit --generate c -o crc8-byb.c $ ./pycrc.py --model=crc-8 --algorithm=bit-by-bit-fast --generate c -o crc8-bybf.c $ ./pycrc.py --model=crc-8 --algorithm=table-driven --generate c -o crc8-table.c $ ./pycrc.py --model=crc-16 --algorithm=table-driven --generate c -o crc16-table.c $ wc *.c 72 256 1790 crc8-byb.c 54 190 1392 crc8-bybf.c 66 433 2966 crc8-table.c 101 515 4094 crc16-table.c 293 1394 10242 total\n\nYou can even do funky things like specify using dual nibble lookups (with a 16 byte look-up table) rather than single byte look-up, with 256 byte look-up table.\n\nFor example (cloning the git repository):\n\n$ git clone http://github.com/tpircher/pycrc.git $ cd pycrc $ git branch * master $ git describe v0.8-3-g7a041cd $ ./pycrc.py --model=crc-8 --algorithm=table-driven --table-idx-width=4 --generate c -o crc8-table4.c $ wc crc8-table4.c 53 211 1562 crc8-table4.c\n\nGiven your memory and speed constraints, this option may well be the best compromise between speed and code size. The only way to be sure would be to benchmark it though.\n\nThe pycrc git repository is on github, as is its issue tracker, but it can also be downloaded from sourceforge.\n\nWell the checksum logic itself is good and people can help with faster algorithms.\n\nIf you want to improve the speed of your component, you might need to look at changing your overall technique to seperate out the transfer component from the validation component.\n\nIf you have these as two independant items (on different threads) then you can get your full speed of transfer and only resend failed packets.\n\nAlgorithm would look something like:\n\nServer breaks up into known packet sizes (say 1K chunks). Puts them in a queue of \"to be sent\".\n\nEach packet is sent over with a 16 or 32 bit ID AND its checksum.\n\nThe client receives each packet and puts it in a queue to be processed.\n\nOn a seperate thread the client takes of a packet at a time, does the validation.\n\nOn success it adds it to the final collection of packetss (in ID order) being\n\nOn a fail it reports the failed ID back to the server, which queues up that packet to be resent.\n\nOnce you have recieved and validated the packets and you have the IDs in the correct sequnce (starting at 1) you can start writing these to disk (or do what ever is required).\n\nThis will let you trasmit at the highest possible speed and if you play with your packet size you can work out the optimium fail rate VS validate/resend rate.\n\nMany people think Adler32 is a very fast checksum because it is a simple one but that is only partly true. Adler32 is certainly faster than CRC32 but some hash functons are even faster, like Murmur3F or FNVJ32/FHVJ64. See this comparison chart. And hash functions can also be used for checksumming.\n\nAnd not only are certain checksums faster, at the same time they produce way better results than Adler32, even better than CRC. See this answer to a similar question on Software Engineering. The more random the outcome, the less likely two different blocks of data will result in the same checksum and the better the bits are evenly distributed in the final checksum result (this is important if you plan to truncate the result).\n\nMeanwhile even much faster alternatives exist. Please checkout this answer on Stack Overflow. The fastest hash probably available that is also a very good one, is XXH3 but it can only be implemented that fast on CPUs with SSE2 support. The crazy thing is: It is faster than a plain memory copy. Of course, only if the data is already in the CPU cache (everything else would be magic).\n\nSo plenty of better alternatives exist, the question is only, which of these can be implemented on the dsPIC side and will it still be faster when implemented there? As many alternatives are not fast in general, they are fast because they are optimized for the way how modern desktop/server CPUs are processing data."
+    }
+}

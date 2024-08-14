@@ -1,0 +1,32 @@
+{
+    "id": "dbpedia_4766_3",
+    "rank": 65,
+    "data": {
+        "url": "https://stackoverflow.com/questions/45420539/is-there-some-sort-of-universal-id-for-spotify-tracks-in-their-api",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Is there some sort of universal ID for spotify tracks in their API?",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/8d35d6625b3ca82a1066d59e3806370b?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/b14a131cbb31eea7ae6c810a2f8c6887?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/45420539/ivc/acfa?prg=7d4587f7-9bf1-4aff-9492-5c6f583bd818"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2017-07-31T16:02:57",
+        "summary": "",
+        "meta_description": "I'm looking for some sort of universal identifier in the Spotify API for each track. So for instance if I fetch the track \"Thriller\" by Michael Jackson, I would get all the track info and Spotify's...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/45420539/is-there-some-sort-of-universal-id-for-spotify-tracks-in-their-api",
+        "text": "What you want doesn't really exist, but there is an identifier that is called ISRC, which is probably very close to what you ask for.\n\nhttps://en.wikipedia.org/wiki/International_Standard_Recording_Code\n\nThis Spotify track with the uri spotify:track:2LlQb7Uoj1kKyGhlkBf9aC is Thriller by Michael Jackson. The ISRC code for that track is USSM19902989, which you can find in the Web API:\n\n$ curl -s -X GET \"https://api.spotify.com/v1/tracks/2LlQb7Uoj1kKyGhlkBf9aC\" \\ -H \"Accept: application/json\" \\ -H \"Authorization: Bearer <INSERT ACCESS TOKEN>\" \\ | jq -r .external_ids.isrc USSM19902989\n\nYoy can use this identifier to find Thriller by Michael Jackson in Spotify (or other services).\n\n$ curl -s -X GET \"https://api.spotify.com/v1/search?q=isrc%3AUSSM19902989&type=track\" \\ -H \"Accept: application/json\" \\ -H \"Authorization: Bearer <INSERT ACCESS TOKEN>\" \\ | jq -c '.tracks.items[] | {uri, name, album: .album.name, available_markets}' {\"uri\":\"spotify:track:1D9KEXIrlmPUkMTdYzqgX4\",\"name\":\"Thriller\",\"album\":\"Michael Jackson's This Is It\",\"available_markets\":[\"AD\",\"AR\",\"AT\",\"AU\",\"BE\",\"BG\",\"BO\",\"BR\",\"CA\",\"CH\",\"CL\",\"CO\",\"CR\",\"CY\",\"CZ\",\"DE\",\"DK\",\"DO\",\"EC\",\"EE\",\"ES\",\"FI\",\"FR\",\"GB\",\"GR\",\"GT\",\"HK\",\"HN\",\"HU\",\"ID\",\"IE\",\"IS\",\"IT\",\"JP\",\"LI\",\"LT\",\"LU\",\"LV\",\"MC\",\"MT\",\"MX\",\"MY\",\"NI\",\"NL\",\"NO\",\"NZ\",\"PA\",\"PE\",\"PH\",\"PL\",\"PT\",\"PY\",\"SE\",\"SG\",\"SK\",\"SV\",\"TR\",\"TW\",\"US\",\"UY\"]} {\"uri\":\"spotify:track:3S2R0EVwBSAVMd5UMgKTL0\",\"name\":\"Thriller\",\"album\":\"Thriller 25 Super Deluxe Edition\",\"available_markets\":[\"AD\",\"AR\",\"AT\",\"AU\",\"BE\",\"BG\",\"BO\",\"BR\",\"CA\",\"CH\",\"CL\",\"CO\",\"CR\",\"CY\",\"CZ\",\"DE\",\"DK\",\"DO\",\"EC\",\"EE\",\"ES\",\"FI\",\"FR\",\"GB\",\"GR\",\"GT\",\"HK\",\"HN\",\"HU\",\"ID\",\"IE\",\"IS\",\"IT\",\"JP\",\"LI\",\"LT\",\"LU\",\"LV\",\"MC\",\"MT\",\"MX\",\"MY\",\"NI\",\"NL\",\"NO\",\"NZ\",\"PA\",\"PE\",\"PH\",\"PL\",\"PT\",\"PY\",\"SE\",\"SG\",\"SK\",\"SV\",\"TR\",\"TW\",\"US\",\"UY\"]} {\"uri\":\"spotify:track:2LlQb7Uoj1kKyGhlkBf9aC\",\"name\":\"Thriller\",\"album\":\"Thriller\",\"available_markets\":[\"AD\",\"AR\",\"AU\",\"BE\",\"BG\",\"BO\",\"BR\",\"CA\",\"CL\",\"CO\",\"CR\",\"CY\",\"CZ\",\"DK\",\"DO\",\"EC\",\"EE\",\"ES\",\"FI\",\"FR\",\"GB\",\"GR\",\"GT\",\"HK\",\"HN\",\"HU\",\"ID\",\"IE\",\"IS\",\"IT\",\"JP\",\"LT\",\"LU\",\"LV\",\"MC\",\"MT\",\"MX\",\"MY\",\"NI\",\"NL\",\"NO\",\"NZ\",\"PA\",\"PE\",\"PH\",\"PL\",\"PT\",\"PY\",\"SE\",\"SG\",\"SK\",\"SV\",\"TR\",\"TW\",\"US\",\"UY\"]} {\"uri\":\"spotify:track:6ZntYOZ44LwdrowjJRzvoQ\",\"name\":\"Thriller\",\"album\":\"Michael Jackson: The Ultimate Collection\",\"available_markets\":[]}\n\nWhat you get back here are many different copies of Thriller by Michael Jackson. They are available in different markets and are from different versions of Thriller or Michael Jackson compilations.\n\nThe ISRC code USSM19902989 can be said to uniquely point to Thriller by Michael Jackson, but the opposite is not true. It probably has much more than one ISRC code. With your analogy, 4011 will always point to banana, but there might be many more codes to points to the same bananas. While that doesn't sound like it will be a problem, it actually is. Different databases of tracks don't contain the same ISRCs. So, while 4011 will always point to bananas and nothing else, USSM19902989 will always point to Thriller and nothing else. However, in some stores 4011 doesn't point to anything.\n\nUsing ISRC the way I described here works, but is a bit annoying. If you only write an app for Spotify users, using the Spotify Web API, you don't need to care about market availability or ISRC, and can just send spotify track uris around. For instance, spotify:track:2LlQb7Uoj1kKyGhlkBf9aC doesn't seem to be available in Germany. However, if a German Spotify user tries to play this track, they will still hear Thriller by Michael Jackson, because Spotify will instead play an alternative track that is available, like spotify:track:3S2R0EVwBSAVMd5UMgKTL0."
+    }
+}

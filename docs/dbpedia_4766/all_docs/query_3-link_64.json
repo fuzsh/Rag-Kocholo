@@ -1,0 +1,32 @@
+{
+    "id": "dbpedia_4766_3",
+    "rank": 64,
+    "data": {
+        "url": "https://community.auth0.com/t/identifier-first-universal-login-for-saml-users-without-hrd/72073",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Identifier first Universal Login for SAML users without HRD",
+        "top_image": "https://global.discourse-cdn.com/auth0/original/3X/3/f/3fd656787590f7b189cf4a56ddd4f3a33a591bb2.svg",
+        "meta_img": "https://global.discourse-cdn.com/auth0/original/3X/3/f/3fd656787590f7b189cf4a56ddd4f3a33a591bb2.svg",
+        "images": [],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "saml"
+        ],
+        "tags": null,
+        "authors": [
+            "shunsuke.tsutsui",
+            "konrad.sopala",
+            "system Closed"
+        ],
+        "publish_date": "2021-10-26T13:32:52+00:00",
+        "summary": "",
+        "meta_description": "Hi, \nI’m migrating my system authentication features to Auth0. My system has SAML feature and users redirect their own IdP relates their account resolved by mail address. \nI want to achieve this feature on Auth0 using Un&hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://global.discourse-cdn.com/auth0/optimized/3X/6/8/683858070b3a99e38278121cb791a29de61bf854_2_32x32.png",
+        "meta_site_name": "Auth0 Community",
+        "canonical_link": "https://community.auth0.com/t/identifier-first-universal-login-for-saml-users-without-hrd/72073",
+        "text": "Hi,\n\nI’m migrating my system authentication features to Auth0. My system has SAML feature and users redirect their own IdP relates their account resolved by mail address.\n\nI want to achieve this feature on Auth0 using Universal Login New Login Experience with Identifier first.\n\nI want to use HRD but I can’t because it has to support many SAML connections and some users are using general mail address domain like gmail.com.\n\nI found document for HRD through Universal Login using the Identifier to Realm Map Authentication (B2B) that similar to I want to do. Does Auth0 have feature to manage map of identifiers to IdP? Or do I have to manage by myself? And how should I use this map through Universal Login?\n\nThanks!\n\n@shmurakami\n\nNew Universal Login has HRD based on a domain name not per email address.\n\nSo New Universal Login does not meet your requirement, unfortunately.\n\nHowever, you can achieve this with your own endpoint.\n\nthe endpoint receives an email address, then returns to an appropriate connection name.\n\nthen call /authorize with the connection name received from the endpoint.\n\nSteps are like this:\n\nA user inputs an email address and presses the “Next” button.\n\nThe frontend (Universal Login) calls the endpoint with the email address that the user has inputted.\n\nThe endpoint returns an appropriate connection name.\n\ncall /authorize with the connection name. (you can use our auth0.js library).\n\nThe endpoint will be publicly accessible. so please consider the Auth0 best practice documented on the page you provided.\n\nBest practice\n\nAny public endpoint should have rate limiting applied to it to prevent hackers from using it to discover information and to prevent denial of service attacks.\n\nThank you"
+    }
+}

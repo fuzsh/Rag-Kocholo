@@ -1,0 +1,38 @@
+{
+    "id": "dbpedia_4766_3",
+    "rank": 63,
+    "data": {
+        "url": "https://softwareengineering.stackexchange.com/questions/166133/what-is-use-of-universal-character-names-in-identifiers-in-c",
+        "read_more_link": "",
+        "language": "en",
+        "title": "What is use of universal character names in identifiers in C++",
+        "top_image": "https://cdn.sstatic.net/Sites/softwareengineering/Img/apple-touch-icon@2.png?v=1ef7363febba",
+        "meta_img": "https://cdn.sstatic.net/Sites/softwareengineering/Img/apple-touch-icon@2.png?v=1ef7363febba",
+        "images": [
+            "https://cdn.sstatic.net/Sites/softwareengineering/Img/logo.svg?v=e86f7d5306ae",
+            "https://www.gravatar.com/avatar/616f7a1cbb20fe949d883393657c039a?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/69f522ea287d08a156b51d3d75ad1eb2?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/8a30f566f1b7c9ae44cf245138850ba4?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/257160e4181c3a80adffe50bf6d8f0a1?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/1397eae94e7fe715f040459c988c40b1?s=64&d=identicon&r=PG",
+            "https://softwareengineering.stackexchange.com/posts/166133/ivc/acfa?prg=926f60fa-0f72-4d1e-be1f-dc1a3cc67ab5"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Jan Hudec"
+        ],
+        "publish_date": "2012-09-25T14:45:58",
+        "summary": "",
+        "meta_description": "The C++ standard (I noticed it in the new one, but it did already exist in C++03) specifies universal character names, written as \\uNNNN and \\UNNNNNNNN and representing the characters with unicode",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/softwareengineering/Img/favicon.ico?v=c4f35a1e3900",
+        "meta_site_name": "Software Engineering Stack Exchange",
+        "canonical_link": "https://softwareengineering.stackexchange.com/questions/166133/what-is-use-of-universal-character-names-in-identifiers-in-c",
+        "text": "UPDATE - this answer, though it seemed to make sense to me and others, turns out to be largely wrong (and sufficiently wrong regarding the intent, as to be effectively just plain wrong). Since (as pointed out in a comment by AProgrammer) it's not permitted to use UCS outside of string constants when the same character could be represented normally in the base character set. So, no using it to escape keywords, as in my example; and no using it to make 'identifiers' like 23skiddo by escaping the 2. It could still be used to make names compatible with external languages, I guess, but only, it seems, when those names start with either a letter or an extended character, and contain only letters, digits, underline, and extended characters -- which seems much too restrictive to properly support that intent. So it must be that the main intent is (as in AProgrammer's answer) to allow these extra characters in identifiers, and to enable source editors where these characters are displayed graphically, while still allowing the source file to be in plain ASCII.\n\nC++ programs may call functions written in other languages. It is good strategy on the part of the standardization committee to ensure that C++ will be interoperable with other languages which may allow non-alphanumerics or unicode characters in function names, even if such languages do not yet exist. The standard doesn't need to specify how this will work at the linker level, etc; but it's good to have a specified mechanism in place to allow it.\n\nYou don't need to look into the future to see a use for this. Suppose I have an old C library with a function in it called catch (or protected, or mutable)... and I want to call it from C++. And for whatever reason I can't or don't want to modify the C code (By the way, I have more than once had to deal with old C code that used a function name that had become a C++ keyword...)\n\nWith UC names I can write this in a header, and then just call 'catch_func()':\n\nextern \"C\" { int catc\\u0068( int a, int b ); // C 'catch()' function } inline int catch_func( int a, int b ) { return catc\\u0068(a,b); }\n\nSure it's ugly, but it doesn't matter since it's only in one place in the header. The same approach could be used to make stubs to call functions in other languages, and works even if the names are C++ keywords or unicode, or have spaces, . or other punctuation embedded in them"
+    }
+}

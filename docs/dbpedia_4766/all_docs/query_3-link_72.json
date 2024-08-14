@@ -1,0 +1,38 @@
+{
+    "id": "dbpedia_4766_3",
+    "rank": 72,
+    "data": {
+        "url": "https://medium.com/decentralized-identity/a-universal-resolver-for-self-sovereign-identifiers-48e6b4a5cc3c",
+        "read_more_link": "",
+        "language": "en",
+        "title": "A Universal Resolver for self-sovereign identifiers",
+        "top_image": "https://miro.medium.com/v2/resize:fit:800/1*Z_tUGSKjlkcaG6D2zf7faA.png",
+        "meta_img": "https://miro.medium.com/v2/resize:fit:800/1*Z_tUGSKjlkcaG6D2zf7faA.png",
+        "images": [
+            "https://miro.medium.com/v2/resize:fill:64:64/1*dmbNkD5D-u45r44go_cf0g.png",
+            "https://miro.medium.com/v2/resize:fill:88:88/1*dBtzMe0abHEBPOvTRlu6Cw.jpeg",
+            "https://miro.medium.com/v2/resize:fill:48:48/1*wtwq2MPkEQseHV5viblhcg.png",
+            "https://miro.medium.com/v2/resize:fill:144:144/1*dBtzMe0abHEBPOvTRlu6Cw.jpeg",
+            "https://miro.medium.com/v2/resize:fill:64:64/1*wtwq2MPkEQseHV5viblhcg.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Markus Sabadello",
+            "medium.com",
+            "@markus.sabadello"
+        ],
+        "publish_date": "2017-11-01T14:43:23.608000+00:00",
+        "summary": "",
+        "meta_description": "DIF is introducing a community preview of the Universal Resolver — a core building block of a decentralized identity system. This is a first step in fulfilling DIF’s mission to help individuals and…",
+        "meta_lang": "en",
+        "meta_favicon": "https://miro.medium.com/v2/5d8de952517e8160e40ef9841c781cdc14a5db313057fa3c3de41c6f5b494b19",
+        "meta_site_name": "Medium",
+        "canonical_link": "https://medium.com/decentralized-identity/a-universal-resolver-for-self-sovereign-identifiers-48e6b4a5cc3c",
+        "text": "DIF is introducing a community preview of the Universal Resolver — a core building block of a decentralized identity system. This is a first step in fulfilling DIF’s mission to help individuals and organizations to control their digital identity, without being dependent on any intermediary party.\n\nThis tool fulfills a similar purpose as Bind does in the DNS system: resolution of identifiers. However, instead of working with domain names, we work with self-sovereign identifiers that can be created and registered directly by the entities they refer to. This is important, because identifiers are the basis for any identity and communications system — without identifiers, we cannot have relationships, transactions, data sharing or messaging between entities. Historically identifiers have always been assigned to us by some kind of corporate or state authority. The Universal Resolver lets us build architectures and protocols on top of identifiers that are completely self-sovereign. There is no longer a need for a central authority to issue, maintain and revoke identifiers.\n\nHowever, just having an identifier is not enough. We need some further information in order to know how to communicate with the entity represented by the identifier. The job of a “Resolver” is to discover and retrieve this further information. At a minimum, this information includes elements such as service endpoints for communicating with the entity, as well as the cryptographic keys associated with it. The Universal Resolver performs this task to enable the basic building blocks of a self-sovereign identity world.\n\nThe Universal Resolver is directly related to the work that has been done by the Rebooting-the-Web-of-Trust and Internet Identity Workshop communities around a Decentralized Public Key Infrastructure (DPKI) and Decentralized Identifiers (DIDs), which support different “methods” for registering identifiers on decentralized systems such as the Bitcoin blockchain, Sovrin, Ethereum, IPFS, and others. Note that the DID spec is currently undergoing a “hardening” phase, and that the work presented here is an early developers’ implementation meant to encourage the participation of the community and to accelerate the joint development of key decentralized identity primitives.\n\nExtensible Driver Architecture\n\nDIF’s Universal Resolver provides a unified interface which can be used to resolve any kind of decentralized identifier. This enables higher level data formats (such as Verifiable Claims) and protocols (such as DIF’s Hub protocol) to be built on top of the identifier layer, no matter which blockchain or other system has been used to register the identifier. Internally, the Universal Resolver achieves this through an architecture consisting of “drivers” for each supported identifier type. A driver can be easily added via a Docker container, a Java API, or a remote HTTP GET call, as illustrated in the following diagram:\n\nCurrently, early versions of the following drivers exist. They will be updated regularly to match the progress of the various specification documents:\n\ndid:sov, registered on the Sovrin distributed ledger\n\ndid:btcr, registered on the Bitcoin blockchain\n\ndid:stack, used by Blockstack (thank you Jude Nelson !)\n\ndid:uport, used by uPort (thank you Christian Lundqvist !)\n\ndid:jolo, used by Jolocom (thank you Charles Cunningham !)\n\ndid:ipid, using IPFS and IPNS (thank you Jonathan Holt !)\n\ndid:v1, used by Veres One\n\nDrivers can internally function in different ways — some drivers may simply call a remote web service, while others may have direct access to a full node of the blockchain they use. The former option can make the driver usable even on mobile devices, while the latter option provides higher security guarantees for the resolution result.\n\nHow can I deploy/use the Universal Resolver?\n\nAn easy way to get started on your local machine is to clone the following Github repository, and use docker-compose to build and run the Universal Resolver as well as its drivers:\n\ngit clone https://github.com/decentralized-identity/universal-resolver.git\n\ncd universal-resolver/\n\ndocker-compose -f docker-compose.yml pull\n\ndocker-compose -f docker-compose.yml up\n\nYou should then be able to resolve identifiers locally using simple curl requests as follows:\n\ncurl -X GET http://localhost:8080/1.0/identifiers/did:sov:WRfXPg8dantKVubE3HX8pw\n\ncurl -X GET http://localhost:8080/1.0/identifiers/did:btcr:xkrn-xzcr-qqlv-j6sl\n\ncurl -X GET http://localhost:8080/1.0/identifiers/did:v1:test:nym:3AEJTDMSxDDQpyUftjuoeZ2Bazp4Bswj1ce7FJGybCUu\n\ncurl -X GET http://localhost:8080/1.0/identifiers/did:uport:2omWsSGspY7zhxaG6uHyoGtcYxoGeeohQXz\n\ncurl -X GET http://localhost:8080/1.0/identifiers/did:jolo:e76fb4b4900e43891f613066b9afca366c6d22f7d87fc9f78a91515be24dfb21\n\ncurl -X GET http://localhost:8080/1.0/identifiers/did:stack:v0:16EMaNw3pkn3v6f2BgnSSs53zAKH4Q8YJg-0\n\ncurl -X GET http://localhost:8080/1.0/identifiers/did:ipid:QmYA7p467t4BGgBL4NmyHtsXMoPrYH9b3kSG6dbgFYskJm\n\nThe response to these calls will be the DID Document, containing service endpoints and cryptographic keys associated with the entity the DID refers to.\n\nNext Steps\n\nWe are now working on the following improvements and additional resources:"
+    }
+}

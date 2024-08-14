@@ -1,0 +1,43 @@
+{
+    "id": "dbpedia_4766_3",
+    "rank": 68,
+    "data": {
+        "url": "https://community.splunk.com/t5/Getting-Data-In/Universal-Forwarder-Tag-or-add-identifier-to-data-to-distinguish/m-p/475448",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Tag or add identifier to dat...",
+        "top_image": "https://community.splunk.com/html/@87A068F8F1A8A358BCD1BCC5267F51D2/assets/favicon.ico",
+        "meta_img": "https://community.splunk.com/html/@87A068F8F1A8A358BCD1BCC5267F51D2/assets/favicon.ico",
+        "images": [
+            "https://community.splunk.com/html/assets/splunk-logo-black.svg",
+            "https://community.splunk.com/html/assets/splunk-logo-black.svg",
+            "https://community.splunk.com/t5/image/serverpage/avatar-name/environment-clouds/avatar-theme/classic/avatar-collection/environment/avatar-display-size/message/version/2?xdesc=1.0",
+            "https://community.splunk.com/t5/image/serverpage/avatar-name/environment-clouds/avatar-theme/classic/avatar-collection/environment/avatar-display-size/message/version/2?xdesc=1.0",
+            "https://community.splunk.com/t5/image/serverpage/avatar-name/environment-clouds/avatar-theme/classic/avatar-collection/environment/avatar-display-size/message/version/2?xdesc=1.0",
+            "https://community.splunk.com/t5/image/serverpage/avatar-name/environment-clouds/avatar-theme/classic/avatar-collection/environment/avatar-display-size/message/version/2?xdesc=1.0",
+            "https://community.splunk.com/legacyfs/online/avatars/553812.jpg",
+            "https://community.splunk.com/html/@9E0E338CF4778DCF581C2431A098A10E/rank_icons/splunk-trust-16.png",
+            "https://community.splunk.com/skins/images/8489761B9DA10BE30BF347A1F024F457/responsive_peak/images/icon_anonymous_message.png",
+            "https://community.splunk.com/skins/images/83CBA99E58E28310D58BCA8A4EF9F33A/responsive_peak/images/powered_by_khoros.svg",
+            "https://www.splunk.com/content/dam/splunk2/images/logos/splunk-logo.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "community.splunk.com",
+            "user-id"
+        ],
+        "publish_date": "2019-09-11T14:42:12+00:00",
+        "summary": "",
+        "meta_description": "Solved: Hey everyone, Summary of the long post: On universal forwarders, I need to add some kind of identifier like a tag or metadata value to all",
+        "meta_lang": "en",
+        "meta_favicon": "https://community.splunk.com/html/@87A068F8F1A8A358BCD1BCC5267F51D2/assets/favicon.ico",
+        "meta_site_name": "",
+        "canonical_link": "https://community.splunk.com/t5/Getting-Data-In/Universal-Forwarder-Tag-or-add-identifier-to-data-to-distinguish/m-p/475448#M81622",
+        "text": "Ended up adding a meta tag onto individual monitored inputs and some in the default of inputs.conf and was able to do most of what I needed using the tag. Performing props/transforms on them is possible but very limited, but as far as searching goes, it's a great way to tag data from multiple customers that are being stored in a single index.\n\nCustomer A inputs.conf:\n\n[default]\n\n_meta=customer::CustA\n\n[monitor:///opt/application1/log]\n\n_meta=app::application1\n\nThen I added the following to the fields.conf on the indexers and search heads for each meta tag to make them searchable. You don't need to do this. If you do, you can simply search for \"customer=CustA\" and if you don't, then you can search for \"customer::CustA\". The \"::\" is splunk's \"=\" in the meta tags.\n\nfields.conf:\n\n[app]\n\nINDEXED=true\n\n[customer]\n\nINDEXED=true\n\nAfter all that was done, because customer tag was under default, it got applied to all inputs in the config so all of Customer A's events were tagged. Then each of the individual inputs had different meta tags added for when we wanted to narrow down searches to a specific app or log for a specific customer.\n\nI performed all the UF meta tagging configurations with Puppet so that any new servers that get created for customers will automatically get the tags. Performed deployments of the fields.conf to the indexer cluster and search head cluster from the Master deployment server.\n\nHi mccartneyc,\n\nI don't think that it's possible to add a tag, but you can configure hostname and sourcetypes for each group of hosts.\n\nSo you can identify logs from a group of forwarders based on hostname (e.g.: hostnames that starts with nw belong to the New York group) or sourcetypes (e.g.: wineventlog from a group of forwarders is called 1_wineventlog).\n\nIf this is possible, you can filter and route logs on Heavy Forwarders based on hostname or sourcetype.\n\nIf you have both the choices, choose hostname, because sourcetype need additional work to configure indexers to override values and restore the original ones.\n\nBye.\n\nGiuseppe"
+    }
+}
