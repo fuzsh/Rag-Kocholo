@@ -1,0 +1,35 @@
+{
+    "id": "dbpedia_4204_2",
+    "rank": 34,
+    "data": {
+        "url": "https://caglarcansarikaya.medium.com/another-view-for-filtering-function-b0025af90d0c",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Another view for filtering function",
+        "top_image": "https://miro.medium.com/v2/resize:fit:1200/1*EBNcfUDoWU2tY9aXDJp0eA.png",
+        "meta_img": "https://miro.medium.com/v2/resize:fit:1200/1*EBNcfUDoWU2tY9aXDJp0eA.png",
+        "images": [
+            "https://miro.medium.com/v2/resize:fill:64:64/1*dmbNkD5D-u45r44go_cf0g.png",
+            "https://miro.medium.com/v2/resize:fill:88:88/2*XxoyN_GavQ1s_8iqoqLzkQ.jpeg",
+            "https://miro.medium.com/v2/resize:fill:144:144/2*XxoyN_GavQ1s_8iqoqLzkQ.jpeg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Çağlar Can SARIKAYA",
+            "caglarcansarikaya.medium.com"
+        ],
+        "publish_date": "2020-10-23T19:28:35.417000+00:00",
+        "summary": "",
+        "meta_description": "I learnt this method, probably someone found before I just want to share my experiences. You can use this for filtering, authorize etc. I had 3 types (raw materials,semi-products, products). Top-left…",
+        "meta_lang": "en",
+        "meta_favicon": "https://miro.medium.com/v2/5d8de952517e8160e40ef9841c781cdc14a5db313057fa3c3de41c6f5b494b19",
+        "meta_site_name": "Medium",
+        "canonical_link": "https://caglarcansarikaya.medium.com/another-view-for-filtering-function-b0025af90d0c",
+        "text": "I learnt this method, probably someone found before I just want to share my experiences. You can use this for filtering, authorize etc.\n\nI had 3 types (raw materials,semi-products, products). Top-left side of the screen I had 3 filters for these types. When you pick the filters, it will push the value of filter to an array.\n\nlet's assume;\n\nid:1,value=”raw materials”\n\nid:2,value=”semi-products”\n\nid:3,value=”products”\n\nEvery filter has an id, I will use this to achieve another unique id(such as Hilbert’s paradox of the Grand Hotel)\n\nif you just select first of filters it means we shift one time to left\n\nour flag 10 in binary = 2 decimal\n\nfor second 100 in binary = 4 in decimal\n\nfor third 1000 in binary = 8 in decimal\n\nand when you combine the filters it will also unique\n\nlike just 2 or 2+4 = 6 or 2+8=10 etc.\n\nYes, we got all unique type numbers. Also, you can expand this for role management.\n\nso we 2 objects one from DB(datafromDB), another one(filteredItems) for the show on the dom or what place you want.\n\nAnother point I would like to draw your attention to is why I used to Object.assign ??\n\nBut first, let's check a little our logic circuits knowledge, how can I understand is 2 in 2 or 2 in 4 why?\n\nbecause our filterFlags include 0 or 2 or 6 or 10 or 12 or 14 (i am telling again 0 for non-filter 14 for fully filtered)\n\nlet’s assume our filterflag is 0000 which means no filter, you have you check this and show your all data. It means to get a full copy of dataFromDB. but you should useObject.assign({},this.dataFromDB[]) because the array is a reference type variable. If you just get a copy of an array it means you just copied of the address of the array, you will create a kind of connection with both of them(its another story, I will explain this in another time)\n\nlet’s assume our filterflag is 1010 it means first and third filter applied and our dataFromDB types is (0010 or 0100 or 1000) we have to check these values is in filterflag or not. We can use an operator to understand this.\n\n1010 & 0010 = 0010\n\n1010 & 0100 = 0000\n\n1010 & 1000 = 1000\n\nyou can see the which products in this filterflag so you have to get a real copy of them to another array and show them. You can use the same method for authorizing 0000 number person should be super admin, 1111 numbered should be just user then check these users with authorizing flag, if they pass they will be routed, otherwise, give 404 (it is just a joke if you give 404 they will understand there is a distinct place and they can try some other ways to get inside)\n\nNotice: I used javascript for this experiment. You have to use flags something like this less than 8 I had 3 filters. Because javascript only support 8 bit in an integer variable"
+    }
+}
