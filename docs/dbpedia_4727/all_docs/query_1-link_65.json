@@ -1,0 +1,32 @@
+{
+    "id": "dbpedia_4727_1",
+    "rank": 65,
+    "data": {
+        "url": "http://mardy.it/ia/blog/2021/12/debugging-the-factory-mode-of-bq-devices-in-ubuntu-touch.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Debugging the âFactory modeâ of BQ devices in Ubuntu Touch",
+        "top_image": "http://mardy.it/favicon.png",
+        "meta_img": "http://mardy.it/favicon.png",
+        "images": [
+            "http://mardy.it/archivos/imagines/social/avatar64_bn.jpg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Alberto Mardegan"
+        ],
+        "publish_date": "2021-12-25T10:13:54+03:00",
+        "summary": "",
+        "meta_description": "As you know, I'm trying to get the FM radio to work in Ubuntu\nTouch, and I basically have\nit working on the Redmi Note 7 Pro. But then I remembered that the BQ Aquaris\nE4.5 (which is the first commerc",
+        "meta_lang": "",
+        "meta_favicon": "../../../../favicon.png",
+        "meta_site_name": "Mardy",
+        "canonical_link": "http://mardy.it/ia/blog/2021/12/debugging-the-factory-mode-of-bq-devices-in-ubuntu-touch.html",
+        "text": "As you know, I'm trying to get the FM radio to work in Ubuntu Touch, and I basically have it working on the Redmi Note 7 Pro. But then I remembered that the BQ Aquaris E4.5 (which is the first commercial device officially supporting Ubuntu Touch) also comes with an FM radio, so I decided to put some effort in getting that to work, too. You might think it's a waste of time, but as a matter of fact this device is built on a Mediatek SoC, and FM radio support is exposed to userspace in a very similar way across all Mediatek devices â so this work should be covering other devices as well.\n\nIt was relatively easy to get the FM radio to work on this phone: I can now tune to a frequency and see that the RDS data is received, but I cannot get any sound out of the speakers or headphones, which makes the whole radio experience a bit, uhmâ¦ suboptimal, let's say.\n\nThe problem is not new: back in the days when Ubuntu Touch was still supported by Canonical, sturmflut was trying to get the FM radio to work, and he met the same issues (see this and this messages in the mailing list). He also spent some time investigating how the Factory mode works (the FM radio is indeed one of the features that can be tested via the Factory mode, and it does work) and he mentioned that he could get gdb to attach to the factory mode program and could see the various ioctls being executed. Yesterday I tried to follow the same steps, but I failed quite soon: I simply could not connect with adb shell while the device was in factory mode, so no chances of debugging for me. â¹\n\nOut of dispair, I tried just to manually run the program /system/bin/factory inside a Lomiri session and, to my surprise, it overlayed its yellow âFactory Modeâ title on the screen â just to immediately quit afterwards. I tried running it with strace, and noticed these lines:\n\nopen(\"/sys/class/BOOT/BOOT/boot/boot_mode\", O_RDWR|O_LARGEFILE) = 15 read(15, \"0\\n\", 4) = 2 close(15) = 0 writev(5, [{\"\\3\", 1}, {\"FTM\\0\", 4}, {\"[FTM UTILS] Unsupported factory \"..., 39}], 3) = 44 writev(5, [{\"\\6\", 1}, {\"NVRAM\\0\", 6}, {\"[MAIN] Unsupported Factory mode\\n\"..., 33}], 3) = 40\n\nOf course, the /sys/class/BOOT/BOOT/boot/boot_mode file is read-only, so I couldn't just write 1 into it, but could a bind-mount work? Indeed it did! And after a few attempts, I verified that writing a value of 4 in the boot_mode file made the factory program happy. It was still unusable because it was acting as if the volume down button was being constantly pressed, so the cursor was always moving downwards, but killing the Lomiri session did the trick. In short, these are the steps you need to follow in order to run the Factory Mode from an ordinary boot session:\n\nWhat is more surprising, is that the FM radio test is working even in this environment, and you can actually hear the sounds (for some reason, the FM radio item takes about 40 seconds to initialize when run under these conditions, but it eventually works). At this point, not only I could run gdb (which I didn't), but I could even run the factory program under strace and collect the logs.\n\nAt the moment of writing this post, I haven't yet examined the logs, so I'm not at all sure that they'll be enough to make audio work (I suspect that the factory mode binary might be playing some tricks that are somehow not replicable in a proper Linux system with Pulseaudio and lots of other services running), but I do have enough information to make at least a few attempts.\n\nStay tuned, and have a Merry Christmas!"
+    }
+}

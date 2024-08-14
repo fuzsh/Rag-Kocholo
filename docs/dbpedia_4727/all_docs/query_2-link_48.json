@@ -1,0 +1,38 @@
+{
+    "id": "dbpedia_4727_2",
+    "rank": 48,
+    "data": {
+        "url": "https://askubuntu.com/questions/600065/consequences-of-using-apt-get-in-ubuntu-touch",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Consequences of using apt-get in ubuntu touch",
+        "top_image": "https://cdn.sstatic.net/Sites/askubuntu/Img/apple-touch-icon@2.png?v=c492c9229955",
+        "meta_img": "https://cdn.sstatic.net/Sites/askubuntu/Img/apple-touch-icon@2.png?v=c492c9229955",
+        "images": [
+            "https://cdn.sstatic.net/Sites/askubuntu/Img/logo.svg?v=472cf2768bba",
+            "https://www.gravatar.com/avatar/a007be5a61f6aa8f3e85ae2fc18dd66e?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/9cc9e89dc5a5e69489a449073e67f629?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/a007be5a61f6aa8f3e85ae2fc18dd66e?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/59b329797c7193a58319d15b4a38d293?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/6e93f773b54b25ff5038c244f19773a1?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/hv0DE.jpg?s=64",
+            "https://lh3.googleusercontent.com/-2rYCZj89Es8/AAAAAAAAAAI/AAAAAAAAAAA/ACHi3rf5BLoprY3th6j90gJMQ_bKWxDHgw/photo.jpg?sz=64",
+            "https://askubuntu.com/posts/600065/ivc/6ffb?prg=3e3b9f5f-63d3-44f4-82a4-ee16a13ebad0"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2015-03-22T23:23:11",
+        "summary": "",
+        "meta_description": "I have just received my BQ Aquaris E4.5 Ubuntu edition.\nI have been playing around with it and find that it is just what I expected it to be.\n\nOne of the great things about it is a full ubuntu stack,",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/askubuntu/Img/favicon.ico?v=928dfb7c1990",
+        "meta_site_name": "Ask Ubuntu",
+        "canonical_link": "https://askubuntu.com/questions/600065/consequences-of-using-apt-get-in-ubuntu-touch",
+        "text": "To be able to use \"apt-get\" in ubuntu-touch, for safety I suggest you use the function \"Enabling/ Disabling read-write mode\".\n\nOnce enabled the \"read-write mode\", this will disable Ubuntu system upgrades.\n\nHowerver you can restore automatic over-the-air updates by disabling the \"read-write mode\".\n\n\"By default the system is read-only. You can switch to read-write mode, although this disables Ubuntu system upgrades.The main purpose for this is developing the Ubuntu system directly. This is not required for developing apps or using the system normally. Recovering from read-write mode is possible but requires reinstalling the system from scratch. Warning: Switching a device to read-write mode (and/or recovering from it) is an advanced feature and may result in complete data loss. Warning: Switching a device to read-write mode disables automatic over-the-air delta updates. Accepting a full over-the-air update after making a device writable may undo changes you have made. \"\n\nFirstly, Enabling developer mode on your Ubuntu device. To do this, go to Settings → About this device → Developer mode. (You have to apply the \"Lock security\" by alternatives: \"4-digit passcode\" or \"Passphrase\". Otherwise, with the \"swipe\" function, you can not enable the \"developer mode\")\n\nConnect your device into a PC (Assume that's a Ubuntu platform environment).\n\nTo verify the connection, use adb to display currently connected devices:\n\n$ adb devices\n\nList of devices attached\n\n025d138e2f521413 device\n\nInstall phablet-tools package\n\nEnsure the universe archive is enabled, then:\n\n$ sudo apt-get install phablet-tools\n\nEnabling read-write mode:\n\n$ phablet-config writable-image\n\nThe system reboots in read-write mode.\n\nDisabling read-write mode: You can disable read-write and restore automatic over-the-air updates:\n\n$ adb shell rm /userdata/.writable_image\n\nTo restore the normally read-write protected system area to a pristine state that does not include any changes you made while in read-write mode by installing the Ubuntu system:\n\n$ ubuntu-device-flash touch --channel=CHANNEL\n\nSources: https://developer.ubuntu.com/en/start/ubuntu-for-devices/installing-ubuntu-for-devices/#install-options\n\nAdvises: Up to now, it's not a good idea to use \"apt-get\" as they (Mr.Popey) said:\n\n\"We don't test apt-get installed scenarios on the phone and if you use apt-get upgrade, you may install packages which haven't yet been fully tested as part of image based updates\"\n\nSource: How to install a .deb file in Ubuntu-Touch?\n\nNo (but it will feel like yes for a while)\n\nIf you enable rw on / and start modifying it, nothing disables the delivery of OTA updates. So when they arrive, they will be offered to you for install, as before.\n\nHowever, the OTA process does a very simple thing to the filesystem. It just untars a large set of files on top of the filesystem you have. Since it knows (because it should be ro) the previous filesystem, this is simply a set of the files that have changed.\n\nSo you are gambling. Do the changes you have made cause side effects when this happens? In general, yes. In general, you will have modified some file in the / filesystem, and added software that depends on that change. When an OTA is installed, that change will be removed, and potentially replaced with a conflicting change. At this point, what happens next is unknowable, and certainly untested.\n\nSo, in practice, some apt-get installs will largely add software in parallel to the existing files, so will not be much impacted by an OTA. However, one file set will certainly be impacted - apt's own record keeping (OTA's deliver the records used in construction of the ro filesystem). So your system will lose the knowledge of what is there, and what is not.\n\nThis is the core danger with apt-get upgrade. It will always be performed with an incorrect database of what is on the device, so it cannot be guaranteed to succeed. As your additions become more complex, and as the underlying system makes major transitions (such as when the phones moved from Utopic to Vivid), apt-get run by hand will do the wrong thing.\n\nEvery OTA then becomes a gamble, until you perform a wipe & reinstall.\n\nYour system will become slowly broken - see above.\n\nMounting read and write permanently only requires 3 lines. I originally tried to follow these instructions on UBPorts but to no avail. No phablet tools necessary.\n\nadb shell sudo touch /userdata/.writable_image sudo reboot\n\nchange it to r/w just for session\n\nadb shell sudo mount -o remount,rw /\n\nChange back to r/o permenantly\n\nadb shell sudo mount -o remount,rw /\n\nUbuntu touch is normally not intended for apt-get. Desktop apps are generally supposed be used in a libertine container although I haven't set it up. Depending on the model apt-get will clog up the root partition. It is also very possible it can interfere with updates, install conflicting package, or otherwise break your system. But where's the fun if you can't?\n\nI originally used up root space almost immediately and had to use these commands to free up some space, although there should be a more proper symlink to userdata available\n\nsudo mount -o rw,remount / sudo rm -r /var/cache/apt sudo tune2fs -m 0 /dev/loop0"
+    }
+}

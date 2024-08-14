@@ -1,0 +1,35 @@
+{
+    "id": "dbpedia_4726_1",
+    "rank": 3,
+    "data": {
+        "url": "https://askubuntu.com/questions/802647/did-i-functionally-brick-my-ubuntu-touch-phone-bq-aquaris-e4-5",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Did I (functionally) brick my Ubuntu touch phone? (BQ Aquaris E4.5)",
+        "top_image": "https://cdn.sstatic.net/Sites/askubuntu/Img/apple-touch-icon@2.png?v=c492c9229955",
+        "meta_img": "https://cdn.sstatic.net/Sites/askubuntu/Img/apple-touch-icon@2.png?v=c492c9229955",
+        "images": [
+            "https://cdn.sstatic.net/Sites/askubuntu/Img/logo.svg?v=472cf2768bba",
+            "https://i.sstatic.net/GKjUX.png?s=64",
+            "https://i.sstatic.net/GKjUX.png?s=64",
+            "https://www.gravatar.com/avatar/5daffcbc05e9885b815ed65956e0c4a1?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/KOMW8.png?s=64",
+            "https://askubuntu.com/posts/802647/ivc/6ffb?prg=3a28244e-d693-46c2-ad98-36c5045ffd5d"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2016-07-25T10:26:46",
+        "summary": "",
+        "meta_description": "Background\n\nI bought a factory resetted BQ Aquaris E4.5 Ubuntu Edition and as an experienced, trusting Ubuntu user, the second thing I did, after taking pictures, copying over some music, adding some",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/askubuntu/Img/favicon.ico?v=928dfb7c1990",
+        "meta_site_name": "Ask Ubuntu",
+        "canonical_link": "https://askubuntu.com/questions/802647/did-i-functionally-brick-my-ubuntu-touch-phone-bq-aquaris-e4-5",
+        "text": "Background\n\nI bought a factory resetted BQ Aquaris E4.5 Ubuntu Edition and as an experienced, trusting Ubuntu user, the second thing I did, after taking pictures, copying over some music, adding some contacts etc. was install a terminal and type sudo apt-get update; sudo apt-get upgrade;.\n\nFrom numerous sources I learned afterwards that this is what I was not supposed to do.\n\nProblem\n\nThe result was:\n\nno onscreen keyboard, it just doesn't pop up anymore\n\nbroadband internet cannot be enabled, the button react a tiny bit and then pops back to the left, disabled state\n\nclock is not working.\n\nIn an attack of Feng Shui I resetted the phone once more ( I read that this would bring the keyboard back), not fixing the problems, but also effectively deleting my images, contacts etc.\n\nThe first point results in not being able to type a wifi password, hence (together with the second point) no internet, hence no way to install a terminal and no connection via ssh.\n\nThe first point also means that I cannot enable the developer mode, because that requires a lock screen code or password, which requires a keyboard input. Hence no connection via adb.\n\nTherefore almost every functionality (except calling another phone) is not possible, which means the phone is not technically bricked (I can still boot), but... well... to a great extend unusable.\n\nQuestions\n\nFirst question: Does a broken keyboard really mean that the phone is unusable, unreacheble and unfixable? Pleas tell me I am wrong!\n\nAs I have some pictures I would like to keep: Is there a way to create an image of the phone data or to copy e.g. /home/phablet in order to maybe restore some images and other stuff.\n\nMore info\n\nI tried connecting via adb, which yield no result:\n\n$ sudo adb devices List of devices attached $\n\nRemember, development mode is not enabled.\n\nI can boot the phone into fastboot mode and get:\n\n$ sudo fastboot devices JU003207 fastboot $\n\nwhich looks promising.\n\nI run arch Linux and have ubuntu installed in a VirtualBox. When I plug in the phone via USB, I don't get a reaction from dmesg. What I do get is the offer from VirtualBox to make \"MediaTek Android [0100]\" available. In VirtualBox I get the same results with adb and fastboot as above.\n\nEdit\n\nI managed to flash using a dedicated (not VM) Ubuntu machine and\n\n$ sudo ubuntu-device-flash touch --channel=ubuntu-touch/stable/bq-aquaris.en --device=krillin\n\nI had to run it several times and on some of these intents, I used the options\n\n--recovery-image /path/to/recovery-krillin.img\n\nand\n\n--bootstrap\n\nThe push processes complete, the phone reboots into recovery and ubuntu-device-flash ends with success. But when I reboot, the problems remain the same.\n\nSolution :)\n\nHere's how I managed to solve the issue:\n\nBoot into recovery\n\nwipe cache (don't know if that is necessary, but won't hurt either)\n\nfactory reset (the factory reset option in systems setting does not work in this context)\n\nflash ubuntu using ubuntu-device-flash\n\nreboot\n\nThe first boot will take a few minutes, and you will see a progress bar (not the 5 dots). Then all is good :)"
+    }
+}

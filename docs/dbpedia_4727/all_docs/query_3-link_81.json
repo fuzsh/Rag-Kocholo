@@ -1,0 +1,28 @@
+{
+    "id": "dbpedia_4727_3",
+    "rank": 81,
+    "data": {
+        "url": "https://sturmflut.github.io/ubuntu/touch/2015/05/06/hacking-ubuntu-touch-part-2-devices-and-images/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Hacking Ubuntu Touch, Part 2: Devices and Images",
+        "top_image": "",
+        "meta_img": "",
+        "images": [],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2015-05-06T00:00:00",
+        "summary": "",
+        "meta_description": "Musings on various things.",
+        "meta_lang": "",
+        "meta_favicon": "",
+        "meta_site_name": "",
+        "canonical_link": "https://sturmflut.github.io//ubuntu/touch/2015/05/06/hacking-ubuntu-touch-part-2-devices-and-images/",
+        "text": "NOTE: This is a continuation of the previous article in the series.\n\nUPDATE 06.05.2015: Added section about signing keys.\n\nWe now know how to work with ubuntu-device-flash to find, download and flash images. But what does an image actually contain? Let’s look at the information for the most recent image for the bq Aquaris E4.5 Ubuntu Edition as obtained in the previous article:\n\nThe image consists of four actual files: an ubuntu tarball, a device tarball and a custom tarball. The version archive just contains a bit of metdata:\n\nSo an Ubuntu Touch archive consists of three archives which go together somehow, and this is the layering, showing the different parts used to build images for different devices:\n\nLet’s look at what the individual tarballs contain.\n\nDevice tarball\n\nPhones and tablets are different from personal computers and servers because they are embedded platforms, which are usually short on memory and processing power. Also the hardware setup is pretty much the same all the time and doesn’t change, with the exception of USB, but the number of supported USB devices is also limited. So it doesn’t make sense to enable every possible kernel feature and ship every available driver like the normal Ubuntu Desktop and Server flavors do.\n\nOn non-x86 platforms (especially ARM) a second problem arises: There is no standardised way to boot a system and to find out what the hardware looks like. So you can’t build a generic kernel that would run on more than one ARM board at the same time because every board is different from the others and the kernel has no way to find out what to do - there’s no BIOS, UEFI, DMI, ACPI etc. You have to manually craft a matching kernel for the exact board you’re working with, and in many cases you also have to craft a matching bootloader (usually U-Boot) for the exact board.\n\nThere are some solutions for this, mainly DeviceTree, and future ARM64 systems will support UEFI and ACPI. But Android has set a quasi-standard for these environments and most Ubuntu Touch devices will just be repurposed Android models, so it will probably be a long time before our phones look like our personal computers and we can just install a generic, non-modified Ubuntu on any device without having to think about the hardware.\n\nNow what does the device tarball contain?\n\nThere are four binary files:\n\nuboot.img is the U-Boot bootloader for the device. This is a binary blob.\n\nrecovery.img is the recovery system image that gets booted when you enter Recovery Mode. This is a blob in the “Android bootimg” format which will be discussed in a later article.\n\nboot.img contains the kernel and initrd that get booted when your device boots normally or when you enter Factory Mode. This also is a blob in the “Android bootimg” format.\n\nsystem.img contains the Android bits for the device. This is necessary because many manufacturers only provice Android drivers for their hardware and Ubuntu Touch needs them to work, interfacing via libhybris. This is an ext4 filesystem image and its content will later be launched in an LXC container.\n\nYou can mount system.img on a host computer and look at its content:\n\nIt is pretty large, currently about 120 megabytes, and contains a lot of files.\n\nUbuntu tarball\n\nThis tarball contains the actual Ubuntu Touch base system with all its default libraries, frameworks, apps, services and system binaries. This looks very much like a normal Ubuntu system, and in fact it is. AppArmor, Upstart, udev, NetworkManager, Qt5, bash? There. Unity? There. There are also many additional, phone-specific bits like ofono and system-image.\n\nThere are currently about 44.000 files in there, so if you’re interested just use an archiver and have a look.\n\nCustom tarball\n\nCanonical promised their partners that an Ubuntu Touch device can be customised to set each device apart from the others. This enables a manufacturer to ship additional files, apps and scopes with the default installation of a device, for example the bq Aquaris E4.5 Ubuntu Edition came with the Nokia HERE location provider (codenamed “espoo”), the Aquaris ringtone, a “NearBy” scope and a free copy of the “Cut the Rope” game, all goodies currently not available on other phones.\n\nIn the end it’s just a set of files which are extracted to the internal device memory after all other steps have been finished, extending the default installation.\n\nDid you know that you can just bundle your own custom tarball, and that ubuntu-device-flash touch has a --custom-tarball= parameter? This is where your modding skills come in, kids! I wonder if someone could make a “super” custom tarball, containing all the goodies from all device manufacturers at the same time…\n\nSigning keys"
+    }
+}
