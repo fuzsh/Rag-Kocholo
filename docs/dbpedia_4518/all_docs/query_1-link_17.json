@@ -1,0 +1,32 @@
+{
+    "id": "dbpedia_4518_1",
+    "rank": 17,
+    "data": {
+        "url": "https://stackoverflow.com/questions/74544197/using-bitshift-in-c-to-set-two-bits-to-0-resp-1",
+        "read_more_link": "",
+        "language": "en",
+        "title": "using bitshift in c++ to set two bits to 0 resp 1",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://i.sstatic.net/Ravp2.jpg?s=64",
+            "https://www.gravatar.com/avatar/8bd7ff011dabc210db940ae72eba5560?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://stackoverflow.com/posts/74544197/ivc/0ffa?prg=11726862-8abd-4f4f-8c26-dcff6765fd48"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2022-11-23T09:08:08",
+        "summary": "",
+        "meta_description": "Assuming x is a 8bit unsigned integer, what is the most efficient command to set the last two bits to 01 ?\nSo regardless of the initial value it should be x = ******01 in the final state.\nIn order ...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/74544197/using-bitshift-in-c-to-set-two-bits-to-0-resp-1",
+        "text": "Of course you can put both operation in one instructions.\n\nx = (x & 0b11111100) | 1;\n\nThat at least saves one assignment and one memory read/write. However, most likely the compilers may optimize this anyway, even if put into two instructions.\n\nDepending on the target CPU, compilers may even optimize the code into bit manipulation instructions that directly can set or reset single bits. And if the variable is locally heavily used, then most likely its kept in register.\n\nSo at the end the generated code may look at as simple as (pseudo asm):\n\nload x setBit 0 clearBit 1 store x\n\nhowever it also may be compiled into something like\n\nload x to R1 load immediate 0b11111100 to R2 and R1, R2 load immediate 1 to R2 or R1, R2 store R1 to x"
+    }
+}

@@ -1,0 +1,33 @@
+{
+    "id": "dbpedia_4518_0",
+    "rank": 98,
+    "data": {
+        "url": "https://stackoverflow.com/questions/59911141/how-do-i-use-the-test-instruction-to-see-if-two-bits-are-set",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How do I use the TEST instruction to see if two bits are set?",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://i.sstatic.net/Jori9.jpg?s=64",
+            "https://www.gravatar.com/avatar/7ac8fa292707d21768f9ebe17de4b523?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/Vdomp.png?s=64",
+            "https://stackoverflow.com/posts/59911141/ivc/0ffa?prg=a1b79790-fb1f-41bb-9a82-7db3f32afcda"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2020-01-25T16:22:45",
+        "summary": "",
+        "meta_description": "How could you use the TEST instruction (or a sequence of TEST instructions) to see if bits\nzero and four in the AL register are both set to one? How would the TEST instruction be\nused to see if eit...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/59911141/how-do-i-use-the-test-instruction-to-see-if-two-bits-are-set",
+        "text": "(See my answer to a similar question.)\n\nUsing TEST, you can mask against 17 (= 0b10001, i.e. bits zero and four are set).\n\nTEST AL, 17\n\nThen:\n\nZF will be 0 if at least one bit (either bit zero or bit four) was set\n\nPF will be 1 if either two or zero bits are set\n\nSo after TEST:\n\nnot ZF and PF - both bits set\n\nnot ZF but not PF - one bit set\n\nZF - neither bit set\n\nHere is a full example:\n\nTEST AL, 17 JZ none_set JPE both_set one_set: ... none_set: ... both_set: ...\n\nPlease note that this only happens to work in the case of checking for 2 bits, and specifically in the least significant byte of the masked result.\n\nTesting for 3 or more bits would best be done with x & mask == mask using AND and CMP. (That would be efficient for the 2-bit case as well, letting you use only one branch after a couple other instructions, instead of maybe 2 branches after one TEST).\n\nHow could you use the TEST instruction (or a sequence of TEST instructions) to see if bits zero and four in the AL register are both set to one?\n\nYou can use the Parity Flag trick as in the answer by Aurel Bílý -- though as noted that only works if both bits are in the low 8 bits.\n\nHere's a simple way with multiple test instructions:\n\ntest al, 16 jz not_both_set test al, 1 jz not_both_set both_set: ... not_both_set:\n\nEquivalently, the last conditional branch may be inverted:\n\ntest al, 16 jz not_both_set test al, 1 jnz both_set not_both_set: ... both_set:\n\nHere's another way that does not use test but instead uses a temporary register, and does an and then a cmp on that:\n\nmov ah, al and ah, 17 cmp ah, 17 jne not_both_set both_set: ... not_both_set:\n\nHow would the TEST instruction be used to see if either bit is set?\n\nJust provide the mask with both bits set to the test instruction, Zero Flag clear (Non-Zero) means at least one of the bits is set.\n\nHow could the TEST instruction be used to see if neither bit is set?\n\nAgain use the mask of both bits, Zero Flag set means neither bit is set."
+    }
+}

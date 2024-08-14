@@ -1,0 +1,37 @@
+{
+    "id": "dbpedia_4518_3",
+    "rank": 82,
+    "data": {
+        "url": "https://betterprogramming.pub/bit-manipulation-playing-with-the-truth-part-1-e4740466d3b1",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Bit Manipulation — Playing With the Truth (Part One)",
+        "top_image": "https://miro.medium.com/v2/resize:fit:480/1*A05IT58kOsoNenlZttS9fw.png",
+        "meta_img": "https://miro.medium.com/v2/resize:fit:480/1*A05IT58kOsoNenlZttS9fw.png",
+        "images": [
+            "https://miro.medium.com/v2/resize:fill:64:64/1*dmbNkD5D-u45r44go_cf0g.png",
+            "https://miro.medium.com/v2/resize:fill:88:88/0*Jnni0e101XtgYbjy.jpg",
+            "https://miro.medium.com/v2/resize:fill:48:48/1*QNoA3XlXLHz22zQazc0syg.png",
+            "https://miro.medium.com/v2/resize:fill:144:144/0*Jnni0e101XtgYbjy.jpg",
+            "https://miro.medium.com/v2/resize:fill:64:64/1*QNoA3XlXLHz22zQazc0syg.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Ekundayo Blessing Funminiyi",
+            "medium.com"
+        ],
+        "publish_date": "2019-07-21T16:52:36.980000+00:00",
+        "summary": "",
+        "meta_description": "Oh, great, just one table? No… not one, but for the sake of this piece, we shall discuss two — AND and OR. If you would like to know more, check out this article. That said, let’s get started! This…",
+        "meta_lang": "en",
+        "meta_favicon": "https://miro.medium.com/v2/5d8de952517e8160e40ef9841c781cdc14a5db313057fa3c3de41c6f5b494b19",
+        "meta_site_name": "Medium",
+        "canonical_link": "https://betterprogramming.pub/bit-manipulation-playing-with-the-truth-part-1-e4740466d3b1",
+        "text": "AND\n\nThis is denoted by &. Essentially, this says that combining two bits, A and B, will only give a result of 1 if and only if both A and B are 1.\n\nWith the help of the table above, it is easy to determine the result of the bitwise AND operation between two integers. E.g. To find the result of 12 & 4, convert both integers to their binary representations.\n\n12=1100\n\n4=100\n\nHmmm. 12 has four bits in it, and 4 has three bits in it. It is always cool to make them of equal length. To do this, we pad the smaller number of bits with zeros to make them equal bits. So:\n\n4=0100.\n\nNow that they are of equal length, we can now find the bitwise AND:\n\n1100 & 0100\n\n— —\n\n0100\n\nStarting from the right most bit of each integer, check the table above to see the corresponding value. So 0&0=0, 0&0=0, 1&1=1, and 1&0=0.\n\nSo, the final result is 0100, which is 4. I.e 12&4=4.\n\nHow Is This Useful, You May Ask…\n\nImagine you have been asked to write a function that takes in a string and returns the decorated string surrounded by any/all of the following tags : <i>, <b> , and <u>\n\nOption one\n\nWe can decide to write a function that takes into account all of the tags in its signature. So, we have something like this:\n\nThe above function works well. But the challenge with it is that you have to remember the position of each tag when passing the arguments to the function.\n\nAlso, suppose you just want to underline the text. You will have to do something like this: decorateString(\"Hello\", false, false, true). Anyone (apart from you) reading this code will have to look up the function to know what is false and what is true.\n\nOption two\n\nHmmmm… Minister of Algorithms, you know you don’t have to write your function that way in Javascript. You can make the second argument an Object and destructure it to get the values available and work with it accordingly. So you have:\n\nThis is much better, since I do not have to remember the order, and only specify the ones that I want. But I am not using Javascript. Any other options?\n\nOption three\n\nYes! Working with bits as configuration (BaC)! Let’s agree that a bit represents a flag. When the bit is 1, the flag is up, when the bit is 0, the flag is down. Now, each tag will be represented with a flag at certain position. We can define each of the tags as follows (in binary):\n\nincludeITag = 001\n\nincludeBTag = 010\n\nincludeUTag = 100// 001 = 1, 010 = 2, 100 = 4\n\nCalling the function will now look like this:\n\nTo include only the I tag: decorateString(\"Hello\", 1)\n\nTo include only the B tag: decorateString(\"Hello\", 2)\n\nTo include only the U tag: decorateString(\"Hello\", 4)\n\nNot bad, but I will have to remember these numbers, right?\n\nNo. These values will be defined as constants int the class/file that contains this function, so you don’t have to remember them.\n\nBut, there is no way to use two tags together. To make the string include both I and B tags, we need the two flags to be set… i.e 011. And to make the three tags appear, we need 111 .\n\nAre we going to define the values for all possible combinations of tags? No. You create only the ones you need and generate the combination. This is where the use of | operator comes in.\n\nincludeITag = 001\n\n|\n\nincludeBTag = 010\n\n— — — — — —011\n\nWhich means we can now call the function like this:\n\nTo include only the I and B tags: decorateString(\"Hello\", includeITag | includeBTag)\n\nTo include the three tags: decorateString(\"Hello\", includeITag | includeBTag | includeUTag)\n\nAnd this can be in any order.\n\nHow then do you extract these values from the input when implementing the function? By checking if a flag is set! This is where the & operator comes in.\n\nTo check an integer if a bit at index i is set, bitwise AND the 2^i value of the index with it. If the result is not 0, then the bit is set, otherwise the bit is not set.\n\nE.g Given 1101, check if the bit at index 1 is set, 2¹ = 2.\n\nTherefore:\n\n1101\n\n&\n\n0010\n\n— —\n\n0000\n\nSince this is 0, the bit at index 1 is not set. Hence, the flag at index 1 is not set.\n\nHowever, given 1011, check if the bit at index 1 is set, 2¹ = 2.\n\nTherefore:\n\n1011\n\n&\n\n0010\n\n— —\n\n0010\n\nSince the result is not 0, that means the bit at index 1 is set.\n\nKnowing this, let’s implement our function:\n\nThis can be implemented in any programming language without using destructuring or passing a long list of parameters.\n\nA simple use case of this is setting of flags when launching new activity in Android:\n\nmyIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION|Intent.FLAG_ACTIVITY_CLEAR_TOP);\n\nIf you have anything to add, please include it in the comments.\n\nIn part two, we shall be discussing Bit Shifting and how you can use it. Until then, enjoy your life bit by bit."
+    }
+}

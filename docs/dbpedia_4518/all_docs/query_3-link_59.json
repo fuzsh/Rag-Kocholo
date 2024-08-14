@@ -1,0 +1,30 @@
+{
+    "id": "dbpedia_4518_3",
+    "rank": 59,
+    "data": {
+        "url": "https://infosys.beckhoff.com/content/1033/tc3_plc_intro/2529343371.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Bit Access to Variables",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://infosys.beckhoff.com/content/1033/tc3_plc_intro/safety/notice_bk_infosymbol.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "With an index access you can address individual bits in integer variables...",
+        "meta_lang": "en",
+        "meta_favicon": "",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "Index access to bits in integer variables\n\nIt is possible to address individual bits in integer variables. To do this, append the index of the bit to be addressed to the variable, separated by a dot. The bit index can be specified by any constant. Indexing is 0-based.\n\nSyntax:\n\n<integer variable name> . <index>\n\n<integer data typ> = BYTE | WORD | DWORD | LWORD | SINT | USINT | INT | UINT | DINT | UDINT | LINT | ULINT\n\nIf the type of the variable is not allowed, TwinCAT issues the following error message: Invalid data type <type> for direct indexing. If the index is larger than the bit width of the variable, TwinCAT issues the following error: Index <n> out of valid range for variable <name>.\n\nSample index access:\n\nIn the program the third bit of the variable nVarA is set to the value of the variable nVarB.\n\nPROGRAM MAIN\n\nVAR\n\nÂ Â Â Â nVarAÂ : WORD := 16#FFFF;\n\nbVarBÂ : BOOL := 0;\n\nEND_VAR\n\n// Index access in an integer variable\n\nnVarA.2 := bVarB;\n\nResult: nVarA = 2#1111_1111_1111_1011 = 16#FFFB\n\nSample constant as index:\n\nThe constant cEnable acts as an index to access the third bit of the variable nVar.\n\n// GVL declaration\n\nVAR_GLOBALÂ CONSTANT\n\nÂ Â Â Â cEnableÂ :Â USINTÂ :=Â 2;\n\nEND_VAR\n\nPROGRAM MAIN\n\nVAR\n\nÂ Â Â Â nVarÂ Â Â Â :Â INTÂ Â Â :=Â 0;\n\nEND_VAR\n\n// Constant as index\n\nnVar.cEnable := TRUE; // Third bit in nVar is set TRUE\n\nResult: nVar = 4"
+    }
+}

@@ -1,0 +1,34 @@
+{
+    "id": "dbpedia_4518_1",
+    "rank": 73,
+    "data": {
+        "url": "https://mike-diaz006.medium.com/bits-bytes-and-the-capacity-of-data-structures-6a22bf4e36d",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Bits, Bytes, and the Capacity of Data Structures",
+        "top_image": "https://miro.medium.com/v2/resize:fit:1200/1*L334tY40QbIp6CYdiyeOVw.jpeg",
+        "meta_img": "https://miro.medium.com/v2/resize:fit:1200/1*L334tY40QbIp6CYdiyeOVw.jpeg",
+        "images": [
+            "https://miro.medium.com/v2/resize:fill:64:64/1*dmbNkD5D-u45r44go_cf0g.png",
+            "https://miro.medium.com/v2/da:true/resize:fill:88:88/0*TOAsXHg1-f3NEdun",
+            "https://miro.medium.com/v2/da:true/resize:fill:144:144/0*TOAsXHg1-f3NEdun"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Mike Diaz"
+        ],
+        "publish_date": "2020-06-03T17:44:33.177000+00:00",
+        "summary": "",
+        "meta_description": "Modern engineering frameworks have spared many beginner developers (like me) from the intense mathematical rigors of computer science. While it’s unfeasible for someone like me to jump in to all that…",
+        "meta_lang": "en",
+        "meta_favicon": "https://miro.medium.com/v2/5d8de952517e8160e40ef9841c781cdc14a5db313057fa3c3de41c6f5b494b19",
+        "meta_site_name": "Medium",
+        "canonical_link": "https://mike-diaz006.medium.com/bits-bytes-and-the-capacity-of-data-structures-6a22bf4e36d",
+        "text": "Modern engineering frameworks have spared many beginner developers (like me) from the intense mathematical rigors of computer science. While it’s unfeasible for someone like me to jump in to all that math head first, I’ve found that for every problem far too complex to understand, there is a simpler version that, through study, can lead to personal enrichment. This week, that problem was: in Java, why can we store the number 2,147,483,647 as an int, but not the number 2,147,483,648?\n\nBits and Bytes\n\nAs so many things do, it all comes down to the very fabric of computer data storage: binary code. Bit is shorthand for binary digit, meaning that there are two options (binary) that can fill one space (digit). One byte traditionally holds eight bits, so a byte has eight individual spaces that with binary options. That might look something like this:\n\n0001 0110 // (the number 22)\n\nHow many different combinations could be represented by one byte, or eight bits? 256. Now we could memorize that number or look it up any time we’re curious, but to understand why it’s 256, it helps to look at our options for one single bit:\n\n0, 1\n\nHow many different combinations can be represented by this bit? As we know, the b in bit represents binary, which comes from the Latin bis or binus, meaning twice or double. This is easy enough to understand, a bit can be a 0 or a 1 — it can represent two different values.\n\nWhat about two bits? This is another one we could probably figure out in our head, but it’s helpful to write it out. We know the possible combinations are:\n\n00, 01, 10, 11\n\nSo one bit gives us the power to represent two values and two bits can get us to four (two bits can also get us a shave and a haircut…I’ll see myself out). How about three?\n\n000, 001, 010, 011, 100, 101, 110, 111\n\nNow we’re up to eight possible combinations and we’re probably starting to notice a pattern. Each time we increase the number of bits, our number of combinations doubles. It looks something like this:\n\n1 bit: 2 combinations\n\n2 bits: 4 combinations\n\n3 bits: 8 combinations\n\n4 bits: ???\n\nIf you guessed 16, you were right! But what if we weren’t going chronologically? We wouldn’t already know the number of combinations from the previous number, so how could we figure out the number of combinations? Exponents, you say? Great idea!\n\n1 bit = 2¹ combinations\n\n2 bits = 2² combinations\n\n3 bits = 2³ combinations\n\n4 bits = 2⁴ combinations\n\n2 x 2 x 2 x 2 = 16, so it looks like this works. This is a perfect use for an exponent — however many bits we are using will represent the number of times we multiply. So if we wanted to look back at our byte, which contains eight bits:\n\n8 bits = 2⁸…256 huzzah!\n\nJava Data Types\n\nI began investigating this question because, in studying Java, I learned that different data types take up different amounts of memory. The more memory, the larger the range of possibilities for the data type. The int is a primitive data type in Java that takes up four bytes of memory. A quick search will reveal that an int can store numbers as large as 2,147,483,647 and as small as -2,147,483,648. This is impressive and likely more than I’ll ever need in an app, but the numbers seem awfully arbitrary until we start thinking about our space requirements.\n\nLet’s do the math: four bytes means 32 bits (4 x 8) so that means we’d be looking at 2³² power of combinations, right? That calculates out to…\n\n4,294,967,296\n\nKeen observers will notice that this number is a little more than twice the maximum for an int. They also probably recognize why: positive and negative values. Four bytes of memory will offer over four billion combinations, just keep in mind that some of them may be greater than zero and others will be less. And of course in the case of int, one of them will be zero, which is why the maximum and the minimum here aren’t perfect reflections of each other.\n\nWhen dealing with whole numbers (or “signed” data types, as they are often called because they may use the negative “sign”), one bit of memory will always be reserved for a negative or positive indicator. If you’re curious about how this plays out, you can read more about signed 2s complement here.\n\nSo our answer is that the largest number we can store using four bytes of memory is 2³¹-1 (to account for 0). We can’t store a number any larger than that because we literally would not have enough space to represent it with binary notation.\n\nFurther Learning\n\nThis post barely scratches the surface on topics like data types and binary notation, but it’s a start! These topics are relevant to every developer, so please check out my sources if you’re looking to learn more:"
+    }
+}

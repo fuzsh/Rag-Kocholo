@@ -1,0 +1,32 @@
+{
+    "id": "dbpedia_4519_0",
+    "rank": 97,
+    "data": {
+        "url": "https://en.cppreference.com/w/cpp/language/bit_field",
+        "read_more_link": "",
+        "language": "en",
+        "title": "cppreference.com",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://en.cppreference.com/mwiki/skins/common/images/poweredby_mediawiki_88x31.png",
+            "https://upload.cppreference.com/mwiki/images/2/2b/powered_by_geshi_88x31.png",
+            "https://upload.cppreference.com/mwiki/images/9/94/powered_by_tigertech_88x31.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "/favicon.ico",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "Declares a class data member with explicit size, in bits. Adjacent bit-field members may (or may not) be packed to share and straddle the individual bytes.\n\nA bit-field declaration is a class data member declaration which uses the following declarator:\n\nidentifier (optional) attr (optional) : size (1) identifier (optional) attr (optional) : size brace-or-equal-initializer (2) (since C++20)\n\nThe type of the bit-field is introduced by the decl-specifier-seq of the declaration syntax.\n\nattr - (since C++11) sequence of any number of attributes identifier - the name of the bit-field that is being declared. The name is optional: unnamed bit-fields introduce the specified number of padding bits. size - an integral constant expression with a value greater or equal to zero. When greater than zero, this is the number of bits that this bit-field will occupy. The value zero is only allowed for nameless bit-fields and has special meaning. brace-or-equal-initializer - default member initializer to be used with this bit-field\n\nContents\n\n1 Explanation\n\n2 Notes\n\n3 Defect reports\n\n4 References\n\n5 See also\n\n[edit] Explanation\n\nThe type of a bit-field can only be integral or (possibly cv-qualified) enumeration type, an unnamed bit-field cannot be declared with a cv-qualified type.\n\nA bit-field cannot be a static data member.\n\nThere are no bit-field prvalues: lvalue-to-rvalue conversion always produces an object of the underlying type of the bit-field.\n\nThe number of bits in a bit-field sets the limit to the range of values it can hold:\n\nMultiple adjacent bit-fields are usually packed together (although this behavior is implementation-defined):\n\nThe special unnamed bit-field of size zero can be forced to break up padding. It specifies that the next bit-field begins at the beginning of its allocation unit:\n\nIf the specified size of the bit-field is greater than the size of its type, the value is limited by the type: a std::uint8_t b : 1000; would still hold values between 0 and 255. the extra bits are padding bits.\n\nBecause bit-fields do not necessarily begin at the beginning of a byte, address of a bit-field cannot be taken. Pointers and non-const references to bit-fields are not possible. When initializing a const reference from a bit-field, a temporary is created (its type is the type of the bit-field), copy initialized with the value of the bit-field, and the reference is bound to that temporary.\n\n[edit] Notes\n\nThe following properties of bit-fields are implementation-defined:\n\nThe value that results from assigning or initializing a signed bit-field with a value out of range, or from incrementing a signed bit-field past its range.\n\nEverything about the actual allocation details of bit-fields within the class object.\n\nFor example, on some platforms, bit-fields don't straddle bytes, on others they do.\n\nAlso, on some platforms, bit-fields are packed left-to-right, on others right-to-left.\n\nIn the C programming language, the width of a bit-field cannot exceed the width of the underlying type, and whether int bit-fields that are not explicitly signed or unsigned are signed or unsigned is implementation-defined. For example, int b:3; may have the range of values 0..7 or -4..3 in C, but only the latter choice is allowed in C++.\n\n[edit] Defect reports\n\nThe following behavior-changing defect reports were applied retroactively to previously published C++ standards.\n\nDR Applied to Behavior as published Correct behavior CWG 324 C++98 it was unspecified whether the return value\n\nof an assignment to a bit-field is a bit-field added bit-field specifications for\n\noperators which may return lvalues CWG 739 C++98 signedness of bit-fields that are neither declared\n\nsigned nor unsigned were implementation-defined consistent with underlying types CWG 2229 C++98 unnamed bit-fields could be declared with a cv-qualified type prohibited CWG 2511 C++98 cv-qualifications were not allowed in bit-field types bit-fields can have cv-qualified\n\nenumeration types\n\n[edit] References\n\n[edit] See also"
+    }
+}

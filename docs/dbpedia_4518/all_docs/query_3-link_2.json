@@ -1,0 +1,34 @@
+{
+    "id": "dbpedia_4518_3",
+    "rank": 2,
+    "data": {
+        "url": "https://stackoverflow.com/questions/14600153/2-bits-size-variable",
+        "read_more_link": "",
+        "language": "en",
+        "title": "2 bits size variable",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/101889513654ccabf2cff98d3352e74c?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/vXG1F.png?s=64",
+            "https://www.gravatar.com/avatar/ec9385dc533f1a6a93769077f852503e?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/b2acd6d0711667546be77006ffc55428?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/14600153/ivc/0ffa?prg=69c56d13-ae6b-4e9b-95f2-fc7ad8ef865d"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2013-01-30T09:04:22",
+        "summary": "",
+        "meta_description": "I need to define a struct which has data members of size 2 bits and 6 bits.\nShould I use char type for each member?Or ,in  order not to waste a memory,can I use something like :2\\ :6 notation? \nhow...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/14600153/2-bits-size-variable",
+        "text": "You can use something like:\n\ntypedef struct { unsigned char SixBits:6; unsigned char TwoBits:2; } tEightBits;\n\nand then use:\n\ntEightBits eight; eight.SixBits = 31; eight.TwoBits = 3;\n\nBut, to be honest, unless you're having to comply with packed data external to your application, or you're in a very memory constrained situation, this sort of memory saving is not usually worth it. You'll find your code is a lot faster if it's not having to pack and unpack data all the time with bitwise and bitshift operations.\n\nAlso keep in mind that use of any type other than _Bool, signed int or unsigned int is an issue for the implementation. Specifically, unsigned char may not work everywhere.\n\nIt's probably best to use uint8_t for something like this. And yes, use bit fields:\n\nstruct tiny_fields { uint8_t twobits : 2; uint8_t sixbits : 6; }\n\nI don't think you can be sure that the compiler will pack this into a single byte, though. Also, you can't know how the bits are ordered, within the byte(s) that values of the the struct type occupies. It's often better to use explicit masks, if you want more control.\n\nPersonally I prefer shift operators and some macros over bit fields, so there's no \"magic\" left for the compiler. It is usual practice in embedded world.\n\n#define SET_VAL2BIT(_var, _val) ( (_var) | ((_val) & 3) ) #define SET_VAL6BIT(_var, _val) ( (_var) | (((_val) & 63) << 2) ) #define GET_VAL2BIT(_var) ( (_val) & 3) #define GET_VAL6BIT(_var) ( ((_var) >> 2) & 63 ) static uint8_t my_var; <...> SET_VAL2BIT(my_var, 1); SET_VAL6BIT(my_var, 5); int a = GET_VAL2BIT(my_var); /* a == 1 */ int b = GET_VAL6BIT(my_var); /* b == 5 */"
+    }
+}

@@ -1,0 +1,35 @@
+{
+    "id": "dbpedia_4518_1",
+    "rank": 9,
+    "data": {
+        "url": "https://stackoverflow.com/questions/2499978/how-to-define-2-bit-numbers-in-c-if-possible",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How to define 2-bit numbers in C, if possible?",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/cde0700c81d9e2dc882c8ad81f4faa71?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/69qgr.jpg?s=64",
+            "https://www.gravatar.com/avatar/320239374ee6d1ae0d8c6889b0de89a9?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/82d3ad1de1b2b52e33ae85a9e396cdeb?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/10aae09a71c08efc29b09b7a9cf8706d?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/2499978/ivc/0ffa?prg=fba86dfe-1904-4f91-b912-c7f6a1db3275"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2010-03-23T12:55:05",
+        "summary": "",
+        "meta_description": "For my university process I'm simulating a process called random sequential adsorption.\nOne of the things I have to do involves randomly depositing squares (which cannot overlap) onto a lattice until",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/2499978/how-to-define-2-bit-numbers-in-c-if-possible",
+        "text": "You can't create a datatype that is 2-bits in size since it wouldn't be addressable. What you can do is pack several 2-bit numbers into a larger cell:\n\nstruct Cell { a : 2; b : 2; c : 2; d : 2; };\n\nThis specifies that each of the members a, b, c and d should occupy two bits in memory.\n\nEDIT: This is just an example of how to create 2-bit variables, for the actual problem in question the most efficient implementation would probably be to create an array of int and wrap up the bit fiddling in a couple of set/get methods.\n\nThe basic idea\n\nUnfortunately, there is no way to do this in C. You can create arrays of 1 byte, 2 bytes, etc., but you can't create areas of bits.\n\nThe best thing you can do, then, is to write a new library for yourself, which makes it look like you're dealing with arrays of 2 bits, but in reality does a lot of hard work. The same way that the string libraries give you functions that work on \"strings\" (which in C are just arrays), you'll be creating a new library which works on \"bit arrays\" (which in reality will be arrays of integers, with a few special functions to deal with them as-if they were arrays of bits).\n\nNOTE: If you're new to C, and haven't learned the ideas of \"creating a new library/module\", or the concept of \"abstraction\", then I'd recommend learning about them before you continue with this project. Understanding them is IMO more important than optimizing your program to use a little less space.\n\nHow to implement this new \"library\" or module\n\nFor your needs, I'd create a new module called \"2-bit array\", which exports functions for dealing with the 2-bit arrays, as you need them.\n\nIt would have a few functions that deal with setting/reading bits, so that you can work with it as if you have an actual array of bits (you'll actually have an array of integers or something, but the module will make it seem like you have an array of bits).\n\nUsing this module would like something like this:\n\n// This is just an example of how to use the functions in the twoBitArray library. twoB my_array = Create2BitArray(size); // This will \"create\" a twoBitArray and return it. SetBit(twoB, 5, 1); // Set bit 5 to 1 // bit b = GetBit(twoB, 5); // Where bit is typedefed to an int by your module.\n\nWhat the module will actually do is implement all these functions using regular-old arrays of integers.\n\nFor example, the function GetBit(), for GetBit(my_arr, 17), will calculate that it's the 1st bit in the 4th integer of your array (depending on sizeof(int), obviously), and you'd return it by using bitwise operations."
+    }
+}
