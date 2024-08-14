@@ -1,0 +1,34 @@
+{
+    "id": "dbpedia_4774_0",
+    "rank": 73,
+    "data": {
+        "url": "https://stackoverflow.com/questions/41315086/calculating-iv60-and-iv90-on-interactive-brokers",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Calculating IV60, and IV90 on interactive brokers",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://i.sstatic.net/DpokP.gif",
+            "https://graph.facebook.com/10152538725216326/picture?type=large",
+            "https://www.gravatar.com/avatar/a007be5a61f6aa8f3e85ae2fc18dd66e?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/0f1ddccfd95207448247e71889008cb9?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/41315086/ivc/acfa?prg=71fb367e-8deb-4ca2-a486-39c6981769fe"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2016-12-24T16:42:37",
+        "summary": "",
+        "meta_description": "I am trading options, but I need to calculate the historical implied volatility in the last year. I am using Interactive Broker's TWS. Unfortunately they only calculate V30 (the implied volatility ...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/41315086/calculating-iv60-and-iv90-on-interactive-brokers",
+        "text": "Your question is either confusing or isn't about programming. This is what IB says.\n\nThe IB 30-day volatility is the at-market volatility estimated for a maturity thirty calendar days forward of the current trading day, and is based on option prices from two consecutive expiration months.\n\nIt makes no sense to me and I can't even get those ticks to arrive (generic type 24). But even if you get them, they don't seem to be useful. My guess is it's an average to estimate what the IV would be for an option expiring exactly 30 days in the future. I can't imagine the purpose for this. The data would be impossible to trade with and doesn't represent reality. Imagine an earnings report at 29 or 31 days!\n\nIf you'd like the IV about 60 or 90 days in the future call reqMktData with an option contract that expires around then and an empty generic tick list. You will get tick types 10, 11, 12, and 13 which all have an IV. That's how you build the IV surface. If you'd like to build it with a weighted average to estimate 60 days, it's possible.\n\nThis is python but should be self explanatory\n\ntickerId = 1 optCont = Contract() optCont.m_localSymbol = \"AAPL 170120C00130000\" optCont.m_exchange = \"SMART\" optCont.m_currency = \"USD\" optCont.m_secType = \"OPT\" tws.reqMktData(tickerId, optCont, \"\", False)\n\nThen I get data like\n\n<tickOptionComputation tickerId=1, field=10, impliedVol=0.20363398519176756, delta=0.0186015418248492, optPrice=0.03999999910593033, pvDividend=0.0, gamma=0.007611155331932943, vega=0.012855970569816431, theta=-0.005936076573849303, undPrice=116.735001>"
+    }
+}
