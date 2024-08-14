@@ -1,0 +1,30 @@
+{
+    "id": "dbpedia_4417_0",
+    "rank": 12,
+    "data": {
+        "url": "https://forum.inductiveautomation.com/t/windowed-client-start-position/18764",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Windowed Client Start Position",
+        "top_image": "https://global.discourse-cdn.com/business4/uploads/inductiveautomation/original/3X/d/0/d04bf73695767fa1e57a3be18dae99baf5dfc2c4.jpeg",
+        "meta_img": "https://global.discourse-cdn.com/business4/uploads/inductiveautomation/original/3X/d/0/d04bf73695767fa1e57a3be18dae99baf5dfc2c4.jpeg",
+        "images": [
+            "http://forum.inductiveautomation.com/images/emoji/twitter/thinking.png?v=9"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2018-07-08T00:53:26+00:00",
+        "summary": "",
+        "meta_description": "A client has a large 4K monitor they are using for cameras, with a 1920x1080 area for their Ignition client in the bottom right. I can set the size of the client, but how can I set the launch position coordinates to the &hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://global.discourse-cdn.com/business4/uploads/inductiveautomation/optimized/2X/5/51600da2efd947f080fca46a91f48655bf125b6f_2_32x32.png",
+        "meta_site_name": "Inductive Automation Forum",
+        "canonical_link": "https://forum.inductiveautomation.com/t/windowed-client-start-position/18764",
+        "text": "A client has a large 4K monitor they are using for cameras, with a 1920x1080 area for their Ignition client in the bottom right. I can set the size of the client, but how can I set the launch position coordinates to the bottom right, instead of default top left?\n\nThanks Paul. I’ll look at using AutoHotKey. From your answer though, I assume it’s not possible to move around the client window via a Jython script on client launch?\n\nFrom some searching around, it looks like it might be possible to setLocation() on the parent JFrame containing the entire client, but it’s not something I’ve ever experimented with. If you decide to do some experimentation, I’d recommend using SwingUtilities to help get the root frame.\n\nJust in case anyone else is looking, I found this works:\n\n# set the location of the Ignition Client window from javax.swing import SwingUtilities def SetLocation(left=100, top=200): allWindows = system.gui.getOpenedWindows() if len(allWindows)==0: #No Windows open? open one first system.nav.openWindow(\"Main\") allWindows = system.gui.getOpenedWindows() topWindow = SwingUtilities.getAncestorOfClass(Window, allWindows[0]) topWindow.setLocation(left,top)\n\nI know this may be a stupid question but where did you run this script? Also doesn’t it still go to top left as it is written?"
+    }
+}

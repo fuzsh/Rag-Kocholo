@@ -1,0 +1,50 @@
+{
+    "id": "dbpedia_4418_3",
+    "rank": 58,
+    "data": {
+        "url": "https://www.dmcinfo.com/latest-thinking/blog/id/10252/creating-dynamic-ignition-perspective-projects-part-3-embedded-views-and-flex-containers",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Creating Dynamic Ignition Perspective Projects, Part 3: Embedded Views and Flex Containers",
+        "top_image": "https://www.dmcinfo.com/Portals/0/Blog Pictures/Part Three.png",
+        "meta_img": "https://www.dmcinfo.com/Portals/0/Blog Pictures/Part Three.png",
+        "images": [
+            "https://www.dmcinfo.com/Portals/_default/skins/morethanoneway/images/hamburger.png",
+            "https://www.dmcinfo.com/Portals/_default/skins/morethanoneway/images/dmc-logo.png",
+            "https://www.dmcinfo.com/DesktopModules/DnnForge%20-%20NewsArticles/ImageHandler.ashx?Width=925&Height=400&HomeDirectory=%2fPortals%2f0%2f&FileName=Blog+Pictures%2fPart+Three.png&PortalID=0&q=1",
+            "https://www.dmcinfo.com/Portals/0/Blog Pictures/HeadShots/casimirs.jpg",
+            "https://www.dmcinfo.com/Portals/0/1_new_flex_view.png",
+            "https://www.dmcinfo.com/Portals/0/2_resized_view.png",
+            "https://www.dmcinfo.com/Portals/0/3_copy_from_main_view.png",
+            "https://www.dmcinfo.com/Portals/0/4_paste_to_main_view.png",
+            "https://www.dmcinfo.com/Portals/0/6_flex_container_props.png",
+            "https://www.dmcinfo.com/Portals/0/7_row_flex_container.png",
+            "https://www.dmcinfo.com/Portals/0/8_flex_position_props.png",
+            "https://www.dmcinfo.com/Portals/0/9_spaced_flex.png",
+            "https://www.dmcinfo.com/Portals/0/11_add_margin.png",
+            "https://www.dmcinfo.com/Portals/0/12_final_result.png",
+            "https://www.dmcinfo.com/Portals/0/13_drag_into_main_view.png",
+            "https://www.dmcinfo.com/DesktopModules/DnnForge%20-%20NewsArticles/Controls/ImageChallenge.captcha.aspx?captcha=B63F4B77283D78992012FD70DFB206735CF8F09B4F312D1A88AD592720E2B770EB843DC6E317A5815733CC0CAB0840DBEF01E60E4C6889FCD124AD5FA60D9CC234173AF606998D51D55D5B6C9C2BAB801D3CFA60AC5CE9EE6D28A336BD3B4B4BF692002CF95A741C387B353ADE233848307CF852478ECEB4764DA42D&alias=www.dmcinfo.com",
+            "https://www.dmcinfo.com/portals/_default/skins/morethanoneway/images/dmc-logo-white.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "Manufacturing Automation & Intelligence",
+            "HMI and SCADA",
+            "MES"
+        ],
+        "tags": null,
+        "authors": [
+            "Casimir Smith"
+        ],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "One of the fastest growing SCADA/HMI platforms today is Inductive Automation's Ignition. In addition to the well-known Vision visualization module, Ignition contains Perspective, a web-friendly visualization module built from the ground up to work in any web browser — even on mob",
+        "meta_lang": "en",
+        "meta_favicon": "/Portals/0/favicon.ico?ver=uDXj5FJT77hg0Fl3-XUKYw%3d%3d",
+        "meta_site_name": "",
+        "canonical_link": "https://www.dmcinfo.com/latest-thinking/blog/id/10252/creating-dynamic-ignition-perspective-projects-part-3-embedded-views-and-flex-containers",
+        "text": "One of the fastest growing SCADA/HMI platforms today is Inductive Automation's Ignition. In addition to the well-known Vision visualization module, Ignition contains Perspective, a web-friendly visualization module built from the ground up to work in any web browser — even on mobile!\n\nAlthough most Ignition functions work the same across Perspective or Vision, there are some adjustments to work better in a web-friendly environment. This multi-part blog will serve as a guide to setting up dynamic Perspective screens that take full advantage of the powerful new features.\n\nIn the last two blogs, we created a status display to toggle an enable bit and display a numeric value. In this blog, we will combine those objects into an embedded view and use a flex repeater to create a dynamic layout.\n\nCreating a New Flex View\n\nTo create a new view, right click \"Views\" in the Project Browser then click \"New View\" In the popup. Be sure to change the root container type to \"Flex Container\". The root container type cannot be changed once the view is created.\n\nNext, select the view in the project browser and resize it using the width and height properties in the property editor. Change the dimensions to 400x100px.\n\nNext, return to the main view and copy the toggle button, enable display, and numeric value display. Paste these three components into the new view's root container.\n\nThe three views line up on top of each other in the flex container, which is not what we want. We need to configure the flex container and object position properties to best display our data.\n\nConfiguring the Flex Container\n\nThe flex container has many different properties that determine how objects are displayed, the first is the direction. Switch this to \"row\" to change the orientation of the three objects.\n\nNow our objects are in a row, but they are not the correct size. We want the button, enable, and numeric display to take up different amounts of space. Luckily, there are position properties on each object that can achieve this exact behavior.\n\nSelect the button object and find the position properties in the property editor. The basis determines how much space the object \"wants\" to take up. It can be in percent (%) or pixels (px). Set the button basis to 20%, the enable label basis to 30%, and the numeric label to 50%.\n\nThe other parameters are shrink, which decides if the object should shrink if there isn't enough space, and grow, which decides if the object should grow to take up unallocated space. We do not need to adjust these.\n\nAfter adjusting the basis, each object takes up the allotted percentage of space. There is one final tweak: adding a margin to the button so it is spaced away from the edges and other components.\n\nSelect the button and find the \"style\" property in the property editor. Press the plus button to add a new style entry. Name it \"margin\" and set the value to 5px. Alternatively, you can click the style card icon button to graphically view and edit style definitions.\n\nWith a margin on the button, our flex container view looks ready to go! All that's left to do is to add it to our main view.\n\nEmbedding in Another View\n\nEmbedding views within other views is easy. Just find your desired view in the project browser, then drag it into your current view. Alternatively, you can grab an \"Embedded View\" object from the toolbox, then set the path parameter to your view's path. The embedded view now acts as a singular object.\n\nIn this blog, we learned how to create an embedded view template and add it to another view. In the next blog, we will add parameters to this template so we can create multiple instances to get data from different sources!"
+    }
+}
