@@ -1,0 +1,40 @@
+{
+    "id": "dbpedia_4202_1",
+    "rank": 26,
+    "data": {
+        "url": "https://e2e.ti.com/support/legacy_forums/embedded/tirtos/f/ti-rtos-forum-read-only-archived/539439/relocating-application-while-using-sys-bios-rom",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Relocating Application while using SYS/BIOS ROM",
+        "top_image": "https://e2e.ti.com:443/cfs-file/__key/themefiles/tc-s-3fc3f82483d14ec485ef92e206116d49-00000000000000000000000000000000-favicon/tiicon.gif",
+        "meta_img": "https://e2e.ti.com:443/cfs-file/__key/themefiles/tc-s-3fc3f82483d14ec485ef92e206116d49-00000000000000000000000000000000-favicon/tiicon.gif",
+        "images": [
+            "https://e2e.ti.com:443/cfs-filesystemfile/__key/communityserver-components-imagefileviewer/widgetcontainerfiles-3fc3f82483d14ec485ef92e206116d49-s-AAAAAAAAAAAAAAAAAAAAAA-header-header-dXWTWF6YJkCKrTvaFFZaDQ-logo/ic_2D00_logo.png_2D00_250x88.png_2D00_250x88.png?_=638278900268803910",
+            "https://e2e.ti.com:443/cfs-filesystemfile/__key/communityserver-components-imagefileviewer/communityserver-components-groupavatars_2E00_/default.png_2D00_68x68x2.png?_=638256304222205490",
+            "https://e2e.ti.com:443/cfs-filesystemfile/__key/communityserver-components-imagefileviewer/communityserver-components-avatars_2E00_/default.png_2D00_32x32x2.png?_=638256251478916720",
+            "https://e2e.ti.com:443/cfs-filesystemfile/__key/widgetfiles/95bd25baf0724cf2af03a74ebd4a607a-d/communitymember.gif?_=638373014223297770",
+            "https://e2e.ti.com:443/cfs-filesystemfile/__key/communityserver-components-imagefileviewer/communityserver-components-avatars-00-00-03-52-99/4THLT4R7OGOI.jpg_2D00_28x28x2.jpg?_=638279671805807220",
+            "https://e2e.ti.com:443/cfs-filesystemfile/__key/communityserver-components-imagefileviewer/communityserver-components-avatars_2E00_/default.png_2D00_28x28x2.png?_=638256308571005130",
+            "https://e2e.ti.com:443/cfs-filesystemfile/__key/communityserver-components-imagefileviewer/communityserver-components-avatars_2E00_/default.png_2D00_28x28x2.png?_=638256308571005130"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "CC2650",
+            "Kernel",
+            "SYSBIOS",
+            "ROM",
+            "FLASH_BASE"
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2016-09-01T07:49:57.437000+00:00",
+        "summary": "",
+        "meta_description": "Hi, First, I want to say that I have read these topics: https://e2e.ti.com/support/embedded/tirtos/f/355/p/441476/1588263#pi317008=1 https://e2e.ti.com/support",
+        "meta_lang": "en",
+        "meta_favicon": "https://e2e.ti.com:443/cfs-file/__key/themefiles/tc-s-3fc3f82483d14ec485ef92e206116d49-00000000000000000000000000000000-favicon/tiicon.gif",
+        "meta_site_name": "",
+        "canonical_link": "https://e2e.ti.com/support/processors-group/processors/f/processors-forum/539439/relocating-application-while-using-sys-bios-rom",
+        "text": "Hi,\n\nFirst, I want to say that I have read these topics:\n\nhttps://e2e.ti.com/support/embedded/tirtos/f/355/p/441476/1588263#pi317008=1\n\nhttps://e2e.ti.com/support/wireless_connectivity/bluetooth_low_energy/f/538/t/433035\n\nhttps://e2e.ti.com/support/wireless_connectivity/bluetooth_low_energy/f/538/p/463148/1663952\n\nI see that \"RTOS in ROM look-up table\" is not relocatable. So, using kernel ROM leads to linker error when FLASH_BASE has offset.\n\nNow assume we have an Application_A with FLASH_BASE and resetVectorAddress 0x0, using kernel ROM. It will be compiled and linked with no problem.\n\nAnd we have an Application_B with FLASH_BASE and resetVectorAddress 0x4000, using kernel ROM again. linker.cmd file will be generated and we get a linker error.\n\nThen arrange linker.cmd so SECTIONS will look like this:\n\nSECTIONS\n\n{\n\n.data:ti_sysbios_knl_Clock_Module__state__V: LOAD > 0x20000178\n\n.data:ti_sysbios_family_arm_cc26xx_TimestampProvider_Module__state__V: LOAD > 0x200001ec\n\n.data:xdc_runtime_Startup_Module__state__V: LOAD > 0x200001f0\n\n.data:ti_sysbios_BIOS_Module__state__V: LOAD > 0x200001a4\n\n.data:ti_sysbios_knl_Swi_Module__state__V: LOAD > 0x200001c8\n\n.data:ti_sysbios_knl_Task_Module__state__V: LOAD > 0x20000100\n\n.data:xdc_runtime_Memory_Module__state__V: LOAD > 0x20000200\n\n.data:xdc_runtime_System_Module__state__V: LOAD > 0x200001f8\n\n.data:ti_sysbios_family_arm_m3_Hwi_Module__state__V: LOAD > 0x20000144\n\n.data:ti_sysbios_family_arm_cc26xx_Timer_Module__state__V: LOAD > 0x200001e4\n\n}"
+    }
+}

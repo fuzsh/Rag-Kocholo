@@ -1,0 +1,48 @@
+{
+    "id": "dbpedia_4195_3",
+    "rank": 38,
+    "data": {
+        "url": "https://retropie.org.uk/forum/topic/21450/which-shader-video-filter-setting-for-atari-7800",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Which shader/video filter setting for Atari 7800?",
+        "top_image": "https://retropie.org.uk/forum/assets/uploads/profile/uid-21734/21734-profileavatar.jpeg",
+        "meta_img": "https://retropie.org.uk/forum/assets/uploads/profile/uid-21734/21734-profileavatar.jpeg",
+        "images": [
+            "https://retropie.org.uk/forum/assets/uploads/system/site-logo.png?v=jd3ci5kkam8",
+            "https://retropie.org.uk/forum/assets/uploads/profile/uid-21734/21734-profileavatar.jpeg",
+            "https://retropie.org.uk/forum/assets/uploads/profile/uid-21734/21734-profileavatar.jpeg",
+            "https://retropie.org.uk/forum/assets/uploads/profile/uid-21734/21734-profileavatar.jpeg",
+            "https://retropie.org.uk/forum/assets/uploads/profile/uid-11426/11426-profileavatar.png",
+            "https://retropie.org.uk/forum/assets/uploads/profile/uid-11426/11426-profileavatar.png",
+            "https://retropie.org.uk/forum/assets/uploads/profile/uid-21734/21734-profileavatar.jpeg",
+            "https://retropie.org.uk/forum/assets/uploads/profile/uid-21734/21734-profileavatar.jpeg",
+            "https://retropie.org.uk/forum/assets/uploads/profile/uid-11426/11426-profileavatar.png",
+            "https://retropie.org.uk/forum/assets/uploads/profile/uid-11426/11426-profileavatar.png",
+            "https://retropie.org.uk/forum/assets/uploads/profile/uid-21734/21734-profileavatar.jpeg",
+            "https://retropie.org.uk/forum/assets/uploads/profile/uid-11426/11426-profileavatar.png",
+            "https://retropie.org.uk/forum/uploads/profile/uid-2970/2970-profileimg.jpg",
+            "https://retropie.org.uk/forum/assets/uploads/profile/uid-11426/11426-profileavatar.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "pi",
+            "raspberry",
+            "retrogaming",
+            "retro",
+            "emulation",
+            "games"
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2019-02-27T21:56:42.124000+00:00",
+        "summary": "",
+        "meta_description": "Any recommendations? I'd like to extend my Atari 7800 retroarch.cfg and apply some video filter/shader settings which considerably, not to say quite extremel...",
+        "meta_lang": "en",
+        "meta_favicon": "/forum/assets/uploads/system/favicon.ico?v=jd3ci5kkam8",
+        "meta_site_name": "RetroPie Forum",
+        "canonical_link": "https://retropie.org.uk/forum/topic/21450/which-shader-video-filter-setting-for-atari-7800",
+        "text": "Any recommendations?\n\nI'd like to extend my Atari 7800 retroarch.cfg and apply some video filter/shader settings which considerably, not to say quite extremely blur the image on games.\n\nOn-default it's so blocky.\n\nI tried these but i see no any change:\n\nhttps://retropie.org.uk/forum/topic/20024/slang-shaders-configurations-for-each-system/2\n\nAny ideas/recommendations?\n\nHmm - meanwhile I came across this folder here:\n\n/retropie/configs/all/retroarch/shaders\n\nIs there a way to use these, respectively can I tell the Atari 7800 emulator somhow to use them?\n\nEDIT:\n\nThis is how my retroarch.cfg for the Atari 7800 looks right now:\n\n# Settings made here will only override settings in the global retroarch.cfg if placed above the #include line input_remapping_directory = \"/opt/retropie/configs/atari7800/\" audio_volume = \"-10.000000\" Video_smooth = \"true\" video_shader_enable = \"true\" video_shader = \"~/.config/retroarch/shaders/color/palm-color.glslp\" #include \"/opt/retropie/configs/all/retroarch.cfg\"\n\nI chose an (think so) extra flashy shader, however I can see no any difference.\n\nOK guys I got it to work and I'd like to share it with you.\n\nNo idea which of the lines are actually mandatory and which not, but anyway it works, e.g. with this CRT filter:\n\n# Settings made here will only override settings in the global retroarch.cfg if placed above the #include line input_remapping_directory = \"/opt/retropie/configs/atari7800/\" audio_volume = \"-10.000000\" Video_smooth = \"true\" auto_shaders_enable = \"true\" input_shader_next = \"m\" input_shader_prev = \"n\" video_shader_dir = \"~/.config/retroarch/shaders\" video_filter_dir = \"default\" video_shader_enable = \"true\" video_shader = \"~/.config/retroarch/shaders/crt-pi-vertical.glsl\" #include \"/opt/retropie/configs/all/retroarch.cfg\"\n\n@TimZett Thank you for sharing the solution. Most likely, the lines needed are\n\nauto_shaders_enable = \"true\" video_shader = \"~/.config/retroarch/shaders/crt-pi-vertical.glsl\"\n\nThis can be also be done directly from the RGUI, by saving the shader preset for the core, as described near the end of the doc page.\n\n@mitu There must be something missing at yours - I just tried it and the filter isn't applied any longer.\n\nI will play around a bit and let you know later.\n\nBy the way, do you know how to apply more than one filter at a time (cascading)?\n\nEDIT:\n\nGot it. This is all we need:\n\nvideo_shader_enable = \"true\" video_shader = \"~/.config/retroarch/shaders/[Shader Filename]\"\n\n@TimZett RetroArch distributes Shader presets (.glslp) files which combine multiple shader passes with the parameters accepted by the shaders and can be loaded from the RGUI and then tweaked.\n\nHere's an example of such a preset (crt/gtu-famicon.glslp):\n\nshaders = 5 shader0 = shaders/gtu-famicom/DAC_combined.glsl scale_type_x0 = source scale_x0 = 8.0 scale_type_y0 = source scale_y0 = 1.0 filter_linear0 = false frame_count_mod0 = 2 float_framebuffer0 = true shader1 = shaders/gtu-famicom/lowPass.glsl scale_type_1 = source scale_1 = 1.0 filter_linear1 = false frame_count_mod1 = 32 float_framebuffer1 = true shader2 = shaders/gtu-famicom/combFilter.glsl scale_type_2 = source scale_2 = 1.0 filter_linear2 = false frame_count_mod2 = 2 float_framebuffer2 = true shader3 = shaders/gtu-famicom/scaleX.glsl scale_type_x3 = viewport scale_x3 = 1.0 scale_type_y3 = source scale_y3 = 1.0 float_framebuffer3 = true filter_linear3 = false shader4 = shaders/gtu-famicom/scaleY.glsl scale_type_x4 = source scale_x4 = 1.0 scale_type_y4 = viewport scale_y4 = 1.0 filter_linear4 = false float_framebuffer4 = true textures = nestable nestable = shaders/gtu-famicom/NesTable.png nestable_linear = false nestable_mipmap = false nestable_wrap_mode = clamp_to_border\n\nYou can create your own presets - look in the shaders folder - or just add the shaders individually to the .cfg file with the same syntax as above.\n\nThanks mitu.\n\nNow for me the question is whether there is an overview available, about what each shader preset (.glsl) does and in case of a .glslp, what the individual (cascaded) shaders do.\n\nThe preset file names, especially those of the .glslp ones, IMO are not really self-explaining in most cases.\n\nEDIT:\n\nI found something:\n\nhttp://emulation.gametechwiki.com/index.php/Shaders_and_Filters\n\nIf you guys know something \"better\" or more official please share it\n\nthe crt vertical shader is especially for arcade games with a vertically oriented monitor. If you like the way it makes the Atari 7800 games, then go ahead and keep it, but you might just want to try the vanilla crt-pi shader instead."
+    }
+}
