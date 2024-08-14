@@ -1,0 +1,32 @@
+{
+    "id": "dbpedia_4507_3",
+    "rank": 40,
+    "data": {
+        "url": "https://community.mrtrix.org/t/mrconvert-shifts-orientation-of-an-mrtransform-ed-image/2417",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Mrconvert shifts orientation of an mrtransform ed image",
+        "top_image": "https://community.mrtrix.org/uploads/default/optimized/2X/b/b2a4ec38ad862fa128fc6d2f454617ea2524e257_2_1023x628.png",
+        "meta_img": "https://community.mrtrix.org/uploads/default/optimized/2X/b/b2a4ec38ad862fa128fc6d2f454617ea2524e257_2_1023x628.png",
+        "images": [
+            "https://community.mrtrix.org/uploads/default/optimized/2X/b/b2a4ec38ad862fa128fc6d2f454617ea2524e257_2_690x423.png",
+            "https://community.mrtrix.org/uploads/default/optimized/2X/5/5f066d1dd217ce8b31d1ac8a6d7cc6dfe50222f6_2_690x423.png",
+            "https://community.mrtrix.org/uploads/default/optimized/2X/9/931560a2da6e64df3430dbd531f28042c9a30020_2_690x423.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2019-04-02T05:14:53+00:00",
+        "summary": "",
+        "meta_description": "Hi Experts, \nI have been trying to convert an aparc+aseg parcellation image that has been brought to the Diffusion space, from a .mif to a .nii.gz image, for the purpose of extracting specific ROIs from this image to be &hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://community.mrtrix.org/uploads/default/optimized/2X/5/5a141e867cdef5b8247f929cbfd88191a5a6da05_2_32x32.png",
+        "meta_site_name": "MRtrix3 Community",
+        "canonical_link": "https://community.mrtrix.org/t/mrconvert-shifts-orientation-of-an-mrtransform-ed-image/2417",
+        "text": "Hi Experts,\n\nI have been trying to convert an aparc+aseg parcellation image that has been brought to the Diffusion space, from a .mif to a .nii.gz image, for the purpose of extracting specific ROIs from this image to be used in tractography. I did perform the following steps:\n\nRegister b0 to T1 using FSL’s flirt and save the inverse transform\n\nConvert the inverse transform to mrtrix format using transformconvert\n\nApply this transform to the aparc+aseg image converted to .mif format using mrtransform to form nodes.mif - aparc+aseg image in .mif format and in diffusion space.\n\nEverything worked fine and the registration gave really good results. However, when I convert the resulting nodes.mif image into a nifti file using mrconvert, the output (nodes.nii.gz) seems to be misaligned with the .mif image(Screenshots attached). Kindly suggest what could have gone wrong.\n\nRegards,\n\nArchith\n\nEverything worked fine and the registration gave really good results. However, when I convert the resulting nodes.mif image into a nifti file using mrconvert, the output (nodes.nii.gz) seems to be misaligned with the .mif image.\n\nFrom your description here, it sounds as though the issue that you’re reporting is in fact independent of the registration and transformation steps that you described prior to this point: the issue is that upon simply converting a .mif image to a .nii, those two images do not align with one another in space.\n\nGiven the frequency with which this operation has been performed over the years it would seem unusual that it would suddenly lead to such an egregious error. Can you please double-check that the data you are visualising were in fact generated based on precisely the description you’ve given here?\n\nDr. Smith,\n\nI have double checked and the data visualized are generated precisely on the description above.\n\nI’m not sure if it is entirely independent of the registration and transformation steps, as this error occurs only on an image that had undergone mrtransform.\n\nAlso, I think the error is specific to this dataset, as the same commands on a different dataset did not give any errors.\n\nRegards,\n\nArchith\n\nReading my crystal ball, I suspect you did not regrid the image using mrtransform's -template option and used an affine transformation?\n\nIn that case mrtransform applies the transformation to the header, resulting in a non-orthogonal coordinate system (you should have seen a warning about that). This is not necessarily a problem but converting this file to nifti results in the misalignment you observed. You should get more warnings about a mismatch in sform and qform when you inspect that nifti with mrinfo. To fix this, use the target image as the argument to the -template option.\n\nIf the above is not the case, what is the output of mrinfo of the transformed .mif and the corresponding .nii files?\n\nDr Pietsch,\n\nIt was indeed the case.Thank you very much for the diagnosis. But however, if I were to not regrid the T1 parcellation from the original resolution and use mrcalc/mrmath to threshold and extract a few labels from the parcellated .mif image, what would be a workaround?\n\nRegards,\n\nArchith"
+    }
+}

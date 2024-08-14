@@ -1,0 +1,41 @@
+{
+    "id": "dbpedia_4507_3",
+    "rank": 34,
+    "data": {
+        "url": "https://dsp.stackexchange.com/questions/32420/finding-an-images-orientation-with-dft-frequency-amplitudes",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Finding an Image's Orientation With DFT Frequency Amplitudes",
+        "top_image": "https://cdn.sstatic.net/Sites/dsp/Img/apple-touch-icon@2.png?v=e0439310c223",
+        "meta_img": "https://cdn.sstatic.net/Sites/dsp/Img/apple-touch-icon@2.png?v=e0439310c223",
+        "images": [
+            "https://cdn.sstatic.net/Sites/dsp/Img/logo.svg?v=55afe2baa05c",
+            "https://i.sstatic.net/yuiOa.png",
+            "https://i.sstatic.net/hTCQ4.png",
+            "https://i.sstatic.net/QNJba.png",
+            "https://i.sstatic.net/hdIk5.png",
+            "https://i.sstatic.net/RaWRj.gif",
+            "https://i.sstatic.net/qFcsU.gif",
+            "https://graph.facebook.com/659174383/picture?type=large",
+            "https://i.sstatic.net/v4kP5.png?s=64",
+            "https://dsp.stackexchange.com/posts/32420/ivc/f9f9?prg=0ae4f02a-8a84-49f6-b8a5-4ea52370bfe4"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Alan Wolfe"
+        ],
+        "publish_date": "2016-08-01T22:18:40",
+        "summary": "",
+        "meta_description": "I'm looking to get some general idea of an image's orientation so that I can then rotate it to the nearest 90 degree angle.\n\nMy idea on how to do this is to take the DFT on the image, then do a \"ra...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/dsp/Img/favicon.ico?v=a0f03f004bf6",
+        "meta_site_name": "Signal Processing Stack Exchange",
+        "canonical_link": "https://dsp.stackexchange.com/questions/32420/finding-an-images-orientation-with-dft-frequency-amplitudes",
+        "text": "I'm looking to get some general idea of an image's orientation so that I can then rotate it to the nearest 90 degree angle.\n\nMy idea on how to do this is to take the DFT on the image, then do a \"radar sweep\" to find which angle has the greatest sum of frequency amplitudes along the line, and call the winning angle the orientation.\n\nI scan from 0 to 180 degrees instead of from 0 to 360, and make the radar sweep double sided since negative and positive frequencies seem to belong together.\n\nFor example, if i take the DFT of this image:\n\nThe frequency amplitudes are:\n\nAnd if I do a radar sweep, I'd find the winning line / angle here:\n\nUsing that information, I can know where the nearest 90 degrees is for that blue line, figure out how much i'd need to rotate the dft image to make that blue line vertical, but instead rotate the source image by that amount, to make that image orient towards the nearest 90 degrees.\n\nSomething like this, but actually level (I'm working out some bugs at the moment, in my implementation)\n\nIs this method sound? Are there any complications that I'm going to encounter when moving to more complex images such as complex patterns or photographs?\n\nEdit: In the above I didn't explain the reasoning for what I am doing.\n\nIf you take the dft of simple images - like a single line, or a repeating pattern of black and white stripes - the resulting frequency amplitudes image has data that runs perpendicular to the direction of that line or those stripes.\n\nLine this:\n\nDFT'ing to this:\n\nMay (possibly naive!) understanding is that I should then be able to tell which direction (from the center) has the highest sum, and that will tell me the angle perpendicular to the largest represented orientation of the image.\n\nFrom there, i can find how much i'd have to rotate that line to get to the nearest 90 degrees, and apply that rotation to the source image, to make it line up to it's nearest 90 degrees.\n\nIs my thinking too simplistic, or is this a solid approach?"
+    }
+}

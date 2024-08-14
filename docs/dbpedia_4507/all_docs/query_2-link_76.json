@@ -1,0 +1,47 @@
+{
+    "id": "dbpedia_4507_2",
+    "rank": 76,
+    "data": {
+        "url": "https://retropie.org.uk/forum/topic/19955/omx-player-showing-in-portrait-instead-of-landscape%3Fpage%3D2",
+        "read_more_link": "",
+        "language": "en",
+        "title": "OMX Player showing in portrait instead of landscape",
+        "top_image": "https://retropie.org.uk/forum/assets/uploads/system/site-logo.png",
+        "meta_img": "https://retropie.org.uk/forum/assets/uploads/system/site-logo.png",
+        "images": [
+            "https://retropie.org.uk/forum/assets/uploads/system/site-logo.png?v=jd3ci5kkam8",
+            "https://retropie.org.uk/forum/assets/uploads/profile/uid-11426/11426-profileavatar.png",
+            "https://retropie.org.uk/forum/assets/uploads/profile/uid-11426/11426-profileavatar.png",
+            "https://retropie.org.uk/forum/assets/uploads/profile/uid-11426/11426-profileavatar.png",
+            "https://retropie.org.uk/forum/assets/uploads/profile/uid-11426/11426-profileavatar.png",
+            "https://retropie.org.uk/forum/assets/uploads/profile/uid-11426/11426-profileavatar.png",
+            "https://retropie.org.uk/forum/assets/uploads/profile/uid-11426/11426-profileavatar.png",
+            "https://retropie.org.uk/forum/assets/uploads/profile/uid-11426/11426-profileavatar.png",
+            "https://retropie.org.uk/forum/assets/uploads/profile/uid-11426/11426-profileavatar.png",
+            "https://retropie.org.uk/forum/assets/uploads/profile/uid-11426/11426-profileavatar.png",
+            "https://retropie.org.uk/forum/assets/uploads/profile/uid-11426/11426-profileavatar.png",
+            "https://retropie.org.uk/forum/uploads/profile/uid-2912/2912-profileimg.png",
+            "https://retropie.org.uk/forum/uploads/profile/uid-2912/2912-profileimg.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "pi",
+            "raspberry",
+            "retrogaming",
+            "retro",
+            "emulation",
+            "games"
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2018-11-12T16:47:32.005000+00:00",
+        "summary": "",
+        "meta_description": "What would cause OMX Player to show videos in the wrong orientation? When I start up ES, the intro videos show in portrait instead of landscape and all the v...",
+        "meta_lang": "en",
+        "meta_favicon": "/forum/assets/uploads/system/favicon.ico?v=jd3ci5kkam8",
+        "meta_site_name": "RetroPie Forum",
+        "canonical_link": "https://retropie.org.uk/forum/topic/19955/omx-player-showing-in-portrait-instead-of-landscape",
+        "text": "What would cause OMX Player to show videos in the wrong orientation? When I start up ES, the intro videos show in portrait instead of landscape and all the video snaps for each system do as well. If I turn off OMX Player in Main Menu -> Other Settings the video snaps show correctly (but the intro video still shows in the wrong orientation). Nothing else seems to be effected but the intro videos and the video snaps which leads me to believe one of my settings is interfering with OMX.\n\nI think the issue has something to do with my config.txt file that was supplied by the original creator of this build. Here's what's in that file: https://pastebin.com/pSMfMBHt\n\nI'm assuming it's something to do with that file because I removed the SD card I had in there and put another one that has a working image from another build I just finished and the problem persists when I put in the config.txt that was on the original SD card. Not sure which setting could be affecting OMX Player. Anyone have any ideas?\n\nI've been at this for hours but I can't seem to figure this out. I've pulled apart the build so I can get information off the monitor and it's this one: https://www.waveshare.com/product/4inch-hdmi-lcd.htm\n\nI tried redoing my config.txt from scratch with the bits of code they mention on their wiki: https://www.waveshare.com/wiki/4inch_HDMI_LCD\n\nhdmi_group=2 hdmi_mode=87 hdmi_cvt 480 800 60 6 0 0 0 dtoverlay=ads7846,cs=1,penirq=25,penirq_pull=2,speed=50000,keep_vref_on=0,swapxy=0,pmax=255,xohms=150,xmin=200,xmax=3900,ymin=200,ymax=3900 display_rotate=3\n\nBut the problem still persists. I'm not really sure what else to check at this point. It only seems to affect the intro videos and my video snaps. My theme loads fine, screensaver slideshow images show fine, games show fine. So I keep coming back to it's something to do with OMX Player but the Pi image I'm on now is identical to one I just did on another build where everything works fine. The only difference is that build didn't use a connected screen like this and so the config.txt is untouched. So it must have something to do with my config.txt file. Here's a copy of that file again: https://pastebin.com/pSMfMBHt\n\nAny help would be much appreciated. I just finished three Pi builds and this is the very last thing I need to sort out before I can call this a wrap. After weeks of learning how to set all of this stuff up I'm finally ready to play some games. Just need to get this sorted first.\n\n@mitu I tried replicating this issue on my working console build that's connected to a normal lcd TV and I can't. I put in those same lines in my config.txt (but I changed display_rotate to 2 so the display would be rotated but I could see it) and everything still plays fine. I'm using the same theme on both builds which is BACK2BASICS by Hursty.\n\nI also tried changing my theme to Carbon on the build that's not working right and the video snap problem persists.\n\nI also tried commenting out the rotate display bit and I switched to Hursty's vertical arcade theme and the video snaps were still all messed up. So I'm not so sure that it has something to do with rotating the display. I'm really stumped here.\n\n@mitu Thanks for all the continued help! I really do appreciate it!\n\nI started playing around with OMX Player in terminal and it looks like the issue is the aspect-mode. This page has three modes outlined:\n\nLetterbox, fill, stretch. Default is stretch if win is specified, letterbox otherwise\n\nI played around with each and found that the video I was testing only played right when I entered stretch mode. It looks like it's defaulting to Letterbox. Any idea how I can set this to only play in stretch going forward? I'm very much a novice at this so any help would be appreciated. I know you mentioned modifying the script but I'm not sure how to do that exactly.\n\nMan...getting so close here!\n\nI ended up finding another thread about editing the wrapper script and found that I needed to put my adjustments in between $OMXPLAYER_BIN and \"$@\" on line 67. I put --aspect-mode stretch in there and rebooted and the intro video finally played just fine but the video snaps still play the same. Of course you've already figured out why since the theme is calling the bin and not the wrapper script. I did try switching to the Carbon theme to see if it had something to do with BACK2BASICS but the problem persists there as well.\n\nSo I guess I now have to figure out how to edit the theme somehow. If anyone has any input, I'm all ears!\n\n@AtTheArcade I have an idea about modifying the theme.\n\nCopy the theme folder from /etc/emulationstation/themes to /home/pi/.emulationstation/themes (the 2nd folder does not exist by default, just create it) using the File Manager from the RetroPie system in ES. Rename the folder and add a suffix to is (like back2basics-mod) so you're sure the name of the theme to select it in ES.\n\nModify the theme.xml inside the new created theme folder and replace the maxsize node at line 225 and replace it with size so instead of\n\n<video name=\"md_video\"> <origin>0.5 0.5</origin> <pos>0.747 0.631</pos> <maxSize>0.3292 0.4297</maxSize> <delay>1</delay> <showSnapshotNoVideo>true</showSnapshotNoVideo> <showSnapshotDelay>true</showSnapshotDelay> </video>\n\nis\n\n<video name=\"md_video\"> <origin>0.5 0.5</origin> <pos>0.747 0.631</pos> <size>0.3292 0.4297</size> <delay>1</delay> <showSnapshotNoVideo>true</showSnapshotNoVideo> <showSnapshotDelay>true</showSnapshotDelay> </video>\n\nYou can edit the file from the File Manager (press F2 when the file is selected) or use nano to edit it (nano <path to file>). If it's easier, you can edit the file from your PC over file shares, it should be in \\\\retropie\\configs\\all\\emulationstation\\themes\\back2basics-mod.\n\nRestart Emulationstation, then select your new theme and see if anything is different for the video snaps.\n\nMy workaround (not ideal by any means) was to download every piece of boxart I had on the build and resize it to fit the media window for this theme. It was exhausting but I think this build is a wrap now.\n\nI am curious about how to go about rotating ES and the emulators themselves as opposed to rotating the whole screen through the config.txt file though. I clicked the link you originally posted on that @mitu but I didn't see where the solution was for that."
+    }
+}

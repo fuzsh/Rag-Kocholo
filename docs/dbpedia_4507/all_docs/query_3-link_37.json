@@ -1,0 +1,35 @@
+{
+    "id": "dbpedia_4507_3",
+    "rank": 37,
+    "data": {
+        "url": "https://forum.image.sc/t/segment-orientation-from-analyze-skeleton-3d/3945",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Segment orientation from Analyze Skeleton 3D",
+        "top_image": "https://global.discourse-cdn.com/business4/uploads/imagej/original/2X/4/4904e8fe196486eabdbe0d9d185e94dfcab74e10.png",
+        "meta_img": "https://global.discourse-cdn.com/business4/uploads/imagej/original/2X/4/4904e8fe196486eabdbe0d9d185e94dfcab74e10.png",
+        "images": [
+            "https://avatars.discourse-cdn.com/v4/letter/c/977dab/48.png",
+            "https://avatars.discourse-cdn.com/v4/letter/m/f4b2a3/48.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "bonej",
+            "imagej"
+        ],
+        "tags": null,
+        "authors": [
+            "CampbellRolian (Campbell Rolian)",
+            "mdoube (Michael Doube)"
+        ],
+        "publish_date": "2017-01-30T17:52:50+00:00",
+        "summary": "",
+        "meta_description": "Hi - \n\nI am trying to extract information on the orientation of vascular canals in the cortex of mouse bones from high-resolution CT data. I have used Skeletonize 3D followed by Analyze Skeleton 3D with the option for ex&hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://global.discourse-cdn.com/business4/uploads/imagej/optimized/2X/4/4b3d366e9bd1c4abfb68ca23f7596edd29cb2f4a_2_32x32.png",
+        "meta_site_name": "Image.sc Forum",
+        "canonical_link": "https://forum.image.sc/t/segment-orientation-from-analyze-skeleton-3d/3945",
+        "text": "Hi -\n\nI am trying to extract information on the orientation of vascular canals in the cortex of mouse bones from high-resolution CT data. I have used Skeletonize 3D followed by Analyze Skeleton 3D with the option for extra information on the vertex coordinates, branch lengths and Euclidean distance between them. The issue is that the difference between the Euclidean and branch lengths can be up to 50%, i.e., the branch representing the canal is significantly more tortuous than the vertices suggest. Is there a way that the branches from the skeletonization process can be further divided into shorter segments whose orientation could then be determined from their vertices (using a 3D specific plugin)? This would be especially relevant for canals that are circumferential, by their nature more curved than radial and longitudinal.\n\nHere’s a link to a recent article that discusses a method with an ImageJ plugin, but it relies on prior processing using the LineSet file format from Amira (using its AutoSkeleton feature). Ideally I’d like to automate this all in ImageJ/BoneJ.\n\nhttp://www.sciencedirect.com/science/article/pii/S0968432816301585\n\nAny thoughts or pointing to relevant plugins would be much appreciated!\n\nThanks\n\nCampbell\n\nHello,\n\nI don’t know which plugins you could use, but I have an idea how to code this. The Java API of the BoneJ version of AnalyzeSkeleton_ exposes a method SkeletonResult run(). The returned SkeletonResult object has a getGraphs() method, which returns the graphs which AnalyzeSkeleton_ created from the image. Each graph describes one skeleton, and they consist of vertices (junctions & end points) and edges (branches). I’ve explained the structure in more detail here.\n\nAn edge consists of two vertices and “slabs”. Slabs are the points that make the edge between the vertices. NB: an edge may have zero slabs. For slabs 1 – n-1 you could calculate orientation with vector subtraction i+1 - i. Then the orientation of the first and last slabs you can find out by comparing them to e.g. the centroids of start and end vertices respectively.\n\nBest regards,\n\nRichard\n\nHi Richard -\n\nI guess I spoke too soon. I’ve been writing the macro in IJM format, and am not familiar with Java. When I select the plugin for Analyze Skeleton 3D, the Results output does not have the coordinates of every slab voxel (or option to list, as far as I can tell), just their number, while the Branch Information window has the coordinates of the vertices, but again not the slabs. I am not sure how to extract that information using the Java API, which I am assuming is what I could get from the getGraphs function.\n\nThanks\n\nCampbell"
+    }
+}
