@@ -1,0 +1,39 @@
+{
+    "id": "dbpedia_4100_2",
+    "rank": 50,
+    "data": {
+        "url": "https://stackoverflow.com/questions/830855/what-regex-would-capture-everything-from-mark-to-the-end-of-a-line",
+        "read_more_link": "",
+        "language": "en",
+        "title": "What Regex would capture everything from ' mark to the end of a line?",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://i.sstatic.net/bBmQb.png?s=64",
+            "https://www.gravatar.com/avatar/8b7df2eb3a2f4ea3bef20eb8e7a8e4b3?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/VB2is.jpg?s=64",
+            "https://i.sstatic.net/IWrUp.jpg?s=64",
+            "https://www.gravatar.com/avatar/f3aa9e8bfc46f7253b16d165250bcecd?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/db3b074ce1f85a56ee4664d225eca8e3?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/Ku0IZ.jpg?s=64",
+            "https://www.gravatar.com/avatar/52e65a3c802ae662b6c0e0989a7c4425?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/uZLqn.jpg?s=64",
+            "https://stackoverflow.com/posts/830855/ivc/99ce?prg=b893caae-1f19-4beb-b3af-da60296e96e5"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2009-05-06T17:52:49",
+        "summary": "",
+        "meta_description": "I have a text file that denotes remarks with a single '.  \n\nSome lines have two quotes but I need to get everything from the first instance of a ' and the line feed.\n\nI AL01                  ' A-LI...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/830855/what-regex-would-capture-everything-from-mark-to-the-end-of-a-line",
+        "text": "The appropriate regex would be the ' char followed by any number of any chars [including zero chars] ending with an end of string/line token:\n\n'.*$\n\nAnd if you wanted to capture everything after the ' char but not include it in the output, you would use:\n\n(?<=').*$\n\nThis basically says give me all characters that follow the ' char until the end of the line.\n\nEdit: It has been noted that $ is implicit when using .* and therefore not strictly required, therefore the pattern:\n\n'.*\n\nis technically correct, however it is clearer to be specific and avoid confusion for later code maintenance, hence my use of the $. It is my belief that it is always better to declare explicit behaviour than rely on implicit behaviour in situations where clarity could be questioned.\n\nIn your example I'd go for the following pattern:\n\n'([^\\n]+)$\n\nuse multiline and global options to match all occurences.\n\nTo include the linefeed in the match you could use:\n\n'[^\\n]+\\n\n\nBut this might miss the last line if it has no linefeed.\n\nFor a single line, if you don't need to match the linefeed I'd prefer to use:\n\n'[^$]+$\n\nThis will capture everything up to the ' in backreference 1 - and everything after the ' in backreference 2. You may need to escape the apostrophes though depending on language (\\')\n\n/^([^']*)'?(.*)$/\n\nQuick modification: if the line doesn't have an ' - backreference 1 should still catch the whole line.\n\n^ - start of string ([^']*) - capture any number of not ' characters '? - match the ' 0 or 1 time (.*) - capture any number of characters $ - end of string\n\nhttps://regex101.com/r/Jjc2xR/1\n\n/(\\w*\\(Hex\\): w*)(.*?)(?= |$)/gm\n\nI'm sure this one works, it will capture de hexa serial in the badly structured text multilined bellow\n\nSpace Reservation: disabled Serial Number: wCVt1]IlvQWv Serial Number (Hex): 77435674315d496c76515776 Comment: new comment\n\nI'm a eternal newbie in regex but I'll try explain this one\n\n(\\w*(Hex): w*) : Find text in line where string contains \"Hex: \"\n\n(.*?) This is the second captured text and means everything after\n\n(?= |$) create a limit that is the space between = and the |\n\nSo with the second group, you will have the value"
+    }
+}
