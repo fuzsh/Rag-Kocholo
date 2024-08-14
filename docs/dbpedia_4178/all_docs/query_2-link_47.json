@@ -1,0 +1,32 @@
+{
+    "id": "dbpedia_4178_2",
+    "rank": 47,
+    "data": {
+        "url": "https://stackoverflow.com/questions/68042413/how-to-sample-a-multivariate-normal-distribution-in-math-net",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How to sample a multivariate normal distribution in Math.NET?",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/cd991227ac34793b8bae42972cbb03d6?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/cd991227ac34793b8bae42972cbb03d6?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/68042413/ivc/cd78?prg=a378e19c-b571-4575-b370-0aa09e7a020d"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2021-06-18T23:32:33",
+        "summary": "",
+        "meta_description": "Am I missing something obvious here? Math.NET has a wealth of probability distribution sampling classes but no multivariate normal distribution. It has Normal and MatrixNormal classes — is there an...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/68042413/how-to-sample-a-multivariate-normal-distribution-in-math-net",
+        "text": "As per @robert-dodier's suggestion, the MatrixNormal distribution becomes the multivariate normal at p = 1. This is more verbose than if there were a native Multinormal distribution class, but not by much:\n\nusing MathNet.Numerics.LinearAlgebra; Vector Sample<T>(System.Random random, Vector<T> mean, Matrix<T> cov) { return MatrixNormal.Sample( random, mean.ToColumnMatrix(), cov, Matrix<T>.Build.DenseIdentity(1)).Column(0); }\n\nHowever, only positive-definite covariance matrices are allowed, since the distribution performs the Cholesky decomposition."
+    }
+}
