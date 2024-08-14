@@ -1,0 +1,31 @@
+{
+    "id": "dbpedia_4461_2",
+    "rank": 9,
+    "data": {
+        "url": "https://gist.github.com/CliffordAnderson/7fb7473af31f9343f8a55518545480a0",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Exploring the U-Bahn with Neo4j",
+        "top_image": "https://github.githubassets.com/assets/gist-og-image-54fd7dc0713e.png",
+        "meta_img": "https://github.githubassets.com/assets/gist-og-image-54fd7dc0713e.png",
+        "images": [
+            "https://avatars.githubusercontent.com/u/1919466?s=64&v=4",
+            "https://camo.githubusercontent.com/c43e0e8a2029c82dc8eced4b72dc19089daf4127bac7e082c4ef359af427f101/68747470733a2f2f75706c6f61642e77696b696d656469612e6f72672f77696b6970656469612f636f6d6d6f6e732f7468756d622f342f34382f532d4261686e5f4265726c696e5f2d5f4e65747a706c616e2e706e672f33303470782d532d4261686e5f4265726c696e5f2d5f4e65747a706c616e2e706e67"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "Exploring the U-Bahn with Neo4j. GitHub Gist: instantly share code, notes, and snippets.",
+        "meta_lang": "en",
+        "meta_favicon": "https://gist.github.com/fluidicon.png",
+        "meta_site_name": "Gist",
+        "canonical_link": "https://gist.github.com/CliffordAnderson/7fb7473af31f9343f8a55518545480a0",
+        "text": "Analyzing the U-Bahn Network with Neo4J\n\nThe goal of this exercise is to extract information about the Berlin metro system from Wikidata and to analyze its relationships with Neo4j.\n\nLoad Nodes\n\nLOAD CSV FROM 'https://gist.githubusercontent.com/CliffordAnderson/7fb7473af31f9343f8a55518545480a0/raw/0f8ba34e5240a4a5599c412cb59e5961cc6cbe33/stations.csv' AS line CREATE (:Station { name: line[0], longitude: toFloat(line[1]), latitude: toFloat(line[2]) } )\n\nLoad Relationships\n\nLOAD CSV FROM 'https://gist.githubusercontent.com/CliffordAnderson/7fb7473af31f9343f8a55518545480a0/raw/d82e2659e01a976cc47b727bdf6b3d7d4f35df08/connections.csv' AS line MATCH (station:Station { name: line[0] }) MATCH (adjacent:Station { name: line[1] }) CREATE (station)-[:Line { name: line[2] }]->(adjacent)\n\nQuery Stations\n\nmatch (a {name:\"U-Bahnhof Walther-Schreiber-Platz\"})-[r]-(c) return a,r,c\n\nQuery ShortestPaths\n\nmatch (a:Station {name: \"U-Bahnhof Voltastraße\"}) match (b:Station {name: \"U-Bahnhof Rosa-Luxemburg-Platz\"}) match path = AllShortestPaths((a)-[*..5]->(b)) return path\n\nQuery Distance\n\nmatch (a:Station {name: \"U-Bahnhof Voltastraße\"}) match (b:Station {name: \"U-Bahnhof Rosa-Luxemburg-Platz\"}) with point({ longitude: a.longitude, latitude: a.latitude }) AS start, point({ longitude: b.longitude, latitude: b.latitude }) AS stop RETURN round(distance(start, stop)) AS travelDistance\n\nQuery Path Distances\n\nMATCH (a:Station {name:'U-Bahnhof Walther-Schreiber-Platz'}) MATCH (b:Station {name:'U-Bahnhof Berliner Straße'}) MATCH p=(b)-[*]->(a) WITH collect(p) as paths CALL apoc.spatial.sortByDistance(paths) YIELD path, distance RETURN path,distance\n\nRoute Around Problems\n\nA problem with our analyses to this point is that we have duplicated relationships in our data. So, let's clean up the data set before conducting more advanced graph algorithms.\n\nDrop Relationships\n\nmatch (a)-[r]-(c) delete r\n\nAdd De-Duplicated Relationship\n\nLOAD CSV FROM 'https://gist.githubusercontent.com/CliffordAnderson/7fb7473af31f9343f8a55518545480a0/raw/6e2d565bb61767c686bd8bfd0dcfa7a69c1d027b/connections-no-dupes.csv' AS line MATCH (station:Station { name: line[0] }) MATCH (adjacent:Station { name: line[2] }) CREATE (station)-[:Line { name: line[1] }]->(adjacent)\n\nQuery Centrality\n\nCALL algo.closeness.stream('Station', 'Line') YIELD nodeId, centrality RETURN algo.asNode(nodeId).name AS node, centrality ORDER BY centrality DESC LIMIT 20;"
+    }
+}
