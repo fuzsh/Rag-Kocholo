@@ -1,0 +1,38 @@
+{
+    "id": "dbpedia_4810_1",
+    "rank": 81,
+    "data": {
+        "url": "https://www.imarkinteractive.com/how-to-block-malicious-wordpress-login-attempts-with-htaccess/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How to Block Malicious Wordpress Login Attempts with .htaccess",
+        "top_image": "https://www.imarkinteractive.com/wp-content/uploads/2015/06/lockdown_wordpress_login_page.jpg",
+        "meta_img": "https://www.imarkinteractive.com/wp-content/uploads/2015/06/lockdown_wordpress_login_page.jpg",
+        "images": [
+            "https://www.imarkinteractive.com/wp-content/uploads/2016/04/new_imark_logo.png",
+            "https://www.imarkinteractive.com/wp-content/uploads/2016/04/new_imark_logo.png",
+            "https://www.imarkinteractive.com/wp-content/uploads/2015/06/htpasswd_generator.jpg",
+            "https://www.imarkinteractive.com/wp-content/uploads/2015/06/htpasswd_generator_button.jpg",
+            "https://www.imarkinteractive.com/wp-content/uploads/2015/06/htpasswd_generator_final.jpg",
+            "https://secure.gravatar.com/avatar/d8dd1542bc0b08f86fcb176493061b24?s=60&r=g",
+            "https://secure.gravatar.com/avatar/1de084aeca7ea6183484be7c3263ed1c?s=60&r=g"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Grayson Bell"
+        ],
+        "publish_date": "2015-06-23T17:01:52+00:00",
+        "summary": "",
+        "meta_description": "How to Block Malicious Wordpress Login Attempts with .htaccess - Let's face it, Wordpress is great, but it's also the widest used open-source content management system with over 60 millions sites. Day in and day out,",
+        "meta_lang": "en",
+        "meta_favicon": "https://www.imarkinteractive.com/wp-content/uploads/2016/04/coming_soon-66x66.png",
+        "meta_site_name": "iMark Interactive",
+        "canonical_link": "https://www.imarkinteractive.com/how-to-block-malicious-wordpress-login-attempts-with-htaccess/",
+        "text": "Let’s face it, WordPress is great, but it’s also the widest used open-source content management system with over 60 millions sites. Day in and day out, WordPress sites are hacked. Why? Basic security protocols are not being followed. While there are hundreds of articles about how to tighten up security, I’m going to share one tip I use on all my sites. I like to call it a login lock down wall. That’s not the technical term, but it’s more fun to say!\n\nHow You Can Stop Malicious WordPress Logins\n\nIf you have plugins like Wordfence or Sucuri, then you might get notifications when someone is trying to brute force their way into your blog. One my personal finance site, I used to get nearly 200 a day. That was a lot of emails.\n\nSince I don’t allow people to register on my sites, I figured it was time to get serious about these scammers and how they approach my sites. It took me all of about 5 minutes and I was done! Here are the steps to lock down your login page (domain.com/wp-login.php). We are going to be doing this with .htaccess and password protecting the wp-login.php file.\n\nStep 1: Check your hosting\n\nMake sure you have a host that uses cPanel (this is just what I’m using right now) and that it’s on Apache. Most shared hosting plans are running on Apache, such as BlueHost, HostGator, and SiteGround.\n\nYou can do this with FTP as long as you have access to the root directory in your file management system. You need to log into your platform (easiest via cPanel) and go to the File Manager. When in there, make sure you click on the check box that says “Show Hidden Files.” Go t0 the home directory and see if you already have a .wpadmin file in your install. If you do, then select and click the edit button.\n\nStep 2: Back Up Your Site\n\nI can’t stress this enough, especially for those who don’t or haven’t messed with .htaccess files. Please back up your site first. If you don’t have a backup service, I offer one for $5 per month. Contact me for more details.\n\nStep 3: Create a .wpadmin file\n\nYou can really call this whatever you want, but wpadmin is OK with me. Make sure you include the period before the name. That’s very important.\n\nThis file is only going to contain one line with a username and encrypted password. Open your favorite text editor and work through these steps.\n\nHead over to this site to create a username/password combination. Make sure you keep a note of this information as you will need it to log in. Also make sure you use a nice and secure password. Try the LastPass password generator for this.\n\nClick the “create .htpasswd file” button\n\nTake what the generator created and put it in your .wpadmin file you are creating in the text editor.\n\nSave the .wpadmin file as a text file with UTF-8 encoding.\n\nStep 4: Upload your .wpadmin file to the server\n\nYou will need to go into cPanel as directed above and have to upload the file you just created. There is a menu link in the File Manager in order to upload a file. Click that and select the .wpadmin file you just created on your computer.\n\nStep 5: Edit your .htaccess file\n\nGo into your public_html folder and find your .htaccess file. Click to edit this file. You will then need to include this code into the top of your .htaccess file.\n\nErrorDocument 401 \"Unauthorized Access\" ErrorDocument 403 \"Forbidden\" <FilesMatch \"wp-login.php\"> AuthName \"Authorized Only\" AuthType Basic AuthUserFile /home/username/.wpadmin require valid-user </FilesMatch>\n\nYou will see in the section that says AuthUserFile, you will need to change this to the path on your server. Most of the time it’s home/then your username/filename. You can see this path when you’re in the File Manager on cPanel.\n\nOnce you add that code, click save. Now it’s time to check.\n\nOpen a new browser window and navigate to your site. When there, append the /wp-login.php to the URL. This is your login URL. Even if you use domain.com/wp-admin/, it still redirects to wp-login.php, so you don’t even have to go to that page.\n\nWhen you click enter, there should be a little pop up box that appears. This is where you will put in your username and password you created up above. If you do it right, it will then load the wp-login.php page like normal. You can then use your regular WordPress login.\n\n**Important Caveat**\n\nIf you have multiple domains in one account, such as add-on domains, this will lock them all down with the same username and password. If you don’t want it on all the wp-login.php pages in your account, then change the following line:\n\n<FilesMatch \"wp-login.php\">\n\nto:\n\n<FilesMatch \"/home/username/public_html/wp-login.php\">\n\nThis will just put this up on the main domain in your hosting account. It won’t pull it up on other WordPress installations in sub-folders. Make sure you change the path to fit what you hosting path actually is."
+    }
+}

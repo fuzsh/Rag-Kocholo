@@ -1,0 +1,40 @@
+{
+    "id": "dbpedia_4810_1",
+    "rank": 78,
+    "data": {
+        "url": "https://www.a2hosting.com/kb/developer-corner/apache-web-server/using-the-mod-speling-apache-module/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How to use the mod_speling Apache module",
+        "top_image": "https://www.a2hosting.com/favicon.ico",
+        "meta_img": "https://www.a2hosting.com/favicon.ico",
+        "images": [
+            "https://www.a2hosting.com/assets/primarynav/img/a2hosting-logo.png",
+            "https://www.a2hosting.com/assets/primarynav/img/a2hosting-logo.png",
+            "https://www.a2hosting.com/assets/primarynav/img/search.svg",
+            "https://www.a2hosting.com/assets/img/trusted__logo3.png",
+            "https://seal-easternmichigan.bbb.org/seals/blue-seal-200-42-whitetxt-bbb-49003294.png",
+            "https://www.a2hosting.com/assets/img/us-cc.webp",
+            "https://www.a2hosting.com/assets/img/payment-paypal.webp",
+            "https://www.a2hosting.com/assets/img/skrill_banner.webp",
+            "https://www.a2hosting.com/assets/img/phone__icon.svg",
+            "https://www.a2hosting.com/assets/img/chat__icon.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "mod_speling",
+            "apache module"
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "Learn  how to enable and configure the mod_speling Apache module on your server. The mod_speling module allows your web site to process filenames that vary in their case.",
+        "meta_lang": "en",
+        "meta_favicon": "/favicon.ico",
+        "meta_site_name": "",
+        "canonical_link": "https://www.a2hosting.com/kb/developer-corner/apache-web-server/using-the-mod-speling-apache-module/",
+        "text": "This article describes how to enable and configure the mod_speling Apache module on an unmanaged server. The mod_speling module enables your web site to process filenames that vary in their case.\n\nThese types of issues can occur with files created on an operating system that uses a case-insensitive file system, such as Microsoft Windows.\n\nThe information in this article only applies to the products listed in the Article Details sidebar. You must have root access to the server to follow the procedures described below.\n\nInformation in this article about unmanaged dedicated servers is only for customers who purchased those plans before May 27, 2024. As of that date, unmanaged dedicated servers are no longer available. Our new managed dedicated server plans feature more powerful hardware to meet your hosting needs. To view available dedicated hosting options, please visit https://www.a2hosting.com/dedicated-server-hosting/.\n\nAbout filename case sensitivity\n\nA2 Hosting servers run Linux, which has a case-sensitive file system. In other words, file.html and File.html are not the same file. This is different from Microsoft Windows, which does not have a case-sensitive file system. On Microsoft Windows, file.html, File.html, FILE.HTML, and FiLe.Html all refer to the same file.\n\nThese file handling differences can cause problems, particularly when:\n\nYou migrate a web site from Microsoft IIS (Internet Information Services) to Linux.\n\nYou use an application to design a web site on Microsoft Windows, and then publish the files to a Linux web server.\n\nYou can use the Apache web server's mod_speling module to work around these issues. (The module's name is intentionally misspelled with only one 'l'.) With the mod_speling module, you can instruct Apache to ignore filename case. This saves you the effort of having to manually rename files and edit HTML hyperlinks so they all use the correct case.\n\nTo set up the mod_speling module, follow the appropriate procedure below for your server's Linux distribution.\n\nDebian and Ubuntu\n\nTo enable the mod_speling module on Debian or Ubuntu, follow these steps:\n\nLog in to your server using SSH.\n\nAs the root user, type the following command to enable the mod_speling module:\n\na2enmod speling\n\nType the following command to restart Apache:\n\nservice apache2 restart\n\nThe mod_speling module is now enabled. You can use .htaccess directives to control which directories use it to process filenames. To do this, follow these steps:\n\nType the following command:\n\ncd /etc/apache2/sites-available\n\nOpen your web site configuration file in a text editor, and then make sure that the AllowOverride directive is set to All or Options for the directory or directories that you want.\n\nTo load the new site configuration, type the following command. Replace sitename with the name of your own site configuration file:\n\na2ensite sitename\n\nChange to the web site directory (for example, /var/www) where you want to use mod_speling processing.\n\nCreate an .htaccess file that includes the following lines:\n\n<IfModule mod_speling.c> CheckCaseOnly on CheckSpelling on </IfModule>\n\nTest the configuration. For example, if you have a file named test.html, you should now be able to view it in your web browser by specifying Test.html, TEST.html, test.HTML, or any other case combination in the URL.\n\nAlmaLinux and Fedora\n\nTo enable the mod_speling module on AlmaLinux or Fedora, follow these steps:\n\nLog in to your server using SSH.\n\nThe mod_speling module may be already loaded by default. To verify if this is the case, type the following command as the root user:\n\nhttpd -M | grep speling\n\nIf the mod_speling module is enabled, you see the following output:\n\nspeling_module (shared)\n\nIf you do not see this output, add the following line to the /etc/httpd/conf/httpd.conf file:\n\nLoadModule speling_module modules/mod_speling.so\n\nThen type the following command:\n\nservice httpd restart\n\nWhen the mod_speling module is enabled, you can use .htaccess directives to control which directories use it to process filenames. To do this, follow these steps:\n\nOpen the /etc/httpd/conf/httpd.conf file in a text editor, and then make sure that the AllowOverride directive is set to All or Options for the directory or directories that you want.\n\nIf the AllowOverride directive is not set to All or Options, make the change, save the httpd.conf file, and then type the following command to restart the server:\n\nservice httpd restart\n\nChange to the web site directory (for example, /var/www/html) where you want to use mod_speling processing.\n\nCreate an .htaccess file that includes the following lines:\n\n<IfModule mod_speling.c> CheckCaseOnly on CheckSpelling on </IfModule>\n\nTest the configuration. For example, if you have a file named test.html, you should now be able to view it in your web browser by specifying Test.html, TEST.html, test.HTML, or any other case combination in the URL.\n\nOther Linux distributions\n\nFor other Linux distributions, consult its documentation for the steps to enable and configure the mod_speling module.\n\nMore Information"
+    }
+}

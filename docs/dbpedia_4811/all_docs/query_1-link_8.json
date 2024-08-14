@@ -1,0 +1,33 @@
+{
+    "id": "dbpedia_4811_1",
+    "rank": 8,
+    "data": {
+        "url": "https://m.mediawiki.org/wiki/Topic:Wr7fouwlprbap5hg",
+        "read_more_link": "",
+        "language": "en",
+        "title": "If you get a weird \"Unknown error in PHP's mail() function\" and are using SiteGround, Amazon SES, and perhaps some other host when trying to send email or use ContactPage... on Project:Support desk",
+        "top_image": "https://m.mediawiki.org/static/favicon/mediawiki.ico",
+        "meta_img": "https://m.mediawiki.org/static/favicon/mediawiki.ico",
+        "images": [
+            "https://m.mediawiki.org/static/images/mobile/copyright/mediawikiwiki-wordmark.svg",
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Error_from_Contact_Page_2022-02-20_inset.jpg/800px-Error_from_Contact_Page_2022-02-20_inset.jpg",
+            "https://login.m.wikimedia.org/wiki/Special:CentralAutoLogin/start?type=1x1&mobile=1",
+            "https://m.mediawiki.org/static/images/mobile/copyright/mediawikiwiki-wordmark.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "/static/apple-touch/mediawiki.png",
+        "meta_site_name": "MediaWiki",
+        "canonical_link": "https://www.mediawiki.org/wiki/Topic:Wr7fouwlprbap5hg",
+        "text": "A week ago, I was baffled by this message:\n\nMy ContactPage had worked just fine a few weeks before; I hadn't changed anything involving it, and my host SiteGround said that they hadn't either. Kindly folks tried to help but they were casting around because...\n\nUltimately I found that the reason it broke is because in fact my host had changed email handling on me without telling me.\n\nSpecifically, a default install of MediaWiki and of the ContactPage extension results in the Contact Page spoofing email. If you test it by sending a Contact to yourself that uses some made-up email address, you see when you get it (when it's forwarded to your personal email, or whatever) it's says it is From that made-up address... but of course it isn't; it was actually sent from your wiki's admin account (or whatever you set it to). It's spoofing, by definition: It sends from one email address but says it's from some other, completely unrelated address. MW and ContactPage have always done this by default / if you don't change anything. What changed is my host decided it wouldn't allow spoofing any more.\n\nYou can see how host providers can have an issue with this... but if they were a little more intelligent about it, they'd realize you're only sending from a site you own, to a personal email registered to the owner... and, of course, it's probably labeled \"Contact Info\", too. So in one sense, there's no harm, no foul. But at least some host providers don't want to hassle with subtleties such as no harm actually being caused, laugh.\n\nI personally would never have figured this out, but someone much better than I worked with me to determine that the root problem is some of the settings in Extensions/ContactPage/includes/SpecialContact.php. In particular, where the email is originating from. You'll also have to fix a second place if you allow the ability for Contactees to email themselves a copy of their form (so that this, too, doesn't spoof). He wrote the fix up in a nicely detailed page.\n\nI hope this helps others."
+    }
+}

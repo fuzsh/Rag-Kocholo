@@ -1,0 +1,33 @@
+{
+    "id": "dbpedia_4810_3",
+    "rank": 74,
+    "data": {
+        "url": "https://wordpress.stackexchange.com/questions/317922/after-moving-a-site-to-new-hosting-not-all-images-are-showing-in-media-library",
+        "read_more_link": "",
+        "language": "en",
+        "title": "After moving a site to new hosting, not all images are showing in media library",
+        "top_image": "https://cdn.sstatic.net/Sites/wordpress/Img/apple-touch-icon@2.png?v=85d7f2242440",
+        "meta_img": "https://cdn.sstatic.net/Sites/wordpress/Img/apple-touch-icon@2.png?v=85d7f2242440",
+        "images": [
+            "https://cdn.sstatic.net/Sites/wordpress/Img/logo.svg?v=3edd23ad572e",
+            "https://www.gravatar.com/avatar/e29db47bb7cd25e3723092daf771682f?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/7be00df1138f8d4065be6817183f6806?s=64&d=identicon&r=PG",
+            "https://wordpress.stackexchange.com/posts/317922/ivc/a9fa?prg=a0b70ad5-75e2-4379-9235-e471742c1c93"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2018-10-29T20:02:07",
+        "summary": "",
+        "meta_description": "I have moved my website to new hosting.  \n\nThe site was originally in public_html/websites/dcworldholding/newsite on my server, on the new server its in public_html/\n\nSome images are showing but the",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/wordpress/Img/favicon.ico?v=e99a73db990a",
+        "meta_site_name": "WordPress Development Stack Exchange",
+        "canonical_link": "https://wordpress.stackexchange.com/questions/317922/after-moving-a-site-to-new-hosting-not-all-images-are-showing-in-media-library",
+        "text": "The issue is that images URLs are stored in the database as a full URL; domain and all.\n\nWhen you move a site to a new URL, that doesn't update the URLs in the database. So a 'search and replace' process is needed to go through the database and replace your www.olddomain.com with your www.newdomain.com .\n\nI usually use the \"Better Search and Replace\" plugin to do that. It works well (and easy and fast) to take care of the problem. You could also do it manually with MySQL commands, but a plugin is much faster.\n\nA backup of your database before is always a good idea.\n\nAdded\n\nYou can verify in the generated page code source, or with Developer Tools (usually F12, then look at the Network tab and reload the page; see the URLs that are being requested for the images).\n\nIf the images are still 'scr' from the old domain, then that's how the URL is stored in the database. So the Search/Replace is needed.\n\nLook at an existing Media item; you'll see that one of the fields (meta values) is the full URL of the media item. That comes from the database, so a Search/Replace will fix that.\n\nIt's possible that it is a caching issue on the phone or device. Restarting the device ought to fix that. But you can tell via Developer Tools, Network (or the page source) the URL being specified for the media item."
+    }
+}

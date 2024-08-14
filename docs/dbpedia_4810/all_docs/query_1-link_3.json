@@ -1,0 +1,30 @@
+{
+    "id": "dbpedia_4810_1",
+    "rank": 3,
+    "data": {
+        "url": "https://www.siteground.com/kb/transfer-another-server-files-strange-characters-names/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Why my files have strange characters in their names after server transfer?",
+        "top_image": "",
+        "meta_img": "",
+        "images": [],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "SiteGround Web Hosting"
+        ],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "In some cases after transferring files to different servers, you may start seeing their file names with strange characters: or This means that the files ar",
+        "meta_lang": "en",
+        "meta_favicon": "/img/favicon.ico",
+        "meta_site_name": "SiteGround",
+        "canonical_link": "https://www.siteground.com/kb/transfer-another-server-files-strange-characters-names/",
+        "text": "In some cases after transferring files to different servers, you may start seeing their file names with strange characters:\n\n������_����.txt\n\nor\n\n342325341342336322_344320331333.txt\n\nThis means that the files are not in UTF-8 and in most of the cases these files cannot be used by your website and will produce a 404 error if you try to access them. Usually, these are the images uploaded on the website, which after a transfer stop showing on the website’s pages.\n\nTo resolve this problem, convert the files to UTF-8. To do that you must first find their current encoding.\n\nLog in your account via SSH and navigate to the folder where the files are located and then run the following command:\n\nfile -i *\n\nThis will list all files in the current directory and show their encoding, for example:\n\nusername@server [~/public_html]# file -i * ������_����.txt: text/plain; charset=iso-8859-5\n\nThe value of the charset parameter is the current encoding of the files. In this case, it is iso-8859-5.\n\nIf you cannot see the files with their proper names while logged in your account via SSH, add the following lines in the ~/.bashrc file:\n\nexport LC_CTYPE=en_US.UTF-8\n\nTo modify the file use SSH, FTP or Site Tools > Site > File Manager.\n\nNow that you know the exact encoding the files are using, convert them to UTF-8 using the convmv utility. First, you must download and extract it by using this command:\n\nwget https://www.j3e.de/linux/convmv/convmv-2.01.tar.gz; tar -xzf convmv-2.01.tar.gz\n\nThen to convert the files execute this command:\n\n./convmv-2.01/convmv --notest -r -f iso-8859-5 -t UTF-8 ."
+    }
+}

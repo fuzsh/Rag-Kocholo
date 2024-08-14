@@ -1,0 +1,44 @@
+{
+    "id": "dbpedia_4811_0",
+    "rank": 73,
+    "data": {
+        "url": "https://stackoverflow.com/questions/7942372/can-i-configure-a-subdomain-to-point-to-a-specific-port-on-my-server",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Can I configure a subdomain to point to a specific port on my server",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://i.sstatic.net/HZ9CL.png?s=64",
+            "https://www.gravatar.com/avatar/441b800a97d1b45e2fbf15ed4fa67fa5?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/HZ9CL.png?s=64",
+            "https://www.gravatar.com/avatar/f78ade75fe9c3cbcb9e64dfccdb2cb57?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/qwdFY.png",
+            "https://i.sstatic.net/HZ9CL.png?s=64",
+            "https://i.sstatic.net/qodt7.jpg?s=64",
+            "https://i.sstatic.net/HZ9CL.png?s=64",
+            "https://www.gravatar.com/avatar/038d6be374b8b3620ccb51b43e58650f?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/HZ9CL.png?s=64",
+            "https://www.gravatar.com/avatar/6801bf30e40c9f7972987d67e2d5e4f2?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/HZ9CL.png?s=64",
+            "https://lh6.googleusercontent.com/-r-Wf-JkgNwg/AAAAAAAAAAI/AAAAAAAAAZI/v37Z-KPS_xA/photo.jpg?sz=64",
+            "https://lh3.googleusercontent.com/--xZsmobunLM/AAAAAAAAAAI/AAAAAAAAAEM/3WUJWTBsdgQ/photo.jpg?sz=64",
+            "https://stackoverflow.com/posts/7942372/ivc/a9fa?prg=ce9fafd1-17df-4299-8dc5-2bb4489a9c1b"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2011-10-29T23:36:46",
+        "summary": "",
+        "meta_description": "I have an old computer which I converted into a Minecraft server. I have 2 Minecraft servers running simultaneously, one on port 25565 (default) and one on port 25566.\nI bought the domain something.",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/7942372/can-i-configure-a-subdomain-to-point-to-a-specific-port-on-my-server",
+        "text": "If you have access to SRV Records, you can use them to get what you want :)\n\nE.G\n\nA Records\n\nName: mc1.domain.example Value: <yourIP> Name: mc2.domain.example Value: <yourIP>\n\nSRV Records\n\nName: _minecraft._tcp.mc1.domain.example Priority: 5 Weight: 5 Port: 25565 Value: mc1.domain.example Name: _minecraft._tcp.mc2.domain.example Priority: 5 Weight: 5 Port: 25566 Value: mc2.domain.example\n\nthen in minecraft you can use\n\nmc1.domain.example which will sign you into server 1 using port 25565\n\nand\n\nmc2.domain.example which will sign you into server 2 using port 25566\n\nthen on your router you can have it point 25565 and 25566 to the machine with both servers on and Voilà!\n\nSource: This works for me running 2 minecraft servers on the same machine with ports 50500 and 50501\n\nIf you want to host multiple websites in a single server in different ports then, method mentioned by MRVDOG won't work. Because browser won't resolve SRV records and will always hit :80 port. For example if your requirement is:\n\nsite1.domain.example maps to domain.example:8080 site2.domain.example maps to domain.example:8081\n\nBecause often you want to fully utilize the server space you have bought. Then you can try the following:\n\nStep 1: Install proxy server. I will use Nginx here.\n\napt-get install nginx\n\nStep 2: Edit /etc/nginx/nginx.conf file to add the port mappings. To do so, add the following lines:\n\nserver { listen 80; server_name site1.domain.example; location / { proxy_pass http://localhost:8080; } } server { listen 80; server_name site2.domain.example; location / { proxy_pass http://localhost:8081; } }\n\nThis does the magic. So the file will end up looking like following:\n\nuser www-data; worker_processes auto; pid /run/nginx.pid; include /etc/nginx/modules-enabled/*.conf; events { worker_connections 768; # multi_accept on; } http { ## # Basic Settings ## sendfile on; tcp_nopush on; tcp_nodelay on; keepalive_timeout 65; types_hash_max_size 2048; # server_tokens off; # server_names_hash_bucket_size 64; # server_name_in_redirect off; include /etc/nginx/mime.types; default_type application/octet-stream; ## # SSL Settings ## ssl_protocols TLSv1 TLSv1.1 TLSv1.2; # Dropping SSLv3, ref: POODLE ssl_prefer_server_ciphers on; ## # Logging Settings ## access_log /var/log/nginx/access.log; error_log /var/log/nginx/error.log; ## # Gzip Settings ## gzip on; # gzip_vary on; # gzip_proxied any; # gzip_comp_level 6; # gzip_buffers 16 8k; # gzip_http_version 1.1; # gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript; ## # Virtual Host Configs ## server { listen 80; server_name site1.domain.example; location / { proxy_pass http://localhost:8080; } } server { listen 80; server_name site2.domain.example; location / { proxy_pass http://localhost:8081; } } include /etc/nginx/conf.d/*.conf; include /etc/nginx/sites-enabled/*; } #mail { # # See sample authentication script at: # # http://wiki.nginx.org/ImapAuthenticateWithApachePhpScript # # # auth_http localhost/auth.php; # # pop3_capabilities \"TOP\" \"USER\"; # # imap_capabilities \"IMAP4rev1\" \"UIDPLUS\"; # # server { # listen localhost:110; # protocol pop3; # proxy on; # } # # server { # listen localhost:143; # protocol imap; # proxy on; # } #}\n\nStep 3: Start Nginx:\n\n/etc/init.d/nginx start.\n\nWhenever you make any changes to configuration, you need to restart Nginx:\n\n/etc/init.d/nginx restart\n\nFinally: Don't forget to add A records in your DNS configuration. All subdomains should point to domain. Like this:\n\nPut your static IP instead of 111.11.111.111\n\nFurther details:\n\nhttp://tutorials.jenkov.com/nginx/index.html\n\nRedirect subdomain to port [nginx/flask]\n\nhttps://serverfault.com/questions/920534/nginx-proxy-subdomains-to-other-addresses-and-ports\n\nHost Static Website: If you have any static website (Like angular app), that you want to deploy in Nginx itself. Place your index.html along with the other resources in some folder, like /srv/mySite and add the following server block in nginx.conf:\n\nserver { listen 80; server_name staticSite.domain.example; root /srv/mySite; location / { try_files $uri $uri/ /index.html; } }\n\nIf you wish to use 2 subdomains to other ports, you can use Minecraft's proxy server (it means BungeeCord, Waterfall, Travertine...), and bind subdomain to specifiend in config.yml server. To do that you have to setup your servers in BungeeCord's config:\n\nservers: pvp: motd: 'A Minecraft Server PVP' address: localhost:25566 restricted: false skyblock: motd: 'A Minecraft Server SkyBlock' address: localhost:25567 restricted: false\n\nRemember! Ports must be diffrent than default Minecraft's port (it means 25565), because we will use this port to our proxy. sub1.domain.example and sub2.domain.example we have to bind to server where you have these servers. Now, we have to bind subdomains in your Bungee server:\n\nlisteners: forced_hosts: sub1.domain.example: pvp sub2.domain.example: skyblock domain.example: pvp // You can bind other domains to same servers.\n\nRemember to change force_default_server to true, and change host to 0.0.0.0:25565 Example of BungeeCord's config.yml with some servers: https://pastebin.com/tA9ktZ6f Now you can connect to your pvp server on sub1.domain.example and connect to skyblock on sub2.domain.example. Don't worry, BungeeCord takes only 0,5GB of RAM for 500 players."
+    }
+}
