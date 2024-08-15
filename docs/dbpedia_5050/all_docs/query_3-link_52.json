@@ -1,0 +1,37 @@
+{
+    "id": "dbpedia_5050_3",
+    "rank": 52,
+    "data": {
+        "url": "https://discuss.streamlit.io/t/how-do-i-align-st-title/1668",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How do i align st.title?",
+        "top_image": "https://global.discourse-cdn.com/streamlit/original/2X/f/f0d0d26db1f2d99da8472951c60e5a1b782eb6fe.png",
+        "meta_img": "https://global.discourse-cdn.com/streamlit/original/2X/f/f0d0d26db1f2d99da8472951c60e5a1b782eb6fe.png",
+        "images": [
+            "https://sea2.discourse-cdn.com/streamlit/user_avatar/discuss.streamlit.io/marc/48/602_2.png",
+            "https://emoji.discourse-cdn.com/google/sweat_smile.png?v=9",
+            "https://emoji.discourse-cdn.com/google/slight_smile.png?v=10",
+            "https://global.discourse-cdn.com/streamlit/optimized/2X/d/d6666d37acd620d414cfa1fc7af7f30c89729f33_2_690x102.png",
+            "https://emoji.discourse-cdn.com/google/grinning.png?v=12",
+            "https://emoji.discourse-cdn.com/google/grinning.png?v=12",
+            "https://global.discourse-cdn.com/streamlit/original/3X/4/d/4df92c09704c4405675871fe82fd6700046327aa.png",
+            "https://global.discourse-cdn.com/streamlit/optimized/3X/4/7/47c7c6b241511cf110658899e54583143c8fda4a_2_577x500.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "css"
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2020-01-19T20:46:28+00:00",
+        "summary": "",
+        "meta_description": "how do i align st.title ?",
+        "meta_lang": "en",
+        "meta_favicon": "https://global.discourse-cdn.com/streamlit/optimized/2X/f/f0d0d26db1f2d99da8472951c60e5a1b782eb6fe_2_32x32.png",
+        "meta_site_name": "Streamlit",
+        "canonical_link": "https://discuss.streamlit.io/t/how-do-i-align-st-title/1668",
+        "text": "Hi @qxlsz.\n\nI would like to help. But I need more info to be able to help.\n\nPlease be a bit more specific. What do you mean by align? Horizonally, vertically or…\n\nThe best approach is to provide a small code example and a screenshot that shows how it looks and indicates how it should look.\n\nThanks.\n\nHi @qxlsz,\n\nCurrently it’s not possible to set title and header alignment. Our layout is done in Markdown which doesn’t contain a native notion of text alignment (it’s all left-justified by default).\n\nAdditionally I don’t think it will work to use HTML to force the alignment, since the style will get overridden by Streamlit’s CSS. (I am not great at CSS, though; maybe it’s possible with some HTML/CSS wizardry?)\n\nIf this is an important feature for you, I recommend opening a Feature Request in our github issues.\n\nHello @qxlsz,\n\nActuallly, as hinted by @nthmost, you CAN align HTML through Markdown :\n\nimport streamlit as st st.markdown(\"<h1 style='text-align: center; color: red;'>Some title</h1>\", unsafe_allow_html=True)\n\n…but unsafe_allow_html is probably going to be deprecated soon, so we can’t count on this.\n\nI tried adding a CSS file in the static folder where Streamlit is installed but no luck (EDIT : but it can work if done correctly !)\n\nThere’s a feature in RISE that allows to inject custom CSS classes over RISE CSS but they allow display of HTML so that makes it easier. I would be interested in custom CSS but maybe it would be too cumbersome to add a list of editable CSS classes as arg of each Streamlit Python method and pointing them to our external CSS file ?\n\nSo if you really want to edit CSS, for now the way to go would be to edit the SCSS in Streamlit source code and rebuild the frontend part.\n\nEDIT : well actually someone did load it’s custom CSS and it’s easy. You can follow the discussion to see how it goes .\n\nIf you inspect the element, there’s the default setting that the h1 tag would have an id the same as your text. It’s possible to customize the alignment for different h1. For example:\n\nst.title(\"The title\")\n\nThe id would be “the-title”. Therefore, you can tweak the position with markdown and CSS\n\ntitle_alignment= \"\"\" <style> #the-title { text-align: center } </style> \"\"\" st.markdown(title_alignment, unsafe_allow_html=True)\n\nHi @Charly_Wargnier,\n\nActually, I had another post regarding the plotly_chart alignments with HTML components. The issue I am facing is that the HTML code would be cut or under the plotly chart.\n\nHaving a look at the element, the chart is the svg type, which is hard to align with HTML code. Using the streamlit.title, the h1 tag is wrapped by the markdown class, which perfectly solves my issue.\n\nHowever, the issue of alignment with HTML code and charts could be challenging for me.\n\nRegards,\n\nI’m sure by now someone, somewhere has already used CSS to get this, but some people are not very familiar with that, so this is the trick I’ve got.\n\ncolT1,colT2 = st.columns([1,8])\n\nwith colT2:\n\nst.title(“Major Consumer Bundle Analysis”)\n\nYou can just keep playing with the ratio, or just the 8 to get the right center. It won’t be perfect but its consistent and it is pretty easy. Plus it works with more than just the st.title\n\nThanks"
+    }
+}

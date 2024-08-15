@@ -1,0 +1,46 @@
+{
+    "id": "dbpedia_5050_3",
+    "rank": 6,
+    "data": {
+        "url": "https://stackoverflow.com/questions/2099249/aligning-textviews-on-the-left-and-right-edges-in-android-layout",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Aligning textviews on the left and right edges in Android layout",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://cdn.sstatic.net/Img/teams/teams-promo.svg?v=e507948b81bf",
+            "https://i.sstatic.net/wPWOI.jpg?s=64",
+            "https://www.gravatar.com/avatar/8d7121f623f2c05bf294094bff03e60f?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/a780bab849bc39176f044f5effbba7da?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/Fkc6G.jpg?s=64",
+            "https://i.sstatic.net/TwNtl.png",
+            "https://i.sstatic.net/KxwP9.png",
+            "https://i.sstatic.net/jWMdh.jpg?s=64",
+            "https://i.sstatic.net/4HFUt.jpg?s=64",
+            "https://www.gravatar.com/avatar/3d679897a2a00021e66387e12a9c3dd8?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/UFyGW.jpg?s=64",
+            "https://i.sstatic.net/Y4P3I.png",
+            "https://i.sstatic.net/NiOqE.jpg?s=64",
+            "https://graph.facebook.com/538592314/picture?type=large",
+            "https://www.gravatar.com/avatar/e11a3a5dbc554e5d17aa480eb83e4e9f?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/8NKuv.jpg?s=64",
+            "https://stackoverflow.com/posts/2099249/ivc/9ebe?prg=772d8059-93c6-4448-b4e0-d92bd6a52032"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2010-01-20T05:34:16",
+        "summary": "",
+        "meta_description": "I am getting started with Android. I am having trouble getting a simple layout going.  \n\nI would like to use a LinearLayout to position two TextViews in a single row. One TextView on the left hand ...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/2099249/aligning-textviews-on-the-left-and-right-edges-in-android-layout",
+        "text": "It can be done with LinearLayout (less overhead and more control than the Relative Layout option). Give the second view the remaining space so gravity can work. Tested back to API 16.\n\n<LinearLayout android:layout_width=\"match_parent\" android:layout_height=\"match_parent\"> <TextView android:layout_width=\"wrap_content\" android:layout_height=\"wrap_content\" android:text=\"Aligned left\" /> <TextView android:layout_width=\"match_parent\" android:layout_height=\"wrap_content\" android:gravity=\"end\" android:text=\"Aligned right\" /> </LinearLayout>\n\nIf you want to limit the size of the first text view, do this:\n\nAdjust weights as required. Relative layout won't allow you to set a percentage weight like this, only a fixed dp of one of the views\n\n<LinearLayout android:layout_width=\"match_parent\" android:layout_height=\"match_parent\"> <TextView android:layout_width=\"0dp\" android:layout_weight=\"1\" android:layout_height=\"wrap_content\" android:text=\"Aligned left but too long and would squash the other view\" /> <TextView android:layout_width=\"0dp\" android:layout_weight=\"1\" android:layout_height=\"wrap_content\" android:gravity=\"end\" android:text=\"Aligned right\" /> </LinearLayout>\n\nEven with Rollin_s's tip, Dave Webb's answer didn't work for me. The text in the right TextView was still overlapping the text in the left TextView.\n\nI eventually got the behavior I wanted with something like this:\n\n<RelativeLayout xmlns:android=\"http://schemas.android.com/apk/res/android\" android:id=\"@+id/RelativeLayout01\" android:layout_width=\"match_parent\" android:layout_height=\"match_parent\" android:padding=\"10dp\"> <TextView android:id=\"@+id/mytextview1\" android:layout_width=\"wrap_content\" android:layout_height=\"wrap_content\" android:layout_alignParentLeft=\"true\" /> <TextView android:id=\"@+id/mytextview2\" android:layout_width=\"match_parent\" android:layout_height=\"wrap_content\" android:layout_toRightOf=\"@id/mytextview1\" android:gravity=\"right\"/> </RelativeLayout>\n\nNote that mytextview2 has \"android:layout_width\" set as \"match_parent\".\n\nHope this helps someone!"
+    }
+}
