@@ -1,0 +1,41 @@
+{
+    "id": "dbpedia_5039_3",
+    "rank": 23,
+    "data": {
+        "url": "https://stackoverflow.com/questions/1695042/is-garbage-collection-automatic-in-standard-c",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Is garbage collection automatic in standard C++?",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/f51f5079f0eb244c5421d2b5096ecfce?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/f3667c3342ad913511f4767c91aa8aa6?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/2845d24eaed990d3163a94782a93faf0?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/b6ece6d41e5bc5a5e35f7c3f8b67420d?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/wO0su.jpg?s=64",
+            "https://www.gravatar.com/avatar/3c5ee5663d8001726a4f6e397f5c5e77?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/c2c732bbf13dc96670b210b3c0c1ead5?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/e8d5fe90f1fe2148bf130cccd4dc311c?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/a007be5a61f6aa8f3e85ae2fc18dd66e?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/9d0Vk.jpg?s=64",
+            "https://www.gravatar.com/avatar/5a46c45ae5e044a4e63c9ed91b7b7c0a?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/1695042/ivc/5e7f?prg=c58ca432-6b43-4c0b-b104-7b5da4cfe615"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2009-11-08T01:31:52",
+        "summary": "",
+        "meta_description": "From what I understand, in standard C++ whenever you use the new operator you must also use the delete operator at some point to prevent memory leaks.  This is because there is no garbage collectio...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/1695042/is-garbage-collection-automatic-in-standard-c",
+        "text": "The long answer to it is that for every time new is called, somewhere, somehow, delete must be called, or some other deallocation function (depends on the memory allocator etc.)\n\nBut you don't need to be the one supplying the delete call:\n\nThere is garbage collection for C++, in the form of the Hans-Boehm Garbage Collector. There is also probably other garbage collection libraries.\n\nYou can use smart pointers, which use RAII (and reference counting if the pointer allows shared access) to determine when to delete the object. A good smart pointer library is Boost's smart pointer. Smart pointers in the vast majority of cases can replace raw pointers.\n\nSome application frameworks, like Qt, build object trees, such that there is a parent child relationship for the framework's heap allocated objects. As a result, all is needed is for a delete to be called on an object, and all its children will automatically be deleted as well.\n\nIf you don't want to use any of these techniques, to safeguard against memory leaks, you can try using a memory checking tool. Valgrind is particularly good, although it only works on Linux\n\nAs for .NET, yes, allocating using gcnew means that the memory is tracked by .NET, so no leaks. Other resources however, like file handles etc. are not managed by the GC.\n\nIn idiomatic high-level C++, you never call delete.\n\nC++ does not have a standard garbage collector that works the same as in C#, and therefore it is true that fundamentally, new and delete need to be paired. However, there are mechanisms in C++ that completely eliminate the explicit use of delete for code written in the modern style.\n\nThe first thing to note is that in C++ you use new much less frequently than you use new in C#. This is because in C# you use new whenever you create an instance of a structure, class, or array, but in C++, you use new only when you want to manage a data element dynamically. Most data in C++ does not require dynamic management and can therefore be created without the use of new. [Put another way, new has a different meaning in C# than in C++. In C++ it specifically indicates dynamic allocation, while in C# it is used for any construction.]\n\nSecondly, any time you do call new in C++, the return value should be handed directly to a smart pointer. The smart pointer will ensure that delete is automatically called for you at the appropriate time.\n\nBy the way, unless you are a guru writing a low-level library (or a student learning how to do this), you should never call new to allocate an array in C++. The standard library (and also Boost/TR1) provide template classes that allocate and manage arrays for you.\n\nIn summary, C++ does not use a garbage collector but it does have its own form of automatic memory management. There are subtle differences between the two approaches, but both approaches automate the release of memory, thereby eliminating most types of memory leaks.\n\nThe authoritative demonstration of these concepts is given by C++ creator Bjarne Stroustrup in answer to the question: How do I deal with memory leaks?\n\nSee also:\n\nDynamic memory management reference -- smart pointers\n\nContainers library reference -- arrays\n\nYour statement about operator new is totally correct...but it's oversimplifying C++ semantics quite a bit.\n\nIn C++, objects can be created on the stack or on the heap:\n\nclass Foo {}; int main() { Foo obj1; Foo* obj2 = new Foo(); delete obj2; }\n\nIn the above example, obj1 is created on the stack and obj2 is created on the heap (with new). Objects created on the heap are not destroyed until delete is explicitly called on them. However, objects on the stack are automatically destroyed when they go out of scope (i.e. when main() returns in this example).\n\nThis enables the \"Resource Acquisition Is Initialization\" idiom (a.k.a. RAII) in C++, which is much more powerful than basic garbage collection. Resources that need to be cleaned up (heap memory, sockets, files, DB connections, etc.) are generally put in stack-based objects whose destructors take care of cleanup.\n\nIn contrast, Java and C# don't allow objects to be constructed on the stack, and do not guarantee that collection will ever happen nor that finalizers will run (I'm not a C# guy, so I may be a little wrong there). So while you get free heap memory management in Java/C#, you'll actually end up with a lot more resource cleanup code in those languages than you do in C++."
+    }
+}

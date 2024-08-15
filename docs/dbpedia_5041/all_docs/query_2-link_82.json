@@ -1,0 +1,42 @@
+{
+    "id": "dbpedia_5041_2",
+    "rank": 82,
+    "data": {
+        "url": "https://superuser.com/questions/548316/excel-text-alignment-with-custom-formatting",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Excel text alignment with custom formatting",
+        "top_image": "https://cdn.sstatic.net/Sites/superuser/Img/apple-touch-icon@2.png?v=e869e4459439",
+        "meta_img": "https://cdn.sstatic.net/Sites/superuser/Img/apple-touch-icon@2.png?v=e869e4459439",
+        "images": [
+            "https://cdn.sstatic.net/Sites/superuser/Img/logo.svg?v=4bc8a703ebac",
+            "https://www.gravatar.com/avatar/46f9729ff00ddde9dc5a4312679f7d37?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/2klvR.png?s=64",
+            "https://i.sstatic.net/q46XX.png",
+            "https://i.sstatic.net/14niM.png",
+            "https://www.gravatar.com/avatar/9bcb37b793b9ecc9ecfb63ee455482b3?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/37620c4cdf768c73696c4d58746942e4?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/bbc5624b73baf153fd9c2aa9e1465ce1?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/eleCu.png",
+            "https://www.gravatar.com/avatar/36538ac8f64cfbe9adcb7ce845186edf?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/b1db8599264a27d6b7f3b1514e828f38?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/nBKxk.png?s=64",
+            "https://superuser.com/posts/548316/ivc/5e7f?prg=8687ab2d-f4e1-46a7-bc5f-d454c0226649"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2013-02-08T08:36:39",
+        "summary": "",
+        "meta_description": "Is there anything in a custom formatted formula which defines the text alignment?\n\nI know the different parts of the formula is numbers, negative numbers and so on, but I need to set the alignment.",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/superuser/Img/favicon.ico?v=4852d6fb3f5d",
+        "meta_site_name": "Super User",
+        "canonical_link": "https://superuser.com/questions/548316/excel-text-alignment-with-custom-formatting",
+        "text": "While it is not possible to explicitly set the cell alignment using a custom format, you can achieve the same effect using the Repeat Characters syntax in the custom format. This syntax is simply the * character followed by the character that you want to repeat, in this case presumably the space character.\n\nFor example, the simple comma-separated number format \"#,##0\" can be made to align left by changing the format string to \"#,##0* \".\n\nTaking the example further, you could have number entries align left and text entries align right using the custom format string \"#,##0* ;;;* @\".\n\nTo directly answer the question regarding text alignment by a custom formatting string, it's not possible. However, it's possible to emulate 2 out of the 6 alignment options (left | center | right | top | middle | bottom) by using custom formatting settings to insert invisible characters.\n\nTo right-align text, as mentioned in another answer here, just leave the first three fields blank and use the Repeat Characters syntax * followed by a space, then an @ where you want the text to be inserted.\n\n;;;* @\n\nThis will force the text to right-align, even if alignment type \"Center\" is applied to the cell.\n\nThere are some situations where you need to force text to left-align. For example, a Pivot Table displayed in Tabular Form or Outline Form can automatically merge and center cells with labels. What if you'd rather only merge, but want the text to be aligned to the left instead? The custom formatting rules can be used to post-process the formatting that was applied by the Pivot Table.\n\nTo left-align text, you have to be a little creative. In the Pivot Table situation, Excel will (annoyingly) trim trailing spaces in a custom rule before applying the format, so just using ;;;@*[space] won't work. However, you can use one of the invisible Unicode characters instead, and Excel will leave your custom format unmolested.\n\nThe invisible Unicode characters are U0160 and U255. Either will work. On Windows, hold down Alt and type the numbers, for example Alt+2+5+5. The invisible character will be inserted after releasing Alt.\n\nAs far as the vertical alignment options, we're stuck with either running a VBA script or using the alignment buttons in the ribbon. Custom formats can't be used to apply, say, top alignment for example.\n\nExample: forcing left/right alignment, even with cell alignment=center\n\nExample: forcing left alignment in merged & centered Pivot Table label column"
+    }
+}

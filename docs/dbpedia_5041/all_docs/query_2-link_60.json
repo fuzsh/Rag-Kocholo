@@ -1,0 +1,35 @@
+{
+    "id": "dbpedia_5041_2",
+    "rank": 60,
+    "data": {
+        "url": "https://chenhuijing.com/blog/box-alignment-and-overflow/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Box alignment and overflow",
+        "top_image": "https://chenhuijing.com/assets/images/avatar-ponytail.png",
+        "meta_img": "https://chenhuijing.com/assets/images/avatar-ponytail.png",
+        "images": [
+            "https://chenhuijing.com/assets/images/posts/overflow/chat-ui.png",
+            "https://chenhuijing.com/assets/images/posts/overflow/left-right-480.png 480w, /assets/images/posts/overflow/left-right-640.png 640w, /assets/images/posts/overflow/left-right-960.png 960w, /assets/images/posts/overflow/left-right-1280.png 1280w",
+            "https://chenhuijing.com/assets/images/posts/overflow/dataloss-480.png 480w, /assets/images/posts/overflow/dataloss-640.png 640w, /assets/images/posts/overflow/dataloss-960.png 960w, /assets/images/posts/overflow/dataloss-1280.png 1280w",
+            "https://chenhuijing.com/assets/images/posts/overflow/dataloss2-480.png 480w, /assets/images/posts/overflow/dataloss2-640.png 640w, /assets/images/posts/overflow/dataloss2-960.png 960w, /assets/images/posts/overflow/dataloss2-1280.png 1280w",
+            "https://chenhuijing.com/assets/images/posts/overflow/safe-480.png 480w, /assets/images/posts/overflow/safe-640.png 640w, /assets/images/posts/overflow/safe-960.png 960w, /assets/images/posts/overflow/safe-1280.png 1280w",
+            "https://chenhuijing.com/assets/images/avatar-ponytail@2x.png 2x"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2019-10-19T00:00:00+00:00",
+        "summary": "",
+        "meta_description": "Recently I was working on a few chat interfaces, and the general layout is typical to what you would see in most chat …",
+        "meta_lang": "en",
+        "meta_favicon": "/assets/favicons/apple-touch-icon.png",
+        "meta_site_name": "",
+        "canonical_link": "https://chenhuijing.com/blog/box-alignment-and-overflow/",
+        "text": "Recently I was working on a few chat interfaces, and the general layout is typical to what you would see in most chat applications. There would be an input kissing the bottom of the window, with messages displayed in the chat window on either side depending on who said what.\n\nUsually your own messages would appear on the right, while received messages would appear on the left. Of course there are also some interfaces (Slack) which align all the messages on the left, but the ones I use regularly (Whatsapp, WeChat, Twitter) use the aforementioned left-right style.\n\nSuch an interface is not tricky to build with Flexbox and the Box Alignment properties. But I did create a bug in the interface when using the box alignment properties for the messages area. TL:DR, the fix involves using auto margins instead of the justify-content property. Intrigued? Read on.\n\nCSS-ing the chat interface\n\nFirst, I’ll quickly give a broad overview of how a basic chat interface’s CSS looks like. So the layout should look something like this:\n\nYou would need a container for the entire chat window, divy-ed up into a header, a messages area and the input area right at the bottom. Within the messages area, individual messages would be their own element, laid out left and right.\n\nFor this particular example, I’ve used an <aside> element as the chat window body, and applied a display: flex on it. The entire chat window layout is pretty much going to be powered by Flexbox.\n\nA flex: 1 on the message area while its parent (<aside>) is a flex container with a flex direction of column means that the message area will grow to fill up additional space as viewport height increases, or vice versa.\n\nUse of a single positive integer as the flex value on a flex item is making use of one of the flex keyword values.This keyword resolves to a flex-grow value of whatever the positive integer was, a flex-shrink value of 1 and a flex-basis of 0.\n\nAs for the chat bubbles within the message area, each role has their own class, e.g. agent and input. For the chat bubble that is supposed to be on the left, you don’t really need to do anything, and for the chat bubble that is supposed to be on the right, add an align-self: flex-end.\n\nThe data loss issue\n\nAs more messages get exchanged, the total height of all the messages would exceed that of the message area hence we would like the message area to be scrollable.\n\nInitially, in order to have the chat messages start from the bottom of the message area, I had set a justify-content: flex-end on the message area. This works well enough. At first.\n\nUnfortunately, once we get more messages than the message area can contain, we suffer a data loss issue. We are not able to scroll to the earliest messages.\n\nIf you peek into the specification for box alignment, there’s this bit:\n\nWhen the alignment subject is larger than the alignment container, it will overflow. Some alignment modes, if honored in this situation, may cause data loss: for example, if the contents of a sidebar are centered, when they overflow they may send part of their boxes past the viewport’s start edge, which can’t be scrolled to.\n\nAnd if you look into the flexbox specification, there’s also this bit:\n\nOverflowing boxes ignore their auto margins and overflow in the end direction.\n\nNow if you use the overflow alignment keyword of safe, what the browser will do is change the alignment mode back to one that does not result in data loss. And you can try this out in Firefox to see for yourself.\n\nBut then the original intention of having the messages start at the bottom of the message area cannot be achieved. The browser has forced the alignment to flex-start to prevent the data loss, so we’re back to square one.\n\nThe auto-margins fix\n\nThe solution I came up with is, instead of setting a justify-content: flex-end to align the messages to the bottom of the message area, I’d set a margin-top: auto on the first child of the messages area.\n\nIf you peek at the Flexbox specification this time, you can find this bit:\n\nPrior to alignment via justify-content and align-self, any positive free space is distributed to auto margins in that dimension.\n\nRegardless of how many message bubbles are in the message area, the top auto-margin on the first message bubble will push all the messages down to the bottom of the message area. And when there are many messages, you will still be able to scroll the message area.\n\nI’ve ported a demo showing the difference between the 2 implementations in this CodePen if anyone is interested: https://codepen.io/huijing/pen/zYYoZZP.\n\nReferences and reading"
+    }
+}

@@ -1,0 +1,42 @@
+{
+    "id": "dbpedia_5041_1",
+    "rank": 87,
+    "data": {
+        "url": "https://forum.glyphsapp.com/t/automatic-alignment-issue/6214",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Automatic alignment issue",
+        "top_image": "https://forum.glyphsapp.com/uploads/default/original/2X/b/ba3709b9cb6de5a0fd22c15c0894e33d0074b1ff.png",
+        "meta_img": "https://forum.glyphsapp.com/uploads/default/original/2X/b/ba3709b9cb6de5a0fd22c15c0894e33d0074b1ff.png",
+        "images": [
+            "https://forum.glyphsapp.com/user_avatar/forum.glyphsapp.com/elena/48/468_2.png",
+            "https://forum.glyphsapp.com/uploads/default/original/2X/0/0c1a03cc7241ab9ca4f0c7537f5c40fd57c5f354.PNG",
+            "https://forum.glyphsapp.com/uploads/default/original/2X/e/eb54e7f4d250f128cca2a1058f54d7850a679109.png",
+            "https://forum.glyphsapp.com/uploads/default/optimized/2X/f/f07230d4e07d475dc87fceb73e57bb3ea7e8931e_2_690x204.png",
+            "https://forum.glyphsapp.com/images/emoji/apple/slight_smile.png?v=6",
+            "https://forum.glyphsapp.com/letter_avatar_proxy/v4/letter/l/c0e974/48.png",
+            "https://forum.glyphsapp.com/images/emoji/apple/slight_smile.png?v=6",
+            "https://forum.glyphsapp.com/uploads/default/optimized/2X/f/fe1bf1244db09f028336e4aba6dae3389e39481b_2_690x226.png",
+            "https://forum.glyphsapp.com/uploads/default/optimized/2X/5/5034c45e208b657e133ef7e3c53b11ece490d7fd_2_690x142.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "etunni (etunni)",
+            "mekkablue (Rainer Erich Scheichelbauer)",
+            "elena (elena)"
+        ],
+        "publish_date": "2017-03-28T13:30:50+00:00",
+        "summary": "",
+        "meta_description": "When I create, for example, one.dnom glyph using the &quot;one&quot; glyph and scaling it to, lets say to 70% of it&#39;s original size, the alignment inside the one.dnom works weird. First of all, it is not set to &quot;auto&quot; and when I d&hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://forum.glyphsapp.com/uploads/default/optimized/2X/b/b4c5b06977105c652fc6fbd41279060bfacd4f93_2_32x32.png",
+        "meta_site_name": "Glyphs Forum",
+        "canonical_link": "https://forum.glyphsapp.com/t/automatic-alignment-issue/6214",
+        "text": "When I create, for example, one.dnom glyph using the “one” glyph and scaling it to, lets say to 70% of it’s original size, the alignment inside the one.dnom works weird. First of all, it is not set to “auto” and when I do set manually to the automatic mode the right and left bearings doesn’t match the ones from “one” glyph etc\n\nAlso, when I create a ligature (for example f_k), it doesn’t adopt kerning groups from f and k glyphs. Should it work this way or this is a glitch?\n\nthanks Rainer, for some reason I was sure it was a Glyphs’s feature…\n\nany thoughts on the first part of the issue?\n\nHad a look at it, and it seems what happens is that the glyph width is scaled properly, but the component is shifted horizontally when autoaligned. Easy workaround: manually set the x offset of the component to zero:\n\nI have a problem with Ldot / ldot and ldot.sc.\n\nThese three glyphs was made as composed, but I need to move the dot (periodcentered) but I can’t.\n\nAnother components like slash or diacritic marks can be disabled to move it.\n\nhttp://recordit.co/N5yaV0Jkz7\n\nCatalan people type an L and a periodcentered from their keyboards, not an Ldot.\n\nThe Ldot having a Unicode was a mistake, nobody wants that Unicode to appear in Catalan texts. Make sure the two glyphs kern nicely, and if substitution in a pre-composed shape is neccesary, better name it L_periodcentered or maybe u004C00B7.\n\nThanks Lucas,\n\nThis recipe it’s only for internal design, the code replace:\n\nlanguage CAT;\n\nsub l’ periodcentered’ l by ldot;\n\nsub L’ periodcentered’ L by Ldot;\n\nYour suggestion about nicely kern for these glyphs is valid too and I used it in all my fonts.\n\nThanks for sharing\n\nThat code will insert the Unicodes for Ldot and ldot into text, and should not be in any font. But maybe I misunderstand what you are doing…\n\nOT substitutions happen on the glyph level only, the characters of the text cannot be changed by them. Unless the implementation of the renderer is faulty. Which app does that? Do you have a reproducible example where that happens?\n\nFor a short moment I thought I had misunderstood the workings of OT substitutions\n\nBut then I put that code in a font and tested in an extremely common app, which is unlikely to have a faulty OT implementation.\n\nSo I type L, periodcentered, L, set the language to Catalan, save as Adobe PDF.\n\nThe text in that PDF then carries the unicodes of Ldot and ldot, no periodcentered anymore.\n\nYou might want to start testing fonts in MS Word hekkablue. (sorry I could not resist)\n\nWhy else would someone feel compelled to make a.sc and A.sc?\n\nInteresting, when using TT and the MS Word “save as PDF”, the Ldot Unicode is not inserted.\n\nSo it could be that the Adobe PDF-maker for MS Word (needed to embed and test CFF from Office) causes the faulty OT implementation? That would be funny.\n\nIn general Adobe and Microsoft handle OT substitutions differently and both scenarios need to be tested.\n\nSo I wonder, is this the only situation where OT substitutions change Unicodes?"
+    }
+}

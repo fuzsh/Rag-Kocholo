@@ -1,0 +1,46 @@
+{
+    "id": "dbpedia_5039_3",
+    "rank": 32,
+    "data": {
+        "url": "https://learn.microsoft.com/en-us/power-platform/power-fx/reference/function-clear-collect-clearcollect",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Collect, Clear, and ClearCollect functions - Power Platform",
+        "top_image": "https://learn.microsoft.com/en-us/media/open-graph-image.png",
+        "meta_img": "https://learn.microsoft.com/en-us/media/open-graph-image.png",
+        "images": [
+            "https://learn.microsoft.com/en-us/power-platform/power-fx/reference/media/yes-icon.svg",
+            "https://learn.microsoft.com/en-us/power-platform/power-fx/reference/media/yes-icon.svg",
+            "https://learn.microsoft.com/en-us/power-platform/power-fx/reference/media/yes-icon.svg",
+            "https://learn.microsoft.com/en-us/power-platform/power-fx/reference/media/yes-icon.svg",
+            "https://learn.microsoft.com/en-us/power-platform/power-fx/reference/media/yes-icon.svg",
+            "https://learn.microsoft.com/en-us/power-platform/power-fx/reference/media/yes-icon.svg",
+            "https://learn.microsoft.com/en-us/power-platform/power-fx/reference/media/yes-icon.svg",
+            "https://learn.microsoft.com/en-us/power-platform/power-fx/reference/media/yes-icon.svg",
+            "https://learn.microsoft.com/en-us/power-platform/power-fx/reference/media/function-clear-collect-clearcollect/icecream.png",
+            "https://learn.microsoft.com/en-us/power-platform/power-fx/reference/media/function-clear-collect-clearcollect/icecream-clearcollect.png",
+            "https://learn.microsoft.com/en-us/power-platform/power-fx/reference/media/function-clear-collect-clearcollect/icecream-collect.png",
+            "https://learn.microsoft.com/en-us/power-platform/power-fx/reference/media/function-clear-collect-clearcollect/icecream-clear.png",
+            "https://learn.microsoft.com/en-us/power-platform/power-fx/reference/media/function-clear-collect-clearcollect/icecream.png",
+            "https://learn.microsoft.com/en-us/power-platform/power-fx/reference/media/function-clear-collect-clearcollect/icecream.png",
+            "https://learn.microsoft.com/en-us/power-platform/power-fx/reference/media/function-clear-collect-clearcollect/icecream-myfavorites.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "gregli-msft"
+        ],
+        "publish_date": "2024-04-11T08:00:00+00:00",
+        "summary": "",
+        "meta_description": "Reference information including syntax and examples for the Collect, Clear, and ClearCollect functions.",
+        "meta_lang": "en",
+        "meta_favicon": "",
+        "meta_site_name": "",
+        "canonical_link": "https://learn.microsoft.com/en-us/power-platform/power-fx/reference/function-clear-collect-clearcollect",
+        "text": "Collect, Clear, and ClearCollect functions\n\nCreates and clears collections and adds records to any data source.\n\nCollect\n\nApplies to: Canvas apps Cards Dataverse low-code plug-ins Power Platform CLI Desktop flows\n\nThe Collect function adds records to a data source. The items to be added can be:\n\nA single value: The value is placed in the Value field of a new record. All other properties are left blank.\n\nA record: Each named property is placed in the corresponding property of a new record. All other properties are left blank.\n\nA table: Each record of the table is added as a separate record of the data source as described above. The table isn't added as a nested table to a record. To do this, wrap the table in a record first.\n\nWhen used with a collection, additional columns will be created as needed. The columns for other data sources are fixed by the data source and new columns can't be added.\n\nIf the data source doesn't already exist, a collection is created.\n\nCollections are sometimes used to hold global variables or make a temporary copy of a data source. Canvas apps are based on formulas that automatically recalculate as the user interacts with an app. Collections don't enjoy this benefit and their use can make your app harder to create and understand. Before using a collection in this manner, review working with variables.\n\nYou can also use the Patch function to create records in a data source.\n\nCollect returns the modified data source as a table. Collect can only be used in a behavior formula.\n\nClear\n\nApplies to: Canvas apps\n\nThe Clear function deletes all the records of a collection. The columns of the collection will remain.\n\nNote that Clear only operates on collections and not other data sources. You can use RemoveIf( DataSource, true ) for this purpose. Use caution as this will remove all records from the data source's storage and can affect other users.\n\nYou can use the Remove function to selectively remove records.\n\nClear has no return value. It can only be used in a behavior formula.\n\nClearCollect\n\nApplies to: Canvas apps Model-driven apps\n\nThe ClearCollect function deletes all the records from a collection. And then adds a different set of records to the same collection. With a single function, ClearCollect offers the combination of Clear and then Collect.\n\nClearCollect returns the modified collection as a table. ClearCollect can only be used in a behavior formula.\n\nDelegation\n\nWhen used with a data source, these functions can't be delegated. Only the first portion of the data source will be retrieved and then the function applied. The result may not represent the complete story. A warning may appear at authoring time to remind you of this limitation and to suggest switching to delegable alternatives where possible. For more information, see the delegation overview.\n\nSyntax\n\nCollect( DataSource, Item, ... )\n\nDataSource â Required. The data source that you want to add data to. If it doesn't already exist, a new collection is created.\n\nItem(s) - Required. One or more records or tables to add to the data source.\n\nClear( Collection )\n\nCollection â Required. The collection that you want to clear.\n\nClearCollect( Collection, Item, ... )\n\nCollection â Required. The collection that you want to clear and then add data to.\n\nItem(s) - Required. One or more records or tables to add to the data source.\n\nExamples\n\nClearing and adding records to a data source\n\nIn these examples, you'll erase and add to a collection that's named IceCream. The data source begins with these contents:\n\nFormula Description Result ClearCollect( IceCream, {Â Flavor:Â \"Strawberry\",Â Quantity:Â 300Â } ) Clears all data from the IceCream collection and then adds a record that includes a quantity of strawberry ice cream.\n\nThe IceCream collection has also been modified. Collect( IceCream, {Â Flavor:Â \"Pistachio\",Â Quantity:Â 40Â }, {Â Flavor:Â \"Orange\",Â Quantity:Â 200Â } ) Adds two records to the IceCream collection that includes a quantity of pistachio and orange ice cream.\n\nThe IceCream collection has also been modified. Clear( IceCream ) Removes all records from the IceCream collection.\n\nThe IceCream collection has also been modified.\n\nFor step-by-step examples of how to create a collection, see Create and update a collection.\n\nRecords and tables\n\nThese examples examine how record and table arguments to Collect and ClearCollect are handled."
+    }
+}

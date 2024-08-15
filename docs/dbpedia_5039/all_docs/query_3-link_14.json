@@ -1,0 +1,30 @@
+{
+    "id": "dbpedia_5039_3",
+    "rank": 14,
+    "data": {
+        "url": "https://typesense.org/docs/0.20.0/api/collections.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Collections",
+        "top_image": "https://typesense.org/docs/images/opengraph_banner.png",
+        "meta_img": "https://typesense.org/docs/images/opengraph_banner.png",
+        "images": [
+            "https://typesense.org/docs/images/typesense_logo.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "Documentation for Typesense Search",
+        "meta_lang": "en",
+        "meta_favicon": "/docs/favicon.png",
+        "meta_site_name": "",
+        "canonical_link": "https://typesense.org/26.0/api/collections.html",
+        "text": "# Collections\n\nIn Typesense, a group of related documents is called a collection. A collection is roughly equivalent to a table in a relational database.\n\n# Create a collection\n\nWhen a collection is created, we give it a name and describe the fields that will be indexed from the documents that are added to the collection.\n\nFrom Typesense v0.20, we can also create a collection that automatically detects the types of the various fields in the document.\n\n# With pre-defined schema\n\nLet's first create a collection with an explicit, pre-defined schema.\n\nTIP\n\nYour documents can contain other fields not mentioned in the collection's schema - they will be stored on disk but not indexed in memory.\n\n# Sample Response\n\nDefinition\n\nPOST ${TYPESENSE_HOST}/collections\n\n# Field Arguments\n\nParameter Required Description name yes Name of the collection you wish to create.\n\nThis can be a simple string like \"name\": \"score\".\n\nOr you can also use a RegEx to specify field names matching a pattern. For eg: if you want to specify that all fields starting with score_ should be an integer, you can set name as \"name\": \"score_.*\". fields yes A list of fields that you wish to index for querying, filtering and faceting. For each field, you have to specify the name and type.\n\nDeclaring a field as optional\n\nA field can be declared as optional by setting \"optional\": true.\n\nDeclaring a field as a facet\n\nA field can be declared as a facetable field by setting \"facet\": true.\n\nFaceted fields are indexed verbatim without any tokenization or preprocessing. For example, if you are building a product search, color and brand could be defined as facet fields.\n\nDeclaring a field as non-indexable\n\nYou can ensure that a field is not indexed by setting \"index\": false. This is useful when used along with auto schema detection. default_sorting_field no The name of an int32 / float field that determines the order in which the search results are ranked when a sort_by clause is not provided during searching. This field must indicate some kind of popularity. For example, in a product search application, you could define num_reviews field as the default_sorting_field.\n\nAdditionally, when a word in a search query matches multiple possible words (either because of a typo or during a prefix search), this parameter is used to rank such equally matching tokens. For e.g. both \"john\" and \"joan\" are 1-typo away from \"jofn\". Similarly, in a prefix search, both \"apple\" and \"apply\" would match the prefix \"app\".\n\n# Field types\n\nTypesense allows you to index the following types of fields:\n\nstring int32 int64 float bool\n\nYou can define an array or multi-valued field by suffixing a [] at the end:\n\nstring[] int32[] int64[] float[] bool[]\n\nThere are also two special field types that are used for handling data sources with varying schema via automatic schema detection.\n\nauto string*\n\n# With auto schema detection\n\nWhile we encourage the use of a schema to ensure that you index only the fields that you need, it's not always possible to know upfront what fields your documents might contain.\n\nIn such a scenario, you can define a wildcard field with the name .* and type auto to let Typesense automatically detect the type of the fields automatically.\n\nWhen a .* field is defined this way, all the fields in a document are automatically indexed for searching and filtering.\n\nYou can still define the schema for certain fields explicitly:\n\nIf an explicit definition is available for a field (country in this example), Typesense will give preference to that before falling back to the wildcard definition.\n\nWhen such an explicit field definition is not available, the first document that contains a field with a given name determines the type of that field. For example, if you index a document with a field named title and it is a string, then the next document that contains the field named title will be expected to have a string too.\n\n# Data Coercion\n\nWhat happens when the next document's title field is not a string? By default, Typesense will try to coerce the value to the previously inferred type. For example, if you sent a number, Typesense will \"stringify\" the number and store it as a string. However, this may not always work (you can't convert a string to a number). When Typesense is unable to coerce the field value to the previously inferred type, the indexing will fail with the appropriate error.\n\n# Retrieve a collection\n\nRetrieve the details of a collection, given its name.\n\n# Sample Response\n\n# Definition\n\nGET ${TYPESENSE_HOST}/collections/:collection\n\n# List all collections\n\nReturns a summary of all your collections. The collections are returned sorted by creation date, with the most recent collections appearing first.\n\n# Sample Response\n\n# Definition\n\nGET ${TYPESENSE_HOST}/collections\n\n# Drop a collection\n\nPermanently drops a collection. This action cannot be undone. For large collections, this might have an impact on read latencies.\n\n# Sample Response\n\n# Definition"
+    }
+}

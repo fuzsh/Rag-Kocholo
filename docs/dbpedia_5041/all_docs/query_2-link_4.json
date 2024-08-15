@@ -1,0 +1,53 @@
+{
+    "id": "dbpedia_5041_2",
+    "rank": 4,
+    "data": {
+        "url": "https://stackoverflow.com/questions/7693224/how-do-i-right-align-div-elements",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How do I right align div elements?",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://i.sstatic.net/4rtxd.png?s=64",
+            "https://graph.facebook.com/669395788/picture?type=large",
+            "https://www.gravatar.com/avatar/683ed6ba54880a577aaa2592f6e9ebe8?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/57b2d849509d2058cee4344af8785de9?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/P4p6W.jpg?s=64",
+            "https://lh6.googleusercontent.com/-405c9YSAmvs/AAAAAAAAAAI/AAAAAAAAAIU/nqXfmMqRvTg/photo.jpg?sz=64",
+            "https://i.sstatic.net/RiUJX.jpg?s=64",
+            "https://i.sstatic.net/YtEOGCx7.jpg?s=64",
+            "https://www.gravatar.com/avatar/ae6b6aabdc8ee91f305f25563b1e244d?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/b7906d7fdab1e4d8855d4bc082d7d9a9?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/1m93a.jpg?s=64",
+            "https://i.sstatic.net/cpTof.png?s=64",
+            "https://i.sstatic.net/EOtYu.jpg?s=64",
+            "https://i.sstatic.net/MVPAN.jpg?s=64",
+            "https://i.sstatic.net/XGoCO.png?s=64",
+            "https://lh3.googleusercontent.com/-ORDz7pZN9DQ/AAAAAAAAAAI/AAAAAAAAACc/6M3aYJpvIXI/photo.jpg?sz=64",
+            "https://lh5.googleusercontent.com/-x8kp-ic7c_c/AAAAAAAAAAI/AAAAAAAAFIg/ln-COyrHKfY/photo.jpg?sz=64",
+            "https://www.gravatar.com/avatar/ed95a48d4a5c39be9f07298d7a842caa?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/2e4d9b3a1848e130e0d54d402f21b4aa?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/d695aba2968980a52ddb45c02ad3826c?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/9089ddbb1842bd750f0b4de778273a0b?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/70d671ad3176d816d0682b4f03521362?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/286a536202d9a2ebb0549bf264e55ec4?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/7693224/ivc/5e7f?prg=fec70b20-86ec-4cb9-86d5-397525ed7a5b"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2011-10-07T21:54:04",
+        "summary": "",
+        "meta_description": "The body of my html document consists of 3 elements, a button, a form, and a canvas. I want the button and the form to be right aligned and the canvas to stay left aligned. The problem is when I tr...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/7693224/how-do-i-right-align-div-elements",
+        "text": "Floats are okay, but problematic with IE 6 & 7.\n\nI'd prefer using the following on the inner div:\n\nmargin-left: auto; margin-right: 0;\n\nSee the IE Double Margin Bug for clarification on why.\n\nNote that while this answer is not wrong, it is very outdated methodology written in 2015\n\nOther answers for this question are not so good since float:right can go outside of a parent div (overflow: hidden for parent sometimes might help) and margin-left: auto, margin-right: 0 for me didn't work in complex nested divs (I didn't investigate why).\n\nI've figured out that for certain elements text-align: right works, assuming this works when the element and parent are both inline or inline-block.\n\nNote: the text-align CSS property describes how inline content like text is aligned in its parent block element. text-align does not control the alignment of block elements itself, only their inline content.\n\nAn example:\n\n<div style=\"display: block; width: 80%; min-width: 400px; background-color: #caa;\"> <div style=\"display: block; width: 100%\"> I'm parent </div> <div style=\"display: inline-block; text-align: right; width: 100%\"> Caption for parent </div> </div>\n\nHere's a JS Fiddle.\n\nIf you don't have to support IE9 and below you can use flexbox to solve this: codepen\n\nThere's also a few bugs with IE10 and 11 (flexbox support), but they are not present in this example\n\nYou can vertically align the <button> and the <form> by wrapping them in a container with flex-direction: column. The source order of the elements will be the order in which they're displayed from top to bottom so I reordered them.\n\nYou can then horizontally align the form & button container with the canvas by wrapping them in a container with flex-direction: row. Again the source order of the elements will be the order in which they're displayed from left to right so I reordered them.\n\nAlso, this would require that you remove all position and float style rules from the code linked in the question.\n\nHere's a trimmed down version of the HTML in the codepen linked above.\n\n<div id=\"mainContainer\"> <div> <canvas></canvas> </div> <div id=\"formContainer\"> <div id=\"addEventForm\"> <form></form> </div> <div id=\"button\"> <button></button> </div> </div> </div>\n\nAnd here is the relevant CSS\n\n#mainContainer { display: flex; flex-direction: row; } #formContainer { display: flex; flex-direction: column; }"
+    }
+}

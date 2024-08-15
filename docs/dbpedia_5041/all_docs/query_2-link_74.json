@@ -1,0 +1,35 @@
+{
+    "id": "dbpedia_5041_2",
+    "rank": 74,
+    "data": {
+        "url": "https://community.carbide3d.com/t/auto-alignment-to-stock-on-stock-resizing/61058",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Auto Alignment to Stock on Stock Resizing",
+        "top_image": "https://community.carbide3d.com/uploads/default/original/2X/6/6b28dabeee0d6d16d2fe79c3569d1c53dc44c69d.png",
+        "meta_img": "https://community.carbide3d.com/uploads/default/original/2X/6/6b28dabeee0d6d16d2fe79c3569d1c53dc44c69d.png",
+        "images": [
+            "https://community.carbide3d.com/images/emoji/twitter/wink.png?v=12",
+            "https://community.carbide3d.com/user_avatar/community.carbide3d.com/tod1d/48/66793_2.png",
+            "https://carbide3d.com/favicon.ico"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "msuing (Mitchell S)",
+            "system (system) Closed"
+        ],
+        "publish_date": "2023-04-06T23:55:42+00:00",
+        "summary": "",
+        "meta_description": "In beginning to use dimensional variables in expression editors, I came upon another idea that would help me develop/prepare work even faster in relation to stock sizing and dynamic updates. \nI would like to see a featur&hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://community.carbide3d.com/uploads/default/optimized/2X/6/6b28dabeee0d6d16d2fe79c3569d1c53dc44c69d_2_32x32.png",
+        "meta_site_name": "Carbide 3D Community Site",
+        "canonical_link": "https://community.carbide3d.com/t/auto-alignment-to-stock-on-stock-resizing/61058",
+        "text": "In beginning to use dimensional variables in expression editors, I came upon another idea that would help me develop/prepare work even faster in relation to stock sizing and dynamic updates.\n\nI would like to see a feature where we can select a set of vectors and set their alignment behavior in reference to the stock upon the resizing of the stock dimensions.\n\nTo give an example, if a circle vector is generated on the center of a piece of stock that is 4x4, its center will be at (2,2). But let’s say someone wants to do the same cut but the only stock piece they have is 5x5. When they go to adjust their stock size from 4x4 to 5x5, that circle is still centered about (2,2). It would be handy to select those vectors and have an alignment option below/within the standard alignment set that allows us to control behavior after we update that stock so the circle’s new center would become (2.5,2.5) automatically. A single circle is obviously an overly basic example but when it comes to complicated designs or repeated vectors that just need to be run on a different size stock, it would be even quicker to produce gcode using this method along with stock dimension variables.\n\nThanks for the consideration!\n\nI think full blown associativity & parametric design is something that is way beyond the scope of this application. You only mention the “center of stock” as a point that the circle center is associative to.\n\nBut there are so many possibilities & combinations to consider, and everyone is going to approach their designs differently.\n\nAn expression system with user defined variables & expressions might be more in scope.\n\nExpanding on the few static variables we have now (t, ?, ? there’s 3 right now?)\n\nMaybe add in “w” & “h” to compliment “t” ?\n\nBut you would also need parameterized fields to enter the values / expressions. i.e. the circle X & Y center point. Even that could get out of hand.\n\n“d” (Tool Diameter) might be nice too. I could use “1.5 * d” for a slot width when I want my slots to be wider than the tool to avoid full engagement. But then other parameters would also have to be exposed & stored. Like rectangle width & length, origin (center or corner).\n\nHaving the stock resize relative to the zero point would help with your example. Set the zero to “center” then the stock change would add 0.5\" to all 4 sides rather than 1\" to the right & top.\n\n(Grid origin should also be the zero point when zero is not at the lower left corner. )\n\nIn your “center” example, setting the zero to center would do what you need. You would leave the design at 4 x 4, but set your zero on the machine at the center of stock regardless of the actual stock size. As long as it’s big enough to contain the design. Or were you wanting the circle radius to update to fill the stock as well?\n\nThe use of w and h as WillAdams mentioned is helpful in certain scenarios. I know I used a very basic example and talked about center alignment only, but yes, you’re absolutely correct in there could be numerous computations on vector and auto alignment combinations.\n\nIn my case, I can perhaps expand on a more legitimate example that I deal with. I have dice boxes that I design and cut out using cuts on both sides of the stock. One side is for cutting out the exterior decorative sides where the cuts on the other side of the stock cut out pockets for where dice would rest in the box.\n\nDepending on how big the stock is I can cut out one or multiple sets at a time. The big thing with cutting both sides of the stock is that I need everything to be absolutely square and aligned when it is flipped and cut. I obviously need to account for the squaring on my own, but alignment I generally do after resizing the stock in CC, selecting and grouping all vectors then using the center alignment tool, then I ungroup the vectors back to the original design and toolpath configs. Ultimately, these aren’t very complicated steps to do manually, but from the process of reducing more manual efforts thru design, if I had a way to scale my stock and my vectors automatically move to the correct position, along with utilizing the ‘t’ depth variable for thickness changes, I would have everything set automatically and simply would generate the gcode after that and I am good to go.\n\nI could see where it gets more complicated in how it tracks what vectors have alignment rules on them, and what do you do to that rule when a group of vectors is broken or modified? is it maintained or does it get destroyed? That would be something that has to be considered and adds a twist to the feature design.\n\nUltimately I am very happy that variables are available now, along with layer toolpaths, but this idea popped in my head in regards to the last step I need to do every time I have a new piece of stock to cut out of. I’m not even sure how viable it would be in some of my 3D cuts I do in regards to shifting models around either, but starting with vectors would be a start at least. Hopefully that makes some sense and thanks for your feedback"
+    }
+}

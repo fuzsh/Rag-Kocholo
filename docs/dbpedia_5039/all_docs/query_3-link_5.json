@@ -1,0 +1,38 @@
+{
+    "id": "dbpedia_5039_3",
+    "rank": 5,
+    "data": {
+        "url": "https://stackoverflow.com/questions/7874342/what-is-the-difference-between-objective-c-automatic-reference-counting-and-garb",
+        "read_more_link": "",
+        "language": "en",
+        "title": "What is the difference between Objective-C automatic reference counting and garbage collection?",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://cdn.sstatic.net/Img/teams/teams-promo.svg?v=e507948b81bf",
+            "https://www.gravatar.com/avatar/52a2ffb44b1c11ab9001cb67e0a0021c?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/05436d24ba0cfc19f5f3b07693ad318e?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/a007be5a61f6aa8f3e85ae2fc18dd66e?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/52a2ffb44b1c11ab9001cb67e0a0021c?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/c3a10255d357e545d2e065b95bf896e4?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/rRkqv.jpg?s=64",
+            "https://www.gravatar.com/avatar/99d66c89993329c80b68ae2ffb16d4a1?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/7874342/ivc/5f3f?prg=33a1e608-e2ab-4b21-8e29-cd3586e95393"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2011-10-24T10:36:10",
+        "summary": "",
+        "meta_description": "With the new automatic reference counting (ARC) introduced in Xcode 4.2, we no longer need to manually manage retain / release in Objective-C.\n\nThis seems similar to garbage collection, as done in",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/7874342/what-is-the-difference-between-objective-c-automatic-reference-counting-and-garb",
+        "text": "As I describe in my answer here, ARC can provide the best of both manual memory management and tracing garbage collection. It mostly removes the need for a developer to track manual retains, releases, and autoreleases on Objective-C objects, yet avoids the need for a garbage collector process which can use up limited resources on a mobile device and cause occasional stutters in a running application.\n\nARC inserts the appropriate retains and releases required for reference counting at compile time, by applying the rules that all Objective-C developers have had to use over the years. This frees the developer from having to manage this themselves. Because the retains and release are inserted at compile time, no collector process is needed to continually sweep memory and remove unreferenced objects.\n\nOne slight advantage that tracing garbage collection has over ARC is that ARC will not deal with retain cycles for you, where tracing garbage collection can pick these up.\n\nA great read on the subject comes from this thread on Apple's Objective-C mailing list, where Chris Lattner has this to say:\n\nThe primary advantage of GC over ARC is that it collects retain cycles. A secondary advantage is that \"retained\" assignments are \"atomic\" because they are a simple store. ARC has several big advantages over libauto GC:\n\nIt has deterministic reclamation of objects (when the last strong reference to the object goes away) where GC frees an object \"sometime later\". This defines away a class of subtle bugs that can exist in GC apps that aren't exposed because the collector doesn't trigger \"in the buggy window\".\n\nThe high water mark is generally much lower with ARC than GC because objects are released sooner.\n\nlibauto provides a fragile programming model, you have to be careful to not lose write barriers etc.\n\nnot all of the system frameworks are GC clean, and the frameworks do occasionally regress as they evolve.\n\nARC doesn't suffer from false roots. libauto conservatively scans the stack, which means that integers that look like pointers can root object graphs.\n\nARC doesn't have anything that kicks in and stops your app, causing UI stutters. libauto is pretty advanced as far as GC implementations go because it doesn't immediately stop every thread, but it still does usually end up stopping all the UI threads.\n\nI am currently migrating both my manually memory managed projects, as well as those using Objective-C garbage collection, to ARC. After using garbage collection in a couple of Mac applications for a while now, I see some significant advantages in moving these projects to ARC."
+    }
+}

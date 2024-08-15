@@ -1,0 +1,42 @@
+{
+    "id": "dbpedia_5041_2",
+    "rank": 46,
+    "data": {
+        "url": "https://discourse.mcneel.com/t/align-center/135506",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Align center",
+        "top_image": "https://global.discourse-cdn.com/mcneel/original/3X/a/3/a3d22fa75cb2e26bdc77cc6462014e63abbc920c.png",
+        "meta_img": "https://global.discourse-cdn.com/mcneel/original/3X/a/3/a3d22fa75cb2e26bdc77cc6462014e63abbc920c.png",
+        "images": [
+            "https://emoji.discourse-cdn.com/twitter/cold_face.png?v=10",
+            "https://global.discourse-cdn.com/mcneel/uploads/default/original/4X/c/3/e/c3e3e0f5d8fe2fa5dd0f25a930eb61a3bbe8c581.png",
+            "https://global.discourse-cdn.com/mcneel/uploads/default/original/4X/0/b/4/0b47ec55da0cbf225b32380c30eaeea2123cd805.png",
+            "https://global.discourse-cdn.com/mcneel/uploads/default/original/4X/0/6/9/069bfc27490d31b4b88164e7a85d89703ebc5be3.png",
+            "https://sea1.discourse-cdn.com/mcneel/user_avatar/discourse.mcneel.com/pou010/48/156137_2.png",
+            "https://emoji.discourse-cdn.com/twitter/grinning.png?v=10",
+            "https://sea1.discourse-cdn.com/mcneel/user_avatar/discourse.mcneel.com/pou010/48/156137_2.png",
+            "https://global.discourse-cdn.com/mcneel/uploads/default/optimized/4X/8/4/2/8422768d4abb5caf8c08d498ab4e2571e52f99de_2_690x455.png",
+            "https://global.discourse-cdn.com/mcneel/uploads/default/optimized/4X/c/3/4/c34ccdbef46bb7ff51d9447a0d3233e11175fb99_2_690x455.png",
+            "https://emoji.discourse-cdn.com/twitter/zipper_mouth_face.png?v=10",
+            "https://emoji.discourse-cdn.com/twitter/wink.png?v=10",
+            "https://emoji.discourse-cdn.com/twitter/pray.png?v=10",
+            "https://emoji.discourse-cdn.com/twitter/stuck_out_tongue_winking_eye.png?v=10"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "mac"
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2021-12-27T12:24:53+00:00",
+        "summary": "",
+        "meta_description": "Hello, \nfor the function of alignment and “center of alignment”; it is the last parameter which tires me the famous point of alignment, the key enter and nothing is aligned ditto with the key ‘esc’ … it is painful … &hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://global.discourse-cdn.com/mcneel/uploads/default/optimized/3X/e/8/e8ac746b7d3ee947a397b6e4f08d03f650423c3c_2_32x32.ico",
+        "meta_site_name": "McNeel Forum",
+        "canonical_link": "https://discourse.mcneel.com/t/align-center/135506",
+        "text": "You are talking about the “Concentric” command line alignment option and pressing Enter to “auto-align”? In a quick test here it seems to work, can you post an example where it is not?\n\nESC will cancel and exit any command, that is to be expected. But Enter should work to auto align.\n\nWell, you can always use two consecutive concentric Align operations, one from the Top CPlane and the second from the Front for example…\n\nThis is also fairly easily scriptable for individual objects, I probably already have something* that does this lying around somewhere, however, what’s not quite so simple is dealing with groups moving together (especially nested groups).\n\n* for example this script - which is hard coded relative to World CPlane - but which does not currently support object grouping.\n\nEdit, fixed a minor bug with point objects\n\nAlign3DWorld.py (3.7 KB)\n\nand it would not be a ‘problem’ of the center of gravity of the objects? that all the objects to be grouped are the same center of gravity so that it is well centered on the 3 axes.?\n\n“Center of gravity” is not the way these things are calculated - virtually all native Rhino alignment commands use the objects’ bounding box for alignment determination. For example, if “centered” is chosen, it uses the center of the bounding box.\n\nIf you want to have something based on the object’s center of mass, a script would need to be written that calculates the volume mass properties for each object or group of objects in order to get the alignment point.\n\nHere is a quick hack of the script above that tries to respect object top grouping (single groups). Results with nested groups will likely be incorrect.\n\nEdit, fixed a minor bug with point objects\n\nAlign3DWorldG.py (5.0 KB)\n\nNo, it does not. In that file, all the objects are lying on the World XY plane. Using “concentric” and the Perspective viewport (Top CPlane), it aligns in X and Y here, but not Z. Like this:\n\nIf it were to align centered in Z at the same time, it would look like this:"
+    }
+}
