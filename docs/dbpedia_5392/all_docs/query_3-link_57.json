@@ -1,0 +1,37 @@
+{
+    "id": "dbpedia_5392_3",
+    "rank": 57,
+    "data": {
+        "url": "https://superuser.com/questions/1709147/history-explanation-for-time-zones-on-windows",
+        "read_more_link": "",
+        "language": "en",
+        "title": "History/explanation for \"time zones\" on Windows",
+        "top_image": "https://cdn.sstatic.net/Sites/superuser/Img/apple-touch-icon@2.png?v=e869e4459439",
+        "meta_img": "https://cdn.sstatic.net/Sites/superuser/Img/apple-touch-icon@2.png?v=e869e4459439",
+        "images": [
+            "https://cdn.sstatic.net/Sites/superuser/Img/logo.svg?v=4bc8a703ebac",
+            "https://i.sstatic.net/pQsv2.png",
+            "https://www.gravatar.com/avatar/b1fcddf43425d951bb5dafef53563d45?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/889cf720c96957e615463b5c903a5e18?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/bH6I4.png?s=64",
+            "https://lh3.googleusercontent.com/a-/AOh14Ghq9uQ1tP4fr9d_uPdxV-KcThew1grmpccPDePt=k-s64",
+            "https://www.gravatar.com/avatar/0833cea067fac2f5f71a00193c06ebfb?s=64&d=identicon&r=PG",
+            "https://superuser.com/posts/1709147/ivc/6d28?prg=73fd33d1-6acd-4afe-88a5-c9cd9b7fe806"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2022-03-10T15:00:16",
+        "summary": "",
+        "meta_description": "Not sure if superuser.com is the proper StackExchange site to ask this question; if not, refer me to the most appropriate of the sites.\nWhat is the origin of the time zones that come with Windows? ...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/superuser/Img/favicon.ico?v=4852d6fb3f5d",
+        "meta_site_name": "Super User",
+        "canonical_link": "https://superuser.com/questions/1709147/history-explanation-for-time-zones-on-windows",
+        "text": "All these four entries (\"W. Europe Standard Time\", \"Central Europe Standard Time\", \"Romance Standard Time\", \"Central European Standard Time\") are essentially equivalent, but confusing in several ways.\n\nYes.\n\nThe name W. Europe Standard Time is often used for UTC±00:00 used in Lisbon, London etc.\n\nColloquially, yes - \"Western European Time\" is applied to several places that are UTC+0. However, Windows thinks that's UTC+1. The Windows time zone ID for London and Lisbon is \"GMT Standard Time\".\n\nso where does the name come from?\n\nIt's a mistake, that has been grandfathered in to the data.\n\nThe word Romance in the third one is curious. One city mentioned (Copenhagen) uses a non-Romance language (Danish, a Germanic language), while a city with clearly Romance association (Rome, from the name of which Romance is derived) is in another entry.\n\nI think this is a stretch. It's more likely the individual who first proposed this zone entry thought that Paris was a romantic place. (Yes, I am being serious.)\n\nThere is no meaning to the groups. Like why are Amsterdam and Brussels in different groups? And why does Stockholm go together with Amsterdam while Copenhagen goes with Brussels?\n\nNo reason other than there were a long list of European countries and corresponding cities with the same time zone at the time the identifiers were chosen. I speculate they were broken into four to keep the drop-down list visible in the UI without making it super wide, or upsetting anyone by dropping one of them.\n\nIf you are in Oslo (not mentioned), would you pick Copenhagen or Stockholm?\n\nI can't speak for what one would do, but the correct mapping would be Stockholm. (W. Europe Standard Time)\n\nThe names Central Europe Standard Time and Central European Standard Time are very similar? Why is Zagreb not grouped together with Ljubljana; the cities of the Balkans are completely randomly distributed between the two groups?\n\nYes.\n\nSo my main question is, what is the explanation for these groups?\n\nI've researched this considerably, and the only reasonable answer I can offer is: Human behavior can often be seen as haphazard when reviewed over time. Hence the expression, \"Hindsight is 20/20\".\n\nConsider that the first APIs that used this data were part of the earliest versions of Windows NT. While the tz database project existed at the time, it wasn't as ubiquitous as it is today. Microsoft also did not have a culture of adopting open source technologies, or much interest on interoperability between systems with things as esoteric as time zones.\n\nIt took much longer for there to be even a slight regard for historical time zone changes (Windows Vista added \"Dynamic DST\" to the registry entries).\n\nGenerally speaking, the only motivation was having the clock on the taskbar be correct, for the time zones that Microsoft was selling Windows in. Thus, the list did not have to cover 100% of the world - but just the areas where there was a support contract. If you were using Windows in some other time zone, you probably didn't have a channel to convince someone at Microsoft that it was an important issue worth spending engineering money on.\n\nMicrosoft also had had major problems with time zones interfering with product sales due to how they were labeled on maps. (See this blog or this older tz list post for more details.)\n\nOver time, more and more time zones were added to the list. Sometimes the changes were at request of customers, and sometimes they were in response to government change of standard offset or DST rules. Sometimes the changes were part of larger projects, or sometimes as one-offs. Often by different teams following what they thought was the right thing to do, but didn't necessarily align with precedent (ex: the \"Russia Time Zone X\" numbered zones).\n\nThe good news is, the world changed, and Microsoft has come a long way with it. Technologies like .NET have embraced IANA time zones where possible. So has Windows itself, in several areas such as WinRT/UWP. In 2016, I worked at Microsoft and helped the Windows team fill in the gaps. Now, as much as possible, there is a reasonably valid choice of time zone for any person on the planet (to align with Microsoft's revised mission statement: \"to empower every person and every organization on the planet to achieve more\"). There's a lovely piece in Wired magazine about these folks. I no longer work there, but the policies I helped put in place continue to support efforts to stay updated as time moves on. You can follow along with their work on the Microsoft DST/TZ blog.\n\nIs there a map from tz database entries to the groups used by Windows?\n\nYes. The de-facto standard mapping is the windowsZones.xml file, found within the Unicode CLDR project. It is used by Windows itself, as well as .NET, many third-party libraries, and just about anything that runs ICU."
+    }
+}

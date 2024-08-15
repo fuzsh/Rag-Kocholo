@@ -1,0 +1,51 @@
+{
+    "id": "dbpedia_5395_2",
+    "rank": 19,
+    "data": {
+        "url": "https://community.nxp.com/t5/S12-MagniV-Microcontrollers/when-I-used-PIT0-and-SWI-interrupts-the-program-can-t-run/m-p/468154/%3Fprofile.language%3Den",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Re: when I used PIT0 and SWI interrupts the program can't run,【ILLEGAL_BP】",
+        "top_image": "https://community.nxp.com/html/@8C1A1039F62637A3D662DDE58B5FD20B/assets/favicon__2.ico",
+        "meta_img": "https://community.nxp.com/html/@8C1A1039F62637A3D662DDE58B5FD20B/assets/favicon__2.ico",
+        "images": [
+            "https://community.nxp.com/html/@3B2A2AF7E7CFE0C1FF0853D9A45CE7BB/assets/NXP_Community.svg",
+            "https://community.nxp.com/t5/image/serverpage/avatar-name/Community-User/avatar-theme/candy/avatar-collection/nxp/avatar-display-size/message/version/2?xdesc=1.0",
+            "https://community.nxp.com/legacyfs/online/avatars/a1029_28.png",
+            "https://community.nxp.com/html/@B84DBEB2E12F6CC7034F4AFA7345F487/assets/favicon-3.16x16.png",
+            "https://community.nxp.com/t5/image/serverpage/avatar-name/Community-User/avatar-theme/candy/avatar-collection/nxp/avatar-display-size/message/version/2?xdesc=1.0",
+            "https://community.nxp.com/legacyfs/online/avatars/a1029_28.png",
+            "https://community.nxp.com/html/@B84DBEB2E12F6CC7034F4AFA7345F487/assets/favicon-3.16x16.png",
+            "https://community.nxp.com/t5/image/serverpage/avatar-name/Community-User/avatar-theme/candy/avatar-collection/nxp/avatar-display-size/message/version/2?xdesc=1.0",
+            "https://community.nxp.com/legacyfs/online/avatars/a1029_28.png",
+            "https://community.nxp.com/html/@B84DBEB2E12F6CC7034F4AFA7345F487/assets/favicon-3.16x16.png",
+            "https://community.nxp.com/t5/image/serverpage/avatar-name/Community-User/avatar-theme/candy/avatar-collection/nxp/avatar-display-size/message/version/2?xdesc=1.0",
+            "https://community.nxp.com/t5/image/serverpage/image-id/54128i739AE30E911A4094/image-size/large?v=v2&px=999",
+            "https://community.nxp.com/t5/image/serverpage/image-id/54178i1DF5CA13A44DA6CB/image-size/large?v=v2&px=999",
+            "https://community.nxp.com/t5/image/serverpage/image-id/54182iC63853787FB0F3FF/image-size/large?v=v2&px=999",
+            "https://community.nxp.com/t5/image/serverpage/image-id/54236i4C47425FC70EA271/image-size/large?v=v2&px=999",
+            "https://community.nxp.com/t5/image/serverpage/image-id/54260iADBCFB0DA27111D4/image-size/large?v=v2&px=999",
+            "https://community.nxp.com/t5/image/serverpage/image-id/54277i66CE5F4807097CEB/image-size/large?v=v2&px=999",
+            "https://community.nxp.com/t5/image/serverpage/avatar-name/Community-User/avatar-theme/candy/avatar-collection/nxp/avatar-display-size/message/version/2?xdesc=1.0",
+            "https://community.nxp.com/skins/images/C220130D86B4262565E48F4323AFA975/responsive_peak/images/icon_anonymous_message.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "community.nxp.com",
+            "user-id"
+        ],
+        "publish_date": "2016-02-20T01:42:54.544000+00:00",
+        "summary": "",
+        "meta_description": "thanks for your reply. But the question is still here. I have not enable watchdog. This is a part of my code. void INIT_PIT(void)    /* enable a",
+        "meta_lang": "en",
+        "meta_favicon": "https://community.nxp.com/html/@8C1A1039F62637A3D662DDE58B5FD20B/assets/favicon__2.ico",
+        "meta_site_name": "NXP Community",
+        "canonical_link": "https://community.nxp.com/t5/S12-MagniV-Microcontrollers/when-I-used-PIT0-and-SWI-interrupts-the-program-can-t-run/m-p/468154#M11815",
+        "text": "Hi &amp;#23815;&amp;#38160; &amp;#21346;,\n\nI could not see anything wrong in your INIT_PIT() function.\n\nBut your code in PIT_ISR is strange.\n\nYou used “asm cli” command for enable other interrupts prior you cleared PITTF_PTF0 flag. Since there is 1-cycle (bus clock) delay in the clearing mechanism for the I bit, PITTF_PTF0 flag will be cleared anyway. However exact time of OSTimeTick() function execution depends on number of pending interrupts… This does not make sense for me. OS tick time based on Periodic interrupt should be accurate and without any necessary jitter. Why did you clear I bit in middle of PIT ISR?\n\nThe strange is also your code in OSCtxSw.\n\nI suppose that you used SWI for some “context switching”, but your implementation is quite insufficient.\n\nIf I understood correctly - You saved PPAGE, modify stack pointer and restore back PPAGE. This could “work” only when all functions will be in non-paged flash. When you want execute some code from banked flash, you have to change stack pointer and PPAGE. Additionally, context switch should modify also basic CPU registers…\n\nI would like to apologize, but I don’t have experiences with uCOSii OS.\n\nFor now I suppose that there will be probably some issue with inconsistency between modified stack pointer and PPAGE.\n\nThere should not be any connection between SWI and PIT0 on hardware side.\n\nJust for sure: SWI interrupt vector number is 4, PIT0 interrupt vector number is 66. Please check your prm file whether you defined it correctly.\n\nI hope it helps you.\n\nHave a great day,\n\nRadekS\n\n-----------------------------------------------------------------------------------------------------------------------\n\nNote: If this post answers your question, please click the Correct Answer button. Thank you!\n\n-----------------------------------------------------------------------------------------------------------------------\n\nwith my best grateful.\n\nyes,when I debug my code, It went wrong.\n\nAfter watching your receive, I try to chek my XS128 register.\n\nsome code is doing when pending interrupts is come to “context switching” ,code is follow,\n\n**************************************************************************************************************\n\n#pragma TRAP_PROC\n\nvoid OSIntCtxSw(void) //中断级任务切换子程序\n\n{\n\n#if OS_CPU_HOOKS_EN > 0\n\nOSTaskSwHook(); /* 4~, Invoke user defined context switch hook */\n\n#endif\n\n__asm{\n\nldx OSTCBHighRdy ; 3~, OSTCBCur = OSTCBHighRdy\n\nstx OSTCBCur ; 3~\n\nldab OSPrioHighRdy ; 3~, OSPrioCur = OSPrioHighRdy\n\nstab OSPrioCur ; 3~\n\nldx OSTCBCur\n\nlds 0,x ;3~, Load SP into 68HC12\n\npula\n\nstaa $15\n\nnop\n\n}\n\n}\n\n***************************************************************************************************************************************\n\nI try to replace it to OSCtxSw(), let PPAGE and stack pointer be saved before switch context,the program run correctly.\n\nSo I think there is some wrong when PIT interrupt come,perhaps some registers couldn't be saved correct,When this code\n\ndelay is over, program want to execute this part of code from break point, because of the registers' mistaken saved or someting wrong\n\nelse when PIT interrupt's coming.\n\nHowever,I modify my code,let PPAGE and stack point be saved again before switch context , problems seems go away,although I still\n\ndo not know why and how it happend.\n\nif its posible could u give me you massage box I send my project to you,\n\nmy English is improving, thanks for your help.\n\nHi &amp;#23815;&amp;#38160; &amp;#21346;,\n\nThe problem is probably that when you clear I bit (asm cli;), your PIT interrupt routine may be interrupted by any other interrupt. Since your OS implementation is full of assembler code (not handled by compiler), it is possible that OS function simply do not suppose such case (nested interrupts – ISR interrupted by ISR).\n\nIn general - some critical system functions needs to be executed in once, interruption in middle of these functions may cause dangerous situations. For these parts of code, interrupts must be disabled.\n\nPlease check whether functions like OSTimeTick(); or OSIntExit(); may be interrupted.\n\nI hope it helps you.\n\nHave a great day,\n\nRadekS\n\n-----------------------------------------------------------------------------------------------------------------------\n\nNote: If this post answers your question, please click the Correct Answer button. Thank you!\n\n-----------------------------------------------------------------------------------------------------------------------"
+    }
+}
