@@ -1,0 +1,35 @@
+{
+    "id": "dbpedia_5396_0",
+    "rank": 9,
+    "data": {
+        "url": "https://medium.com/%40panamgama/developing-a-dashboard-with-sql-server-power-bi-8cb61fda9b7b",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Developing a Dashboard with SQL Server & Power BI",
+        "top_image": "https://miro.medium.com/v2/resize:fit:1200/1*zIsKk6CIhOWjZblU5CIblw.png",
+        "meta_img": "https://miro.medium.com/v2/resize:fit:1200/1*zIsKk6CIhOWjZblU5CIblw.png",
+        "images": [
+            "https://miro.medium.com/v2/resize:fill:64:64/1*dmbNkD5D-u45r44go_cf0g.png",
+            "https://miro.medium.com/v2/da:true/resize:fill:88:88/0*8lyR3TyVHD47XTra",
+            "https://miro.medium.com/v2/da:true/resize:fill:144:144/0*8lyR3TyVHD47XTra"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Pula Panamgama",
+            "medium.com"
+        ],
+        "publish_date": "2023-06-17T11:18:54.178000+00:00",
+        "summary": "",
+        "meta_description": "A portfolio project showcasing data modeling, database creation, and visualization skills.",
+        "meta_lang": "en",
+        "meta_favicon": "https://miro.medium.com/v2/5d8de952517e8160e40ef9841c781cdc14a5db313057fa3c3de41c6f5b494b19",
+        "meta_site_name": "Medium",
+        "canonical_link": "https://medium.com/@panamgama/developing-a-dashboard-with-sql-server-power-bi-8cb61fda9b7b",
+        "text": "A portfolio project showcasing data modeling, database creation, and visualization skills\n\nPula Panamgama\n\n·\n\nFollow\n\n5 min read\n\n·\n\nJun 17, 2023\n\n--\n\nProject Summary\n\nBusiness objective: Create a dashboard for a pizzeria containing key operating information of daily activities.\n\nOutcome: Built a data model, SQL Server database, and Power BI dashboard to track and display key operating metrics of the Pizzeria. Processors such as orders undertaken, inventory usage and staff rotations were captured in the system design.\n\nObjective\n\nDemonstrate data modeling, SQL, and Power BI skillset through developing an operational data pipeline.\n\nCreating the data model\n\nNormalization is breaking data into sub-tables and maintaining relationships between them to minimize the risk of data redundancy.\n\nThe operational procedures of the pizzeria such as tracking order creation, ingredient usage, staff working hours, and product purchases have been considered in the normalized data model.\n\nFor example, the orders created by the cashier are logged in the ‘order_customers’ table. This table captures\n\nThe date and time of the order\n\nThe person making the order and their contact details\n\nIf the order is to be picked up or delivered\n\nBut the order includes items as well, such as pizzas, appetizers, and drinks. These are separately logged in another table called ‘order_items’, where the following information is captured,\n\nOrder to be referenced to\n\nAll the items ordered\n\nThe quantity of each item ordered\n\nA similar process was followed for storing the information of all entities (both people and other companies), ingredients and their use in the recipes, keeping track of staff attendance, purchase of products, and stock availability in the inventory.\n\nCreating the database in SQL Server\n\nAfter confirming that the model emulated all work procedures and provides all metrics necessary for the visualization, the corresponding database was created using SQL Server Management Studio.\n\nClustered primary keys were designated and set to auto-increment with the input of data. Foreign keys were added to create the relationships among the tables. The complete SQL script is included in this GitHub repo.\n\nWhile most views were directly created from tables, the inventory posed a problem since it has to be derived from two separate processes; ingredients coming in from purchases and going out through orders.\n\nTwo separate views were created for incoming and outgoing material quantities. Through the use of subqueries, they were combined to calculate the net value of ingredients left in the inventory.\n\nSince these views are automatically updated each time they are queried, it ensured that the dashboard will stay updated in a production scenario.\n\nConnecting the Views to Power BI\n\nPower BI makes it possible to connect to numerous data sources and both being Microsoft products, it swiftly connected with the SQL Server database.\n\nThe selected views were imported and connected to form the data model within Power BI.\n\nA date table had to be newly created within Power BI to connect the dates between the tables. This enabled the mapping of sales orders and purchases together, even though the data was in two separate tables.\n\nTo make certain calculations, such as the cost of ingredients, new measures were created using the DAX formula. Iterator functions such as SUMX() and RELATED() functions were used for this purpose."
+    }
+}
