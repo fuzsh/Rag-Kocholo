@@ -1,0 +1,36 @@
+{
+    "id": "dbpedia_5209_3",
+    "rank": 11,
+    "data": {
+        "url": "https://gis.stackexchange.com/questions/142833/seeking-postcode-shapefiles-census-data-for-netherlands",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Seeking postcode shapefiles & census data for Netherlands",
+        "top_image": "https://cdn.sstatic.net/Sites/gis/Img/apple-touch-icon@2.png?v=54e3ab1edcf3",
+        "meta_img": "https://cdn.sstatic.net/Sites/gis/Img/apple-touch-icon@2.png?v=54e3ab1edcf3",
+        "images": [
+            "https://cdn.sstatic.net/Sites/gis/Img/logo.svg?v=524ba4e921b1",
+            "https://www.gravatar.com/avatar/5bdb495c960b3384649e2a7e49c39cb9?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/3b316400a008b92bfd8794c20dce0b50?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/oO1hv.png?s=64",
+            "https://www.gravatar.com/avatar/74159a1ef52360aeba93c8413d1f106b?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/b0b60639424f09c5903c797727237c82?s=64&d=identicon&r=PG",
+            "https://gis.stackexchange.com/posts/142833/ivc/cde8?prg=52fe84ce-c12b-420e-954b-014d6228e305"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2015-04-16T13:37:15",
+        "summary": "",
+        "meta_description": "I would like to do some GIS mapping of the Netherlands, but I am having trouble finding official data files for the following:\n\nShapefiles for postcodes.\nCensus (population) data for postcodes.\nAnd...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/gis/Img/favicon.ico?v=6e585ede6bca",
+        "meta_site_name": "Geographic Information Systems Stack Exchange",
+        "canonical_link": "https://gis.stackexchange.com/questions/142833/seeking-postcode-shapefiles-census-data-for-netherlands",
+        "text": "Things have changed since 2015 I guess, currently there are multiple free methods to obtain data and geometry of postal codes. It is unfortunately slightly harder to find when one cannot read Dutch.\n\nI've summarized the different ways of obtaining postal code data of The Netherlands below, the methods may lead to the same data.\n\nOn the page \"Kerncijfers per postcode\" (\"Key postal code figures\") of the Central Bureau of Statistics (CBS) you can find recent (2018-2020) demographic data in a shapefile on a PC4 level1.\n\nThe same page has older (2008-2017) data on a PC5 and PC6 level.\n\nPDOK provides geographic data in The Netherlands. Amongst other things they have a WFS and WMS feed for the same CBS PC4 and PC6 data.\n\nNote that the PDOK services are limited to 1000 records per call. If you want to retrieve all data, you need to use paging, by appending this parameter: &startindex={starting at this 0-based index}\n\nPDOK has a QGIS plugin allowing you to easily add the postal code data in QGIS as a layer, without manually downloading the shapefile.\n\nTo retrieve the number of residents per PC4 zone in 2017 you could use the following URL parameters:\n\nhttps://geodata.nationaalgeoregister.nl/cbspostcode4/wfs?request=GetFeature&service=WFS&version=2.0.0&typeName=postcode42017&propertyName=(postcode,aantal_inwoners)&outputFormat=json\n\nEsri Netherlands through their ArcGIS Hub, offers shapefiles on a PC2 and PC4 level.\n\n1. PC4 indicates that only the first four characters of the postal code are used as a key, e.g. if the full postal code is 1011AA, the data aggregates information for all postal codes starting with 1011.\n\nSimilarly PC5 refers to the first 5 characters (e.g. all postal codes starting with 1011A). PC6 is equal to the full postal code.\n\nNote:\n\nPostNL has been assigned by the Dutch government to carry out the UPD (Universele Postdienst, Dutch for Universal Postal Service). This means that PostNL has to deliver mail throughout the Netherlands, five days a week (Tuesday through Saturday), and have enough mailboxes and post offices available for posting mail. ACM is charged with monitoring and enforcing the execution by PostNL\n\nhttp://en.wikipedia.org/wiki/PostNL\n\nThe Basic version is a merged database containing the postal code ranges € 609.00 ex VAT (ex Taxes) (in euros)\n\nThe professional version is available as merged or normalized database, which covers the zip code ranges building numbers. The house numbers are also complemented by a number of characteristics such as coordinates € 999.00 ex VAT (ex Taxes) (in euros)\n\nhttps://translate.google.com/translate?hl=en&sl=nl&tl=en&u=https%3A%2F%2Fwww.postcode.nl%2F\n\nDemo Data https://translate.googleusercontent.com/translate_c?depth=1&hl=en&rurl=translate.google.com&sl=nl&tl=en&u=https://www.postcode.nl/producten/nationale-postcodedatabase-demobestanden&usg=ALkJrhicC_c0mgJD4H4Uf_ys4rUxusUIxw\n\nOfficial Site is https://www.postcode.nl/\n\nThink, this is the best, you can find. It is in Dutch, so you need to keep google translator tab opened, but it has a lot of valuable census data for 3 agregation levels like regions, disticts, neighborhoods (buurt). For each neighborhood, if I'm not mistaken, there is a most common postal code. Hope it'll help, what kind of research are you doing btw?"
+    }
+}
