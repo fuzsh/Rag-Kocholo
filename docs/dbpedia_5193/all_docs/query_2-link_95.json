@@ -1,0 +1,30 @@
+{
+    "id": "dbpedia_5193_2",
+    "rank": 95,
+    "data": {
+        "url": "https://code.mpimet.mpg.de/boards/1/topics/13489",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Selecting data based on 1D variable value",
+        "top_image": "",
+        "meta_img": "",
+        "images": [],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "issue",
+            "bug",
+            "tracker"
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "Redmine",
+        "meta_lang": "en",
+        "meta_favicon": "/favicon.ico?1718628135",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "Hallo Ralf,\n\nThanks for your always fast feedbacks.\n\nThe question is related to using cdo on netcdf4 files downloaded from Copernicus.\n\nOne example of the datafile can be found attached.\n\nThe file contains monthly average seasonality temperature values (in local rivers) for catchment ids provided in an attached shapefile (which you do not need but I'll attach just in case: https://zenodo.org/record/581451#.Y3O9h8fMJlo) using the E-HYPEcatch 00 model and provides both historical and RCP scenario data.\n\nExtracting catchment id 9507523 (progressive id=23919) should therefore output 48 (12x4) values, 12 monthly entries for each historical and scenario datasets exclusive for that catchment id.\n\nI am currently using ncks -d id,23919 infile.in outfile.out to extract the data, but I would like to forgo completely using the id array position and instead use the required value (much like ncks -d id,9507523 infile.in outfile.out, which ofc does not work and outputs an out of range error).\n\nI realized furthermore that catchments in the file are not progressively sorted, meaning that I first need to find the netcdf array position of the catchment required (9507523 in the shapefile and position 23919 in the netcdf array) and then use it as input for the ncks function.\n\nMany thanks indeed!\n\nCDO regards the id as normal location information because of the id:axis = \"X\". Hence CDO won't be able the select a certain location because the id has nothing to do with a normal coordinate system.\n\nBut you input seems to be small enough, so I would work with xarray on this like\n\n>>> import xarray as xr >>> xr.open_dataset('Hypecatch00.nc') <xarray.Dataset> Dimensions: (time: 120, id: 34810) Coordinates: * time (time) datetime64[ns] 1971-01-01 ... 2071-12-01 * id (id) float64 8.802e+06 8e+06 ... 9.606e+06 9.602e+06 Data variables: locwtemp_ymonmean (time, id) float32 ... Attributes: (12/27) CDI: Climate Data Interface version 2.0.5 (https://m... Conventions: CF-1.6 source: A set of EURO-CORDEX EUR-11 RCM was bias adjust... institution: SMHI, www.smhi.se NCO: netCDF Operators version 4.7.7 (Homepage = http... comment: - ... ... invar_experiment_name: rcp45 time_coverage_start: 19710101 time_coverage_end: 20001231 variable_name: locwtemp_ymonmean contact: copernicus-support@ecmwf.int CDO: Climate Data Operators version 2.0.5 (https://m...\n\nyou can use ds.time, ds.id or ds.locwtemp_ymonmean for the data and start searching for the right ids using xarrays select/find/slice methods.\n\nData access like ds.locwtemp_ymonmean[:,23919] maybe?\n\nI am not fluent in xarray, but I am sure the docu has examples on this\n\ncheers\n\nralf"
+    }
+}

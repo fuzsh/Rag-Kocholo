@@ -1,0 +1,35 @@
+{
+    "id": "dbpedia_5193_2",
+    "rank": 98,
+    "data": {
+        "url": "https://www.nsc.liu.se/storage/smhi-hsm/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "SMHI HSM storage",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://www.nsc.liu.se/assets/img/nsclogo.png",
+            "https://www.nsc.liu.se/assets/img/header-search.png",
+            "https://www.nsc.liu.se/assets/img/header-search.png",
+            "https://www.nsc.liu.se/assets/img/ico-ca.png",
+            "https://www.nsc.liu.se/assets/img/nsc-footer.png",
+            "https://www.nsc.liu.se/assets/img/liu_naiss_footer_v2.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "",
+        "meta_favicon": "/assets/img/favicon.png",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "SMHI HSM storage (James)\n\nIntroduction\n\nNSC operates an archive for SMHI that can be accessed with a file system view. This is implemented via the HSM functionality of Spectrum Scale (GPFS) backed by tape storage. Access is through the SSH based file transfer protocol SFTP.\n\nOnly a limited subset of the data is stored on disk in the archive, but all directories and files are visible as if they were. Data is transparently fetched in the background if it is only available on tape. Vice versa data uploaded to the archive is migrated to tape in the background. The disk storage should be seen more as a cache.\n\nAccessing the storage via SFTP\n\nTo be able to access James a separate account is needed. It is not the same one as on any other SMHI systems. Please email to request one.\n\nAccessing the storage via network mount on Bi\n\nThe HSM server exports selected file systems via a network file system (NFS) to the login nodes on Bi. From a user perspective they appear as a normal file tree under the /hsm directory. Access to this hierarchy is controlled via a combination of membership in a special group and normal file access permissions using the regular users and groups on Bi. I.e., if you are a memeber of the rossby group on Bi, you can access any directories for Rossby, but you also need to be granted HSM access to see the directories to begin with.\n\nPlease contact Michael Sahlin or Ulf Andrae internally at SMHI for access to the HSM file systems.\n\nNote that even if the directory tree looks like any ordinary file system it is backed by sequential tapes. So doing a recursive search of file contents will take a long time and is highly discouraged. It is strongly encouraged to use any index and/or description of datasets placed in the dataset directory. Creating such an index is the responsibility of the person placing the data on the HSM storage, so the name and content may vary between datasets.\n\nPerformance considerations\n\nSince most of the data is physically located on tape there will be an initial delay when it is fetched from tape. Depending on the amount of data and if it was uploaded at different times it may require mounting several tape volumes. This may lead to variations in how long accesses take. Transferring data in a batch job to a local server is encouraged so it is not dependant on a workstation or a laptop.\n\nWorkflow recommendations\n\nLarge files are in general more suited to a streaming media type like tape, so we recommend packing small files into larger archives to improve the recall latency. Due to the way the HSM resource is accessed (SFTP/NFS) usually only one file at a time will be recalled, since the reading processes will open files serially. Extracting an archive onto local storage is usually preferable if the goal is to access many files.\n\nBandwidth is not the main issue, a single tape drive can deliver higher bandwidth than a singe hard drive, but the latency is much higher on tape. Mounting a tape cartridge and moving the tape to the right spot can take a couple of minutes if the tape library is heavily loaded and the data is at the end of the tape. Tapes are dismounted fairly quickly (one minute after last access), so if the next request for the same tape comes in later the process starts anew.\n\nHow large the archive files should be is dependant on how the data is going to be used. When creating archive files the expected workflow for reading data should be taken into account. For example, if it is time based data series packing it into weekly or monthly archives is usually suitable.\n\nAs noted above it is strongly encouraged to to create some form of small index and/or description of datasets being archived to facilitate finding the loctation of data without having to search through data files that are potentially on tape. What that should contain is dependant on the dataset, but enough information should be included that searching through all data files can be avoided for normal use cases. At the same time a single index file must be smaller than 1 MB to stay resident on disk."
+    }
+}

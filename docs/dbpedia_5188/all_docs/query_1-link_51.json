@@ -1,0 +1,35 @@
+{
+    "id": "dbpedia_5188_1",
+    "rank": 51,
+    "data": {
+        "url": "https://stackoverflow.com/questions/78245673/how-do-i-get-a-country-as-a-region",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How do I get a country as a region?",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://cdn.sstatic.net/Img/teams/teams-promo.svg?v=e507948b81bf",
+            "https://i.sstatic.net/BlsdV.jpg?s=64",
+            "https://www.gravatar.com/avatar/004b454e3da1eba47c3c69b689316e2c?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.imgur.com/826luna.png",
+            "https://i.sstatic.net/BlsdV.jpg?s=64",
+            "https://stackoverflow.com/posts/78245673/ivc/0c69?prg=c066c8d8-fb5b-4f64-9ccf-1fb209a99ac4"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2024-03-29T19:48:48",
+        "summary": "",
+        "meta_description": "I am trying to color a country map based on level of weather risk in each admin area. I believe this can best be done in R, though my knowledge of R is next to zero.\nFrom this post cannot add label...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/78245673/how-do-i-get-a-country-as-a-region",
+        "text": "I am trying to color a country map based on level of weather risk in each admin area. I believe this can best be done in R, though my knowledge of R is next to zero.\n\nFrom this post cannot add labels for country with ggplot, geom_polygon and geom_text, I have been able to run the code and plot a risk map of all countries in Africa. I tried to adapt the code for my purpose as below:\n\nlibrary(sf) library(ggplot2) all_districts <- data.frame(region = c(\"Maseru\", \"Butha-Buthe\", \"Leribe\", \"Berea\", \"Mafeteng\", \"Mohale's Hoek\", \"Quthing\", \"Qacha's Nek\", \"Mokhotlong\", \"Thaba-Tseka\"), risk = c(4, 4, 2, 1, 2, 4, 1, 3, 1, 2)) table(all_districts$risk) mapdata_x <- map_data('world') %>% filter(region %in% all_districts$region) mapdata_x <- mapdata_x %>% left_join(all_districts, by='region') label_data <- mapdata_x %>% group_by(region) %>% filter(row_number() == 1) ggplot(mapdata_x, aes (x = long, y = lat, group = group)) + geom_polygon(aes(fill = factor(risk)), linewidth = 0.25, color = \"black\") + scale_fill_manual(values = c(\"#a6d96a\", \"#ffffbf\", \"#fdae61\", \"#d7191c\"), name = \"Risk Level\") + theme(axis.text.x = element_blank(), axis.text.y = element_blank(), axis.ticks = element_blank(), axis.ticks = element_blank(), axis.title.y = element_blank(), axis.title.x = element_blank(), rect = element_blank())+ labs(title = \"Weather Risk Levels\") + geom_label_repel(data = label_data, aes(x = long, y = lat, label = region), size = 3, max.overlaps = 12)\n\nMy code fails on the line\n\nmapdata_x <- map_data('world') %>% filter(region %in% all_districts$region)\n\nGiving the error:\n\nError in h(simpleError(msg, call)) : error in evaluating the argument 'x' in selecting a method for function '%in%': object 'region' not found.\n\nHow do I define this so that I can get Lesotho as a region?, or if there is an alternative way of achieving this."
+    }
+}
