@@ -1,0 +1,38 @@
+{
+    "id": "dbpedia_5420_3",
+    "rank": 91,
+    "data": {
+        "url": "https://jocke.no/2010/10/21/cisco-ios-clock-sync-with-ntp-and-summer-timedaylight-saving-time/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Cisco IOS Clock Sync (with NTP) and Summer Time",
+        "top_image": "https://jocke.no/wp-content/uploads/2024/08/e8bd19da73a0b1bc4a27e5b9e44075f9-150x150.png",
+        "meta_img": "https://jocke.no/wp-content/uploads/2024/08/e8bd19da73a0b1bc4a27e5b9e44075f9-150x150.png",
+        "images": [
+            "https://secure.gravatar.com/avatar/c4fe2b44ffbaf3bc4716e50be006db2c?s=48&d=mm&r=g",
+            "https://secure.gravatar.com/avatar/d642a40dd424d09caeff4ed2080727d8?s=48&d=mm&r=g",
+            "https://secure.gravatar.com/avatar/e8bd19da73a0b1bc4a27e5b9e44075f9?s=48&d=mm&r=g",
+            "https://secure.gravatar.com/avatar/e8bd19da73a0b1bc4a27e5b9e44075f9?s=48&d=mm&r=g",
+            "https://secure.gravatar.com/avatar/d642a40dd424d09caeff4ed2080727d8?s=48&d=mm&r=g",
+            "https://secure.gravatar.com/avatar/?s=48&d=mm&r=g",
+            "https://secure.gravatar.com/avatar/b487342b983998e6a637bb9db77ec020?s=48&d=mm&r=g",
+            "https://secure.gravatar.com/avatar/fa7e0bf45c565d75549ab9f06d2baae8?s=48&d=mm&r=g",
+            "https://secure.gravatar.com/avatar/d0f5162be4a81ca95c6c9d01acbbf56b?s=48&d=mm&r=g"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2010-10-21T00:00:00",
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "https://jocke.no/wp-content/uploads/2024/08/e8bd19da73a0b1bc4a27e5b9e44075f9-150x150.png",
+        "meta_site_name": "",
+        "canonical_link": "https://jocke.no/2010/10/21/cisco-ios-clock-sync-with-ntp-and-summer-timedaylight-saving-time/",
+        "text": "Tired of having a Cisco-device that always ends up with a wrong clock? I was.\n\nThe first thing you’ll need, is a proper NTP-server. You can either set up one locally (which syncs from a hardware-device ? like a GPS ? or from an external server), or you can choose one of the public available NTP-servers. I’ve chosen to use ?158.37.91.134? in this example.\n\nRouter(config)#ntp server 158.37.91.134\n\nThats it. Now your Cisco-device will stay in sync (it might need some time to get in a ?accurate? state, as it has to learn how it’s internal clock varies compared to the external server). Just let it work it’s magic for a while. We can, of course, check it’s NTP-sync-status;\n\nRouter#sh ntp status Clock is synchronized, stratum 3, reference is 158.37.91.134 nominal freq is 250.0000 Hz, actual freq is 249.9955 Hz, precision is 2**32 reference time is D06AC4AA.47CC6D7C (15:54:50.280 CEST Thu Oct 21 2010) clock offset is -0.0002 msec, root delay is 0.02 msec root dispersion is 0.09 msec, peer dispersion is 0.01 msec loopfilter state is 'CTRL' (Normal Controlled Loop), drift is 0.000017902 s/s system poll interval is 1024, last update was 1886 sec ago.\n\nNow that we have a working sync, we’ll need to set the correct time zone. You can verify what time zone it’s currently in, if you want;\n\nRouter#sh clock 16:29:00.378 CEST Thu Oct 21 2010\n\nThis one is in the CEST time zone (Central European Summer Time). To set your time zone;\n\nRouter(config)#clock timezone ? WORD name of time zone Router(config)#clock timezone CET ? <-23 - 23> Hours offset from UTC Router(config)#clock timezone CET 1\n\nWhere the name of the time zone is basically whatever you’d like to call the time zone. Wether you call it ?CET?, ?UTC/GMT+1? or ?LOLZONE? doesn’t really matter; it will accept it. The important part is that you get the offset correct. The offset needs to be between -23 and +23, and to figure out which one you need, you can use Google (search for ?time zone + your country? or something).\n\nNow we have a synced clock, and a correct time zone. Let’s get to the part where we configure the Summer Time/Daylight Saving Time. I’m not sure if this varies between different countries, so make sure you check what applies to your country. I’m from Norway, hence the following example is valid for Norway. We turn our clocks one hour forward at the last Sunday in March, from 02:00 to 03:00, effectively making the new time zone CEST (Central European Summer Time). The Summer Time ends at the last Sunday in October, where we turn our clocks one hour backwards, from 03:00 to 02:00, hence making our new time zone CET. Having this clarified, we can now configure it;\n\nRouter(config)#clock summer-time ? WORD name of time zone in summer Router(config)#clock summer-time CEST ? date Configure absolute summer time recurring Configure recurring summer time Router(config)#clock summer-time CEST recurring ? <1-4> Week number to start first First week of the month last Last week of the month Router(config)#clock summer-time CEST recurring last ? DAY Weekday to start Router(config)#clock summer-time CEST recurring last Sun ? MONTH Month to start Router(config)#clock summer-time CEST recurring last Sun Mar ? hh:mm Time to start (hh:mm) Router(config)#clock summer-time CEST recurring last Sun Mar 02:00 ? <1-4> Week number to end first First week of the month last Last week of the month Router(config)#clock summer-time CEST recurring last Sun Mar 02:00 last ? DAY Weekday to end Router(config)#clock summer-time CEST recurring last Sun Mar 02:00 last Sun ? MONTH Month to end Router(config)#clock summer-time CEST recurring last Sun Mar 02:00 last Sun Oct ? hh:mm Time to end (hh:mm) Router(config)#clock summer-time CEST recurring last Sun Mar 02:00 last Sun Oct 03:00\n\nNow we’re almost done. We need to make sure the time zone is printed in logs and debugs.\n\nRouter(config)#service timestamps debug datetime ? localtime Use local time zone for timestamps msec Include milliseconds in timestamp show-timezone Add time zone information to timestamp year Include year in timestamp Router(config)#service timestamps debug datetime msec ? localtime Use local time zone for timestamps show-timezone Add time zone information to timestamp year Include year in timestamp Router(config)#service timestamps debug datetime msec localtime ? show-timezone Add time zone information to timestamp year Include year in timestamp Router(config)#service timestamps debug datetime msec localtime show-timezone ? year Include year in timestamp Router(config)#service timestamps debug datetime msec localtime show-timezone year\n\nThis will format debugs the following way;\n\nOct 21 2010 16:54:53.598 CEST: ISAKMP (0): received packet from 192.168.0.200 dport 500 sport 500 Global (N) NEW SA\n\nIf you also want the above format for logs, just change ?debug? with ?log?;\n\nRouter(config)#service timestamps log datetime msec localtime show-timezone year\n\nThat’s it. Finally you can enjoy a Cisco-device with a working clock!"
+    }
+}
