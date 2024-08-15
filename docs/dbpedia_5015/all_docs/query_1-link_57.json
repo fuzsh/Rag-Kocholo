@@ -1,0 +1,28 @@
+{
+    "id": "dbpedia_5015_1",
+    "rank": 57,
+    "data": {
+        "url": "http://legacy.spa.aalto.fi/projects/GuineaPig/GuineaDocs/SoundPlayer/sgi.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Sound Player for Silicon Graphics",
+        "top_image": "",
+        "meta_img": "",
+        "images": [],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "",
+        "meta_favicon": "",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "Tik-76.115 Individual Project: Guinea Pig\n\n$Id: sgi.html,v 1.2 1996/04/21 12:30:46 hynde Exp $\n\nSound Player for Silicon Graphics\n\nThe Sound Player was primarily written for Linux with MSND but there's now a version for SGI as well. Even though the SGI version is not our primary target, it actually works better than the primary MSND version, probably because Silicon Graphics actually has built-in support for audio contrary to Linux. Porting the player for SGI was quite easy; it only took a couple of hours to modify the MSND audio code and I hadn't done any SGI audio programming before. It looks like the player is quite portable in practise, too.\n\nThe SGI player was developed and tested on SGI Indy and Indigo^2 workstations running IRIX 5.3.\n\nFeatures\n\nThe Sound Player for Silicon Graphics has the following features:\n\nOutputs:\n\n16 bit analog MONO, STEREO or 4-channel output, 24-bit digital MONO or STEREO output.\n\nSampling rates:\n\n48000, 44100 (default), 32000, 22050, 16000 or 11025 HKz.\n\nReal time priority:\n\nThe player can use real time priorities if run as root. (We haven't been able to test this yet because we don't have access to a machine with root privileges)\n\nThe SGI player uses internally floating point numbers scaled to the 24-bit range. On output, these values are converted to 24-bit integers which is the native format of the Silicon Graphics Audio system.\n\nThe delays that are present in the MSND version are unnoticable in the SGI version. The maximum delay can also be adjusted by changing the size of the buffers the player uses.\n\nProblems\n\nBreaks in audio when swapping:\n\nAnother problem which affects other ports too is that there are breaks in audio output when machine has to swap; if the machine starts swapping or paging at critical times there will be breaks in audio output. Possible remedies we could use are: using negative nice values for player, real time priorities, locking pages into memory. Longer buffers can be used but they will increase the delay. This problem isn't too bad because it usually only occurs if the samples are very big or there are other users using the machine at the same time.\n\nWe don't have an access to a SGI machine with root privileges so we haven't been able to test the effects of using real time priorities yet."
+    }
+}
