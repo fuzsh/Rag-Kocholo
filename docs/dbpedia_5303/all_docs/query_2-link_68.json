@@ -1,0 +1,45 @@
+{
+    "id": "dbpedia_5303_2",
+    "rank": 68,
+    "data": {
+        "url": "https://amreldib.com/blog/HowToFixWlwBackupProblemWithWindowsx64/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How to fix WLW Backup problem with Windows x64 · Amr Eldib",
+        "top_image": "https://amreldib.com/public/images/AmrAvatar.png",
+        "meta_img": "https://amreldib.com/public/images/AmrAvatar.png",
+        "images": [
+            "https://amreldib.com/public/images/AmrAvatar.png",
+            "https://amreldib.com/public/images/Amr.png",
+            "https://amreldib.com/public/images/Amr.png",
+            "https://amreldib.com/public/images/AmrAvatar.png",
+            "https://amreldib.com/public/images/blog/HowToFixWlwBackupProblemWithWindowsx64/Windows_Live_Writer_logo.png",
+            "https://amreldib.com/public/images/blog/HowToFixWlwBackupProblemWithWindowsx64/clip_image006[4].jpg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "Amr",
+            "Eldib",
+            ".NET",
+            "C#",
+            "GIS",
+            "Weblog",
+            "Blog",
+            "Egypt",
+            "Canada"
+        ],
+        "tags": null,
+        "authors": [
+            "Amr Eldib"
+        ],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "Amr Eldib Blog and personal website",
+        "meta_lang": "en",
+        "meta_favicon": "/public/images/favicon.ico",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "How to fix WLW Backup problem with Windows x64\n\nI, like most bloggers out there, love Windows Live Writer. One problem I have with it is that I have to set it up whenever I re-install Windows. Long ago I found that I can backup all my posts (recently posted and drafts) just copying the two folders “Drafts” and “Recent Posts” from the folder\n\nC:\\Users\\<UserName>\\Documents\\My Weblog Posts\n\nHowever, I wanted to backup more than that. I wanted to backup my blog configurations and other settings. So, I searched a little bit (using Kngine which is great, give it a try) and I found WLW Backup tool that can backup blog settings, drafts, recent posts, and plugins. The link I’ve listed here is for the project on CodePlex where the project went open source by its developer Scott Lovegrover.\n\nBefore I found this latest version I downloaded version 2.0 and tried to backup my WLW settings and an error occurred.\n\nSystem.BadImageFormatException: Could not load file or assembly ‘CabLib, Version=6.9.26.0, Culture=neutral, PublicKeyToken=null’ or one of its dependencies. An attempt was made to load a program with an incorrect format.\n\nFile name: ‘CabLib, Version=6.9.26.0, Culture=neutral, PublicKeyToken=null’\n\nThe application comes in two simple assemblies LiveWriterBackup.exe and CabLib.dll (and two icons). CabLib.dll is compression and extraction library that LiveWriterBackup.exe is using to compress all the backed up files into one file. This was a .NET exception, so I got interested and started to try to fix the problem. Reading the error, it seems like LiveWriterBackup.exe can’t find CabLib.dll. A bit of searching, and I found that some SharePoint developers were having the same problem with the CabLib.dll file. They fixed it by replacing the CabLib.dll with the x64 version. I tried that but now I got a new error:\n\nSystem.IO.FileLoadException: Could not load file or assembly ‘CabLib, Version=6.9.26.0, Culture=neutral, PublicKeyToken=null’ or one of its dependencies. The located assembly’s manifest definition does not match the assembly reference. (Exception from HRESULT: 0x80131040)\n\nSeems like the two assemblies didn’t really match. Instead of getting around it, I needed to fix the actual problem. Why can’t LiveWriterBackup.exe find CabLib.dll? Maybe there’s a bug with the application itself. I decided to look inside. I fired up JustDecompile and loaded the LiveWriterBackup.exe. The executable have a direct reference to CabLib.dll and don’t have any assumptions other than how .NET assemblies find other assemblies.\n\nBack to search. Remove some search words and try different combinations. Then I found the solution on a Chinese blog.\n\nGod bless Google translation which came to the rescue. The problem wasn’t in the CabLib.dll but rather in LiveWriterBackup.exe which was built with the setting “Any CPU” on a 32bit machine so all it’s testing went okey. But when tried on a 64bit machine like mine, it actually ran as a 64bit application trying to call a 32bit CabLib.dll. You can see that in the screenshot of Task Manager. You can see 32bit applications have a *32 next to them while the LiveWriterBackup.exe process doesn’t.\n\nSo the solution is get an executable that is built for 32 bit configurations. Or we just use Corflags. It’s a tool that allows you to configure the CorFlags section of the header of an executable. It’s what Rafeel Rivera was referring to in his recording (listen here) with Scott Hanselman as “flipping bits” which seems to be a known term. Here’s “Flipping bits on managed images to make them load with the right bitness”\n\nI just browsed using the command line to the location of the Corflags executable (C:\\Program Files (x86)\\Microsoft SDKs\\Windows\\v7.0A\\Bin) and I ran the command\n\nCorflags “C:\\Program Files (x86)\\Windows Live Writer Backup\\LiveWriterBackup.exe” /32BIT+\n\nTried again to backup settings and it worked. Testing on x64 machines is necessary as x64 machines are becoming more and more popular. Also, try not to build to “Any CPU” unless you test on all CPUs. More importantly, when debugging try to know the bitness of all the participating assemblies that are causing trouble.\n\nHappy debugging."
+    }
+}

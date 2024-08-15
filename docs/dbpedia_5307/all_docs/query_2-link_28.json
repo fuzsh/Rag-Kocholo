@@ -1,0 +1,28 @@
+{
+    "id": "dbpedia_5307_2",
+    "rank": 28,
+    "data": {
+        "url": "https://pudding.cool/2017/09/hip-hop-words",
+        "read_more_link": "",
+        "language": "en",
+        "title": "The Words That Are âMost Hip Hopâ",
+        "top_image": "https://pudding.cool/2017/09/hip-hop-words/og_image.png",
+        "meta_img": "https://pudding.cool/2017/09/hip-hop-words/og_image.png",
+        "images": [],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "Words central to hip hop and artistsâ vocabularies",
+        "meta_lang": "",
+        "meta_favicon": "",
+        "meta_site_name": "The Pudding",
+        "canonical_link": "https://pudding.cool/2017/09/hip-hop-words",
+        "text": "Methdology Notes\n\nThe general music corpus was formed using data from LyricFind. We filtered hip-hop artists by cross-referencing their primary genre on MusixMatch.\n\nFor consistency, The hip hop data was cleaned using the same script as the LyricFind corpus. This included efforts to standardize spelling, remove capitalization, and apply light lemmatization.\n\nMost Hip Hop: To find the words most âcharacteristicâ of hip-hop, we computed the odds that a word appeared in the hip hop corpus vs. the general corpus. For example, this is # of appearences in hip hop corpus divided by total words in hip hop corpus. We then compare that to the same math for the general corpus.\n\nSome words were filtered from this list that, while indexing high in hip hop vs. the general corpus, were still rather rare words. These all had fewer than 1,000 occurances in the hip hop corpus. For example “lowrider” had a 255:1 ratio in hip hop vs. other genres, but was only used 116 times in 26 million words.\n\nTF-IDF: to determine the words that characterize each hip-hop artist, we used a technique called term frequency-inverse document frequency (tf-idf). Each rapper gets assigned a tf-idf score for every word in the hip-hop corpus. For a given word, we count the number of times it occurs in one rapperâs catalogue (its term frequency) and divide by the number of artists that use it across the hip-hop corpus (its document frequency). The words with the ten highest tf-idf scores for each artist were deemed the words âmost uniqueâ to him or her.\n\nWe made two slight modifications to the traditional formula. 1) We used sublinear scaling on the term frequencies, giving us a little more variation across our lists. You can read more about why you might want to do sublinear scaling here. 2) We also set a âcut-offâ for document frequency of 0.1. That means, to be considered in our tf-idf computation, a term had to be used at least once by 10% of the artists in our dataset. This rules out words that are repeated over and over by one or a few artists (think âcontrollaâ for Drake).\n\nCosine Similarity: Cosine similarity is a common way of calculating the similarity between two vectors by taking the cosine of the angle between them. In our case, that means taking the tf-idf vector for an artist and comparing it to that of another. Higher cosine values imply more similarity, with an upper bound of 1 when the vectors are perfectly similar.\n\nt-SNE: To create our map of rappers, we used a dimensionality reduction technique called t-SNE. We took the tf-idf matrix and first reduced it to 50 dimensions using Truncated singular value decomposition (SVD). We then took the resulting matrix and fed it into t-SNE with a perplexity parameter set to 40. The output of the t-SNE algorithm mapped rappers to a two-dimensional space based on the similarity of their lyrics."
+    }
+}
