@@ -1,0 +1,36 @@
+{
+    "id": "dbpedia_5633_3",
+    "rank": 11,
+    "data": {
+        "url": "https://stackoverflow.com/questions/7978607/get-country-list-in-other-languages-besides-english",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Get country list in other languages besides english",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/abd7a628e7f1749d463f51fc1f8bbf9e?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/7e82a64e87140a3e0eb0eeca115780e3?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/a007be5a61f6aa8f3e85ae2fc18dd66e?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/487f6927f37c3005e5b918d131892715?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/421be3fed9125dd2b0968488603593a5?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/8bc87c7cc8e79612b548ce3e33541abb?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://stackoverflow.com/posts/7978607/ivc/9f6b?prg=229c0bac-6b8b-46f8-9083-f482348149a6"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2011-11-02T10:09:54",
+        "summary": "",
+        "meta_description": "I can get the list of country names using below code, (copied from somewhere i can't remember)\n\nMy question is, can i get the list of countries in other languages such as Thai ?\n\n    /// &lt;summar...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/7978607/get-country-list-in-other-languages-besides-english",
+        "text": "I can get the list of country names using below code, (copied from somewhere i can't remember)\n\nMy question is, can i get the list of countries in other languages such as Thai ?\n\n/// <summary> /// method for generating a country list, say for populating /// a ComboBox, with country options. We return the /// values in a Generic List<T> /// </summary> /// <returns></returns> public static List<string> GetCountryList() { //create a new Generic list to hold the country names returned List<string> cultureList = new List<string>(); //create an array of CultureInfo to hold all the cultures found, these include the users local cluture, and all the //cultures installed with the .Net Framework CultureInfo[] cultures = CultureInfo.GetCultures(CultureTypes.AllCultures & ~CultureTypes.NeutralCultures); //loop through all the cultures found foreach (CultureInfo culture in cultures) { //pass the current culture's Locale ID (http://msdn.microsoft.com/en-us/library/0h88fahh.aspx) //to the RegionInfo contructor to gain access to the information for that culture RegionInfo region = new RegionInfo(culture.LCID); //make sure out generic list doesnt already //contain this country if (!(cultureList.Contains(region.EnglishName))) //not there so add the EnglishName (http://msdn.microsoft.com/en-us/library/system.globalization.regioninfo.englishname.aspx) //value to our generic list cultureList.Add(region.EnglishName); } return cultureList; }\n\nPretty late answer:\n\nIn my application the user can select a language (among languages that the application supports) and in the UI I need to display country names in the selected language.\n\nI found that NuGet package IsoNames fullfills that purpose. It provides method\n\nIsoNames.CountryNames.GetName(CultureInfo culture, string countrycode);\n\nand thus overcomes the restrictions implied with the DisplayName.\n\nanswered Jul 7, 2018 at 23:27\n\nuser7399085user7399085\n\n23011 silver badge1212 bronze badges"
+    }
+}
