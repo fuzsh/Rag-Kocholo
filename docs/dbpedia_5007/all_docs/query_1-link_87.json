@@ -1,0 +1,35 @@
+{
+    "id": "dbpedia_5007_1",
+    "rank": 87,
+    "data": {
+        "url": "https://askubuntu.com/questions/183089/default-program-for-opening-pro-qt-project-files",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Default program for opening .pro Qt project files",
+        "top_image": "https://cdn.sstatic.net/Sites/askubuntu/Img/apple-touch-icon@2.png?v=c492c9229955",
+        "meta_img": "https://cdn.sstatic.net/Sites/askubuntu/Img/apple-touch-icon@2.png?v=c492c9229955",
+        "images": [
+            "https://cdn.sstatic.net/Sites/askubuntu/Img/logo.svg?v=472cf2768bba",
+            "https://www.gravatar.com/avatar/456a5b948592dbd489efea7a433b3068?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/616a7720dbcb5f05dfa7a0970062b6d4?s=64&d=identicon&r=PG",
+            "https://askubuntu.com/posts/183089/ivc/093f?prg=7fd1681f-fc26-4100-b943-2c836737dfa3"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "air-dex"
+        ],
+        "publish_date": "2012-09-02T00:03:08",
+        "summary": "",
+        "meta_description": "I would like to set Qt Creator (the one which is in the Nokia Qt SDK, not the one in Canonical PPAs) as the default program to open .pro Qt project files. But it appears that my Ubuntu install (12.04",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/askubuntu/Img/favicon.ico?v=928dfb7c1990",
+        "meta_site_name": "Ask Ubuntu",
+        "canonical_link": "https://askubuntu.com/questions/183089/default-program-for-opening-pro-qt-project-files",
+        "text": "I would like to set Qt Creator (the one which is in the Nokia Qt SDK, not the one in Canonical PPAs) as the default program to open .pro Qt project files. But it appears that my Ubuntu install (12.04 while I am writing the question) recognizes .pro files as plain text files instead of Qt project files. I know that I could fix the problem by setting Qt Creator as the default program for opening plain text files but I want to keep on opening plain text files with the program I currently use for this (gedit).\n\nSo my question is : how can I do for making my Ubuntu install recognizing .pro files as Qt project files instead of plain text files ?\n\nNB : I have already looked at Ubuntu Tweak to associate Qt project files with Qt Creator but I did not find anything relevant (perhaps I missed it too).\n\nEDIT : the solution is in the Edit of Kalle Elmér's answer.\n\nYou can change the default application this way:\n\nRight click a .pro file.\n\nClick \"Properties\".\n\nSelect the \"Open With\" tab.\n\nClick \"Show other applications\" if needed.\n\nSelect the application you want from the list.\n\nClick \"Set as default\".\n\nThis should change the default application used for all .pro files.\n\nEdit:\n\nThis won't work with .pro files, as they are associated with the \"text/plain\" type. The steps above are provided by air-dex in a comment.\n\nWrite an XML file like the shinythings-shiny.xml file in the xdg-mime man page (http://linux.die.net/man/1/xdg-mime). The type can be called, for example, \"text/qt-project-file\". Set the pattern to \"*.pro\". Add a tag saying that the custom MIME type is a subtype of text/plain too.\n\nExecute the following command : sudo xdg-mime install <path to XML file>. Sudo must be used.\n\nSelect the default program just like explained above.\n\nThese steps can be used for any file extension. Just replace .pro with the extension and choose a suitable name to replace \"text/qt-project-file\".\n\nanswered Sep 2, 2012 at 0:09\n\nKalle ElmérKalle Elmér\n\n8,63855 gold badges2828 silver badges4242 bronze badges"
+    }
+}

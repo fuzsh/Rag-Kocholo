@@ -1,0 +1,33 @@
+{
+    "id": "dbpedia_5009_3",
+    "rank": 1,
+    "data": {
+        "url": "https://stackoverflow.com/questions/25630829/the-role-of-the-main-cpp-in-a-qt-project",
+        "read_more_link": "",
+        "language": "en",
+        "title": "The role of the 'main.cpp' in a Qt project",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/e74b2dfafeb529ea4b2d45fd7b7d763f?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/Z2fk7.png?s=64",
+            "https://i.sstatic.net/6wNQa.jpg?s=64",
+            "https://stackoverflow.com/posts/25630829/ivc/093f?prg=09c59297-121b-486f-846a-5955fb8c0515"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2014-09-02T19:23:54",
+        "summary": "",
+        "meta_description": "In a Qt project we generally find a project.pro file, the main.cpp and several header, source and *.ui files, containing all the resources to breathe life and function into the application/project....",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/25630829/the-role-of-the-main-cpp-in-a-qt-project",
+        "text": "(Note: A complete answer should incorporate @thokra's comment, which is to say that main.cpp is a filename and the appearance of the program entry point in a file with that name is only convention. But it's a fairly well-adhered to convention in Qt programs and C++ in general to try and put the program's entry point in a file with that name.)\n\nOne category would be registration of global hooks and settings. Think about things like qInstallMessageHandler, or QTextCodec::setCodecForCStrings.\n\nInitialization of any non-Qt libraries that your app wants to take for granted would be another area.\n\nIf your program has a main window object that's only created and destroyed one time, it might seem equally suitable to put the \"run once\" code in its constructor/destructor. But ask yourself exactly what is it about your app that only lets it have one main window. Why wouldn't it be able to have two in the same process? Even if that's not part of the requirement today, it can suggest an architectural boundary.\n\nI'll mention from personal experience that if you try making a class derived from QApplication, and then put your global run-once-code in the constructor and destructor of that derived class, that is trickier than it sounds (especially if you spawn threads and make widgets in that constructor). So I don't think in most scenarios you should derive from QApplication. I stuck with it because I was making an application framework...but avoid that and your run-once code goes in the main.cpp.\n\n\"1. Is the main.cpp's only purpose to kick off the application?\"\n\nAs from the c++ [standards definition]1 the 1st section says:\n\n3.6 Start and termination [basic.start]\n\n3.6.1 Main function [basic.start.main]\n\n1 A program shall contain a global function called main, which is the designated start of the program. It is implementation-defined whether a program in a freestanding environment is required to define a main function.\n\n[ Note: In a freestanding environment, start-up and termination is implementation-defined; startup contains the execution of constructors for objects of namespace scope with static storage duration; termination contains the execution of destructors for objects with static storage duration. —end note ]\n\nA qt application is still using C++, thus this constraint needs to be satisfied for any executable application. So presumably: Yes, the main()'s only purpose is to kick off the application.\n\nMainForm and main() aren't really strongly related, other than your configuration will generate a main() function instantiating and calling it. You can also have Qt projects, that don't have any MainForm instance at all (e.g. a just command line app)."
+    }
+}

@@ -1,0 +1,33 @@
+{
+    "id": "dbpedia_5008_0",
+    "rank": 5,
+    "data": {
+        "url": "https://stackoverflow.com/questions/1168472/is-there-any-special-category-for-external-files-in-project-file-of-qt-creator",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Is there any special category for external files in project file of Qt Creator?",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/297e728fc79110ee2ea25ccc69a8ffae?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/514d88c606d3a571824fb8f0e7f7f3c8?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/8d3c8816c672650038f75209f5aa5408?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/1168472/ivc/c9fe?prg=f83d13a4-8c1b-4291-afc5-8da7e3fe2219"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2009-07-22T21:46:25",
+        "summary": "",
+        "meta_description": "I'd like to keep in my project some external files, let's say .txt ones.\nIs there any special category for external files in project file (.pro) of Qt Creator?",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/1168472/is-there-any-special-category-for-external-files-in-project-file-of-qt-creator",
+        "text": "Qt Creator, at least, uses an OTHER_FILES variable for .txt files and anything similar:\n\nOTHER_FILES += test.txt\n\nAdds \"test.txt\" to the \"Project Files\" pane in Qt Creator.\n\nIf you want to group your files a bit, what you can try is adding a separate .pri file such as \"External.pri\", including your external files from there, and then including the .pri file in your .pro:\n\nProject.pro\n\nHEADERS += someclass.h SOURCES += main.cpp someclass.cpp ... include(External.pri)\n\nExternal.pri\n\nOTHER_FILES += license.txt todo.txt\n\nWhich has the effect of creating a folder of sorts (called \"External\") in Qt Creator. If you have a bunch of external files it'll help keep things organized."
+    }
+}

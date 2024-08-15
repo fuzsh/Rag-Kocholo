@@ -1,0 +1,43 @@
+{
+    "id": "dbpedia_5009_3",
+    "rank": 8,
+    "data": {
+        "url": "https://community.st.com/t5/stm32-mpus-products/stm32-qt-cross-compile/td-p/347882",
+        "read_more_link": "",
+        "language": "en",
+        "title": "STM32 Qt cross compile",
+        "top_image": "https://community.st.com/html/@69F73FA73CBA8CB0B32F49AC59A3C841/assets/favicon-32.png",
+        "meta_img": "https://community.st.com/html/@69F73FA73CBA8CB0B32F49AC59A3C841/assets/favicon-32.png",
+        "images": [
+            "https://community.st.com/legacyfs/online/avatars/005",
+            "https://community.st.com/t5/image/serverpage/image-id/49252i0C6179B8123EF79C/image-dimensions/150x150/image-coordinates/0%2C0%2C988%2C988/constrain-image/false?v=v2",
+            "https://community.st.com/legacyfs/online/avatars/7290X000000NtZF",
+            "https://community.st.com/legacyfs/online/avatars/005",
+            "https://community.st.com/legacyfs/online/avatars/7290X000000NtZF",
+            "https://community.st.com/legacyfs/online/avatars/005",
+            "https://community.st.com/legacyfs/online/avatars/7290X000000NtZF",
+            "https://community.st.com/legacyfs/online/avatars/005",
+            "https://community.st.com/legacyfs/online/avatars/7290X000000NtZF",
+            "https://community.st.com/skins/images/8C62DBB60E2DC67466E6605C3B86EC4D/responsive_peak/images/icon_anonymous_message.png",
+            "https://community.st.com/html/@BD84A24F6C33B4216F5F2C3226885C95/assets/stmicro-logo.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "community.st.com",
+            "user-id"
+        ],
+        "publish_date": "2019-06-14T07:33:02+00:00",
+        "summary": "",
+        "meta_description": "Hello, I have a STM32MP157C-DK2 board and did the hello world cross compile project with GTK and that work perfectly. Now I am trying to do cross",
+        "meta_lang": "en",
+        "meta_favicon": "https://community.st.com/html/@69F73FA73CBA8CB0B32F49AC59A3C841/assets/favicon-32.png",
+        "meta_site_name": "",
+        "canonical_link": "https://community.st.com/t5/stm32-mpus-products/stm32-qt-cross-compile/td-p/347882",
+        "text": "Hello,\n\nI have a STM32MP157C-DK2 board and did the hello world cross compile project with GTK and that work perfectly.\n\nNow I am trying to do cross compiling with Qt Creator. I used the same compiler as the GTK project but Qt Creator give me an error: The compiler (arm-linux-generic-elf-32bit) cannot produce code for the Qt version (x86-linux-generic-elf-64bit).\n\nWhere I get a compatible qmake file for this compiler or how to generate it?\n\nRegards Marius\n\nAfter many attempts I managed to generate a qMake file with qt-everywhere 4.8. (worked with this tutorial)\n\nThere are no Qt librarys installed on the STM32MP157C-DK2 board. After running my compiled Hello World application I got an error saying that libqtgui4 is missing.\n\nThen I started to build an image with Qt5 librarys. It took many hours but in the end it worked. (this tutorial )\n\nI installed the image on my board and started the sample projects with Qt. It worked, the Qt5 librarys were installed. When I ran my Hello World project the same error occurred. I think it is because my Hello World application was built with Qt 4.8 and the image contains Qt 5.11 librarys.\n\nSo I have to create a Qt 5.11 project. In my virtual machine (Ubuntu 18.04) I installed qt-everywhere 5.11.2 and took the \"gcc-linaro-7.4.1-2019.02-x86_64_arm-linux-gnueabihf\" compiler. My configuration options are these here:\n\n./configure -opensource -confirm-license -prefix /usr/local/Qt-5.11.2-arm -xplatform linux-arm-gnueabi-g++\n\nMy qmake.conf looks like these:\n\n# # qmake configuration for building with arm-linux-gnueabi-g++ # MAKEFILE_GENERATOR = UNIX CONFIG += incremental QMAKE_INCREMENTAL_STYLE = sublib include(../common/linux.conf) include(../common/gcc-base-unix.conf) include(../common/g++-unix.conf) # modifications to g++.conf QMAKE_CC = /home/myuser/gcc-linaro-7.4.1-2019.02-x86_64_arm-linux-gnueabihf/bin/arm-linux-gnueabihf-gcc QMAKE_CXX = /home/myuser/gcc-linaro-7.4.1-2019.02-x86_64_arm-linux-gnueabihf/bin/arm-linux-gnueabihf-g++ QMAKE_LINK = /home/myuser/gcc-linaro-7.4.1-2019.02-x86_64_arm-linux-gnueabihf/bin/arm-linux-gnueabihf-g++ QMAKE_LINK_SHLIB = /home/myuser/gcc-linaro-7.4.1-2019.02-x86_64_arm-linux-gnueabihf/bin/arm-linux-gnueabihf-g++ # modifications to linux.conf QMAKE_AR = /home/myuser/gcc-linaro-7.4.1-2019.02-x86_64_arm-linux-gnueabihf/bin/arm-linux-gnueabihf-ar cqs QMAKE_OBJCOPY = /home/myuser/gcc-linaro-7.4.1-2019.02-x86_64_arm-linux-gnueabihf/bin/arm-linux-gnueabihf-objcopy QMAKE_NM = /home/myuser/gcc-linaro-7.4.1-2019.02-x86_64_arm-linux-gnueabihf/bin/arm-linux-gnueabihf-nm -P QMAKE_STRIP = /home/myuser/gcc-linaro-7.4.1-2019.02-x86_64_arm-linux-gnueabihf/bin/arm-linux-gnueabihf-strip load(qt_config)\n\nThe paths to my compiler are correct, I already checked this.\n\nI get the following error when running the upper ./configure command\n\nNote: Also available for Linux: linux-clang linux-icc Note: No wayland-egl support detected. Cross-toolkit compatibility disabled. ERROR: The OpenGL functionality tests failed! You might need to modify the include and library search paths by editing QMAKE_INCDIR_OPENGL[_ES2], QMAKE_LIBDIR_OPENGL[_ES2] and QMAKE_LIBS_OPENGL[_ES2] in the mkspec for your platform.\n\nHow can i fix this error?\n\nI'm happy about every answer."
+    }
+}

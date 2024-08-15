@@ -1,0 +1,34 @@
+{
+    "id": "dbpedia_5008_3",
+    "rank": 88,
+    "data": {
+        "url": "https://tr0.medium.com/how-to-set-qt-5-15-on-apple-silicon-m1-336dbbb0b23e",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How to set Qt 5.15 on Apple Silicon M1",
+        "top_image": "https://miro.medium.com/v2/resize:fit:980/0*sTUkgw-VhZ7FCrPo.jpg",
+        "meta_img": "https://miro.medium.com/v2/resize:fit:980/0*sTUkgw-VhZ7FCrPo.jpg",
+        "images": [
+            "https://miro.medium.com/v2/resize:fill:64:64/1*dmbNkD5D-u45r44go_cf0g.png",
+            "https://miro.medium.com/v2/resize:fill:88:88/1*7sQoXH2-uNm4TI7csztapQ.png",
+            "https://miro.medium.com/v2/resize:fill:144:144/1*7sQoXH2-uNm4TI7csztapQ.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Nazar"
+        ],
+        "publish_date": "2023-10-10T21:06:53.972000+00:00",
+        "summary": "",
+        "meta_description": "In this article, we’ll try to get Qt 5.15.10 working on your Apple Silicon Processor and, in addition, set up all required software to properly work together in the way I prefer it to be. I’d like to…",
+        "meta_lang": "en",
+        "meta_favicon": "https://miro.medium.com/v2/5d8de952517e8160e40ef9841c781cdc14a5db313057fa3c3de41c6f5b494b19",
+        "meta_site_name": "Medium",
+        "canonical_link": "https://tr0.medium.com/how-to-set-qt-5-15-on-apple-silicon-m1-336dbbb0b23e",
+        "text": "If you landed on this page, you’ve already researched how to get Qt 5.15 working on your Apple Silicon M1 (M2 or maybe already M3?) processor. Setting up Qt 5.15 on a MacBook with an Apple Silicon processor can be slightly different than on Intel-based Macs due to the ARM architecture. Keep in mind that Qt 6 works out of the box.\n\nIn this article, we’ll try to get Qt 5.15.10 working on your Apple Silicon Processor and, in addition, set up all required software to properly work together in the way I prefer it to be. I’d like to have control over installed software and be able to set build Kits as explicitly as possible. This requirement was inspired by recommendations from P.Hintjens from his book “Confession of a Necromancer” (you can read it for free):\n\nLesson learned: identify the riskiest parts of your architecture and bring them under your full control.\n\n…\n\nThe main lessons I learned were obvious and yet worth stating, perhaps because the industrial world is so distant from the normal pure digital development world:\n\n— Don’t expect random work from random vendors to magically work together.\n\n— Do not develop and test in your production environment.\n\n— When things go wrong that even marginally involve you, assume responsibility until you know where the real problem lies.\n\n— You can work significantly faster when you use hardware and software that bends to your will.\n\nThat's handy advice! We’ll try to build a kit that will bend to our will.\n\nGreat book and a great author. Unfortunately, most developers' friends ignore my recommendation to read such a great book. But will you?\n\nInstalling required software\n\nXCode\n\nFor native development for macOS, you need to have XCode. Install it from the App Store.\n\nAlso, you have to configure the command line tools using xcode-select:\n\nsudo xcode-select --switch /Applications/Xcode.app\n\nHomebrew\n\nYou can read about it on the official site, but I’ll say what it is.\n\nHomebrew installs the stuff you need that Apple (or your Linux system) doesn’t.\n\nHomebrew installs packages to their directory and then symlinks their files into /opt/homebrew (on Apple Silicon, which is precisely our case).\n\nWe’ll install several applications via brew later, so we must first install brew. Open Terminal and run this command:\n\n/bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\"\n\nThe script explains what it will do and then pauses before it does it. Read about other installation options.\n\nOfficial Qt installation\n\nI suggest having an official Qt installation because it has a handy Qt Maintainance Tool and can install/update/remove some Qt applications or libraries. In the future, you would like to install newer Qt versions or any other software via it. Also, it can install QtCreator — the IDE we will use for Qt development.\n\nDownload the official unified online installer.\n\nRun it, provide your Qt credentials, and ensure the installer that you are not using Qt commercially.\n\nSelect the components you’d like to install. The most important is Qt Creator 11.0.3. You may uncheck the rest; it's up to you: maybe you’d like to try Qt 6, so leave Qt 6.6.0 checked.\n\nCMake\n\nAs Wiki says:\n\nIn software development, CMake is cross-platform free and open-source software for build automation, testing, packaging, and installation of software by using a compiler-independent method. CMake is not a build system; it generates another system’s files.\n\nIt’s effortless to install via brew:\n\nbrew install cmake\n\nNinja\n\nNinja is a small build system with a focus on speed. It differs from other build systems in two significant respects: it is designed to have its input files generated by a higher-level build system to run builds as fast as possible.\n\nLet’s install it via brew:\n\nbrew install ninja\n\nQt 5.15.10\n\nAs you may suspect, we’ll install Qt via brew, too. According to its formulae, the subsequent macOS versions are supported:\n\nSonoma\n\nVentura\n\nMonterey\n\nThanks to brew developers and supporters, they have already agreed to the Qt open-source license for us. If this is unacceptable, you should proceed with the next step.\n\n`brew install qt@5`\n\nSetup Qt Creator\n\nAll required software components installed. It's time to collect everything into the build Kit.\n\nRun QtCreator (typically, it is in your home folder -> Qt -> Qt Creator).\n\nOpen Settings via Command +,\n\nSelect the “CMake” tab. Manually add a new item with the name “CMake via brew” and following path /opt/homebrew/bin/cmake\n\nSelect the “Kits” tab.\n\nOpen “Qt Versions”. Click the button “Link with Qt…”. Your Qt installation path should be: $HOMEBREW_PREFIX/opt/qt@5\n\nHit “Apply” before jumping to the next page.\n\nOpen the “Kits” tab.\n\nManually add new kit. You may name it initially, like Qt 5.15.10 Superb!\n\nFor your newly created kit, you need to select C/C++ Compiler Apple Clang (arm64); Qt version — one that you’ve set previously; and CMake tool from the brew: “Cmake via brew”; CMake generator: “Ninja”.\n\nCongratulations! Now you can use your kit to create beautiful applications! Test it via File -> New Project -> Qt Widget Application, and select your Superb kit for it!\n\nWish you successful build and only easy to catch bugs!"
+    }
+}

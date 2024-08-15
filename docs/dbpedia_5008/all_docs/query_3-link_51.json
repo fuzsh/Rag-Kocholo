@@ -1,0 +1,45 @@
+{
+    "id": "dbpedia_5008_3",
+    "rank": 51,
+    "data": {
+        "url": "https://synyx.de/blog/the-qt-framework-solid-fun-in-many-languages/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "The Qt framework: solid fun in many languages",
+        "top_image": "https://synyx.de/wp-content/uploads/2014/09/qt_imagecomposer_qt-creator.jpg",
+        "meta_img": "https://synyx.de/wp-content/uploads/2014/09/qt_imagecomposer_qt-creator.jpg",
+        "images": [
+            "https://synyx.de/wp-content/uploads/2022/03/synyx-logo-2022.svg",
+            "https://synyx.de/wp-content/uploads/2022/03/synyx-logo-2022.svg",
+            "https://synyx.de/wp-content/uploads/2019/03/icon-wer-wir-sind.svg",
+            "https://synyx.de/wp-content/uploads/2019/03/icon-was-wir-machen.svg",
+            "https://synyx.de/wp-content/uploads/2019/03/icon-wie-wir-arbeiten.svg",
+            "https://synyx.de/wp-content/uploads/2014/09/qt_imagecomposer_qt-creator.jpg",
+            "https://synyx.de/wp-content/uploads/2014/09/qt_fancybrowser.jpg",
+            "https://synyx.de/wp-content/uploads/2014/09/qt_photo_viewer.jpg",
+            "https://synyx.de/wp-content/uploads/2024/01/linkedin.svg",
+            "https://synyx.de/wp-content/uploads/2024/01/x.svg",
+            "https://synyx.de/wp-content/uploads/2024/01/mastodon.svg",
+            "https://synyx.de/wp-content/uploads/2019/03/instagram.svg",
+            "https://synyx.de/wp-content/uploads/2019/03/youtube.svg",
+            "https://synyx.de/wp-content/uploads/2019/03/github.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Maya Posch"
+        ],
+        "publish_date": "2014-09-18T15:15:03+00:00",
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "de",
+        "meta_favicon": "/apple-touch-icon.png",
+        "meta_site_name": "synyx",
+        "canonical_link": "https://synyx.de/blog/the-qt-framework-solid-fun-in-many-languages/",
+        "text": "Particularly to people using C++ and Python the Qt framework is probably quite well-known, as in these communities it’s one of the most-used frameworks for application development. For those who don’t know what Qt is or what it does: it’s a comprehensive LGPL-licensed framework providing cross-platform support for GUI, network, multimedia, database, sensors, graphics (OpenGL) and many other features. In this article I would like to give a quick overview of these.\n\nWhile written in C++, Qt has many language bindings , including for Python, Perl, Ada, Ruby, Java, BASIC, Go, C#, PHP, Lua and Haskell. Any application written in any of these languages and using the Qt framework can be deployed unmodified on any of the supported platforms – including all major desktop and mobile platforms – which makes it a popular framework for many big organizations and companies. Some well-known applications written using Qt include Autodesk Maya, Altera Quartus, KDE, Google Earth, Skype, Spotify (Linux), Virtualbox and VLC.\n\nIn addition to the straight Qt framework there is also the Qt Modeling Language (QML) component which can be used to rapidly create user interface-centric applications in a JavaScript-based, declarative language. It’s commonly used for mobile and embedded applications. A basic QML application can be enhanced using JavaScript code and feature anything from UI controls to a complete web browser widget (using the WebKit-based module).\n\nGetting started\n\nWhen I started using Qt in 2010 Qt 4.7 was the standard. Since then Qt has grown into its current form at version 5.3, with a strong focus on JavaScript and mobile development (using the Qt Quick module, which defines QML), while the original C++ API also got a makeover. This didn’t change any fundamentals, however, mostly improving library organization and features such as accessibility in GUIs.\n\nTo quickly build a GUI application, one can use the provided Qt Creator IDE, which includes all of the tools to make any type of application, including non-Qt-based ones. If one wanted to for example create a browser using the Webkit browser engine, a single class implementation would suffice, as in Qt’s Fancy Browser example , which goes one step further and even loads a JQuery instance into the JavaScript runtime to perform HTML manipulation.\n\nFor a hobby project I took this basic concept and made a more full-featured browser , writing a custom cookie handler among other extensions to the basic Qt classes. With the foundation Qt provides it’s very easy to rapidly get started on a project, or to quickly prototype a concept without wasting hours on implementation details.\n\nWhether one uses C++, Python, Ada or another language for which a complete wrapper exists, the basic principle doesn’t change in implementing a Qt-based application. One always uses the same API and same concepts, just molded to fit the implementing language.\n\nEnter QML\n\nEven to long-time users of C++/Qt QML can seem quite confusing at first, mostly because of the confusion over what QML is and isn’t. In essence QML (Qt Modeling Language) is the name of the modeling language: a descriptive language using which one can define user interface elements and their behavior. QML is part of Qt Quick, the UI creation kit which itself is part of the Qt framework. Finally, the runtime for QML is called Qt Declarative.\n\nPlaces where QML is used include (outside of mobile/embedded) KDE and the Unity UI (as of version 8 ) which is used by Ubuntu. The main motivations behind the use of a QML-based UI seem to revolve around the language and platform agnostic nature of it. All one needs is the QML runtime whereby one can add JavaScript and C++ code for further functionality. Unity 8 uses QML to ease the cross-platform deployment across desktop and mobile devices (running Ubuntu Touch).\n\nThe Photo Viewer QML example application on the Qt site is a good example of how much one can do with just QML: this application allows one to define all views of the application with transitions, widgets and the XML-based model which retrieves image URLs from the Flickr public API. The JavaScript file is just used for some minor utility functions.\n\nIn theory one could extend the JavaScript side to include more or additional logic, and use a C++ extension for example image processing or similar functionality. Where one puts the logic and which features are included would be determined by the available resources and intended languages. One can also use QML with just C++, or pure QML with no additional languages. Many QML applications can be readily deployed on a mobile device as well.\n\nQML isn’t just about static content either. Using Qt’s multimedia features one can for example quickly set up a video player:\n\nimport QtQuick 2.0 import QtMultimedia 5.0 Video { id: video width : 800 height : 600 source: \"video.avi\" MouseArea { anchors.fill: parent onClicked: { video.play() } } focus: true Keys.onSpacePressed: video.playbackState == MediaPlayer.PlayingState ? video.pause() : video.play() Keys.onLeftPressed: video.seek(video.position - 5000) Keys.onRightPressed: video.seek(video.position + 5000) }\n\nThis sample, taken from the Qt Video QML type documentation shows just how easy it is to set up a responsive user interface with QML and to add elements which not only respond to user inputs, but can use video and audio as well.\n\nWrapping up"
+    }
+}

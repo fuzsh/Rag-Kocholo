@@ -1,0 +1,39 @@
+{
+    "id": "dbpedia_5008_0",
+    "rank": 57,
+    "data": {
+        "url": "https://forum.juce.com/t/torn-between-juce-and-qt/47858",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Torn between JUCE and Qt",
+        "top_image": "https://global.discourse-cdn.com/business6/uploads/juce/original/2X/c/cb36406ae2f4e477676098963f737dfe231688ed.png",
+        "meta_img": "https://global.discourse-cdn.com/business6/uploads/juce/original/2X/c/cb36406ae2f4e477676098963f737dfe231688ed.png",
+        "images": [
+            "https://sea2.discourse-cdn.com/business6/user_avatar/forum.juce.com/sbenitezb/48/4572_2.png",
+            "https://sea2.discourse-cdn.com/business6/user_avatar/forum.juce.com/mbo/48/5045_2.png",
+            "https://sea2.discourse-cdn.com/business6/user_avatar/forum.juce.com/rolandmr/48/641_2.png",
+            "https://avatars.discourse-cdn.com/v4/letter/j/41988e/48.png",
+            "https://emoji.discourse-cdn.com/twitter/crazy_face.png?v=10",
+            "https://emoji.discourse-cdn.com/twitter/wink.png?v=10",
+            "https://emoji.discourse-cdn.com/twitter/slight_smile.png?v=10",
+            "https://sea2.discourse-cdn.com/business6/user_avatar/forum.juce.com/peteatjuce/48/2347_2.png",
+            "https://emoji.discourse-cdn.com/twitter/rofl.png?v=12",
+            "https://juce.com/wp-content/uploads/2022/07/JUCE-logo-horiz-ondark.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2021-09-17T21:51:00+00:00",
+        "summary": "",
+        "meta_description": "Hi all. I’m developing a data-science sort of tool, a cross-platform desktop GUI. Right now I’m doing the core logic so I’m not touching GUI stuff yet, but I’m pondering whether to go with Qt or JUCE. I have already deci&hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://global.discourse-cdn.com/business6/uploads/juce/optimized/2X/9/95b23d649aba6bd923e8eb266abeae7d96964e9e_2_32x32.png",
+        "meta_site_name": "JUCE",
+        "canonical_link": "https://forum.juce.com/t/torn-between-juce-and-qt/47858",
+        "text": "Hi all. I’m developing a data-science sort of tool, a cross-platform desktop GUI. Right now I’m doing the core logic so I’m not touching GUI stuff yet, but I’m pondering whether to go with Qt or JUCE. I have already decided I don’t care and won’t do a native looking app. I want a custom look which I can do with both libraries equally well.\n\nMy question is which one to pick? Have you been in the same situation where you had to pick one over the other and decided one was better? The app will be mostly a node based flow, with a property panel to tweak some of those nodes, plus a configuration dialog with the usual widgets.\n\nI have a fair bit of experience with both JUCE and Qt. I’ve worked with JUCE since 2005. I worked with Qt from about 2008 to 2015. I still maintain one Qt app, but just do the minimum to keep it working so I’m not too familiar with the latest in Qt. It is a QWidgets based app, I am not familiar with QML at all.\n\nI think JUCE is really good for Plugins. It abstracts away all the differences between AU/VST/AAX etc which is a huge amount of work. It also handles keeping projects in sync between mac, Windows, Linux, 32 bit, 64 bit, all the plugin formats. That could probably be 16 or more targets to keep updated, which you can now do from one jucer file. It’s also good for completely custom UIs that plugins tend to have have.\n\nThe Qt team seems quiet slow to react, the latest stable release of Qt Creator still doesn’t support Apple Silicon. Qt being from the 90s has a dated coding style, and everything must be done the Qt way. I do not like that all the QWidgets must be created on the heap and then the parent widget manages lifetime. The moc wasn’t a big deal on Windows, it integrated into Visual Studio nicely. But on macOS it meant using Qt Creator instead of Xcode. I am just upgrading to Qt 6 now, I noticed they have deprecated a lot of their algorithms, and not recommend using std instead.\n\nThe biggest downside of JUCE is the quality of the widgets. They aren’t usable out of the box, lots of features are missing or non standard. It means pretty much subclassing everything. Buttons can’t be triggered by spacebar, which is the standard hotkey. Sliders don’t respond to key presses at all. Listbox isn’t even usable without subclassing. Most components don’t disable when setEnabled(false) is called on them. ComboBox, TreeView, Viewport, ListBox, and Scrollbar all still respond to keyboard or mouse events when disabled. Expect to spend a lot of time to get components to respond the way users expect them to.\n\nLaying out components is a complete pain, the visual editor in Projucer has been deprecated and was never very good any. The Qt resource editor is much better, and their layout system works well adapting to to different platforms with different size buttons.\n\nIf you expect your application to have a significant number of dialog boxes, go with Qt – the time you save will be huge, from laying out components to not having to spend time tweaking the behaviour of components.\n\nQt is also much more thoroughly tested. Downsides is it is large, I was using the LGPL version, which meant I needed to ship DLLs instead of static linking, so expect to ship many megabytes of DLLs.\n\nIf your app is going to be all custom widgets, then the differences between them are pretty minimal. But do you want to deal with custom menus as well? A lot of this depends on your market fit and what your users expect.\n\nWhen comes to pdf export, I managed to use libharu library to export pdf’s directly from JUCE applications. It would be nice to have a pdf wrapper in JUCE but I understand it is not of high priority.\n\nI think @RolandMR said almost everything what was needed to say. I want to repeat again that even some basic but modern GUI editor would be a very helpful thing. Maybe it should be the way @daniel already started with his GUI editor for plugins? Or maybe the already deprecated GUI editor in Projucer should be reanimated with added options for screen scaling / layouts / grids / flex boxes? There were already discussions on the forum what can be improved. Preparing GUI layout is not hard but is very time consuming when done manually in JUCE, especially if you have to prepare similar interfaces but with slight but important differences for mobile, standalone and embedded systems.\n\nBut even if JUCE components lacks some out of the box features I like them better than heavy Qt widgets. It always possible to modify or subclass JUCE components one way or another.\n\nAnother issue are embedded systems based on Linux. Qt has one big advantage over JUCE: there is no dependency on X11. Qt can render for example directly to a framebuffer on Yocto Linux on iMX and Analog Devices SHARC based platforms. In case of JUCE - if I understand it correctly - it would require to implement system specific ComponentPeer. I wrote a commercial application for iMX 6 fully in JUCE and X11 but dependency on X11 is not needed at all in such cases. Personally I don’t want to use Qt on embedded systems due to their (Qt’s) strange licensing model."
+    }
+}

@@ -1,0 +1,35 @@
+{
+    "id": "dbpedia_5009_1",
+    "rank": 2,
+    "data": {
+        "url": "https://stackoverflow.com/questions/41771738/why-does-qt-creator-generate-projects-that-wont-compile",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Why does Qt Creator generate projects that won't compile?",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/f61b304752c9f49c9e951cd51ac33aee?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/57c81285e699cf8942f89d787e756a10?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/QNich.png",
+            "https://www.gravatar.com/avatar/a007be5a61f6aa8f3e85ae2fc18dd66e?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/874561e399041a45c82c2ca6652400b6?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/41771738/ivc/093f?prg=d03cb41c-5407-4f52-8b07-94b9e02e5224"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2017-01-20T20:19:25",
+        "summary": "",
+        "meta_description": "I'm not new to C++ or programming in general, but this is my first attempt at using Qt.  When I create a new project it makes this mainwindow.cpp file:\n\n    #include \"mainwindow.h\"\n    #include \"",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/41771738/why-does-qt-creator-generate-projects-that-wont-compile",
+        "text": "It doesn't. You do. You even admitted to as much.\n\njust making some changes in the ui file\n\nYou've answered your own question. You broke the .ui file.\n\nBut Creator generated that code itself.\n\nNot really. The ui_mainwindow.h that the generated code depends on is derived from the .ui file. From the point of view of the mainwindow.cpp, the contents of the .ui file are just as important.\n\nYou cannot arbitrarily choose what you call code and what you don't. All of the pre-generated files, including the .ui file, comprise the code of your project.\n\nYou're now complaining that somehow Qt Creator generates useless code when you've just admitted that you changed said code!.\n\nMost likely you've changed the name of the class within the .ui file, so that there's no declaration of the Ui::MainWindow in ui_mainwindow.h. Recall that the ui_mainwindow.h file is generated from the .ui file, and by changing the .ui file you can make the content of the other files (e.g. the .cpp file) incorrect: they must all refer to consistent class name.\n\nYou can easily verify that by clicking on the \"ui_mainwindow.h\" string and pressing F2 in Qt Creator. It will open the header file, that you can now inspect to determine what classes (if any) it declares. Most likely, that file, directly derived from your now changed .ui file, fails to declare the class that the \"unchanged\" .cpp file depends on.\n\nIt is entirely on you to maintain the dependent files to keep the project coherent. It is normal and fully expected for changes to one file (e.g. the .ui file) to break compilation of other files if you don't propagate the necessary changes (e.g. class and member names from .ui to other files).\n\nBefore you do anything else, though, please delete the build folder and build the project again. If the error persists, investigate what you broke in the .ui file."
+    }
+}

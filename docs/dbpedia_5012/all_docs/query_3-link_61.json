@@ -1,0 +1,33 @@
+{
+    "id": "dbpedia_5012_3",
+    "rank": 61,
+    "data": {
+        "url": "https://stackoverflow.com/questions/44050266/get-info-from-streaming-radio",
+        "read_more_link": "",
+        "language": "en",
+        "title": "get info from streaming radio",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/5b66145aa15d4d35021cdf994822fda6?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/79xxW.png",
+            "https://i.sstatic.net/yt7Em.jpg?s=64",
+            "https://stackoverflow.com/posts/44050266/ivc/093f?prg=7585df05-d72e-422c-98bf-557eed998491"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2017-05-18T14:15:27",
+        "summary": "",
+        "meta_description": "There is some standard way to ask a streaming radio service about the currently playing song?\nI currently do it in a different way for each station, e.g. (SomaFM):\n\n  $wg=join(\"\\n\",`wget -q -O - ht...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/44050266/get-info-from-streaming-radio",
+        "text": "For SHOUTcast/Icecast style stations with ICY metadata (which make up the bulk of internet radio stations), the best thing to do is get this data from the stream itself.\n\nFirst, you need a URL to the actual stream. If you go to SomaFM's Secret Agent page at http://somafm.com/secretagent/, you'll see links to listen in other players. As an example, let's use the 128k AAC link, which points at http://somafm.com/secretagent130.pls. This isn't the actual stream... it's a playlist file that contains links to the actual stream. Open it in your favorite text or code editor to see what I mean:\n\n[playlist] numberofentries=2 File1=http://ice1.somafm.com/secretagent-128-aac Title1=SomaFM: Secret Agent (#1 ): The soundtrack for your stylish, mysterious, dangerous life. For Spies and PIs too! Length1=-1 File2=http://ice2.somafm.com/secretagent-128-aac Title2=SomaFM: Secret Agent (#2 ): The soundtrack for your stylish, mysterious, dangerous life. For Spies and PIs too! Length2=-1 Version=2\n\nInternet radio stations typically include multiple servers here for failover. If the listener gets disconnected from one, the player will usually roll to the next item. This is also useful when one server reaches its listener limit... the player will (hopefully) eventually hit another server that's active.\n\nAnyway, fire up a copy of Wireshark or some other packet sniffer. Hit one of the URLs in your audio player, and inspect the traffic. The first thing we'll look at is the request and response.\n\nGET /secretagent-128-aac HTTP/1.1 Host: ice1.somafm.com User-Agent: VLC/2.2.4 LibVLC/2.2.4 Range: bytes=0- Connection: close Icy-MetaData: 1 HTTP/1.0 200 OK Content-Type: audio/aacp Date: Sat, 20 May 2017 20:43:56 GMT icy-br:128 icy-genre:Various icy-name:Secret Agent from SomaFM [SomaFM] icy-notice1:<BR>This stream requires <a href=\"http://www.winamp.com/\">Winamp</a><BR> icy-notice2:SHOUTcast Distributed Network Audio Server/Linux v1.9.5<BR> icy-pub:0 icy-url:http://SomaFM.com Server: Icecast 2.4.0-kh3 Cache-Control: no-cache, no-store Pragma: no-cache Access-Control-Allow-Origin: * Access-Control-Allow-Headers: Origin, Accept, X-Requested-With, Content-Type Access-Control-Allow-Methods: GET, OPTIONS, HEAD Connection: Close Expires: Mon, 26 Jul 1997 05:00:00 GMT icy-metaint:45000\n\nThese internet radio servers are either HTTP (in the case of Icecast and others) or really close to it (legacy SHOUTcast), and accept normal GET requests. In this case, my player (VLC) makes a GET request for /secretagent-128-aac, which is the path to the actual stream.\n\nMy player also includes one key request header:\n\nIcy-MetaData: 1\n\nThis Icy-MetaData header asks the server to mux metadata with the audio stream data. That is, the \"now playing\" track information is going to be sent periodically injected into the stream.\n\nIn the server response headers, there's another key header:\n\nicy-metaint:45000\n\nThis tells us two things... the first is that the server agreed to send metadata. The second is that the metadata interval is 45,000 bytes. Every 45,000 bytes, the server will inject a chunk of metadata. Let's go back to our packet sniffer, and see what this looks like:\n\nThe very first byte of the metadata chunk, 0x06, tells us how long the metadata chunk is. Take the value of that byte, multiply it by 16, and you'll have the length of the metadata chunk in bytes. That is, 0x06 for the first metadata chunk byte tells us that the next 96 bytes will be metadata, before returning to regular stream data. Note that this means the entire metadata is 97 bytes... 1 byte for the length indicator, and then 96 bytes (in this case) for the rest.\n\nNow, let's get into the actual text metadata format:\n\nStreamTitle='Buscemi - First Flight To London';StreamUrl='http://SomaFM.com/secretagent/';\n\nIt's looks pretty straightforward. key='value', semicolon ; delimited. There are some big catches with this though. For example... there's no truly standard method for escaping the single quote. If the metadata value needs to contain a single quote, sometimes it's \\', sometimes it's '''. Sometimes it's not escaped at all!\n\nAdditionally, not all servers use the same character encoding. You can probably safely assume UTF-8, but do expect that some servers might be different, or just simply broken in their own metadata encoding."
+    }
+}

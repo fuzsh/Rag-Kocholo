@@ -1,0 +1,36 @@
+{
+    "id": "dbpedia_5009_2",
+    "rank": 94,
+    "data": {
+        "url": "https://decovar.dev/blog/2017/05/24/documenting-qt-project-with-qdoc/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Documenting a Qt project with QDoc",
+        "top_image": "https://decovar.dev/favicon-32x32.png",
+        "meta_img": "https://decovar.dev/favicon-32x32.png",
+        "images": [
+            "https://decovar.dev/blog/2017/05/24/documenting-qt-project-with-qdoc/images/qdoc-output.png",
+            "https://decovar.dev/blog/2017/05/24/documenting-qt-project-with-qdoc/images/result.png",
+            "https://decovar.dev/images/avas/spike.png",
+            "https://decovar.dev/images/rss.png",
+            "https://decovar.dev/images/telegram.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "retif"
+        ],
+        "publish_date": "2017-05-24T00:00:00",
+        "summary": "",
+        "meta_description": "Documenting a Qt project with QDoc",
+        "meta_lang": "",
+        "meta_favicon": "/apple-touch-icon.png",
+        "meta_site_name": "",
+        "canonical_link": "https://decovar.dev/blog/2017/05/24/documenting-qt-project-with-qdoc/",
+        "text": "When I needed to generate documentation for my projects, I used Doxygen. It’s a quite useful tool that parses specially formated comments in your project’s source code to produce documentation pages for it. Mostly I used it to document my Qt projects.\n\nTo my shame, I didn’t know that Qt has such a tool out-of-the-box - it is the QDoc. In this article I’ll show you how to document a custom QML type (Qt Quick control) with QDoc and also how to make the result look a bit less dull.\n\nQDoc requires a configuration file to understand how to theat your project: where to find sources (and what types of sources should be documented), images, etc. In this config you can also specify additional information, like what external CSS to apply.\n\nHere’s an example of my config:\n\nSometimes qdoc behaves like a whimsy princess: if you would omit some configuration string or add an empty string between two “related” strings, it won’t produce any result. But I can’t catch it to reproduce any of those issue guaranteed, so just keep in mind that something like this can happen.\n\nFull list of HTML variables is here, but it doesn’t contain the HTML.headerstyles variable, and without it the CSS file will only be copied to the output directory and will not be applied to pages. Although, this variable is mentioned in another article, so it’s kinda documented, but its whereabouts can cause some troubles, like it was in my case - only having discovered this page I finally understood what exactly was missing from my config.\n\nOk, that is your configuration file for qdoc utility. Save it to your project directory.\n\nNow you need to write special comments in your source files. Those comments will be used by qdoc to generate the documentation. Use this article to master writing documentation comments. By the way, you can use QDoc not only for C++ code, but for QML code as well.\n\nI’ll show you an example of documenting a new QML type (a bit customized TextInput):\n\nAs you can see, I used specially formated comments to create a simple documentation for my new type AwesomeUIControl (that is stored in AwesomeUIControl.qml file).\n\nIf you would like to include some images in your documentation, like I did, don’t forget to add the imagedirs configuration variable, and also beware, that qdoc will use the original size of images and you can’t specify any scaling for them, so you have to prepare your images with the right width and height beforehand.\n\nAlright, you have a configuration file for qdoc, you have special comments in your sources - now you’re ready to generate some documentation. Open a command line in your project directory and execute:\n\nOf course, if qdoc is not in your system environment, then use /path/to/your/Qt/5.8/clang_64/bin/qdoc.\n\nAnyway, it should produce something like this:\n\nYou can open HTML files in web-browser and see the result. It is a good enough already, but default pages look so boring - let’s add some simple styling to make them look more lively.\n\nHere’s what I’ve put inside the style.css file:\n\nAnd that’s how my documentation pages nicely look like after such a simple styling:\n\nYeah, a bit stupid to show a screenshot of a webpage, but still."
+    }
+}

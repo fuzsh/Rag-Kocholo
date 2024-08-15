@@ -1,0 +1,33 @@
+{
+    "id": "dbpedia_5008_3",
+    "rank": 87,
+    "data": {
+        "url": "https://bastian.rieck.me/blog/2014/qt_and_openscenegraph/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Making Qt and OpenSceneGraph play nice",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://bastian.rieck.me/buttons/ally.png",
+            "https://bastian.rieck.me/buttons/archlinux.png",
+            "https://bastian.rieck.me/buttons/neovim.png",
+            "https://bastian.rieck.me/buttons/web-pi.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2024-02-28T00:00:00",
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "We have been using the powerful OpeneSceneGraph graphics toolkit for our internal software. The software initially started out with a GUI based on GTK, but in the middle of 2012, we decided to rewrite it, using Qt. Our rewrite was mostly prompted my portability concerns and code constraints, which required an almost complete overhaul of the architecture.\n\nDuring the rewrite, I thought hard about different ways of combining Qt and OpenSceneGraph. Our application should have the possibility to render different scenes in different Qt widgets. This turned out to be harder than expected.\n\nThe initial attempt\n\nBeing a very impressionable fool, I initially looked at the examples that shipped with OSG. Their main examples all contained a QTimer class for managing updates. As I recall, the code was very similar to this:\n\nLooking back now, I see the glaringly obvious performance issue. Multiple timers force each widget to redraw multiple times per second, making any interaction with the GUI all but useless. Obviously, this was not the way to go.\n\nGetting funky with threads\n\nThe next idea involved dreaded threads. I figured that by setting up each widget in its own render thread, GUI interactions still could work. This was not completely wrong, but more than 5 windows still made for unbearably large processing times. Reading OSG’s source code again proved fruitful, and I found out about on-demand rendering. By simply creating all viewers slightly differently, the threads suddenly worked better and took less processing time:\n\nAt the surface, this solution seemed to perfectly. Things got strange, though, when we attempted to modify existing scene graphs. So I implemented a special update callback that enqueued nodes on each call. This helped and everything was fine again. Except for random crashes. And problems with some graphics cards. And some more random crashes.\n\nI now know that the crashes we were getting are caused by us attempting to perform multi-threaded OpenGL rendering without attempting to perform a proper switching of graphics contexts. While Qt appears to have given some thought to this matter in more recent versions, OpenSceneGraph apparently did not. At least, the osgQt module that we used to connect both frameworks is not suitable for our particular requirements.\n\nGetting smarter\n\nA different solution had to be found. I took multiple steps back and thought about providing the “glue” between OpenSceneGraph and Qt on my own. Armed with the knowledge of my two previous failures, this was surprisingly easy.\n\nAt the core, I decided I wanted to use a QGLWidget for encapsulating the rendering stuff. Since I required the widget only to render on demand, I did not require any threaded redraw functionalities. Instead, I relied on the builtin event system by Qt.\n\nI thus created a new widget that inherited from QGLWidget. The widget was to contain an instance of an osgViewer::GraphicsWindowEmbedded. Said graphics window provided its own graphics context which I could attach to any number of cameras. The cameras, in turn, could then be attached to some osgViewer::CompositeViewer instance. The constructor of the widget looked something like this:\n\nThe call to setFocusPolicy is required because I want the widget to receive all keyboard events, regardless of whether the widget has received focus by clicking into it, so that I can forward them to the graphics window:\n\nI had to implement similar event handling procedures for mouse move events, key press events, and so on. To ensure that repaints happen after user interactions, I overrode the generic event handler of the widget:\n\nThe only remaining “tricky” part is to handle resize events properly. Here, the viewport of each camera should be reset correctly. For a single camera, this is rather easy:\n\nConclusion & code\n\nSo far, the new widgets are working perfectly. Even multiple cameras with different viewports did not prove to be a significant problem. So, after much toiling and teeth-gnashing, I conclude that this is a good way for making OpenSceneGraph and Qt behave."
+    }
+}

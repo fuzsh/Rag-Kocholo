@@ -1,0 +1,31 @@
+{
+    "id": "dbpedia_5008_2",
+    "rank": 47,
+    "data": {
+        "url": "https://discourse.mapeditor.org/t/about-tiled-java-vs-qt-framework/3344",
+        "read_more_link": "",
+        "language": "en",
+        "title": "About Tiled Java vs Qt framework",
+        "top_image": "https://global.discourse-cdn.com/standard17/uploads/mapeditor/original/2X/d/da08d1dd9f2349a9c87d0f98ad762584dd91f6b8.png",
+        "meta_img": "https://global.discourse-cdn.com/standard17/uploads/mapeditor/original/2X/d/da08d1dd9f2349a9c87d0f98ad762584dd91f6b8.png",
+        "images": [],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Von (Von)",
+            "bjorn (Thorbjørn Lindeijer)"
+        ],
+        "publish_date": "2018-08-08T20:04:52+00:00",
+        "summary": "",
+        "meta_description": "This is mostly addressed to @bjorn as I’m curious about Tiled’s transition from Java to Qt. \nI’d like to know on what ways and by how much did that decision pay off in the long run: \n\nHow dramatic was the performance imp&hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://global.discourse-cdn.com/standard17/uploads/mapeditor/optimized/2X/9/9ee6d8c790ddde001666548e1ec54e94bca8d130_2_32x32.ico",
+        "meta_site_name": "Tiled Forum",
+        "canonical_link": "https://discourse.mapeditor.org/t/about-tiled-java-vs-qt-framework/3344",
+        "text": "Interesting questions for sure! I’ll try to address each of them, but it’s going to take some time…\n\nPerformance\n\nI never performed any actual measurements, but things like starting the application and loading a map suddenly felt instant and scrolling the map was smooth, whereas I had gotten used to things taking time in the Java version.\n\nNote that this is likely not about Java vs. C++, but also about general change of approach and use of algorithms. For example, the map loader in Java used XML DOM API and Reflection, both of which are notoriously slow. Whereas the Qt based map loader used QXmlStreamReader. I’ve long planned to rewrite the Java loader to not use Reflection and to use the XML stream reader available in Java, but never got around to it.\n\nFeatures\n\nFor rendering the map, Tiled benefits greatly from QGraphicsView, which makes it easy to compose the map using a hierarchy of objects and limit repaints to only the changing areas. In the Java version we had no such thing available and would have to implement our own optimizations.\n\nIn general, Qt provided an almost native look and feel on all platforms, whereas the Java version was using Swing, which looked horrible and widget layouts were hard to get right. I had used a lot of GridBagLayout. This “most flexible and powerful layout manager” was very good for making horrible dialogs.\n\nJava developments\n\nI don’t know what happened to Java after 2008. In 2007 I got a job as C++ developer at Trolltech (who developed Qt), and after one year of working with Qt full time it was only natural to use it for my other projects as well. I’m still using C++ professionally and now enjoying the features and convenience of C++11.\n\nSomebody else could probably have continued Tiled Java development, but it didn’t happen.\n\nAs you can see it’s not just about Java vs. Qt, but very much about what I happen to be most familiar with. Time is limited and continuing to use Java would mean I need to invest more time to stay familiar with its use in addition to the basic development time.\n\nIssues\n\nWith Tiled Java I was having issues with style, layout, performance and deployment. I also did not like Java’s license, and OpenJDK had a lot of compatibility issues at the time.\n\nWith Tiled Qt I am having issues with some bugs in Qt, but they can usually be avoided by being careful about which version of Qt to use when making a release.\n\nJavaFX\n\nI’ve only heard of it, never used it. I do not know whether it would make any difference for Tiled. It still doesn’t look native as far as I know. Though granted, these days Tiled is shipping with a non-native theme by default as well (except on macOS), but it can be set to native in the preferences.\n\nConclusion\n\nI definitely think moving to Qt was the right decision for me and for Tiled, and have no reason to consider going back to Java.\n\nTiled Java was never very well known. By January 2010 the website had little over 1.000 users visiting per month. Then I announced the Qt version was replacing the Java version, since it had reached feature-parity. Google Analytics is pretty clear that it is from that point that Tiled usage really picked up, reaching 5.000 users in February and going up to 10.000 per month by January 2011. Many people liked the new version.\n\nCould the same have been done with a new version in Java? Probably, but not by me."
+    }
+}

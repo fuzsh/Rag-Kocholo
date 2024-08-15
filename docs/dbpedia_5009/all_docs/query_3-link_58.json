@@ -1,0 +1,37 @@
+{
+    "id": "dbpedia_5009_3",
+    "rank": 58,
+    "data": {
+        "url": "https://www.vikingsoftware.com/blog/qt-sourcetree-structure/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "A Qt Based Project Folder Layout",
+        "top_image": "https://www.vikingsoftware.com/wp-content/uploads/2021/05/Code-tree.jpg",
+        "meta_img": "https://www.vikingsoftware.com/wp-content/uploads/2021/05/Code-tree.jpg",
+        "images": [
+            "https://www.vikingsoftware.com/wp-content/uploads/2019/10/VS-logo-hvid.png",
+            "https://www.vikingsoftware.com/wp-content/uploads/2019/10/VS-logo-hvid.png",
+            "https://www.vikingsoftware.com/wp-content/uploads/2021/05/Code-tree-1024x460.jpg",
+            "https://secure.gravatar.com/avatar/9b685d47b33b105e83acea4ca881a9dc?s=56&d=mm&r=g",
+            "https://secure.gravatar.com/avatar/de7970f214201f238cdad6e7974df07e?s=56&d=mm&r=g",
+            "https://px.ads.linkedin.com/collect/?pid=3111354&fmt=gif"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Maria Lisberg"
+        ],
+        "publish_date": "2015-01-03T07:56:06+00:00",
+        "summary": "",
+        "meta_description": "One of the questions I often get from companies that hire me to help them in their first project with Qt, is how to structure the source tree.",
+        "meta_lang": "en",
+        "meta_favicon": "https://www.vikingsoftware.com/wp-content/uploads/2021/02/favicon-VS-150x150.png",
+        "meta_site_name": "Viking Software A/S",
+        "canonical_link": "https://www.vikingsoftware.com/blog/qt-sourcetree-structure/",
+        "text": "One of the questions I often get from companies that hire me to help them in their first project with Qt, is how to structure the source tree.\n\nThis might look trivial to some, but if you don’t know how to do it correctly, you can seriously shoot yourself in the foot with this. Fortunately, it’s not that hard to do a sensible setup. I’m sure there are many other good ways of doing this, and I would love to see them in the comments to this post. The source tree setup I describe here is the one I always use, unless a customer has already decided on something else. And I tend to follow this structure in non-Qt projects as well, unless there are good reasons not to.\n\nHere are most of the directories I have in a Qt source tree:\n\nsource\n\nlibmodel\n\nunittest\n\nlibmodelcommands\n\nunittest\n\nlibui\n\nunittest\n\nlibuicommands\n\nunittest\n\nlibscript\n\nunittest\n\napplication\n\nplugins\n\napplication plugins here\n\ndesigner-plugins\n\ntranslations\n\ncmake (or qmake)\n\ntestfiles\n\nexample files\n\ndocumentation\n\nThis list has most of the directories I have had in source code trees. Of course, the documentation tree can have anything in it, and sometimes there are more or less libraries (no libui in a QCoreApplication project), but I wanted this to be a fairly complete list.\n\nWhen using external libraries, you can either install them on the system and let cmake find them. Or, if it’s possible, you can use them as external references directly in the sources directory.\n\nAs you can see, I use a fair amount of internal libraries. This is to allow easier unit testing of individual project parts, and to make sure the code isn’t too tightly coupled with other parts of the system. I’m sure some people will object to this, and there are some drawbacks both to the code and to the possible compiler optimizations. But when working on the same source code tree for years with many people leaving or joining an organization, maintainability of the code becomes incredibly important. Unit testing and separation are simple and very effective ways to achieve this.\n\nThe commands directories contain implementations of undo/redo commands. In smaller projects, I’m often tempted to put these directly in the library they work on. And I even sometimes do it. But if you consider this, please also consider that projects only get bigger, and at some point in the future, you might regret not separating them.\n\nI’m a huge fan of unit testing. I don’t do test driven development, because I think it’s too expensive to keep rewriting the test cases as the sources develop. (I think it’s very odd that agile methods included this particular waterfall’ish thinking for unit testing.) Write unit tests on as much of the system as possible. Certainly on the model and on scripting, but UI is a very good candidate as well. And of course, the command libraries are naturally suited for unit testing. Code doesn’t automatically become testable. It’s up to you to ensure that it’s possible to test your code. If you don’t, you will in a couple of years find yourself in a position where it’s necessary and almost impossible.\n\nIn libui, I place all the GUI code and little logic. It’s harder to test the GUI properly, so it’s a good idea to make the GUI just call other parts of the system to do the real work.\n\nThe application directory usually only contains a single file which has the main function. I have previously had this in one of the other directories, but started to move it out. It’s a small and not very important question if you do this or not. Just make sure you don’t make it impossible to test parts of the system if you place the main function in another directory.\n\nIf your application has a set of plugins, you should put these in a separate directory structure and make sure you compile them after the application. This sounds so obvious, but I have seen a very big commercial project completely fail because the developers started putting application logic in the plugins. Make sure you test your application both with and without plugins.\n\nThe translations directory has the .ts files used by lupdate, linguist etc. I will write a blog entry later about how I harvest the strings using CMake, how to build and load them and other things about I18N.\n\nThe cmake or qmake directory has all the project specific build extensions. There are often something you need to add to the build system, and do yourself a favour and put it here instead of directly in the cmake or .pro files.\n\nSometimes, the unit testing needs to access a set of test files. I always put these in a directory in the top of the source tree. This makes it easier to access them when building outside the source tree (which in my opinion is the only proper way).\n\nMy next blog entries will have much more detail about parts of this system and how to implement the necessary parts using Qt and CMake."
+    }
+}

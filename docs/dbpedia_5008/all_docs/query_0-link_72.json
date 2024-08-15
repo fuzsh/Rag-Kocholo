@@ -1,0 +1,30 @@
+{
+    "id": "dbpedia_5008_0",
+    "rank": 72,
+    "data": {
+        "url": "https://wiki.gentoo.org/wiki/Project:Qt/Policies",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Project:Qt/Policies",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://assets.gentoo.org/tyrian/site-logo.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "https://www.gentoo.org/favicon.ico",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "General policies\n\nDo not add random new packages to the dev-qt category, it is reserved for the Qt framework modules and directly related libraries and development applications from the upstream Qt Project.\n\nChanges to Qt packages should be reviewed by a project member prior to being committed.\n\nIn the case of minor changes (e.g. typos, pkgmoved dependencies, etc.), please notify the team. Most of our packages are bumped out of the overlay and tree changes will be lost if not also made there.\n\nQA policy on USE=gui should be followed\n\nDependencies\n\nExplicitly depend on all Qt modules that are used - do not rely on transitive dependencies (including ).\n\nSpecify the correct slot - most Qt modules have two major versions.\n\nThe := subslot dependency operator must only be used for packages that are known to use a private part of the Qt API.\n\nHandling different versions of Qt\n\nWe recommend all packages with a Qt dependency follow these recommendations to ensure a consistent user experience.\n\nAvoiding unnecessary REQUIRED_USE is important to minimise user interaction, especially as USE=\"qt5 qt6\" becomes a common configuration.\n\nOptional support for a single Qt version\n\nFor example, a CLI application with an optional Qt GUI.\n\nIf the package has no other GUI toolkit support, implement USE=gui.\n\nIf the package supports two Qt versions (Qt 5 and Qt 6) but upstream prefer Qt 5, implement USE=gui and USE=qt6. USE=gui would use qt5.\n\nDepending on the Qt version required, implement the appropriate USE flag: qt5 or qt6.\n\nOptional support for one of two Qt versions\n\nFor example, a CLI application with an optional GUI that can be built with Qt 5 or Qt 6.\n\nImplement both qt5 and qt6 USE flags\n\nWhen both qt5 and qt6 USE flags are enabled, prefer qt5\n\nDo not use REQUIRED_USE=\"?? ( qt5 qt6 )\"\n\nOptional support for two Qt versions\n\nFor example, a library with both Qt 5 and Qt 6 bindings (example: ).\n\nImplement both qt5 and qt6 USE flags\n\nRequires at least one Qt version\n\nFor example, a library with a SONAME that changes based on which Qt version it was built against (example: ).\n\nImplement both qt5 and qt6 USE flags\n\nEnable the qt5 USE flag by default: USE=\"+qt5\"\n\nAdd REQUIRED_USE=\"|| ( qt5 qt6 )\"\n\nUse multibuild eclass instead of revision slotting (-r500, -r600)\n\nRequires one of two Qt versions\n\nFor example, a Qt-based media player that can be built with either Qt 5 or Qt 6 (example: ).\n\nImplement a qt6 USE flag to choose Qt 6\n\nDo not implement a qt5 USE flag and do not use REQUIRED_USE=\"^^ ( qt5 qt6 )\"\n\nFor a more troublesome example, a library that can only support either Qt 5 or Qt 6. First, consider one of the following options (especially for a non-niche library that many users will be installing):\n\nStill try to support both at once, e.g. with multibuild.eclass if libraries can coexist\n\nDrop support for the old Qt version entirely (including in reverse dependencies)\n\nUse revision \"fake\" slotting (-r500, -r600) for a smoother transition but only if reverse dependencies can align (all qt5 or all qt6 to avoid conflicts, safe if only one package)\n\nIf deemed too troublesome, a last option that is acceptable for niche libraries but still discouraged (similar end result as revision slotting that is easier to maintain but requires more work from users), is:"
+    }
+}

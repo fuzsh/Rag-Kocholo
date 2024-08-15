@@ -1,0 +1,36 @@
+{
+    "id": "dbpedia_5009_3",
+    "rank": 64,
+    "data": {
+        "url": "https://qmlbook.github.io/ch01-meetqt/meetqt.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "1. Meet Qt 5 — Qt5 Cadaques Book vmaster",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://qmlbook.github.io/_images/qt5_overview.png",
+            "https://qmlbook.github.io/_images/scene.png",
+            "https://qmlbook.github.io/_images/background.png",
+            "https://qmlbook.github.io/_images/pole.png",
+            "https://qmlbook.github.io/_images/pinwheel.png",
+            "https://qmlbook.github.io/_images/scene2.png",
+            "https://qmlbook.github.io/_images/graphviz-94e85ce83ea4c8f418c1b0c535cb232dcc395fcb.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "",
+        "meta_favicon": "",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "1.2.2. Digesting a User Interface¶\n\nLet’s create a simple user interface using Qt Quick, which showcases some aspects of the QML language. In the end, we will have a paper windmill with rotating blades.\n\nWe start with an empty document called main.qml. All our QML files will have the suffix .qml. As a markup language (like HTML), a QML document needs to have one and only one root type. In our case, this is the Image type with a width and height based on the background image geometry:\n\nAs QML doesn’t restrict the choice of type for the root type, we use an Image type with the source property set to our background image as the root.\n\nThe foreground elements, representing the pole and the pinwheel in the user interface, are included as separate images.\n\nWe want to place the pole horizontally in the center of the background, but offset vertically towards the bottom. And we want to place the pinwheel in the middle of the background.\n\nAlthough this beginners example only uses image types, as we progress you will create more sophisticated user interfaces that are composed of many different types.\n\nTo place the pinwheel in the middle, we use a complex property called anchor. Anchoring allows you to specify geometric relations between parent and sibling objects. For example, place me in the center of another type ( anchors.centerIn: parent ). There are left, right, top, bottom, centerIn, fill, verticalCenter and horizontalCenter relations on both ends. Naturally, when two or more anchors are used together, they should complement each other: it wouldn’t make sense, for instance, to anchor a type’s left side to the top of another type.\n\nFor the pinwheel, the anchoring only requires one simple anchor.\n\nTo make the showcase a bit more interesting, let’s make the scene interactive. The idea is to rotate the wheel when the user presses the mouse somewhere in the scene.\n\nWe use the MouseArea type and make it cover the entire area of our root type.\n\nThe mouse area emits signals when the user clicks inside the area it covers. You can connect to this signal by overriding the onClicked function. When a signal is connected, it means that the function (or functions) it corresponds to are called whenever the signal is emitted. In this case, we say that when there’s a mouse click in the mouse area, the type whose id is wheel (i.e., the pinwheel image) should rotate by +90 degrees.\n\nThe wheel will now rotate whenever the user clicks, but the rotation takes place in one jump, rather than a fluid movement over time. We can achieve smooth movement using animation. An animation defines how a property change occurs over a period of time. To enable this, we use the Animation type’s property called Behavior. The Behavior specifies an animation for a defined property for every change applied to that property. In other words, whenever the property changes, the animation is run. This is only one of many ways of doing animation in QML.\n\nNow, whenever the wheel’s rotation property changes, it will be animated using a NumberAnimation with a duration of 250 ms. So each 90-degree turn will take 250 ms, producing a nice smooth turn.\n\nNote\n\nYou will not actually see the wheel blurred. This is just to indicate the rotation. (A blurred wheel is in the assets folder, in case you’d like to experiment with it.)\n\nNow the wheel looks much better and behaves nicely, as well as providing a very brief insight into the basics of how Qt Quick programming works."
+    }
+}

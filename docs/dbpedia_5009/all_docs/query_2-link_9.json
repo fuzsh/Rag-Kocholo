@@ -1,0 +1,28 @@
+{
+    "id": "dbpedia_5009_2",
+    "rank": 9,
+    "data": {
+        "url": "https://interest.qt-project.narkive.com/95JZ0Gbs/qlabel-with-images",
+        "read_more_link": "",
+        "language": "en",
+        "title": "[Interest] QLabel with images",
+        "top_image": "https://narkive.net/favicon.ico",
+        "meta_img": "https://narkive.net/favicon.ico",
+        "images": [],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "",
+        "meta_favicon": "https://narkive.net/favicon.ico",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "Bo Thorsen\n\nPost by Sensei\n\nHi all,\n\nI need to display a QLabel that has an image and text in it, in\n\nparticular, a semi-transparent icon. All, without implementing another\n\ncustom widget.\n\nGoogling, I found no ways of adding text and images, since one excludes\n\nthe other. Moreover, my images are black and transparent, used for some\n\nQIcons I need, and I'd like to avoid creating another set of images,\n\njust for the transparency.\n\nWhat I've done now is having two overlapping QLabels, one for the text,\n\nthe other for the icon. Now I just need to make the icon at a certain\n\nalpha, but setWindowOpacity does not work on the QLabel containing the\n\npixmap.\n\nYou're on the right track, but you have to modify the image opacity\n\ndirectly. There's no way to modify how transparent a label is.\n\nThe two QLabel approach is the right one.\n\nBo Thorsen.\n\nFionia Software - Qt experts for hire.\n\nKonrad Rosenbaum\n\nHi,\n\nPost by Sensei\n\nI need to display a QLabel that has an image and text in it, in\n\nparticular, a semi-transparent icon. All, without implementing another\n\ncustom widget.\n\nGoogling, I found no ways of adding text and images, since one excludes\n\nthe other. Moreover, my images are black and transparent, used for some\n\nQIcons I need, and I'd like to avoid creating another set of images,\n\njust for the transparency.\n\nWhat I've done now is having two overlapping QLabels, one for the text,\n\nthe other for the icon. Now I just need to make the icon at a certain\n\nalpha, but setWindowOpacity does not work on the QLabel containing the\n\npixmap.\n\nAny hints?\n\nA few:\n\nOverlapping QLabels is not a good idea - you may get very weird effects next\n\ntime anything changes in the implementation or next time you port to a new\n\nsystem.\n\nCreate a pixmap and paint the icon and the text over it. Once you've done that\n\nfor the first time it becomes very easy.\n\nSome untested code:\n\n//load the icon\n\nQPixmap pix(\"/my/iconfile.png\");\n\n//enable painting\n\nQPainter paint(&pix);\n\n//draw the text\n\npaint.begin();\n\npaint.drawText(MY_X,MY_Y,\"my text\");\n\npaint.end();\n\n//create the label\n\nQLabel *mylabel=new QLabel(...);\n\nmylabel->setPixmap(pix);\n\nKonrad"
+    }
+}

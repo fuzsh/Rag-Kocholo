@@ -1,0 +1,59 @@
+{
+    "id": "dbpedia_5008_2",
+    "rank": 90,
+    "data": {
+        "url": "https://subscription.packtpub.com/book/programming/9781786467126/1/ch01lvl1sec12/adding-a-task",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Mastering Qt 5",
+        "top_image": "https://subscription.packtpub.com/favicon.ico",
+        "meta_img": "https://subscription.packtpub.com/favicon.ico",
+        "images": [
+            "https://subscription.packtpub.com/images/logo-new.svg",
+            "https://content.packt.com/B05566/cover_image_small.jpg",
+            "https://content.packt.com/B05566/cover_image_small.jpg",
+            "https://content.packt.com/B05566/cover_image_small.jpg",
+            "https://content.packt.com/B05566/cover_image_small.jpg",
+            "https://subscription.packtpub.com/images/reader/lhs/chevron-up-grey.svg",
+            "https://subscription.packtpub.com/images/reader/lhs/chevron-down-grey.svg",
+            "https://subscription.packtpub.com/images/reader/lhs/chevron-down-grey.svg",
+            "https://subscription.packtpub.com/images/reader/lhs/chevron-down-grey.svg",
+            "https://subscription.packtpub.com/images/reader/lhs/chevron-down-grey.svg",
+            "https://subscription.packtpub.com/images/reader/lhs/chevron-down-grey.svg",
+            "https://subscription.packtpub.com/images/lock-close.svg",
+            "https://subscription.packtpub.com/images/reader/lhs/chevron-down-grey.svg",
+            "https://subscription.packtpub.com/images/reader/lhs/chevron-down-grey.svg",
+            "https://subscription.packtpub.com/images/reader/lhs/chevron-down-grey.svg",
+            "https://subscription.packtpub.com/images/reader/lhs/chevron-down-grey.svg",
+            "https://subscription.packtpub.com/images/reader/lhs/chevron-down-grey.svg",
+            "https://subscription.packtpub.com/images/reader/lhs/chevron-down-grey.svg",
+            "https://subscription.packtpub.com/images/reader/lhs/chevron-down-grey.svg",
+            "https://subscription.packtpub.com/images/reader/lhs/chevron-down-grey.svg",
+            "https://subscription.packtpub.com/images/reader/lhs/chevron-down-grey.svg",
+            "https://subscription.packtpub.com/images/reader/lhs/chevron-down-grey.svg",
+            "https://subscription.packtpub.com/images/reader/lhs/chevron-down-grey.svg",
+            "https://subscription.packtpub.com/images/reader/lhs/chevron-down-grey.svg",
+            "https://subscription.packtpub.com/images/reader/lhs/chevron-down-grey.svg",
+            "https://subscription.packtpub.com/images/reader/lhs/chevron-down-grey.svg",
+            "https://static.packt-cdn.com/products/9781786467126/graphics/image_01_009.jpg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Guillaume Lazar",
+            "Robin Penea"
+        ],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "Qt 5.7 is an application development framework that provides a great user experience and develops full-capability applications with Qt Widgets, QML, and even Qt 3D.\n\nThis book will address challenges in successfully developing cross-platform applications with the Qt framework. Cross-platform development needs a well-organized project. Using this book, you will have a better understanding of the Qt framework and the tools to resolve serious issues such as linking, debugging, and multithreading. Your journey will start with the new Qt 5 features. Then you will explore different platforms and learn to tame them. Every chapter along the way is a logical step that you must take to master Qt. The journey will end in an application that has been tested and is ready to be shipped.",
+        "meta_lang": "en",
+        "meta_favicon": "/images/favicon.ico",
+        "meta_site_name": "",
+        "canonical_link": "https://subscription.packtpub.com/book/programming/9781786467126/1/ch01lvl1sec12/adding-a-task",
+        "text": "We will now rearrange the layout of MainWindow to be able to display our todo tasks. Right now, there is no widget where we can display our tasks. Open the MainWindow.ui file and edit it to get the following result:\n\nIf we detail the content, we have:\n\nDo not forget to rename the MainWindow title to Todo by selecting the MainWindow in the Object Inspector window and editing the Qwidget | windowTitle property. Your app deserves to be named properly.\n\nNow that the MainWindow UI is ready to welcome tasks, let's switch to the code part. The application has to keep track of the new tasks. Add the following in the MainWindow.h file:\n\n#include <QVector> #include \"Task.h\" class MainWindow : public QMainWindow { // MAINWINDOW_H public slots: void addTask(); private: Ui::MainWindow *ui; QVector<Task*> mTasks; };\n\nThe QVector is the Qt container class providing a dynamic array, which is an equivalent of the std::vector. As a general rule, STL containers are more customizable but might miss some features compared to Qt containers. If you use C++11 smart pointers, you should favor std containers, but we will get into that later.\n\nIn the Qt documentation of QVector, you might stumble upon the following statement: \"For most purposes, QList is the right class to use\". There is a debate about this in the Qt community:\n\nThe already added slot addTask() will now be called each time we want to add a new Task object to the mTasks function.\n\nLet's fill our QVector tasks each time addTaskButton is clicked. First, we connect the clicked() signal in the MainWindow.cpp file:\n\nMainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow), mTasks() { ui->setupUi(this); connect(ui->addTaskButton, &QPushButton::clicked, this, &MainWindow::addTask); };\n\nThe body of the addTask() function should look like this:\n\nvoid MainWindow::addTask() { qDebug() << \"Adding new task\"; Task* task = new Task(\"Untitled task\"); mTasks.append(task); ui->tasksLayout->addWidget(task); }\n\nWe created a new task and added it to our mTask vector. Because Task is a QWidget, we also added it directly to the tasksLayout. An important thing to note here is that we never managed this new task's memory. Where is the delete task instruction? This is a key feature of the Qt Framework we started to broach earlier in the chapter; the QObject class parenting automatically handles object destruction.\n\nIn our case, the ui->tasksLayout->addWidget(task) call has an interesting side-effect; the ownership of the task is transferred to tasksLayout. The QObject* parent defined in Task constructor is now tasksLayout, and the Task destructor will be called when tasksLayout releases its own memory by recursively iterating through its children and calling their destructor.\n\nThis will happen at this precise moment:\n\nMainWindow::~MainWindow() { delete ui; }"
+    }
+}
