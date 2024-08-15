@@ -1,0 +1,28 @@
+{
+    "id": "dbpedia_4987_1",
+    "rank": 10,
+    "data": {
+        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Symbol - JavaScript",
+        "top_image": "https://developer.mozilla.org/mdn-social-share.cd6c4a5a.png",
+        "meta_img": "https://developer.mozilla.org/mdn-social-share.cd6c4a5a.png",
+        "images": [],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2024-07-25T21:32:46+00:00",
+        "summary": "",
+        "meta_description": "Symbol is a built-in object whose constructor returns a symbol primitive â also called a Symbol value or just a Symbol â that's guaranteed to be unique. Symbols are often used to add unique property keys to an object that won't collide with keys any other code might add to the object, and which are hidden from any mechanisms other code will typically use to access the object. That enables a form of weak encapsulation, or a weak form of information hiding.",
+        "meta_lang": "en",
+        "meta_favicon": "/favicon-48x48.cbbd161b.png",
+        "meta_site_name": "MDN Web Docs",
+        "canonical_link": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol",
+        "text": "To create a new primitive Symbol, you write Symbol() with an optional string as its description:\n\njs\n\nconst sym1 = Symbol(); const sym2 = Symbol(\"foo\"); const sym3 = Symbol(\"foo\");\n\nThe above code creates three new Symbols. Note that Symbol(\"foo\") does not coerce the string \"foo\" into a Symbol. It creates a new Symbol each time:\n\njs\n\nSymbol(\"foo\") === Symbol(\"foo\");\n\nThe following syntax with the new operator will throw a TypeError:\n\njs\n\nconst sym = new Symbol();\n\nThis prevents authors from creating an explicit Symbol wrapper object instead of a new Symbol value and might be surprising as creating explicit wrapper objects around primitive data types is generally possible (for example, new Boolean, new String and new Number).\n\nIf you really want to create a Symbol wrapper object, you can use the Object() function:\n\njs\n\nconst sym = Symbol(\"foo\"); typeof sym; const symObj = Object(sym); typeof symObj;\n\nBecause symbols are the only primitive data type that has reference identity (that is, you cannot create the same symbol twice), they behave like objects in some way. For example, they are garbage collectable and can therefore be stored in WeakMap, WeakSet, WeakRef, and FinalizationRegistry objects.\n\nThe above syntax using the Symbol() function will create a Symbol whose value remains unique throughout the lifetime of the program. To create Symbols available across files and even across realms (each of which has its own global scope), use the methods Symbol.for() and Symbol.keyFor() to set and retrieve Symbols from the global Symbol registry.\n\nNote that the \"global Symbol registry\" is only a fictitious concept and may not correspond to any internal data structure in the JavaScript engine â and even if such a registry exists, its content is not available to the JavaScript code, except through the for() and keyFor() methods.\n\nThe method Symbol.for(tokenString) takes a string key and returns a symbol value from the registry, while Symbol.keyFor(symbolValue) takes a symbol value and returns the string key corresponding to it. Each is the other's inverse, so the following is true:\n\njs\n\nSymbol.keyFor(Symbol.for(\"tokenString\")) === \"tokenString\";\n\nBecause registered symbols can be arbitrarily created anywhere, they behave almost exactly like the strings they wrap. Therefore, they are not guaranteed to be unique and are not garbage collectable. Therefore, registered symbols are disallowed in WeakMap, WeakSet, WeakRef, and FinalizationRegistry objects.\n\nAll static properties of the Symbol constructor are Symbols themselves, whose values are constant across realms. They are known as well-known Symbols, and their purpose is to serve as \"protocols\" for certain built-in JavaScript operations, allowing users to customize the language's behavior. For example, if a constructor function has a method with Symbol.hasInstance as its name, this method will encode its behavior with the instanceof operator.\n\nPrior to well-known Symbols, JavaScript used normal properties to implement certain built-in operations. For example, the JSON.stringify function will attempt to call each object's toJSON() method, and the String function will call the object's toString() and valueOf() methods. However, as more operations are added to the language, designating each operation a \"magic property\" can break backward compatibility and make the language's behavior harder to reason with. Well-known Symbols allow the customizations to be \"invisible\" from normal code, which typically only read string properties.\n\nNote: The spec used to use the notation @@<symbol-name> to denote well-known symbols. For example, Symbol.hasInstance was written as @@hasInstance, and the Array.prototype[Symbol.iterator]() method would be called Array.prototype[@@iterator](). This notation is no longer used in the spec, but you may still see it in older documentation or discussions.\n\nWell-known symbols do not have the concept of garbage collectability, because they come in a fixed set and are unique throughout the lifetime of the program, similar to intrinsic objects such as Array.prototype, so they are also allowed in WeakMap, WeakSet, WeakRef, and FinalizationRegistry objects."
+    }
+}

@@ -1,0 +1,61 @@
+{
+    "id": "dbpedia_4991_0",
+    "rank": 67,
+    "data": {
+        "url": "https://www.anandtech.com/show/9330/exynos-7420-deep-dive/4",
+        "read_more_link": "",
+        "language": "en",
+        "title": "The Samsung Exynos 7420 Deep Dive - Inside A Modern 14nm SoC",
+        "top_image": "https://images.anandtech.com/doci/9330/P1020945_678x452.jpg",
+        "meta_img": "https://images.anandtech.com/doci/9330/P1020945_678x452.jpg",
+        "images": [
+            "https://www.anandtech.com/Content/images/logo2.png",
+            "https://www.anandtech.com/Content/images/icon-twitter.png",
+            "https://www.anandtech.com/Content/images/icon-facebook.png",
+            "https://www.anandtech.com/Content/images/icon-rss.png",
+            "https://www.anandtech.com/Content/images/logo_resp.png",
+            "https://images.anandtech.com/doci/9330/core-latency-little_575px.png",
+            "https://images.anandtech.com/doci/9330/core-latency-big_575px.png",
+            "https://images.anandtech.com/doci/9330/P1020936_575px.jpg",
+            "https://www.anandtech.com/Content/images/ajax-loader13.gif",
+            "https://www.anandtech.com/Content/images/dell_reveal_arrow.png",
+            "https://www.anandtech.com/Content/images/icon-facebook2.png",
+            "https://www.anandtech.com/Content/images/icon-twitter2.png",
+            "https://www.anandtech.com/Content/images/icon-rss2.png",
+            "https://www.anandtech.com/Content/images/FutureFooterLogo-Transparent.png",
+            "https://www.anandtech.com/Content/images/gryBg1.png",
+            "https://www.anandtech.com/Content/images/gryBg1.png",
+            "https://www.anandtech.com/Content/images/icon-facebook2.png",
+            "https://www.anandtech.com/Content/images/icon-twitter2.png",
+            "https://www.anandtech.com/Content/images/icon-rss2.png",
+            "https://www.anandtech.com/Content/images/gryBg1.png",
+            "https://www.anandtech.com/Content/images/bench_li_pic1.jpg",
+            "https://www.anandtech.com/Content/images/bench_li_pic2.jpg",
+            "https://www.anandtech.com/Content/images/gpubench2013.jpg",
+            "https://www.anandtech.com/Content/images/bench_li_pic3.jpg",
+            "https://www.anandtech.com/Content/images/bench_li_pic5.jpg",
+            "https://www.anandtech.com/Content/images/bench_li_pic6.jpg",
+            "https://www.anandtech.com/Content/images/icon-facebook2.png",
+            "https://www.anandtech.com/Content/images/icon-twitter2.png",
+            "https://www.anandtech.com/Content/images/icon-rss2.png",
+            "https://www.anandtech.com/Content/images/ajax-loader.gif"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Andrei Frumusanu"
+        ],
+        "publish_date": "2015-06-29T10:00:00+00:00",
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "",
+        "meta_favicon": "/favicon.ico",
+        "meta_site_name": "",
+        "canonical_link": "https://www.anandtech.com/show/9330/exynos-7420-deep-dive/4",
+        "text": "SPECint2000 base - Estimated Scores\n\nBig Cores Apple A8\n\n(Typhoon)\n\nAArch64 Exynos 5433\n\n(Cortex A57)\n\nAArch32 Exynos 7420\n\n(Cortex A57)\n\nAArch32 Exynos 7420\n\n(Cortex A57)\n\nAArch64 Exynos 7420\n\n64 > 32 bit\n\n% Advantage 164.gzip 842 813 909 927 2% 175.vpr 1228 1120 1129 1014 -10% 176.gcc 1810 1549 1617 2000 24% 181.mcf 1420 1192 1276 923 -28% 186.crafty 2021 1149 1282 990 -23% 197.parser 1129 841 904 895 -1% 252.eon 1933 2096 2280 2500 10% 253.perlbmk 1666 1258 1363 4000 193% 254.gap 1821 1466 1506 3437 128% 255.vortex 1716 1652 1596 1681 5% 256.bzip2 1234 1027 1102 1102 0% 300.twolf 1633 1260 1428 1875 31%\n\nMoving on to the A57 numbers, we again see a similar scenario as the 64-bit vpr, mcf, and crafty show a significant performance downgrade compared to the 32-bit variants due to higher memory and cache pressure. Perlbmk and gap are again the largest benefactors of 64-bit register usage. While the performance boost for the gcc compiler test was significant for the A53 cores, the A57 cores come in at a less impressive but still respectable 28% performance boost.\n\nOverall it’s interesting to see what kind of an impact AArch64 has on performance and it’s clear that the advantages are very architecture and use-case dependent. The two most negatively affected benchmarks were 181.mcf and 186.crafty. The former is based on a single-depot vehicle scheduling algorithm with almost exclusive integer arithmetic that doesn’t take advantage of 64-bit data-structures, so most of performance is wasted due to overhead.\n\nThe Galaxy S6 most-notably still employs a 32-bit native browser, and although I'm not sure if this was a deliberate decision or carry-over from existing firmwares, this may be a sign that it may not always be worth to switch over to AArch64 compiled applications.\n\nMemory Latency and Performance\n\nLPDDR4 is one of the major specification upgrades for many high-end 2015 SoCs and the 7420 is along with the Snapdragon 810 one of the first mobile SoCs to adopt the new technology. LPDDR4 doubles its operational frequency over LPDDR3, and the Exynos 7420 runs its memory at 1555MHz (3110MT/s). In terms of computational requirements, CPUs are more sensitive to latency while GPUs require more bandwidth to operate at the best efficiency. As a start, we’ll look at how memory latency has changed on the Exynos 7420. For this review I choose to present the results on a logarithmic scale to better depict the latency differences on the L1 and L2 caches.\n\nThe A53 cores don’t show any significant variation in the L1 and L2 results that exceeds the expected 15% difference due to the higher clock-speed of the Exynos 7420’s little cores. As transfer size grows beyond 256kB we see our benchmark leaving pre-fetching and caching on the L2 and hit main memory. Here the Exynos 7420 sees a rise in latency to 206ns over the 5433’s 191ns.\n\nThe change in main memory latency is also visible in the bandwidth results of the 7420’s little cores as transfer speeds overall drops on average 10% over what we’ve measured on the 5433.\n\nThe latency graphs for the big cores looks more interesting as we see a quite large difference in the L1 cache of the Exynos 7420. The new chip is able to offer a 76% improvement in the L1 latency when compared to the Exynos 5433, as the new SoC is able to hold a very steady 1.91ns versus an average 3.36ns on the predecessor A57 implementation. The frequency advantage of the 7420 comes in at only 10%, so Samsung definitely must have made some changes in the cache architecture as I was able to measure much more consistent latency and bandwidth results in our custom benchmark.\n\nThe bandwidth results on the L1 and L2 caches are equally significant: The L1 bandwidth improved on average by 89% while the L2 also saw a 46% increase over the Exynos 5433. NEON load instructions in particular seem have gotten a very large improvement as we’re able to measure a 2.4-3.1x bandwidth boost on the L2 and L1 caches compared to the Exynos 5433’s A57 cluster.\n\nThe latency and bandwidth differences are smaller when hitting main memory. The A57 cluster on the new chip actually does better than the 5433 as main memory latency slightly improves by 8ns to 172ns, which results in the same average 4% boost in memory bandwidth using various common access methods. The CPU's are certainly not limited by main memory as they're far from saturating the bus bandwidth on the CCI. As previously mentioned in the SoC layout section, Samsung chooses to limit the CCI to 532MHz instead of going higher to match DRAM speeds. This is contrary to other SoCs and Qualcomm's Snapdragon 810 which runs the CCI at up to 787MHz.\n\nAll in all, it seems Samsung may have done some optimizations on the A57 cores that manage to significantly improve their memory performance. One could reason that any performance improvements exceeding the 10% / 200MHz frequency boost, and not affected by possible AArch64 instruction set usage may be result of the higher on-core and cluster cache performance boost, and while that’s hard to verify, we see no other architectural difference between the 7420 and its predecessor.\n\nOff-topic - Galaxy S6 Disassembly Process\n\nBefore I get into the power numbers and explain our methodology, I would like to take the opportunity to share my experience with dismantling the Galaxy S6 and getting access to the battery, as some readers and eventual device owners might be interested to hear about the feasibility of the battery swapping process. The by far most daunting process and time-consuming procedure is the removal of the glass back-cover.\n\nThe Gorilla Glass 4 piece is held in place by very heavy-duty glue surrounding the edges of the device. It’s basically required to have a very strong suction cup and at least a hair dryer if one doesn’t have access to a heat gun. I used a car's GPS mount for the suction cup as it provided a tight hold and also acted as a lever to pull on. The glue needs to reach a high temperature to soften up, and you might need to heat up (along the edge) the device until it’s no longer comfortable or possible to hold. One should have some plastic picks ready – I just cut up a plastic SIM-card holder into pieces to use them as picks. The initial prying should start at the bottom of the device opposite of the speaker. The process takes a lot of force before one is able to put the first pick in and it definitely not for the faint-of-heart. Slowly advancing along the edge of the device with repeated re-heating should get you to remove the glass cover from the main body.\n\nOnce the back cover is removed, the rest of the process is very easy as we’re just dealing with ordinary Phillips screws. After removing all visible screws one should apply moderate heat along the front edges of the display. While keeping pressure on the battery one lifts up the whole unibody frame of the device from the screen and motherboard assembly. For the normal Galaxy S6 the process is almost over as the battery is now in direct view and accessible, one can disconnect the connector and slowly and carefully pry it up from the sides to separate it from being glued on the display assembly. S6 Edge owners will require further removing of the motherboard as the battery connector wraps around to the back of the PCB.\n\nOnce the new battery is in place and properly connected, the re-assembly process becomes straightforward as it is just a reversal of the disassembly steps. One should make sure that the glue strips on the glass back cover don’t have ridges or overlapping pieces as it will cause the back cover to slightly stick out and no longer be level with the metal frame. Once the phone is back together, I would again recommend applying heat along the edges of the device while forcibly squeezing the back glass and whole assembly back in place.\n\nOverall, the whole procedure of replacing the battery should take up to 30-40 minutes depending how much one struggles to remove the back glass. We’ll have to see how Samsung's new battery chemistry holds up after 1 year of constant usage and fast-charge cycles, but if required to swap out the battery it’s definitely a doable process if one manages to muster up the initial courage."
+    }
+}
