@@ -1,0 +1,42 @@
+{
+    "id": "dbpedia_5174_3",
+    "rank": 27,
+    "data": {
+        "url": "https://community.smartsheet.com/discussion/90292/formula-to-add-multiple-names-to-one-cell/p2",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Formula to add multiple names to one cell - Page 2",
+        "top_image": "https://us.v-cdn.net/6031209/uploads/D3D9A484WBPL/smartsheet-community-og-image.png",
+        "meta_img": "https://us.v-cdn.net/6031209/uploads/D3D9A484WBPL/smartsheet-community-og-image.png",
+        "images": [
+            "https://us.v-cdn.net/6031209/uploads/defaultavatar/nWRMFRX6I99I6.jpg",
+            "https://us.v-cdn.net/6031209/uploads/userpics/0XAA8ESJQ7PM/nQOURGAEE3OZV.JPG",
+            "https://us.v-cdn.net/6031209/uploads/defaultavatar/nWRMFRX6I99I6.jpg",
+            "https://us.v-cdn.net/6031209/uploads/defaultavatar/nWRMFRX6I99I6.jpg",
+            "https://us.v-cdn.net/6031209/uploads/userpics/0XAA8ESJQ7PM/nQOURGAEE3OZV.JPG",
+            "https://us.v-cdn.net/6031209/uploads/defaultavatar/nWRMFRX6I99I6.jpg",
+            "https://us.v-cdn.net/6031209/uploads/userpics/0XAA8ESJQ7PM/nQOURGAEE3OZV.JPG",
+            "https://www.smartsheet.com/sites/default/files/2023-07/Smartsheet%20Community%20Promotion%200-53%20screenshot%20%282%29.png",
+            "https://www.smartsheet.com/sites/default/files/Download_on_the_App_Store_Badge_US-UK_135x40_0_0.svg",
+            "https://www.smartsheet.com/sites/default/files/google-play-badge-English.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Rick Girard",
+            "Jeff Reisman"
+        ],
+        "publish_date": "2022-11-09T20:50:23+00:00",
+        "summary": "",
+        "meta_description": "Thank you to @Rick Girard , @Jeff Reisman for this post. I used it to help me join a collection of names.",
+        "meta_lang": "en",
+        "meta_favicon": "https://us.v-cdn.net/6031209/uploads/UHAFF8XGMDBV/smartsheet-logo-mark-collaboration-blue.png",
+        "meta_site_name": "Smartsheet Community",
+        "canonical_link": "https://community.smartsheet.com/discussion/90292/formula-to-add-multiple-names-to-one-cell/p2",
+        "text": "Thank you to @Rick Girard , @Jeff Reisman for this post.\n\nI used it to help me join a collection of names. Unfortunately, it doesn't want to recognize those names in a Contact Column that allows multiple names.\n\nThe weird thing I found... I changed the delimiter from \", \" to Char(10) (no quotes) and it showed the names as contacts with the little badge, BUT when I saved the sheet, it converted them back to names and not contacts.\n\nAfter saving, if I reset the column to text and then back to contact, it shows the names as contacts. Save the sheet and it converts them back to names. So close and yet so far. If you have found a way around this, would love to hear it.\n\n@ker9 Unfortunately, Contact columns in Smartsheet are pretty complex.\n\nThe only way I've found to be able to work with them successfully in formulas is one-way. In other words, if I have an email address in a Text/Number \"Email\" column, I can use a formula in a Contact column like =Email@row to create a valid Contact value out of the text email address. I'm doing that all over the place in a current project, where we need external users to enter email addresses on form submissions, and then we use those addresses later in automations.\n\nNow, if you haven't set up a real Contact record with first name/last name/ email address for an email address, you can match against them using text fields or whatever. For example, if my multi-select Contact column contains \"Test@test.com\", I can do something like =IF(HAS(Contact@row, \"Test@test.com\"), \"Yes\", \"No\") and will return a Yes value.\n\n@Jeff Reisman - I learned from another thread that I should not use Char(10) but that the delimiter \", \" is appropriate for this column type (even though it doesn't work). (Courtesy of @Paul Newcome in this thread.)\n\nI did try DataMesh and found that you can DataMesh the formula to a contact cell (as data, no longer a formula) BUT it won't work immediately. You have to change it to text and back to contact, but then it sticks (until you DataMesh again). Still not a perfect solution but if the data doesn't change much, it can work.\n\n@ker9 Do you have any experience using the Smartsheet API? I just remembered I worked on something like a few weeks ago, trying to populate a multi-picklist column in a sheet with values from an Excel file. So just now I did some digging on how I could adapt this for multi-contact columns. It's not easy, but I just got it to work! The most I had done before about two weeks ago was read other people's code, never wrote any of my own, so I've learned a lot. So if you have API access and are a little familiar with API calls, or just want to journey down the code rabbit hole, follow along below.\n\nMy process above is being done in Alteryx, which at like $5k per seat is not cheap. However, you can use Postman, which is free! If this is a regular process you'll have to do, I'm sure there's a way you can script this out in Postman.\n\nThe API Documentation is here: https://smartsheet.redoc.ly/\n\nFirst thing is to get the column IDs from the sheet, using something like this:\n\nhttps://api.smartsheet.com/2.0/sheets/insert_SheetID_here?accessApiLevel=1\n\nOnce you know the column IDs you want to populate, you'll want to construct a JSON string to use in a POST or PUT command. (POST is for writing a new row, PUT is for updating an existing row.) The multi-contact column's portion uses this syntax:\n\n{\"columnId\": your multi-contact column's ID goes here, \"objectValue\": {\"objectType\": \"MULTI_CONTACT\", \"values\": [ {\"objectType\": \"CONTACT\", \"email\": \"TestUser1@fakedomain.com\" }, {\"objectType\": \"CONTACT\", \"email\": \"TestUser2@fakedomain.com\" } ]}}\n\nEssentially, each contact in your list has their own little section within the MULTI_CONTACT data, consisting of an \"objectType\" value and an \"email\" value.\n\nSo put all together, the JSON looks something like this:\n\n[{\"cells\": [ {\"columnId\": 164400025185444, \"value\": \"This is my Smartsheet code\"} ,{\"columnId\": 44598856859004, \"value\": \"Interesting information\"}, {\"columnId\": your multi-contact column's ID goes here, \"objectValue\": {\"objectType\": \"MULTI_CONTACT\", \"values\": [ {\"objectType\": \"CONTACT\", \"email\": \"TestUser1@fakedomain.com\" }, {\"objectType\": \"CONTACT\", \"email\": \"TestUser2@fakedomain.com\" } ]}}, {\"columnId\": 2487537454584660, \"value\": \"Did you vote this week\"} ] }]\n\nHave fun!"
+    }
+}
