@@ -1,0 +1,48 @@
+{
+    "id": "dbpedia_5314_1",
+    "rank": 99,
+    "data": {
+        "url": "https://answers.ros.org/question/270919/tf-tutorial-start_demolaunch-wtf/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "ROS Answers: Open Source Q&A Forum",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://answers.ros.org/m/ros/media/images/logoros.png?v=28",
+            "https://answers.ros.org/upfiles/avatars/moonspacedancer/resized/32/21587096_10210600907154662_7871360779086521546_o.jpg",
+            "https://www.gravatar.com/avatar/3bc6528f8fe1fef6b6ecc7312ee0cf04?s=32&d=identicon&r=PG",
+            "https://answers.ros.org/m/default/media/images/flags/us.gif?v=28",
+            "https://answers.ros.org/upfiles/15054287971063852.png",
+            "https://answers.ros.org/upfiles/avatars/moonspacedancer/resized/16/21587096_10210600907154662_7871360779086521546_o.jpg",
+            "https://www.gravatar.com/avatar/d788d05baded009f499dbad00e139043?s=32&d=identicon&r=PG",
+            "https://answers.ros.org/upfiles/avatars/moonspacedancer/resized/16/21587096_10210600907154662_7871360779086521546_o.jpg",
+            "https://www.gravatar.com/avatar/d788d05baded009f499dbad00e139043?s=16&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/d788d05baded009f499dbad00e139043?s=16&d=identicon&r=PG",
+            "https://answers.ros.org/upfiles/avatars/moonspacedancer/resized/32/21587096_10210600907154662_7871360779086521546_o.jpg",
+            "https://www.gravatar.com/avatar/d788d05baded009f499dbad00e139043?s=16&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/3bc6528f8fe1fef6b6ecc7312ee0cf04?s=16&d=identicon&r=PG",
+            "https://answers.ros.org/upfiles/avatars/moonspacedancer/resized/16/21587096_10210600907154662_7871360779086521546_o.jpg",
+            "https://answers.ros.org/upfiles/avatars/moonspacedancer/resized/16/21587096_10210600907154662_7871360779086521546_o.jpg",
+            "https://answers.ros.org/m/default/media/images/cc-by-sa.png?v=28"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "",
+            "ROS",
+            "forum",
+            "community"
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "<launch> <!-- Turtlesim Node--> <node pkg=\"turtlesim\" type=\"turtlesim_node\" name=\"sim\"/> <node pkg=\"turtlesim\" type=\"turtle_teleop_key\" name=\"teleop\" output=\"screen\"/> <param name=\"turtle\" type=\"string\" value=\"turtle1\" /> </node> <param name=\"turtle\" type=\"string\" value=\"turtle2\" /> </node> </launch> What is wrong with this launch file? and I don't mean the spacing, I have reformatted it a bunch and already know xml formatting has to be spaced right and all that. it's got to be the code itself, which is directly from http://wiki.ros.org/tf/Tutorials/Writ... tf tutorial and I'm surprised I only saw one unanswered question about this issue, but I assume it's because the others know how to make xml syntax correct and just moved on.",
+        "meta_lang": "",
+        "meta_favicon": "/m/ros/media/images/ros_favicon.gif?v=28",
+        "meta_site_name": "",
+        "canonical_link": "https://answers.ros.org/question/270919/tf-tutorial-start_demolaunch-wtf/",
+        "text": "<launch> <!-- Turtlesim Node--> <node pkg=\"turtlesim\" type=\"turtlesim_node\" name=\"sim\"/> <node pkg=\"turtlesim\" type=\"turtle_teleop_key\" name=\"teleop\" output=\"screen\"/> <param name=\"turtle\" type=\"string\" value=\"turtle1\" /> </node> <param name=\"turtle\" type=\"string\" value=\"turtle2\" /> </node> </launch>\n\nWhat is wrong with this launch file? and I don't mean the spacing, I have reformatted it a bunch and already know xml formatting has to be spaced right and all that. it's got to be the code itself, which is directly from http://wiki.ros.org/tf/Tutorials/Writ... tf tutorial and I'm surprised I only saw one unanswered question about this issue, but I assume it's because the others know how to make xml syntax correct and just moved on.\n\nYou're missing a lot of the content of the launch file in the tutorial. In particular two of the four node elements (and only have the close elements). Make sure you're copying the whole file.\n\nCopying from the tutorial it looks like this:\n\n<launch> <!-- Turtlesim Node--> <node pkg=\"turtlesim\" type=\"turtlesim_node\" name=\"sim\"/> <node pkg=\"turtlesim\" type=\"turtle_teleop_key\" name=\"teleop\" output=\"screen\"/> <node name=\"turtle1_tf_broadcaster\" pkg=\"learning_tf\" type=\"turtle_tf_broadcaster.py\" respawn=\"false\" output=\"screen\" > <param name=\"turtle\" type=\"string\" value=\"turtle1\" /> </node> <node name=\"turtle2_tf_broadcaster\" pkg=\"learning_tf\" type=\"turtle_tf_broadcaster.py\" respawn=\"false\" output=\"screen\" > <param name=\"turtle\" type=\"string\" value=\"turtle2\" /> </node> </launch>\n\nEdit: here's how it renders:\n\nAre you sure you copy and pasted it correctly? The problem is that you're missing some of the node tags. Turn this\n\n<launch> <!-- Turtlesim Node--> <node pkg=\"turtlesim\" type=\"turtlesim_node\" name=\"sim\"/> <node pkg=\"turtlesim\" type=\"turtle_teleop_key\" name=\"teleop\" output=\"screen\"/> <!-- Missing opening <node> --> <param name=\"turtle\" type=\"string\" value=\"turtle1\" /> </node> <!-- Missing opening <node> --> <param name=\"turtle\" type=\"string\" value=\"turtle2\" /> </node> </launch>\n\ninto this\n\n<launch> <!-- Turtlesim Node--> <node pkg=\"turtlesim\" type=\"turtlesim_node\" name=\"sim\"/> <node pkg=\"turtlesim\" type=\"turtle_teleop_key\" name=\"teleop\" output=\"screen\"/> <node name=\"turtle1_tf_broadcaster\" pkg=\"learning_tf\" type=\"turtle_tf_broadcaster.py\" respawn=\"false\" output=\"screen\" > <param name=\"turtle\" type=\"string\" value=\"turtle1\" /> </node> <node name=\"turtle2_tf_broadcaster\" pkg=\"learning_tf\" type=\"turtle_tf_broadcaster.py\" respawn=\"false\" output=\"screen\" > <param name=\"turtle\" type=\"string\" value=\"turtle2\" /> </node> </launch>\n\nNotice how you're missing two\n\n<node name=\"turtle1_tf_broadcaster\" pkg=\"learning_tf\" type=\"turtle_tf_broadcaster.py\" respawn=\"false\" output=\"screen\" >\n\nEdit:\n\nTo create a proper XML you need to have:\n\nboth opening and closing tags (e.g. <node> and </node>, respectively), or\n\nself-closing tags (e.g., <node/> note the / before the >)\n\nIf you don't properly open and close tags then your file is not properly formatted and you'll get an error.\n\nOk wow, well apparently Chromium on Ubuntu is quite unstable as I just checked with Mozilla and the full text indeed shows up. how strange... thank you @tfoote and @jayess I have been troubleshooting this for 5 hours now haha"
+    }
+}

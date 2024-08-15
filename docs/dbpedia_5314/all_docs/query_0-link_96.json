@@ -1,0 +1,40 @@
+{
+    "id": "dbpedia_5314_0",
+    "rank": 96,
+    "data": {
+        "url": "https://thedailywtf.com/articles/required-requirements",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Required Requirements",
+        "top_image": "https://s3.amazonaws.com/remy.jetpackshark.com/remy-thumb.jpg",
+        "meta_img": "https://s3.amazonaws.com/remy.jetpackshark.com/remy-thumb.jpg",
+        "images": [
+            "https://thedailywtf.com/Content/Images/wtf-logo.png",
+            "https://thedailywtf.com/Content/Images/forums-icon-white.svg",
+            "https://thedailywtf.com/Content/Images/forums-icon-black.svg",
+            "https://thedailywtf.com/Content/Images/mobile-menu.svg",
+            "https://thedailywtf.com/fblast/a4bd9024db6947eda4b91b146a666664",
+            "https://s3.amazonaws.com/remy.jetpackshark.com/remy-thumb.jpg",
+            "https://thedailywtf.com/images/inedo/proget-icon.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Remy Porter",
+            "thedailywtf.com",
+            "remy-porter"
+        ],
+        "publish_date": "2024-08-06T06:30:00+00:00",
+        "summary": "",
+        "meta_description": "Sean was supporting a web application which, as many do, had required form fields for the user to fill out. The team wanted to ensure that the required fields were marked by an \"*\", as you do. Now, there are a lot of ways to potentially accomplish the goal, especially given that the forms are static and the fields are known well ahead of time.\nThe obvious answer is just including the asterisk directly in the HTML: <label for=\"myInput\">My Input(*)</label>: <input…>. But what if the field requirements change! You'll need to update every field label, potentially. So someone hit upon the \"brillant\" idea of tracking the names of the fields and their validation requirements in the database. That way, they could output that information when they rendered the page.",
+        "meta_lang": "en",
+        "meta_favicon": "",
+        "meta_site_name": "The Daily WTF",
+        "canonical_link": "https://thedailywtf.com/articles/required-requirements",
+        "text": "Sean was supporting a web application which, as many do, had required form fields for the user to fill out. The team wanted to ensure that the required fields were marked by an \"*\", as you do. Now, there are a lot of ways to potentially accomplish the goal, especially given that the forms are static and the fields are known well ahead of time.\n\nThe obvious answer is just including the asterisk directly in the HTML: <label for=\"myInput\">My Input(*)</label>: <input…>. But what if the field requirements change! You'll need to update every field label, potentially. So someone hit upon the \"brillant\" idea of tracking the names of the fields and their validation requirements in the database. That way, they could output that information when they rendered the page.\n\nNow, again, an obvious solution might be to output it directly into the rendered HTML. But someone decided that they should, instead, use a CSS class to mark it. Not a bad call, honestly! You could style your input.required fields, and even use the ::before or ::after pseudoelements to inject your \"*\". And if that's what they'd done, we wouldn't be talking about this. But that's not what they did.\n\n<head> <script type=\"text/javascript\"> $(document).ready(function ( ) { $(\".requiredField\").prepend(\"* \"); }); </script> </head> <body> <div id=\"first\" class=\"displayBlock\"> <div class=\"fieldlabel\"> <span class=\"requiredField\"></span>First Name:</div> @Html.TextBoxFor(i => Model.Applicant.FirstName) <div class=\"displayBlock\">@Html.ValidationMessageFor(i => Model.Applicant.FirstName)</div> </div> </body>\n\nThis is a Razor-based .NET View. You can see, in this trimmed down snippet, that they're not actually using the database fields for remembering which UI elements are required, and instead did just hard-code it into the HTML. And they're not using CSS to style anything; they're using JQuery to select all the .required elements and inject the \"*\" into them.\n\nThis, by the way, is the only reason this application ever uses JQuery. The entire JQuery library dependency was added just to handle required fields. Fields, which we know are required because it's hard-coded into the page body. Which raises the question: why not just hard-code the asterisk too? Or are we too worried about wanting to stop using \"*\" someday in lieu of \"!\"?\n\nAt this point, the code is fairly old, and no one is willing to okay a change which impacts multiple pages and doesn't involve any newly developed features. So this odd little plug of JQuery for JQuery's sake just sorta sits there, staring at Sean every day. No one wants it there, but no one is going to be the one to remove it."
+    }
+}
