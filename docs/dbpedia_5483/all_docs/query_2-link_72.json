@@ -1,0 +1,34 @@
+{
+    "id": "dbpedia_5483_2",
+    "rank": 72,
+    "data": {
+        "url": "https://nsrd.info/blog/2009/08/03/networker-vs-scratch-pools/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "NetWorker vs Scratch pools",
+        "top_image": "http://nsrd.files.wordpress.com/2009/08/amv.png",
+        "meta_img": "http://nsrd.files.wordpress.com/2009/08/amv.png",
+        "images": [
+            "http://nsrd.files.wordpress.com/2009/08/amv.png",
+            "http://nsrd.files.wordpress.com/2009/08/pools.png",
+            "https://nsrd.info/rainbow.jpg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Preston de Guise"
+        ],
+        "publish_date": "2009-08-03T00:00:00",
+        "summary": "",
+        "meta_description": "A common question asked in NetWorker forums is “how do I configure a scratch pool in NetWorker?” This comes mainly from people who have exposure to Veritas NetBackup, which does media m…",
+        "meta_lang": "en",
+        "meta_favicon": "https://nsrd.info/blog/wp-content/uploads/2021/02/cropped-data-proteciton-hub-icon-32x32.jpg",
+        "meta_site_name": "Data Protection Hub",
+        "canonical_link": "https://nsrd.info/blog/2009/08/03/networker-vs-scratch-pools/",
+        "text": "A common question asked in NetWorker forums is “how do I configure a scratch pool in NetWorker?” This comes mainly from people who have exposure to Veritas NetBackup, which does media management in a different way to NetWorker.\n\nIn NetWorker, once a piece of media has been assigned to a pool, the only way it can be assigned to another pool is by relabelling. I.e., moving media from one pool to another in NetWorker (a) is data-destructive and (b) requires physical writes to the media. (By “data-destructive”, I mean that whatever was previously written to the media is lost when the volume is relabelled into another pool.)\n\nNetBackup on the other hand, which mainly categorises media by the retention policy used for images written to that media, allows media to be shifted from one ‘pool’ to another. Hence, in NetBackup, new media is typically added to a ‘scratch’ pool when it is brought into the environment, and allocated out of that pool into the required pool on an as-needed basis.\n\nThe reason NetWorker doesn’t really need a scratch pool is two-fold:\n\nBy enabling auto-media-management, you can have media added to a tape library, left unlabelled, and then labelled on an ‘as-required’ basis by NetWorker automatically into the required pool, and,\n\nYou can configure each pool to effectively be a scratch pool for every other pool with only a few settings, allowing recyclable media to be moved into whatever pool requires new media.\n\nLet’s look at these two features.\n\nFirst, auto media management. Despite a lot of misconceptions, this fulfills only one purpose. NetWorker, by default, will not under any circumstance use a tape which has not been previously labelled. I.e., it (by default) requires you to manually label each piece of media – either via NMC, or nsrjb. (There’s a reason for this – it prevents the overwriting of data that might belong to another product or another backup not recognised by NetWorker.)\n\nIf you know that the only media that will ever go into a tape library however is media you want to use with NetWorker, you can turn on auto media management. This is done on a per library basis, by editing the library properties in NMC and clicking a single check-box. Once done, any new media added to the system will be automatically labelled only when absolutely required, and labelled into the pool you want.\n\nHere’s the setting:\n\nThe second requirement is to enable media which has become recyclable to be recycled from one pool into another.\n\nTo do this, you need to look at your pool properties. The settings we want to adjust are “Recycle from other pools” and “Recycle to other pools”:\n\nThese options are pretty straight forward:\n\nRecycle from other pools – Allow recyclable media in other pools to be recycled into this pool.\n\nRecycle to other pools – Allow recyclable media in this pool to be recycled into other pools when required.\n\nUsing both auto media management and recycle from/to other pools, you can achieve the purpose of scratch pools without actually using them – NetWorker will allocate new media to pools as required, and move media between pools as they become available and are required.\n\n…But our barcodes mean something!\n\nSay you have a “system” whereby all clone media has a barcode starting with “C” and all backup media starts with “B”. How do you use the above functionality with such a system? The answer is simple:\n\nDrop the system, you shouldn’t be doing it.\n\nThat might sound cavalier, but I’ll be perfectly blunt: any site that confuses bar code label with data content is using NetWorker incorrectly. NetWorker has good query, report and media management functionality, and you should be using this to determine what is on each tape. Not only that, you place artificial restrictions on media availability when you do this, and invite situations where say, someone dials in at 3am because the system has run out of backup media and “for an emergency” relabels empty “clone” volumes as “backup”."
+    }
+}

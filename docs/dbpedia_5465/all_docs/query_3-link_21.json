@@ -1,0 +1,37 @@
+{
+    "id": "dbpedia_5465_3",
+    "rank": 21,
+    "data": {
+        "url": "https://stackoverflow.com/questions/2552428/how-to-use-start-of-line-end-of-line-signs-or-in-different-contexts",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How to use start of line/end of line signs (^ or $) in different contexts?",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/aa0d95b3830549589afbbc79d886c466?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/b6e4cbfb6e9473115421f6e480c6d790?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/ad240ed5cc406759f0fd72591dc8ca47?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/e6488132d206883770017ba97d0f521f?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/265fe961507697ba8ef2d303e044d50e?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/hXT0U.jpg?s=64",
+            "https://www.gravatar.com/avatar/ef95563a97d46a7905c1b35fc7cc15d5?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://stackoverflow.com/posts/2552428/ivc/3ca8?prg=cd33ed85-9e47-4718-9abc-0903553585ef"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2010-03-31T11:25:39",
+        "summary": "",
+        "meta_description": "While doing some small regex task I came upon this problem. I have a string that is a list of tags that looks e.g like this:\n    foo,bar,qux,garp,wobble,thud\n\nWhat I needed to do was to check if a",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/2552428/how-to-use-start-of-line-end-of-line-signs-or-in-different-contexts",
+        "text": "While doing some small regex task I came upon this problem. I have a string that is a list of tags that looks e.g like this:\n\nfoo,bar,qux,garp,wobble,thud\n\nWhat I needed to do was to check if a certain tag, e.g. 'garp' was in this list. (What it finally matches is not really important, just if there is a match or not.)\n\nMy first and a bit stupid try at this was to use the following regex:\n\n[^,]garp[,$]\n\nMy idea was that before 'garp' there should either be the start of the line/string or a comma, after 'garp' there should be either a comma or the end of the line/string.\n\nNow, it is instantly obvious that this regex is wrong: Both ^ and $ change their behaviour in the context of the character class [ ].\n\nWhat I finally came up with is the following:\n\n^garp$|^garp,|,garp,|,garp$\n\nThis regex just handles the 4 cases one by one. (Tag at beginning of list, in the center, at the end, or as the only element of the list.) The last regex is somehow a bit ugly in my eyes and just for funs sake I'd like to make it a bit more elegant.\n\nIs there a way how the start of line/end of line characters (^ and $) can be used in the context of character classes?\n\nEDIT: Ok, some more info was wished so here it is: I'm using this within an Oracle SQL statement. This sadly does not allow any look-around assertions but as I'm only interested if there is a match or not (and not what is matched) this does not really affect me here. The tags can contain non-alphabetical characters like - or _ so \\bgarp\\b would not work. Also one tag can contain an other tag as SilentGhost said, so /garp/ doesnt work either."
+    }
+}
