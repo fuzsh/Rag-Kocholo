@@ -1,0 +1,33 @@
+{
+    "id": "dbpedia_5484_0",
+    "rank": 57,
+    "data": {
+        "url": "https://stackoverflow.com/questions/28066187/what-is-scratch-space-filesystem-in-hpc",
+        "read_more_link": "",
+        "language": "en",
+        "title": "What is scratch space /filesystem in HPC",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/3f372904d7fc4587f7253843895cd945?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/d006ba300354b527129d7988dd3b3ce8?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/1037d544b43c71c34225fac55e0c7750?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/28066187/ivc/fc69?prg=c6677bc8-41c4-40ee-aa49-22bb2217b5c3"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2015-01-21T11:32:28",
+        "summary": "",
+        "meta_description": "I am studying about HPC applications and Parallel Filesystems. I came across the term scratch space AND scratch filesystem. \n\nI cannot visualize where this scratch space exists. Is it on the comput...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/28066187/what-is-scratch-space-filesystem-in-hpc",
+        "text": "It all depends on how the cluster was setup and what the users need. When you are given access to a cluster you should also be given some information about how it is meant to be used which should answer most of your questions.\n\nOn one of the clusters I work with NFS is used for long term storage and some Lustre space is available for job scratch space. Both the NFS and Lustre are seen by all of the nodes. Each of the nodes also has some scratch space on the node that only that node can see.\n\nIf you want your job to work on 123.txt in parallel you can copy 123.txt to a shared scratch space(Lustre) or you can copy it to each of your node scratch spaces in your job file.\n\nfor i in `cat $PBS_NODEFILE | sort -u ` ; do scp 123.txt $i:/scratch ; done\n\nOnce each node has a copy you can run your job. Once the job is done you need to copy your results to persistent storage since clusters will often run scripts to cleanup scratch space.\n\nThere are a lot of different ways to think about or deploy scratch space or a scratch file system.\n\nLet's say you have a cluster of linux nodes, and these nodes all have a hard disk. You could imagine a /scratch space, local to each node. Since the OS image is going to be relatively small, and one cannot procure anything smaller than a terabyte drive nowadays, you end up with close to a terabyte of storage for the node to use.\n\nWhat would you do with this node-local storage? Oh, lots of things. Scalable Checkpoint-Restart. Local out-of-core operations.\n\nWhen I first started playing with clusters, it seemed like a good idea to gang all this un-used space into a parallel file system. PVFS worked really well for that purpose.\n\nwhich lets me segue to a /scratch parallel file system available to all nodes. There is a technology component to this (which parallel file system will a site deploy?) but there is also a policy component: how long will data on this file system be retained? is it backed up? /scratch often implies files are not backed up and in fact are purged after some period of not being accessed (typically two weeks)"
+    }
+}

@@ -1,0 +1,34 @@
+{
+    "id": "dbpedia_5484_1",
+    "rank": 2,
+    "data": {
+        "url": "https://serverfault.com/questions/211461/scratch-media-in-backup-exec",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Scratch Media in Backup Exec",
+        "top_image": "https://cdn.sstatic.net/Sites/serverfault/Img/apple-touch-icon@2.png?v=9b1f48ae296b",
+        "meta_img": "https://cdn.sstatic.net/Sites/serverfault/Img/apple-touch-icon@2.png?v=9b1f48ae296b",
+        "images": [
+            "https://cdn.sstatic.net/Sites/serverfault/Img/logo.svg?v=43f5b6d5f65b",
+            "https://i.sstatic.net/EnT88.png?s=64",
+            "https://i.sstatic.net/E5UIV.jpg?s=64",
+            "https://www.gravatar.com/avatar/cf5cbff349aecf7d6c7006d7aa65aeca?s=64&d=identicon&r=PG",
+            "https://serverfault.com/posts/211461/ivc/fc69?prg=71bf6dd2-253c-4d1e-8db8-490b4f4376a7"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2010-12-10T22:19:45",
+        "summary": "",
+        "meta_description": "So Symantec wanted $280 per incident to use their support line without a support contract. Yikes!\n\nWhat is \"Scratch Media\"? I noticed that all the tapes in my library that aren't currently being used",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/serverfault/Img/favicon.ico?v=18e9cc4f2aea",
+        "meta_site_name": "Server Fault",
+        "canonical_link": "https://serverfault.com/questions/211461/scratch-media-in-backup-exec",
+        "text": "What is \"Scratch Media\"?\n\nYes, that refers to media that are available for BE to use.\n\nMy question is, what do I have to in Backup Exec before I remove that tape from the library?\n\nYou shouldn't need to do anything other than wait for the job to finish. When it's done, the tape should be ejected and placed back into its slot in the library. Since BE keeps records of all tapes (and their contents) in its catalog, it will recognize that tape the next time it is placed in the library.\n\nRegarding your second question:\n\nIn Backup Exec you can define media sets. These are named 'folders' with defined overwrite protection and append periods. Each backup job is configured to target a specific media set. When these jobs start, the chosen tape is allocated to the media set. Usable tapes that are not allocated should live in the built-in Scratch Media set.\n\nBackup Exec has two Overwrite options to determine which media to use when you create a backup:\n\nUse overwritable media within the media set before using scratch media\n\nUse scratch media before using overwritable media within the media set\n\nThe distinction between the two is simple; when it is time to allocate the tape, Backup Exec will either\n\npick the oldest-allocated tape from the named media set that has passed its overwrite protection period, or pick from Scratch Media if it cannot find any (option 1);\n\nor always pick from Scratch Media if one exists there, and pick the oldest-allocated tape in the named media pool if one does not (option 2)\n\nIn addition, Backup Exec specifies three Append options for using existing tapes:\n\nAppend to media in the same media set, otherwise overwrite existing media\n\nAppend to media in the same media set, otherwise abort\n\nOverwrite existing media\n\nThese coerce Backup Exec to write to the end of the same tape, if it can find media in the named media set within the defined append period, otherwise pick a tape to overwrite based on the Overwrite options above.\n\nIn your case (how to make a backup to an unused tape, then move that tape offsite), for the simple approach, I would do the following:\n\nMake a media set that has 'do not allow overwrite' and 'do not allow append'\n\nMake a copy of the job that ruins to your regular tape, using the same selection list\n\nConfigure that job to use the new media set\n\nSet the Backup Method to 'Copy the Files', so it does not reset the archive bit used in any incremental scheme\n\nSchedule/run the job.\n\nBackup Exec should take one of the overwritable tapes, allocate it to the new media set, write a new backup to it and mark it as non-overwritable. You can then take this offsite.\n\nAlternatively, even simpler, next time a full backup runs, take that tape offsite. Backup Exec will then use the next available tape to make its full backup."
+    }
+}

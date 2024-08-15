@@ -1,0 +1,37 @@
+{
+    "id": "dbpedia_5484_1",
+    "rank": 51,
+    "data": {
+        "url": "https://thiers.net/2011/09/07/list-scratch-media/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "List Scratch Media",
+        "top_image": "https://thiers.net/wp-content/uploads/2019/03/cropped-emcworld2019-e1553900619340.jpg?w=200",
+        "meta_img": "https://thiers.net/wp-content/uploads/2019/03/cropped-emcworld2019-e1553900619340.jpg?w=200",
+        "images": [
+            "https://2.gravatar.com/avatar/e6a8265635b3974fa4f1a2b21472071097694d2eec141e9c63c3a8737f923fb8?s=48&d=identicon&r=G",
+            "https://2.gravatar.com/avatar/e5ce8a7dc00bc512f98e47e1fe873ff8c787b412f30291a9d228191e95f7f768?s=48&d=identicon&r=G",
+            "https://2.gravatar.com/avatar/b8d45ec81b03b4f81b219799ebb0974b393a4c1ef52fa53b1f65046681cfede4?s=48&d=identicon&r=G",
+            "https://1.gravatar.com/avatar/a766bb548ea5a041a7b3dc6420937aa051e0914bbd2ef9cf6cd39281a4b91af8?s=48&d=identicon&r=G",
+            "https://2.gravatar.com/avatar/84876a03393d736b3cdf5c4f864c1b258c2a1e7282645c669369d0c8fa06ac7a?s=48&d=identicon&r=G",
+            "https://thiers.net/wp-content/uploads/2019/03/cropped-emcworld2019-e1553900619340.jpg?w=50",
+            "https://thiers.net/wp-content/uploads/2019/03/cropped-emcworld2019-e1553900619340.jpg?w=50",
+            "https://pixel.wp.com/b.gif?v=noscript"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2011-09-07T00:00:00",
+        "summary": "",
+        "meta_description": "This is a handy Netbackup command line command that I use to list scratch pool media. You can get a brief listing of scratch media by running the following command. This command will generate a list that can be redirected to a text file that could serve as a report or as input to a program…",
+        "meta_lang": "en",
+        "meta_favicon": "https://thiers.net/wp-content/uploads/2019/03/cropped-emcworld2019-e1553900619340.jpg?w=32",
+        "meta_site_name": "--  Thiers Family --",
+        "canonical_link": "https://thiers.net/2011/09/07/list-scratch-media/",
+        "text": "This is a handy Netbackup command line command that I use to list scratch pool media.\n\nYou can get a brief listing of scratch media by running the following command. This command will generate a list that can be redirected to a text file that could serve as a report or as input to a program to recall scratch tapes from offsite storage. I make a few changes to the command line and use the output to recall scratch tapes from Iron Mountain.\n\n/usr/openv/volmgr/bin/vmquery -b -pn Scratch\n\nSince I like to use this command to request media from Iron Mountain I tack on the following commands to massage the data and generate an output file which I can then upload on the Iron Mountain securesync website.\n\n|grep -i none |awk ‘{print $1″L3″}’\n\nTherefore the final command (which is best put in a script) looks like the following:\n\n/usr/openv/volmgr/bin/vmquery -b -pn Scratch |grep -i none |awk ‘{print $1″L3″}’ > //filename\n\nThe awk command insures that only the first column, which is the media ID, is included since that is all the data that Iron Mountain needs. Since most of our media is LTO3 and the barcode includes “L3” at the end I tack that on to the media ID since that is the way Iron Mountain is looking for the tapes.\n\nThe grep commands removes the heading from the output and excludes any tapes that are currently loaded in the tape library. I exclude the tapes in the library because of course I don’t want to request media that I already have in the tape library.\n\nSometimes I wind-up requesting tapes I already have lying around but for just these couple tapes I can delete them before sending the final request to Iron Mountain."
+    }
+}
