@@ -1,0 +1,33 @@
+{
+    "id": "dbpedia_5166_1",
+    "rank": 70,
+    "data": {
+        "url": "https://help.ubuntu.com/community/Orchestra/Installation",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Orchestra/Installation",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://help.ubuntu.com/community/Orchestra/Installation?action=AttachFile&do=get&target=01-orchestra-server-b.png",
+            "https://help.ubuntu.com/community/Orchestra/Installation?action=AttachFile&do=get&target=02-orchestra-server.png",
+            "https://help.ubuntu.com/community/Orchestra/Installation?action=AttachFile&do=get&target=03-orchestra-server.png",
+            "https://help.ubuntu.com/community/Orchestra/Installation?action=AttachFile&do=get&target=04-orchestra-server.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "",
+        "meta_favicon": "",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "Overview\n\nOrchestra is a set of components that provides a Provisioning server, Logging server, and Management server.\n\nThe Orchestra Provisioning Server provides the ability to manage both, DNS and DHCP in the network where we will using it to provision servers. This is very important to have specially when using Orchestra with JuJu.\n\nIn the Orchestra/JuJu scenario, it is important for JuJu to be able to access the DNS name of a machine that will be deployed. The recommended scenario is to allow Orchestra to manage DNS/DHCP for JuJu to be able to manage the environment correctly. The scenario requirements for this is detailed bellow:\n\n192.168.1.1: Default Gateway\n\n192.168.1.2: Orchestra Server\n\n192.168.1.100 to 192.168.1.200: IP address range to serve by the DHCP Server.\n\nHowever, having an external DNS and DHCP server is also an option.\n\nInstalling Orchestra\n\nTo install the Orchestra Server, we simply need to execute the following command:\n\nsudo apt-get install ubuntu-orchestra-server\n\nOnce installation is done, a series of questions will pop up to decide whether to configure DNS/DHCP or not.\n\nDNS/DHCP Management\n\nFirst, and right after the Orchestra Provisioning Server is installed, a question will pop-up asking to decide whether to manage DNS/DHCP or not. In this case, we select Yes, as follows:\n\nSecond, we need to specify the range of IP addresses that the Orchestra DHCP Server will manage. In our case scenario, we will use the range 192.168.1.100,192.168.1.200 as follows:\n\nThird, we need to specify the default gateway, which is not the Orchestra Server (192.68.1.2). In our case is 192.168.1.1. We do this as follows.\n\nFinally, we need to input the Domain Name to be used in the environment, so we can make the machines resolve to a FQDN. We do this as follows:\n\nNo DNS/DHCP Management\n\nIf there's a already and external DNS and DHCP server, we need to make sure of two things.\n\nThe DHCP server should be configured to point to the Orchestra Server (192.168.1.2) for PXE Booting.\n\nThe DNS server should made available for JuJu. Every machine that get's deployed should also be DNS addressable for JuJu to be able to communicate with it. JuJu knows about the DNS names of each system thanks to Cobbler, which will have to be configured accordingly.\n\nJuJu Configuration\n\nAdditionally, when Installing orchestra, a script called orchestra-import-isos will be run in the background and it will import all the Ubuntu Mini ISO's into Cobbler, creating the necessary configuration and profiles for the systems that will be managed by the Provisioning Server. These configurations will also prepare the environment and create profiles for JuJu.\n\nIn the case of JuJu, as an example, cobbler profiles will be created as follows:\n\noneiric-x86_64-juju\n\noneiric-i386-juju\n\nThe script will also create the management classes that will be used by JuJu:"
+    }
+}
