@@ -1,0 +1,44 @@
+{
+    "id": "dbpedia_6509_3",
+    "rank": 94,
+    "data": {
+        "url": "https://askubuntu.com/questions/323131/setting-timezone-from-terminal",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Setting timezone from terminal",
+        "top_image": "https://cdn.sstatic.net/Sites/askubuntu/Img/apple-touch-icon@2.png?v=c492c9229955",
+        "meta_img": "https://cdn.sstatic.net/Sites/askubuntu/Img/apple-touch-icon@2.png?v=c492c9229955",
+        "images": [
+            "https://cdn.sstatic.net/Sites/askubuntu/Img/logo.svg?v=472cf2768bba",
+            "https://i.sstatic.net/hv0DE.jpg?s=64",
+            "https://www.gravatar.com/avatar/81a7ef6b1f61186c767749057dca6d83?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/cf4506b88e212e4a5efb0396a6a7990f?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/05081bd09da27830150776c53318e0ef?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/1a151daf68ed9c6931833a134bf73f4b?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/5347c683b6963f418d1b16c65917bf3f?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/oXZkh.jpg?s=64",
+            "https://i.sstatic.net/EAAaU.png",
+            "https://i.sstatic.net/U1Jy6.jpg?s=64",
+            "https://www.gravatar.com/avatar/5d561f2de0f27818ee920dbc9e4a8a4d?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/rEEbo.png?s=64",
+            "https://i.sstatic.net/ypdkG.gif?s=64",
+            "https://www.gravatar.com/avatar/228a93ff6ed3e7adab3c6dad95e80513?s=64&d=identicon&r=PG",
+            "https://askubuntu.com/posts/323131/ivc/fd19?prg=d8f21c49-3c65-4836-895f-b383a88e61d2"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2013-07-22T20:22:57",
+        "summary": "",
+        "meta_description": "I want to change the timezone of the system clock from the terminal.\n\nThis can be done with\n\ntzselect\r\n\"which opens a gui in terminal\"\n\nor\n\nsudo cp /usr/share/zoneinfo/Europe/London /etc/localtime\r\n\"",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/askubuntu/Img/favicon.ico?v=928dfb7c1990",
+        "meta_site_name": "Ask Ubuntu",
+        "canonical_link": "https://askubuntu.com/questions/323131/setting-timezone-from-terminal",
+        "text": "To change time zone from terminal, just press Ctrl+Alt+T on your keyboard to open Terminal. When it opens, run the command(s) below:\n\nsudo dpkg-reconfigure tzdata\n\nOnce open, just follow the screens to change the time zone.\n\nI realize this thread is a bit dated, but I was looking for a better solution because I needed to automatically set the timezone in a VM after a user downloads it from our website and deploys it. Here's what I ended up with:\n\necho \"Setting TimeZone...\" export tz=`wget -qO - http://geoip.ubuntu.com/lookup | sed -n -e 's/.*<TimeZone>\\(.*\\)<\\/TimeZone>.*/\\1/p'` && timedatectl set-timezone $tz export tz=`timedatectl status| grep Timezone | awk '{print $2}'` echo \"TimeZone set to $tz\"\n\nThis will query geoip.ubuntu.com from the server once it is started on the new network (my script checks for connectivity first course) and then set the server's timezone based on the response.\n\nThe \"wget -q0 -\" tells wget to output only the results to stdout which is then piped to the $tz variable.\n\nHope it helps someone!\n\nTL;DR /etc/localtime is a symbolic link that points to a file in /usr/share/zoneinfo/Continent/City. By altering where it points you can alter your timezone.\n\nIn order to change timezone, remove the /etc/localtime and assign symbolic link to your desired city. For instance, ls -l /etc/localtime reports that this file points to /usr/share/zoneinfo/America/Denver. To change it to New York, I do\n\nsudo rm /etc/localtime\n\nsudo ln -s /usr/share/zoneinfo/America/New_York /etc/localtime\n\nWait a minute for my clock to get updated\n\nThe screenshot bellow shows the steps and confirmation from timedatectl\n\nThe easy way to update the timezone is to use sudo dpkg-reconfigure tzdata. But this isn't so easily scripted.\n\nIf you want to set the timezone explicitly via a script (e.g. for setting up a VM), here's a recipe:\n\nSet a variable for the timezone you want, e.g. one of\n\ntz=Europe/London tz=America/Anchorage tz=Etc/GMT+6\n\nValid values are the directories and filenames under /usr/share/zoneinfo.\n\nThen simply\n\nsudo cp -vf /usr/share/zoneinfo/$tz /etc/localtime echo $tz | sudo tee /etc/timezone\n\nNote that both /etc/localtime and /etc/timezone must be consistent.\n\nProbably now reboot to get all your services updated too (e.g. cron).\n\nHere's the method I use, which is US-centric as I don't need to worry about non-US time zones.\n\nIf I need to determine the current time zone, I either do:\n\ncat /etc/timezone\n\nor\n\nsudo hwclock --show\n\nI then do:\n\ntimedatectl set-timezone <_designation_>\n\nwhere <_designation_> is one of the following:\n\nUS/Eastern\n\nUS/Central\n\nUS/Mountain\n\nUS/Pacific\n\nUS/Alaska\n\nUS/Aleutian\n\nUS/Arizona\n\nUS/East-Indiana\n\nUS/Hawaii\n\nUS/Indiana-Starke\n\nUS/Michigan\n\nUS/Pacific-New\n\nUS/Samoa\n\nE.G.:\n\ntimedatectl set-timezone US/Eastern\n\nOther timezone designations can be found here: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones\n\nYou cannot do this unless you select the time zone file you want to correspond to each time zone offset.\n\nSome answers suggested using the files in /usr/share/zoneinfo/Etc, but the problem with these is that they are DST agnostic.\n\nSo unless you pick some time zone configuration to match each offset, or you don't care about DST, there is no way to do it generically."
+    }
+}

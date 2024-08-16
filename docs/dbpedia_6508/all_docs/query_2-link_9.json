@@ -1,0 +1,43 @@
+{
+    "id": "dbpedia_6508_2",
+    "rank": 9,
+    "data": {
+        "url": "https://gis.stackexchange.com/questions/2951/algorithm-for-offsetting-a-latitude-longitude-by-some-amount-of-meters",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Algorithm for offsetting a latitude/longitude by some amount of meters",
+        "top_image": "https://cdn.sstatic.net/Sites/gis/Img/apple-touch-icon@2.png?v=54e3ab1edcf3",
+        "meta_img": "https://cdn.sstatic.net/Sites/gis/Img/apple-touch-icon@2.png?v=54e3ab1edcf3",
+        "images": [
+            "https://cdn.sstatic.net/Sites/gis/Img/logo.svg?v=524ba4e921b1",
+            "https://www.gravatar.com/avatar/5bdb495c960b3384649e2a7e49c39cb9?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/5657c677648a8004040de05d10cb2013?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/VZRgM.png?s=64",
+            "https://www.gravatar.com/avatar/8aa40c3b7e8ec071e95a9ca1be31046d?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/20644e967aad131a616f769dd57128fa?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/ca7b97ac1c6eed7a3b0e13d9f65e27ae?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/X4w6g.png",
+            "https://www.gravatar.com/avatar/67c216ca182451567e17c2098d47f26d?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/FpiO7.jpg?s=64",
+            "https://www.gravatar.com/avatar/fb51e538d3b5b7d501347068bfcd8e0d?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/AubqN.jpg?s=64",
+            "https://www.gravatar.com/avatar/13fc2ce4b0f30a34920f8b4bc4af287f?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://gis.stackexchange.com/posts/2951/ivc/fd19?prg=b55012ed-dc88-4f1c-bd2b-ab47ec31573d"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2010-10-26T22:43:34",
+        "summary": "",
+        "meta_description": "I'm looking for an algorithm which when given a latitude and longitude pair and a vector translation in meters in Cartesian coordinates (x,y) would give me a new coordinate. Sort of like a reverse",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/gis/Img/favicon.ico?v=6e585ede6bca",
+        "meta_site_name": "Geographic Information Systems Stack Exchange",
+        "canonical_link": "https://gis.stackexchange.com/questions/2951/algorithm-for-offsetting-a-latitude-longitude-by-some-amount-of-meters",
+        "text": "If your displacements aren't too great (less than a few kilometers) and you're not right at the poles, use the quick and dirty estimate that 111,111 meters (111.111 km) in the y direction is 1 degree (of latitude) and 111,111 * cos(latitude) meters in the x direction is 1 degree (of longitude).\n\nAs Liedman says in his answer Williams’s aviation formulas are an invaluable source, and to keep the accuracy within 10 meters for displacements up to 1 km you’ll probably need to use the more complex of these.\n\nBut if you’re willing to accept errors above 10m for points offset more than approx 200m you may use a simplified flat earth calculation. I think the errors still will be less than 50m for offsets up to 1km.\n\n//Position, decimal degrees lat = 51.0 lon = 0.0 //Earth’s radius, sphere R=6378137 //offsets in meters dn = 100 de = 100 //Coordinate offsets in radians dLat = dn/R dLon = de/(R*Cos(Pi*lat/180)) //OffsetPosition, decimal degrees latO = lat + dLat * 180/Pi lonO = lon + dLon * 180/Pi\n\nThis should return:\n\nlatO = 51,00089832 lonO = 0,001427437\n\nI find that Aviation Formulary, here is great for these types of formulas and algorithms. For your problem, check out the \"lat/long given radial and distance\":here\n\nNote that this algorithm might be a bit too complex for your use, if you want to keep use of trigonometry functions low, etc.\n\nI created a simple custom map on Google Maps that illustrates the estimation algorithm mentioned by the accepted answer (1/111111 == one meter). Feel free to see and play with it here:\n\nhttps://drive.google.com/open?id=1XWlZ8BM00PIZ4qk43DieoJjcXjK4z7xe&usp=sharing\n\nTo give more context - this map shows the coordinates 0,0 and then shows two more pins which are 1 meter north and 1 meter east of 0,0.\n\nIt might make sense to project the point first. You could make something like this pseudo-code:\n\nfalt_coordinate = latlon_to_utm(original_koordinate) new_flat_coordinate = flat_coordinate + (x,y) result_coordinate = utm_to_latlon(new_flat_coordinate)\n\nwhere (x,y) is the desired offset.\n\nYou don't need to use utm, any flat coordinate system, that makes sense in your area will do.\n\nWhat software are you working with?\n\nHere is Swift version used on kodisha answer on SO:\n\nextension CLLocationCoordinate2D { func earthRadius() -> CLLocationDistance { let earthRadiusInMetersAtSeaLevel = 6378137.0 let earthRadiusInMetersAtPole = 6356752.314 let r1 = earthRadiusInMetersAtSeaLevel let r2 = earthRadiusInMetersAtPole let beta = latitude let earthRadiuseAtGivenLatitude = ( ( pow(pow(r1, 2) * cos(beta), 2) + pow(pow(r2, 2) * sin(beta), 2) ) / ( pow(r1 * cos(beta), 2) + pow(r2 * sin(beta), 2) ) ) .squareRoot() return earthRadiuseAtGivenLatitude } func locationByAdding( distance: CLLocationDistance, bearing: CLLocationDegrees ) -> CLLocationCoordinate2D { let latitude = self.latitude let longitude = self.longitude let earthRadiusInMeters = self.earthRadius() let brng = bearing.degreesToRadians var lat = latitude.degreesToRadians var lon = longitude.degreesToRadians lat = asin( sin(lat) * cos(distance / earthRadiusInMeters) + cos(lat) * sin(distance / earthRadiusInMeters) * cos(brng) ) lon += atan2( sin(brng) * sin(distance / earthRadiusInMeters) * cos(lat), cos(distance / earthRadiusInMeters) - sin(lat) * sin(lat) ) let newCoordinate = CLLocationCoordinate2D( latitude: lat.radiansToDegrees, longitude: lon.radiansToDegrees ) return newCoordinate } } extension FloatingPoint { var degreesToRadians: Self { self * .pi / 180 } var radiansToDegrees: Self { self * 180 / .pi } }"
+    }
+}

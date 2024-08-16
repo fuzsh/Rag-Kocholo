@@ -1,0 +1,33 @@
+{
+    "id": "dbpedia_6509_3",
+    "rank": 95,
+    "data": {
+        "url": "https://learn.microsoft.com/en-us/dotnet/api/system.timezoneinfo.converttimefromutc%3Fview%3Dnet-8.0",
+        "read_more_link": "",
+        "language": "en",
+        "title": "TimeZoneInfo.ConvertTimeFromUtc(DateTime, TimeZoneInfo) Method (System)",
+        "top_image": "https://learn.microsoft.com/en-us/media/open-graph-image.png",
+        "meta_img": "https://learn.microsoft.com/en-us/media/open-graph-image.png",
+        "images": [
+            "https://learn.microsoft.com/media/logos/logo_net.svg",
+            "https://learn.microsoft.com/media/logos/logo_net.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "dotnet-bot"
+        ],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "Converts a Coordinated Universal Time (UTC) to the time in a specified time zone.",
+        "meta_lang": "en",
+        "meta_favicon": "",
+        "meta_site_name": "",
+        "canonical_link": "https://learn.microsoft.com/en-us/dotnet/api/system.timezoneinfo.converttimefromutc?view=net-8.0",
+        "text": "public: static DateTime ConvertTimeFromUtc(DateTime dateTime, TimeZoneInfo ^ destinationTimeZone);\n\npublic static DateTime ConvertTimeFromUtc (DateTime dateTime, TimeZoneInfo destinationTimeZone);\n\nstatic member ConvertTimeFromUtc : DateTime * TimeZoneInfo -> DateTime\n\nPublic Shared Function ConvertTimeFromUtc (dateTime As DateTime, destinationTimeZone As TimeZoneInfo) As DateTime\n\nParameters\n\nReturns\n\nThe date and time in the destination time zone. Its Kind property is Utc if destinationTimeZone is Utc; otherwise, its Kind property is Unspecified.\n\nExceptions\n\nExamples\n\nThe following example converts Coordinated Universal Time (UTC) to Central Time.\n\nDateTime timeUtc = DateTime.UtcNow; try { TimeZoneInfo cstZone = TimeZoneInfo.FindSystemTimeZoneById(\"Central Standard Time\"); DateTime cstTime = TimeZoneInfo.ConvertTimeFromUtc(timeUtc, cstZone); Console.WriteLine(\"The date and time are {0} {1}.\", cstTime, cstZone.IsDaylightSavingTime(cstTime) ? cstZone.DaylightName : cstZone.StandardName); } catch (TimeZoneNotFoundException) { Console.WriteLine(\"The registry does not define the Central Standard Time zone.\"); } catch (InvalidTimeZoneException) { Console.WriteLine(\"Registry data on the Central Standard Time zone has been corrupted.\"); }\n\nlet timeUtc = DateTime.UtcNow try let cstZone = TimeZoneInfo.FindSystemTimeZoneById \"Central Standard Time\" let cstTime = TimeZoneInfo.ConvertTimeFromUtc(timeUtc, cstZone) printfn $\"The date and time are {cstTime} {if cstZone.IsDaylightSavingTime cstTime then cstZone.DaylightName else cstZone.StandardName}.\" with | :? TimeZoneNotFoundException -> printfn \"The registry does not define the Central Standard Time zone.\" | :? InvalidTimeZoneException -> printfn \"Registry data on the Central Standard Time zone has been corrupted.\"\n\nDim timeUtc As Date = Date.UtcNow Try Dim cstZone As TimeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById(\"Central Standard Time\") Dim cstTime As Date = TimeZoneInfo.ConvertTimeFromUtc(timeUtc, cstZone) Console.WriteLine(\"The date and time are {0} {1}.\", _ cstTime, _ IIf(cstZone.IsDaylightSavingTime(cstTime), _ cstZone.DaylightName, cstZone.StandardName)) Catch e As TimeZoneNotFoundException Console.WriteLine(\"The registry does not define the Central Standard Time zone.\") Catch e As InvalidTimeZoneException Console.WriteLine(\"Registry data on the Central Standard Time zone has been corrupted.\") End Try\n\nRemarks\n\nWhen performing the conversion, the ConvertTimeFromUtc method applies any adjustment rules in effect in the destinationTimeZone time zone.\n\nThe precise behavior of this method depends on the value of the Kind property of the dateTime parameter, as the following table shows.\n\nDateTime.Kind property Conversion DateTimeKind.Local Throws an ArgumentException. DateTimeKind.Unspecified or DateTimeKind.Utc Converts from Coordinated Universal Time (UTC).\n\nIf the conversion of dateTime results in a date and time value that is earlier than DateTime.MinValue or later than DateTime.MaxValue, this method returns DateTime.MinValue or DateTime.MaxValue, respectively.\n\nApplies to\n\nSee also"
+    }
+}
