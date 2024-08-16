@@ -1,0 +1,44 @@
+{
+    "id": "dbpedia_6153_3",
+    "rank": 62,
+    "data": {
+        "url": "https://gifguide2code.wordpress.com/2017/01/10/scheme-how-to-loop-gimp-functions/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Scheme: How to Loop GIMP Functions",
+        "top_image": "https://gifguide2code.wordpress.com/wp-content/uploads/2017/01/happynewyear.png",
+        "meta_img": "https://gifguide2code.wordpress.com/wp-content/uploads/2017/01/happynewyear.png",
+        "images": [
+            "https://gifguide2code.wordpress.com/wp-content/uploads/2018/05/cropped-end.png",
+            "https://gifguide2code.wordpress.com/wp-content/uploads/2017/01/happynewyear.png?w=740",
+            "https://gifguide2code.wordpress.com/wp-content/uploads/2017/01/scriptfuconsole.png?w=646&h=422",
+            "https://gifguide2code.wordpress.com/wp-content/uploads/2017/01/theproceduraldatabase.png?w=740",
+            "https://gifguide2code.wordpress.com/wp-content/uploads/2017/01/gimp-rect-select.png?w=740",
+            "https://gifguide2code.wordpress.com/wp-content/uploads/2017/01/theimagenumber1.png?w=740",
+            "https://gifguide2code.wordpress.com/wp-content/uploads/2017/01/scriptfu.gif?w=740",
+            "https://gifguide2code.wordpress.com/wp-content/uploads/2017/01/workingpablo.png?w=740",
+            "https://2.gravatar.com/avatar/5b5b9a1369fd6dc3befe589f367b8a9f146da6a593682aa2e2b101b6641d3496?s=100&d=identicon&r=G",
+            "https://0.gravatar.com/avatar/ff0947184098c979693c37720078f42848ba77142ca06bc89221742cf4d731d2?s=100&d=identicon&r=G",
+            "https://0.gravatar.com/avatar/c3d1fafc160a3e91d80adaeadf393cb083123790cde9e24c53d11bc8339ed058?s=100&d=identicon&r=G",
+            "https://1.gravatar.com/avatar/7807d20224f821ba446950b2aad99a35b59ab37bf93dc9fab89afc5938fbcb3c?s=100&d=identicon&r=G",
+            "https://gifguide2code.wordpress.com/wp-content/uploads/2018/08/cropped-ben1.png?w=50",
+            "https://gifguide2code.wordpress.com/wp-content/uploads/2018/08/cropped-ben1.png?w=50",
+            "https://pixel.wp.com/b.gif?v=noscript"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2017-01-10T00:00:00",
+        "summary": "",
+        "meta_description": "For my first script of the new year, I started learning an entirely new language for an entirely different program that has resulted in my enduring a genuinely disturbing number of migraines over the last few days. Tangential Warning: I don't recommend scheme for beginners. I wouldn't recommend it for any living creature because scheme…",
+        "meta_lang": "en",
+        "meta_favicon": "https://gifguide2code.wordpress.com/wp-content/uploads/2018/08/cropped-ben1.png?w=32",
+        "meta_site_name": "gifGuide2Code",
+        "canonical_link": "https://gifguide2code.wordpress.com/2017/01/10/scheme-how-to-loop-gimp-functions/",
+        "text": "For my first script of the new year, I started learning an entirely new language for an entirely different program that has resulted in my enduring a genuinely disturbing number of migraines over the last few days.\n\nTangential Warning: I don’t recommend scheme for beginners. I wouldn’t recommend it for any living creature because scheme is a monumental asshat of a language. It demands that you restructure the way you write math. Who the HELL decided THAT was a good idea? Oh, everyone in the world is accustomed to writing 2+2? Fuck those bastards, we’re going to force them to do +2 2 because programming is SUPPOSED to be confusing. And just to make it extra fun, EVERYTHING needs to go in parentheses. That way, even if the morons manage to get the expressions figured out, they’ll still have to spend HOURS guessing where the missing ) needs to go.\n\nI’m not exaggerating. I just spent 6 hours writing scripts that don’t work. At one point, I wrote one so bad, it triggered an error in a plugin I didn’t even know I’d installed. The one script that did work happened accidentally. That’s what finally got me a loop in GIMP. Enjoy.\n\nHold up. What’s GIMP?\n\nGIMP is a free image manipulation software. A nice alternative to Photoshop for us broke folks. It’s how I edit illustrations and make gifs. You can download it here.\n\nOk. What’s Scheme?\n\nScheme is the Dolores Umbridge of programming languages. It’s bureaucratic and passive aggressive, and if you don’t believe me, just wait till you’re flooded with unbound variable errors. It’s evil.\n\nAlso, it’s the language that GIMP speaks.\n\nBut How Do I Actually Talk to GIMP?\n\nThrough the Script-Fu console. It’s inside the Filters menu.\n\nIf all has gone well, you’ll see a Script-Fu console window, and you can hit Browse to get to a magical window called the Procedure Browser. It’s a Gimp-To-Human dictionary that lists all the Gimp functions.\n\nBe not afraid. It looks technical, but really, it’s just telling you what you need to type into the console to make GIMP do its thing. I really only care about the parameters at this point because without those, the script won’t work.\n\nWhat are Parameters?\n\nThey’re just extra bits you have to add so GIMP will know how to run the function. Type gimp-rect-select into the browser search, and several parameters pop up.\n\nThe first parameter is image. It’s referring to a number assigned to your image, quite fortunately displayed at the top of the GIMP. The next four parameters are coordinates and measurements that can be found by hovering the cursor over the image and checking the bottom left hand corner.\n\nType that into the console, hit enter, and the result is a pretty thin rectangle selection of the top of the image. Now comes the painful part.\n\nHow Do I Plug That Into A Loop?\n\nI don’t really care why it works at this point. I’ve just accepted that this particular template* is functional. Here’s the format:\n\n(let loop ((variable StartValue))\n\n(if (<variable EndValue)\n\n(begin\n\n(gimp-function parameters)\n\n(loop (+variable Increment) ))))\n\n*Based on this script on gimper.net, courtesy of humblejohnny20.\n\nSo for my particular image, I want to add rectangular selections 5 pixels long every 10 pixels on the y axis. To do this, I’m plugging in a single y variable initially set to 0 which will increase in increments of 10 until it hits 750 (the length of the image). With each loop, GIMP will rectangle select an area 592 pixels wide (the width of the image) and add it to the existing selection because we specified Channel-Op-Add (0) in the parameters. Like so:\n\n(let loop ((y 0)) (if (< y 750) (begin (gimp-rect-select 12 0 y 592 5 0 0 0) (loop (+ y 10) ) ) ) )\n\nIf it works, GIMP will appear to have a mind of its own.\n\nNow if the top layer has an alpha channel, you can take the eraser and reveal horizontal stripes of the layer below.\n\nOr you can create a striped .png to import into a Blender texture for a nice Happy New Year banner like the one I’ve got at the top. What else could this be useful for, you ask?\n\nAbsolutely no idea. I’m hoping my next round of god-awful scheme scripts will yield something more practical."
+    }
+}

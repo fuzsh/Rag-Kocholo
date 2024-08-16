@@ -1,0 +1,30 @@
+{
+    "id": "dbpedia_6161_2",
+    "rank": 5,
+    "data": {
+        "url": "https://archive.virtualmin.com/node/65331",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Paessler Server Load Test caused a \"php fatal error: out of memory\"",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://archive.virtualmin.com/images/virtualmin-logo-220x45.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "https://archive.virtualmin.com/files/favicon.ico",
+        "meta_site_name": "",
+        "canonical_link": "https://archive.virtualmin.com/node/65331",
+        "text": "Hi guys, i was doing some web server load tests at 2am this morning making some comparisons between 3 webservers. Stupid me did realise it at the time, however, the virtualmin machine crapped itself and i did not realise until i woke up this morning that i had a problem. The webserver continued to serve static html sites, however everything else went down (database connection errors, etc). Virtualmin itself was not accessible either (white screen of death) I was able to perform a hard reset from my service provider control panel, however, this made no difference strangely enough. The solution was to log into the instance using putty and perform /etc/init.d/webmin start\n\n2 problems\n\nProblem one\n\nfrom the logs, it appears that at some point last night, php and mysqli stopped functioning?\n\n[Tue Apr 02 23:51:03.750178 2019] [fcgid:warn] [pid 18168] (14)Bad address: [client xxx.xxx.xx.157:65146] mod_fcgid: error reading data from FastCGI server\n\n[Tue Apr 02 23:51:22.964176 2019] [fcgid:warn] [pid 18180] [client xxx.xxx.xx.157:65167] mod_fcgid: read data timeout in 181 seconds\n\n[Tue Apr 02 23:51:24.184356 2019] [fcgid:warn] [pid 18170] [client xxx.xxx.xx.157:65149] mod_fcgid: read data timeout in 181 seconds\n\n[Tue Apr 02 23:51:32.299224 2019] [fcgid:warn] [pid 18297] (14)Bad address: [client xxx.xxx.xx.157:50131] mod_fcgid: error reading data from FastCGI server\n\n[Tue Apr 02 23:51:32.685123 2019] [fcgid:warn] [pid 17975] (104)Connection reset by peer: [client xxx.xxx.xx.157:65338] mod_fcgid: error reading data from FastCGI server\n\n[Tue Apr 02 23:51:32.696818 2019] [core:error] [pid 17975] [client xxx.xxx.xx.157:65338] End of script output before headers: index.php\n\n[Tue Apr 02 23:51:33.384033 2019] [fcgid:warn] [pid 17964] [client xxx.xxx.xx.157:65342] mod_fcgid: stderr: PHP Warning: mysqli_query(): MySQL server has gone away in /home/ajecreative/public_html/wordpress/wp-includes/wp-db.php\n\nSecond problem\n\nUpon looking at the logs further, i came across something i do not quite understand. A website, that was once on a virtualmin server on google cloud compute (but is not, nor has it ever been, on my current virtualmin vultr server) is referred to in the logs...??\n\n[Tue Apr 02 23:02:14.606719 2019] [autoindex:error] [pid 13114] [client 82.102.18.148:54334] AH01276: Cannot serve directory /home/virtualserver_user/public_html/: No matching DirectoryIndex (index.html,index.htm,index.php,index.php4,index.php5) found, and server-generated directory index forbidden by Options directive, referer: https://domain.com.au/\n\nwhen i enter the url in the above log into a web broswer...i am redirected to the parent website on my current virtualmin webserver. How is this possible when that particular URL is not even on this server?"
+    }
+}

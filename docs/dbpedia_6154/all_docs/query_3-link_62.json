@@ -1,0 +1,36 @@
+{
+    "id": "dbpedia_6154_3",
+    "rank": 62,
+    "data": {
+        "url": "https://wiki.unvanquished.net/wiki/Tools/Image",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Unvanquished",
+        "top_image": "https://unvanquished.net/favicon.ico",
+        "meta_img": "https://unvanquished.net/favicon.ico",
+        "images": [
+            "https://unvanquished.net/wp-content/themes/unv/images/u-logo.png",
+            "https://unvanquished.net/wp-content/themes/unv/images/unvanquished.png",
+            "https://unvanquished.net/wp-content/themes/unv/images/tyrant.gif",
+            "https://wiki.unvanquished.net/images/1/10/Information_48x48.png",
+            "https://wiki.unvanquished.net/images/1/10/Information_48x48.png",
+            "https://wiki.unvanquished.net/resources/assets/licenses/cc-by-sa.png",
+            "https://wiki.unvanquished.net/resources/assets/poweredby_mediawiki_88x31.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "/favicon.ico",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "Note\n\nWhen contributing to Unvanquished, the contributor is asked to provide lossless images if possible, conversion to optimized formats are expected to only be done at build time, in an automated manner. The Urcheon tool knows how to do the conversions. It's very unlikely an Unvanquished contributor will have to produce CRN, DDS or lossless WebP files. A modder not using Urcheon may use those tools though.\n\nTutorial\n\nThe recommended way to convert non-normalmap images to CRN with crunch is to do:\n\ncrunch -quality 255 -noNormalDetection -file file.tga -out file.crn\n\nThe recommended way to convert normalmap files without heightmap in alpha channel to CRN with crunch is to do:\n\ncrunch -quality 255 -dxn -renormalize -rtopmip -file file.tga -out file.crn\n\nThe recommended way to convert normalmap files with heightmap in alpha channel to CRN with crunch is to do:\n\ncrunch -quality 255 -renormalize -rtopmip -file file.tga -out file.crn\n\nTutorial\n\nThe best way to produce the smallest lossless WebP images with cwebp is to do:\n\ncwebp -mt -exact -lossless -z 9 file.png -o file.webp\n\nThe recommended way to produce lossy WebP images with cwebp is to do:\n\ncwebp -mt -exact -m 6 -q 95 -pass 10 file.png -o file.webp\n\nWarning\n\nAlways use -exact with -lossless when using cwebp. Using -lossless without -exact will produce an image with lossless RGB channels but with a lossy alpha channel. This is not wanted as game images may store something else than alpha data in alpha channel.\n\nNote\n\nImageMagick's convert tool was previously recommended but it became unreliable with time, especially at converting from TGA which is a format that is used a lot in idTech 3 games and engines projects (it was the default format for Quake 3), and which is a format produced by many tools we use (like Q3map2) so we need a reliable TGA to PNG converter, something ImageMagick's convert is not."
+    }
+}

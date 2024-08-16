@@ -1,0 +1,37 @@
+{
+    "id": "dbpedia_6157_0",
+    "rank": 37,
+    "data": {
+        "url": "https://librearts.org/2023/11/gimp-3-0-roadmap/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "GIMP 3.0 finally has a release schedule",
+        "top_image": "https://librearts.org/2023/11/gimp-3-0-roadmap/featured.webp",
+        "meta_img": "https://librearts.org/2023/11/gimp-3-0-roadmap/featured.webp",
+        "images": [
+            "https://librearts.org/2023/11/gimp-3-0-roadmap/featured.webp",
+            "https://librearts.org/2023/11/gimp-3-0-roadmap/layer-properties.webp",
+            "https://librearts.org/2023/11/gimp-3-0-roadmap/layer-effects-drop-out.webp",
+            "https://librearts.org/images/patreon-button.png"
+        ],
+        "movies": [
+            "https://www.youtube-nocookie.com/embed/WOTj0TvZkzU"
+        ],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Alexandre Prokoudine"
+        ],
+        "publish_date": "2023-11-23T19:51:22+00:00",
+        "summary": "",
+        "meta_description": "The team is targeting May 2024, but it's going to be tough, and here is why",
+        "meta_lang": "en",
+        "meta_favicon": "https://librearts.org/apple-touch-icon.png",
+        "meta_site_name": "Libre Arts",
+        "canonical_link": "https://librearts.org/2023/11/gimp-3-0-roadmap/",
+        "text": "Jehan Pages who is the lead developer and maintainer of GIMP made an announcement on Patreon yesterday. GIMP 3.0 is tentatively scheduled for release in May 2024. The plan is to announce the release at the next Libre Graphics Meeting conference in France. There is a page that details the roadmap.\n\nSo let’s talk about the paint points: stopping development of new features while trying to get non-destructive editing into 3.0, making more API changes, fixing a load of bugs.\n\nBelow goes edited transcript of the video.\n\nFeature freeze\n\nRight off the bat, the proposal is to start with a feature freeze in the middle of December. A feature freeze basically means this. Every new line of code that you write has the potential to introduce a new bug or even many bugs. So if you expect to release software that doesnât crash much and doesnât throw too many error messages at users, at some point you have to stop writing new features and focus on fixing bugs.\n\nToday is the 22nd of November, the tentative release date is around May 9 of the next year, that makes nearly 5 months between now and the release and closer to 4 months between the feature freeze and the release.\n\nThere are three major topics here to unpack.\n\nNon-destructive editing\n\nFirst of all, development of new features has been decelerating over the past few years, with focus shifted towards completing the port to GTK3. But most recently CmykStudent resumed his Google Summer of Code project where he hacked on non-destructive filters attached to layers.\n\nThe interface you see here (the bottom part of the screenshot above) is pretty much a slight evolution of the non-destructive embryo that has already been there for many years. The real deal will look nothing like this. Itâs just that the public branch doesnât yet have the latest work that CmykStudent demonstrated on Twitter recently:\n\nIf you have a look at the full proposal on the GIMP developers website, youâll see that it should be possible to stack effects and edit their masks. They thought about a lot of things, which is great.\n\nBut it also looks like completing the full proposal is not something you can do in 3 to 4 weeks before the feature freeze. So there is a strong possibility that we will either end up with a basic implementation for 3.0 and then see more in the next updates. Or the developers will postpone this patch till version 3.0.2 that is expected to be released soon after 3.0.\n\nIn other words, the worst case scenario here is that GIMP 3.0 loses that bit of numerology where a release with a fancy number gets a fancy new feature. Personally, Iâm okay with that idea. Weâve been waiting for non-destructive editing for frigging 23 years since the beginning of the work on GEGL, two or three more months â itâs not too bad. But judging by the response on Twitter the first possibility is more likely to happen which means a basic implementation in 3.0:\n\nSo letâs wait and see.\n\nAPI changes\n\nThe second important topic is API changes. This is something Iâm actually more concerned about. Historically, this has been the number one reason for long, long development cycles in GIMP. Jehan specifically says:\n\nI am not including API features on purpose in the freeze, because I think an additional month for the last little tweaks may be worth it\n\nOne of the ongoing changes here is the new API that helps make GIMP more omnivore in terms of color spaces and color models. So instead of functions like GimpRGB and GimpCMYK built right inside GIMP you get an exposure to all the color models available in GEGL and babl, and thatâs a lot.\n\nbabl supports the entire CIE family of color models â LAB, LCH, YUV, XYZ â as well as newer things like OKlab. Not to mention CMYK, HSV, HSL, and friends. Most recently, GEGL itself got functions for getting and setting CMYK colors.\n\nMy primary concern here is that getting and setting colors is something that happens in GIMP all the time, even if you donât see it in the user interface. Just searching for âGimpRGBâ reveals almost 800 instances in the part related to user interface and over 400 instances in the backend code. Thatâs a lot.\n\nWhich means that attempting to complete this API rewrite in time for the release will keep Jehan away from bug fixing. And that is the third important topic here.\n\nBug fixing\n\nThe situation with bugs in GIMP â and Iâm sorry I have no other words for this â is getting out of hand. They recently passed the 4K mark, which is, like, a 30% increase in just about a year. Of those 4K+ bug reports and feature requests a whopping 624 bugs are crashers. And that is just crazy.\n\nOne possibility here is to declare amnesty for all bug reports filed against the current stable series and then reopen the ones that will be reproduced by users in the new release. That would be a quite horrible policy of dealing with bug reports. But given the bug reporting dynamics and the availability of developers, I just donât see any other way to handle this. Itâs that or never getting to actually do the release.\n\nThere are many more things Iâm still concerned about. The incorrect scale at which the canvas is rendered on HiDPI displays, the insane controls in tool settings, and other things.\n\nLook, Iâm just being realistic here. Completing this release is going to take a huge toll on the team. If you are in a position to help them with stabilizing the program, please consider doing so.\n\nOnce 3.0 is released, we can have a long conversation about the way the team plans their work, which is not great, and the way they finance it, which is even worse. But right now the community needs to finish off this SOB of a release."
+    }
+}

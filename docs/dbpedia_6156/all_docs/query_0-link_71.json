@@ -1,0 +1,36 @@
+{
+    "id": "dbpedia_6156_0",
+    "rank": 71,
+    "data": {
+        "url": "https://unix.stackexchange.com/questions/55182/why-does-a-default-linux-installation-run-more-processes-than-a-default-openbsd",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Why does a default Linux installation run more processes than a default OpenBSD installation?",
+        "top_image": "https://cdn.sstatic.net/Sites/unix/Img/apple-touch-icon@2.png?v=32fb07f7ce26",
+        "meta_img": "https://cdn.sstatic.net/Sites/unix/Img/apple-touch-icon@2.png?v=32fb07f7ce26",
+        "images": [
+            "https://cdn.sstatic.net/Sites/unix/Img/logo.svg?v=eb6eb2b9e73c",
+            "https://i.sstatic.net/xtio0.gif?s=64",
+            "https://www.gravatar.com/avatar/3a9cad6680becb2a392175df8dcbac3f?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/cFyP6.jpg?s=64",
+            "https://i.sstatic.net/NvO3t.png?s=64",
+            "https://www.gravatar.com/avatar/b0322a3a2a6536f4bc123eefb2a099a3?s=64&d=identicon&r=PG",
+            "https://unix.stackexchange.com/posts/55182/ivc/99ae?prg=5aed6e93-3736-4b17-9018-fcf4bfe27d63"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2012-11-08T11:15:50",
+        "summary": "",
+        "meta_description": "If I ps -aux on Ubuntu (or any GNU/Linux distribution) without GUI I see ~100 processes running. If I ps -aux on OpenBSD without GUI, then I get ~10 processes. \n\nWhat is the explanation/reason for ...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/unix/Img/favicon.ico?v=fb86ccabb921",
+        "meta_site_name": "Unix & Linux Stack Exchange",
+        "canonical_link": "https://unix.stackexchange.com/questions/55182/why-does-a-default-linux-installation-run-more-processes-than-a-default-openbsd",
+        "text": "There is no correlation between the number of processes and the “clarity” of an operating system. You are comparing apples and gooseberries.\n\nOn a Linux system, ps ax will show a lot of processes that consume no memory and have a name in square brackets, like this:\n\nroot 2 0.0 0.0 0 0 ? S Nov02 0:01 [kthreadd] root 3 0.0 0.0 0 0 ? S Nov02 4:39 [ksoftirqd/0] root 6 0.0 0.0 0 0 ? S Nov02 0:00 [migration/0] root 7 0.0 0.0 0 0 ? S Nov02 0:01 [watchdog/0] root 8 0.0 0.0 0 0 ? S Nov02 0:00 [migration/1]\n\nThese processes are part of the kernel. They run with kernel privileges, but they are managed like user processes by the scheduler (many of them with high priority because they handle hardware requests). The machine I'm writing this on has over 100 such processes — how many you have will depend on many things, including your kernel version, your hardware and what kernel services you run (e.g. some filesystems have kernel daemons).\n\nThese processes probably account for a large part of the different numbers. As far as I know, none of the BSD report such tasks separately, which makes your comparison meaningless.\n\nIn addition, a default OpenBSD installation includes very few services, whereas a default Ubuntu installation runs everything the average user expects to find. If you install the same software on both machines, you'll find similar numbers of non-kernel processes.\n\nThe number of running processes is not necessarily a good indicator for \"clarity\".\n\nTake, for example, FreeBSD's devd which uses a socket to communicate where udev uses D-Bus (and hence needs another dbus-daemon process). Process count: 1:2. But D-Bus brings in a lot more features and possibilities, many other system daemons use it (handled by the same dbus-daemon process), too. Now which one is clearer?\n\nPlus, I guess you can get any non-GUI GNU/Linux system to \"use less processes\", by sacrificing features (i.e. don't use any *Kits) -- and a fair comparison between a BSD and this system (for what it's worth) can only be done when the feature set matches."
+    }
+}

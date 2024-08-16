@@ -1,0 +1,33 @@
+{
+    "id": "dbpedia_6156_2",
+    "rank": 94,
+    "data": {
+        "url": "https://blog.lambda.cx/posts/openbsd-dhcp-server/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Setting up a DHCP server on OpenBSD 6.7",
+        "top_image": "https://blog.lambda.cx/favicon-32x32.png",
+        "meta_img": "https://blog.lambda.cx/favicon-32x32.png",
+        "images": [
+            "https://blog.lambda.cx/posts/openbsd-dhcp-server/cover.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "openbsd",
+            "dhcp"
+        ],
+        "tags": null,
+        "authors": [
+            "Dante Catalfamo"
+        ],
+        "publish_date": "2020-07-10T16:10:09-04:00",
+        "summary": "",
+        "meta_description": "Cofiguring dhcpd for a small home network on OpenBSD",
+        "meta_lang": "en",
+        "meta_favicon": "/apple-touch-icon.png",
+        "meta_site_name": "",
+        "canonical_link": "https://blog.lambda.cx/posts/openbsd-dhcp-server/",
+        "text": "OpenBSD makes a great router. It's simplicity and ease of configuration makes it perfect for network infrastructure applications. Everything you need to build a network of any size is built into the base system, plus its man pages and examples cover everything you'd need to know.\n\nWhile I've been an OpenBSD user for years, I'm finally in the process of replacing the router provided by my ISP with a PC Engines APU2E4 running OpenBSD.\n\nOne of the key services that I have to setup for this is the DHCP server, which is responsible for giving out IP addresses to machines when they join the network.\n\nThis task is incredibly easy on OpenBSD, as it comes with dhcpd on the base system. The OpenBSD project provides excellent documentation for this system under dhcpd(8) for the DHCP server itself, dhcpd.conf(5) for the configuration file, and dhcpd.leases(5) for the lease database format.\n\nThe example we'll be going over in this post will be extremely simple, as it's only for a small home network without any advanced options. I encourage you to read the man pages if you're ever setting up your own, as I might not cover what you need to know here.\n\nFor my case, I'll be handing out IP addresses in the 192.168.0.0/24 subnet, with addresses 192.168.0.30 through 192.168.0.200 assigned with DHCP. The gateway router will be at the address 192.168.0.1.\n\nI will assign the devices on the network the home.local domain. I'll use 192.168.0.23 as the DNS server, as I have a caching DNS server which filters out advertisers setup at that address, with 8.8.8.8 as the secondary DNS server in case my DNS server ever goes down.\n\nI'll also set the default lease time to one week, and the maximum lease time to one month.\n\nTo jumpstart the configuration, I'll first copy the file from /etc/examples/dhcpd.conf to /etc/dhcpd.conf so I don't have to start from scratch.\n\nThen I'll edit the file with mg, an emacs-like editor that comes with OpenBSD.\n\nHere's the finished configuration file.\n\nLet's go through this line-by-line to get a better understanding of what's going on here.\n\nThe comments at the top are just to help understand the file at a glance, and don't serve any practical function.\n\nAn option can be specified globally or per-subnet, and can also be specified per-client for BOOTP clients. Here I set the domain name and DNS servers globally.\n\nThen I declare the configuration for my subnet.\n\nThe subnet-specific configuration goes inside the braces. You may specify as many subnets as you need in the configuration file, although for a home network like this I only need one.\n\nInside of the subnet configuration block, I set the gateway router and the range of IPs I'll be handing out with DHCP.\n\nI also specify the default lease time and max lease time. The default lease time is the number of seconds the DHCP server will hold a lease for a client if the client doesn't ask for a specific lease length, and the max lease length is the maximum allowed lease length. Here I set the default to 604800 (one week), and the max to 2592000 (one month).\n\nFinally I have an example static client configuration. Here the client with the MAC address 22:33:44:55:66:77 will all ways be given the IP 192.168.0.201. This is useful when you want to assign a specific IP to a certain client without having to manually configure the interface.\n\nNow that I'm done with the configuration file, it's time to start the DHCP server. To do this, I first enable, then start it using rcctl.\n\nWith the server running, to see the leases that dhcpd is currently holding, you can check /var/db/dhcpd.leases. Entries will be added to this file as clients make DHCP requests.\n\nIf you followed along these steps, you now have a running DHCP sever!"
+    }
+}

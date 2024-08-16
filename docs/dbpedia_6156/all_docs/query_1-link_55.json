@@ -1,0 +1,52 @@
+{
+    "id": "dbpedia_6156_1",
+    "rank": 55,
+    "data": {
+        "url": "https://forums.macrumors.com/threads/the-openbsd-wiki.2196940/page-5",
+        "read_more_link": "",
+        "language": "en",
+        "title": "The OpenBSD Wiki",
+        "top_image": "https://images.macrumors.com/article-new/2019/10/macrumors-forums-social.jpg",
+        "meta_img": "https://images.macrumors.com/article-new/2019/10/macrumors-forums-social.jpg",
+        "images": [
+            "https://images.macrumors.com/images-new/macrumors-simple-logo-light.svg",
+            "https://images.macrumors.com/images-new/macrumors-simple-logo-dark.svg",
+            "https://images.macrumors.com/images-new/macrumors-simple-logo-light.svg",
+            "https://images.macrumors.com/images-new/macrumors-simple-logo-dark.svg",
+            "https://forums.macrumors.com/attachments/snapped-jpg.2007643/",
+            "https://forums.macrumors.com/data/avatars/m/1260/1260813.jpg?1614089761",
+            "https://forums.macrumors.com/data/attachments/1090/1090579-75c8ab793045a8a70237aace3c829a7a.jpg",
+            "https://forums.macrumors.com/data/avatars/m/204/204563.jpg?1587611803",
+            "https://forums.macrumors.com/data/attachments/1098/1098717-a1731ac0cef68900636b8f872e7be2ed.jpg",
+            "https://forums.macrumors.com/data/attachments/1098/1098715-a1731ac0cef68900636b8f872e7be2ed.jpg",
+            "https://forums.macrumors.com/data/attachments/1098/1098716-a1731ac0cef68900636b8f872e7be2ed.jpg",
+            "https://forums.macrumors.com/data/avatars/m/1312/1312911.jpg?1722297303",
+            "https://forums.macrumors.com/data/avatars/m/1312/1312911.jpg?1722297303",
+            "https://forums.macrumors.com/data/avatars/m/1282/1282231.jpg?1630282946",
+            "https://forums.macrumors.com/data/avatars/m/1211/1211563.jpg?1586035448",
+            "https://forums.macrumors.com/data/avatars/m/1211/1211563.jpg?1586035448",
+            "https://forums.macrumors.com/data/avatars/m/3/3383.jpg?1592355765",
+            "https://images.macrumors.com/images-new/macrumors-simple-logo-light.svg",
+            "https://images.macrumors.com/images-new/macrumors-simple-logo-dark.svg"
+        ],
+        "movies": [
+            "https://www.youtube.com/embed/rT71HwfiM_A?wmode=opaque"
+        ],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "z970"
+        ],
+        "publish_date": "2019-09-10T01:44:51+00:00",
+        "summary": "",
+        "meta_description": "Preface\nI made the decision to install OpenBSD 6.9, using a 16GB USB (2.0) flash drive, on my iMac G3/600 (slot-loader).  Mostly disappointed by the lack of...",
+        "meta_lang": "",
+        "meta_favicon": "/data/assets/logo/mr-icon-192.png",
+        "meta_site_name": "MacRumors Forums",
+        "canonical_link": "https://forums.macrumors.com/threads/the-openbsd-wiki.2196940/page-5",
+        "text": "Preface\n\nI made the decision to install OpenBSD 6.9, using a 16GB USB (2.0) flash drive, on my iMac G3/600 (slot-loader). Mostly disappointed by the lack of detailed instructions around the web, for how iMac G3 owners (specifically) can boot off of a USB flash drive, especially when I know that any Mac user with a busted optical drive would probably just get rid of their old slot-loading Mac, I just thought I'd share the process I used, which also includes instructions on how to upgrade to OpenBSD 7.0, and then to OpenBSD 7.1, in that order, without the need to burn additional installation images separately to USB flash drives.\n\nAction Retro, on YouTube, uploaded a video a while back, showing his own installation process for installing OpenBSD. But I just think he skipped some otherwise useful details that I would've preferred he'd left in. Additionally, he was lucky enough to still have a functioning optical drive and burned the .iso to CD. Unfortunately for me, and I'm just as sure as for many/any other slot-loading Mac owners out there, I don't have that luxury.\n\nI used 'dd' on my Linux machine to actually burn the .iso image ('install69.iso'), because the iMac's optical drive is dead. I can't explain why 'dd' on Linux results in a USB flash drive that is actually bootable... but, when i tried creating the flash drive on my Windows machine, using either RUFUS or Balena Etcher, using the same OpenBSD .iso image, it didn't work. That is to say that my iMac's Open Firmware can't seem to recognize the resulting flash drive. I'm guessing that this has something to do with the file system in which the .iso image was originally created. This is very strange to me, since I was actually able to use those Windows programs to successfully burn a bootable Debian Sid .iso image. But I digress.\n\nBottom line: However you choose to burn your downloaded .iso installation image to USB, may still involve multiple tries in getting it to boot, even if you know you've burned it correctly. More on that, later.\n\nProcess\n\nFirst, i inserted the USB flash drive into my Linux machine, then made sure it was unmounted\n\nCode:\n\nsudo umount /dev/sd*\n\n... where \"*\" is where the USB flash drive is actually located.\n\nThen to actually burn the .iso image:\n\nCode:\n\nsudo dd if=/path/to/install##.iso of=/dev/sd* bs=1M\n\n...where \"##\" is the version number of the OpenBSD install image.\n\nTo boot off the flash drive on my iMac G3, I had to boot into Open Firmware:\n\nWhile powering-on, hold: Command+Option+O+F.\n\nContinue holding until reaching the white screen that contains the message, saying that it is okay to let go of those keys.\n\nInsert the freshly-burned USB flash drive directly into the bottom USB port. In my case, my iMac G3 has only 2 USB ports. Normally, this would be one USB port for the keyboard and one USB port for the mouse (if the USB keyboard didn't have a USB pass-through port included). To make my life simple, what I ended up doing was to get a separate, cheap, external USB hub to connect my mouse and keyboard to the top USB port.\n\nIn Open Firmware, i found that the bottom USB port is designated by the system as 'usb0', while the top USB port was designated as 'usb1'.\n\nOnce the USB flash drive was inserted in the bottom USB port, i typed the following commands:\n\nCode:\n\nsetenv boot-device hd:,ofwboot boot usb0/disk:,ofwboot /6.9/macppc/bsd.rd\n\nOne thing I should mention is that, if for whatever reason the attempt to boot off the flash drive fails, at least on my iMac G3, I found that I actually have to RESTART the whole computer and reboot back into Open Firmware to try again. It is very annoying, to say the least, but it works. But this is ONLY if I know for a fact that the .ISO image was first verified (via 'signify') and, of course, burned properly.\n\nOnce I got to the part of the installation process that says that it was time to 'install the sets'. I had to specify that I wanted to install from the 'disk', rather than 'cd0'. When it asked me if the disk was mounted, i input 'n' for 'no'. This allowed me to specify the flash drive ('sd0') as the device location where the 'sets' for installation were actually located, and thereby continue with the installation. Note that, after specifying the USB flash drive's device location, the path ultimately still ended in '/6.9/macppc/'.\n\nImmediately after post-install, I actually had to reboot, back into the Open Firmware prompt, and tell the system to set the hard drive as the startup device:\n\nCode:\n\nsetenv boot-device hd:,ofwboot shut-down\n\nOnce I powered-on again, I installed the 'nano' text editor, because that's what I'm most familiar with, and I don't really like 'pico'. And then I also added 'wget', just in case I needed to download something off the web, using a direct download link, later on.\n\nCode:\n\nsu pkg_add nano wget\n\nThen, I used 'nano' to edit the 'doas' configuration file to let me actually use 'doas'.\n\nCode:\n\nsu nano /etc/doas.conf\n\nAdded the line:\n\nCode:\n\npermit: wheel\n\n... then CTRL+X to exit, and then SAVE.\n\nFrom this point, I was able to upgrade to OpenBSD 7.0 and then subsequently to 7.1, without having to burn any .iso image for either of them. All I had to do was:\n\nCode:\n\ndoas su sysupgrade\n\nThe above command automatically downloaded everything needed, for upgrading the installation of OpenBSD 6.9 to 7.0. After it restarted (also automatically), I was brought to the log-in prompt. I then repeated the process, one final time, to upgrade to OpenBSD 7.1:\n\nCode:\n\ndoas su sysupgrade\n\nConclusion\n\nAnd that is where I am, at the moment.\n\nI have not installed an xorg.conf file just yet, but I already know that I will eventually need to either create one from scratch, or download it from a website. That's why I chose to install the 'wget' program, earlier on. Once I have the default GUI working (ie. 'xenodm'), I can then try fooling around with another environment like 'XFCE' (hopefully) or at the very least, 'LXQT'.\n\nA parting note about Debian Sid, MintPPC, Linux Adelie, and MESA drivers\n\nI have mostly abandoned my efforts to get any sort of GUI working in Debian Sid, MintPPC (which is essentially Debian Sid, plus custom-ported Linux Mint packages), and even Linux Adelie. The Rage 128 ('r128') driver (at least in those operating systems) seems to require an older version of 'MESA' to be installed (and 'pinned'), and I can't be bothered to fool around with that, let alone look for where to download it. I just really wish that a working version of MESA could be created ('forked'), specifically to retain existing functionality of the Rage 128, and I suppose for other drivers that had their support similarly-dropped. I KNOW that I saw a Google search result that showed, someone else actually recommended doing just that (ie. forking MESA for older GPUs), but I can't find the link for it anymore."
+    }
+}

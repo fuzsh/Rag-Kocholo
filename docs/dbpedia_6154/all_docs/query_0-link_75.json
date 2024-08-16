@@ -1,0 +1,35 @@
+{
+    "id": "dbpedia_6154_0",
+    "rank": 75,
+    "data": {
+        "url": "https://graphicdesign.stackexchange.com/questions/134880/gimp-undo-tool-e-g-to-erase-pencil-paths",
+        "read_more_link": "",
+        "language": "en",
+        "title": "gimp: undo tool, e.g. to erase pencil paths",
+        "top_image": "https://cdn.sstatic.net/Sites/graphicdesign/Img/apple-touch-icon@2.png?v=5078cbcb62f3",
+        "meta_img": "https://cdn.sstatic.net/Sites/graphicdesign/Img/apple-touch-icon@2.png?v=5078cbcb62f3",
+        "images": [
+            "https://cdn.sstatic.net/Sites/graphicdesign/Img/logo.svg?v=c784e64edfd8",
+            "https://www.gravatar.com/avatar/192cfc7498843044f604aaedd1a09383?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/VcPMX.gif",
+            "https://lh5.googleusercontent.com/-GKn4Xw8HmgY/AAAAAAAAAAI/AAAAAAAACGg/yDdmCApeXx8/photo.jpg?sz=64",
+            "https://lh3.googleusercontent.com/-WNJkO-fEv7M/AAAAAAAAAAI/AAAAAAAAAFA/m7AAwpymOY4/photo.jpg?sz=64",
+            "https://graphicdesign.stackexchange.com/posts/134880/ivc/99ae?prg=81375738-acd1-48b0-8b67-6be21f59f77d"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2020-03-21T23:36:19",
+        "summary": "",
+        "meta_description": "I've drawn a few curves with the pencil, and now I want to edit one of them or at least delete it.\n\nThere's the history, but you can only undo a sequence that ends with the last op.\n\nThere's the path",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/graphicdesign/Img/favicon.ico?v=2b79c1ccdc7c",
+        "meta_site_name": "Graphic Design Stack Exchange",
+        "canonical_link": "https://graphicdesign.stackexchange.com/questions/134880/gimp-undo-tool-e-g-to-erase-pencil-paths",
+        "text": "Further to my comments, there's no Undo tool in GIMP. However there is a possible work around using the Clone tool to paint back a history state selectively. It's similar to the History Brush which is available in Photoshop. Obviously I'm not sure how useful this will be for your particular case.\n\nIf you have an undo step available in the history that you want to use, do the following:\n\nDuplicate the image using Image > Duplicate\n\nSelect the original image tab (along the top)\n\nSelect the history state you want to use.\n\nSelect the Clone tool. In the tool options set the Alignment to \"Registered\".\n\nCtrl+click anywhere on the image to set the Clone target\n\nSelect the duplicate image tab (along the top)\n\nPaint with the clone tool over the areas you want to undo.\n\nExample: Everything here is on one layer, I am using a history state from the image to Clone out some of the lines I made previously.\n\nIn a raster image there is no concept of an object, as there is in vector graphics. Operations are not done by recording a definition of actions on a particular entity.\n\nActually, if there is an object at all it is either the image in total, or an individual pixel.\n\nA pixel in the image is changed in some way, and editors can record this in history, usually grouped by the application of some tool or other. What is recorded in history in all the common raster programs (I believe: I haven't used them all) is the state of changed pixels in that grouping. To be able to meaningfully pull out a past edit would require that the change to a pixel is recorded, or computed backwards. That's possible but actually less helpful than it might seem, as a pixel changed more than once for different reasons (e.g. colour temperature, opacity, shading) is not always going to look right by just deducting a single operation. The pixel arrived at its current state by a process that might only be worked backwards in sequence; changing the sequence could change the final value.\n\nGIMP enables a level of 'objectness' by allowing layers, paths, and channels. Using these (particularly layers, and layer groups), even to what might seem an excessive way, is often the way to go when creating a raster graphic. In time, one learns when to use a new layer, when not to, and when to merge layers down (or occasionally up, if you have the FX Foundary extension) before applying a change to what you have so far.\n\nUsing layers a lot also enables you to duplicate a layer, and keep it hidden as a backup in case.. something I use a lot!\n\nThen you can play around with layers by hiding or revealing them, experimenting with various versions of the same 'object' to see what it looks like. Then save the GIMP file, still fully editable, before finally flattening all the layers you want for final output."
+    }
+}
