@@ -1,0 +1,35 @@
+{
+    "id": "dbpedia_6346_2",
+    "rank": 29,
+    "data": {
+        "url": "https://superuser.com/questions/543354/swap-file-error-message-while-trying-to-edit-vimrc-file",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Swap file error message while trying to edit .vimrc file?",
+        "top_image": "https://cdn.sstatic.net/Sites/superuser/Img/apple-touch-icon@2.png?v=e869e4459439",
+        "meta_img": "https://cdn.sstatic.net/Sites/superuser/Img/apple-touch-icon@2.png?v=e869e4459439",
+        "images": [
+            "https://cdn.sstatic.net/Sites/superuser/Img/logo.svg?v=4bc8a703ebac",
+            "https://www.gravatar.com/avatar/3c93245c8f90bb4256781ab91e212821?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/e1844cebf36374d83a83c0e69003cd42?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/535a9e3712ba865c4223e82b77e2f6b6?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/b02e07a0367de32a666f33d088125771?s=64&d=identicon&r=PG",
+            "https://superuser.com/posts/543354/ivc/9818?prg=e778974c-530d-48fb-baf0-541ede5ac219"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2013-01-29T11:46:27",
+        "summary": "",
+        "meta_description": "Everytime I try to open the .vimrc file I am getting this message .I am using the vimtutor in another terminal but I don't think I have opened up any extra .vimrc file . Why do I see this error and...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/superuser/Img/favicon.ico?v=4852d6fb3f5d",
+        "meta_site_name": "Super User",
+        "canonical_link": "https://superuser.com/questions/543354/swap-file-error-message-while-trying-to-edit-vimrc-file",
+        "text": "The swap file is a month old (Dec 26), so it's probably save to delete it. On that day, you probably killed a Vim instance (or it crashed), leaving behind the swap file. Vim will never clean these up itself, you have to delete it yourself (or choose the delete option when Vim asks you).\n\nBTW, the recover.vim - Show differences for recovered files plugin greatly enhances the swap file experience, e.g. by offering to show a diff of the changes.\n\nvi uses a swap file to keep a copy of your edits until you either save or discard them.\n\nYou see this error because either:\n\nYou are editing .vimrc twice (improbable, since you are only using vimtutor).\n\nvi was killed while .vimrc was being edited.\n\nIn the latter case, vi couldn't clean up the swap file .vimrc.swp, so it nicely asks you whether you want to recover the changes or discard them:\n\n(2) An edit session for this file crashed. If this is the case, use \":recover\" or \"vim -r .vimrc\" to recover the changes (see \":help recovery\"). If you did this already, delete the swap file \".vimrc.swp\" to avoid this message.\n\nIf you haven't made any changes to .vimrc (for example, you used vi to open the file -- in the future use less instead), simply delete the file:\n\n$ rm .vimrc.swp\n\nIf you have made changes to the file, open it with vi and press R. You may get error E309:\n\nE309: Unable to read block 1 from .vimrc.swp\n\nIn this case delete the swap file as explained above. If you could open the file, type:\n\n:recover\n\nReview the file and save it with:\n\n:x\n\nThen delete the swap file to get rid of the message."
+    }
+}

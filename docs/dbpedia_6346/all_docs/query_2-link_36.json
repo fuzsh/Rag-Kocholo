@@ -1,0 +1,48 @@
+{
+    "id": "dbpedia_6346_2",
+    "rank": 36,
+    "data": {
+        "url": "https://askubuntu.com/questions/214805/how-do-i-disable-swap",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How do I disable swap?",
+        "top_image": "https://cdn.sstatic.net/Sites/askubuntu/Img/apple-touch-icon@2.png?v=c492c9229955",
+        "meta_img": "https://cdn.sstatic.net/Sites/askubuntu/Img/apple-touch-icon@2.png?v=c492c9229955",
+        "images": [
+            "https://cdn.sstatic.net/Sites/askubuntu/Img/logo.svg?v=472cf2768bba",
+            "https://www.gravatar.com/avatar/78a0a4bb106d07b6c6f33a51988155e3?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/d2ea6602f1e2dc7fcb5541389c064e55?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/499ad6b4324afc463ebfcff47450a85e?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/78a0a4bb106d07b6c6f33a51988155e3?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/001a7dfad57132d86d3baea2e39d4046?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/uebLb.jpg?s=64",
+            "https://i.sstatic.net/6Fa3V.jpg?s=64",
+            "https://i.sstatic.net/opwrs.jpg?s=64",
+            "https://i.sstatic.net/AcfFW.png",
+            "https://www.gravatar.com/avatar/78a0a4bb106d07b6c6f33a51988155e3?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/Cfz2Q.jpg?s=64",
+            "https://i.sstatic.net/5JPDg.png",
+            "https://www.gravatar.com/avatar/78a0a4bb106d07b6c6f33a51988155e3?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/c5eaaf524fce6a899dbbe4a6914f477c?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/3d1fdda8ba74d020c747f0b983dc784c?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/b24bx.jpg?s=64",
+            "https://i.sstatic.net/NgCbm.png?s=64",
+            "https://askubuntu.com/posts/214805/ivc/9818?prg=4244a8d2-0838-4c48-9d6f-0f0f8e54cabd"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2012-11-09T00:30:52",
+        "summary": "",
+        "meta_description": "I have some sensitive data in RAM that I prefer not to be on disk. How do I disable swap?\n\nI have more than enough RAM. If RAM consumption gets too high I have no problems with processes being term...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/askubuntu/Img/favicon.ico?v=928dfb7c1990",
+        "meta_site_name": "Ask Ubuntu",
+        "canonical_link": "https://askubuntu.com/questions/214805/how-do-i-disable-swap",
+        "text": "You may disable swap after reboot by just commenting out (add # in front of the line) the swap entry in the /etc/fstab file. It will prevent the swap partition from automatically mounting after a reboot. To do this in a single command:\n\nsudo sed -i '/ swap / s/^\\(.*\\)$/#\\1/g' /etc/fstab\n\nOr simply:\n\nsudo sed -i '/ swap / s/^/#/' /etc/fstab\n\nNow your swap entry on /etc/fstab will look similar to this:\n\n#UUID=xxxxxxxx-xxxx-xxxxx-xxx-xxxxxxxxxxx none swap sw 0 0\n\nWith your own specific numbers and lower case letters instead of the letters \"x\".\n\nIf you're concerned about the content of the swap, you can always turn it off as specified in the usual way with sudo swapoff -a and then fill the swap device with zeros or random data using dd.\n\nFirst use the content of fstab to find your swapfile or device (less /etc/fstab).\n\nHaving located it and double and triple checked its location at say sda5 or /swapfile (swap partitions were replaced by default with a swapfile in Ubuntu 17.04 (Zesty Zapus) and beyond).\n\nIn the case of a swap partition or drive (prefaced with /dev): issue the \"disk destroyer\" command (not to be used lightly),\n\nsudo dd if=/dev/zero of=swap, replacing the word swap with the swap device or file you located in /etc/fstab\n\nto blast it full of zeros or\n\nsudo dd if=/dev/random of=swap again replacing the word swap with the swap device or file you located in /etc/fstab\n\nto blast it full of random data.\n\nIn the case of a swapfile (prefaced with only a path):, you can simply delete the file with sudo rm /path/to/swapfile, but it's better to just fill it with garbage as described above, so that the next time you turn swap on with\n\nswapon -a\n\nthe system will happily use it again. If you have plenty of RAM you may not need swap at all. Issue the command\n\nfree\n\nwhen the system is under heavy load and see how much is in use to make this determination.\n\nIf you determine that you permanently don't need swap (for hibernation or anything else) you can simply comment out that line in fstab as suggested here.\n\nGo into a terminal and execute this command: gnome-disks. It is not installed in all distributions. If so, follow the instructions printed to install it and try again. Look for a device with the word 'swap' on the left pane. It usually has a size the same as your physical memory. Click the square button to disable it. Authenticate this change with your root password.\n\nScreenshot:\n\nIn the System Monitor application (gnome-system-monitor), you will see it reports the swap area as 'not available'. The swap area is disabled, but not deleted. You can enable it easily again in the future. Deleting the swap space has caused my system no harm, but you will create more work for yourself if you do decide you want it back (hibernation) in the future.\n\nTo prevent it from mounting at startup, you should go into the \"Edit Mount Options...\" in gnome-disks and uncheck \"Mount at startup\"."
+    }
+}

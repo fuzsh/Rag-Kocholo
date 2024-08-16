@@ -1,0 +1,48 @@
+{
+    "id": "dbpedia_6346_2",
+    "rank": 46,
+    "data": {
+        "url": "https://superuser.com/questions/480367/whats-the-easiest-way-to-delete-vim-swapfiles-ive-already-recovered-from",
+        "read_more_link": "",
+        "language": "en",
+        "title": "What's the easiest way to delete Vim swapfiles I've already recovered from?",
+        "top_image": "https://cdn.sstatic.net/Sites/superuser/Img/apple-touch-icon@2.png?v=e869e4459439",
+        "meta_img": "https://cdn.sstatic.net/Sites/superuser/Img/apple-touch-icon@2.png?v=e869e4459439",
+        "images": [
+            "https://cdn.sstatic.net/Sites/superuser/Img/logo.svg?v=4bc8a703ebac",
+            "https://www.gravatar.com/avatar/d069ac0170dc6c93bad77734258fadae?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/7acdf69764a61ccea54316ac415f40ee?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/0egSZ.png?s=64",
+            "https://www.gravatar.com/avatar/1ebabae87ed1e30f0a66ef80a3ac3759?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/af0hc.png?s=64",
+            "https://i.sstatic.net/HFhZz.jpg?s=64",
+            "https://www.gravatar.com/avatar/78140b18051cbf367d39f10d10ef2c8b?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/nIDkp.png?s=64",
+            "https://www.gravatar.com/avatar/cae9027f374d53de525672532152181f?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/9579d46f3906911c55cfbe5c7087789d?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/7953f14f1787fc6ee7a9eb80d0e08b0c?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/6a62362ec20cc0677a03d69669a245f5?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/e11915f1e9df5c6b06b775451004c045?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/7a16fac3f735f8d41981e252499c59c8?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/GWBHx.jpg?s=64",
+            "https://www.gravatar.com/avatar/552d91d82969b8f227210655d790ee1e?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/3d62e28078df819ef2c61b3ddf5dc25d?s=64&d=identicon&r=PG",
+            "https://superuser.com/posts/480367/ivc/9818?prg=8bf0e7fd-ed9e-4de3-a859-779b11f2bbc6"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2012-09-27T14:47:47",
+        "summary": "",
+        "meta_description": "Sometimes Vim crashes and leaves me a swapfile.  That's awesome.  Then I open the file I was editing and Vim asks me if I want to recover.  I do, thanks.  When it's done, Vim tells me,\n\nYou may wan...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/superuser/Img/favicon.ico?v=4852d6fb3f5d",
+        "meta_site_name": "Super User",
+        "canonical_link": "https://superuser.com/questions/480367/whats-the-easiest-way-to-delete-vim-swapfiles-ive-already-recovered-from",
+        "text": "A slightly simpler way\n\nFrom the terminal emulator:\n\n$ vim filename\n\nThen inside vim choose recover, and if you want to delete the swap you write (save) and then call this command:\n\n:e // no argument needed. It assumes the current buffer.\n\n...and choose delete this time.\n\nA benefit to this approach is that it won't automatically overwrite a working file, if the recovery turned out corrupt (though admittedly I've never had that happen before).\n\nThere are also relevant tips on this question on Stack Overflow (where I found this tip).\n\nTo Clean out ALL vim Swap Files in a Directory:\n\nIf you are sure you don’t need any vim swap files in a directory tree and want to get rid of them, you can use the following command in the directory while vim is not running (not even in another window or even a different login session):\n\nfind . -type f -name \"*.sw[klmnop]\" -delete\n\nSome inspiration and thoughts came from Removing junk .swp files at Google Groups. This will delete all files whose names end with .swk, .swl, .swm, .swn, .swo, or .swp in the current directory tree.\n\nThis might not be what you want, for several reasons:\n\nAs stated, it searches the current directory tree ; i.e., the current directory and all subdirectories, recursively. That goes beyond what the question asks for, and may be considered to be overkill.\n\nAs stated, it will delete all files whose names end with .swk, .swl, .swm, .swn, .swo, or .swp, and not just .swp. Gary Johnson says,\n\nAlso, not all swap files end in .swp. If Vim needs to create a swap file and one ending in .swp already exists, Vim will use the extension .swo for the new one and .swn after that. I think it just continues backwards through the alphabet. So using something like\n\n\\*.sw[nop]\n\nor even\n\n\\*.sw?\n\nwould be more thorough.\n\nThe original author of this post says,\n\n'klmnop' may be overkill, but that usually ensures I get all of them.\n\nOn the other hand, it might be underkill. rouble suggests\n\nfind . -type f \\( -name \".*.s[a-v][a-z]\" -o -name \".*.sw[a-p]\" \\) -delete\n\nwhich matches all (lower-case) three-letter extensions ranging from .saa to .swp. He adds, “Be careful though, while this is a more complete solution, it will take out any .svg image files and .swf adobe flash files. You may want to modify the regex if you work with those files.” It also matches .sav, .snd (sound data), .sql, .src, .srt (SubRip video subtitle format), and many other common extensions.\n\nIt might be overkill. As stated, it will delete all files whose names end with .swk, .swl, .swm, .swn, .swo, or .swp. But, apparently, vim swap files are commonly “dot” files. If you edit hello.cpp, the swap file might be .hello.cpp.swp. As shown (but not explained) in rouble’s answer, it is safer to delete only files whose names begin with a dot; e.g., with\n\nfind . -type f -name \".*.sw[klmnop]\" -delete\n\nType ls -a which lists ALL the files in the directory\n\ntype rm .whatever.your.swp is and press enter\n\nIts that simple.\n\nAny file that shows with . in front is a hidden file and is not normally seen.\n\nRemember that changes are immediate and permanent so be careful.\n\nVim, like most Unix commands, is simple and explicit, rather than assuming and implicit.\n\nYou recover with (r). It you don't like the recovery or the recovery is corrupt, you can discard it. If you do like it, you can save the file. The recovery file is not deleted for you because this is not explicit and will not be correct for 100% of situations.\n\nSo you (r)ecover, (w)rite and (q)uit, then either edit again and choose (d)elete or \"rm .myfile.js.swp\" and edit again. This is quick to do and is always, from Vim's point of view, 100% correct behaviour.\n\nHere is a snippet to add in .vimrc. It deletes all the swap files that are associated to the current file buffer and reset swap extension.\n\nfunction! DeleteFileSwaps() write let l:output = '' redir => l:output silent exec ':sw' redir END let l:current_swap_file = substitute(l:output, '\\n', '', '') let l:base = substitute(l:current_swap_file, '\\v\\.\\w+$', '', '') let l:swap_files = split(glob(l:base.'\\.s*')) \" delete all except the current swap file for l:swap_file in l:swap_files if !empty(glob(l:swap_file)) && l:swap_file != l:current_swap_file call delete(l:swap_file) echo \"swap file removed: \".l:swap_file endif endfor \" Reset swap file extension to `.swp`. set swf! | set swf! echo \"Reset swap file extension for file: \".expand('%') endfunction command! DeleteFileSwaps :call DeleteFileSwaps()\n\nOnce encounter with the predicament, one can execute :DeleteFileSwaps This is great if combine with :windo or :tabdo commands.\n\n:tabdo DeleteFileSwaps\n\nFurther details: A file can have more than 1 swap file. The reason because the swap file, with extension of .swp, still exist and vim will keep creating new ones because of it. To find out if .swp exist:\n\nWith the target file open in vim, execute :sw to get current swap file.\n\nCheck the directory that the current swap file is contained in.\n\nThen check if directory contains a swap file with the name of the open file and has an extension of .swp.\n\nThe snippet above follows the same process, but remove all swap files.\n\nHope this helps.\n\nIf there are no other vi processes running then this works:\n\nvi filename\n\nrecover\n\n↩\n\n:w\n\n:e\n\ndelete\n\nIf other vi processes are running then you won't get the delete option on step 5. First go find and stop or kill the other vi processes.\n\nif you're asked then press D to delete current file's swap file.\n\nif you are not then you have to do it manually.\n\none alternative way to do this is:\n\nto locate/search file:\n\nfind | grep \".searchRefineVertTabs.jsp.swp\"\n\nand then delete this file:\n\nrm ./.searchRefineVertTabs.jsp.swp\n\nI often don't see the (D) Delete it option. I guess because I'm on *nix and the .swp file is left over from some crashed or killed vim process. So, if I just want to delete all .sw* files after opening my file I'll issue:\n\nvim my-file-in-current-directory.txt\n\nthen hit (E) Edit anyway or (R) Recover\n\nand then once in vim issue:\n\n:!rm .%.sw*\n\nIf you're not in the same directory as the file you can still do this, but it's not so easy to remember or type out:\n\nvim my/file/with-really-long-name/in-a-directory-far-away.txt\n\nthen (E) or (R) then\n\n:!rm %:p:h/.%:t.sw*"
+    }
+}
