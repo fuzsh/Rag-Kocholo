@@ -1,0 +1,46 @@
+{
+    "id": "dbpedia_5752_3",
+    "rank": 61,
+    "data": {
+        "url": "https://community.splunk.com/t5/Splunk-Search/How-to-add-dummy-row-with-0-when-count-returns-0/m-p/466327",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Solved: How to add dummy row with 0 when count returns 0?",
+        "top_image": "https://community.splunk.com/html/@87A068F8F1A8A358BCD1BCC5267F51D2/assets/favicon.ico",
+        "meta_img": "https://community.splunk.com/html/@87A068F8F1A8A358BCD1BCC5267F51D2/assets/favicon.ico",
+        "images": [
+            "https://community.splunk.com/html/assets/splunk-logo-black.svg",
+            "https://community.splunk.com/html/assets/splunk-logo-black.svg",
+            "https://community.splunk.com/legacyfs/online/avatars/572908.jpg",
+            "https://community.splunk.com/legacyfs/online/avatars/299862.jpg",
+            "https://community.splunk.com/legacyfs/online/avatars/299862.jpg",
+            "https://community.splunk.com/t5/image/serverpage/avatar-name/environment-clouds/avatar-theme/classic/avatar-collection/environment/avatar-display-size/message/version/2?xdesc=1.0",
+            "https://community.splunk.com/legacyfs/online/avatars/572908.jpg",
+            "https://community.splunk.com/legacyfs/online/avatars/299862.jpg",
+            "https://community.splunk.com/legacyfs/online/avatars/572908.jpg",
+            "https://community.splunk.com/legacyfs/online/avatars/524925.jpg",
+            "https://community.splunk.com/legacyfs/online/avatars/572908.jpg",
+            "https://community.splunk.com/skins/images/8489761B9DA10BE30BF347A1F024F457/responsive_peak/images/icon_anonymous_message.png",
+            "https://community.splunk.com/skins/images/83CBA99E58E28310D58BCA8A4EF9F33A/responsive_peak/images/powered_by_khoros.svg",
+            "https://www.splunk.com/content/dam/splunk2/images/logos/splunk-logo.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "community.splunk.com",
+            "user-id"
+        ],
+        "publish_date": "2020-02-13T10:33:05+00:00",
+        "summary": "",
+        "meta_description": "Solved: Hello Splunkers, I am using | stats count by X, Y at the end of my query. X has 4 possible values and so does Y resulting in 16 different",
+        "meta_lang": "en",
+        "meta_favicon": "https://community.splunk.com/html/@87A068F8F1A8A358BCD1BCC5267F51D2/assets/favicon.ico",
+        "meta_site_name": "",
+        "canonical_link": "https://community.splunk.com/t5/Splunk-Search/How-to-add-dummy-row-with-0-when-count-returns-0/m-p/466327#M131320",
+        "text": "@vinaysathyanarayana please try the following run anywhere example which should always return 16 rows for each possible combination of field1 and field2. The first search is to simulate some combination of data available in index. For example for field1 values as A and C and field2 values as X and Y there are 4 combination which will have count (through random() function). The remaining combinations are not present. the query from | append ... till | dedup field1 field2 needs to be added to your existing search where field1 and field2 are X and Y as per your question. Please try out and confirm!\n\n| makeresults | fields - _time | eval field1=\"A,C\", field2=\"X,Y\" | makemv field1 delim=\",\" | makemv field2 delim=\",\" | mvexpand field1 | mvexpand field2 | eval count=random(), count=substr(count,1,2) | table field1 field2 count | append [| makeresults | fields - _time | eval field1=\"A,B,C,D\", field2=\"W,X,Y,Z\" | makemv field1 delim=\",\" | makemv field2 delim=\",\" | mvexpand field1 | mvexpand field2 | eval count=0] | dedup field1 field2\n\n____________________________________________\n\n| makeresults | eval message= \"Happy Splunking!!!\"\n\nHello @oscar84x Thank you for the response. I tried | fillnull but it didn't help. Let me try to summarize the scenario if it helps. I have 2 fields, say category and status with 4 possible values. let's say category 1,2,3,4 and status A,B,C,D.\n\nNow I would like to count events for each combination of category and status. Like how many events with category=1 and status=A, with category=1 and status=B and so on for all 16 possible combinations. I am using | stats count by Category, Status. Now, If there are no events with Category=2 and status=C, It doesn't show it in the table. I would like to have a 0 value for this combination.\n\nI hope I have made it clear. please write back if it isn't clear yet."
+    }
+}
