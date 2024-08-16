@@ -1,0 +1,41 @@
+{
+    "id": "dbpedia_6143_2",
+    "rank": 25,
+    "data": {
+        "url": "https://kcm.trellix.com/corporate/index%3Fpage%3Dcontent%26id%3DKB91035",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How to migrate from a Sentrigo environment to a Trellix environment",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://kcm.trellix.com/corporate/apps/portal/resources/animated_loading4.jpg",
+            "https://kcm.trellix.com/webcenter/content/conn/spr-ucm/path/Enterprise%20Libraries/sp/WebContent/Images/trellix/Dual_Lockup_468x40.png",
+            "https://kcm.trellix.com/webcenter/content/conn/spr-ucm/path/Enterprise%20Libraries/sp/WebContent/Images/trellix/xpand-recap-menu-card.jpg",
+            "https://kcm.trellix.com/webcenter/content/conn/spr-ucm/path/Enterprise%20Libraries/sp/WebContent/Images/trellix/trellix-ceo-threat-center.jpg",
+            "https://kcm.trellix.com/webcenter/content/conn/spr-ucm/path/Enterprise%20Libraries/sp/WebContent/Images/trellix/gartner-xdr-mm.png",
+            "https://kcm.trellix.com/webcenter/content/conn/spr-ucm/path/Enterprise%20Libraries/sp/WebContent/Images/trellix/trellix-arc-card.jpg",
+            "https://kcm.trellix.com/webcenter/content/conn/spr-ucm/path/Enterprise%20Libraries/sp/WebContent/Images/trellix/threat-report-feb-2023-card.jpg",
+            "https://kcm.trellix.com/webcenter/images/logo-mcafee-shield.png",
+            "https://kcm.trellix.com/webcenter/images/logo-mcafee-shield.png",
+            "https://kcm.trellix.com/webcenter/content/conn/spr-ucm/path/Enterprise%20Libraries/sp/WebContent/Images/Icon-material-arrow-forward.svg",
+            "https://kcm.trellix.com/corporate/apps/portal/resources/images/closebtn.svg",
+            "https://kcm.trellix.com/corporate/apps/portal/resources/images/closebtn.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "Learn more about how to migrate from a Sentrigo environment to a Trellix environment.",
+        "meta_lang": "en",
+        "meta_favicon": "https://kcm.trellix.com/trellixfav.ico",
+        "meta_site_name": "",
+        "canonical_link": "http://kcm.trellix.com/corporate/index?page=content&id=KB91035&locale=en_US",
+        "text": "Technical Articles ID: KB91035\n\nLast Modified: 2022-09-23 11:04:22 Etc/GMT\n\nEnvironment\n\nDatabase Activity Monitoring 4.x\n\nProblem\n\nWe no longer produce Sentrigo-branded builds. To migrate from Sentrigo-branded Sensors and Servers to Trellix-branded Sensors and Servers, follow the steps below.\n\nSolution\n\nIMPORTANT: You must first upgrade the Server and then the Sensor.\n\nUpgrade the Server:\n\nStop the Sentrigo-branded Server service.\n\nOn Windows, stop the service named Hedgehog:\n\n​Open the Task Manager\n\nClick the Services tab.\n\nRight-click the entry named Hedgehog and select Stop Service.\n\nOn Linux, stop the service named sentrigo-server.\n\n​Open a command-line session.\n\nType /etc/init.d/sentrigo-server stop and press Enter.\n\nBack up the back-end database:\n\nUse your regular DBMS tools to perform the backup.\n\nNOTE: HSQLDB back-end database isn't supported for production environments.\n\nInstall the Database Security Standalone Server with an HSQLDB back-end database.\n\nFor further instructions, see the \"Server Installation\" section of the Installation Guide for your release.\n\nIMPORTANT:\n\nDon't start the Database Security Server service.\n\nThe final step of the installation process shows a prompt that asks whether you want to start the Database Security Server service. Click No.\n\nCopy the contents of the Sentrigo server custom properties file to the Trellix server custom properties file.\n\nIMPORTANT:\n\nDon't replace the file; instead, copy the content from one file to another.\n\nOn Windows:\n\nOpen C:\\Program Files\\Sentrigo\\Hedgehog\\conf\\sentrigo-custom.properties in Notepad.\n\nSelect and copy the entire contents of the file.\n\nOpen C:\\Program Files\\McAfee\\McAfee Database Security\\conf\\server-custom.properties in Notepad.\n\nLocate the bottom of the file and paste the copied content into the server-custom.properties file.\n\nSave the file.\n\nOn Linux:\n\nOpen /usr/local/sentrigo-server/conf/sentrigo-custom.properties in a text editor of your choice.\n\nSelect the contents of the file.\n\nOpen usr/local/mfe-dbs-server/conf/server-custom.properties.\n\nLocate the bottom of the file and paste the copied contents of sentrigo-custom.properties into the file.\n\nIf you're upgrading to Database Security Standalone Server 4.6.6 or higher, you must add another property to the server-custom.properties file.\n\nAfter the pasted content from the steps above, add the following text:\n\nFor a 32-bit architecture:\n\nJRE_HOME=/usr/local/mfe-dbs-server/jre_32\n\nFor a 64-bit architecture:\n\nJRE_HOME=/usr/local/mfe-dbs-server/jre_64\n\nSave your changes.\n\nStart the Database Security Server:\n\nOn a Windows Server, the service is named McAfeeDBS.\n\n​Open the Task Manager.\n\nSelect the Services tab.\n\nLocate the McAfeeDBS Service.\n\nRight-click and click Start Service.\n\nOn a Linux server, the service is named mfe-dbs-server.\n\nOpen a command-line session.\n\nType /etc/init.d/mfe-dbs-server start and press End.\n\nUninstall the Sentrigo-branded Server:\n\nOn Windows:\n\nNavigate to Installed Programs.\n\nHighlight Sentrigo Server and click Uninstall.\n\nClick No when you see the prompt:\n\nNote! Selecting 'Yes' removes alerts, configurations, and the entire Hedgehog database. Select 'No' to keep files\n\nOn Linux:\n\nOpen a command-line session.\n\nType rpm -e sentrigo-server and press Enter.\n\nRemove the Sentrigo installation directories.\n\nOn Windows:\n\nOpen File manager.\n\nNavigate to C:\\Program Files.\n\nDelete Sentrigo.\n\nOn Linux:\n\nNavigate to /usr/local/.\n\nDelete the folder sentrigo-server.\n\nUpgrade the Sensor:\n\nUpgrade your Sensor according to the steps documented in the \"Sensor Installation\" section of the Database Activity Monitoring Installation Guide for your release.\n\nIMPORTANT: Don't upgrade the Sensor using the .sup files because this method isn't recommended.\n\nAffected Products\n\nLanguages:\n\nThis article is available in the following languages:"
+    }
+}
