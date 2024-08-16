@@ -1,0 +1,31 @@
+{
+    "id": "dbpedia_6613_1",
+    "rank": 30,
+    "data": {
+        "url": "https://cloud.google.com/recaptcha/docs/interpret-assessment-website",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Interpret assessments for websites",
+        "top_image": "https://cloud.google.com/_static/cloud/images/social-icon-google-cloud-1200-630.png",
+        "meta_img": "https://cloud.google.com/_static/cloud/images/social-icon-google-cloud-1200-630.png",
+        "images": [
+            "https://www.gstatic.com/devrel-devsite/prod/v20ab951cf37b43fc7a428ae75ce91d8269f391204ca16525bc8a5ececea0ab56/cloud/images/cloud-logo.svg",
+            "https://www.gstatic.com/devrel-devsite/prod/v20ab951cf37b43fc7a428ae75ce91d8269f391204ca16525bc8a5ececea0ab56/cloud/images/cloud-logo.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "https://www.gstatic.com/devrel-devsite/prod/v20ab951cf37b43fc7a428ae75ce91d8269f391204ca16525bc8a5ececea0ab56/cloud/images/favicons/onecloud/favicon.ico",
+        "meta_site_name": "Google Cloud",
+        "canonical_link": "https://cloud.google.com/recaptcha/docs/interpret-assessment-website",
+        "text": "This page explains how to interpret a score to understand the level of risk that user interactions pose, and take appropriate actions for your site.\n\nreCAPTCHA returns a score for each request based on the interactions with your site, regardless of the key type. After you receive the score from reCAPTCHA, you must interpret the score and take appropriate actions for your site.\n\nBefore you begin\n\nCreate an assessment for your website.\n\nInterpret the assessment\n\nAfter your backend submits a user's reCAPTCHA response token to reCAPTCHA, you receive an assessment as a JSON response as shown in the following example.\n\nTo interpret an assessment, consider the following parameters:\n\nvalid: indicates whether the provided user response token is valid. When valid = false, the reason is specified in invalidReason. valid = false can also indicate that a user has failed to solve a challenge or there is a siteKey mismatch.\n\ninvalidReason: Reason associated with the response when valid = false.\n\naction: a user interaction that triggered reCAPTCHA verification.\n\nexpectedAction: the expected action from a user that you specified when creating the assessment.\n\nscore: level of risk the user interaction poses.\n\nreasons: additional information about how reCAPTCHA has interpreted the user interaction.\n\n{ \"event\":{ \"expectedAction\":\"EXPECTED_ACTION\", \"hashedAccountId\":\"ACCOUNT_ID\", \"siteKey\":\"KEY_ID\", \"token\":\"TOKEN\", \"userAgent\":\"(USER-PROVIDED STRING)\", \"userIpAddress\":\"USER_PROVIDED_IP_ADDRESS\" }, \"name\":\"ASSESSMENT_ID\", \"riskAnalysis\":{ \"reasons\":[], \"score\":\"SCORE\" }, \"tokenProperties\":{ \"action\":\"USER_INTERACTION\", \"createTime\":\"TIMESTAMP\", \"hostname\":\"HOSTNAME\", \"invalidReason\":\"(ENUM)\", \"valid\":(BOOLEAN) } }\n\nVerify actions\n\nThe JSON response contains the action parameter that you specified for a user interaction when calling execute() and the expectedAction parameter that you specified when creating the assessment.\n\nVerify that action matches the expectedAction. For example, a login action should be returned on your login page. If there is a mismatch, it indicates that an attacker is attempting to falsify actions. You can take actions against the user interaction, such as adding additional verifications or blocking the interaction to prevent any fraudulent activities.\n\nInterpret scores\n\nThe scoring system of reCAPTCHA is an expansion from prior versions of reCAPTCHA to allow greater granularity in responses. reCAPTCHA has 11 levels for scores with values ranging from 0.0 to 1.0. The score 1.0 indicates that the interaction poses low risk and is very likely legitimate, whereas 0.0 indicates that the interaction poses high risk and might be fraudulent. Out of the 11 levels, only the following four score levels are available by default: 0.1, 0.3, 0.7 and 0.9.\n\nTo request access to 11 score levels, contact our sales team.\n\nreCAPTCHA learns by monitoring real traffic on your site. Therefore, scores in a staging environment and within 7 days of implementation might differ from the long-term production scores.\n\nIf you installed score-based keys, you can first run reCAPTCHA without taking action and then decide on thresholds by looking at the traffic.\n\nBased on the score, you can take an appropriate action in the context of your site. To protect your site better, we recommend that you take the action in the background instead of blocking traffic.\n\nThe following table lists some of the actions you might take:\n\nUse case Action homepage See a cohesive view of your traffic on the admin console while filtering scrapers. login With low scores, require MFA or email verification to prevent credential stuffing attacks. social Limit unanswered friend requests from abusive users and send risky comments to moderation. e-commerce Put your real sales ahead of bots and identify risky transactions.\n\nReason codes\n\nReason codes are available after a security review. To request access to reason codes, contact our sales team.\n\nSome scores might be returned with reason codes that provide additional information about how reCAPTCHA interpreted the interactions.\n\nThe following table lists the reason codes and their descriptions:\n\nReason code Description AUTOMATION The interaction matches the behavior of an automated agent. UNEXPECTED_ENVIRONMENT The event originated from an illegitimate environment. TOO_MUCH_TRAFFIC Traffic volume from the event source is higher than normal. UNEXPECTED_USAGE_PATTERNS The interaction with your site was significantly different from expected patterns. LOW_CONFIDENCE_SCORE Too little traffic was received from this site to generate quality risk analysis.\n\nWhat's next"
+    }
+}
