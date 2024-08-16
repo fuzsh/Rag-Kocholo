@@ -1,0 +1,37 @@
+{
+    "id": "dbpedia_6248_0",
+    "rank": 4,
+    "data": {
+        "url": "https://community.esri.com/t5/arcgis-javascript-maps-sdk-blog/where-is-github-most-popular-in-the-uk/ba-p/894633",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Where is GitHub most popular in the UK?",
+        "top_image": "https://www.esri.com/content/dam/esrisites/en-us/common/favicon/esri-favicon-dark-32.png",
+        "meta_img": "https://www.esri.com/content/dam/esrisites/en-us/common/favicon/esri-favicon-dark-32.png",
+        "images": [
+            "https://community.esri.com/html/assets/langTrFlag.PNG",
+            "https://community.esri.com/legacyfs/online/esri/avatars/a132065_james.png",
+            "https://community.esri.com/legacyfs/online/emoticons/sad.png",
+            "https://community.esri.com/legacyfs/online/116136_githubcsv.png",
+            "https://community.esri.com/legacyfs/online/116138_githubmap.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "community.esri.com",
+            "user-id"
+        ],
+        "publish_date": "2015-07-09T12:23:36.244000+00:00",
+        "summary": "",
+        "meta_description": "Recently I came across an article that had used the GitHub API to scrape information regarding the number of users in major cities in the US. The article gave me",
+        "meta_lang": "en",
+        "meta_favicon": "https://www.esri.com/content/dam/esrisites/en-us/common/favicon/esri-favicon-180.png",
+        "meta_site_name": "Esri Community",
+        "canonical_link": "https://community.esri.com/t5/arcgis-javascript-maps-sdk-blog/where-is-github-most-popular-in-the-uk/ba-p/894633",
+        "text": "Recently I came across an article that had used the GitHub API to scrape information regarding the number of users in major cities in the US. The article gave me the idea to take this a little further and see if we could map out the number of users in each city, or perhaps more importantly the percentage of people in that city with a GitHub accounts. Before we begin let met point out the obvious flaws with the methodology of this application:\n\nPopulations are estimations (plus the UK census is now 4 years old)\n\nPopulations for cities can be difficult to define (city, urban, metro area)\n\nGitHub accounts can be owned by companies as well as people\n\nNot everyone gives their location on their GitHub accounts, or people may lie/not update\n\nHaving said this, it's still interesting to explore the available data and try to see or explain any patterns. Plus it's fun!\n\nData Scraping\n\nFirstly to get the data into a format that could be mapped, it was necessary to instantiate a list of cities that I was interested in, and assign these their populations (I used Wikipedia).\n\nThen using Python and the GitHub API I scraped the number accounts that matched the town name. Here it was necessary to try multiple different matches to get an accurate data. For example, with London it was necessary to try \"London, England\", \"London, Great Britain\", \"London, United Kingdom\" and \"London, UK\" as these are all valid locations representing the same place. You will need a GitHub account and a token to avoid rate limiting.\n\nThe Results\n\nCityGitHub AccountsCity PopulationRateCambridge, England13131285151.022Brighton, England5881630000.361Oxford, England5511713800.322Bath, England231888590.260Reading, England2911608250.181Durham, England68480690.141Bristol, England8376170000.136York, England2602044390.127Norwich, England1651404520.117Edinburgh, Scotland8017820000.102London, England929197874260.095Glasgow, Scotland5585899000.095Dundee, Scotland1331539900.086Exeter, England981218000.080Belfast, Northern-Ireland2162767050.078Bangor, Wales11163580.067Aberdeen, Scotland1251891200.066Cardiff, Wales2834472870.063Bournemouth, England1161834910.063Sheffield, England3626407200.056Nottingham, England3897299770.053Liverpool, England2364664150.051Manchester, England129125533790.051Plymouth, England1222566000.048Swansea, Wales1012390230.042Newcastle, England3518799960.040Southampton, England3128555690.036Inverness, Scotland21579600.036Leicester, England1435090000.028Leeds, England49617779340.028Gloucester, England291256490.023Warwick, England291393960.021Birmingham, England50324409860.021Newport, Wales261457000.018Derry, Northern-Ireland6836520.007Aylesbury, England131845600.007Lisburn, Northern-Ireland4714030.006\n\nWe can see highest on the list is Cambridge with over 1 % of the population having a GitHub account. Lowest on the list was Lisburn with 0.006 closely followed by Aylesbury (where I live ) and Derry with 0.007%. To put this into perspective the original Hirily analysis found 3% of San Francisco's population had a GitHub account!\n\nMaking the Map\n\nThe script outputs a CSV which was then uploaded into ArcGIS Online content pane using a developer account. When uploading the CSV we can set the city column to be geocoded. This allows us to take the address of the city and turn it into a latitude and longitude, in turn allowing us to map the data.\n\nThe process asks if you want to review (probably worth while as some points can end up astray). Once this was done, I gained a Feature Service of the data (a REST end point we can get our data from). From here I took this into a Esri Leaflet map (one of Esri's GitHub projects!). The main bulk of the mapping is outlined in the JavaScript code below:\n\nvar map = L.map('map').setView([ 54.514, -2.122], 6); L.esri.basemapLayer(\"Gray\").addTo(map); L.esri.basemapLayer(\"GrayLabels\").addTo(map); var ukGitHub = \"http://services1.arcgis.com/Q6SkXeZHDxVxhXA4/arcgis/rest/services/GitHub_Data/FeatureServer/0\"; var gh = L.esri.featureLayer(ukGitHub, { pointToLayer: function (geojson, latlng) { console.log(geojson); var rate = geojson.properties.Rate; var size; if (rate >= 0.361 && rate < 1.2 ) { size = [65, 63]; } else if (rate >= 0.181 && rate < 0.361 ) { size = [55, 53]; } else if (rate >= 0.095 && rate < 0.181 ) { size = [45, 43]; } else if (rate >= 0.046 && rate < 0.095 ) { size = [35, 33]; } else if (rate >= 0 && rate < 0.046 ) { size = [25, 23]; } return L.marker(latlng, { icon: L.icon({ iconUrl: 'imgs/github4.png', iconSize: size, iconAnchor: [size[0] / 2, size[1] / 2], popupAnchor: [0, -11] }) }); } }).addTo(map);\n\nScreenshot and Live Demo\n\nA screenshot of the map can be seen below, a live demo can be seen here.\n\nWhere's the code?\n\nYou can find the code on my GitHub account: JamesMilnerUK/github-mapping · GitHub\n\nset the city column to be geocoded. This allows us to take the address of the city and turn it into a latitude and longitude, in turn allowing us to map the data."
+    }
+}
