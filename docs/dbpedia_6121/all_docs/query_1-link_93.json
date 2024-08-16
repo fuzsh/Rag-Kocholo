@@ -1,0 +1,35 @@
+{
+    "id": "dbpedia_6121_1",
+    "rank": 93,
+    "data": {
+        "url": "https://serverfault.com/questions/1019683/how-can-i-lower-the-cpu-usage-on-mysql-queries",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How can I lower the CPU usage on MySQL queries?",
+        "top_image": "https://cdn.sstatic.net/Sites/serverfault/Img/apple-touch-icon@2.png?v=9b1f48ae296b",
+        "meta_img": "https://cdn.sstatic.net/Sites/serverfault/Img/apple-touch-icon@2.png?v=9b1f48ae296b",
+        "images": [
+            "https://cdn.sstatic.net/Sites/serverfault/Img/logo.svg?v=43f5b6d5f65b",
+            "https://www.gravatar.com/avatar/38f596c3f2df8d2138615318ee5629fd?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/96e8028e9cf279679e9215dd7f246ccd?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/5a085ec390128f3a5a9496692a705bcc?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/a187537757c9049c64e21e424c5f09a8?s=64&d=identicon&r=PG",
+            "https://serverfault.com/posts/1019683/ivc/5c6f?prg=9bf5603c-ce6e-4e1c-be53-338cdafcbe23"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2020-06-02T12:11:45",
+        "summary": "",
+        "meta_description": "We are running a Wowonder-based social site for a little community and as soon as we hit 100 users online, our site becomes extremely slow due to high CPU usage. The script itself should be fine be...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/serverfault/Img/favicon.ico?v=18e9cc4f2aea",
+        "meta_site_name": "Server Fault",
+        "canonical_link": "https://serverfault.com/questions/1019683/how-can-i-lower-the-cpu-usage-on-mysql-queries",
+        "text": "As a general rule, high CPU usage means slow (poorly indexed or poorly designed) queries. Configuration generally has a much smaller impact, and bad configuration will typically make your CPU usage lower and queries slower.\n\nHaving said that, some parts of your configuration are egregiously poor:\n\njoin_buffer_size=256M\n\nThis is quite likely increasing your CPU usage and crippling your performance. Comment it out, leave it on default value.\n\nYou almost certainly don't need to touch these away from defaults, so consider commenting them out:\n\nthread_stack = 192K thread_cache_size = 10\n\nThese usually do more harm than good:\n\nquery_cache_type = 1 query_cache_limit = 256K query_cache_min_res_unit = 2k query_cache_size = 50M\n\nConsider replacing with:\n\nquery_cache_type = 0 query_cache_size = 0\n\nMy answer is to complement @Gordan Bobic\n\nCheck which queries are slow:\n\nmysql -e \"SELECT * FROM INFORMATION_SCHEMA.PROCESSLIST WHERE COMMAND<>'Sleep' and TIME > 5\"\n\nFor each query that is slow run an EXPLAIN on the query. You can install Percona Tools and run pt-visual-explain to have a better representation of the EXPLAIN statement.\n\nIf you are using InnoDB engine, you can see what it is doing with:\n\nmysql -e \"show engine innodb status \\G\"\n\nOther details can be found in MySQL Performance Schema which includes a profiler too. Here is a Percona article about the profiler.\n\nIf you want to have a better picture of the CPU utilization, you can use perf + FlameGraphs."
+    }
+}

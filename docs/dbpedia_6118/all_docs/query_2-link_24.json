@@ -1,0 +1,47 @@
+{
+    "id": "dbpedia_6118_2",
+    "rank": 24,
+    "data": {
+        "url": "https://www.cs.utexas.edu/~mhauskn/projects/atari/movies.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Atari Video Game Learning",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://www.cs.utexas.edu/~mhauskn/projects/atari/images/object-substrate-2.png"
+        ],
+        "movies": [
+            "http://www.youtube.com/embed/woXkJFio1mA",
+            "http://www.youtube.com/embed/DnU_BpxYrXA",
+            "http://www.youtube.com/embed/7TfHukvLUMs",
+            "http://www.youtube.com/embed/rU5ID0mcWdU",
+            "http://www.youtube.com/embed/7tRzvd0-W0c",
+            "http://www.youtube.com/embed/QMC2_z29X9w",
+            "http://www.youtube.com/embed/uhhwlCEdN7g",
+            "http://www.youtube.com/embed/moqeZusEMcA",
+            "http://www.youtube.com/embed/dQxS_xCyXA0",
+            "http://www.youtube.com/embed/SG3qQ-JS2tg",
+            "http://www.youtube.com/embed/Y3-sYSeVrpo",
+            "http://www.youtube.com/embed/aqvfu8c-2lw",
+            "http://www.youtube.com/embed/dkIW_1LWXMo",
+            "http://www.youtube.com/embed/WbFTGU-C2_c",
+            "http://www.youtube.com/embed/hog2DBPgbKs",
+            "http://www.youtube.com/embed/3sqb9ZsKUtY"
+        ],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "favicon.ico",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "A Neuroevolution Approach to General Atari Game Playing\n\nGeneral Game Players are learning algorithms capable of performing many different tasks without needing to be reconfigured, re-programmed, or given task-specific knowledge. The videos below show the results of general game playing algorithms applied to classic Atari 2600 video games.\n\nAlgorithms\n\nFour different Neuro-evolutionary algorithms were applied to the problem of learning to play Atari games - Neuro-evolution of Augmenting Topologies (NEAT), HyperNEAT, Conventional Neuroevolution (CNE), and CMA-ES. The Arcade Learning Environment is an emulator that interfaces the learning agents with Atari 2600 games. To play the game, each of these algorithms uses a three-layer Artificial Neural Network:\n\nNeural Network Topology\n\nThe network consists of a Substrate Layer, Processing Layer, and Output Layer. At each new frame the Atari game screen is processed to detect the on-screen objects. These objects are classified into different categories (ghosts and Pac-Man in this example). There is one substrate for each object category. The two-dimensional (x,y) locations of the objects in each category on the current game screen activate substrate node(s) corresponding to the (x,y) location of each object. Substrate activation is shown by the white arrows. Activations are propagated upwards from the Substrate Layer to the Processing Layer and then to the Output Layer. Actions are read from the output layer by first selecting the node with the highest activation from the directional substrate (D-pad), then pairing it with the activity of the fire button. By pairing the joystick direction and the fire button, actions can be created in a manner isomorphic to the physical Atari controls.\n\nGameplay proceeds in this fashion until the episode terminates - due either to a \"Game Over\" or reaching a 50,000 frame cap. At the end of the game, the emulator reads the score from the console RAM. This score is the fitness that is assigned to the agent. A population of one-hundred agents is maintained and evolved for 250 generations. At the end of each generation, crossover and mutation are performed to create the next generation. Emphasis is placed on (1) Allowing the best agents in each generation to reproduce and (2) Maintaining a diverse population of solutions. The videos below show the best or champion agent playing the selected video game after 250 generations of evolution.\n\nEvolved policies achieve state-of-the-art results, even surpassing human high scores on three games. More information about NEAT, HyperNEAT, CNE, and CMA-ES as well as alternate state representations can be found in the paper. Code is available at https://github.com/mhauskn/HyperNEAT.\n\nSelected Policies\n\nA number of evolved players discovered interesting exploits or human-like play:\n\nNEAT discovers an interesting exploit in Beam Rider, where it attains invincibility by remaining in-between lanes.\n\nCNE plays a solid game of Phoenix and even takes down the mother-ship!\n\nNEAT discovers an aggressive ghost-eating policy on Ms Pac-Man. Note that the pellets aren't picked up by the visual processing algorithm and are thus invisible to NEAT. This could explain why the algorithm doesn't collect them all an instead focuses on eating ghosts.\n\nHyperNEAT (white) shows its stuff in the ring with a knockout score of 100 to 9.\n\nHyperNEAT does quite well in Centipede. Watch for the corridors of mushrooms that form and allow a full centipede to be decimated in a split second.\n\nHybrID plays a very human-like game of Chopper Command.\n\nPixel-based HyperNEAT evolves in effective policy for Asteroids that never uses the thrust on the space-ship. Who knew sitting at the center of the screen could be so effective?\n\nHyperNEAT (green paddle on right) learns an exploitative return on Pong which the opponent can't keep up with.\n\nHybrID goes for a day on slopes! While it doesn't make it through all the poles, it is only .2 seconds slower than the human high score.\n\nHyperNEAT plays an aggressive game of Yars Revenge. At 0:55 HyperNEAT scores a bunch of points after it manages to hit the Qotile when it transforms into a swirl and launches itself at the player.\n\nInfinite Score Loops\n\nInfinite score loops were found on the games Gopher, Elevator Action, and Krull. A finite score was acquired for agents on these domains due only to the 50,000 frame cap on any episode. The score loop in Gopher, discovered by HyperNEAT, depends on quick reactions and would likely be very hard for a human to duplicate for any extended period of time. Similarly Elevator Action, discovered by CNE, requires a repeated sequence of timed jumps and ducks to dodge bullets and defeat enemies. The score loop in Krull, discovered by HyperNEAT, seems more likely to be a design flaw as the agent is rewarded an extra life after completing a repeatable sequence of play. Most Atari games take the safer approach and reward extra lives in accordance with (exponentially) increasing score thresholds.\n\nHyperNEAT learns to protect its final carrot from the gopher by quick reflexes and hard shovel hits.\n\nCNE playing Elevator Action shows that it can dominate enemies in while doing intense aerobic jumping. If you watch closely, the player does touch enemy bullets from time to time, and even starts the death animation, but does not actually die. Perhaps this was a bug in the game?\n\nHyperNEAT playing Krull discovers a score loop in which it gets an extra life after surviving the \"Widow of the Web\" which is then lost as the player traverses the Iron Desert on a Fire Mare, ultimately returning to the web.\n\nBeating Human High Scores\n\nThe following Fixed-Topology-NEAT agents beat human high scores listed at jvgs.net:\n\nCNE playing Video Pinball scores 407,864 in comparison to the human score of 56,851.\n\nCNE playing Bowling scores 252 in comparison to the human score of 237.\n\nCNE playing Kung Fu Master scores 99,800 in comparison to the human score of 65,130.\n\nFor more information on this work, please see the associated publication."
+    }
+}

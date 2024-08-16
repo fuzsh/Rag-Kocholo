@@ -1,0 +1,42 @@
+{
+    "id": "dbpedia_6121_0",
+    "rank": 34,
+    "data": {
+        "url": "https://superuser.com/questions/913176/screen-goes-black-for-1-to-2-seconds-while-switching-between-a-game-and-the-desk",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Screen goes black for 1 to 2 seconds while switching between a game and the desktop",
+        "top_image": "https://cdn.sstatic.net/Sites/superuser/Img/apple-touch-icon@2.png?v=e869e4459439",
+        "meta_img": "https://cdn.sstatic.net/Sites/superuser/Img/apple-touch-icon@2.png?v=e869e4459439",
+        "images": [
+            "https://cdn.sstatic.net/Sites/superuser/Img/logo.svg?v=4bc8a703ebac",
+            "https://i.sstatic.net/axfhW.jpg?s=64",
+            "https://i.sstatic.net/l54ta.jpg?s=64",
+            "https://lh6.googleusercontent.com/-uTkIo57-p7E/AAAAAAAAAAI/AAAAAAAAehc/3ysfQLo158I/photo.jpg?sz=64",
+            "https://i.sstatic.net/8qWKd.png?s=64",
+            "https://www.gravatar.com/avatar/c378c53d383d9924b615352aad121a6f?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/59018d895f832a4c69a25cbd19148ea3?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/42196fb674f7a3d025b4f74254ba5c99?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/7d764c416ec8923d5a2bd3863889dbbd?s=64&d=identicon&r=PG",
+            "https://lh5.googleusercontent.com/-Bw6ieqbliQY/AAAAAAAAAAI/AAAAAAAAAAA/ACHi3rdseTSX_JfrGVHMoXGM-hmj2pWn9w/photo.jpg?sz=64",
+            "https://i.sstatic.net/z2oYG.jpg?s=64",
+            "https://www.gravatar.com/avatar/9de6aa9413cb5c8438edb393c1a7d2df?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://superuser.com/posts/913176/ivc/5c6f?prg=200f076e-c558-43eb-a495-a1a25e67d986"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2015-05-11T03:06:51",
+        "summary": "",
+        "meta_description": "When I set GTA V to run in fullscreen, and if I switch between the game and the desktop, the screen goes black for around 2 seconds, then it recovers. BUT GTA V doesn't freeze if I press W while the",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/superuser/Img/favicon.ico?v=4852d6fb3f5d",
+        "meta_site_name": "Super User",
+        "canonical_link": "https://superuser.com/questions/913176/screen-goes-black-for-1-to-2-seconds-while-switching-between-a-game-and-the-desk",
+        "text": "This is by design and probably has something to do with multithreading and the fact that all the graphics data will have been purged when you switched to the desktop.\n\nWhen you switch back into the game the main game thread starts instantly, reading keys, playing sounds, making your car move.\n\nThe graphics thread on the other hand has a lot of work to do. It has to set up the entire graphics pipeline from scratch. Textures have to be loaded, shader programs have to be compiled and started on the GPU, and the various shader stages have to be pipelined together. This bring up will take some time, the largest time is probably loading in the textures.\n\nOn a single threaded program all of this setup would have to be done before the program accepts any keypresses and would delay your time to get moving, but in a multi threaded program these two things can happen at the same time. Obviously if one thread is ready before the other though you will get this \"odd\" sort of behaviour.\n\nThe differences between full screen and windowed modes is that in fullscreen mode the application assumes it has full control when in focus and when not in focus you do not want it to \"hog\" resources. Windowed modes are generally for when you want to switch between the game and Windows quickly and not unload the graphics data. Windowed modes are usually slightly slower than full screen, but have no delay when alt-tab is used to escape the program.\n\nPOSSIBLE FIX\n\nI just started having this problem too, but luckily I remembered the last change I did to my PC before this problem started happening.\n\nIn GeForce Experience go to setings and disable in-game overlay. Restart your game (maybe also restart computer).\n\nThis fixed it for me. This leads me to believe that fullscreen mode may have problems dealing with overlays. So if for example you don't have a NVIDIA GPU (which would mean you don't have GeForce Experience) look for any other overlay, that you are currently using. Disabling them could be the answer to your prayers.\n\nThis happens as the game you are playing is disabling the graphics thread in order to save resources while you are not playing the game. This takes a second or two and after this is completed your GPU starts rendering the desktop or other windowed app (and not before).\n\nYou can avoid this by setting your game to \"Windowed\" or \"Borderless Windowed\". You can usually find this option somewhere in the game settings, and Borderless Windowed looks the same as fullscreen but acts as a window, so if you alt-tab out of it, it will switch instantly, at the cost of performance for whatever other app you're using.\n\nNote: If you set your game to borderless windowed, make sure to cap your fps when the game is not in focus. This will improve performance when not actively playing the game."
+    }
+}

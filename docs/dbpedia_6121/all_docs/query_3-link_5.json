@@ -1,0 +1,46 @@
+{
+    "id": "dbpedia_6121_3",
+    "rank": 5,
+    "data": {
+        "url": "https://electronics.stackexchange.com/questions/122050/what-limits-cpu-speed",
+        "read_more_link": "",
+        "language": "en",
+        "title": "What limits CPU speed?",
+        "top_image": "https://cdn.sstatic.net/Sites/electronics/Img/apple-touch-icon@2.png?v=7b89fddaa66b",
+        "meta_img": "https://cdn.sstatic.net/Sites/electronics/Img/apple-touch-icon@2.png?v=7b89fddaa66b",
+        "images": [
+            "https://cdn.sstatic.net/Sites/electronics/Img/logo.svg?v=d40286c6a4eb",
+            "https://www.gravatar.com/avatar/a007be5a61f6aa8f3e85ae2fc18dd66e?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/e86681e49622d52817b36fd2a4c936b7?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/daciI.png",
+            "https://www.gravatar.com/avatar/7c91dbe3c7fdf96369fe85bf22f9fc29?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/NWBSc.jpg?s=64",
+            "https://www.gravatar.com/avatar/7c91dbe3c7fdf96369fe85bf22f9fc29?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/a2b41338408a49e7c24daf821dd84842?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/7c91dbe3c7fdf96369fe85bf22f9fc29?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/646a6ea26055482d9595ac766dad55ea?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/4dsFR.jpg?s=64",
+            "https://www.gravatar.com/avatar/c1bf90a85a5c7108ad7b09881044607a?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/9a354e99dd64adf823aa72c4ee22a1fc?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/7c91dbe3c7fdf96369fe85bf22f9fc29?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/jjVXe.jpg?s=64",
+            "https://i.sstatic.net/XZKfz.png?s=64",
+            "https://electronics.stackexchange.com/posts/122050/ivc/5c6f?prg=622ecb5d-353e-45f6-ac12-0512e48dfd3b"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2014-07-20T15:37:15",
+        "summary": "",
+        "meta_description": "I've recently talked with a friend about LaTeX compilation. LaTeX can use only one core to compile. So for the speed of LaTeX compiliation, the clock speed of the CPU is most important (see Tips for",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/electronics/Img/favicon.ico?v=a17b31b3918d",
+        "meta_site_name": "Electrical Engineering Stack Exchange",
+        "canonical_link": "https://electronics.stackexchange.com/questions/122050/what-limits-cpu-speed",
+        "text": "Practically, what limits CPU speed is both the heat generated and the gate delays, but usually, the heat becomes a far greater issue before the latter kicks in.\n\nRecent processors are manufactured using CMOS technology. Every time there is a clock cycle, power is dissipated. Therefore, higher processor speeds means more heat dissipation.\n\nhttp://en.wikipedia.org/wiki/CMOS\n\nHere are some figures:\n\nCore i7-860 (45 nm) 2.8 GHz 95 W Core i7-965 (45 nm) 3.2 GHz 130 W Core i7-3970X (32 nm) 3.5 GHz 150 W\n\nYou can really see how the CPU transition power increases (exponentially!).\n\nAlso, there are some quantum effects which kick in as the size of transistors shrink. At nanometer levels, transistor gates actually become \"leaky\".\n\nhttp://computer.howstuffworks.com/small-cpu2.htm\n\nI won't get into how this technology works here, but I'm sure you can use Google to look up these topics.\n\nOkay, now, for the transmission delays.\n\nEach \"wire\" inside the CPU acts as a small capacitor. Also, the base of the transistor or the gate of the MOSFET act as small capacitors. In order to change the voltage on a connection, you must either charge the wire or remove the charge. As transistors shrink, it becomes more difficult to do that. This is why SRAM needs amplification transistors, because the actually memory array transistors are so small and weak.\n\nIn typical IC designs, where density is very important, the bit-cells have very small transistors. Additionally, they are typically built into large arrays, which have very large bit-line capacitances. This results in a very slow (relatively) discharge of the bit-line by the bit-cell.\n\nFrom: How to implement SRAM sense amplifier?\n\nBasically, the point is that it is harder for small transistors to drive the interconnects.\n\nAlso, there are gate delays. Modern CPUs have more than ten pipeline stages, perhaps up to twenty.\n\nPerformance Issues in Pipelining\n\nThere are also inductive effects. At microwave frequencies, they become quite significant. You can look up crosstalk and that kind of stuff.\n\nNow, even if you do manage to get a 3265810 THz processor working, another practical limit is how fast the rest of the system can support it. You either must have RAM, storage, glue logic, and other interconnects that perform just as fast, or you need an immense cache.\n\nThere are three physical limits: Heat, gate delay and the speed of electric transmission.\n\nThe world record on the highest clock speed so far is (according to this link) 8722.78 MHz\n\nThe speed of electric transmission (about the same as the speed of light) is the absolute physical limit, since no data can be transmitted faster than its medium. At the same time this limit is very high, so it is not usually a limiting factor.\n\nCPUs consist of huge amounts of gates, of which quite a few are connected serially (one after another). A switch from high state (e.g. 1) to low state (e.g. 0) or vice versa takes a while. This is the gate delay. So if you have 100 gates connected serially and one takes 1 ns to switch, you will have to wait for at least 100 ns for the whole thing to give you a valid output.\n\nThese switches are the thing that takes the most power on a CPU. This means if you increase the clock speed you get more switches thus use more power thus increase the heat output.\n\nOvervolting (=> providing more power) decreases the gate delay a bit, but again increases heat output.\n\nSomewhere around 3 GHz the power use to clock speed increases extremely. This is why 1.5 GHz CPUs can run on a smart phone while most 3-4 GHz CPUs can't even be run on a laptop.\n\nBut Clock Speed isn't the only thing that can speed up a CPU, also optimizations at the pipeline or the microcode architecture can cause a significant speed-up. This is why a 3 GHz Intel i5 (Dualcore) is multiple times as fast as a 3 GHz Intel Pentium D (Dualcore).\n\nAs well as all the other answers, there are also a few other considerations which may not affect CPU speed directly but make building anything around that CPU quite difficult;\n\nIn short, above DC, radio frequency becomes an issue. The faster you go, the more inclined everything is to act as a giant radio. This means that PCB traces suffer crosstalk, the effects of their inherent capacitance/inductance with adjacent tracks / ground plane, noise, etc. etc. etc.\n\nThe faster you go, the worse all this gets - component legs can introduce unacceptable inductance for example.\n\nIf you look at the guidelines for laying out \"basic\" PCB's of the sort of level of a Raspberry Pi with some DDR RAM, all the traces for the data bus etc. have to be of equal length, have correct termination etc. and that's running well below 1GHz."
+    }
+}

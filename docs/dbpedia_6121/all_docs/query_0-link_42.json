@@ -1,0 +1,43 @@
+{
+    "id": "dbpedia_6121_0",
+    "rank": 42,
+    "data": {
+        "url": "https://physics.stackexchange.com/questions/34766/how-does-power-consumption-vary-with-the-processor-frequency-in-a-typical-comput",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How does power consumption vary with the processor frequency in a typical computer?",
+        "top_image": "https://cdn.sstatic.net/Sites/physics/Img/apple-touch-icon@2.png?v=f58801408228",
+        "meta_img": "https://cdn.sstatic.net/Sites/physics/Img/apple-touch-icon@2.png?v=f58801408228",
+        "images": [
+            "https://cdn.sstatic.net/Sites/physics/Img/logo.svg?v=6eb7d730c013",
+            "https://www.gravatar.com/avatar/86f4f64980b4736b1f6e5e3056d08e15?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/77d0f6949f176dfef1647d0404cfc4a6?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/a007be5a61f6aa8f3e85ae2fc18dd66e?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/ChjqQ.png?s=64",
+            "https://i.sstatic.net/IJP4J.png",
+            "https://www.gravatar.com/avatar/872dbc0986fe053dd935090c90d042d6?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/daciI.png",
+            "https://www.gravatar.com/avatar/08fd2dcd29257d71183b8ed5b6e3ff33?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/4Nkc0.jpg?s=64",
+            "https://www.gravatar.com/avatar/ef02adcd72fe84ea6c4bdc8ea4cccf17?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/0eeda48676f683d04c1431b2542954af?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/e3xZV.png?s=64",
+            "https://physics.stackexchange.com/posts/34766/ivc/5c6f?prg=9b6983b4-11c9-46c3-8d8e-35c7b6699d98"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2012-08-23T07:31:51",
+        "summary": "",
+        "meta_description": "I am looking for an estimate on the relationship between the rate of increase of power usage as the frequency of the processor is increased.\n\nAny references to findings on this would be helpful.",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/physics/Img/favicon.ico?v=e8ea30e2eacd",
+        "meta_site_name": "Physics Stack Exchange",
+        "canonical_link": "https://physics.stackexchange.com/questions/34766/how-does-power-consumption-vary-with-the-processor-frequency-in-a-typical-comput",
+        "text": "For a given circuit in a given technology, power increases at a rate proportional to $f^3$ or worse. You can see by looking at the graph in @Martin Thompson's answer that power is superlinear in frequency.\n\n$P=c V^2 f + P_S$ is correct, but only superficially so because $f$ and $P_S$ are functions of $V$ and $V_{th}$ (the threshold voltage.) In practice voltage, threshold voltage, and frequency are always changed together. Given a chosen voltage there is a maximum frequency at which you can run your circuit. Running any faster will result in bad data. But you would never set the frequency much below the maximum frequency for a chosen voltage because then you are just wasting power.\n\nLet's ignore the leakage (static) power and just focus on the dynamic power, $cV^2f$. By the alpha approximation $$ f \\propto \\frac{(V-V_{th})^\\alpha}{V}. $$\n\nHere $\\alpha$ is a technology-dependent constant that accounts for velocity saturation. $\\alpha$ would be 2 for no velocity saturation (for example in 1000nm technology and older), and approaches 1 with complete velocity saturation. In 250nm technology it was somewhere between 1.3 and 1.5. In 45nm it might be somewhere between 1.1 and 1.4.\n\nBefore 1995 one might assume that $\\alpha$ was 2 and that $V \\gg V_{th}$, in which case $f \\propto V$ so $P \\propto f^3$. But in 2013 technology (45nm and below) not only is $\\alpha$ more like 1.3 than 2, but $V$ is now only slightly larger than $V_{th}$.\n\nFurther the static power $P_S \\propto e^{(-V_{th}/V_o)}V$, which means that choosing voltage, threshold voltage and frequency is now a nonlinear constrained optimization problem. (Given a fixed maximum power optimize for the highest achievable frequency or given a fixed required frequency optimize for the minimum power.)\n\nHere are three very good papers that discuss the optimization procedures and their consequences:\n\nGonzalez, Gordon, Horowitz; Supply and Threshold Voltage Scaling for Low Power CMOS; IEEE JSSC, 32(8), 1997.\n\nBrodersen, Horowitz, Markovic, Nikolic, Stojanovic; Methods for True Power Minimization; IEEE/ACM Int'l Conf on CAD, pp. 35-42, 2002.\n\nHorowitz, Alon, Patil, Naffziger, Kumar, Bernstein; Scaling, Power, the Future of CWWW-VLSI, IEEE Int'l Electron Devices Meeting, 2005.\n\nThis paper clearly shows the nonlinear increase of power consumption with an increase of frequency:\n\nMiyoshi, Akihiko, et al. \"Critical power slope: understanding the runtime effects of frequency scaling.\" Proceedings of the 16th international conference on Supercomputing. ACM, 2002.\n\nPower consumption is about linear with frequency.\n\nThe processor contains millions of complementary FETs as shown. When the input goes low the small capacitance gets charged and it will hold a small amount of energy. A same amount is lost during the charging. When the input goes high again the charge will be drained to ground and be lost. So with each level change $n$ Joules are lost. If the frequency is 1 MHz then this switching occurs 10$^{6}$ per second, and $n$ 10$^{6}$ Joules will be lost per second. If the frequency is 1 GHz that loss will be $n$ 10$^{9}$ Joules.\n\nNotice that the energy in a capacitor is $\\frac{C \\cdot V^2}{2}$, so the dissipation varies quadratic with voltage; running the processor at half the voltage will reduce power with 75 %.\n\nThis leads to the equation tuğrul also mentions:\n\n$ P = c \\cdot V^2 \\cdot f + P_S $\n\nwhere $c$ is a scaling constant, with the dimension of capacitance (F). $P_S$ is the static power dissipation Martin refers to, which is the power at a zero clock frequency."
+    }
+}

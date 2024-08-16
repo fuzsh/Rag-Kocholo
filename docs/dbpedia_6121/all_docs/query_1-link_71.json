@@ -1,0 +1,34 @@
+{
+    "id": "dbpedia_6121_1",
+    "rank": 71,
+    "data": {
+        "url": "https://cs.stackexchange.com/questions/28915/what-is-the-maximum-directly-adddressable-memory-capacity",
+        "read_more_link": "",
+        "language": "en",
+        "title": "What is the maximum directly adddressable memory capacity?",
+        "top_image": "https://cdn.sstatic.net/Sites/cs/Img/apple-touch-icon@2.png?v=324a3e0c2b03",
+        "meta_img": "https://cdn.sstatic.net/Sites/cs/Img/apple-touch-icon@2.png?v=324a3e0c2b03",
+        "images": [
+            "https://cdn.sstatic.net/Sites/cs/Img/logo.svg?v=27188323e9e9",
+            "https://i.sstatic.net/3Mu1E.jpg?s=64",
+            "https://graph.facebook.com/100002349619236/picture?type=large",
+            "https://www.gravatar.com/avatar/9e2e4c6610a79359e16c767767071fa3?s=64&d=identicon&r=PG",
+            "https://cs.stackexchange.com/posts/28915/ivc/5c6f?prg=04d52c41-2811-4cce-8287-9eb951471a12"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2014-08-04T14:21:35",
+        "summary": "",
+        "meta_description": "This is taken from OPERATING SYSTEMS: INTERNALS AND DESIGN PRINCIPLES by WILLIAM STALLINGS\n\nConsider a 32-bit microprocessor composed of 2 fields: the first byte contains the opcode and remainder an",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/cs/Img/favicon.ico?v=0c1f5fd7a5e4",
+        "meta_site_name": "Computer Science Stack Exchange",
+        "canonical_link": "https://cs.stackexchange.com/questions/28915/what-is-the-maximum-directly-adddressable-memory-capacity",
+        "text": "Start with a simpler example. Suppose you only had 3 address bits, rather than 24. With $3$ bits we could have $2^3=8$ addresses: 000, 001, 010, 011, 100, 101, 110, 111. In this case, we could think of memory as being divided up into 8 chunks, of equal sizes, with one address per chunk:\n\nmemory: chunk 0 | chunk 1 | chunk 2 | chunk 3 | chunk 4 | chunk 5 | chunk 6 | chunk 7 address: 000 001 010 011 100 101 110 111\n\nFor example, the contents of chunk 3 would be addressed by the three bits 011. Now how much memory would there be in total? It'll clearly be 8 times the size of a chunk. Stalling is using a memory model where the chunks are bytes, so with 3-bit addresses, we would have a total memory of $2^3=8$ bytes: one byte per address.\n\nA different computer, though, might be built so that each chunk was 4 bytes. On such a machine with 3-bit addresses we would have $8\\times 4 = 32$ bytes of memory, 4 bytes per address.\n\nAt any rate, with 24-bit addresses, we'd have $2^{24}= 16777216 = 16\\text{M}$ possible addresses, hence that many possible chunks. If each chunk was a byte that would mean that the total addressable memory would be 16777216 bytes, or 16MB. Similarly, if each chunk was 4 bytes long, the total addressable memory would be (chunk size $\\times$ number of addresses), or $4\\text{B}\\times 16\\text{M} =64\\text{MB}$.\n\nMost modern processors do not address memory at the granularity of single bits but limit the size of the smallest chunk of memory that can be accessed to an 8-bit byte. This is called byte-addressable memory.\n\nWith byte-addressable memory, a 24-bit immediate could directly address any of 224 bytes, i.e., 16 MiB.\n\nStallings is assuming byte-addressing, so 224 bytes would be directly addressable.\n\nIn the past, some processors used word-addressable memory, where the smallest chunk that could be accessed was equal to the size of the registers. By using a larger smallest chunk size, fewer bits were needed to address a given size of memory. E.g., with a 32-bit word size, a 24-bit immediate would be able to reference 224*4 bytes (64 MiB). (Using word-addressable memory also simplified memory access.)\n\nOutside of some DSPs and embedded systems processors, word-addressable memory is not very popular today.\n\nAs a side note, some microcontrollers have special mechanisms for atomic bit addressing such bit-band regions (e.g., ARM), where a section of the address space is bit-addressable, and atomic set and atomic clear bit instructions (e.g., MIPS), where three bits of the instruction specify the bit within a byte.)\n\nIt might also be noted that some ISAs shift immediate values by the access size (e.g., accessing a 2-byte value would shift the immediate by one bit). This assumes that the base pointer and the address of the value are properly aligned, i.e., that the least bit is zero for a 2-byte value, the two least significant bits are zero for a 4-byte value, etc. This allows a smaller immediate to provide a larger access range when accessing values larger than a byte."
+    }
+}
