@@ -1,0 +1,40 @@
+{
+    "id": "dbpedia_6399_1",
+    "rank": 28,
+    "data": {
+        "url": "https://stackoverflow.com/questions/7269303/mkmapview-crashes-app-when-view-controller-popped",
+        "read_more_link": "",
+        "language": "en",
+        "title": "MKMapView crashes app when view controller popped",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://cdn.sstatic.net/Img/teams/teams-promo.svg?v=e507948b81bf",
+            "https://www.gravatar.com/avatar/06077bb231eea5c6b6fbd7a07b676824?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/06077bb231eea5c6b6fbd7a07b676824?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/781b7b8808aa435d573b14e5af8f41e4?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/SmC8F.jpg?s=64",
+            "https://i.sstatic.net/HPeWt.png?s=64",
+            "https://www.gravatar.com/avatar/85e5c60ca8616d3c9269378baec34972?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/23a40be532148345d00d757c45016751?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/7269303/ivc/af59?prg=38a31b84-9606-4ae2-8deb-13151d4a9abb"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Jiho Kang"
+        ],
+        "publish_date": "2011-09-01T10:53:52",
+        "summary": "",
+        "meta_description": "I have a view controller with an MKMapView that calls \n\n[self.mapView setRegion:region animated:YES]; \r\nwhich repositions the map from A to B.\n\nThe view controller which holds the MKMapView is set ...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/7269303/mkmapview-crashes-app-when-view-controller-popped",
+        "text": "I have a view controller with an MKMapView that calls\n\n[self.mapView setRegion:region animated:YES];\n\nwhich repositions the map from A to B.\n\nThe view controller which holds the MKMapView is set as the delegate and in\n\n- (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated\n\nI have some code that will trigger another setRegion:animated: to the MKMapView so that the map will zoom in on the new position automatically.\n\nEverything works fine if I popViewControllerAnimated: the view controller AFTER the MKMapView animation is done panning and zooming.\n\nHowever, when I try to popViewControllerAnimated: the current view controller WHILE the MKMapView is running it's animation, the app crashes with \"message sent to deallocated instance\".\n\nFrom the looks of the debugger, I think that MKMapView is trying to call a method from a popped and deallocated delegate.\n\nSo I tried\n\n[self.mapView setDelegate:nil]; self.mapView = nil;\n\nin viewDidUnload with no luck. The app still crashes consistently.\n\nThe only thing I could think of was to create a separate new delegate class and retain that class from the parent view controller so that the MKMapView would have a delegate to call even after the view controller that contains it is deallocated.\n\nWhy is this happening? Are there any other \"clean\" options?"
+    }
+}

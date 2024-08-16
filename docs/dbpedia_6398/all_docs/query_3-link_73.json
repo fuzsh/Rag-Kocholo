@@ -1,0 +1,51 @@
+{
+    "id": "dbpedia_6398_3",
+    "rank": 73,
+    "data": {
+        "url": "https://stackoverflow.com/questions/50645703/how-to-get-apk-and-ipa-file-from-flutter",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How to get .apk and .ipa file from flutter?",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://i.sstatic.net/46iUE.jpg?s=64",
+            "https://lh4.googleusercontent.com/-HfhsA3j-Ocs/AAAAAAAAAAI/AAAAAAAAACs/ujQDfoNtLvA/photo.jpg?sz=64",
+            "https://i.sstatic.net/dU7CD.jpg?s=64",
+            "https://graph.facebook.com/1752900328133019/picture?type=large",
+            "https://graph.facebook.com/701899409942402/picture?type=large",
+            "https://www.gravatar.com/avatar/d7477ad055315ebb6e584d2e01ce01dc?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://lh5.googleusercontent.com/-1OUt6-PqOLk/AAAAAAAAAAI/AAAAAAAAJFw/AxGS4MvQep4/photo.jpg?sz=64",
+            "https://www.gravatar.com/avatar/4db8f1ba3c7d9a8d76cfb36bd22936a8?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/DyCE6.png?s=64",
+            "https://lh3.googleusercontent.com/-_OIHCwSa9Ig/AAAAAAAAAAI/AAAAAAAABck/bMhvo09zo7A/photo.jpg?sz=64",
+            "https://lh4.googleusercontent.com/-ZsqX_HCwV7M/AAAAAAAAAAI/AAAAAAAARuI/1BB0kIBFM2o/photo.jpg?sz=64",
+            "https://lh4.googleusercontent.com/-QM6rKhuAuhw/AAAAAAAAAAI/AAAAAAAAAAA/ACHi3rfyKQsrwr3h9ovgEdYuG72dj6oq1w/photo.jpg?sz=64",
+            "https://lh6.googleusercontent.com/-NCHwlqWjLo8/AAAAAAAAAAI/AAAAAAAAADY/SlsCrtUF90E/photo.jpg?sz=64",
+            "https://i.sstatic.net/HPUq2.jpg?s=64",
+            "https://i.sstatic.net/aOkPb.jpg?s=64",
+            "https://www.gravatar.com/avatar/cb0388d1c21590c716f03bed19bd36be?s=64&d=identicon&r=PG",
+            "https://lh3.googleusercontent.com/-guB7eoaSiPw/AAAAAAAAAAI/AAAAAAAAAAA/ACHi3rcdnrVpMepYMa5OdDVYwV6SxD6l1Q/mo/photo.jpg?sz=64",
+            "https://i.sstatic.net/DLhwJ.png",
+            "https://i.sstatic.net/8TsGk.png",
+            "https://lh5.googleusercontent.com/-S2SwAplGx_E/AAAAAAAAAAI/AAAAAAAAACU/2WzkGgsqBUQ/photo.jpg?sz=64",
+            "https://lh3.googleusercontent.com/a-/AOh14GhxcWCRFCfcUs1ScPmip0Sv5qlBTVNzBQS7-NkLhA=k-s64",
+            "https://stackoverflow.com/posts/50645703/ivc/6d18?prg=7c9965cf-644f-4842-adaf-460b2913a57b"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2018-06-01T14:29:02",
+        "summary": "",
+        "meta_description": "I am new to flutter programming and I've created a demo app, its running fine on both android and iOS devices. I want to see .apk and .ipa file in flutter. Can anyone help me to get these files from",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/50645703/how-to-get-apk-and-ipa-file-from-flutter",
+        "text": "For apk (Android) you need to run the command :\n\nflutter build apk --release\n\nIf you want to split the apks per abi (Split Apk) then run\n\nflutter build apk --target-platform android-arm,android-arm64,android-x64 --split-per-abi\n\nFor ipa (iOS) you need to run the command :\n\nflutter build ios --release\n\nFrom the console\n\nP.S. --release is optional as it is by default if you need debug build, just replace --release with --debug\n\nyou can find the released APK or IPA files form\n\nbuild/app/outputs/flutter-apk/app-release.apk\n\nFor Android an APK is generated every time you build the app, e.g. with flutter run. You will find that in your project folder under <project>/build/app/outputs/apk/debug/app-debug.apk. If you want a release APK, have a look at the docs.\n\nI'm not an iOS person, so I'm not sure an IPA is generated during development as in android. But looking at these docs it seems you can follow the standard steps on xcode to get it, as shown here.\n\nTo get an apk, it is simple. Just use :\n\nflutter build apk\n\nTo get an ipa, It is more complicated. First use :\n\nflutter build ipa\n\nBe careful to use flutter build ipa, not flutter build ios, because the second one builds a \".app\" file instead of \".xcarchives\" file.\n\nOnce you have the \".xcarchives\" file, you can open it in XCode and click on \"Distribute the app\" to export an ipa file on your computer.\n\nI also had this question and had a really tough time finding the right solution. First of all in the terminal of your code editor type:\n\nflutter build apk --release\n\nand after that go to this location:\n\nyourAppFolder/build/app/outputs/apk/release/app-release.apk\n\nI do not do development for iOS so I don't know much about that.\n\nFor apk, you can use flutter build apk --release to get the release version of your apk on either windows/macOS.\n\nFor ipa, you have to use flutter build ios --release to get the release version of your apk on macOS.\n\nNote: You can get a ipa on macOS only.\n\nFor iOS:\n\nStep 1: open terminal and type cd \"your flutter sdk path\"\n\nStep 2: cd export PATH=/Users/yourname/Downloads/flutter/bin:$PATH\n\nStep 3: cd \"your project path\"\n\nStep 4: flutter build ios --release\n\nrun step 1 to 4 in terminal.\n\nAfter that open android studio and go to iOS folder path and open project.pbxproj file with ios module and in xcode you need to choose generic ios device and select archive, it will generate ipa build for you.\n\nUpdated for iOS :-\n\nfirst you need to go to your current working directory and run the following command;\n\nflutter build ios --release\n\nAfter successfully completion of build, you can find build on below path;\n\n/Users/sanjaybalaji/Documents/KiranFlutterApps/hb_calculator/build/ios/iphoneos/Runn er.app.\n\nyou can check below screenshots for more details."
+    }
+}

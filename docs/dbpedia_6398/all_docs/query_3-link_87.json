@@ -1,0 +1,32 @@
+{
+    "id": "dbpedia_6398_3",
+    "rank": 87,
+    "data": {
+        "url": "https://stackoverflow.com/questions/76945048/error-v83-15-has-been-disabled-because-it-depends-on-python-2-to-build",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Error: v8@3.15 has been disabled because it depends on Python 2 to build",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://lh3.googleusercontent.com/a/AATXAJx0lgHYw1XNSfVM15f9UySkYkTAWYEAqAr36_w=k-s64",
+            "https://www.gravatar.com/avatar/ee93378fed4ee9be40b7354ef6e7bad3?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://stackoverflow.com/posts/76945048/ivc/6d18?prg=f2d0cf95-c9e7-49a6-a027-5716c1b5c109"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2023-08-21T11:55:48",
+        "summary": "",
+        "meta_description": "I want to install v8 3.15 on MacOs with M2 pro apple chip. Getting the error that is disabled.\nI tried to install x86-64 brew with rosetta and use that to install v8 but still getting the same error.",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/76945048/error-v83-15-has-been-disabled-because-it-depends-on-python-2-to-build",
+        "text": "This is a problem for many, because at least therubyracer gem still depends on this version of libv8. It would be best to not use this old version by upgrading your application. If you absolutely have to, I found a way to install this using Rosetta 2 and homebrew.\n\nMake sure you're using Rosetta and the x86_64 version of homebrew.\n\nInstall python 2:\n\nbrew install pyenv pyenv install 2.7.18 pyenv global 2.7.18\n\nAdd pyenv to your path:\n\nPATH=$(pyenv root)/shims:$PATH\n\nTry to install [email protected]\n\nHOMEBREW_NO_INSTALL_FROM_API=1 brew install [email protected]\n\nYou will get the following error:\n\nError: [email protected] has been disabled because it depends on Python 2 to build\n\nEdit the formula to enable installing the old version of v8:\n\nbrew edit [email protected]\n\nRemove this line:\n\ndisable! date: \"2023-06-19\", because: \"depends on Python 2 to build\"\n\nNow you can install the [email protected]:\n\nHOMEBREW_NO_INSTALL_FROM_API=1 arch -x86_64 /usr/local/bin/brew install [email protected]\n\nI believe this will work as long as the old formula is still available from homebrew."
+    }
+}
