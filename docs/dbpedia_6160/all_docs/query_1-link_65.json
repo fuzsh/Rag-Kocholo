@@ -1,0 +1,46 @@
+{
+    "id": "dbpedia_6160_1",
+    "rank": 65,
+    "data": {
+        "url": "https://www.pagerduty.com/docs/guides/prtg-integration-guide/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "PRTG Integration Guide",
+        "top_image": "https://www.pagerduty.com/wp-content/uploads/integration-guide-assets-v1/PRTG-2.jpg",
+        "meta_img": "https://www.pagerduty.com/wp-content/uploads/integration-guide-assets-v1/PRTG-2.jpg",
+        "images": [
+            "https://www.pagerduty.com/wp-content/uploads/2024/07/PagerDutyAdvance_1920x1080.svg",
+            "https://www.pagerduty.com/wp-content/uploads/2024/07/PagerDutyAdvance_1920x1080.svg",
+            "https://www.pagerduty.com/wp-content/uploads/2024/01/nav-fox-corporation.png",
+            "https://www.pagerduty.com/wp-content/uploads/2024/01/nav-fox-corporation.png",
+            "https://www.pagerduty.com/cdn-cgi/image/f=auto,w=600/wp-content/uploads/2024/04/ide-woman-nurse.jpg",
+            "https://www.pagerduty.com/cdn-cgi/image/f=auto,w=600/wp-content/uploads/2024/04/ide-woman-nurse.jpg",
+            "https://www.pagerduty.com/wp-content/uploads/2024/05/pd-on-tour.png",
+            "https://www.pagerduty.com/wp-content/uploads/2024/05/pd-on-tour.png",
+            "https://www.pagerduty.com/wp-content/uploads/2024/07/PagerDutyAdvance_1920x1080.svg",
+            "https://www.pagerduty.com/wp-content/uploads/2024/01/nav-fox-corporation.png",
+            "https://www.pagerduty.com/cdn-cgi/image/f=auto,w=600/wp-content/uploads/2024/04/ide-woman-nurse.jpg",
+            "https://www.pagerduty.com/wp-content/uploads/2024/05/pd-on-tour.png",
+            "https://www.pagerduty.com/wp-content/uploads/integration-guide-assets-v1/PRTG-2.jpg",
+            "https://www.pagerduty.com/wp-content/uploads/integration-guide-assets-v1/PRTG-3.jpg",
+            "https://www.pagerduty.com/wp-content/uploads/integration-guide-assets/prtg-configuration-pagerduty-notification-720x1024.jpg",
+            "https://www.pagerduty.com/wp-content/uploads/integration-guide-assets-v1/PRTG-5.jpg",
+            "https://www.pagerduty.com/wp-content/uploads/integration-guide-assets-v1/PRTG-6.jpg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2015-04-01T00:50:08+00:00",
+        "summary": "",
+        "meta_description": "PRTG is a central component of networking monitoring. It is used to monitor the state, health, and performance of everything from servers to networking",
+        "meta_lang": "en",
+        "meta_favicon": "https://www.pagerduty.com/wp-content/themes/citizens-band/favicon/public/favicon.ico",
+        "meta_site_name": "PagerDuty",
+        "canonical_link": "https://www.pagerduty.com/docs/guides/prtg-integration-guide/",
+        "text": "PRTG is a central component of networking monitoring. It is used to monitor the state, health, and performance of everything from servers to networking devices.\n\nAlerts generated in PRTG can trigger incidents in PagerDuty, to alert the appropriate technician via SMS, phone, email or push. The guide below describes how to integrate your PRTG installation with PagerDuty\n\nIn PagerDuty\n\nGo to the Services menu and select Service Directory.\n\nOn the Service Directory page:\n\nIf you are creating a new service for your integration, click +New Service and follow the steps outlined, selecting this integration in step 4.\n\nIf you are adding your integration to an existing service, click the name of the service you want to add the integration to. Then click the Integrations tab and click Add a new integration.\n\nUnder Select the integration(s) you use to send alerts to this service search and select this integration.\n\nClick the Add Service or Add Integration button to save your new integration. You will be redirected to the Integrations page for your service.\n\nFind the integration in the list, copy the Integration Key and keep it in a safe place for later use.\n\nIn PRTG\n\nPRTG Network Monitor can trigger and resolve PagerDuty incidents via email. Below are the steps that are required to setup the communication between PRTG and PagerDuty.\n\n1. Open PRTG Enterprise Console from your server’s desktop.\n\n2. Selecg the Setup tab from the Enterprise Console.\n\n3. From the sidebar menu, select Notifications, then click the + Add new notification button.\n\n4. Configure the notification settings:\n\n– Enter a Notification Name (example shows “PagerDuty Notification”).\n\n– In the Notification Summarization section, select the Always notify ASAP option.\n\n– Check the Send Email checkbox.\n\n– In the Send to Email Address field, enter the PagerDuty integration key email address (from In PagerDuty, steps 4 and 6 above).\n\n– Default Subject and Message formats are set, but can be customized to fit your needs.\n\n– Click Save.\n\n5. Setting triggers: This can be done in several ways to fit your needs. For this method we will be using a Parent Trigger which will propagate to the lower children in the class. Select the Devices tab and highlight the Parent PRTG Server Connections. Select the Notifications tab, and click the + Add State Trigger button.\n\n6. Here you will configure the details to define your trigger. In this example, a PagerDuty notification will trigger when sensor state is Warning for at least 0 seconds. You can also add a repeat function if the sensor is down for X amount of seconds to perform the PagerDuty Notification action again. Then select the option to alert the PagerDuty Notification when the condition clears.\n\n6. Select the Notifications tab and ensure Inherit all triggers from parent objects and use the triggers defined below is selected.\n\nThis completes the PRTG configuration. Continue below to set the Auto-Resolve functionality in PagerDuty.\n\nIn PagerDuty\n\nPer your PRTG instance there are several emails that can be sent to PagerDuty depending on what sensor has the failure/warning . In this example we are going to ‘Trigger‘ an incident based off of the ‘Threshold reached‘, ‘Down’ and ‘Warning’ states and ‘Resolve‘ an incident based off of the ‘Down Ended‘, ‘Up‘ and ‘Threshold not reached‘ states.\n\nTo enable this option you will need to make the following changes to your PagerDuty PRTG Email Service:\n\n1. In PagerDuty, go to Services, and click Service Directory.\n\n2. Find and click the service for your PRTG integration, select the Integrations tab and click the cog icon to the right of the email integration.\n\n3. At the top right, click the Edit Integration button.\n\n4. Under Email Management, select the option Open and resolve incidents based on custom rules.\n\n5. Create a resolve rule. Set the rules as follows:\n\n– resolve an incident if any of the following conditions apply:\n\n– The email subject contains Down Ended\n\n– The email subject contains Up\n\n– The email subject contains Threshold not reached\n\n– Link incoming emails to the same incident if they share this key:\n\n– In the email body, match this regular expression Sensor.([a-zA-Z.0-9\\s]+)\n\n6. Create a trigger rule. Set the rules as follows:\n\n– trigger an incident if any of the following conditions apply:\n\n– The email subject contains Down\n\n– The email subject contains Threshold reached\n\n– The email subject contains Warning\n\n– Link incoming emails to the same incident if they share this key:\n\n– In the email body, match this regular expression Sensor.([a-zA-Z.0-9\\s]+)\n\n7. Under the newly created rules, set the final catch-all rule to: If an email does not match any of the rules above, discard it\n\n8. Click the Save changes button.\n\nYour PRTG Integration with PagerDuty is now be complete. When an alert populates in PRTG, you will now receive a notification in PagerDuty.\n\nFAQ\n\nWill PRTG incidents automatically resolve?\n\nYes. This will need to be configured within your PagerDuty PRTG Email service, with the detailed steps listed above.\n\nCan I setup PRTG to be tied to multiple PagerDuty services?\n\nYes, you will need to create multiple PRTG Email Services, then create the additional Contacts within your PRTG server.\n\nAre incidents de-duplicated?\n\nYes, Incidents are de-duplicated, The incident key is returned for the initial alert that creates the incident.\n\nIs this a 2-way bidirectional integration?\n\nNo.\n\nAre there logs I can reference in PRTG?\n\nYes, all alerts are stored and displayed for users within the ‘Logs’ tab in your PRTG UI.\n\nIs there a retry mechanism if the Email call does not succeed?"
+    }
+}

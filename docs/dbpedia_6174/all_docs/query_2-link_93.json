@@ -1,0 +1,48 @@
+{
+    "id": "dbpedia_6174_2",
+    "rank": 93,
+    "data": {
+        "url": "https://groups.google.com/g/gearman/c/FrmzfJcinmg",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Gearman Server stuck, refusing connections, taking 100% CPU",
+        "top_image": "https://www.gstatic.com/images/branding/product/1x/groups_32dp.png",
+        "meta_img": "https://www.gstatic.com/images/branding/product/1x/groups_32dp.png",
+        "images": [
+            "https://fonts.gstatic.com/s/i/productlogos/groups/v9/web-48dp/logo_groups_color_1x_web_48dp.png",
+            "https://lh3.googleusercontent.com/a-/ALV-UjWsOXs0d5nAknnHYAnNExDA3r-OpMiJR_C3sCRk_ywoStSwuJLF=s40-c",
+            "https://lh3.googleusercontent.com/a/default-user=s40-c",
+            "https://lh3.googleusercontent.com/a-/ALV-UjWsOXs0d5nAknnHYAnNExDA3r-OpMiJR_C3sCRk_ywoStSwuJLF=s40-c",
+            "https://lh3.googleusercontent.com/a-/ALV-UjVWlYEufPJU98EvoUwiZFzH1UC9L9sk0PquePRlBQHwIn_3TSKtaw=s40-c",
+            "https://lh3.googleusercontent.com/a-/ALV-UjWsOXs0d5nAknnHYAnNExDA3r-OpMiJR_C3sCRk_ywoStSwuJLF=s40-c",
+            "https://lh3.googleusercontent.com/a-/ALV-UjV_5o6J3cuORCTaVYf3bbORs00BRSCWZIatPLGuAnlkE8AOhQ=s40-c",
+            "https://lh3.googleusercontent.com/a-/ALV-UjWsOXs0d5nAknnHYAnNExDA3r-OpMiJR_C3sCRk_ywoStSwuJLF=s40-c",
+            "https://lh3.googleusercontent.com/a-/ALV-UjWUWVEK3IAoxRnGK3zO1oLUbKrZDTXCtCkAzDZ2o89nUYvb_vdF=s40-c",
+            "https://lh3.googleusercontent.com/a-/ALV-UjWsOXs0d5nAknnHYAnNExDA3r-OpMiJR_C3sCRk_ywoStSwuJLF=s40-c",
+            "https://lh3.googleusercontent.com/a-/ALV-UjWsOXs0d5nAknnHYAnNExDA3r-OpMiJR_C3sCRk_ywoStSwuJLF=s40-c",
+            "https://lh3.googleusercontent.com/a/default-user=s40-c",
+            "https://lh3.googleusercontent.com/a-/ALV-UjUum5xLSfMpleeLWikd72xsk1cQx84SnIsq1De9Z9U2X005Wg=s40-c",
+            "https://lh3.googleusercontent.com/a/default-user=s40-c",
+            "https://lh3.googleusercontent.com/a/default-user=s40-c",
+            "https://lh3.googleusercontent.com/a-/ALV-UjUum5xLSfMpleeLWikd72xsk1cQx84SnIsq1De9Z9U2X005Wg=s40-c",
+            "https://lh3.googleusercontent.com/a/default-user=s40-c",
+            "https://lh3.googleusercontent.com/a-/ALV-UjXPwfLWv7X7dE-W1Gnpl0b9C_KI0pjodjRvFr_scGBZ7IEW5Xki5w=s40-c",
+            "https://lh3.googleusercontent.com/a-/ALV-UjXXiGKj3EYoQnc0IZLy5OfvekLaBSFVyd0ICaZFfP7tD8VyepIO9w=s40-c"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "//www.gstatic.com/images/branding/product/1x/groups_32dp.png",
+        "meta_site_name": "",
+        "canonical_link": "https://groups.google.com/g/gearman/c/FrmzfJcinmg",
+        "text": "Hey all.\n\nI have been running 0.14 for a few months now and lately I have\n\nstarted to have this problem where gearman hangs up. When it hangs up\n\nlike this you can't stop it by sending a TERM to it. You have to kill\n\n-9.\n\nThe only thing I can think of is that recently I added a bunch more\n\nclients to the server. Other than that nothing has changed.\n\nI tried to get a backtrace using this link\n\nhttps://wiki.edubuntu.org/Backtrace but was unable to do so because\n\nwhen I typed in \"continue\" on the debugger and then tried to halt the\n\nprocess by hitting CTL-C nothing happened. I then killed the gearman\n\nprocess and got back into gdb but it still was stuck. I ended up\n\nkilling gdb as well in the end.\n\nI don't think I can reproduce the situation but chances are it will\n\nhappen again in the near future, I am willing to do whatever I need to\n\nget a good bug report so this problem is fixed. This seems like a\n\npretty severe bug.\n\nI am running gearman with libdrizzle.\n\nThanks.\n\n\n\nstrace shows nothing. It just sits there. The program is solidly\n\nlocked up at this point I guess. On reccomendation from John Ewart I\n\ndid a bt on gdb before I did a continue and it output the following.\n\ngdb) bt\n\n#0 0x08056e6a in gearman_ready (universal=0x9c7d28c) at\n\nlibgearman/universal.c:293\n\n#1 0x080561c2 in gearman_server_thread_run (thread=0x9c7d240,\n\nret_ptr=0xbfc3f64c) at libgearman-server/thread.c:231\n\n#2 0x0805244c in gearmand_thread_run (thread=0x9c7d208) at\n\nlibgearman-server/gearmand_thread.c:210\n\n#3 0x08051f15 in _con_ready (fd=33, events=2, arg=0x9cfc6a8) at\n\nlibgearman-server/gearmand_con.c:253\n\n#4 0xb7702274 in event_base_loop () from /usr/lib/libevent-1.4.so.2\n\n#5 0x080510aa in gearmand_run (gearmand=0x9c71cf8) at\n\nlibgearman-server/gearmand.c:263\n\n#6 0x0804b8b5 in main (argc=15, argv=0xbfc3fe14) at gearmand/gearmand.c:433\n\n(gdb) continue\n\nContinuing.\n\n^C^C^C\n\nAs you can see typing continue locks up gdb and CTL C is useless at this point.\n\nThis seems like a very severe bug to me. I will update the bug on launchpad\n\nOn Mon, 2011-01-31 at 08:00 -0800, Lukas wrote:\n\n> We are having the same issue with gearman 0.13\n\n> We use the PHP Pecl extension to interface Gearman.\n\n>\n\n> When Gearman was at high (100%) CPU usage, no jobs were going through.\n\n> After attaching an strace to Gearman revealed that the PHP worker\n\n> scripts kept a lot of connections to Gearman open (going over the\n\n> maximum number of open files allowed) making Gearman go into an\n\n> endless loop. I found a solution to kill the workers every several\n\n> iterations which would release these open connections, but this is\n\n> definitely a bug either within Gearman or the PHP Pecl Library\n\n> http://pecl.php.net/package/gearman.\n\n>\n\nI think you're probably using the PHP extension incorrectly. The worker\n\nobject won't create a new connection unless the old one has died.\n\nIn general you want\n\nfunction x($job) {\n\n}\n\n$worker = new GearmanWorker;\n\n$worker->addServer('foo');\n\n$worker->registerFunction('x','x');\n\n$worker->work();\n\nIf you're creating worker objects in a factory, as I've seen many people\n\ndo, then you'll get a new connection every time.\n\n> Running an strace while gearman got stuck revealed this:\n\n> accept(6, 0x7fff26202a50, [16]) = -1 EMFILE (Too many open\n\n> files)\n\n> epoll_wait(3, {{EPOLLIN, {u32=6, u64=6}}}, 32, 4294967295) = 1\n\n> clock_gettime(CLOCK_MONOTONIC, {663539, 551304108}) = 0\n\n> accept(6, 0x7fff26202a50, [16]) = -1 EMFILE (Too many open\n\n> files)\n\n> epoll_wait(3, {{EPOLLIN, {u32=6, u64=6}}}, 32, 4294967295) = 1\n\n> clock_gettime(CLOCK_MONOTONIC, {663539, 551607465}) = 0\n\n> ...\n\n>\n\n> After display number of open files (lsof) reveals lots of entries like\n\n> this:\n\n> php 9715 jsadmin 18u IPv4 746066235 0t0 TCP\n\n> localhost:35458->localhost:gearman (ESTABLISHED)\n\n> php 9715 jsadmin 19u IPv4 746066245 0t0 TCP\n\n> localhost:35463->localhost:gearman (ESTABLISHED)\n\n> php 9715 jsadmin 20u IPv4 746066255 0t0 TCP\n\n> localhost:35468->localhost:gearman (ESTABLISHED)\n\n> ...\n\n>\n\n> Restarting Gearman Daemon does not release these open connections,\n\n> however restarting the workers does. So it is possible that it is a\n\n> bug within the pecl library not closing connections. Some of the\n\n> workers do send out background jobs as well, so those connections are\n\n> probably not being closed.\n\nIn the past I've been able to close all connections with\n\n$worker = null;\n\nIf you have a factory.. you're out of luck..\n\nclass MyStuff\n\n{\n\npublic static function newGearman()\n\n{\n\n$worker = new GearmanWorker();\n\n$worker->addFunction('x','x');\n\nreturn $worker;\n\n}\n\n}\n\nMyStuff::newGearman()->work();\n\nThis will create a gearman worker object that won't be destroyed until\n\ngarbage collection.. on php 5.2.. that is basically never.. and on\n\n5.3 .. you may need to force it."
+    }
+}

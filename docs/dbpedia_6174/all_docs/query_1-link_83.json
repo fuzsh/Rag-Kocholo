@@ -1,0 +1,32 @@
+{
+    "id": "dbpedia_6174_1",
+    "rank": 83,
+    "data": {
+        "url": "https://stackoverflow.com/questions/25511883/how-can-i-cache-an-object-in-google-apps-scripts",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How can I cache an object in Google Apps scripts",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/19207a4322fa32cad703208d457673e3?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/d4c0b2c38ceb6369e44910a2220ece34?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/25511883/ivc/ce18?prg=7c657c67-94c0-4d2c-a8fc-4b30996ac332"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2014-08-26T17:36:37",
+        "summary": "",
+        "meta_description": "I am fetching JSON data from JIRA in a script for a spreadsheet in Google Drive.  I have a script that does the fetch just fine, and I am pretty much only fetching the data for the issue.  What I get",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/25511883/how-can-i-cache-an-object-in-google-apps-scripts",
+        "text": "I am fetching JSON data from JIRA in a script for a spreadsheet in Google Drive. I have a script that does the fetch just fine, and I am pretty much only fetching the data for the issue. What I get back is JSON text field representing all the data about that particular JIRA issue.\n\nInstead of making the call to the UrlFetch Service everytime I want one of the fields from a particular JIRA issue, I would like to cache the fetched JSON data after the first fetch.\n\nUnfortunately, Google's Cache service for Google Apps scripts will only cache data in string format, and limits the string to 200 characters. The JSON text data that comes back from JIRA is far in excess of 200 characters.\n\nIs there an alternate way of caching a javascript object like a parsed JSON string or a way to cache more than 200 characters in Google Apps scripts?\n\nThis is the code where I tried to cache the data before I realized it was stored as a string:\n\nfunction _fetchJiraData(targetIssue) { Logger.log(\"Started fetching JIRA data for '%s'\", targetIssue); var data = cache.get(targetIssue); if (data == null) { var options = { headers : { Authorization : \"Basic \" + Utilities.base64Encode('user:password') } }; var url = Utilities.formatString( 'https://rentrak.atlassian.net/rest/api/latest/issue/%s', targetIssue ); var result = UrlFetchApp.fetch(url, options); var jsonText = result.getContentText(); data = JSON.parse(jsonText); cache.put(targetIssue, data); } // TODO: validate data return data; };\n\nThanks for any help!"
+    }
+}
