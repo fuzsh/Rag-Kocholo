@@ -1,0 +1,35 @@
+{
+    "id": "dbpedia_6181_2",
+    "rank": 94,
+    "data": {
+        "url": "https://superuser.com/questions/646062/granting-write-permissions-to-www-data-group",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Granting write permissions to www-data group",
+        "top_image": "https://cdn.sstatic.net/Sites/superuser/Img/apple-touch-icon@2.png?v=e869e4459439",
+        "meta_img": "https://cdn.sstatic.net/Sites/superuser/Img/apple-touch-icon@2.png?v=e869e4459439",
+        "images": [
+            "https://cdn.sstatic.net/Sites/superuser/Img/logo.svg?v=4bc8a703ebac",
+            "https://i.sstatic.net/Cq0Om.jpg?s=64",
+            "https://www.gravatar.com/avatar/ad1f59d36b9c79d6041388f12eb1db92?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/A25iW.jpg?s=64",
+            "https://i.sstatic.net/Cq0Om.jpg?s=64",
+            "https://superuser.com/posts/646062/ivc/0ed9?prg=5dc49577-52be-42ba-81e2-4651c6eae0e7"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2013-09-16T13:33:11",
+        "summary": "",
+        "meta_description": "I am creating a website and part of the function is to write out user generated data with php. I'm using nginx on Ubuntu 13.04. A the moment I'm only testing and everything is served through nginx on",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/superuser/Img/favicon.ico?v=4852d6fb3f5d",
+        "meta_site_name": "Super User",
+        "canonical_link": "https://superuser.com/questions/646062/granting-write-permissions-to-www-data-group",
+        "text": "First, useradd creates a new user. As you (iain) already exist, you want to call usermod instead. So that would be:\n\nsudo usermod -aG www-data iain addgroup www-data\n\n(note the -a on Debian-based servers (Ubuntu included) that will add you to that group, and keep your membership to other groups. Forget it and you will belong to the www-data group only - could be a bad experience if one of them was wheel. On SUSE-type servers the option is -A instead of -aG so read man usermod carefully to get it right.)\n\nSecond, you don't want apache to have full rw access to /var/www: this is potentially a major security breach. As a general rule, allow only what you need, and nothing more (principle of least privilege). In this case, you need apache (www-data) and you (www-data group) to write (and read) in /var/www/example.com/public_html, so\n\nsudo chown -R www-data:www-data /var/www/example.com/public_html sudo chmod -R 770 /var/www/example.com/public_html\n\nEdit: to answer your original question, yes, any member of www-data can now read and execute /var/www (because the last bit of your permissions is 5 = read + exec). But because you haven't used the -R switch, that applies only to /var/www, and not to the files and sub-directories it contains. Now, whether they can write is another matter, and depends on the group of /var/www, which you haven't set. I guess it is typically root:root, so no, they (probably) can't write."
+    }
+}

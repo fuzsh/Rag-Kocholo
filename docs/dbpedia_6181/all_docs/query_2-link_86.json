@@ -1,0 +1,30 @@
+{
+    "id": "dbpedia_6181_2",
+    "rank": 86,
+    "data": {
+        "url": "https://forum.posit.co/t/shiny-app-as-a-package-directory-structure-and-www-folder/135323",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Shiny app as a package - directory structure and www folder",
+        "top_image": "https://forum.posit.co/uploads/default/original/3X/6/5/654b5c729979def37b03638d5f101ca9eede49b2.jpeg",
+        "meta_img": "https://forum.posit.co/uploads/default/original/3X/6/5/654b5c729979def37b03638d5f101ca9eede49b2.jpeg",
+        "images": [],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "shiny"
+        ],
+        "tags": null,
+        "authors": [
+            "system Closed"
+        ],
+        "publish_date": "2022-04-26T08:52:25+00:00",
+        "summary": "",
+        "meta_description": "In Chapter 20 of Mastering Shiny, there is the very good idea to organise a large and long term Shiny app as a package. It has simplified my code (no more source()) and simplified my workflow.  My directory structure now&hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://forum.posit.co/uploads/default/optimized/3X/a/2/a2088ce9db90a2a99109603641bde473e3237a6c_2_32x32.png",
+        "meta_site_name": "Posit Community",
+        "canonical_link": "https://forum.posit.co/t/shiny-app-as-a-package-directory-structure-and-www-folder/135323",
+        "text": "In Chapter 20 of Mastering Shiny, there is the very good idea to organise a large and long term Shiny app as a package. It has simplified my code (no more source()) and simplified my workflow. My directory structure now resembles this :\n\n├── data ├── R └── www\n\nHowever, I run into the issue of not knowing how to organise properly my static resources (videos, pictures..). A shinyApp() call inside the R directory does not seem to be able to give access to the www directory in the parent folder, so all the src = \"img.png\" do not work, and other includeMarkdown(\"text.md\") create connection errors (cannot open the connection). The paths to data do work, on the other hand.\n\nHas anyone found a solution to this?\n\nI think I see your issues, Mastering Shiny doesnt mention www folder or resource path anywhere that I can see, which does seem an oversight and might make sense to raise as an issue on their github.\n\nI havent tried shiny as package so not aware of the issues or how to deal.\n\nPerhaps look into golem for either direct use, or to see how they approach the resource path issue.\n\nAlso maybe someone here on the forum will have experience and will know how to advise you.\n\nYes I'm thinking about posting an issue there indeed. But the github does not seem very active.\n\nBut I feel like the documentation of shiny itself is a bit lacking on the subject. What is the difference between shinyApp() and runApp() apart from the return? Why is what I'm doing not working?\n\nI'll look into golem if I don't manage to fix this some other way indeed! It looks somewhat difficult to adapt a sizeable project to it.\n\nThanks a lot for your answers !\n\nHi @paulimer,\n\nI am not using golem but like @nirgrahamuk I think it can be a solution\n\nOtherwise, you can have a look at the structure of my IFCshiny app which is organized as a package.\n\nHTH\n\nThanks a lot for your answers and examples @cnbrownlie and @gitdemont ! I have many things to try then.\n\nI also found a way to circumvent the issue, but if feels a bit hacky, I added this line : addResourcePath(prefix = \"www\", directoryPath = \"./www\"), but it does not work for every resource I think.This seems to work in Chromium for all the resources, but not really in Firefox for videos (I posted an issue about it, the behavior is weird). Edit : this seems unrelated."
+    }
+}

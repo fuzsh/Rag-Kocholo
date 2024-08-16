@@ -1,0 +1,57 @@
+{
+    "id": "dbpedia_6181_2",
+    "rank": 49,
+    "data": {
+        "url": "https://forums.freebsd.org/threads/recommended-directory-for-website-data.82262/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Recommended directory for website data?",
+        "top_image": "https://forums.freebsd.org/styles/freebsd/xenforo/logo.og.png",
+        "meta_img": "https://forums.freebsd.org/styles/freebsd/xenforo/logo.og.png",
+        "images": [
+            "https://forums.freebsd.org/styles/freebsd/xenforo/freebsd_logo.png",
+            "https://forums.freebsd.org/styles/default/xenforo/xenforo-logo.png",
+            "https://forums.freebsd.org/styles/default/xenforo/add_to_home.gif",
+            "https://forums.freebsd.org/data/avatars/m/63/63295.jpg?1605947292",
+            "https://forums.freebsd.org/styles/default/xenforo/reactions/emojione/like-1f44d.png",
+            "https://forums.freebsd.org/data/avatars/m/58/58536.jpg?1723365291",
+            "https://forums.freebsd.org/styles/default/xenforo/reactions/emojione/handshake.png",
+            "https://secure.gravatar.com/avatar/abf80aa6e5dd96dd8ea3f5a6c0277303?s=96",
+            "https://forums.freebsd.org/styles/default/xenforo/reactions/emojione/handshake.png",
+            "https://forums.freebsd.org/styles/default/xenforo/reactions/emojione/handshake.png",
+            "https://forums.freebsd.org/styles/default/xenforo/reactions/emojione/handshake.png",
+            "https://forums.freebsd.org/data/avatars/m/52/52451.jpg?1550787584",
+            "https://forums.freebsd.org/styles/default/xenforo/reactions/emojione/handshake.png",
+            "https://secure.gravatar.com/avatar/abf80aa6e5dd96dd8ea3f5a6c0277303?s=96",
+            "https://forums.freebsd.org/data/avatars/m/60/60816.jpg?1674500727",
+            "https://forums.freebsd.org/data/avatars/m/1/1677.jpg?1413407984",
+            "https://forums.freebsd.org/styles/default/xenforo/reactions/emojione/like-1f44d.png",
+            "https://forums.freebsd.org/data/avatars/m/52/52756.jpg?1526152159",
+            "https://forums.freebsd.org/data/avatars/m/61/61207.jpg?1595173989",
+            "https://forums.freebsd.org/data/avatars/m/4/4827.jpg?1487681228",
+            "https://forums.freebsd.org/data/avatars/m/52/52451.jpg?1550787584",
+            "https://cdn.jsdelivr.net/joypixels/assets/7.0/png/unicode/64/1f629.png",
+            "https://cdn.jsdelivr.net/joypixels/assets/7.0/png/unicode/64/1f635-1f4ab.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Nick-6",
+            "M mer",
+            "T Tieks",
+            "K kalleboy"
+        ],
+        "publish_date": "2021-09-30T16:27:32+00:00",
+        "summary": "",
+        "meta_description": "Checked hier and didn't see mentioning it. Internet says /usr/local/www is the one. I'd used /srv/domain.com in Linux. I'd like to know the proper and...",
+        "meta_lang": "en",
+        "meta_favicon": "/styles/freebsd/xenforo/logo.og.png",
+        "meta_site_name": "The FreeBSD Forums",
+        "canonical_link": "https://forums.FreeBSD.org/threads/recommended-directory-for-website-data.82262/",
+        "text": "As always it depends on context, there really isn't a \"best\" solution here.\n\nFor a server you could opt for moving it into the homedirectory of users so that it'll be easier for them to access and easier for the administration to safeguard (\"backup\") said data.\n\nFor personal use you could consider the same approach, or perhaps use the default of /usr/local/www. Of course this could be considered a minor security concern because if you're using default locations and/or settings you're also providing possible attackers with some basic options to try out. For example: pretty much everyone knows about /tmp and thus attackers often try to dump their scripts there in order to try and exploit local root glitches. Obvious solution: don't use /tmp or make sure it doesn't allow file execution.\n\nBut I digress.\n\nIn the end anything will do, as long as you don't start messing things up by using obviously bizarre locations such as, for example, /usr/src/www or such. When in doubt I often resort to a location in /opt to move things outside of the regular hierarchy, I also often use this to store my jails.\n\nYour milage may vary of course.\n\nHope this can give you some ideas.\n\nWhen in doubt I often resort to a location in /opt\n\nWhere in hier(7) can we find /opt? Used to Linux?\n\nIf your system is using ZFS, create a new dataset to hold it. Sets you up for good security practices and backing up the data.\n\nExactly. Security is especially important here because PHP/Wordpress will be targeted by script kids. You can find a recent example of it here. Make sure you pay attention to file permissions and use non-standard directory names whenever possible. Most of all, keep your software up-to-date. Scripted attacks mostly use known vulnerabilities, with up-to-date software you don't have to worry.\n\nThere is no genuine \"recommended place\". You can use the entire namespace to add whatever you like as your own stuff, as long as you don't mess up the existing paths.\n\nI usually prefer to build a third tree at one place: we have / where the OS tree begins, with /usr, /lib, /share, /etc, and so on, and we have another tree below /usr/local for all things managed via pkg, so that these are already at one common place. Now decide for another place where all the local additions go (/opt would be a traditional choice), and you can have /opt/sbin for the self-written admin scripts, /opt/etc for local configuration files (you could even use /opt/etc/rc.d and /opt/etc/periodic by simply adding them to the main config files), and then probably /opt/www for the server root.\n\nAdvantage: you have completely separated this from the OS upgrades and the ports upgrades, you can glance through it for the local additions, you can configure these accordingly in backup tools and always know what it is, you can move the whole tree to a different machine when needed, you may need to share parts of it between different systems, and this is all out of the way for everything else.\n\nHi msplsh I wonder why are those paths considered \"terrible\"? At least, under OpenBSD, \"/var/www\" is even the default one for httpd.\n\n/var is traditionally for data written by the applications themselves: locks, logfiles, databases.Usually short-life, may run full on errors, and not need longterm retention in the backup."
+    }
+}
