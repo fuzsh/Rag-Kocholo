@@ -1,0 +1,63 @@
+{
+    "id": "dbpedia_6532_3",
+    "rank": 69,
+    "data": {
+        "url": "https://communities.sas.com/t5/SAS-Procedures/PROC-IMPORT-multiple-sheets/td-p/149597",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Solved: PROC IMPORT....multiple sheets",
+        "top_image": "https://communities.sas.com/html/assets/sas-comm-social-blue.png",
+        "meta_img": "https://communities.sas.com/html/assets/sas-comm-social-blue.png",
+        "images": [
+            "https://communities.sas.com/legacyfs/online/a62173_tempImage7809056103368482190.png",
+            "https://communities.sas.com/html/rank_icons/rank5-calcite-1dot.png",
+            "https://communities.sas.com/t5/image/serverpage/image-id/58i767A858569BC7841/image-dimensions/40x40?v=v2",
+            "https://communities.sas.com/html/rank_icons/rank8-quartz-4dots.png",
+            "https://communities.sas.com/t5/image/serverpage/image-id/58i767A858569BC7841/image-dimensions/40x40?v=v2",
+            "https://communities.sas.com/html/rank_icons/rank8-quartz-4dots.png",
+            "https://communities.sas.com/legacyfs/online/a62173_tempImage7809056103368482190.png",
+            "https://communities.sas.com/html/rank_icons/rank5-calcite-1dot.png",
+            "https://communities.sas.com/t5/image/serverpage/image-id/58i767A858569BC7841/image-dimensions/40x40?v=v2",
+            "https://communities.sas.com/html/rank_icons/rank8-quartz-4dots.png",
+            "https://communities.sas.com/t5/image/serverpage/avatar-name/elephant/avatar-theme/candy/avatar-collection/animals/avatar-display-size/message/version/2?xdesc=1.0",
+            "https://communities.sas.com/html/rank_icons/rank8-quartz-4dots.png",
+            "https://communities.sas.com/t5/image/serverpage/image-id/14661iA1EFA7A47A58BD85/image-dimensions/40x40/image-coordinates/0%2C6%2C276%2C282?v=v2",
+            "https://communities.sas.com/html/rank_icons/rank5-calcite-1dot.png",
+            "https://communities.sas.com/t5/image/serverpage/avatar-name/toyblock/avatar-theme/candy/avatar-collection/toys/avatar-display-size/message/version/2?xdesc=1.0",
+            "https://communities.sas.com/html/rank_icons/super-user-rank.png",
+            "https://communities.sas.com/legacyfs/online/a62173_tempImage7809056103368482190.png",
+            "https://communities.sas.com/html/rank_icons/rank5-calcite-1dot.png",
+            "https://communities.sas.com/t5/image/serverpage/avatar-name/toyblock/avatar-theme/candy/avatar-collection/toys/avatar-display-size/message/version/2?xdesc=1.0",
+            "https://communities.sas.com/html/rank_icons/super-user-rank.png",
+            "https://communities.sas.com/t5/image/serverpage/avatar-name/music/avatar-theme/candy/avatar-collection/hobbies/avatar-display-size/message/version/2?xdesc=1.0",
+            "https://communities.sas.com/html/rank_icons/sas-employee-rank.png",
+            "https://img.youtube.com/vi/mmD4roIFOWU/0.jpg",
+            "https://communities.sas.com/t5/image/serverpage/image-id/91612i245D732FF24B323D/image-size/small?v=v2&px=200",
+            "https://communities.sas.com/t5/image/serverpage/avatar-name/toyblock/avatar-theme/candy/avatar-collection/toys/avatar-display-size/favicon/version/2?xdesc=1.0",
+            "https://communities.sas.com/t5/image/serverpage/avatar-name/elephant/avatar-theme/candy/avatar-collection/animals/avatar-display-size/favicon/version/2?xdesc=1.0",
+            "https://communities.sas.com/t5/image/serverpage/image-id/58i767A858569BC7841/image-dimensions/16x16?v=v2",
+            "https://communities.sas.com/legacyfs/online/a62173_tempImage7809056103368482190.png",
+            "https://communities.sas.com/t5/image/serverpage/image-id/14661iA1EFA7A47A58BD85/image-dimensions/16x16?v=v2",
+            "https://communities.sas.com/t5/image/serverpage/avatar-name/music/avatar-theme/candy/avatar-collection/hobbies/avatar-display-size/favicon/version/2?xdesc=1.0",
+            "https://communities.sas.com/skins/images/433C9C05C51D44A6C27B7E7A9E0E48F4/responsive_peak/images/powered_by_khoros.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "communities.sas.com",
+            "user-id"
+        ],
+        "publish_date": "2013-11-20T05:35:06.350000+00:00",
+        "summary": "",
+        "meta_description": "Solved: Hi All, Can anyone help me to understand, how to import multiple sheets using Proc Import. Regards Anand Sahu",
+        "meta_lang": "en",
+        "meta_favicon": "https://communities.sas.com/html/@86D798D128D0FA03C10624935AA29945/assets/favicon.ico",
+        "meta_site_name": "",
+        "canonical_link": "https://communities.sas.com/t5/SAS-Procedures/PROC-IMPORT-multiple-sheets/td-p/149597",
+        "text": "There isnt code to read in multiple sheets from one proc import statement that I know about.\n\nThe best you could do would be to macrotize the invocation of the proc step... something like:\n\n%macro pim(sheet);\n\nproc import out= payment\n\ndatafile = 'E:\\SAS DOC\\project\\Credit Banking.xls'\n\ndbms = Excel;\n\nsheet = \"&sheet\";\n\ngetnames = yes;\n\nrun;\n\n%mend piim;\n\n%pim(Customer Acqusition);\n\n%pim(Spend);\n\n%pim(Repayment);\n\nEJ\n\nProbably need more information than what was posted.\n\nIn general you would have a separate proc import step for each sheet that you want to import.\n\nEJ\n\nI'm using the following codes to import three sheets from a single workbook so can i get a program that allow me to get the same result with a single code.\n\nThe Excel file is attached.\n\nproc import out= Customer_details\n\ndatafile = 'E:\\SAS DOC\\project\\Credit Banking.xls'\n\ndbms = Excel;\n\nsheet = 'Customer Acqusition';\n\ngetnames = yes;\n\nrun;\n\nproc import out= Expanse\n\ndatafile = 'E:\\SAS DOC\\project\\Credit Banking.xls'\n\ndbms = Excel;\n\nsheet = 'Spend';\n\ngetnames = yes;\n\nrun;\n\nproc import out= payment\n\ndatafile = 'E:\\SAS DOC\\project\\Credit Banking.xls'\n\ndbms = Excel;\n\nsheet = 'Repayment';\n\ngetnames = yes;\n\nrun;\n\nThere isnt code to read in multiple sheets from one proc import statement that I know about.\n\nThe best you could do would be to macrotize the invocation of the proc step... something like:\n\n%macro pim(sheet);\n\nproc import out= payment\n\ndatafile = 'E:\\SAS DOC\\project\\Credit Banking.xls'\n\ndbms = Excel;\n\nsheet = \"&sheet\";\n\ngetnames = yes;\n\nrun;\n\n%mend piim;\n\n%pim(Customer Acqusition);\n\n%pim(Spend);\n\n%pim(Repayment);\n\nEJ\n\nHi,\n\nI'm searching for the same answer and tried this solution (which seems to work for many others)\n\nbut it doesn't work on my system and I wonder why?\n\nI get this error for which I can't find any solution on other forums.:\n\nERROR: DBMS type EXCEL not valid for import.\n\nI'm working with SAS 9.3 in SAS EG 5.1 (5.100.0.12019) (64-bit) on Windows7\n\nEDIT: I found out I don't have SAS/ACCESS"
+    }
+}
