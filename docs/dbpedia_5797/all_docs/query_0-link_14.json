@@ -1,0 +1,42 @@
+{
+    "id": "dbpedia_5797_0",
+    "rank": 14,
+    "data": {
+        "url": "https://gis.stackexchange.com/questions/296558/qgis-relations-in-label-expressions",
+        "read_more_link": "",
+        "language": "en",
+        "title": "QGIS: relations in label expressions",
+        "top_image": "https://cdn.sstatic.net/Sites/gis/Img/apple-touch-icon@2.png?v=54e3ab1edcf3",
+        "meta_img": "https://cdn.sstatic.net/Sites/gis/Img/apple-touch-icon@2.png?v=54e3ab1edcf3",
+        "images": [
+            "https://cdn.sstatic.net/Sites/gis/Img/logo.svg?v=524ba4e921b1",
+            "https://lh3.googleusercontent.com/-Wk8eZGtROO0/AAAAAAAAAAI/AAAAAAAAAPA/eDkPu3ZprxM/photo.jpg?sz=64",
+            "https://www.gravatar.com/avatar/432fdbb597e36792c74404581f32761f?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://lh3.googleusercontent.com/-Wk8eZGtROO0/AAAAAAAAAAI/AAAAAAAAAPA/eDkPu3ZprxM/photo.jpg?sz=64",
+            "https://i.sstatic.net/giGdh.png",
+            "https://i.sstatic.net/l23pp.png",
+            "https://i.sstatic.net/OqAi9.png",
+            "https://i.sstatic.net/Uxbdl.png",
+            "https://www.gravatar.com/avatar/94162a032f0fba7168a40b0b92ef1c1c?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/vbZso.jpg?s=64",
+            "https://gis.stackexchange.com/posts/296558/ivc/ad2a?prg=d428c557-96b9-4e0f-91ed-b9cdf664c77f"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Alexander Novikov"
+        ],
+        "publish_date": "2018-09-20T13:42:13",
+        "summary": "",
+        "meta_description": "In my project I have a many-to-one relationship.\n\nFor example I have a vector layer \"Towns\" and a data layer \"TownsInfo\".\n\nEach town record consists of \"Name\" and \"Id\".\nEach TownsInfo record consis...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/gis/Img/favicon.ico?v=6e585ede6bca",
+        "meta_site_name": "Geographic Information Systems Stack Exchange",
+        "canonical_link": "https://gis.stackexchange.com/questions/296558/qgis-relations-in-label-expressions",
+        "text": "I was able to achieve what I think you are after as follows:\n\nFirst, I set the layer relations in project properties as seen in this screenshot:\n\nThe attribute table of the 'Towns' vector layer looks like this:\n\nThe attribute table of the non-spatial 'TownsInfo' Layer looks like this:\n\nI entered the following expression in the Label Expression Generator:\n\nattribute(get_feature('TownsInfo', 'ID', ID), 'POPULATION') || ', ' || attribute(get_feature('TownsInfo', 'ID', ID), 'SOURCE')\n\nThe result looks like this:\n\nthe question is a little unclear, but I think what you are trying to do is use both the 'population' and 'source' fields in your label simultaneously so a given label might say something like '30,000, Wikipedia'. Please correct me if I am wrong.\n\nI think you need to concatenate the two field columns 'pop' and 'source'. This would essentially create a new 3rd column in your attribute table which would contain rows which are a combination of the two original fields, so again these would read something like '30,000 Wikipedia'.\n\nESRI provide a guide on how to do this here: https://support.esri.com/en/technical-article/000005365\n\nOnce you have created your new, combined column, simply set this column as the label data source using the 'label as' function.\n\nThere may be other ways to go about this, but this is the first that springs to mind for me. Good luck and feel free to direct further queries this way but try to be more descriptive and concise in your question delivery."
+    }
+}
