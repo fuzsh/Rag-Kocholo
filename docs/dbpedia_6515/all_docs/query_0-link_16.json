@@ -1,0 +1,31 @@
+{
+    "id": "dbpedia_6515_0",
+    "rank": 16,
+    "data": {
+        "url": "https://algorius.com/manual/anv/inventory/troubleshooting.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Algorius Net Viewer Manual | Troubleshooting",
+        "top_image": "https://algorius.com/src/img/@1x/algorius-net-viewer_demo-map.png",
+        "meta_img": "https://algorius.com/src/img/@1x/algorius-net-viewer_demo-map.png",
+        "images": [
+            "https://www.facebook.com/tr?id=790252215254426&ev=PageView&noscript=1",
+            "https://algorius.com/manual/anv/inventory/src/img/svg/algorius-net-viewer.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "src/img/favicon/favicon.ico",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "Inventory is taken in centralized manner via WMI. RPC service should be started on remote machine to enable WMI access. Account used for connection should have sufficient rights on remote machine. Please find some troubleshooting advices below.\n\nRPC server unavailable error is shown during scanning.\n\nThis error indicates that the application can’t connect to the remote computer. In this case, follow these steps:\n\nCheck that device address is correct and includes correct IP or host name.\n\nRun the following command on the remote computer:\n\nwinrm quickconfig\n\nThis command will check if WMI access is configured correctly and, if it is not, it will suggest making the necessary changes.\n\nCheck that RPC service is started on remote machine. Command to launch RPC: net start RpcSs\n\nCheck that internal or external Firewall on remote machine doesn’t block the connection. Commands to allow WMI access for internal Firewall:\n\nnetsh firewall set service RemoteAdmin enable\n\nnetsh firewall add portopening TCP 135 DCOM_TCP135\n\nRemote access to WMI is impossible in case of Windows XP Home Edition on remote machine.\n\nIf remote machine uses Windows XP, please check that Service Pack 2 is installed at least.\n\nAccess denied. Exception from HRESULT: 0x80070005 (E_ACCESSDENIED) error is shown during scanning.\n\nThis error indicates that the application was able to connect to the remote computer, but access to WMI was denied because you have not enough rights for this operation. In this case, follow these steps:\n\nCheck that correct login is specified in device settings.\n\nCheck that login contains the correct user name and password and that this user exists and has enough rights on remote machine (is a member of Administrators group), that password is not expired and profile is not blocked.\n\nIf devices are scanned by the Algorius Net Viewer Server service, by default it starts from the System user who has no access rights to another computer. If required, you can change the user in the service settings.\n\nRun the following command on the remote computer:\n\nwinrm quickconfig\n\nThis command will check if WMI access is configured correctly and, if it is not, it will suggest making the necessary changes.\n\nCheck the settings of local security policy on remote machine. Maybe all external users are considered as guests: Control Panel→Administration→Local Security Policy→Security Options→Local Policies→Security Options→Network Access: Sharing security model for local accounts must be Classic. The same can be performed via the registry: HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Lsa\\forceguest must be 0.\n\nTry to add the role DCOM User for the user (even if the user is already a member of Administrators group).\n\nCheck the time correctness on local and remote machines. Difference of 15 minutes can lead to access denial.\n\nTry to specify the full user name: Domain\\Administrator\n\nCheck that the access settings are not changed in the configuration of DCOM. Open Control Panel→Administration→Components Services, in the list on the left select Console Root→Components Services→Computers→My computer. In the context menu of My Computer click Properties, click COM Security tab, in the Access Permissions section in Edit Limits and Edit Defaults buttons check that Administrators and DCOM users have remote access. In the same list on the left, under the item My Computer select DCOM Configuration→Windows Management Instrumentation, in its context menu click Properties, click Security tab and check that the access restrictions are Defaults.\n\nPlease contact client support in case if issue is not resolved."
+    }
+}

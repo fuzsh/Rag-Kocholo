@@ -1,0 +1,30 @@
+{
+    "id": "dbpedia_6514_1",
+    "rank": 93,
+    "data": {
+        "url": "https://knowledge.broadcom.com/external/article/98150/tivoli-netview-user-exits-not-in-publish.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "TIVOLI NETVIEW USER EXITS NOT IN PUBLISHED LIB",
+        "top_image": "https://knowledge.broadcom.com/broadcom-log.png",
+        "meta_img": "https://knowledge.broadcom.com/broadcom-log.png",
+        "images": [
+            "https://cdn.wolkenservicedesk.com/wolken-footer-image.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "https://knowledge.broadcom.com/broadcom-log.png",
+        "meta_site_name": "",
+        "canonical_link": "https://knowledge.broadcom.com/external/article/98150/tivoli-netview-user-exits-not-in-publish.html",
+        "text": "Products\n\nCMDB for z/OS NetSpy Network Performance NetMaster Network Automation SOLVE NetMaster Network Management for SNA NetMaster Network Management for TCP/IP NetMaster File Transfer Management\n\nIssue/Introduction\n\nOur colleague was working on the Tivoli NetView User Exits at this new NM cust.\n\nThis r12.2 DocOps page--which is under CA NetMaster Shared Content Library:\n\nUsing CA NetMaster NA with Other Products:\n\nhttps://docops.ca.com/ca-netmaster-shared-content-library/12-2/en/install-or-upgrade-ca-netmaster-products/using-ca-netmaster-na-with-other-products\n\nsays the exits are located in dsnpref.NMC2.CC2DSAMP library.\n\nBut they could not be located there.\n\n-\n\nEnvironment\n\nRelease:\n\nComponent: NMSNA\n\nCause\n\nOur colleague was working on the Tivoli NetView User Exits at this new NM cust.\n\nResolution\n\nOur doc states:\n\nCopy the supplied NM012002, NM012003, and NM012006 load modules in\n\ndsnpref.NMC2.CAILINK into the Tivoli NetView load library.\n\n** The modules are now in the CC2DPLD. **\n\nCustomize the Tivoli NetView User Exits\n\nThe following modules are Tivoli NetView user exits that must be customized:\n\n** NMXITCI is in the CC2DPLD as a module (so cannot be modified), and the\n\nrest are still in the CC2DSAMP. **\n\n--XITCI\n\n--DSIEX06\n\n--DSIEX11\n\n--DSIEX14\n\n--DSIEX16\n\nTo customize the user exits:\n\n1. Examine the provided samples, which demonstrate the necessary changes.\n\n2. Make the necessary changes to the user exits for each of the previously-\n\nmentioned modules.\n\n3. Assemble and link the user exits into the Tivoli NetView load library. The\n\nsource for the $NMNVC macro is provided to allow the\n\nassembly of the modules.\n\nNote: The source code for the above exits can be found in the supplied\n\ndsnpref.NMC2.CC2DSAMP library. The names are NMXITCI and\n\nNMDSIX nn. The $NMNVC macro can be found in the supplied\n\ndsnpref.NMC2.CC2DMAC library.\n\n** This is still correct. **\n\n-"
+    }
+}
