@@ -1,0 +1,46 @@
+{
+    "id": "dbpedia_6504_1",
+    "rank": 53,
+    "data": {
+        "url": "https://salesforce.stackexchange.com/questions/32585/what-formulae-does-the-geolocation-distance-use",
+        "read_more_link": "",
+        "language": "en",
+        "title": "What formulae does the Geolocation Distance use?",
+        "top_image": "https://cdn.sstatic.net/Sites/salesforce/Img/apple-touch-icon@2.png?v=2b5099539758",
+        "meta_img": "https://cdn.sstatic.net/Sites/salesforce/Img/apple-touch-icon@2.png?v=2b5099539758",
+        "images": [
+            "https://cdn.sstatic.net/Sites/salesforce/Img/logo.svg?v=b2886f87beec",
+            "https://i.sstatic.net/CYgYY.png",
+            "https://i.sstatic.net/kqCsC.png",
+            "https://www.gravatar.com/avatar/58e10335e298098566f0368728b4aee4?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/ZUqI5.png",
+            "https://i.sstatic.net/YtU8f.png",
+            "https://i.sstatic.net/OltSZ.png",
+            "https://i.sstatic.net/StcUd.png",
+            "https://i.sstatic.net/UVacp.png",
+            "https://i.sstatic.net/TyJcF.png",
+            "https://i.sstatic.net/DgmIy.png",
+            "https://i.sstatic.net/094JC.png",
+            "https://www.gravatar.com/avatar/58e10335e298098566f0368728b4aee4?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/862f00bdc1d9a40383da075c6f8c07b4?s=64&d=identicon&r=PG",
+            "https://salesforce.stackexchange.com/posts/32585/ivc/3f58?prg=a41410c1-f177-435c-87e8-a064ad5fa02e"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Daniel Ballinger"
+        ],
+        "publish_date": "2014-04-12T10:21:04",
+        "summary": "",
+        "meta_description": "Forgive me if this is a bit extremely academic in nature, but I was wondering how Salesforce goes about determining the distance between two pairs of latitude and longitude?\n\nWhen I've looked at th...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/salesforce/Img/favicon.ico?v=7a6ae35a17ac",
+        "meta_site_name": "Salesforce Stack Exchange",
+        "canonical_link": "https://salesforce.stackexchange.com/questions/32585/what-formulae-does-the-geolocation-distance-use",
+        "text": "Forgive me if this is a bit extremely academic in nature, but I was wondering how Salesforce goes about determining the distance between two pairs of latitude and longitude?\n\nWhen I've looked at this in the past it turned out not to be as straight forward as you might think. See Geographical distance and the second (inverse) geodetic problem. The earth is generally an ellipsoidal shape and there are discontinuities in the coordinate system. It's probably safe to assume changes in elevation aren't being taken into account in distance calculations.\n\nAre they using a great-circle distance formula?\n\nWhy might this be important\n\nHow far is it from Wellington, New Zealand (41°19'S 174°49'E) to Salamanca, Spain(40°58'N 5°30'W)?\n\nDepending on the model you use could be the difference between 19951 km,\n\nand 19960 km.\n\nIs that 0.04% difference important or even meaningful? Probably not for the majority of applications. Hence the statement at the start of the question that this is purely out of academic interest.\n\nUsing a Contact with a Location field set at -41.31666667 174.81666667 (Wellington) and the following SOQL query returned the Contact ID:\n\nselect Id from Contact WHERE DISTANCE(Location__c, GEOLOCATION(40.96666667, -5.50000000), 'km') > 19968.0\n\nIncreasing the distance to 19968.1 km did not.\n\nAgain, an 8 km difference wouldn't usually be considered significant on a ~20,000 km length where elevations are being ignored anyway."
+    }
+}
