@@ -1,0 +1,36 @@
+{
+    "id": "dbpedia_6759_3",
+    "rank": 51,
+    "data": {
+        "url": "https://stackoverflow.com/questions/2709530/how-to-transform-latitude-and-longitude",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How to transform latitude and longitude?",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/d5f91983a9d9cfb69981b6108a63b412?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/8a1d59577c2fad2bf0a686824ba347a1?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/33d1848da81c469e3f19bd7e1d8919d9?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/b45736d1661b3b53a803bfd958d3e1d6?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/92fb4563ddc5ceeaa8b19b60a7a172f4?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/e8d5fe90f1fe2148bf130cccd4dc311c?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/2709530/ivc/581a?prg=dacd0473-5d8a-4b73-85cf-6008bdc8b5a8"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2010-04-25T19:15:56",
+        "summary": "",
+        "meta_description": "How to calculate from these numbers:\n\n51.501690392607,-0.1263427734375\r\nto latitude and longitude? \n\nIt should be \r\nLondon, England 51° 32' N 0° 5' W",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/2709530/how-to-transform-latitude-and-longitude",
+        "text": "To convert the 51.501690392607, first take the integer portion for 51 degrees. Positive values are north; negatives are south.\n\nThen take the fractional portion: 0.501690392607\n\nMultiply by 60: 60 * 0.501690392607 = 30.10142355642\n\nTake the integer portion for 30 minutes.\n\nThen take the fractional portion: 0.10142355642\n\nMultiply by 60: 6.0854133852\n\nRound to the nearest 1 for the seconds.\n\nYou come out with: 51 degrees North 30 minutes 6 seconds.\n\nFor the East/West direction, repeat with east positive and west negative.\n\nTo find the city, you'll have to use some database or something...\n\nI don't know why your conversion doesn't seem to match up.\n\nTo convert a fractional number of degrees into degrees and minutes, in pseudocode:\n\ndegrees = int(frac) minutes = int((frac - degrees) * 60)\n\nto convert \"negative\" numbers into \"S\" and \"W\" (vs \"N\" and \"E\") respectively, use \"if\".\n\nJust to make the pseudocode executable, we could use Python...:\n\ndef translate(frac, islatitude): if islatitude: decorate = \"NS\" else: decorate = \"EW\" if frac < 0: dec = decorate[1] frac = abs(frac) else: dec = decorate[0] degrees = int(frac) minutes = int((frac - degrees) * 60) return \"%d %d %s\" % (degrees, minutes, dec)\n\nSo for example:\n\nprint translate(51.501690392607, True), print translate(-0.126342773437, False)\n\nwould emit\n\n51 30 N 0 7 W\n\nThe decoration (degrees and minutes signs) depends on the character set support of your output device -- and the 7 vs 5 minutes of arc for the W coordinate seems to be the right result for the input numbers you give."
+    }
+}

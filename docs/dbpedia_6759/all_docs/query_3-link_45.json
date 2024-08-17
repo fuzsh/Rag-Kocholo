@@ -1,0 +1,36 @@
+{
+    "id": "dbpedia_6759_3",
+    "rank": 45,
+    "data": {
+        "url": "https://gis.stackexchange.com/questions/142326/calculating-longitude-length-in-miles",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Calculating longitude length in miles",
+        "top_image": "https://cdn.sstatic.net/Sites/gis/Img/apple-touch-icon@2.png?v=54e3ab1edcf3",
+        "meta_img": "https://cdn.sstatic.net/Sites/gis/Img/apple-touch-icon@2.png?v=54e3ab1edcf3",
+        "images": [
+            "https://cdn.sstatic.net/Sites/gis/Img/logo.svg?v=524ba4e921b1",
+            "https://i.sstatic.net/IPA20.png?s=64",
+            "https://www.gravatar.com/avatar/505164440a02963fc6aa22ed312b08f4?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/6JA2d.jpg?s=64",
+            "https://www.gravatar.com/avatar/51e60cc6253004b7de8907371b9f9941?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/fa5764b5ee7afe97b5a925b24c4fa229?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://gis.stackexchange.com/posts/142326/ivc/581a?prg=1ac40377-6c37-4ff6-8996-d23d5bdffc52"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2015-04-12T17:51:01",
+        "summary": "",
+        "meta_description": "Suppose I have the geographic coordinates of &quot;Saratoga, California, USA&quot; as\nLatitude:   37°15.8298′ N   \nLongitude: 122° 1.3806′ W\n\nI know from here that in the case of latitude 1° ≈ 69 m...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/gis/Img/favicon.ico?v=6e585ede6bca",
+        "meta_site_name": "Geographic Information Systems Stack Exchange",
+        "canonical_link": "https://gis.stackexchange.com/questions/142326/calculating-longitude-length-in-miles",
+        "text": "It doesn't matter at what longitude you are. What matters is what latitude you are.\n\nLength of 1 degree of Longitude = cosine (latitude in radians) * length of degree (miles) at equator.\n\nConvert your latitude into decimal degrees ~ 37.26383\n\nConvert your decimal degrees into radians ~ 0.65038\n\nTake the cosine of the value in radians ~ 0.79585\n\n1 degree of Longitude = ~0.79585 * 69.172 = ~ 55.051 miles\n\nMore useful information from the about.com website:\n\nDegrees of latitude are parallel so the distance between each degree remains almost constant but since degrees of longitude are farthest apart at the equator and converge at the poles, their distance varies greatly.\n\nEach degree of latitude is approximately 69 miles (111 kilometers) apart. The range varies (due to the earth's slightly ellipsoid shape) from 68.703 miles (110.567 km) at the equator to 69.407 (111.699 km) at the poles. This is convenient because each minute (1/60th of a degree) is approximately one [nautical] mile.\n\nA degree of longitude is widest at the equator at 69.172 miles (111.321) and gradually shrinks to zero at the poles. At 40° north or south the distance between a degree of longitude is 53 miles (85 km)\n\nNote that the original site (about.com) erroneously omitted the \"nautical\" qualifier.\n\nEquations\n\nSuppose we are discussing latitude and longitude in WGS84 and we want to be accurate. Both meridian radius of curvature M (latitude length) and radius of curvature of parallels R (longitude length) in WGS84 depend only on latitude phi and are defined as:\n\nM = a(1 - e^2) / (1 - e^2 sin(phi)^2)^(3/2) (1)\n\nR = a cos(phi) / (1 - e^2 sin(phi)^2)^(1/2) (2)\n\nwhere\n\ne is the eccentricity of the referenced ellipsoid of WGS84\n\na is the semi-major axis of the ellipsoid.\n\nWGS 84 defines the semi-major axis of the WGS 84 ellipsoid a and the flattening factor of the Earth f as:\n\na=6378137m\n\n1/f=298.257223563\n\nWith these defining parameters in WGS 84, we can obtain the eccentricity:\n\ne=sqrt(2f-f^2)=0.081819191\n\nVerification of the above equations\n\nTo verify whether the above eq. (1) and eq. (2) are correct, we will check them against the results at USGS which said, at 38 degrees North latitude, one degree of latitude equals approximately 364,000 feet (69 miles) and one degree of longitude equals 288,200 feet (54.6 miles).\n\nTo find the meridian radius of curvature M (latitude length) and radius of curvature of parallels (longitude length) at 38 degrees North latitude, we plug in a=6378137, e=0.081819191 and phi=38° into eq. (1) and eq. (2):\n\nM = 6359629.652 m/rad\n\nR = 5032429.322 m/rad\n\nFurthermore, to find length of 1° of latitude and longitude, we multiply the above equations by the radian of 1°:\n\nLength of 1° latitude = M * 1°/180° * pi = 6359629.652*1*pi/180 = 110996.4766 m = 68.970013 miles\n\nLength of 1° longitude= R * 1°/180° * pi = 5032429.322*1*pi/180 = 87832.46103 m = 54.57656101 miles\n\nThe results are in line with the results of USGS.\n\nAnswer to your question\n\nRepeat the above steps but plug in phi=37°15.8298′ = 37+15.8298/60=37.26383, we can obtain:\n\nLength of 1° latitude=68.96139 miles\n\nLength of 1° longitude=55.11761 miles\n\nSo 1° longitude equals to 55.11761 miles. Apparently, your equation is a simplified equation assuming the Earth is a sphere and works best near the equator but not for your case."
+    }
+}
