@@ -1,0 +1,37 @@
+{
+    "id": "dbpedia_6725_2",
+    "rank": 3,
+    "data": {
+        "url": "https://community.spiceworks.com/t/allow-access-on-sonicwall-tz205-to-internal-website/642300",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Allow Access on Sonicwall TZ205 to internal website",
+        "top_image": "https://global.discourse-cdn.com/spiceworks/original/1X/7a73606d7df2f794c4789897e49693fb3c471b23.png",
+        "meta_img": "https://global.discourse-cdn.com/spiceworks/original/1X/7a73606d7df2f794c4789897e49693fb3c471b23.png",
+        "images": [
+            "https://secure.intelligence52.com/795141.png",
+            "https://zdbb.net/l/z0WVjCBSEeGLoxIxOQVEwQ/"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "firewalls",
+            "sonicwall",
+            "question"
+        ],
+        "tags": null,
+        "authors": [
+            "aceofspades (AceOfSpades)",
+            "pfarrell (PatrickFarrell)",
+            "deniskelley (Denis Kelley)"
+        ],
+        "publish_date": "2018-03-23T15:51:30+00:00",
+        "summary": "",
+        "meta_description": "I am having difficulty setting up the NAT Policies and Firewall access rules to allow access to a website on our local server. \nThe page loads fine if viewing directly on the server at http://localhost:85/ \nHowever it ca&hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://global.discourse-cdn.com/spiceworks/optimized/1X/a254df83358a951c43ed6ee756b5e0011a8d58bc_2_32x32.png",
+        "meta_site_name": "Spiceworks Community",
+        "canonical_link": "https://community.spiceworks.com/t/allow-access-on-sonicwall-tz205-to-internal-website/642300",
+        "text": "I am having difficulty setting up the NAT Policies and Firewall access rules to allow access to a website on our local server.\n\nThe page loads fine if viewing directly on the server at http://localhost:85/\n\nHowever it cannot be viewed from any of the other terminals on the network, I have created the NAT Policy and Firewall Access Rule but it still doesn’t allow access from other terminals. Whether directly using the internal Server IP Address or the WAN IP Address with port forwarding.\n\nI also created the appropriate service rule for the TCP port 85\n\nI’ve even attempted to allow access with a loopback policy so the internal computers can enter the WAN IP to access it.\n\nWondering if I missed a step or something else isn’t adding up. I’ve created other policies for different services but this one doesn’t seem to be working out.\n\nA few thoughts here:\n\nTake a look at this to allow a loop back:\n\nhttps://www.sonicwall.com/en-us/support/knowledge-base/170505780814635\n\nIdeally you shouldn’t need that because you should have internal DNS that hands out the internal server address to clients on the lan. They shouldn’t be trying to access the external IP.\n\nAlso, you mentioned port forwarding. I don’t know if you are trying to allow people outside the firewall to access the server but if the server is on the trusted network this is a very unsafe practice. If a web server needs to be accessed from the Internet, it should be on the DMZ.\n\nIs the server that is hosting the website on a different VLAN then the rest of the network? You might just need a firewall rule allowing access from the other VLAN for the clients to the VLAN of the server. If there are no VLAN’s or the VLAN is not done at the Sonicwall than the issue has nothing to do with the Sonicwall."
+    }
+}

@@ -1,0 +1,30 @@
+{
+    "id": "dbpedia_6725_3",
+    "rank": 68,
+    "data": {
+        "url": "https://www.ironwifi.com/help/sonicwall-captive-portal",
+        "read_more_link": "",
+        "language": "en",
+        "title": "SonicWall Captive Portal",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://20811696.fs1.hubspotusercontent-na1.net/hub/20811696/hubfs/logo-2.png?height=120&name=logo-2.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "This page explains the configuration of SonicWall devices to work with IronWiFi Captive Portal and Captive Portal Authentication.",
+        "meta_lang": "en",
+        "meta_favicon": "https://20811696.fs1.hubspotusercontent-na1.net/hubfs/20811696/favicon.ico",
+        "meta_site_name": "",
+        "canonical_link": "https://www.ironwifi.com/help/sonicwall-captive-portal",
+        "text": "Access Point Instructions for SonicWall Captive Portal\n\nThis page explains the configuration of SonicWall devices to work with IronWiFi Captive Portal and Captive Portal Authentication.\n\nLog in to your SonicWall firewall and click Manage at the top. On the left menu, click on VPN > Base Setting and ensure the Unique Firewall Identifier is the original serial number of the device (as shown on the Licenses page).\n\nNext, click on Users > Settings on the left menu and on the Authentication tab at the top configure with:\n\nUser authentication method: RADIUS + Local Users\n\nClick the Configure RADIUS button. Under the Settings header > RADIUS Servers sub-header click ADD...\n\nOn the Settings tab:\n\nHost Name or IP Address: **insert primary RADIUS IP here**\n\nPort: **authentication port**\n\nShared Secret: **insert shared secret here**\n\nConfirm Shared Secret: as above\n\nOn the Advanced tab:\n\nUser Name Format: **Simple-Name**\n\nClick Save. Click ADD... again and configure exactly as above with the following change:\n\nHost Name or IP Address: **insert backup RADIUS IP here**\n\nClick Save again. On the RADIUS Users header:\n\nDefault user group to which all RADIUS users belong: Guest Services\n\nFinally, click OK to save. Next, on the Accounting tab at the top configure with:\n\nSend RADIUS Accounting information: **Enabled**\n\nUnder RADIUS Accounting Servers click ADD... and configure with:\n\nHost Name or IP Address: **insert primary RADIUS IP here**\n\nPort: **accounting port**\n\nShared Secret: **insert shared secret here**\n\nConfirm Shared Secret: as above\n\nUser Name Format: **Simple-Name**\n\nClick Save. Click ADD... again and configure exactly as above with the following change:\n\nHost Name or IP Address: **insert backup RADIUS IP here**\n\nClick Save again.\n\nSend accounting data for: **Guest Users**\n\nInclude: **Domain and local users**\n\nSend interim updates: **Every 2 minutes**\n\nClick Accept at the bottom to save changes. Next, on the left menu click on Objects > Address Objects and click Add at the top. Here, you will need to add multiple rules to allow pre-authentication traffic to be permitted. For each of the entries below you need to add a rule as follows, changing the Name and FQDN Hostname each time:\n\nName: **ironwifi**\n\nZone Assignment: WAN\n\nType: FQDN\n\nFQDN Hostname: **insert *.ironwifi.com here**\n\nAdditionally. if you wish to support social network logins, you also need to add the entries below for each network you plan to support.\n\nFacebook\n\n*.facebook.com\n\n*.fbcdn.net\n\n*.akamaihd.net\n\nconnect.facebook.net\n\nTwitter\n\n*.twitter.com\n\n*.twimg.com\n\nLinkedIn\n\n*.linkedin.com\n\n*.licdn.com\n\nInstagram\n\n*.instagram.com\n\n*.akamaihd.net\n\nOnce all the required entries are added click on the Address Groups tab and click Add at the top. Enter a name of guestwifi and then for each of the entries you created above click the -> arrow to move them to the right hand box. Click OK to save.\n\nNext, on the left menu click on Network > Zones and edit the zone you are using for your guest users (typically the WLAN zone). Under the Guest Services tab configure with:\n\nEnable Guest Services: Enabled\n\nEnable the Captive Portal Authentication checkbox and click Configure. Set the following:\n\nExternal Captive Portal Vendor URL: **insert splash page URL here**\n\nAuto Relay Login Credential to SonicWall: **Enabled**\n\nCaptive Portal Welcome URL Source: **Custom**\n\nCustom Captive Portal Welcome URL: **insert success page URL here**\n\nSession Timeout Source: **From Radius**\n\nIdle Timeout Source: **From Radius**\n\nRadius Authentication Method: **CHAP**\n\nClick OK to save.\n\nEnable the Pass Networks checkbox and select guestwifi from the dropdown. Be sure to also set the Max Guests option to a suitable concurrent number else new guest users might be denied access.\n\nClick OK to save. Finally, if you are using SonicWall Access Points be sure to create an open SSID to enable guest users to connect.\n\n! You must also install a valid SSL certificate on your controller/AP, in order to avoid authentication issues !"
+    }
+}

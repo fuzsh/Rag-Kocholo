@@ -1,0 +1,36 @@
+{
+    "id": "dbpedia_6733_3",
+    "rank": 46,
+    "data": {
+        "url": "https://cs.stackexchange.com/questions/76647/what-is-meant-by-the-term-prior-in-machine-learning",
+        "read_more_link": "",
+        "language": "en",
+        "title": "What is meant by the term \"prior\" in machine learning",
+        "top_image": "https://cdn.sstatic.net/Sites/cs/Img/apple-touch-icon@2.png?v=324a3e0c2b03",
+        "meta_img": "https://cdn.sstatic.net/Sites/cs/Img/apple-touch-icon@2.png?v=324a3e0c2b03",
+        "images": [
+            "https://cdn.sstatic.net/Sites/cs/Img/logo.svg?v=27188323e9e9",
+            "https://i.sstatic.net/6iB0U.jpg?s=64",
+            "https://www.gravatar.com/avatar/831d12f4d4ec27e8198a5e469bf39855?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/MeUV4.jpg?s=64",
+            "https://www.gravatar.com/avatar/5aa5263454ebce9dc0b2b885a6928fe8?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/mYIzP.png?s=64",
+            "https://cs.stackexchange.com/posts/76647/ivc/9c9b?prg=003633a4-9c11-46e2-8ed5-5f1e28c21697"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2017-06-11T11:32:55",
+        "summary": "",
+        "meta_description": "I am new to machine learning. I have read several papers where they have employed deep learning for various applications and have used the term \"prior\" in most of the model design cases, say prior in",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/cs/Img/favicon.ico?v=0c1f5fd7a5e4",
+        "meta_site_name": "Computer Science Stack Exchange",
+        "canonical_link": "https://cs.stackexchange.com/questions/76647/what-is-meant-by-the-term-prior-in-machine-learning",
+        "text": "Put simply, and without any mathematical symbols, prior means initial beliefs about an event in terms of probability distribution. You then set up an experiment and get some data, and then \"update\" your belief (and hence the probability distribution) according to the outcome of the experiment, (the posteriori probability distribution).\n\nExample: Assume we are given two coins. But we don't know which coin is fake. Coin 1 is unbiased (HEADS and TAILS have 50% probability), and Coin 2 is biased, say, we know it gives HEADS with probability 60%. Mathematically:\n\nGiven we have HEADS, the probability that it is Coin 1 is 0.4 $$p(H | Coin_1) = 0.4$$ and probability it is Coin 2 is 0.6 $$p(H| Coin_2) = 0.6$$\n\nSo, that is all what we know before we set up an experiment.\n\nNow we are going to pick a coin toss it, and based on the information what we have (H or T) we are going to guess what coin we have chosen (Coin 1 or Coin 2).\n\nInitially we assume $p(Coin_1) = p(Coin_2) = 0.5$ both coins have equal chances, because we have no information yet. This is our prior. It is a uniform distribution.\n\nNow we take randomly one coin, toss it, and have a HEADS. At this moment everything happens. We compute posterior probability/distribution using Bayesian formula: $$p(Coin_1 | H) = \\frac{p(H | Coin_1)p(Coin_1)}{p(H | Coin_1)p(Coin_1) + p(H | Coin_2)p(Coin_2)} = \\frac{0.4\\times0.5}{0.4\\times0.5 + 0.6\\times0.5} = 0.4$$\n\n$$p(Coin_2 | H) = \\frac{p(H | Coin_2)p(Coin_2)}{p(H | Coin_1)p(Coin_1) + p(H | Coin_2)p(Coin_2)} = \\frac{0.6\\times0.5}{0.4\\times0.5 + 0.6\\times0.5} = 0.6$$\n\nSo, initially we had $0.5$ probability for each coin, but now after the experiment our beliefs has changed, now we believe that the coin is Coin 1 with probability 0.4 and it is Coin 2 with the probability 0.6. This is our posterior distribution, Bernoulli distribution.\n\nThis is the basic principle of Bayesian inference and statistics used in Machine learning.\n\nIn Bayesian statistics, a \"prior\" represents the beliefs we have before observing some data. Then, after we observe some data, we update our beliefs; those updated beliefs are called the \"posterior\".\n\nStatistical machine learning can be viewed through this lens. The \"priors\" are the beliefs we hold or we try to enforce/encourage a model to hold even before it is trained with any training data. The observed data is the training data, and the machine learning model is trained on this data. After it finishes training, the final model is the posterior. Here are some examples:\n\nIn natural language processing, one \"prior\" belief we might have is that if two words tend to be used in the same context, there is a decent chance they are related. For instance, even if you didn't know the meaning of \"good\" or \"delicious\", if I told you that \"lip-smackingly\" was often followed by either the word \"good\" or the word \"delicious\", you might suspect that \"good\" and \"delicious\" might mean something similar (or are somehow related). That's a prior belief -- it's something we might believe is true, even before we've seen any data. Starting from that prior, we might design a word embedding like GloVe, use it to encode sentences before feeding them to a machine learning model, and train the model. In this way, we have build a model that respects our \"priors\" (our beliefs before we saw the training data).\n\nIn image classification, one \"prior\" belief we might have is that if it's useful to look for a particular pattern -- e.g., straight lines -- in the upper-right of an image, it's also useful to look for them everywhere in the image. That's a \"prior\" because it's an assumption or belief or hypothesis we hold, even before training on any training data. We might then build a neural network architecture, such as a convolutional neural network, that behaves in a way that is motivated by or is consistent with this \"prior\". Then, we can train such a network on training data, to obtain a specific model. This illustrates how an architecture can embed a prior (in this case, translation-equivarance), either deliberately or inadvertently. Convolutional neural networks are biased towards performing well on types of images that are consistent with this \"prior\", and performing poorly on types of images that are inconsistent with this \"prior\".\n\nIn some applications of statistical modeling, one prior is that there are many features but only a few are relevant to the quantity we wish to predict. Lasso regression was invented to deal with this situation: it is linear regression, but starting from a prior that the coefficients for most features should be zero, and probably only a few features should have a non-zero coefficient. In contrast, linear regression doesn't start with any assumption or information about what the coefficients are likely to look like. Lasso regression will perform better than linear regression on tasks where the assumption is appropriate.\n\nIn particular, having an informative \"prior\" can be a good thing. It can help the model perform better, given a limited amount of training data, because the model starts with some knowledge -- it doesn't start from nothing."
+    }
+}

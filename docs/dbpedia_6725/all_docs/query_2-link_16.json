@@ -1,0 +1,37 @@
+{
+    "id": "dbpedia_6725_2",
+    "rank": 16,
+    "data": {
+        "url": "https://www.ironwifi.com/help/sonicwall",
+        "read_more_link": "",
+        "language": "en",
+        "title": "SonicWall",
+        "top_image": "https://raw.githubusercontent.com/IronWifi/docs/master/configuration-guides/sonic_wall/sonicwall1.png",
+        "meta_img": "",
+        "images": [
+            "https://20811696.fs1.hubspotusercontent-na1.net/hub/20811696/hubfs/logo-2.png?height=120&name=logo-2.png",
+            "https://raw.githubusercontent.com/IronWifi/docs/master/configuration-guides/sonic_wall/sonicwall1.png",
+            "https://raw.githubusercontent.com/IronWifi/docs/master/configuration-guides/sonic_wall/sonicwall2.png",
+            "https://raw.githubusercontent.com/IronWifi/docs/master/configuration-guides/sonic_wall/sonicwall3.png",
+            "https://raw.githubusercontent.com/IronWifi/docs/master/configuration-guides/sonic_wall/sonicwall4.png",
+            "https://raw.githubusercontent.com/IronWifi/docs/master/configuration-guides/sonic_wall/sonicwall5.png",
+            "https://raw.githubusercontent.com/IronWifi/docs/master/configuration-guides/sonic_wall/sonicwall6.png",
+            "https://raw.githubusercontent.com/IronWifi/docs/master/configuration-guides/sonic_wall/sonicwall7.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "This page explains the configuration of SonicWall devices to work with IronWiFi Captive Portal.",
+        "meta_lang": "en",
+        "meta_favicon": "https://20811696.fs1.hubspotusercontent-na1.net/hubfs/20811696/favicon.ico",
+        "meta_site_name": "",
+        "canonical_link": "https://www.ironwifi.com/help/sonicwall",
+        "text": "Access Point Instructions for SonicWall\n\nThis page explains the configuration of SonicWall devices to work with IronWiFi Captive Portal.\n\nAssumptions\n\nSonicWall Access Point is set up and running the latest firmware.\n\nDHCP and DNS are appropriately configured.\n\nIronWiFi initial setup is complete. This setup includes Network and Captive Portal settings.\n\nSonicWall Access Point can communicate with IronWiFi servers.\n\nThe Guest SSID VLAN can communicate with IronWiFi servers.\n\nAll systems are appropriately licensed.\n\nInstructions\n\nSign in to SonicWall Administration Interface. Click Network, click Zones and click the WLAN edit button.\n\nLeave the \"General\" options default and click Guest Services\n\nCheck Enable Guest Services and check Enable External Guest Authentication. Change the Max Guests value to 255.\n\nSelect HTTP client Redirect Protocol.\n\nUnder \"Web Server,\" select HTTPS protocol and create a new object for Splash page - FQDN hostname from Console - e.g., splash-static.ironwifi.com, st-us-east1.ironwifi.com, splash-static-eu.ironwifi.com, etc.., zone DMZ.\n\nEnter 443 as the Port Number.\n\nSelect Auth Pages tab and enter \"/api/pages/xxxxxx/\" to all input fields. \"xxxxxx\" is your Splash page identifier, from Console.\n\nReview other settings and click OK to save Changes.\n\nThe last step is to Allow remote connections on your Firewall. IronWiFi needs to be able to connect to the SonicWall Guest Services to authorize connected clients. Guest Services are listening on port 4043 and IronWiFi will try to connect to the URL in this format:\n\nhttps://SOURCE_IP_ADDRESS:4043\n\nSOURCE_IP_ADDRESS - IP address that we have received the authentication request from\n\nWe will be connecting directly from the web server, so no further changes are required in your SonicWall firewall rules.\\\n\n! You must also install a valid SSL certificate on your controller/AP, in order to avoid authentication issues !\n\nCommon Errors\n\nIronWiFi needs to be able to connect to your Access Point to authorize the connecting device. If not successful, the Captive Portal will return different error codes in the error_message parameter."
+    }
+}

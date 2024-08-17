@@ -1,0 +1,35 @@
+{
+    "id": "dbpedia_6729_1",
+    "rank": 79,
+    "data": {
+        "url": "https://stackoverflow.com/questions/3935180/how-to-resolve-an-ip-address-to-an-organization-with-caching",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How to resolve an IP address to an organization (with caching)",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/e9be13a68beedd8eacd8caf719fa122b?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/yt7Em.jpg?s=64",
+            "https://www.gravatar.com/avatar/717c5bc6b7be9109370a15fecb546c9b?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/99e0b39c091e10d9c7d4452a34ca52dc?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/3935180/ivc/9ddb?prg=27c784ce-cb6c-46f0-8438-98a7d9df1c68",
+            "https://stackoverflow.com/js-false.gif"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2010-10-14T16:03:43",
+        "summary": "",
+        "meta_description": "I would like to resolve IP(v4) addresses to owner organizations, from the registry of IP address allocations.  To do it, I don't want to become an expert in whois protocols and templates or the str...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/3935180/how-to-resolve-an-ip-address-to-an-organization-with-caching",
+        "text": "I would like to resolve IP(v4) addresses to owner organizations, from the registry of IP address allocations. To do it, I don't want to become an expert in whois protocols and templates or the structure of the registries themselves. I just want a function that takes an IP address (allocated anywhere in the world) and returns a short string like \"IBM Corporation\". The same thing I would find by typing \"whois n.n.n.n\" and eyeballing the result. Reverse DNS is not what I want. Should be free software and run on Linux.\n\nIncredibly to me, I can't find this. The whois program (on Debian) and other user-oriented front-ends give me a result for any IP address, but in all sorts of raw formats. I've found whois libraries that parse results, but they seem to assume I'm a whois expert and know which registry has the records for my query. I think the pieces just need to be put together, but nobody seems to have done it. Have I missed something, or is it easier than I think?\n\nAs a bonus, I would like to maintain a cache of these lookups. The cache should store the network range for whois results so that it returns a hit for another IP address in the same network. Ideally, the cache should perform better than a linear search as it grows.\n\nThe purpose? I would find this incredibly helpful for analyzing server logs. Reverse DNS is mostly useless thse days, but I would still like some idea of who's responsibly for requests.\n\nI think I found a better approach to this problem. I was wrong to think that reverse DNS is useless: there is more to reverse DNS than I knew! For example, given the IP address 8.12.3.96, there is no PTR record for 96.3.12.8.in-addr.arpa:\n\nhost -t ptr 96.32.12.8.in-addr.arpa Host 96.32.12.8.in-addr.arpa not found: 3(NXDOMAIN)\n\nBut I just learned that you can query the delegation records for 3.12.8.in-addr.arpa:\n\nhost -t ns 32.12.8.in-addr.arpa 32.12.8.in-addr.arpa name server dns1.textdrive.com. 32.12.8.in-addr.arpa name server dns2.textdrive.com. 32.12.8.in-addr.arpa name server dns3.textdrive.com. 32.12.8.in-addr.arpa name server dns4.textdrive.com.\n\nPretty informative! We can look for the common suffix and associate the address with the textdrive.com domain.\n\nI know this because jdresolve does it (with the --recursive option). And it can cache. This seems to be a great tool for analyzing network logs, with a clever and innovative way to resolve \"unresolvable\" IP addresses. It accomplishes the same thing I was trying to do using WHOIS."
+    }
+}

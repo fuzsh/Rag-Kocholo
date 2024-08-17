@@ -1,0 +1,37 @@
+{
+    "id": "dbpedia_6725_2",
+    "rank": 11,
+    "data": {
+        "url": "https://networkengineering.stackexchange.com/questions/1146/what-do-i-need-to-do-in-order-to-enable-remote-https-management-of-a-sonicwall-n",
+        "read_more_link": "",
+        "language": "en",
+        "title": "What do I need to do in order to enable remote HTTPS management of a SonicWall NSA3500",
+        "top_image": "https://cdn.sstatic.net/Sites/networkengineering/Img/apple-touch-icon@2.png?v=2ae76539f625",
+        "meta_img": "https://cdn.sstatic.net/Sites/networkengineering/Img/apple-touch-icon@2.png?v=2ae76539f625",
+        "images": [
+            "https://cdn.sstatic.net/Sites/networkengineering/Img/logo.svg?v=ecc4997c4794",
+            "https://i.sstatic.net/7xKTh.png",
+            "https://i.sstatic.net/XBDSN.png",
+            "https://i.sstatic.net/8sJQA.jpg?s=64",
+            "https://www.gravatar.com/avatar/8e40b955ba72299d98374726cdc1573d?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/e39b6757f0a962e319aeb84573d86b1f?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/8e40b955ba72299d98374726cdc1573d?s=64&d=identicon&r=PG",
+            "https://networkengineering.stackexchange.com/posts/1146/ivc/9ddb?prg=6f64e701-a016-4f4e-ac5b-767b57072f31"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2013-05-27T10:38:09",
+        "summary": "",
+        "meta_description": "I am trying to make a few changes on a firewall by connecting remotely to a desktop at work. I need to do a change that I think may reset and change the LAN interface.... I am worried about being k...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/networkengineering/Img/favicon.ico?v=c898b778f3c6",
+        "meta_site_name": "Network Engineering Stack Exchange",
+        "canonical_link": "https://networkengineering.stackexchange.com/questions/1146/what-do-i-need-to-do-in-order-to-enable-remote-https-management-of-a-sonicwall-n",
+        "text": "William,\n\nIf you have enabled HTTPS on the interface and still have the default allow any firewall rule for the HTTPS management service then remote management should be configured.\n\nIf you have enabled the SSLVPN you will probably have changed the management port to something else... generally 8443 but you can check this in the System -> Administration menu. you should see the port setting in the HTTPS administration port setting.\n\nIf its not working then check that you are trying to connect to the correct IP address. you need to connect to the interface IP address.\n\nAlso check the logs of the firewall after trying to login. If its being denied it should tell you and hopefully give a useful reason why. if you still have problems please port the logs and I will have a look.\n\nFinally sorted - Changed the WAN IP/subnet.\n\nDetailed answer for the people who are interested or want to know...\n\nThe problem lies in the fact that my ISP uses a /31 subnet. When we first set up the Sonicwall, it did not allow us to apply this ip as a static ip as it came up with a configuration error.\n\nI brought this to the attention of SonicWall/Dell and after fighting with them for so long that I was not trying to apply a broadcast IP/network IP to the interface and showed them RFC 3021, they finally gave in that the firewall does not support it.\n\nAnyway, that was almost (if not longer than) a year ago and we managed to do a workaround in that it applied the /31 fine via DHCP... and, everything worked great - until I wanted to do remote management!\n\nGerryEgan was very helpful, but, after he finished trying to help, I noticed that my computer was transmitting to the SonicWall but not recieving anything back - however the statistics on the Sonicwall for TX on the HTTPS rule were going up and RX remained still.\n\nI just had an idea that maybe this /31 subnet goes much deeper in the firewall and after changing the subnet from /31 to /30, I confirmed everything worked fine - so confirmed that the issue is due to SonicWall not supporting /31 subnets - even if it successfully applies via DHCP."
+    }
+}

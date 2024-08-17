@@ -1,0 +1,37 @@
+{
+    "id": "dbpedia_6725_3",
+    "rank": 38,
+    "data": {
+        "url": "https://www.mrestore.dk/sonicwall/how-to-block-a-website/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How to block a website? – mrestore",
+        "top_image": "https://www.mrestore.dk/wp-content/uploads/2019/11/accessrules1.png",
+        "meta_img": "",
+        "images": [
+            "https://www.mrestore.dk/wp-content/uploads/2017/03/cropped-cropped-test-1.png",
+            "https://www.mrestore.dk/wp-content/uploads/2019/11/accessrules1.png",
+            "https://www.mrestore.dk/wp-content/uploads/2019/11/accessrules2.png",
+            "https://www.mrestore.dk/wp-content/uploads/2019/11/accessrules3-1024x165.png",
+            "https://www.mrestore.dk/wp-content/uploads/2019/11/accessrules4-1024x452.png",
+            "https://www.mrestore.dk/wp-content/uploads/2019/11/accessrules5-1.png",
+            "https://www.mrestore.dk/wp-content/uploads/2019/11/accessrules6-1.png",
+            "https://www.mrestore.dk/wp-content/uploads/2019/11/accessrules7-1024x132.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "",
+        "meta_site_name": "",
+        "canonical_link": "https://www.mrestore.dk/sonicwall/how-to-block-a-website/",
+        "text": "In this article, I will cover how you can block a certain website in a Sonicwall Firewall.\n\nWe need to create one “Address object” which contain the website we will block and two “Access Rules” which block the traffic from LAN to WAN and WAN to LAN.\n\nI am currently running a TZ500 device, with firmware SonicOS Enhanced 6.5.4.4-44n\n\nLogin to your firewall, and go to “Objects” and click on “Address Objects”\n\nClick on “Add”\n\nChange Zone Assignment to WAN, and type to FQDN.\n\nIn field FQDN Hostname type in the website you wish to block, remember to use wildcard * to be able to block all sites within facebook.com\n\nName: Facebook\n\nZone Assignment: WAN\n\nType: FQDN\n\nFQDN Hostname: *.facebook.com\n\nWhen it has been added, it should look like this below.\n\nClick on “Access Rules” and then “Add”\n\nSelect “Deny” in “Action”\n\nFrom: LAN\n\nTo: WAN\n\nSource Port: Any\n\nService: HTTPS\n\nDestination: Facebook\n\nWhen done, then click “Add”\n\nThen we just need to make one last rule.\n\nSelect “Deny” in “Action”\n\nFrom: WAN\n\nTo: LAN\n\nSource Port: Any\n\nService: HTTPS\n\nDestination: Facebook\n\nClick “Add”\n\nWhen done, it should look like this."
+    }
+}
