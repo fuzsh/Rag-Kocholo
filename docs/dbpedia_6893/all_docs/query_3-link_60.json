@@ -1,0 +1,36 @@
+{
+    "id": "dbpedia_6893_3",
+    "rank": 60,
+    "data": {
+        "url": "https://stackoverflow.com/questions/51961176/introduce-further-approval-via-prolog-if-code-change-exceed-defined-limitation",
+        "read_more_link": "",
+        "language": "en",
+        "title": "introduce further approval via prolog if code change exceed defined limitation",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://cdn.sstatic.net/Img/teams/teams-promo.svg?v=e507948b81bf",
+            "https://i.sstatic.net/pAjNn.png",
+            "https://i.sstatic.net/LCz78.png",
+            "https://i.sstatic.net/WJRJe.png",
+            "https://www.gravatar.com/avatar/3f5f88478662e78f1dc6d912af5d17c4?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/b59fe76ab243e7069197c75cd11fb01e?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/51961176/ivc/3edb?prg=2186df79-6f1b-4486-891d-f5e9b34e9a32"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2018-08-22T06:49:17",
+        "summary": "",
+        "meta_description": "if code change exceed our define threshold like 300 lines, we would like to introduce new lab like \"manager approval\".\n\nthe logic we used is add \"manager approval\" by default, this works well;\nusing",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/51961176/introduce-further-approval-via-prolog-if-code-change-exceed-defined-limitation",
+        "text": "if code change exceed our define threshold like 300 lines, we would like to introduce new lab like \"manager approval\".\n\nthe logic we used is add \"manager approval\" by default, this works well; using prolog submit rule as following logic, as long as code change is less than 300 lines, remove \"manager approval“ label.\n\nthe testing show that \"manager approval\" label is there although the code change is less than 300 lines.\n\nrules.pl file:\n\nsubmit_rule(S) :- gerrit:default_submit(X), X =.. [submit | Ls], require_IP(Ls, R), S =.. [submit | R]. require_IP(S,R) :- gerrit:commit_stats(Files,Insertions,Deletions), Insertions < 300, gerrit:remove_label(S,label('IP-Approved',_),R), !. require_IP(S,S).\n\nOn gerrit server error_log has following error, looks the rules.pl has syntax error i'm new for prolog language, who can share light for us? thanks for help.\n\nattach official remove_label definition from https://github.com/GerritCodeReview/gerrit/blob/master/prolog/gerrit_common.pl\n\n%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% %% %% remove_label/3: %% %% Removes all occurances of label(Name, Status). %% :- public remove_label/3. %% remove_label([], _, []) :- !. remove_label(List, Label, Out) :- List = [_ | _], !, subtract1(List, Label, Out). remove_label(S, Label, Out) :- S =.. [submit | Ls], subtract1(Ls, Label, Tmp), Out =.. [submit | Tmp].\n\n========================================================== update on 8/30:\n\nwe are using three different approach on gerrit 2.11, no syntax error now. but none of them works, new label keeps there what ever the code change size. Suspect commit_stats() does not on 2.11: 1) which file defines commit_stats() in gerrit source code? 2) any other way to achieve this?\n\nreally appreciate any help on this.\n\nsolution 1:\n\n% check if submit length is less than 30 lines\n\nsubmit_rule(S) :- gerrit:default_submit(X), X =.. [submit | Ls], require_Manager(Ls, R), %S =.. [submit | [label(R, need(_)) ]. S =.. [submit | R]. require_Manager(S, R) :- gerrit:commit_stats(_,added,_), %label(added, need(_)), added < 30, gerrit:remove_label(S,label('Manager-Approval',_),R), !. require_Manager(S, S).\n\nsolution 2:\n\nsubmit_rule(S) :- gerrit:default_submit(X), X =.. [submit | Ls], remove_verified(Ls, R), S =.. [submit | R]. remove_verified([], []). remove_verified([label('Manager-Approval', _) | T], R) :- gerrit:commit_stats(_, inserted, _), inserted > 5, remove_verified(T, R), !. remove_verified([H|T], [H|R]) :- remove_verified(T, R).\n\nsolution 3:\n\nsubmit_rule(submit(CR, V, MA)) :- gerrit:commit_stats(_, inserted, _), inserted >= 5, !, base(CR, V), gerrit:max_with_block(-1, 1, 'Manager-Approval', MA). submit_rule(submit(CR, V)) :- base(CR, V). base(CR, V) :- gerrit:max_with_block(-1, 1, 'Verified', V), gerrit:max_with_block(-2, 2, 'Code-Review', CR).\n\nIn the second clause, Files and Deletions are singleton variables. Thus, you can rewrite the clause as:\n\nrequire_IP(S,R) :- gerrit:commit_stats(_,Insertions,_), Insertions < 300, gerrit:remove_label(S,label('IP-Approved',_),R), !.\n\nBut there isn't any syntax error. In the log, you have instead a runtime error, which occurs apparently when using the first clause. The error seems to be caused by the call to the gerrit:remove_label/3 predicate not instantiating R, which results in error show in the log when S =.. [submit | R] is called.\n\nLooking into Gerrit documentation (I'm not familiar with it), notably to examples of use of the gerrit:remove_label/3 predicate, your code looks correct however. Can the error be caused by code other than the one in your question? Do you get the same error if you comment out the first clause for the require_IP /2 predicate?\n\nanswered Aug 22, 2018 at 8:35\n\nPaulo MouraPaulo Moura\n\n18.6k33 gold badges2525 silver badges3333 bronze badges"
+    }
+}
