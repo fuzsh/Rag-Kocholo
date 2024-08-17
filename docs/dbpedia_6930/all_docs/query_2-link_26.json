@@ -1,0 +1,40 @@
+{
+    "id": "dbpedia_6930_2",
+    "rank": 26,
+    "data": {
+        "url": "https://serverfault.com/questions/740770/where-is-systemd-script-for-mysql-service-located",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Where is systemd script for mysql.service located?",
+        "top_image": "https://cdn.sstatic.net/Sites/serverfault/Img/apple-touch-icon@2.png?v=9b1f48ae296b",
+        "meta_img": "https://cdn.sstatic.net/Sites/serverfault/Img/apple-touch-icon@2.png?v=9b1f48ae296b",
+        "images": [
+            "https://cdn.sstatic.net/Sites/serverfault/Img/logo.svg?v=43f5b6d5f65b",
+            "https://www.gravatar.com/avatar/ae95cc81e95a764f5d3f15b0bf02a458?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/aZm2r.jpg?s=64",
+            "https://i.sstatic.net/Pi3hZ.jpg?s=64",
+            "https://www.gravatar.com/avatar/e51f39b392cd45f42d1a090b99c6943c?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/7d28c1e04d3042f173de44b2bfc1b274?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://graph.facebook.com/10202406603682441/picture?type=large",
+            "https://i.sstatic.net/WN6wu.png?s=64",
+            "https://i.sstatic.net/om868UA4.jpg?s=64",
+            "https://www.gravatar.com/avatar/c0813ef73a1a468d754775e4cb276abe?s=64&d=identicon&r=PG",
+            "https://serverfault.com/posts/740770/ivc/3d1b?prg=80f47bb1-b6f2-42e9-85aa-04dd03497e4f"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2015-12-04T11:56:45",
+        "summary": "",
+        "meta_description": "I am actually using MariaDB (drop-in replacement for MySQL).\n\nI'm trying to make some changes to my systemd mysql.service file. \n\nI can see it exists because running sudo systemctl lists it and ind...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/serverfault/Img/favicon.ico?v=18e9cc4f2aea",
+        "meta_site_name": "Server Fault",
+        "canonical_link": "https://serverfault.com/questions/740770/where-is-systemd-script-for-mysql-service-located",
+        "text": "For units defined in static files you could use systemctl status, with the information outputed issuing that command, you will be able to see its location.\n\nFor example:\n\n# systemctl status sshd ● sshd.service - OpenSSH Daemon Loaded: loaded (/usr/lib/systemd/system/sshd.service; enabled; vendor preset: disabled) Active: active (running) since Mon 2016-10-31 17:01:01 UTC; 1 weeks 0 days ago Main PID: 283 (sshd) Tasks: 1 (limit: 4915) CGroup: /system.slice/sshd.service └─290 /usr/bin/sshd -D\n\nNote that the tab command could be helpful here.\n\nTherefore, in my system the systemd services are placed under /usr/lib/systemd/. Please, note that there could be folders in that location.\n\nAnother way is to use the find command in that specific location to find a service:\n\n# find /usr/lib/systemd/ | grep -i mysql\n\nI hope that helps ;)\n\nsystemd\n\nAccording to the official documentation for systemd on the maria.db site, the configuration files for the maria.db service are stored here:\n\n/usr/lib/systemd/system/mariadb.service\n\nsystemd quick info:\n\nsystemd is an init replacement that MariaDB uses on releases since 10.1.8. Distribution packages before this version may use a different configuration so consult their documentation if required.\n\n...and for the configuration file we have:\n\nThe service definition is installed in /usr/lib/systemd/system/mariadb.service. The service name is mariadb.service; however aliases to mysql.service and mysqld.service are included for convenience.\n\nIf your installation is using a customized configuration file to start the maria.db service, then you might find the script in this location:\n\n/etc/systemd/system/mariadb.service.d/XXXX.conf\n\nWhere XXXX can be any file name!\n\nThis could be because of the recommendation made in the above mentioned link:\n\nIf there are some systemd settings to override or to set, create a file /etc/systemd/system/mariadb.service.d/XXXX.conf file where XXXX is something meaningful to you and place the configuration option(s) in an appropriate section, usually [Service]. If a systemd option is a list you may need to set this to empty before you set the replacement values....\n\nIn the feedback to the online article there is a short comment that points out that:\n\nMariaDB 10.1.17 and other recent releases still include an init script as well as a systemd unit. The init script ships with chkconfig on and this causes a race condition as to which version of the daemon starts first. This has causes us significant problems with RPM updates and system reboots.\n\nThis leads me to the conclusion that you might still have to search for the init.d variants of the configuration files (as pointed out in my initial version of this post) to pinpoint your issues.\n\ninit.d\n\nI would check the directory /etc/init.d for the existence of a mysql or mariadb file.\n\nls /etc/init.d -lash\n\nIf you then open up the corresponding file (e.g. mysql on my Ubuntu Server) you can find the startup part.\n\ncat /etc/init.d/mysql\n\n(note: no mysqld file, just a plain mysql file)\n\nAt some point you will find the sanity checks in the service startup script:\n\n## Do some sanity checks before even trying to start mysqld. sanity_checks() { # check for config file if [ ! -r /etc/mysql/my.cnf ]; then log_warning_msg \"$0: WARNING: /etc/mysql/my.cnf cannot be read. See README.Debian.gz\" echo \"WARNING: /etc/mysql/my.cnf cannot be read. See README.Debian.gz\" | $ERR_LOGGER fi\n\nSo the actual file for my setup would be the /etc/mysql/my.cnf file. Then go from there.\n\nYour configuration may differ, but equipped with this knowledge you should be able to find the configuration file for your service."
+    }
+}

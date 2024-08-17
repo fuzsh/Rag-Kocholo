@@ -1,0 +1,40 @@
+{
+    "id": "dbpedia_6938_3",
+    "rank": 5,
+    "data": {
+        "url": "https://discuss.pytorch.org/t/how-can-we-release-gpu-memory-cache/14530",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How can we release GPU memory cache?",
+        "top_image": "https://discuss.pytorch.org/uploads/default/original/2X/1/15a7e2573aeb9e6ba8995f824d3b63171a433041.png",
+        "meta_img": "https://discuss.pytorch.org/uploads/default/original/2X/1/15a7e2573aeb9e6ba8995f824d3b63171a433041.png",
+        "images": [
+            "https://discuss.pytorch.org/images/emoji/apple/wink.png?v=5",
+            "https://discuss.pytorch.org/user_avatar/discuss.pytorch.org/alband/48/215_2.png",
+            "https://discuss.pytorch.org/user_avatar/discuss.pytorch.org/lyakaap/48/3070_2.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "mortonjt (Jamie Morton)",
+            "albanD (Alban D)",
+            "debvrat (Debvrat)",
+            "dimimal (Dimitris Mallios)",
+            "lyakaap (Lyakaap)",
+            "chuong_nguyen (Chuong Nguyen)",
+            "vip (Vipin Pillai)"
+        ],
+        "publish_date": "2018-03-07T10:10:36+00:00",
+        "summary": "",
+        "meta_description": "I would like to do a hyper-parameter search so I trained and evaluated with all of the combinations of parameters. \nBut watching nvidia-smi memory-usage, I found that GPU-memory usage value slightly increased each after &hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://discuss.pytorch.org/uploads/default/optimized/2X/b/bb2eeaba4e9f7e4a5944a0d83f52c4f2bf1b6a85_2_32x32.png",
+        "meta_site_name": "PyTorch Forums",
+        "canonical_link": "https://discuss.pytorch.org/t/how-can-we-release-gpu-memory-cache/14530",
+        "text": "I would like to do a hyper-parameter search so I trained and evaluated with all of the combinations of parameters.\n\nBut watching nvidia-smi memory-usage, I found that GPU-memory usage value slightly increased each after a hyper-parameter trial and after several times of trials, finally I got out of memory error. I think it is due to cuda memory caching in no longer use Tensor. I know torch.cuda.empty_cache but it needs do del valuable beforehand. In my case, I couldn’t locate memory consuming variable.\n\nWhat is the best way to release the GPU memory cache?\n\nHi,\n\ntorch.cuda.empty_cache() (EDITED: fixed function name) will release all the GPU memory cache that can be freed.\n\nIf after calling it, you still have some memory that is used, that means that you have a python variable (either torch Tensor or torch Variable) that reference it, and so it cannot be safely released as you can still access it.\n\nYou should make sure that you are not holding onto some objects in your code that just grow bigger and bigger with each loop in your search.\n\nThanks, @albanD !\n\nSo, the variables no longer referenced will be freed by using torch.cuda.empty_cache() right?\n\nAnd I started to locate the memory consuming objects, but I couldn’t locate what variables gave me a bad effect.\n\nAs for variables related to cuda, I use same variable name (e.g. model, criterion) in different trials.\n\nAnyway, I suspected below evaluation loop (sorry, it’s version 0.4, maybe version causes the problem?),\n\nfor i, (X, y) in tqdm(enumerate(val_loader), total=len(val_loader)): X = Variable(X.cuda()) y = Variable(y.squeeze().cuda(non_blocking=False)) with torch.no_grad(): outputs = model(X) loss = criterion(outputs, y) prec1, prec5 = accuracy(outputs.data, target, top_k=(1, 5)) losses.update(loss.data[0], X.size(0)) top1.update(prec1[0], X.size(0)) top5.update(prec5[0], X.size(0))\n\nSo any variable that is no longer reference is freed in the sense that its memory can be used to create new tensors, but this memory is not released to the os (so will still look like it’s used using nvidia-smi).\n\nempty_cache forces the allocator that pytorch uses to release to the os any memory that it kept to allocate new tensors, so it will make a visible change while looking at nvidia-smi, but in reality, this memory was already available to allocate new tensors.\n\nYour code look good, I would double check that things that you send to your logger are not Variables but just python numbers using .item() as necessary.\n\nAlso, if you’re using 0.4 (I assume current master), then you should remove Variable and .data from your code and replace loss.data[0] by loss.item()\n\nThe variables prec1[0] and prec5[0] still hold reference to tensors. These should be replaced with prec1[0].item() and prec5[0].item() respectively. This is due to the fact that the accuracy method part of the pytorch imagenet training example code returns a tensor and can cause memory leak.\n\n@albanD Could you please clarify the difference between detach() and item() when called on a tensor. Are these effectively the same?\n\nIf you see increasing memory usage, you might accidentally store some tensors with the an attached computation graph. E.g. if you store the loss for printing or debugging purposes, you should save loss.item() instead.\n\nThis issue won’t be solved, if you clear the cache repeatedly. As I said this might just trigger unnecessary allocations which will take some time thus potentially slowing down your code."
+    }
+}

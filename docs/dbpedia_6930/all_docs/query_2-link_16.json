@@ -1,0 +1,37 @@
+{
+    "id": "dbpedia_6930_2",
+    "rank": 16,
+    "data": {
+        "url": "https://askubuntu.com/questions/876733/where-are-the-systemd-units-services-located-in-ubuntu",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Where are the systemd units/services located in Ubuntu?",
+        "top_image": "https://cdn.sstatic.net/Sites/askubuntu/Img/apple-touch-icon@2.png?v=c492c9229955",
+        "meta_img": "https://cdn.sstatic.net/Sites/askubuntu/Img/apple-touch-icon@2.png?v=c492c9229955",
+        "images": [
+            "https://cdn.sstatic.net/Sites/askubuntu/Img/logo.svg?v=472cf2768bba",
+            "https://www.gravatar.com/avatar/c5d5c9fa71ce4de6fd5bc6dd29956979?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/0ed9f7f093bc4915bfe51e794e846ea2?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/xNPjb.png?s=64",
+            "https://i.sstatic.net/fqtBB.jpg?s=64",
+            "https://i.sstatic.net/3wmDV.png?s=64",
+            "https://graph.facebook.com/10208468700268299/picture?type=large",
+            "https://askubuntu.com/posts/876733/ivc/3d1b?prg=0cd1a848-7497-4416-97e6-ec3c81d7c409"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2017-01-27T03:28:03",
+        "summary": "",
+        "meta_description": "I keep finding, while googling, that they're located at /usr/lib/systemd/system/ and /etc/systemd/system/. However, in my ubuntu, the first doesn't even exist, and the other has only a few services",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/askubuntu/Img/favicon.ico?v=928dfb7c1990",
+        "meta_site_name": "Ask Ubuntu",
+        "canonical_link": "https://askubuntu.com/questions/876733/where-are-the-systemd-units-services-located-in-ubuntu",
+        "text": "The package-provided service files are all usually located in /lib/systemd/system. For example, search for .service in the package index.\n\nFrom man systemd.unit:\n\n/etc/systemd/system/* /run/systemd/system/* /lib/systemd/system/* ... $XDG_CONFIG_HOME/systemd/user/* $HOME/.config/systemd/user/* /etc/systemd/user/* $XDG_RUNTIME_DIR/systemd/user/* /run/systemd/user/* $XDG_DATA_HOME/systemd/user/* $HOME/.local/share/systemd/user/* /usr/lib/systemd/user/*\n\nThe latter ones are for user sessions. IIRC Ubuntu 16.04 still uses upstart for user sessions, so those files are only applicable from after 16.04.\n\nFor a specific service, to see what systemd is reading, run systemctl status <service> or systemctl show <service>:\n\n$ systemctl show ssh.service | grep Path FragmentPath=/lib/systemd/system/ssh.service DropInPaths=/etc/systemd/system/ssh.service.d/override.conf $ systemctl status ssh.service ● ssh.service - OpenBSD Secure Shell server Loaded: loaded (/lib/systemd/system/ssh.service; enabled; vendor preset: enabled) Drop-In: /etc/systemd/system/ssh.service.d └─override.conf Active: active (running) since Thu 2017-01-26 16:06:53 JST; 21h ago Main PID: 948 (sshd) CGroup: /system.slice/ssh.service └─948 /usr/sbin/sshd -D\n\nThere are good tools to know about whenever you need to locate something.\n\nThe first is locate, which is used to locate files by name. It uses a pre-built index, so it's extremely fast. However, it sometimes misses new files that haven't been indexed, or may also miss files with restrictive permissions. In this case, a quick locate command would find all the systemd files on Ubuntu:\n\nlocate systemd\n\nIf you want to focus on that Plex file, you can use a pipe to filter the results:\n\nlocate systemd | grep plex\n\nThe other tool to know about is find, which does a live search of a particular directory to find files. It has a lot of options. Check man find for details. To look for plexmediaserver.service anywhere on your system, you would use:\n\nfind / -name plexmediaserver.service\n\nFinally, in this case, you probably know which package that the file you are looking for belongs to. If you aren't sure of the exact package name, you can use this syntax to find all the package which contain 'plex' in their name:\n\ndpkg -l '*plex*'\n\nIf you find that the package you are interested is named 'plexmediaserver', then you can use this syntax to list all the files in that package:\n\ndpkg -L plexmediaserver\n\nAgain, you can use a pipe to filter the results to just the service file you are looking for:\n\ndpkg -L plexmediaserver | grep plexmediaserver.service\n\nNow you'll be able to find files for many common cases."
+    }
+}

@@ -1,0 +1,38 @@
+{
+    "id": "dbpedia_6930_3",
+    "rank": 49,
+    "data": {
+        "url": "https://android.stackexchange.com/questions/117582/where-is-data-of-google-play-services-located-in-device-can-i-safely-delete-it",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Where is data of Google Play Services located in device? Can I safely delete it?",
+        "top_image": "https://cdn.sstatic.net/Sites/android/Img/apple-touch-icon@2.png?v=8f2d3ecfa663",
+        "meta_img": "https://cdn.sstatic.net/Sites/android/Img/apple-touch-icon@2.png?v=8f2d3ecfa663",
+        "images": [
+            "https://cdn.sstatic.net/Sites/android/Img/logo.svg?v=140a7af9fd10",
+            "https://www.gravatar.com/avatar/7e9a02f74c7b7cea87d7e2549c4d1544?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/bd925611ae6409558660bec466396f18?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/VhODL.png",
+            "https://i.sstatic.net/lQenE.png",
+            "https://i.sstatic.net/v0Hez.png",
+            "https://www.gravatar.com/avatar/a007be5a61f6aa8f3e85ae2fc18dd66e?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/GoDwh.png?s=64",
+            "https://android.stackexchange.com/posts/117582/ivc/3d1b?prg=d64daded-6e2d-4559-951e-709676250335"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2015-08-07T13:04:03",
+        "summary": "",
+        "meta_description": "Just noticed that data in internal storage for Google Play Services app grew above 100Mib, so this app is officially a space hog now.\nSo my questions are:\n\nWhat is the exact location for Google Play",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/android/Img/favicon.ico?v=0d1aa2e1fae5",
+        "meta_site_name": "Android Enthusiasts Stack Exchange",
+        "canonical_link": "https://android.stackexchange.com/questions/117582/where-is-data-of-google-play-services-located-in-device-can-i-safely-delete-it",
+        "text": "What is exact location for Google Play Services data?\n\nPackage name of Google Play Services is com.google.android.gms.\n\nDefault data directory of apps is under /data/data, and for Play Services, it is /data/data/com.google.android.gms.\n\nNote that you can't simply copy-paste it into anywhere. To peek into data directory of an app you would need root access. Fortunately, for non-root devices, Play Services allows its backup using adb.\n\nAfter installing ADB, enter this command in a shell:\n\nadb backup -apk com.google.android.gms\n\nThis will save the backup in the file backup.ab located in the current directory.\n\nTo restore that backup, enter this command from the same current directory:\n\nadb restore backup.ab\n\nCan I safely delete Google Play Services data and let app recreate it?\n\nBy safely, if you mean clearing data from Settings → Apps→ Downloaded → Google Play Services, then you're good to go.\n\nIn Android 4.4.2 and 5.0.2, you don't get the straight option named Clear Data. Instead you get Manage space. Follow the screenshots:\n\n(Click image to enlarge; hover to know details)\n\nHowever, in Android 4.2.1, there was no Manage Space but Clear Data. Perhaps, the former option is Android version specific and not app specific.\n\nDoing adb shell pm clear com.google.android.gms is also safe, at least, my Play Store, and Gmail (both ridiculously dependent on Play Services) worked fine after executing both steps independently.\n\nThe data recreated too.\n\nWhat I might lose if I delete Google Play Services data unsafely?\n\nI don't know what unsafely would mean here other than purging the app directory of Play Services without uninstalling it, so I can't comment on it."
+    }
+}
