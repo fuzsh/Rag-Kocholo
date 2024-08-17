@@ -1,0 +1,42 @@
+{
+    "id": "dbpedia_6955_0",
+    "rank": 29,
+    "data": {
+        "url": "https://forum.babylonjs.com/t/how-to-show-a-rendertargettexture-on-gui/2195",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How to show a RenderTargetTexture on GUI?",
+        "top_image": "https://global.discourse-cdn.com/business7/uploads/babylonjs/original/2X/c/c5b6bf3a1dcbbf4a30e9c235af16f7126adbc862.png",
+        "meta_img": "https://global.discourse-cdn.com/business7/uploads/babylonjs/original/2X/c/c5b6bf3a1dcbbf4a30e9c235af16f7126adbc862.png",
+        "images": [
+            "https://global.discourse-cdn.com/business7/uploads/babylonjs/original/2X/7/79e7d2a92ea1da7df571d60eec8cf2ca7238f806.jpeg",
+            "https://emoji.discourse-cdn.com/win10/slight_smile.png?v=9",
+            "https://emoji.discourse-cdn.com/win10/slight_smile.png?v=9",
+            "https://emoji.discourse-cdn.com/win10/smiley.png?v=9",
+            "https://emoji.discourse-cdn.com/win10/slight_smile.png?v=9",
+            "https://emoji.discourse-cdn.com/win10/slight_smile.png?v=9",
+            "https://emoji.discourse-cdn.com/win10/thinking.png?v=9",
+            "https://emoji.discourse-cdn.com/win10/smiley.png?v=9",
+            "https://global.discourse-cdn.com/business7/uploads/babylonjs/optimized/2X/4/4701c8374faed5cc44ea3191ebcde76f2b02b3bd_2_674x500.jpeg",
+            "https://global.discourse-cdn.com/business7/uploads/babylonjs/optimized/2X/d/d240f0317a58412ae3acc227d57357964cf5385f_2_690x252.png",
+            "https://emoji.discourse-cdn.com/win10/slight_smile.png?v=9",
+            "https://www.babylonjs.com/favicon.ico",
+            "https://global.discourse-cdn.com/business7/uploads/babylonjs/optimized/3X/0/6/06458c1f13e785e68f3a493804821407ee82b006_2_690x316.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2019-03-28T02:19:51+00:00",
+        "summary": "",
+        "meta_description": "In Unity3D, we can do it very easy, just call GUI.DrawTexture… \nthank you.",
+        "meta_lang": "en",
+        "meta_favicon": "https://global.discourse-cdn.com/business7/uploads/babylonjs/optimized/2X/b/be898683706e058d1212e39b979328dd801e3026_2_32x32.png",
+        "meta_site_name": "Babylon.js",
+        "canonical_link": "https://forum.babylonjs.com/t/how-to-show-a-rendertargettexture-on-gui/2195",
+        "text": "Hello!\n\nunfortunately this is not straight forward. the RTT is hold by the GPu for performance reason and GUI is driven by CPU and it requires DOM image to render.\n\nSo technically it should be possible to use the Tools.Screenshot feature to get an image (CPU wise) of the RTT but this seems a bit convoluted :).\n\nWhat is your use case precisely?\n\nHi gang. This issue seems like it needs a viewport that can be positioned/sized via GUI measuring.\n\nhttps://playground.babylonjs.com/#13TVWJ#28\n\nNo GUI there… just testing viewports. All freeCams in #28, but PG #29 uses an arcCam as over-laid viewport/cam6.\n\nThe camera6/viewport6 is laid atop the other 5 viewports. (main screen only looks-like 3 viewports, but it is actually 5. Blue lines are viewports, too)\n\nNow, if we could live-position and live-set-size/live-scale viewport 6… AS IF it were a GUI image control (possibly within a GUI container/stackpanel/grid)… then that would work, yes? No renderTargetTexture used.\n\nJust thinkin’ up strange ideas… not sure if useful. GUI viewportControl, sort-of.\n\nBut viewports might not be “live” or “dynamic”. Early tests say YES, it IS size/position dynamic.\n\nIn theory, it SHOULD be able to “act” like a GUI control. Canvas/engine re-sizings COULD be trouble.\n\nGijs… WELL DONE! Cooooool. I haven’t yet earned my GuiControlBuilder’s certificate… but… is this new control… properly API-certified for being an “official” GUI Control? Does it meet all criteria for being a USDA-certified prime beef widget? Proper observers/notifies, etc?\n\nWould .value be the viewport object, and onValueChanged is active? (I should just go inspect Giji’s control-code, eh? But, I’m not really qualified to determine if it is “proper” or not.)\n\nIf it is all proper… and GUI Control criteria is met… I say PR that puppy into Userville (if Gijs is willing). Fun/useful control, perhaps.\n\nAgain, nice job, G-willickers! You GUI Control-makers are SUCH heroes of mine. Sigh. Someday, I’m going to be good enough to make one. WingyWidget 1.0. Doesn’t do anything useful, but it’s fun as hell to click-on. My kind of control… an out-of-control control.\n\n@Gijs -\n\nIf you want to speed up your scene and reduce GPU tasking, then you should be using power of 2 textures whenever you can. It’s far more efficient to avoid calling a very large non power of 2 image when you only need a small portion of the resolution. I mention this as I don’t know if you’re using power of 2 and designing your scene and texture prior to texture creation. If you are, then you’re way ahead of most devs on this forum. I just know that this needs to be spoken of more often as devs appear to always look for new tools; often ignoring good practices. Either way, I hope others look at adopting core practices necessary to scene and hardware optimization.\n\nI know this doesn’t answer your question, but I’ve spent time on other topics recently which can be answered through scene and asset design. As for a RenderTargetTexture, what is your current need? It sounds as though you’re exploring right now which is awesome. We all should do this far more and not always wait until crunch time to explore functions, methods, and processes. It would help greatly if we could get a better understanding of your end goal. Just a general usage description would be helpful.\n\nI see this all of the time… elements such as meshes and more importantly textures are created and applied without any though given to scene optimization in advance. I recommend using this scene as a benchmark to explore GPU and memory usage. I personally advise that you set up different configuration of your texture(s) and record your GPU and memory usage. Once you do this, you’ll have a much better understanding of texture optimization in WebGL.\n\nIt’s a HUGE deal and where many devs fall short. I always recommend designing your scene for your target hardware and software. It takes me back to game development for desktop and consoles where if we didn’t design our scenes prior to asset creation, we would never have released a single game. I would love to see a change in the community; where developers turn back to good practices in scene creation and rendering. The hardware is virtually the same with all of the same issues… but few devs are taking the lessons of the past into consideration. I simply don’t understand where the communication of this is lost. I know I bring it up as often as possible.\n\nGalen"
+    }
+}
