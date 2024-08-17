@@ -1,0 +1,34 @@
+{
+    "id": "dbpedia_7406_0",
+    "rank": 66,
+    "data": {
+        "url": "https://nqucsie.myqnapcloud.com/smallko/sdn/p4-clone.htm",
+        "read_more_link": "",
+        "language": "en",
+        "title": "",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://nqucsie.myqnapcloud.com/smallko/sdn/p4-clone.files/image001.png",
+            "https://nqucsie.myqnapcloud.com/smallko/sdn/p4-clone.files/image002.png",
+            "https://nqucsie.myqnapcloud.com/smallko/sdn/p4-clone.files/image003.png",
+            "https://nqucsie.myqnapcloud.com/smallko/sdn/p4-clone.files/image004.png",
+            "https://nqucsie.myqnapcloud.com/smallko/sdn/p4-clone.files/image005.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "",
+        "meta_favicon": "",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "# Copyright 2013-present Barefoot Networks, Inc.\n\n#\n\n# Licensed under the Apache License, Version 2.0 (the \"License\");\n\n# you may not use this file except in compliance with the License.\n\n# You may obtain a copy of the License at\n\n#\n\n# http://www.apache.org/licenses/LICENSE-2.0\n\n#\n\n# Unless required by applicable law or agreed to in writing, software\n\n# distributed under the License is distributed on an \"AS IS\" BASIS,\n\n# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n\n# See the License for the specific language governing permissions and\n\n# limitations under the License.\n\n#\n\nfrom mininet.net import Mininet\n\nfrom mininet.node import Switch, Host\n\nfrom mininet.log import setLogLevel, info, error, debug\n\nfrom mininet.moduledeps import pathCheck\n\nfrom sys import exit\n\nimport os\n\nimport tempfile\n\nimport socket\n\nclass P4Host(Host):\n\ndef config(self, **params):\n\nr = super(Host, self).config(**params)\n\nself.defaultIntf().rename(\"eth0\")\n\nfor off in [\"rx\", \"tx\", \"sg\"]:\n\ncmd = \"/sbin/ethtool --offload eth0 %s off\" % off\n\nself.cmd(cmd)\n\n# disable IPv6\n\nself.cmd(\"sysctl -w net.ipv6.conf.all.disable_ipv6=1\")\n\nself.cmd(\"sysctl -w net.ipv6.conf.default.disable_ipv6=1\")\n\nself.cmd(\"sysctl -w net.ipv6.conf.lo.disable_ipv6=1\")\n\nreturn r\n\ndef describe(self):\n\nprint \"**********\"\n\nprint self.name\n\nprint \"default interface: %s\\t%s\\t%s\" %(\n\nself.defaultIntf().name,\n\nself.defaultIntf().IP(),\n\nself.defaultIntf().MAC()\n\n)\n\nprint \"**********\"\n\nclass P4Switch(Switch):\n\n\"\"\"P4 virtual switch\"\"\"\n\ndevice_id = 0\n\ndef __init__(self, name, sw_path = None, json_path = None,\n\nthrift_port = None,\n\npcap_dump = False,\n\nlog_console = False,\n\nverbose = False,\n\ndevice_id = None,\n\nenable_debugger = False,\n\n**kwargs):\n\nSwitch.__init__(self, name, **kwargs)\n\nassert(sw_path)\n\nassert(json_path)\n\n# make sure that the provided sw_path is valid\n\npathCheck(sw_path)\n\n# make sure that the provided JSON file exists\n\nif not os.path.isfile(json_path):\n\nerror(\"Invalid JSON file.\\n\")\n\nexit(1)\n\nself.sw_path = sw_path\n\nself.json_path = json_path\n\nself.verbose = verbose\n\nlogfile = \"/tmp/p4s.{}.log\".format(self.name)\n\nself.output = open(logfile, 'w')\n\nself.thrift_port = thrift_port\n\nself.pcap_dump = pcap_dump\n\nself.enable_debugger = enable_debugger\n\nself.log_console = log_console\n\nif device_id is not None:\n\nself.device_id = device_id\n\nP4Switch.device_id = max(P4Switch.device_id, device_id)\n\nelse:\n\nself.device_id = P4Switch.device_id\n\nP4Switch.device_id += 1\n\nself.nanomsg = \"ipc:///tmp/bm-{}-log.ipc\".format(self.device_id)\n\n@classmethod\n\ndef setup(cls):\n\npass\n\ndef check_switch_started(self, pid):\n\n\"\"\"While the process is running (pid exists), we check if the Thrift\n\nserver has been started. If the Thrift server is ready, we assume that\n\nthe switch was started successfully. This is only reliable if the Thrift\n\nserver is started at the end of the init process\"\"\"\n\nwhile True:\n\nif not os.path.exists(os.path.join(\"/proc\", str(pid))):\n\nreturn False\n\nsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)\n\nsock.settimeout(0.5)\n\nresult = sock.connect_ex((\"localhost\", self.thrift_port))\n\nif result == 0:\n\nreturn True\n\ndef start(self, controllers):\n\n\"Start up a new P4 switch\"\n\ninfo(\"Starting P4 switch {}.\\n\".format(self.name))\n\nargs = [self.sw_path]\n\nfor port, intf in self.intfs.items():\n\nif not intf.IP():\n\nargs.extend(['-i', str(port) + \"@\" + intf.name])\n\n#wuwzhs edit in 2017/11/10\n\n#args.extend(['-i 3@veth1'])\n\nif self.pcap_dump:\n\nargs.append(\"--pcap\")\n\n# args.append(\"--useFiles\")\n\nif self.thrift_port:\n\nargs.extend(['--thrift-port', str(self.thrift_port)])\n\nif self.nanomsg:\n\nargs.extend(['--nanolog', self.nanomsg])\n\nargs.extend(['--device-id', str(self.device_id)])\n\nP4Switch.device_id += 1\n\nargs.append(self.json_path)\n\nif self.enable_debugger:\n\nargs.append(\"--debugger\")\n\nif self.log_console:\n\nargs.append(\"--log-console\")\n\nlogfile = \"/tmp/p4s.{}.log\".format(self.name)\n\ninfo(' '.join(args) + \"\\n\")\n\npid = None\n\nwith tempfile.NamedTemporaryFile() as f:\n\n# self.cmd(' '.join(args) + ' > /dev/null 2>&1 &')\n\nself.cmd(' '.join(args) + ' >' + logfile + ' 2>&1 & echo $! >> ' + f.name)\n\npid = int(f.read())\n\ndebug(\"P4 switch {} PID is {}.\\n\".format(self.name, pid))\n\nif not self.check_switch_started(pid):\n\nerror(\"P4 switch {} did not start correctly.\\n\".format(self.name))\n\nexit(1)\n\ninfo(\"P4 switch {} has been started.\\n\".format(self.name))\n\ndef stop(self):\n\n\"Terminate P4 switch.\"\n\nself.output.flush()\n\nself.cmd('kill %' + self.sw_path)\n\nself.cmd('wait')\n\nself.deleteIntfs()\n\ndef attach(self, intf):\n\n\"Connect a data port\"\n\nassert(0)\n\ndef detach(self, intf):\n\n\"Disconnect a data port\"\n\nassert(0)"
+    }
+}

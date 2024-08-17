@@ -1,0 +1,40 @@
+{
+    "id": "dbpedia_7406_3",
+    "rank": 81,
+    "data": {
+        "url": "https://www.eigenmagic.com/2020/05/18/pensando-expands-what-smartnic-offloads-can-do/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Pensando Expands What SmartNIC Offloads Can Do",
+        "top_image": "https://www.eigenmagic.com/wp-uploads/2020/05/pensando-dsc-p4-architecture.png",
+        "meta_img": "https://www.eigenmagic.com/wp-uploads/2020/05/pensando-dsc-p4-architecture.png",
+        "images": [
+            "https://www.eigenmagic.com/wp-uploads/2014/10/eigenmagic-red-cropped.png",
+            "https://www.eigenmagic.com/wp-content/themes/parabola/images/socials/Twitter.png",
+            "https://www.eigenmagic.com/wp-content/themes/parabola/images/socials/LinkedIn.png",
+            "https://www.eigenmagic.com/wp-content/themes/parabola/images/socials/YouTube.png",
+            "https://www.eigenmagic.com/wp-uploads/2020/05/pensando-dsc-p4-architecture-1024x473.png 1024w, https://www.eigenmagic.com/wp-uploads/2020/05/pensando-dsc-p4-architecture-300x139.png 300w, https://www.eigenmagic.com/wp-uploads/2020/05/pensando-dsc-p4-architecture-1536x710.png 1536w, https://www.eigenmagic.com/wp-uploads/2020/05/pensando-dsc-p4-architecture-250x116.png 250w, https://www.eigenmagic.com/wp-uploads/2020/05/pensando-dsc-p4-architecture-150x69.png 150w, https://www.eigenmagic.com/wp-uploads/2020/05/pensando-dsc-p4-architecture.png 1569w",
+            "https://www.eigenmagic.com/images/cc-by-nc-nd-88x31.png",
+            "https://www.eigenmagic.com/wp-content/themes/parabola/images/socials/Twitter.png",
+            "https://www.eigenmagic.com/wp-content/themes/parabola/images/socials/LinkedIn.png",
+            "https://www.eigenmagic.com/wp-content/themes/parabola/images/socials/YouTube.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Justin Warren"
+        ],
+        "publish_date": "2020-05-18T00:00:00",
+        "summary": "",
+        "meta_description": "Pensando have created a P4 programmable SmartNIC with distributed management capabilities. But who will buy them? Read More",
+        "meta_lang": "en",
+        "meta_favicon": "https://www.eigenmagic.com/wp-uploads/2017/06/cropped-eigenmagic-red-positive-icon-512x512-32x32.png",
+        "meta_site_name": "eigenmagic",
+        "canonical_link": "https://www.eigenmagic.com/2020/05/18/pensando-expands-what-smartnic-offloads-can-do/",
+        "text": "From the outset, let me admit that I don’t think I’m smart enough to understand what Pensando are trying to do. During their presentation at Cloud Field Day 7 I struggled to figure out what theâimpressive sounding, don’t get me wrongâtechnology was for.\n\nThe company has been created by people with a strong track record of selling companies to Cisco. Everything from Catalyst switches to UCS to ACI. Solid products all. That indicates that if I don’t understand what’s going on, the fault is probably with me. So here’s what I’ve been able to figure out.\n\nPensando has built an ARM-based chip that is programmable using an emerging network programming language called P4. It’s a Domain Specific Language (DSL) rather than a general-purpose programming language like Python or C. That means it’s good for doing network things but pretty terrible for anything else, while C is good for writing very fast buffer overflow vulnerabilities, Python is good for starting space-versus-braces arguments, and both are equally terrible at everything else. Don’t @ me.\n\nPensando then put this chip into a SmartNIC called a Distributed Services Card that you install in your server to offload various network functions from the general-purpose CPU (usually x86-based) to the more specialised Pensando hardware.\n\nThe idea is to use the more specialised Pensando hardware to perform a variety of network functions, similar to how GPUs are better at the floating point mathematics used in graphics processing than general-purpose CPUs. We already kind of do this with various Ethernet tasks, such TCP offload, and Pensando seems to want to expand the scope of what sort of networking tasks could be done outside of the CPU.\n\nOkay, neat tech. Butâ¦ why?\n\nYou can make network processing faster, which is cool and all, but a lot depends on the price/performance ratio here. If the cards are expensive, and the gains marginal, the market for these things isn’t that large.\n\nGPUs got cheap because of how many people play computer games, and the relentless desire to have better graphics made older cards cheap as they were rendered obsolete by the new tech. nVidia got huge as a result, helped along by BitÃ§Ã¶in weirdos yelling Numberwang at each other to solve Sudokus they could trade for heroin, who were then replaced by ML/AI weirdos solving important questions like “What if Not Hotdog, but for phrenology?”\n\nSimilarly, Flash storage became cheap because of mobile phones (and iPods) needing solid-state storage, and people always wanted more room to store their music, photos and apps.\n\nBut network performance isn’t really a consumer thing, because most people are stuck at the end of a relatively slow pipe to their ISP compared to what the NIC in their computer can do. NIC speed is mostly a datacentre thing, and the datacentre market is consolidating because cloud.\n\nSo when you look at Pensando’s partnersâOracle, HPE, Equinix, NetAppâwe start to understand what these cards are for.\n\nIn a NetApp array, a Pensando DSC can run all the storage-networking workloads, just like existing TCP/IP Offloading Engine (TOE) cards do, only more of them. When you start adding more functionality onto the networkingâthink encryption, dedupe, etc.âbut need to keep low-latency performance, an offload card like this makes sense. A programmable card provides flexibility, so you can upgrade the functionality with software updates rather than hardware replacements, or just limit what the card will do until you pay a license fee to enable it.\n\nSimilarly, the management-at-scale capabilities of the Pensando approach align well with cloud-scale environments, especially those that are trying to differentiate on price/performance like Oracle. Telcos are also very keen to have high-performance core networks that are easy to operate at scale, and Equinix has invested a lot in being telco friendly.\n\nAWS seems to be doing similar things with its Nitro cards, which indicates to me that Pensando is addressing a real problem, though it might only be a problem at the scale of AWS.\n\nThat’s the open question for me at the moment: exactly how big a need is there for what Pensando sells, and can Pensando provide a solution at the right price? The follow-on questions are about the market dynamics we can expect if the answer is “big enough, and yes”: Will we see the use of network offload move down-market as the technology matures and the price drops? Is there a substantial experience curve here? Or will this remain a niche solution for telco and cloud players that is ignored by most of the enterprise market?\n\nAnd will Cisco find enough spare cash lying around to buy another MPLS company?"
+    }
+}

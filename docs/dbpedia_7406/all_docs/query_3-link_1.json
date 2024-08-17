@@ -1,0 +1,28 @@
+{
+    "id": "dbpedia_7406_3",
+    "rank": 1,
+    "data": {
+        "url": "https://forum.p4.org/t/connection-tracking-in-p4/810",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Connection tracking in P4",
+        "top_image": "https://global.discourse-cdn.com/business5/uploads/p4/original/1X/e53c51d9cf9574c50cee652fc3f3b6942b399f0b.jpeg",
+        "meta_img": "https://global.discourse-cdn.com/business5/uploads/p4/original/1X/e53c51d9cf9574c50cee652fc3f3b6942b399f0b.jpeg",
+        "images": [],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2023-06-08T15:13:04+00:00",
+        "summary": "",
+        "meta_description": "I am posting this here since I received a personal email with questions on these topics, but preferred to publish the answers here, in case they are of interest to anyone else. \nQuestion 1: \nI see the sample code for TCP&hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://global.discourse-cdn.com/business5/uploads/p4/optimized/1X/e53c51d9cf9574c50cee652fc3f3b6942b399f0b_2_32x32.jpeg",
+        "meta_site_name": "P4 Programming Language",
+        "canonical_link": "https://forum.p4.org/t/connection-tracking-in-p4/810",
+        "text": "I am posting this here since I received a personal email with questions on these topics, but preferred to publish the answers here, in case they are of interest to anyone else.\n\nQuestion 1:\n\nI see the sample code for TCP connection tracking on P4 Github\n\nplus two more example programs in this directory with ‘connection-tracking’ in their name: pna/examples at main · p4lang/pna · GitHub\n\nHave you run it on the bmv2 test platform?\n\nAnswer 1:\n\nNo, I have not, because the add-on-miss feature has not been added to the BMV2 software switch. Yes, BMv2 is open source, and anyone with the necessary interest, time, and skill could do so, but so far, no one has volunteered to do so, nor been paid to do so (a lot of contributions to open source p4c are from people paid to do so as part of their job, as is common for many open source projects). If you know someone interested in and capable of doing so, their efforts are very welcome.\n\nThe add-on-miss feature has been added to the P4 DPDK software switch. There is a document I published showing one way to install P4 DPDK, with an example P4 program and a PTF test that demonstrates that at least basic add-on-miss capability does work there: p4-guide/README-install-ipdk-networking-container-ubuntu-20.04-and-test.md at master · jafingerhut/p4-guide · GitHub\n\nNote: A section of that article mentions that there is very little debug tracing/logging capability for debugging your P4 programs on the P4 DPDK software switch, as compared to the BMv2 software switch. That could change in the future, but it is the current state of affairs as of 2023-June.\n\nQuestion 2:\n\nOn the PNA architecture, if i want to debug the P4 TCP Conntrack function, is there a good debugging platform?\n\nAnswer 2:\n\nNot an open source one that I am aware of, no. As explained above, as of 2023-June, there is the BMv2 software switch with good debugging/tracing capabilities, but no implementation of add-on-miss, and there is the P4 DPDK software switch with implementation of add-on-miss, but no good debugging/tracing capabilities. Contributions from anyone wishing to improve on this situation are welcome, but they are unlikely to be something one could do in a day. More like a few weeks for a good developer with nothing else to do, again depending upon pre-existing knowledge of the implementations, time, skill, interest, etc.\n\nQuestion 3:\n\nIn the tcp-connect-state example, ct_tcp_table has add_on_miss and default_idle_timeout_for_data_plane_added_entries fields, which are the attributes of the table. What is the type of this property, and how does the P4 compiler know the size of the field?\n\nAnswer 3:\n\nThe names and types of values that all PNA-specific table properties can be assigned are given in the PNA specification document, in particular in this section: P4 Portable NIC Architecture (PNA)"
+    }
+}

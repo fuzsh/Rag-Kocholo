@@ -1,0 +1,28 @@
+{
+    "id": "dbpedia_7406_0",
+    "rank": 29,
+    "data": {
+        "url": "https://forum.p4.org/t/how-to-configure-mirror-direction-by-using-p4runtime-protocol/823",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How to configure mirror direction by using p4runtime protocol?",
+        "top_image": "https://global.discourse-cdn.com/business5/uploads/p4/original/1X/e53c51d9cf9574c50cee652fc3f3b6942b399f0b.jpeg",
+        "meta_img": "https://global.discourse-cdn.com/business5/uploads/p4/original/1X/e53c51d9cf9574c50cee652fc3f3b6942b399f0b.jpeg",
+        "images": [],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2023-06-15T09:30:30+00:00",
+        "summary": "",
+        "meta_description": "in p4runtime protocol, message for mirror is like this: \nmessage CloneSessionEntry { \nuint32 session_id = 1; \nrepeated Replica replicas = 2; \nuint32 class_of_service = 3; \nint32 packet_length_bytes = 4; \n} \nmessage Repli&hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://global.discourse-cdn.com/business5/uploads/p4/optimized/1X/e53c51d9cf9574c50cee652fc3f3b6942b399f0b_2_32x32.jpeg",
+        "meta_site_name": "P4 Programming Language",
+        "canonical_link": "https://forum.p4.org/t/how-to-configure-mirror-direction-by-using-p4runtime-protocol/823",
+        "text": "in p4runtime protocol, message for mirror is like this:\n\nmessage CloneSessionEntry {\n\nuint32 session_id = 1;\n\nrepeated Replica replicas = 2;\n\nuint32 class_of_service = 3;\n\nint32 packet_length_bytes = 4;\n\n}\n\nmessage Replica {\n\noneof port_kind {\n\n// Using uint32 as ports is deprecated, use port field instead.\n\nuint32 egress_port = 1 [deprecated=true];\n\nbytes port = 3;\n\n}\n\nuint32 instance = 2;\n\n}\n\nbut there is no direction field, you know , for mirror, there are INGRESS, EGRESS and BOTH direction types.\n\nso how to configure mirror direction?\n\nHi @ychen ,\n\nI think that the mirror direction is defined within your P4 program, indeed in the code you have to specify the direction for the mirror/cloning p4c/p4include/v1model.p4 at main · p4lang/p4c · GitHub and the session and via the CLI you can specify the egress port behavioral-model/targets/simple_switch/sswitch_CLI.py at 7a8843ffb87bab9eb0a44c993ae39a9fefca10cf · p4lang/behavioral-model · GitHub. So I think that the beaviour is the same in P4Runtime.\n\nBest\n\nDavide\n\nI did define the direction of the mirror in my code, but it is specified as an input parameter, which means it can be specified by the user. However, in the P4Runtime protocol message definition, there is no way for the user to pass input parameters such as direction. So, I am wondering if I can use the “instance” field in the “Replica” message as the direction. Actually, this parameter only works for multicast, but I want to use it as the direction and then parse it on the receiving end.\n\nIn mine previous message I meant to say that the direction of the clone is fixed at compiler level. So, whether or not you use the P4 runtime at control level you cannot change the direction of packet cloning. This also applies to the session id that is associated with that specific “clone function/object” defined in your P4 program.\n\nplease lookat this file for tofino:\n\np4_pd_direction_t dir; /** Mirror direction */\n\ntypedef enum {\n\nPD_DIR_NONE = 0,\n\nPD_DIR_INGRESS,\n\nPD_DIR_EGRESS,\n\nPD_DIR_BOTH\n\n} p4_pd_direction_t;\n\nand lookat this file in stratum:\n\nand search BfSdeWrapper::WriteCloneSession\n\n// Data: $direction\n\nRETURN_IF_ERROR(SetField(table_data.get(), “$direction”, “BOTH”));\n\nso for tofino based mirror, users can configure mirror session. but p4runtime protocol does not support direction parameter.\n\nTofino has its own control plane APIs that should support its full range of configuration options.\n\nP4Runtime API configuration for mirroring can cover the options for the v1model architecture and PSA architecture, but not necessarily Tofino’s, which has more options than the others.\n\nP4Runtime API was never designed to cover that full range of options in any architecture other than PSA. There is work going on in the P4 API work group to generalize what P4Runtime API can support, but it is not there yet."
+    }
+}

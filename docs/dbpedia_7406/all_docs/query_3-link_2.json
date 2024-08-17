@@ -1,0 +1,35 @@
+{
+    "id": "dbpedia_7406_3",
+    "rank": 2,
+    "data": {
+        "url": "https://stackoverflow.com/questions/42295135/how-to-write-a-p4-program-for-easyroute-protocol",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How to write a P4 program for EasyRoute protocol?",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/2e017633cda5465e6683c74992cdec5e?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/d255f7a25babcfa9297a74cfce8b41d7?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/d255f7a25babcfa9297a74cfce8b41d7?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/d255f7a25babcfa9297a74cfce8b41d7?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/ZKfLG.jpg?s=64",
+            "https://stackoverflow.com/posts/42295135/ivc/afc9?prg=edafcc5d-74d6-496e-aa97-28a55b900474"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2017-02-17T10:11:23",
+        "summary": "",
+        "meta_description": "I am trying to implement an Easyroute protocol asked on https://github.com/p4lang/tutorials/tree/master/SIGCOMM_2015#obtaining-required-software. There is skeleton program given on this above githu...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/42295135/how-to-write-a-p4-program-for-easyroute-protocol",
+        "text": "I am trying to implement an Easyroute protocol asked on https://github.com/p4lang/tutorials/tree/master/SIGCOMM_2015#obtaining-required-software. There is skeleton program given on this above github repo. But as I am new learner of P4 language, I need help to write this skeleton program given on above github repository.\n\nAnyone who has already written and implemented above assignment can help me by posting the required P4 program.\n\nThe skeleton program is given as:\n\n/* Copyright 2013-present Barefoot Networks, Inc. Licensed under the Apache License, Version 2.0 (the \"License\"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an \"AS IS\" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License. */ // TODO: define headers & header instances parser start { // TODO return ingress; } // TODO: define parser states action _drop() { drop(); } action route() { modify_field(standard_metadata.egress_spec, /* TODO: port field from your header */); // TODO: update your header } control ingress { // TODO } control egress { // leave empty }\n\n[Place yourself in source routing_directory. ./run_demo.sh will compile your code and create the Mininet network described above. It will also use commands.txt to configure each one of the switches. Once the network is up and running, you should type the following in the Mininet CLI:\n\nxterm h1 xterm h3 This will open a terminal for you on h1 and h3.\n\nOn h3 run: ./receive.py.\n\nOn h1 run: ./send.py h1 h3.\n\nYou should then be able to type messages on h1 and receive them on h3. The send.py program finds the shortest path between h1 and h3 using Dijkstra, then send correctly-formatted packets to h3 through s1 and s3]1\n\n.pcap files will be generated for every interface (9 files: 3 for each of the 3 switches). You can look at the appropriate files and check that your packets are being processed correctly\n\nanswered Feb 27, 2017 at 10:16\n\nKhattakKhattak\n\n2166 bronze badges\n\nThe code given at https://github.com/p4lang/tutorials/tree/master/SIGCOMM_2015#obtaining-required-software has the 'port' argument missing from the action route() method. The correct code is given below. Simply make this small change in the p4 code file and then execute the steps as mentioned in the tutorial given at https://github.com/p4lang/tutorials/tree/master/SIGCOMM_2015#obtaining-required-software.\n\n/* Copyright 2013-present Barefoot Networks, Inc. Licensed under the Apache License, Version 2.0 (the \"License\"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an \"AS IS\" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License. */ // TODO: define headers & header instances parser start { // TODO return ingress; } // TODO: define parser states action _drop() { drop(); } action route(port) { modify_field(standard_metadata.egress_spec, port); // TODO: update your header } control ingress { // TODO } control egress { // leave empty }\n\nAll the Best\n\nanswered May 16, 2018 at 12:52\n\nManish Kumar SinghManish Kumar Singh\n\n1"
+    }
+}

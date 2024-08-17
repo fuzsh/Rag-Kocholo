@@ -1,0 +1,36 @@
+{
+    "id": "dbpedia_7406_3",
+    "rank": 80,
+    "data": {
+        "url": "https://www.perforce.com/manuals/v22.2/p4sag/Content/P4SAG/defining-filetype-with-p4-typemap.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Defining filetypes with p4 typemap",
+        "top_image": "https://www.perforce.com/manuals/v22.2/p4sag/Skins/Favicons/favicon-16x16.png",
+        "meta_img": "https://www.perforce.com/manuals/v22.2/p4sag/Skins/Favicons/favicon-16x16.png",
+        "images": [
+            "https://www.perforce.com/manuals/v22.2/p4sag/Content/Resources/FooterImages/Docs_28x28.png",
+            "https://www.perforce.com/manuals/v22.2/p4sag/Content/Resources/FooterImages/training_28x28.png",
+            "https://www.perforce.com/manuals/v22.2/p4sag/Content/Resources/FooterImages/video-tutorials_28x28.png",
+            "https://www.perforce.com/manuals/v22.2/p4sag/Content/Resources/FooterImages/KB_28x28.png",
+            "https://www.perforce.com/manuals/v22.2/p4sag/Content/Resources/FooterImages/Support_28x28.png",
+            "https://www.perforce.com/manuals/v22.2/p4sag/Content/Resources/FooterImages/feedback_28x28.png",
+            "https://www.perforce.com/manuals/v22.2/p4sag/Content/Resources/FooterImages/Perforce-LOGO-WHITE_150x17.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "../../Skins/Favicons/favicon-16x16.png",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "Helix Server uses the filesys.binaryscan configurable to determine how many bytes to examine when determining if a file is of type text or binary. By default, filesys.binaryscan is 65536; if the high bit is clear in the first 65536 bytes, Helix Server assumes it to be text; otherwise, it is assumed to be binary. Files compressed in the .zip format (including .jar files) are also automatically detected and assigned the type ubinary.\n\nAlthough this default behavior can be overridden by the use of the -t filetype flag, itâs easy for users to overlook this consideration, particularly in cases where files' types are usually (but not always) detected correctly. Certain file formats, such as RTF (Rich Text Format) and Adobe PDF (Portable Document Format), can start with a series of comment fields or other textual data. If these comments are sufficiently long, such files can be erroneously detected by Helix Server as being of type text.\n\nThe p4 typemap command solves this problem by enabling system administrators to set up a table that links Helix Server file types with filename specifications. If an entry in the typemap table matches a file being added, it overrides the file type that would otherwise be assigned by the Helix Server application. For example, to treat all PDF and RTF files as binary, use p4 typemap to modify the typemap table as follows:\n\nTypemap: binary //....pdf binary //....rtf\n\nThe first three periods (\"...\") in the specification are a Helix Server wildcard specifying that all files beneath the root directory are to be included in the mapping. The fourth period and the file extension specify that the specification applies to files ending in .pdf (or .rtf).\n\nThe following table lists recommended Helix Server file types and modifiers for common file extensions.\n\nFile type Helix Server file type Description\n\n.asp\n\ntext\n\nActive server page file\n\n.avi\n\nbinary+F\n\nVideo for Windows file\n\n.bmp\n\nbinary\n\nWindows bitmap file\n\n.btr\n\nbinary\n\nBtrieve database file\n\n.cnf\n\ntext\n\nConference link file\n\n.css\n\ntext\n\nCascading style sheet file\n\n.doc\n\nbinary\n\nMicrosoft Word document\n\n.dot\n\nbinary\n\nMicrosoft Word template\n\n.exp\n\nbinary+w\n\nExport file (Microsoft Visual C++)\n\n.gif\n\nbinary+F\n\nGIF graphic file\n\n.gz\n\nbinary+F\n\nGzip compressed file\n\n.htm\n\ntext\n\nHTML file\n\n.html\n\ntext\n\nHTML file\n\n.ico\n\nbinary\n\nIcon file\n\n.inc\n\ntext\n\nActive Server include file\n\n.ini\n\ntext+w\n\nInitial application settings file\n\n.jpg\n\nbinary\n\nJPEG graphic file\n\n.js\n\ntext\n\nJavaScript language source code file\n\n.lib\n\nbinary+w\n\nLibrary file (several programming languages)\n\n.log\n\ntext+w\n\nLog file\n\n.mpg\n\nbinary+F\n\nMPEG video file\n\n.pdf\n\nbinary\n\nAdobe PDF file\n\n.pdm\n\ntext+w\n\nSybase Power Designer file\n\n.ppt\n\nbinary\n\nMicrosoft PowerPoint file\n\n.prefab\n\nbinary\n\nUnity3D file\n\n.xls\n\nbinary\n\nMicrosoft Excel file\n\nUse the following p4 typemap table to map all of the file extensions to the Helix Server file types recommended in the preceding table.\n\n# Perforce File Type Mapping Specifications. # # TypeMap: a list of filetype mappings; one per line. # Each line has two elements: # Filetype: The filetype to use on 'p4 add'. # Path: File pattern which will use this filetype. # See 'p4 help typemap' for more information. TypeMap: text //....asp binary+F //....avi binary //....bmp binary //....btr text //....cnf text //....css binary //....doc binary //....dot binary+w //....exp binary+F //....gif binary+F //....gz text //....htm text //....html binary //....ico text //....inc text+w //....ini binary //....jpg text //....js binary+w //....lib text+w //....log binary+F //....mpg binary //....pdf text+w //....pdm binary //....ppt binary //....xls\n\nIf a file type requires the use of more than one file type modifier, specify the modifiers consecutively. For example, binary+lFS10 refers to a binary file with exclusive-open (l), stored in full (F) rather than compressed, and for which only the most recent ten revisions are stored (S10)."
+    }
+}

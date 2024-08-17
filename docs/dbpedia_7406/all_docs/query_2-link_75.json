@@ -1,0 +1,40 @@
+{
+    "id": "dbpedia_7406_2",
+    "rank": 75,
+    "data": {
+        "url": "https://stackoverflow.com/questions/72627218/openssl-error-messages-error0a000126ssl-routinesunexpected-eof-while-readin",
+        "read_more_link": "",
+        "language": "en",
+        "title": "OpenSSL Error messages: error:0A000126:SSL routines::unexpected eof while reading",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://cdn.sstatic.net/Img/teams/teams-promo.svg?v=e507948b81bf",
+            "https://lh4.googleusercontent.com/-VcJFB0UDAH4/AAAAAAAAAAI/AAAAAAAAAFI/unDpTosWhHk/photo.jpg?sz=64",
+            "https://www.gravatar.com/avatar/66dc5a164daf24ad6fb75212c8068aac?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/dee319d3a10466edc8438cb125e058b5?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/XcF99.jpg?s=64",
+            "https://www.gravatar.com/avatar/170cee324a6f53f6181e46afa13b7363?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/Psihe.jpg?s=64",
+            "https://stackoverflow.com/posts/72627218/ivc/afc9?prg=df45a7d6-46a2-4695-802f-79933a5d8f0e",
+            "https://stackoverflow.com/js-false.gif"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Salik Mohammad"
+        ],
+        "publish_date": "2022-06-15T07:11:17",
+        "summary": "",
+        "meta_description": "Screenshot is here\nI have built a website in PHP using the YII2 framework. When I use file_get_contents($requestUrl, false, stream_context_create($arrContextOptions)) then i am getting error saying...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/72627218/openssl-error-messages-error0a000126ssl-routinesunexpected-eof-while-readin",
+        "text": "This error manifests not only with PHP but in a broad variety of contexts, so I write a generic answer here. The other answers address the issue by upgrading software that have implemented the solution already upstream. The reasons and background is explained here. Most software linking OpenSSL have tickets where they introduce support for the new openssl behaviour, e.g. 1, 2, 3. Currently, in Ubuntu 22.04 LTS curl is version 7.81.0, and fails in case of unexpected EOF with OpenSSL 3.0.x. The latest curl is 7.88.1, and apparently resolved the issue, though I could not find the exact commit or ticket. The solution in Ubuntu 22.04 and any system with old curl is to manually compile and install the latest one, as shown for example here.\n\nImportantly, the issue can be addressed on client side, you don't have to do anything with the server (especially that, in most cases, it's a third party server and works correctly).\n\nTLDR:\n\napt remove curl apt purge curl apt-get update apt-get install -y libssl-dev autoconf libtool make cd /usr/local/src wget https://curl.haxx.se/download/curl-7.88.1.zip unzip curl-7.88.1.zip cd curl-7.88.1 ./buildconf ./configure --with-ssl make sudo make install sudo cp /usr/local/bin/curl /usr/bin/curl sudo ldconfig curl -V\n\nAnother possible reason you may be getting this error is if a firewall is blocking your traffic from the machine to the internet.\n\nIn my case, it was an Ubuntu 22.04 LTS machine, behind an Azure Firewall. The firewall was configured to only allow certain categories, and the sites I was trying to talk to were not in the allowed category.\n\nIn your case it may be a different kind of rule blocking it however. You may wish to review the logs from your firewall to know if it is blocking it and why."
+    }
+}
