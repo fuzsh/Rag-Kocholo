@@ -1,0 +1,35 @@
+{
+    "id": "dbpedia_7275_3",
+    "rank": 50,
+    "data": {
+        "url": "https://unix.stackexchange.com/questions/234497/plank-dock-problem-in-manjaro-fluxbox-15-09",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Plank dock problem in Manjaro Fluxbox 15.09",
+        "top_image": "https://cdn.sstatic.net/Sites/unix/Img/apple-touch-icon@2.png?v=32fb07f7ce26",
+        "meta_img": "https://cdn.sstatic.net/Sites/unix/Img/apple-touch-icon@2.png?v=32fb07f7ce26",
+        "images": [
+            "https://cdn.sstatic.net/Sites/unix/Img/logo.svg?v=eb6eb2b9e73c",
+            "https://i.sstatic.net/Ho8Ya.png",
+            "https://i.sstatic.net/SFEVw.png",
+            "https://i.sstatic.net/PQ6c7.png",
+            "https://www.gravatar.com/avatar/a007be5a61f6aa8f3e85ae2fc18dd66e?s=64&d=identicon&r=PG",
+            "https://unix.stackexchange.com/posts/234497/ivc/c848?prg=52161100-0058-48b2-8b32-04d2c66cf7a5"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2015-10-07T11:17:10",
+        "summary": "",
+        "meta_description": "I would like to be able to use Docky or Plank in Manjaro Fluxbox, but they do not work well.\n\nA large band of shadow appears close to the dock. This shadow is there even when the dock is hidden.\n\nT...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/unix/Img/favicon.ico?v=fb86ccabb921",
+        "meta_site_name": "Unix & Linux Stack Exchange",
+        "canonical_link": "https://unix.stackexchange.com/questions/234497/plank-dock-problem-in-manjaro-fluxbox-15-09",
+        "text": "The phenomenon, which you described as \"a large band of shadow\", is likely because the window manager Fluxbox is not using any compositing manager.\n\nModern docks such as docky and plank relies on a compositing manager for its appearance rendering and animation effects. This is a default, therefore compositing is required for these docks and there is no way to skip this requirement (when using earlier releases of plank).\n\nLatest solution: Update plank\n\nAs release 0.10.1, the dock seems to support both compositing and non-compositing environments properly. I have tested this release on Xfce 4.10 with Xfwm.\n\nSolution 1: Compositing\n\nYou will need a compositing manager that works with Fluxbox. According to this Wiki, the only option with Fluxbox is compton. Not much details, but someone had managed.\n\nSolution 2: Non-compositing\n\nUse other dock that works even without compositing, such as avant-window-navigator and cairo-dock. The latter seems to work better with compositing. These docks will have solid background when used in non-compositing mode. No compositing means no transparency.\n\nRelated experience\n\nI have experienced this phenomenon when I had tested docky and plank during its early development in GNOME 2 and Xfce environments. These X environments had their built-in compositing managers, Metacity and Xfwm, which can be turned on and off easily.\n\nThis area cannot be clicked through and any window under it, just like a whole part of the desktop, is thus unaccessible.\n\nHowever, I didn't remember the shadow had prevented me from clicking the launchers on the dock (it was some time ago, so I can't recollect my testing experience entirely).\n\nAdditional notes\n\nFluxbox Wiki had this howto that explains how to use compositing with Fluxbox using xcompmgr, which was said to be \"nothing but eyecandy\". Since its development had discontinued, its fork compton took over the role, which notably known for its solution to \"tear-free experience\" in Xfce.\n\nDock with compositing and non-compositing\n\nTo describe the difference between two solutions above, I have used avant-window-navigator in Xfce environment to demonstrate the effect.\n\nIn the first screenshot, the information dialog is partially visible under semi-transparent dock background and has drop down shadows around the information dialog itself.\n\nIn the second screenshot, the information dialog is no longer visible and hidden under the light grey solid background and no more shadows.\n\nIn Manjaro Fluxbox 15.10 Plank not only works, but is installed and running by default.\n\nIn fact, after installing Fluxbox from scratch, that is on top of Lubuntu, the dock Plank works without compton. On the contrary, compton was installed and running in Fluxbox Manjaro 15.09.\n\nThe shadow appeared because the program was started with the command compton -c, which stays for \"Enabled client-side shadows on windows\". Running it without any argument avoids the shadow, but a part of the screen near to the dock is still reserved and not accessible. This is solved by disabling compton completely in Fluxbox. Plank will work, but without certain features like zoom. Removing compton also solves other problems like losing window frame of terminals.\n\nThere must be another solution of running Plank with full features along compton, as it happens in Manjaro Fluxbox 15.10. I have to investigate and see what compton arguments make it possible."
+    }
+}
