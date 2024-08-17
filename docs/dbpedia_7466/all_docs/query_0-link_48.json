@@ -1,0 +1,42 @@
+{
+    "id": "dbpedia_7466_0",
+    "rank": 48,
+    "data": {
+        "url": "https://community.st.com/t5/stm32-mcus-products/hardware-timer-interrupt-for-multiple-delays-stm32g4/td-p/615365",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Hardware timer interrupt for multiple delays(STM32g4)",
+        "top_image": "https://community.st.com/html/@69F73FA73CBA8CB0B32F49AC59A3C841/assets/favicon-32.png",
+        "meta_img": "https://community.st.com/html/@69F73FA73CBA8CB0B32F49AC59A3C841/assets/favicon-32.png",
+        "images": [
+            "https://community.st.com/t5/image/serverpage/avatar-name/guitar/avatar-theme/candy/avatar-collection/music/avatar-display-size/profile/version/2?xdesc=1.0",
+            "https://community.st.com/t5/image/serverpage/image-id/54932i03B48356AF3BAE53/image-dimensions/150x150/image-coordinates/0%2C0%2C158%2C158/constrain-image/false?v=v2",
+            "https://community.st.com/t5/image/serverpage/image-id/54932i03B48356AF3BAE53/image-dimensions/150x150/image-coordinates/0%2C0%2C158%2C158/constrain-image/false?v=v2",
+            "https://community.st.com/t5/image/serverpage/avatar-name/guitar/avatar-theme/candy/avatar-collection/music/avatar-display-size/profile/version/2?xdesc=1.0",
+            "https://community.st.com/t5/image/serverpage/image-id/54932i03B48356AF3BAE53/image-dimensions/150x150/image-coordinates/0%2C0%2C158%2C158/constrain-image/false?v=v2",
+            "https://community.st.com/legacyfs/online/avatars/7293W000000PDul",
+            "https://community.st.com/t5/image/serverpage/avatar-name/guitar/avatar-theme/candy/avatar-collection/music/avatar-display-size/profile/version/2?xdesc=1.0",
+            "https://community.st.com/t5/image/serverpage/image-id/54932i03B48356AF3BAE53/image-dimensions/150x150/image-coordinates/0%2C0%2C158%2C158/constrain-image/false?v=v2",
+            "https://community.st.com/skins/images/A19B6D4B29AC54D33C48C920859B1F65/responsive_peak/images/icon_anonymous_message.png",
+            "https://community.st.com/html/@BD84A24F6C33B4216F5F2C3226885C95/assets/stmicro-logo.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "community.st.com",
+            "user-id"
+        ],
+        "publish_date": "2023-12-01T06:18:13.716000+00:00",
+        "summary": "",
+        "meta_description": "Solved: Hi, I am using STM32G4 in my project. I need delays in my project multiple places. I am using hardware timer interrupt for delay. I am using",
+        "meta_lang": "en",
+        "meta_favicon": "https://community.st.com/html/@69F73FA73CBA8CB0B32F49AC59A3C841/assets/favicon-32.png",
+        "meta_site_name": "",
+        "canonical_link": "https://community.st.com/t5/stm32-mcus-products/hardware-timer-interrupt-for-multiple-delays-stm32g4/td-p/615365",
+        "text": "Hi,\n\nI am using STM32G4 in my project. I need delays in my project multiple places. I am using hardware timer interrupt for delay.\n\nI am using TIM1 configured with 50 usec delay.\n\nHAL_TIM_Base_Start_IT(&htim1); HAL_TIM_PWM_Start_IT(&htim2, TIM_CHANNEL_2); void HAL_TIM_PWM_PulseFinishedCallback(TIM_HandleTypeDef *htim) { if (htim->Instance == TIM2) { if( flag_50 usec==1){ //read adc; flag_50 usec=0; } if(flag_800usec==1){ //check switch high/low flag_800 usec=0 } } } void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) { if (htim->Instance == TIM1) { uint16_t varible=0; flag_50 usec=1; variable++; //take one variable to increment timer if(varible==16) flag_800usec==1; } }\n\n1.As mentioned I need different delays in my project. For every pwm pulse rising edge after 50 usec I need to adc value and then after 800 usec I need to check one switch high/low. It should be repeated process. I am planning to use same timer for delay.\n\n2.Once 50 usec delay done I need to take one variable to increment it for every 50 usec if it reached 16 times means(16*50 usec=800 usec) then I will take flag_800 usec to high and I will check the same in main function.\n\n3.For remaining delays like 3 sec,2 sec I am planning do the same.\n\nIs it correct process. If not Please suggest some other process to do it.\n\nThanks\n\nSolved! Go to Solution.\n\nYou would check TIMx_CNT against a stored timestamp (i.e. elapsed time) in the same way as you would check the flag set by interrupt upon elapsed time.\n\nIn microcontroller programming, there is no universal \"good\" solution. What I've vaguely described above can be interpreted and implemented in several different ways, and details do matter. If you're comfortable with your solution and you don't mind that it consumes the computing power of the processor, then go ahead and use it.\n\nJW\n\nView solution in original post\n\nOne way to do this is just leave the timer free running to its maximum (TIM2 is conveniently 32-bit), say with prescaler set so that TIM2_CNT increments at a 1MHz rate.\n\nIn main loop then, at the start of the timed event you read out TIM2_CNT and remember it in a variable, and then just wait until difference between TIM2_CNT and the stored value gets equal or more than 50. The same for the other delays. No interrupt needed for this method.\n\nJW\n\nHi @waclawek.jan ,\n\n1.I am generating 50 usec delay from timer1.Below configuration for 50 usec in stm32g4\n\nAPB2-48 Mhz\n\nprescaler :2400-1\n\ncounter period:65535-1\n\n2. The code which I mentioned does it work?\n\nstatic uint32_t v = 0; // Declare v as a static variable outside the function typedef struct { uint16_t flag_50; uint16_t flag_100usec; uint16_t flag_800usec; uint16_t flag_1sec; uint16_t flag_2sec; uint16_t flag_3sec; } Em_de; extern Em_de delay; Em_de delay = {0}; void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) { if (htim == &htim1) { delay.flag_50 = 1; v++; if (v == 2) { delay.flag_100usec = 1; } else if (v == 16) delay.flag_800usec = 1; else if (v == 20000) delay.flag_1sec = 1; else if (v == 40000) delay.flag_2sec = 1; else if (v == 60000) delay.flag_3sec = 1; else if (v == 120000) delay.flag_6sec = 1; if (v >= 120000) v = 0; } } void HAL_TIM_PWM_PulseFinishedCallback(TIM_HandleTypeDef *htim) { if (htim == &htim2) { // PWM pulse finished callback for htim2 if (delay.flag_50 == 1) { delay.flag_50 = 0; // Reset the flag uint16_t adcValue = readADC(); // Process the ADC value as needed } if (delay.flag_800usec == 1) { // Check if the 800 microseconds flag is high // Perform the required logic here delay.flag_800usec = 0; // Reset the flag } } }\n\nAPB2-48 Mhz\n\nprescaler :2400-1\n\ncounter period:65535-1\n\nThat means, timer clock is 50us, and period is 65535*50us=3.28s.\n\nThat's probably not what you want.\n\nAlso, note, that it takes quite a couple of machine cycles to service an interrupt. If you want one interrupt per 50us = 2400 machine cycles (e.g. by using prescaler = 0 and period = 2400 - 1), the interrupt service must take much less cycles so that it won't significantly slow down the whole mcu. Especially if you use Cube/HAL, which adds quite some overhead; not using optimization may make this not workable at all.\n\nThis is why I suggested a solution which would avoid using interrupts at all.\n\nJW\n\nThe MCU's aren't well suited to interrupts into the 100's of KHz, simply because you end up wasting so many cycles in friction (unproductive work, entering/exiting interrupt context, HAL code and callbacks).\n\nYes, the basic premise of your code and sequencing looks to be ok, but everything also has to execute within the prescribed time window too. You could probably do something more efficiently in a tight/fast main loop sequencing of a TIM->CNT.\n\nIdeally push as much as possible into HW, ie by making TIM's do pin actions/pulse, or use DMA to drive periodic output or sequences.\n\nTips, Buy me a coffee, or three.. PayPal Venmo\n\nUp vote any posts that you find helpful, it shows what's working..\n\nYou would check TIMx_CNT against a stored timestamp (i.e. elapsed time) in the same way as you would check the flag set by interrupt upon elapsed time.\n\nIn microcontroller programming, there is no universal \"good\" solution. What I've vaguely described above can be interpreted and implemented in several different ways, and details do matter. If you're comfortable with your solution and you don't mind that it consumes the computing power of the processor, then go ahead and use it.\n\nJW"
+    }
+}

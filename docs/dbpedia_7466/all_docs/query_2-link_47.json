@@ -1,0 +1,37 @@
+{
+    "id": "dbpedia_7466_2",
+    "rank": 47,
+    "data": {
+        "url": "https://community.st.com/t5/stm32-mcus-embedded-software/interrupt-mode-hal-delay/td-p/568134",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Interrupt Mode HAL Delay",
+        "top_image": "https://community.st.com/html/@69F73FA73CBA8CB0B32F49AC59A3C841/assets/favicon-32.png",
+        "meta_img": "https://community.st.com/html/@69F73FA73CBA8CB0B32F49AC59A3C841/assets/favicon-32.png",
+        "images": [
+            "https://community.st.com/t5/image/serverpage/avatar-name/guitar/avatar-theme/candy/avatar-collection/music/avatar-display-size/profile/version/2?xdesc=1.0",
+            "https://community.st.com/t5/image/serverpage/image-id/54932i03B48356AF3BAE53/image-dimensions/150x150/image-coordinates/0%2C0%2C158%2C158/constrain-image/false?v=v2",
+            "https://community.st.com/legacyfs/online/avatars/005",
+            "https://community.st.com/skins/images/8C62DBB60E2DC67466E6605C3B86EC4D/responsive_peak/images/icon_anonymous_message.png",
+            "https://community.st.com/html/@BD84A24F6C33B4216F5F2C3226885C95/assets/stmicro-logo.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "community.st.com",
+            "user-id"
+        ],
+        "publish_date": "2023-06-17T06:14:18.576000+00:00",
+        "summary": "",
+        "meta_description": "Hello I am newbie to embedded word. I am trying to learn interrupt for GPIO on NUCLEO-F091RC. I set the User Button as interrupt and LED should",
+        "meta_lang": "en",
+        "meta_favicon": "https://community.st.com/html/@69F73FA73CBA8CB0B32F49AC59A3C841/assets/favicon-32.png",
+        "meta_site_name": "",
+        "canonical_link": "https://community.st.com/t5/stm32-mcus-embedded-software/interrupt-mode-hal-delay/td-p/568134",
+        "text": "Hello\n\nI am newbie to embedded word. I am trying to learn interrupt for GPIO on NUCLEO-F091RC. I set the User Button as interrupt and LED should toggle as button is pressed. I copied the callback function ( HAL_GPIO_EXTI_Callback) in main.c . Under callback function, I called HAL_GPIO_Toggle . The code is working as expected.\n\nBut now I want LED to Blink as interrupt from button is generated. I wrote the below code. But as soon code comes to HAL_Delay function , it hangs. I tried to check in debug mode also. As I come to HAL_Delay function- StepInto , StepOver button fades out and code hangs there.\n\n************************************************\n\nvoid HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)\n\n{\n\nHAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);\n\nwhile(1)\n\n{\n\nHAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);\n\nHAL_Delay(1000);\n\n}\n\n}\n\nCube/HAL is open source so you can check what's going on by reading those sources.\n\nDelay in Cube/HAL generally depends on interrupt, usually SysTick, so if you don't assign proper priorities to that and your interrrupts, while in your interrupt, the delay-related interrupt can't fire and advance its counter.\n\nJW\n\nISR (interrupt service routines) should be exited as quick as possible and kept as short as possible, delays in and ISR are a bad idea because you block what has a lower interrupt priority in the mcu. On top of that as explained by @waclawek.jan above, if your hardware ISR has a higher priority than the SysTick ISR that is the driver of the time count in HAL_Delay(), HAL_Delay cannot work anymore and your HAL_Delay waits forever for ticks that do not come any more.\n\nThe alternative is to set a flag and use the main() loop to organize the blinking:\n\n/* USER CODE BEGIN PV */ #define TRUE 1 // JOHI #define FALSE 0 // JOHI volatile uint8_t buttonPressedFlag=FALSE; // JOHI /* USER CODE END PV */ /* Private function prototypes -----------------------------------------------*/ void SystemClock_Config(void); static void MX_GPIO_Init(void); /* USER CODE BEGIN PFP */ // JOHI: void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) { /* Prevent unused argument(s) compilation warning */ if (GPIO_Pin==BUTTON_Pin) buttonPressedFlag=TRUE; } /* USER CODE END PFP */ /* Private user code ---------------------------------------------------------*/ /* USER CODE BEGIN 0 */ /* USER CODE END 0 */ /** * @brief The application entry point. * @retval int */ int main(void) { /* USER CODE BEGIN 1 */ /* USER CODE END 1 */ /* MCU Configuration--------------------------------------------------------*/ /* Reset of all peripherals, Initializes the Flash interface and the Systick. */ HAL_Init(); /* USER CODE BEGIN Init */ /* USER CODE END Init */ /* Configure the system clock */ SystemClock_Config(); /* USER CODE BEGIN SysInit */ /* USER CODE END SysInit */ /* Initialize all configured peripherals */ MX_GPIO_Init(); /* USER CODE BEGIN 2 */ /* USER CODE END 2 */ /* Infinite loop */ /* USER CODE BEGIN WHILE */ while (1) { /* USER CODE END WHILE */ /* USER CODE BEGIN 3 */ // JOHI: if (buttonPressedFlag==TRUE) { HAL_GPIO_TogglePin(LED_GPIO_Port,LED_Pin); HAL_Delay(1000); HAL_GPIO_TogglePin(LED_GPIO_Port,LED_Pin); HAL_Delay(1000); buttonPressedFlag=FALSE; } HAL_Delay(10); } /* USER CODE END 3 */ }"
+    }
+}
