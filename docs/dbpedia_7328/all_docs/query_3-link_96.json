@@ -1,0 +1,34 @@
+{
+    "id": "dbpedia_7328_3",
+    "rank": 96,
+    "data": {
+        "url": "https://raspberrypi.stackexchange.com/questions/101144/how-can-i-get-my-new-raspberry-pi-4b-to-output-1080i-video",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How can I get my new Raspberry Pi 4B to output 1080i video",
+        "top_image": "https://cdn.sstatic.net/Sites/raspberrypi/Img/apple-touch-icon@2.png?v=38b7cb40765d",
+        "meta_img": "https://cdn.sstatic.net/Sites/raspberrypi/Img/apple-touch-icon@2.png?v=38b7cb40765d",
+        "images": [
+            "https://cdn.sstatic.net/Sites/raspberrypi/Img/logo.svg?v=3a5627199637",
+            "https://www.gravatar.com/avatar/ab9ae7ac043cbdded8b4c972da2ba883?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://raspberrypi.stackexchange.com/posts/101144/ivc/5d49?prg=8ba1c484-ea35-4eed-a9b9-a99d0df76d09"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Gary Dale"
+        ],
+        "publish_date": "2019-07-28T21:34:49",
+        "summary": "",
+        "meta_description": "I finally got into the Pi world with a model 4B. I've updated it to Raspian/Buster and have the network working (wireless and wired - but just using wireless right now). \nI'm running it using VNC-V...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/raspberrypi/Img/favicon.ico?v=bcf66a10ef1d",
+        "meta_site_name": "Raspberry Pi Stack Exchange",
+        "canonical_link": "https://raspberrypi.stackexchange.com/questions/101144/how-can-i-get-my-new-raspberry-pi-4b-to-output-1080i-video",
+        "text": "I finally got into the Pi world with a model 4B. I've updated it to Raspian/Buster and have the network working (wireless and wired - but just using wireless right now).\n\nI'm running it using VNC-Viewer-6.19.325-Linux-x64 from my Linux workstation but have the HDMI output connected to my TV which can only do up to 1080i. tvservice -m CEA shows it supports 6 modes, 3 progressive up to 720x480 @ 60Hz, 16:9; and 3 interlaced with 1920x1080 @60Hz, 16:9 being marked (prefer). The supported CEA modes are 1,2,3,5,6 & 7.\n\nI know it can do mode 5 (the one marked prefer) because I have had various cable boxes and DVD/Blu-ray players connected to it and they all worked once I got them to display 1080i (surprising how many devices don't want to start in a broadcast-standard mode - I wrote a blog post about it).\n\nQ: Anyway, despite tvservice showing that it can work with 1080i, I've not been able to get it beyond 480p.\n\nI've edited /boot/config.txt to include:\n\nhdmi_group=1 hdmi_mode=5 hdmi_drive=2 config_hdmi_boost=4 (also tried without it) hdmi_force_hotplug=1 hdmi_edid_file=1\n\nwith a /boot/edid.dat file for that last option created by running tvservice -d edid.dat.\n\nThe best I can get my Pi to use is 720x480p using Preferences | Screen Configuration then following the right-click menu. There are no higher resolution options shown, just 720x480 and 640x480, each at 60Hz or 59.94Hz (However, even those are not usable on my TV because of the tremendous overscan - I loose a large chunk of the desktop. I can only see it all through VNC. Uncommenting \"disable_overscan=1\" seems to make it worse).\n\nQ: Any idea how I can get the Pi to connect to my TV in 1080i?\n\nadded details: While working with the TV screen on, I ran\n\ntvservice -e \"CEA 5 HDMI\"\n\nand the TV eventually synced to the signal. When switching from 640x480, it took over 3 minutes but going from 720x480 was only a few seconds. Both left me with the original desktop in the top left corner. So the hardware bits can apparently talk to each other. However even when the screen is in 1920x1080, the desktop is still the same size as it booted with.\n\nBy unplugging the HDMI cable, I was able to run the Pi headless using VNC. From there I was able to set it up to 1920x1080 at 59.99Hz (?). Re-plugging the cable and running the tvservice command (above), I could see the desktop on the TV. However the picture is still overscanned.\n\nmore updates: By using a edid file - which clearly shows that the TV supports 1080i and not 1080p, I have got the Pi to boot into a 1920x1080 display with the TV attached. Unfortunately it insists on using 1080p. I confirmed this by using VNC and tvservice -s from a command line.\n\nThe lines in /boot/config.txt are:\n\nhdmi_group=1 hdmi_mode=5 hdmi_drive=2 hdmi_force_hotplug=1 hdmi_force_mode=1 hdmi_ignore_edid=0xa5000080 hdmi_edid_file=1 hdmi_edid_filename=/boot/edid.dat\n\nWhen I run tvservice -e \"CEA 5 HDMI\" it puts it into the correct (interlaced) mode and I have a (horribly overscanned) 1080 line desktop.\n\nAgain, the edid.dat file (as parsed by edid-decode) shows the modes as:\n\nVideo data block VIC 5 1920x1080i@60Hz 16:9 HorFreq: 33750 Hz Clock: 74.250 MHz VIC 3 720x480@60Hz 16:9 HorFreq: 31469 Hz Clock: 27.000 MHz VIC 2 720x480@60Hz 4:3 HorFreq: 31469 Hz Clock: 27.000 MHz VIC 7 1440x480i@60Hz 16:9 HorFreq: 15734 Hz Clock: 27.000 MHz VIC 6 1440x480i@60Hz 4:3 HorFreq: 15734 Hz Clock: 27.000 MHz VIC 1 640x480@60Hz 4:3 HorFreq: 31469 Hz Clock: 25.175 MHz\n\nbut the Pi seems to be ignoring them and only using progressive scan modes unless forced from the command line. I could probably live with this except the tvservice command doesn't let me adjust the overscan settings so I don't have a usable desktop on the TV.\n\nWhen I use Preferences | Screen Configuration, I now see a full range of what appear to be DMT modes, including 3 1920x1080 at 60Hz, 59.94Hz and 50Hz. When I switch to any of them using the Screen Configuration tool, tvservice -s (through VNC) confirms they are all Progressive Scan."
+    }
+}
