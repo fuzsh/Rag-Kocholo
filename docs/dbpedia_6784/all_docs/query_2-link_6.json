@@ -1,0 +1,37 @@
+{
+    "id": "dbpedia_6784_2",
+    "rank": 6,
+    "data": {
+        "url": "https://stackoverflow.com/questions/51521208/c-sharp-regex-to-match-all-sri-lankan-phone-numbers",
+        "read_more_link": "",
+        "language": "en",
+        "title": "c# Regex to match all Sri Lankan phone numbers",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://i.sstatic.net/98O16.jpg?s=64",
+            "https://www.gravatar.com/avatar/15e0242733adfb3fc7176e9bae148efd?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/98O16.jpg?s=64",
+            "https://lh3.googleusercontent.com/a/AAcHTtd44HJdFO4TzXzm4LuPxSuVsSVbkcv-g8wHfMy_rw=k-s64",
+            "https://lh3.googleusercontent.com/-STP-u7-2siM/AAAAAAAAAAI/AAAAAAAAAOo/KPV2OaeoNus/photo.jpg?sz=64",
+            "https://www.gravatar.com/avatar/5cf466ab92e4625e8b6aa02b8acdc15d?s=64&d=identicon&r=PG",
+            "https://graph.facebook.com/1815684288577033/picture?type=large",
+            "https://stackoverflow.com/posts/51521208/ivc/6e1b?prg=e4df737a-27d3-4756-b643-f59af0c8d536"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2018-07-25T14:16:49",
+        "summary": "",
+        "meta_description": "I didn't find any on google on the regex expression for Sri Lankan phone numbers;\nThe formats are:\r\n775645645 (9 digits)\n0775645645 (10 digits)\n+94775645645\r\nIt should start with 7 or 0 or +94. Can",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/51521208/c-sharp-regex-to-match-all-sri-lankan-phone-numbers",
+        "text": "Let's build the pattern:\n\n^ - anchor (string start) 7|0|(?:\\+94) - either 7 or 0 or +94 [0-9]{9,10} - from 9 up and including to 10 digits (chars on [0-9] range) $ - anchor (string end)\n\nSo we have\n\nstring pattern = @\"^(?:7|0|(?:\\+94))[0-9]{9,10}$\";\n\nTests:\n\nstring[] tests = new string[] { \"775645645\", \"0775645645\", \"+94775645645\", \"123456669\", \"1234566698888\", \"+941234566698888\", \"+94123456\" }; string pattern = @\"^(?:7|0|(?:\\+94))[0-9]{9,10}$\"; string report = string.Join(Environment.NewLine, tests .Select(item => $\"{item,-20} : {(Regex.IsMatch(item, pattern) ? \"Matched\" : \"Not\")}\")); Console.Write(report);\n\nOutcome:\n\n775645645 : Matched 0775645645 : Matched +94775645645 : Matched 123456669 : Not 1234566698888 : Not +941234566698888 : Not +94123456 : Not\n\nSimple Regex to test for mobile and landline Sri Lankan numbers:\n\n^(\\+94|0)?[1-9]{2}[0-9]{7}$ - \"test for landline numbers\" ^(\\+94|0)?7[0-9]{8}$ - \"test for mobile numbers\" (^(\\+94|0)?[1-9]{2}[0-9]{7}$)|(^(\\+94|0)?7[0-9]{8}$) - \"combined regex\"\n\nExplanation\n\nAll telephone numbers in Sri Lanka follow a general format. 0 or +94 followed by 9 digits. Some extra rules apply depending on whether the number is a landline or mobile.\n\nLandlines\n\nThe number can start with either +94, 0, or not be specified.\n\nFollowed by a 2-digit area code, digits that can be included are from 1 to 9\n\nFinally end with the operator code, followed by the 6 digits of the specified landline that all can contain digits 0 to 9.\n\nMobile Numbers\n\nThe number can start with either +94, 0, or not be specified.\n\nFollowed by a 2-digit operator code (currently all operator codes start with 7).\n\nFinally end the with the 7 digits of the specified mobile.\n\nThis was made following Sri Lankan telephone formatting conventions. Testing individual area codes in landlines was ignored. Testing mobile operator codes was also unnecessary since they go from 070 to 079 (although 079 is unallocated currently).\n\nSources:\n\nNational Conventions for writing telephone numbers\n\nTelephone Numbers in Sri Lanka"
+    }
+}

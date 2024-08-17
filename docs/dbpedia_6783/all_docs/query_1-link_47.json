@@ -1,0 +1,32 @@
+{
+    "id": "dbpedia_6783_1",
+    "rank": 47,
+    "data": {
+        "url": "https://groups.google.com/g/lastools/c/FJqEA912CuU",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Coordinate convertion",
+        "top_image": "https://www.gstatic.com/images/branding/product/1x/groups_32dp.png",
+        "meta_img": "https://www.gstatic.com/images/branding/product/1x/groups_32dp.png",
+        "images": [
+            "https://fonts.gstatic.com/s/i/productlogos/groups/v9/web-48dp/logo_groups_color_1x_web_48dp.png",
+            "https://lh3.googleusercontent.com/a-/ALV-UjWPTDtW_aRdLr6Xnvyyk8eEZPvV5__kxiEV79XzH8mN77jDQxl5=s40-c",
+            "https://lh3.googleusercontent.com/a-/ALV-UjVDwL_CJJzw7adi91uDWEkENY5iFEh9_Brwq0OSUTpRaZ-0_gKn=s40-c"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "//www.gstatic.com/images/branding/product/1x/groups_32dp.png",
+        "meta_site_name": "",
+        "canonical_link": "https://groups.google.com/g/lastools/c/FJqEA912CuU",
+        "text": "Hello Serene,\n\nit seems you are referring to this projection here\n\nthat uses a Transverse Mercator projection with a datum defined on the \"Everest 1830\" ellipsoid shown below. And from there you want to go to the WGS84 datum? Unfortunately datum transforms are not supported by LAStools. But you can go to long lat on the current datum \"Everest 1830\".\n\n>> more srilanka_sld99.txt\n\nx, y, z\n\n135678, 583945, 10.5\n\n135688, 583945, 10.5\n\n135688, 583955, 10.5\n\n135678, 583955, 10.5\n\n>> las2las -i srilanka_sld99.txt ^\n\n-epsg 5235 ^\n\n-target_longlat ^\n\n-o srilanka_longlat.laz\n\nusing target projection 'longitude/latitude'\n\nWARNING: cannot parse 'x, y, z' with 'xyz'. skipping ...\n\nGeographicTypeGeoKey: look-up for ellipsoid with id 7 not implemented\n\n>> las2txt -i srilanka_longlat.laz -stdout\n\n77.4700843 7.7468302 10.50\n\n77.4701748 7.7468309 10.50\n\n77.4701741 7.7469212 10.50\n\n77.4700836 7.7469205 10.50\n\n>> lasboundary -i srilanka_longlat.laz -okml -labels\n\nInteresting to see how far we are off. Can this be due to the different datum??? Or did I pick the wrong EPSG code? Either way, LAStools is not able to do these more rare conversion. But have a look at the 'las2las' from libLAS or PDAL.\n\nRegards,\n\nMartin @rapidlasso"
+    }
+}
