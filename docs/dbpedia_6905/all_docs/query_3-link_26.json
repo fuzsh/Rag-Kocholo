@@ -1,0 +1,37 @@
+{
+    "id": "dbpedia_6905_3",
+    "rank": 26,
+    "data": {
+        "url": "https://medium.com/math-simplified/the-perfect-matching-1be8b028183c",
+        "read_more_link": "",
+        "language": "en",
+        "title": "The Perfect Matching",
+        "top_image": "https://miro.medium.com/v2/resize:fit:420/1*DgE3qSpsdqtc1XkdSfa6rQ.jpeg",
+        "meta_img": "https://miro.medium.com/v2/resize:fit:420/1*DgE3qSpsdqtc1XkdSfa6rQ.jpeg",
+        "images": [
+            "https://miro.medium.com/v2/resize:fill:64:64/1*dmbNkD5D-u45r44go_cf0g.png",
+            "https://miro.medium.com/v2/resize:fill:88:88/1*dmbNkD5D-u45r44go_cf0g.png",
+            "https://miro.medium.com/v2/resize:fill:48:48/1*DT3Cs4MXCUeOnOCoRuoHxg.png",
+            "https://miro.medium.com/v2/resize:fill:144:144/1*dmbNkD5D-u45r44go_cf0g.png",
+            "https://miro.medium.com/v2/resize:fill:64:64/1*DT3Cs4MXCUeOnOCoRuoHxg.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Venkat",
+            "higgsmass.medium.com"
+        ],
+        "publish_date": "2022-02-28T21:05:43.032000+00:00",
+        "summary": "",
+        "meta_description": "In optimization problems, a time slice qualifies as a resource, or any other traditional commodity. The problem of allocating n resources among n vying slots involves representing them by an n×n…",
+        "meta_lang": "en",
+        "meta_favicon": "https://miro.medium.com/v2/5d8de952517e8160e40ef9841c781cdc14a5db313057fa3c3de41c6f5b494b19",
+        "meta_site_name": "Medium",
+        "canonical_link": "https://medium.com/math-simplified/the-perfect-matching-1be8b028183c",
+        "text": "The Hungarian Method\n\nGeometrically, the doubly stochastic permutation matrices — shown as pink, blue and lime-green headings (also the optimal solutions to the problem) are points in n² dimensional space. Recall that they are lie on the extremities of a convex hull. Optimizing overall-cost (or the rating sum) is bound to yield the same result whether we consider the the linear sum of these points or their convex hull — a direct consequence of Kőnig’s Theorem which we encountered in an earlier installment of this series.\n\nNow we can convert the assignment problem into a Linear Program. What we are seeking is a zero-one (permutation) matrix by suitably transforming the general cost matrix. This is achieved by an algorithm that applies graph theoretical ideas — especially the work of Kőnig and Egerváry. The linear program looks like this:\n\nLinear Program\n\nR = rᵢⱼ (i, j = 1, 2, …, n) is our cost matrix. For example:\n\nr₁₂ = entry in row #1, column #2 = B:I = 7\n\nr₃₄ = entry in row #3, column #4 = D:III = 9\n\nThe objective of the program (algorithm) is to maximize (or minimize) the linear combination of the cost matrix. That combination defines a convex polytope with its coefficients ≥ 0 forming a doubly stochastic matrix (row sum = column sum = 1). We encountered this in our second installment as a requirement for convexity. Expressed mathematically:\n\nAn n×n matrix of elements rᵢⱼ (i, j = 1, 2, …, n) can be represented as a bipartite graph, G(U,V; E) with edge weights = rᵢⱼ\n\nif uᵢ ’s represent the number of lines that contain row #i\n\nand vⱼ ’s represent the number of lines that contain column #j\n\nthey satisfy uᵢ + vⱼ ≥ rᵢⱼ (i, j = 1, 2, …, n)\n\nThe Algorithm\n\nA covering system is the sum of all u’s and v’s. The algorithm must suitably (a) pick a cover (the covering step) and (b) update them (the reduction step). Upon update, it must check for convergence to an optimal solution. Here’s an outline of such an algorithm.\n\nStep #1: initialize by suitably picking a set of uᵢ and vⱼ satisfying uᵢ + vⱼ ≥ rᵢⱼ (i, j = 1, 2, …, n). Kuhn chose wᵢⱼ= uᵢ + vⱼ - rᵢⱼ. So we have wᵢⱼ ≥ 0\n\nWith each covering step, we are choosing a direction to traverse the convex hull. Instead of a random direction, the algorithm guides us along the direction of steepest descent. It is a judicious choice achieved by the covering step. Kuhn calls it the Kőnig step.\n\nStep #2: In the sub-graph G(u, v) ⊂ G, find the maximum matching ⎮Eʹ⎮. It contains the edges E that satisfy uᵢ + vⱼ = rᵢⱼ (notice that we have replaced ‘≥’ by ‘=’ because of Kőnig’s Theorem).\n\nNow we have two distinct possibilities outlined in Step #3 and Step #4\n\nStep #3: Check if ⎮Eʹ⎮ = n, then stop. We have achieved The Perfect Matching. Its weight is rₘ = 𝚺 (uₖ + vₖ) (k = 1,2,…, n) is the most optimal (cost, schedule etc.)\n\nStep #4: If ⎮Eʹ⎮ < n, the solution is still non-optimal. The covering system needs an adjustment. But by what amount should we adjust uᵢ , vⱼ?\n\nThis (step #4) is where the algorithm makes a significant dent in reducing the problem’s complexity. Once a direction is chosen, the reduction step can be geometrically interpreted as a movement in that direction until we reach an extreme point (the optimal point). Kuhn calls it the Egerváry step. This step reduces some cell entries in the matrix to zero. However, the choice of uᵢ , vⱼ ensures an entry never falls below zero. How do we know we have reached an extremal point? When ⎮Eʹ⎮ = n. If not, we must choose a different direction in which to move in the subsequent covering step.\n\nAdjustment\n\nuᵢ ≔ uᵢ - e | vⱼ ≔ vⱼ + e\n\nWhat Egerváry stated (without proof) was the statements above were bound to converge to an optimal solution for assignment. The ≔ sign denotes adjustment of uᵢ , vⱼ. The amount by which to adjust is reduce (-e) or enlarge (+e) where the least entry (e) gets picked from the remaining non-zero cells .\n\nThe matrix of entries for wᵢⱼ = uᵢ + vⱼ- rᵢⱼ has zeros in p rows and q columns (for a total of p+q ≤ n zeros) and forms a minimal cover. If p+q = n, it’s a cue for us to stop the optimization. If not, for adjusting uᵢ , vⱼ, the algorithm prescribes that we choose the minimal entry (e) in the remaining rows and columns (i.e., not in p or q) that can reduce them to zero. Visually we can collect the p rows and q columns into a corner (the top left corner shown) and pick the least entry in the remainder (bottom right in the picture above).\n\nConvergence\n\nThen the algorithm proceeds alternating between the covering step and the reduction step until p + q = n. At this stage, all rows and columns have at least one zero."
+    }
+}
