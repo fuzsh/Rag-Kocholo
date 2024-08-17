@@ -1,0 +1,35 @@
+{
+    "id": "dbpedia_7100_1",
+    "rank": 61,
+    "data": {
+        "url": "https://medium.com/%40vivekmadurai/multi-tenancy-in-rest-api-a570d728620c",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Multi-tenancy in REST API",
+        "top_image": "https://miro.medium.com/v2/resize:fit:636/1*l4Md3ejyIdipwiHouBLrnQ.png",
+        "meta_img": "https://miro.medium.com/v2/resize:fit:636/1*l4Md3ejyIdipwiHouBLrnQ.png",
+        "images": [
+            "https://miro.medium.com/v2/resize:fill:64:64/1*dmbNkD5D-u45r44go_cf0g.png",
+            "https://miro.medium.com/v2/resize:fill:88:88/1*M0CBYhTXN6aW5s0PgzPQ2A.jpeg",
+            "https://miro.medium.com/v2/resize:fill:144:144/1*M0CBYhTXN6aW5s0PgzPQ2A.jpeg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Vivek Madurai",
+            "medium.com"
+        ],
+        "publish_date": "2019-10-07T07:34:07.787000+00:00",
+        "summary": "",
+        "meta_description": "Multi-tenancy architecture helps us to share the resources cost-efficiently and securely in cloud environments where the single instance of the software runs on a server and serves multiple tenants…",
+        "meta_lang": "en",
+        "meta_favicon": "https://miro.medium.com/v2/5d8de952517e8160e40ef9841c781cdc14a5db313057fa3c3de41c6f5b494b19",
+        "meta_site_name": "Medium",
+        "canonical_link": "https://medium.com/@vivekmadurai/multi-tenancy-in-rest-api-a570d728620c",
+        "text": "Multi-tenancy architecture helps us to share the resources cost-efficiently and securely in cloud environments where the single instance of the software runs on a server and serves multiple tenants. In which statelessness plays a major role in scaling for millions of concurrent users. Statelessness means that every Http request(API) happens in complete isolation. When the client makes an Http request, it includes all the information necessary for the server to fulfill that request.\n\nIn this article, I will be sharing different ways to build REST API for multi-tenant stateless application which will be consumed by different client application such as Mobile, Web browser and Integration platforms, etc.\n\nWhen it comes to multi-tenancy the only variant is the tenant Id. Since its a stateless system, the system needs to know tenant information in order to process the request and get the corresponding resources. For example, each tenant’s data either get saved in different tenant database or separated with tenant id as a namespace. The only option for the backend to access the tenant-specific is to send the tenant identifier part of every API.\n\nURL: <scheme>://<domain>/<path>?<query-param>#<nose>\n\nA URL contains scheme/protocol and a domain. Every URL get differentiated from others by changing the path or query param. I have listed some of the methods in which a tenant can get identified as part of REST API,\n\nQuery parameter based tenant identification\n\nIn this approach, the client will send the tenant-id as part of the parameter to the server in addition to other required parameters they need to send. This is not a recommended approach to implement multitenant based API’s.\n\nexample:\n\nhttps://<your-domain>.com/<api-context>?tenantid=<tenant-id>&<other-parameters>\n\nURL path based tenant identification\n\nIn this approach, the API is designed in a way to mandatorily accommodate tenant-id as part of the URL path. So that the server can parse the URL path to get the tenant-id. Most of the multitenant system uses this approach to identify their tenant context.\n\nexample:\n\nhttps://<your-domain>.com/<tenant-id>/<api-context>\n\nDomain-based tenant identification\n\nIn this method, your application is accessed by your client via their own subdomain. This approach the server requires an additional effort to maintain the mapping between the tenant’s domain and tenant id from your end.\n\nexample:\n\nhttps://<tenant-domain>.<your-domain>.com/<api-context>\n\n<tenant-domain>:<tenant-id>\n\nCustom Http header-based tenant identification\n\nIn this method, we can pass the tenant-id as part of your own custom Http headers like X-TENANT-ID. It's not recommended to use custom headers as a way of addressing multitenancy or a resource. They should be used instead to pass ancillary information like accept types, auth tokens, etc.\n\nAs part of the custom attribute in JWT token\n\nJSON Web Token is an open industry standard for representing claims securely between two parties. Click here to know more about JWT.\n\nThe JWT token’s payload will have two information logged-in user’s identification and its corresponding tenant identification. This token will be sent part of a client cookie or a custom header.\n\nexample:\n\n{\n\n“sub”: “1234567890”,\n\n“name”: “<user-name>”,\n\n“iat”: 1516239022,\n\n“userid”: “<user-id>”,\n\n“tenantid”: “<tenant-id>”\n\n}\n\nWe have seen different ways on how a tenant id can be represented in REST API. When it comes to which is best or which one to choose? its just a question of taste, choose the one that suits you most. The one we’ve used in our API implementation is by having the tenant-id part of the URL path. I would suggest the URL path and sub-domain based tenant identification when compared to other options."
+    }
+}

@@ -1,0 +1,36 @@
+{
+    "id": "dbpedia_7100_2",
+    "rank": 52,
+    "data": {
+        "url": "https://stackoverflow.com/questions/8799440/to-send-threekeys-using-send-keys-in-selenium-python-webdriver",
+        "read_more_link": "",
+        "language": "en",
+        "title": "To send threekeys using send_keys() in selenium python webdriver",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/c151b1b5ef86c7c3a6e2093c2f70bc87?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/ec430cc01ef4cf4ae63ebbe9e8596f72?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/b7e42d7954660b54a29bff48043693a5?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/ba6c72da69c4716eb62f00e65b8c3a7c?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/9ccd3a2c422f40ad6c7c2f93d3afe5b6?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/bJ120.png?s=64",
+            "https://stackoverflow.com/posts/8799440/ivc/5edf?prg=00842e19-46a1-433e-8ca1-c9d4baf8be90"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2012-01-10T06:33:17",
+        "summary": "",
+        "meta_description": "I am trying to type a float number  into a textbox with default value 0.00.But it tries to get appended instead of overwriting it.I tried with .clear() and then send_keys('123.00') but still it gets",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/8799440/to-send-threekeys-using-send-keys-in-selenium-python-webdriver",
+        "text": "Unless you have custom editbox, click() should work for you:\n\nfrom selenium.webdriver import Firefox b = Firefox() b.get('http://google.com') e = b.find_element_by_id('lst-ib') e.click() # is optional, but makes sure the focus is on editbox. e.send_keys('12.34') e.get_attribute('value') # outputs: u'12.34' e.click() e.clear() e.get_attribute('value') # outputs: u'' e.send_keys('56.78') e.get_attribute('value') # outputs: u'56.78'\n\nI just found the clear() command - see here:\n\nIf this element is a text entry element, this will clear the value. Has no effect on other elements. Text entry elements are INPUT and TEXTAREA elements.\n\nEDIT: So your approach would be:\n\nelement.clear(); element.sendKeys('123.00');\n\nI've experienced issues with all the examples given in other answers.\n\nel.send_keys(Keys.CONTROL + 'a' + Keys.NULL, 'your string')\n\nHas worked in all the projects I've worked in, so much I've wrapped it into my own implementation of the Webdriver class with more robust operations."
+    }
+}
