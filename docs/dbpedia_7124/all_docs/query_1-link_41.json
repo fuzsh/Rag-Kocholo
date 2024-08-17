@@ -1,0 +1,42 @@
+{
+    "id": "dbpedia_7124_1",
+    "rank": 41,
+    "data": {
+        "url": "https://stackoverflow.com/questions/22039910/what-is-aria-label-and-how-should-i-use-it",
+        "read_more_link": "",
+        "language": "en",
+        "title": "What is aria-label and how should I use it?",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/f56a6e1b74d7ba48be15b92e244e9a93?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/d675b3e6225683ba6432496ec23ed806?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/WBaDs.jpg?s=64",
+            "https://www.gravatar.com/avatar/4c8b846c258abe7fb7b673f2cae2ac75?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/17e288c9a71b80da9e67e568ccb4e6ff?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/870cef66c5ab7e060acfb97ab96a7924?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/09f1f1657ff0b95817111501adea2f12?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/a007be5a61f6aa8f3e85ae2fc18dd66e?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/8m7YX.jpg?s=64",
+            "https://www.gravatar.com/avatar/0baaa86c6ce4c58f800ccf499e0bb147?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/4ytYL.jpg?s=64",
+            "https://i.sstatic.net/OA4yy.jpg?s=64",
+            "https://stackoverflow.com/posts/22039910/ivc/9f5e?prg=9d7e88e6-5e62-4367-8f87-be012f676ba5"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2014-02-26T11:25:59",
+        "summary": "",
+        "meta_description": "A few hours ago I read about the aria-label attribute, which:\r\n  Defines a string value that labels the current element.\r\nBut in my opinion this is what the title attribute was supposed to do. I lo...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/22039910/what-is-aria-label-and-how-should-i-use-it",
+        "text": "It's an attribute designed to help assistive technology (e.g. screen readers) attach a label to an otherwise anonymous HTML element.\n\nSo there's the <label> element:\n\n<label for=\"fmUserName\">Your name</label> <input id=\"fmUserName\">\n\nThe <label> explicitly tells the user to type their name into the input box where id=\"fmUserName\".\n\naria-label does much the same thing, but it's for those cases where it isn't practical or desirable to have a label on screen.\n\n<button aria-label=\"Close\" onclick=\"myDialog.close()\">X</button>`\n\nMost people would be able to infer visually that this button will close the dialog. A blind person using assistive technology might just hear \"X\" read aloud, which doesn't mean much without the visual clues. aria-label explicitly tells them what the button will do.\n\nIn the example you give, you're perfectly right, you have to set the title attribute.\n\nIf the aria-label is one tool used by assistive technologies (like screen readers), it is not natively supported on browsers and has no effect on them. It won't be of any help to most of the people targetted by the WCAG (except screen reader users), for instance a person with intellectal disabilities.\n\nThe \"X\" is not sufficient enough to give information to the action led by the button (think about someone with no computer knowledge). It might mean \"close\", \"delete\", \"cancel\", \"reduce\", a strange cross, a doodle, nothing.\n\nDespite the fact that the W3C seems to promote the aria-label rather that the title attribute here: http://www.w3.org/TR/2014/NOTE-WCAG20-TECHS-20140916/ARIA14 in a similar example, you can see that the technology support does not include standard browsers : http://www.w3.org/WAI/WCAG20/Techniques/ua-notes/aria#ARIA14\n\nIn fact aria-label, in this exact situation might be used to give more context to an action:\n\nFor instance, blind people do not perceive popups like those of us with good vision, it's like a change of context. \"Back to the page\" will be a more convenient alternative for a screen reader, when \"Close\" is more significant for someone with no screen reader.\n\n<button aria-label=\"Back to the page\" title=\"Close\" onclick=\"myDialog.close()\">X</button>\n\nIf you wants to know how aria-label helps you practically .. then follow the steps ... you will get it by your own ..\n\nCreate a html page having below code\n\n<!DOCTYPE html> <html lang=\"en\"> <head> <title></title> </head> <body> <button title=\"Close\"> X </button> <br /> <br /> <br /> <br /> <button aria-label=\"Back to the page\" title=\"Close\" > X </button> </body> </html>\n\nNow, you need a virtual screen reader emulator which will run on browser to observe the difference. So, chrome browser users can install chromevox extension and mozilla users can go with fangs screen reader addin\n\nOnce done with installation, put headphones in your ears, open the html page and make focus on both button(by pressing tab) one-by-one .. and you can hear .. focusing on first x button .. will tell you only x button .. but in case of second x button .. you will hear back to the page button only..\n\ni hope you got it well now!!\n\nPrerequisite:\n\nARIA is a set of attributes you can add to HTML elements that define ways to make web content and applications accessible to users with disabilities who use assistive technologies (AT). When accessibility issues cannot be managed with native HTML, ARIA can help bridge those gaps. It does not change anything visually.\n\naria-label\n\nThe aria-label attribute is used to describe what the label does to those users.\n\nHow To Use:\n\n<input type=\"edit\" aria-label=\"search\" placeholder=\"search\">\n\naria-labelledby\n\nBoth aria-label and aria-labelledby are used to communicate the label. But aria-labelledby can be used to reference any label already present in the page whereas aria-label is used to communicate the label which is not displayed visually.\n\nApproach 1:\n\n<span id=\"sd\">Search</span> <input type=\"text\" aria-labelledby=\"sd\">\n\nApproach 2:\n\naria-labelledby can also be used to combine two labels for screen reader users\n\n<span id=\"de\">Billing Address</span> <span id=\"sd\">First Name</span> <input type=\"text\" aria-labelledby=\"de sd\">\n\nThe title attribute displays a tooltip when the mouse is hovering the element. While this is a great addition, it doesn't help people who cannot use the mouse (due to mobility disabilities) or people who can't see this tooltip (e.g.: people with visual disabilities or people who use a screen reader).\n\nAs such, the mindful approach here would be to serve all users. I would add both title and aria-label attributes (serving different types of users and different types of usage of the web).\n\nHere's a good article that explains aria-label in depth"
+    }
+}

@@ -1,0 +1,28 @@
+{
+    "id": "dbpedia_7110_3",
+    "rank": 62,
+    "data": {
+        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Optional chaining (?.) - JavaScript",
+        "top_image": "https://developer.mozilla.org/mdn-social-share.cd6c4a5a.png",
+        "meta_img": "https://developer.mozilla.org/mdn-social-share.cd6c4a5a.png",
+        "images": [],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2024-07-25T21:42:31+00:00",
+        "summary": "",
+        "meta_description": "The optional chaining (?.) operator accesses an object's property or calls a function. If the object accessed or function called using this operator is undefined or null, the expression short circuits and evaluates to undefined instead of throwing an error.",
+        "meta_lang": "en",
+        "meta_favicon": "/favicon-48x48.cbbd161b.png",
+        "meta_site_name": "MDN Web Docs",
+        "canonical_link": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining",
+        "text": "The ?. operator is like the . chaining operator, except that instead of causing an error if a reference is nullish (null or undefined), the expression short-circuits with a return value of undefined. When used with function calls, it returns undefined if the given function does not exist.\n\nThis results in shorter and simpler expressions when accessing chained properties when the possibility exists that a reference may be missing. It can also be helpful while exploring the content of an object when there's no known guarantee as to which properties are required.\n\nFor example, consider an object obj which has a nested structure. Without optional chaining, looking up a deeply-nested subproperty requires validating the references in between, such as:\n\njs\n\nconst nestedProp = obj.first && obj.first.second;\n\nThe value of obj.first is confirmed to be non-null (and non-undefined) before accessing the value of obj.first.second. This prevents the error that would occur if you accessed obj.first.second directly without testing obj.first.\n\nThis is an idiomatic pattern in JavaScript, but it gets verbose when the chain is long, and it's not safe. For example, if obj.first is a Falsy value that's not null or undefined, such as 0, it would still short-circuit and make nestedProp become 0, which may not be desirable.\n\nWith the optional chaining operator (?.), however, you don't have to explicitly test and short-circuit based on the state of obj.first before trying to access obj.first.second:\n\njs\n\nconst nestedProp = obj.first?.second;\n\nBy using the ?. operator instead of just ., JavaScript knows to implicitly check to be sure obj.first is not null or undefined before attempting to access obj.first.second. If obj.first is null or undefined, the expression automatically short-circuits, returning undefined.\n\nThis is equivalent to the following, except that the temporary variable is in fact not created:\n\njs\n\nconst temp = obj.first; const nestedProp = temp === null || temp === undefined ? undefined : temp.second;\n\nOptional chaining cannot be used on a non-declared root object, but can be used with a root object with value undefined.\n\njs\n\nundeclaredVar?.prop;\n\nYou can use optional chaining when attempting to call a method which may not exist. This can be helpful, for example, when using an API in which a method might be unavailable, either due to the age of the implementation or because of a feature which isn't available on the user's device.\n\nUsing optional chaining with function calls causes the expression to automatically return undefined instead of throwing an exception if the method isn't found:\n\njs\n\nconst result = someInterface.customMethod?.();\n\nHowever, if there is a property with such a name which is not a function, using ?. will still raise a TypeError exception \"someInterface.customMethod is not a function\".\n\nNote: If someInterface itself is null or undefined, a TypeError exception will still be raised (\"someInterface is null\"). If you expect that someInterface itself may be null or undefined, you have to use ?. at this position as well: someInterface?.customMethod?.().\n\neval?.() is the shortest way to enter indirect eval mode."
+    }
+}

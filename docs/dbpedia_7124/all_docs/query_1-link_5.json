@@ -1,0 +1,34 @@
+{
+    "id": "dbpedia_7124_1",
+    "rank": 5,
+    "data": {
+        "url": "https://drupal.stackexchange.com/questions/247577/commerce-show-the-attribute-label-instead-of-product-title",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Commerce- Show the attribute label instead of product title?",
+        "top_image": "https://cdn.sstatic.net/Sites/drupal/Img/apple-touch-icon@2.png?v=5d949c166061",
+        "meta_img": "https://cdn.sstatic.net/Sites/drupal/Img/apple-touch-icon@2.png?v=5d949c166061",
+        "images": [
+            "https://cdn.sstatic.net/Sites/drupal/Img/logo.svg?v=6cfa92df6243",
+            "https://www.gravatar.com/avatar/d3f214bb235f94e2e136ce0768fbab5a?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/fbf279e5fa679db613d61dfc5890bcd5?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/fbf279e5fa679db613d61dfc5890bcd5?s=64&d=identicon&r=PG",
+            "https://drupal.stackexchange.com/posts/247577/ivc/9f5e?prg=9c3182eb-7ead-41ec-b950-4f0e99b3ff05"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2017-10-09T00:23:59",
+        "summary": "",
+        "meta_description": "Drupal Commerce add-to-cart attribute dropdown list shows product titles, instead of label of the attribute. \n\nOne thing that could be causing this is two product types with the same attribute fiel...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/drupal/Img/favicon.ico?v=8ff8e595d909",
+        "meta_site_name": "Drupal Answers",
+        "canonical_link": "https://drupal.stackexchange.com/questions/247577/commerce-show-the-attribute-label-instead-of-product-title",
+        "text": "Here's how this was accomplished in a custom module. This will use the taxonomy terms vs the product titles.\n\nfunction custom_form_views_form_commerce_cart_form_default_alter(&$form, &$form_state) {\n\n$vocabulary = taxonomy_vocabulary_machine_name_load('product_type'); $terms = taxonomy_get_tree($vocabulary->vid); $terms_name = array(); foreach ($terms as $term) { $terms_name[$term->tid] = $term->name; }\n\nforeach ($form['edit_attributes'] as $key => $line_item) { if (isset($line_item['product_id']['#options']) && $line_item['product_id']['#options']) { $options = array_keys($line_item['product_id']['#options']); $products = commerce_product_load_multiple($options); foreach ($line_item['product_id']['#options'] as $id => $name) { $form['edit_attributes'][$key]['product_id']['#options'][$id] = $terms_name[$products[$id]->field_product_type['und'][0]['tid']]; } $form['edit_attributes'][$key]['product_id']['#title'] = 'Format'; } } }\n\nfunction custom_form_alter(&$form, &$form_state, $form_id) {\n\nif (strpos($form_id, 'commerce_cart_add_to_cart_form') === 0) { $vocabulary = taxonomy_vocabulary_machine_name_load('product_type'); $terms = taxonomy_get_tree($vocabulary->vid); $terms_name = array(); foreach ($terms as $term) { $terms_name[$term->tid] = $term->name; }\n\nif (isset($form['product_id']['#options'])) { $options = array_keys($form['product_id']['#options']); $products = commerce_product_load_multiple($options); foreach ($options as $key) { $form['product_id']['#options'][$key] = $terms_name[$products[$key]->field_product_type['und'][0]['tid']]; } $form['product_id']['#title'] = 'Format'; // added by Lynn. Works on product page, but no in cart }\n\n} }"
+    }
+}
