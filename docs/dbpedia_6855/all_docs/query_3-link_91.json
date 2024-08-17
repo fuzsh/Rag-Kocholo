@@ -1,0 +1,44 @@
+{
+    "id": "dbpedia_6855_3",
+    "rank": 91,
+    "data": {
+        "url": "https://www.redhat.com/sysadmin/change-selinux-settings-boolean",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How to modify SELinux settings with booleans",
+        "top_image": "https://www.redhat.com/sysadmin/sites/default/files/styles/google_discover/public/2022-01/record-terminal-script.jpg?itok=NS6CRgie",
+        "meta_img": "https://www.redhat.com/sysadmin/sites/default/files/styles/google_discover/public/2022-01/record-terminal-script.jpg?itok=NS6CRgie",
+        "images": [
+            "https://www.redhat.com/sysadmin/themes/custom/sysadmin/logo.svg",
+            "https://www.redhat.com/sysadmin/sites/default/files/styles/full/public/2022-01/record-terminal-script.jpg?itok=F6ZG4Q-Y",
+            "https://www.redhat.com/sysadmin/sites/default/files/styles/embed_large/public/2022-07/selinux-troubleshooter.png?itok=hD2BGJhR",
+            "https://www.redhat.com/sysadmin/sites/default/files/styles/image_cta/public/2021-07/SysAdminGuidetoITAutomation-e-book-medium.jpg?itok=8_5VlQhF",
+            "https://www.redhat.com/sysadmin/sites/default/files/styles/card/public/2021-11/testing-linux.jpg?itok=nA_ozPUp",
+            "https://www.redhat.com/sysadmin/sites/default/files/styles/card/public/2022-06/password-lock-keyboard.jpg?itok=Odq0AhUg",
+            "https://www.redhat.com/sysadmin/sites/default/files/styles/card/public/2020-12/security-key-red-truck-safe.jpg?itok=tWWzD8GG",
+            "https://www.redhat.com/sysadmin/sites/default/files/styles/user_picture_square/public/pictures/2021-06/sethKenlon-headshot.jpg?itok=OyoGyrQS",
+            "https://www.redhat.com/sysadmin/sites/default/files/2021-10/Linux-package-RPM.jpg",
+            "https://www.redhat.com/sysadmin/sites/default/files/2021-02/NetworkConfiguration.jpg",
+            "https://www.redhat.com/sysadmin/sites/default/files/2021-11/home-lab-linux-skills.jpg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "skenlon",
+            "Seth Kenlon",
+            "www.redhat.com"
+        ],
+        "publish_date": "2022-07-07T09:00:41+00:00",
+        "summary": "",
+        "meta_description": "Use semanage, setsebool, and SELinux Troubleshooter to control SELinux policies and specify which files and processes are allowed to interact.",
+        "meta_lang": "en",
+        "meta_favicon": "/sysadmin/themes/custom/sysadmin/favicon.ico",
+        "meta_site_name": "Enable Sysadmin",
+        "canonical_link": "https://www.redhat.com/sysadmin/change-selinux-settings-boolean",
+        "text": "Security-Enhanced Linux (SELinux) is a form of mandatory access control (MAC) that helps Linux systems enforce file and process permissions. It's a default subsystem on Red Hat Enterprise Linux (RHEL), CentOS, Fedora, and many other Linux distributions.\n\nSELinux is built around the concept of security labels and types. When you give a file an SELinux label of one type, then a process bearing a label of a different type cannot interact with it, even though the file's permissions on disk might be as permissive as 777 (which provides read, write, and execute permissions for owners, groups, and others).\n\nSELinux uses policies to decide what labels and types are compatible with one another. For instance, if your system has the default policy that disallows an HTTP daemon to interact with users' home directories, then user home directories are essentially untouchable by httpd even though you may have a config file saying otherwise.\n\nRead the full Red Hat documentation to gain a complete understanding of SELinux. Considerable work is put into SELinux policies by the time you install a system, but you can control policy decisions through SELinux booleans.\n\nList booleans with semanage\n\nThe semanage command is an SELinux policy management tool. You can use it to view available boolean options:\n\n$ sudo semanage boolean --list | head SELinux boolean State Default abrt_anon_write (off , off) abrt_handle_event (off , off) abrt_upload_watch_anon_write (on , on) antivirus_can_scan_system (off , off) antivirus_use_jit (off , off) auditadm_exec_content (on , on) authlogin_nsswitch_use_ldap (off , off) authlogin_radius (off , off) [...]\n\n[ Improve your skills managing and using SELinux with this helpful guide. ]\n\nIf you've changed any booleans, you can view your custom settings with the --locallist or -C option:\n\n$ sudo semanage boolean -l -C SELinux boolean State Default virt_sandbox_use_all_caps (on , on) virt_use_nfs (on , on) zebra_write_config (on , on)\n\nWhen to use a boolean\n\nThe most common way to find out that a boolean has been designed to prevent an interaction is with SELinux Troubleshooter. When SELinux registers an attempted violation of a policy, it logs the decision as an Access Vector Cache (AVC). The Troubleshooter app spawns desktop notifications any time there's an AVC denial so that you can review the decision and override or report it as appropriate.\n\nThat's the main way you're alerted about SELinux activity, and many times it's the way you solve an issue.\n\nIn the example of an Nginx web server attempting to access a home directory, SELinux Troubleshooter suggests that you enable the httpd_enable_homedirs boolean. It even gives you a command you can use.\n\nShould SELinux Troubleshooter fail to notify you about a denial (or if you don't have it installed), you may still be able to look through available booleans and find the one that makes sense for you to activate or deactivate. Most booleans are named in the interest of clarity. If you're diagnosing an error with NFS, for instance, you can list booleans, grep for nfs, and you'll likely find the boolean you're looking for.\n\nIf you don't have SELinux Troubleshooter installed, you can install it with:\n\n$ sudo dnf install setroubleshoot\n\nSet a boolean with semanage or setsebool\n\nTo modify an SELinux boolean, you can use semanage --modify along with either --on or --off. For instance, here's how to modify the httpd_allow_homedirs boolean:\n\n$ sudo semanage boolean --modify --on http_allow_homedirs\n\nIf you prefer, you can use setsebool, which arguably has a simpler syntax:\n\n$ sudo setsebool -P httpd_enable_homedirs 1\n\nThe setsebool command is a tool for quickly and easily setting SELinux booleans. The -P option makes your decision persistent across reboots, and the 1 makes the boolean true.\n\nSELinux booleans in the filesystem\n\nAll SELinux boolean values are viewable as a file in your filesystem. They're expressed as files in the /sys/fs/selinux/booleans directory:\n\n$ cat /sys/fs/selinux/booleans/httpd_use_nfs 0 0 $ cat /sys/fs/selinux/booleans/httpd_enable_homedirs 1 1\n\nSELinux booleans"
+    }
+}
