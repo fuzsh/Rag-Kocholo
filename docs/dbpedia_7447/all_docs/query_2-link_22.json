@@ -1,0 +1,33 @@
+{
+    "id": "dbpedia_7447_2",
+    "rank": 22,
+    "data": {
+        "url": "https://stackoverflow.com/questions/78146241/how-to-webscrape-this-website-using-selenium",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How to webscrape this website using Selenium",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/b9e26b6ca5c95b86d7ace4a191008e51?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/cGbc0.jpg?s=64",
+            "https://i.sstatic.net/AosZh.jpg?s=64",
+            "https://stackoverflow.com/posts/78146241/ivc/6cc8?prg=6a9caf7b-43dc-40af-b59e-f129fb95fd40"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2024-03-12T10:12:45",
+        "summary": "",
+        "meta_description": "I want to webscrape the website https://www.rome2rio.com. Below is the code that I came up. Sadly I see a captcha 99% of the times I try. Can someone give a hint on what could I add to the code or ...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/78146241/how-to-webscrape-this-website-using-selenium",
+        "text": "You can avoid the CAPTCHAs with https://github.com/seleniumbase/SeleniumBase UC Mode.\n\nAfter pip install seleniumbase, you can run the following with python:\n\nfrom seleniumbase import Driver driver = Driver(uc=True) driver.uc_open_with_reconnect(\"https://www.rome2rio.com/map/Marseille/Paris\", 3) driver.type('input[aria-label=\"From\"]', \"Geneva, Switzerland\") driver.type('input[aria-label=\"To\"]', \"Vienna, Austria\") driver.click('button span:contains(\"Search\")') breakpoint() driver.quit()\n\nThe script pauses at the breakpoint(). Type c and press Enter in the console to continue from the breakpoint.\n\nMore documentation on UC Mode here: SeleniumBase/help_docs/uc_mode.md\n\nThe SeleniumBase driver includes all the original driver methods, plus new ones.\n\nI believe solving the captcha by using 2Captcha's or some other captcha solving service's API would be a more reliable solution than trying to evade detection. They might not be free, but their pricing is not an issue for most applications at 1-2$/1000 requests depending on the captcha type."
+    }
+}
