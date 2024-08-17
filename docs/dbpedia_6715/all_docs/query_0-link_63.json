@@ -1,0 +1,37 @@
+{
+    "id": "dbpedia_6715_0",
+    "rank": 63,
+    "data": {
+        "url": "https://community.openenergymonitor.org/t/what-components-do-i-need-to-measure-my-solar-power-and-import-export-status/21920",
+        "read_more_link": "",
+        "language": "en",
+        "title": "What components do I need to measure my solar power and import export status",
+        "top_image": "https://community.openenergymonitor.org/uploads/default/original/2X/0/0d6bc43e8e1f0090a4c5f75a55e857a75c88e934.png",
+        "meta_img": "https://community.openenergymonitor.org/uploads/default/original/2X/0/0d6bc43e8e1f0090a4c5f75a55e857a75c88e934.png",
+        "images": [
+            "https://community.openenergymonitor.org/letter_avatar_proxy/v4/letter/w/c57346/48.png",
+            "https://community.openenergymonitor.org/images/emoji/google/grinning.png?v=12",
+            "https://community.openenergymonitor.org/letter_avatar_proxy/v4/letter/w/c57346/48.png",
+            "https://community.openenergymonitor.org/letter_avatar_proxy/v4/letter/w/c57346/48.png",
+            "https://community.openenergymonitor.org/letter_avatar_proxy/v4/letter/w/c57346/48.png",
+            "https://community.openenergymonitor.org/images/emoji/google/+1.png?v=12"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Robert.Wall (Robert Wall)"
+        ],
+        "publish_date": "2022-11-21T15:41:05+00:00",
+        "summary": "",
+        "meta_description": "Hi although an electrical engineer am new to this system. So I would love some advice. \nI have a small 640w solar system in my garage on a sub consumer unit to the house. The aim to remove my base load. So my mains incom&hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://community.openenergymonitor.org/uploads/default/optimized/3X/7/b/7b3b78b31dc1b7082266d6f6e88100a289f87dc8_2_32x32.png",
+        "meta_site_name": "OpenEnergyMonitor Community",
+        "canonical_link": "https://community.openenergymonitor.org/t/what-components-do-i-need-to-measure-my-solar-power-and-import-export-status/21920",
+        "text": "Hi although an electrical engineer am new to this system. So I would love some advice.\n\nI have a small 640w solar system in my garage on a sub consumer unit to the house. The aim to remove my base load. So my mains incoming cables are not collocated with my solar cables. This would mean that my CTs would be in separate places in the house.\n\nWhat equipment would I need to buy to display my solar and mains import or export.\n\nI have a supplementary question. I at present have an efergy clamp monitor. But put simply it can’t cope with true power, I don’t know if it’s harmonics or power factor but I can get strange results if I try to increase my load sometimes input power is even going the wrong way. Doing a quick check on led pulses shows the power to be often over reading. Does this system measure true power or va.\n\nAs I say I have a good understanding of mains and electronics but all these products are new to me so some advice on what I need to build a system would be great many thanks.\n\nWelcome, @Whitehse46 to the OEM forum.\n\nLet’s deal with the Efergy kit first. I don’t know which particular model you have, but most of the commercial monitors fall down in several areas. If the c.t. is linked by radio, then it almost certainly reads apparent power, and if the base unit/display is battery-powered, it almost certainly uses a nominal or your ‘best guess’ at line voltage. So it could - and some makes do - have both those failings, and a ‘best guess at v.a.’ is touted as power.\n\nAs regards replacing it with OEM kit, we’ve just received a first shipment of the new emonTx V4, how many are spoken for and how many are sold I don’t know. As far as I know, the old emonTx V3 is out of stock. I see the combined base unit/monitor, the emonPi, is also out of stock at present.\n\nSo what would you want if The Shop could supply it? Is it possible to run a ‘microphone’-type cable (or Ethernet Cat-anything UTP or FTP) between your C.U. and the garage? If it is, and the distance isn’t too great, you could have an emonPi by the main house C.U. and a c.t. on the end of the cable measuring the P.V. infeed.\n\nIf your P.V. generation meter has a pulse LED, you might consider an optical pulse sensor on the meter, feeding a pulse count down the cable to the emonPi by the C.U., the emonPi having one c.t. on the mains incomer. The problem with a pulse count is it’s historical, you only know consumption (total energy) at the time of the last pulse. But it’s 100% accurate for energy. It’s not good at all for instantaneous power.\n\nIf you can’t run a cable, you must look to radio. If a pulse count is good enough, you can use the optical pulse sensor feeding an emonTH (also out of stock), which sends the count via 433 MHz ISM band radio to the emonPi. If you want instantaneous power as well as energy, then you’ll need an emonTx V4 with the emonVS voltage monitor/power supply (or if one comes up for sale, an emonTx V3 with a.c. adapter and 5 V d.c. PSU) and one c.t. also feeding the data on the same radio channel to the emonPi.\n\nAnd if you have WiFi in the garage, it’s possible to send the data from an emonTx that way too, by adding a Pi ZeroW or ESP8266 to the emonTx.\n\nIn each case, the emonPi needs a 5 V. d.c. PSU and an a.c. adapter, as well as the things I mentioned.\n\nHopefully an obvious point - you can’t use the LED on your main meter - it doesn’t flash for export, or doesn’t distinguish from import if it does.\n\nIf you’re totally confused, I understand completely, so don’t hesitate to come back with more questions or if you need clarification.\n\nOk a lot of stuff in your reply so I might respond in bite size.\n\nAll the stuff about real active power all understood. That’s what caused me to discover your site in the first place. As an engineer using clamp amp meter I was starting to pull my hair out in diagnosing some of the readings I was seeing on my solar my house meter and my Efergy (which is as you say a VA device. ) Basically my solar wasn’t being counted and my day total on the Efergy incorrect compared to my house meter.\n\nMy garage to my home Consumer unit is about 75 foot etc are you saying I can extend my CT cable to that sort of length if screened etc ie a good bit of CAT 5. If so I could do that as Wi-Fi in the garage is a bit flaky.\n\nI also understand all you say about meter pulses as I’ve been doing some counting, and never considered that option for extending etc.\n\nNow all the PI stuff is totally new to me although am about to try a bit of programming on a small kit to get going.\n\nOk so there obviously is a equipment availability issue on a lot of components.\n\nNow the bit I also remain thick on is how I see this data. Obviously I have A PC on the home network but do I need a data collection device and a display type device etc to get at this data. This is the area I am most confused in at present"
+    }
+}

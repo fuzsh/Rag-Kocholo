@@ -1,0 +1,38 @@
+{
+    "id": "dbpedia_6722_2",
+    "rank": 74,
+    "data": {
+        "url": "https://community.spiceworks.com/t/anyone-else-having-issues-with-the-default-sonicwall-probe-responder/374841",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Anyone else having issues with the default SonicWALL probe responder?",
+        "top_image": "https://global.discourse-cdn.com/spiceworks/original/1X/7a73606d7df2f794c4789897e49693fb3c471b23.png",
+        "meta_img": "https://global.discourse-cdn.com/spiceworks/original/1X/7a73606d7df2f794c4789897e49693fb3c471b23.png",
+        "images": [
+            "https://secure.intelligence52.com/795141.png",
+            "https://zdbb.net/l/z0WVjCBSEeGLoxIxOQVEwQ/"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "sonicwall",
+            "question"
+        ],
+        "tags": null,
+        "authors": [
+            "erichanko (erichanko)",
+            "mikeb (coreonetwelve)",
+            "kmauldin (Kevin Mauldin)",
+            "marclaflamme (MarcLaflamme)",
+            "blaineblodgette (AintNoPartyLikeAKnifeParty)"
+        ],
+        "publish_date": "2015-01-28T14:32:11+00:00",
+        "summary": "",
+        "meta_description": "The default Sonicwall probe target responder (responder.global.sonicwall.com) ﻿is all over the map for us the last few days. Constantly changing from Target Unavailable to Target Alive. It caused a few brief failovers re&hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://global.discourse-cdn.com/spiceworks/optimized/1X/a254df83358a951c43ed6ee756b5e0011a8d58bc_2_32x32.png",
+        "meta_site_name": "Spiceworks Community",
+        "canonical_link": "https://community.spiceworks.com/t/anyone-else-having-issues-with-the-default-sonicwall-probe-responder/374841",
+        "text": "Kevin,\n\nWe are seeing the exact same thing (but since Monday). Failovers occuring to backup links and we had Comcast check our lines too (nothing wrong).\n\nThere’s a message on SonicWall’s phone support that states something about a large influx of spam and that they’re pushing down…something… to devices (sorry can’t remember exactly what they said) but this might be related.\n\nNoticed that our Failover/LB probe config needs to satisfy BOTH targets in order to succeed. We disabled LB temporarily and it hasn’t flaked out yet. Wondering if changing the probe success to EITHER would work better right now.\n\nYou’re not alone!\n\nI’ve been having nothing but problems with just about every feature related to my sonicwall.\n\nI don’t know what happened, but after Dell bought them everything went to crap.\n\nI think 2015 is the year to dump sonicwall products.\n\nYou can sign up for some kind of reliable web hosting and change your responder to that.\n\n@Dell_Technologies\n\nWe started seeing the exact same issue on dozens of Sonicwall TZ 100/105 devices beginning 1/26 around 00:00-01:00 in the morning.\n\nOur S2S VPNs were breaking every couple of minutes with failover switching back and forth between internet connections. We were forced to change to a different type of probe (ICMP to 2 separate locations now) so we don’t rely on devices we can’t control. Seeing as the responder.global.sonicwall.com probe target is the default on all their routers, this should be causing problems for a LOT of other people.\n\nWe also had the problem yesterday and today with our NSA 2600 failing over to our backup circuit. As other in this thread, we were using the default sonicwall responder address. First noticed it when a couple client PCs kept dropping their VPN tunnels to one of our vendors. Spent way too much time troubleshooting PCs and inside wiring before finally moving down the line to the firewall and comcast connection.\n\nI feel your pain! Spent too much time with Exchange provider, ShoreTel support, switch troubleshooting, Comcast support… this whole time we thought it was firewall but nothing was obvious until we dug into the failover settings. Hindsight dictates this should have been obviously one if our first steps but when you have a bunch of users breathing down your neck for a myriad of different issues it really clouds your thought process!\n\nBeen having the problem since Monday (1/26), but had no idea it was related to the default Sonicwall probe target responder until today when I noticed the alternating “Target Unavailable” and “Target Alive”. Symptoms include intermittent disconnections from AIM clients, Dropbox, Google Drive, as well as dropping ping tests to certain external servers.\n\nI’m somewhat of a novice and I’m not really sure how to tackle this one now that I’m seeing what the issue is. Should I disable LB? I don’t have any other WAN interfaces that I can have it fall back on and I’m not sure how to specify a new target, let alone what that target would be.\n\nI’ve also noticed a lot of the Dell support pages are slow to load or don’t load at all. Not sure if that is related to inconsistency with responder.global.sonicwall.com\n\nEdit: Realized that since I don’t have a second WAN interface, I don’t need Failover or LB enabled. Therefore probing isn’t necessary either (if that was the issue). Disabled both and so far so good! Been up the longest since last week.\n\n@Dell_Technologies\n\nI am having this EXACT issue. Happened Monday Jan 26th around 1:16am. My phone started going crazy with alerts. Called our ISP several times they said nothing on their end. My company is right next to where the SuperBowl is being held at this year and we thought it had to do with that until I found this post. My DNS is already set to 8.8.8.8 and 4.2.2.2 and I’ve disabled probes in Load Balancing but am still getting drop outs. Anyone have any other suggestions? Also when I ping 4.2.2.2 it is timing out about half the time.\n\nNot looking to necro this, but wanted to say thanks as it helped me verify and resolve a problem I was having.\n\nThree WAN feeds - managed primary, unmanaged secondary for spillover/failover, unmanaged tertiary for last resort and guest WAN. Probe failures only happened on the managed interface.\n\nConfirmed with managed link provider that their readings were fine, and as I was on the phone with them came across this thread. Changed to 8.8.4.4 / 8.8.8.8 probes on both interfaces, with it enabled to accept responses from either, and been fine ever since.\n\nMoral of the story - probe Google, not Dell.\n\nYou probably want to test on different layers. If for some odd reason ICMP traffic becomes filtered, then you don’t want a failover to occur. Thus why Sonicwall has chosen Layer 4 port to also test against. I’m not saying to use theirs (responder.global.sonicwall.com TCP port 50000), but rather one that always works. I use a public server port at one of my remote sites which my Sonicwall can successfully check.\n\nI suspect there’s a bug in their firmware that once the DNS lookup for responder.global.sonicwall.com has been successful for the LB Probe, it appears to never check again. I say this because I found in the logs that it was trying to reach a really old and outdated IP for responder.global.sonicwall.com, which of course fails. It wasn’t until I specified IPs to probe against instead of FQDNs was it stable."
+    }
+}
