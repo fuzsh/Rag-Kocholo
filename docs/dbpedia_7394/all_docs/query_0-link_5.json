@@ -1,0 +1,35 @@
+{
+    "id": "dbpedia_7394_0",
+    "rank": 5,
+    "data": {
+        "url": "https://scryptplatform.medium.com/pay-to-decrypt-9d4f4722d2f1",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Pay to Decrypt",
+        "top_image": "https://miro.medium.com/v2/resize:fit:1200/0*NNMAKIFQjlPKVshD.png",
+        "meta_img": "https://miro.medium.com/v2/resize:fit:1200/0*NNMAKIFQjlPKVshD.png",
+        "images": [
+            "https://miro.medium.com/v2/resize:fill:64:64/1*dmbNkD5D-u45r44go_cf0g.png",
+            "https://miro.medium.com/v2/resize:fill:88:88/2*FLyToisoKWquD2bx09f_ag.png",
+            "https://miro.medium.com/v2/resize:fill:144:144/2*FLyToisoKWquD2bx09f_ag.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "sCrypt",
+            "scryptplatform.medium.com"
+        ],
+        "publish_date": "2022-03-31T00:02:34.010000+00:00",
+        "summary": "",
+        "meta_description": "Alice has an encrypted message, i.e., a ciphertext. Bob has the original message, the plaintext. Alice wants to pay Bob bitcoin in exchange for the plaintext. If Alice pays Bob first, Bob may not…",
+        "meta_lang": "en",
+        "meta_favicon": "https://miro.medium.com/v2/5d8de952517e8160e40ef9841c781cdc14a5db313057fa3c3de41c6f5b494b19",
+        "meta_site_name": "Medium",
+        "canonical_link": "https://scryptplatform.medium.com/pay-to-decrypt-9d4f4722d2f1",
+        "text": "Alice has an encrypted message, i.e., a ciphertext. Bob has the original message, the plaintext. Alice wants to pay Bob bitcoin in exchange for the plaintext. If Alice pays Bob first, Bob may not give her the plaintext. Conversely, if Bob tells Alice the plaintext first, Alice may refuse to pay.\n\nWe design a smart contract, called pay to decrypt, that makes the exchange atomic and trustless, ensuring only a correct plaintext can redeem the locked fund¹.\n\nDiffie–Hellman Key Exchange\n\nDiffie–Hellman key exchange (DHKE) is a key agreement protocol that allows two parties to establish a shared secret over an insecure channel.\n\nThis diagram below shows DHKE over an elliptic curve. At the beginning, Alice and Bob each has a public–private key pair. After the exchange, they generate a shared key.\n\nElGamal Encryption\n\nElGamal encryption is an asymmetric key encryption algorithm based on the Diffie–Hellman key exchange, named after Taher Elgamal². Alice encrypts a message to Bob with his public key, which can only be decrypted by Bob’s private key.\n\nThe following diagram shows how it works over an elliptic curve, such as secp256k1 in Bitcoin. As in a standard DHKE, the following shared secret is established.\n\nS = k * A = a * K = k * a * P\n\na is Alice’s secret key and k can be regarded as Bob’s.\n\nTo encrypt a message M, Bob simply adds it to S:\n\nC = S + M\n\nBob sends the ciphertext, the pair (K, C), to Alice.\n\nTo decrypt, Alice can simply subtract to recover M:\n\nM = C - S\n\nNote Alice knows S from K:\n\nS = a * K\n\nPay to Decrypt\n\nAlice locks fund in the following contract, with given K and C. Bob can only redeem it if he provides the correct plaintext and decryption key. We use the previous elliptic curve library for point arithmetic.\n\nAcknowledgements\n\nThis is an implementation of nChain whitepaper 1611."
+    }
+}

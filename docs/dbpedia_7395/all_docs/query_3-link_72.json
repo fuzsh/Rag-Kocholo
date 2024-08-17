@@ -1,0 +1,36 @@
+{
+    "id": "dbpedia_7395_3",
+    "rank": 72,
+    "data": {
+        "url": "https://askubuntu.com/questions/190173/how-to-execute-a-executable-with-sudo",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How to execute a executable with sudo?",
+        "top_image": "https://cdn.sstatic.net/Sites/askubuntu/Img/apple-touch-icon@2.png?v=c492c9229955",
+        "meta_img": "https://cdn.sstatic.net/Sites/askubuntu/Img/apple-touch-icon@2.png?v=c492c9229955",
+        "images": [
+            "https://cdn.sstatic.net/Sites/askubuntu/Img/logo.svg?v=472cf2768bba",
+            "https://i.sstatic.net/Dm86X.png?s=64",
+            "https://www.gravatar.com/avatar/791ae86ea9c6146e1201907b688cc12e?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/69e3a1c8c3dc6d1a2ac76df695fa221c?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/77387ba3fc749925b3f59e6a6f4a7b45?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/uXkl2.png?s=64",
+            "https://askubuntu.com/posts/190173/ivc/6e48?prg=f4a5b5cf-e832-456f-bdd6-e36ee9c2a76d"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2012-09-18T13:13:43",
+        "summary": "",
+        "meta_description": "I have an executable file but don't know what type or format it is. When I execute like this\n\n$chmod +x xfile\n$./xfile\r\nIt shows\n\nPermission denied\r\nwhen I run as super user\n\n$sudo ./xfile\r\nIt show...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/askubuntu/Img/favicon.ico?v=928dfb7c1990",
+        "meta_site_name": "Ask Ubuntu",
+        "canonical_link": "https://askubuntu.com/questions/190173/how-to-execute-a-executable-with-sudo",
+        "text": "Strange, it works exactly that way over here.\n\nFirst, try to find out what the file is:\n\nfile xfile\n\nThe file command looks inside the file and based on certain \"magic\" tries to figure out what that program does.\n\nFrom what you describe I guess that it is a shell executable that tries to execute yet another program. If this is the case, why don't you post the code of the shell executable using http://paste.ubuntu.com.\n\nHad the same problem. In my case the executable was stored on a different drive which was why chmod+x was not working.\n\nI copied the executable to a Linux directory (like Desktop), set the permissions using chmod+x, ran the executable using \"./\" and it worked :)\n\nThe problem is that unless the filesystem of the device is like ext3 or ext4, (and probably it is FAT32 for you), the filesystem does not store much metadata about files, including the executable bit.\n\nWhen you do chmod +x yourfile, then ls -la yourfile, you will notice the executable bit has not in fact been set.\n\nThe solution here is to cp yourfile ~/yourfile; chmod +x ~/yourfile; ~/yourfile, because the filesystem on which your Linux is installed has executable permissions.\n\nLearn more about the *nx permissions model."
+    }
+}

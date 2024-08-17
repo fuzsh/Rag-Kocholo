@@ -1,0 +1,33 @@
+{
+    "id": "dbpedia_7395_1",
+    "rank": 82,
+    "data": {
+        "url": "https://www.microfocus.com/documentation/changeman-zmf/8-3/main-guides/migration-guide/convert/backup-files.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Step 5 Back Up Version 7.1.x Files",
+        "top_image": "https://www.microfocus.com/documentation/changeman-zmf/8-3/main-guides/assets/images/favicon.png",
+        "meta_img": "https://www.microfocus.com/documentation/changeman-zmf/8-3/main-guides/assets/images/favicon.png",
+        "images": [
+            "https://www.microfocus.com/documentation/changeman-zmf/8-3/main-guides/images/logo.png",
+            "https://www.microfocus.com/documentation/changeman-zmf/8-3/main-guides/images/logo.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Micro Focus"
+        ],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "../../assets/images/favicon.png",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "Step 5: Back Up Version 8.1.x or 8.2.x Files\n\nUse your existing preconversion housekeeping jobs or other JCL to back up ChangeMan ZMF files and clear log files for the 8.1.x or 8.2.x release that you are migrating from, before you begin converting files for version 8.3.\n\nThe following table lists the files you should back up. To accomplish this task, use the sample JCL members in the vendor CMNZMF CNTL library that was distributed with the ZMF 8.1.x or 8.2.x instance that you are migrating from.\n\nLast DSN Node Description Type Vendor CMNZMF.CNTL Job from Preconversion Instance Notes CMNPMAST/CMNCMPNL/CMNCMPNT Package Master VSAM BACKUP Note 1 CMNELCTX/CMNCRSnn Component Control/Component Record Store LDS ELSUNLD Note 2 CMNRECV Package Master Forward Recovery VSAM CLEARRCV Note 3 CMNELLOG Component Forward Recovery Log QSAM ELSBKUP Note 4 CMNLOG Activity Log VSAM CLEARLOG CMNDELAY Delay VSAM Note 5 IADSP Impact Analysis LDS LDSBKUP IALOG Impact Analysis Forward Recovery Log QSAM LDSLOGR CMNSVSM Staging Versions Site Master VSAM SVBKUP CMNSVOM Staging Versions Object Master VSAM SVBKUP CMNSVDM Staging Versions Delta Master VSAM SVBKUP\n\nNote 1: The BACKUP member of the ZMF 7.1.3 CMNZMF.CNTL library will back up the CMNPMAST, CMNCMPNL, and CMNCMPNT data sets. The BACKUP member of the ZMF 7.1.x CMNZMF.CNTL library prior to ZMF 7.1.3 will back up the CMNCMPNT data set.\n\nNote 2: The CMNELCTX and CMNCRSnn data sets are obsolete in ZMF 7.1.3 and later releases. They are only used in releases where the Component Master is implemented as a VSAM LDS (in releases 7.1.0 through 7.1.2.01).\n\nNote 3: The format of records in the CMNRECV recovery file are changed in ZMF 7.1.3 and later releases. Job CLEARRCV accomplishes the file conversion, but a new CMNRECV file is explicitly defined and initialized in \"Step 6: Convert Package Master, Component Master, and SSV Data Sets\".\n\nNote 4: The CMNELLOG component recovery log file is obsolete in ZMF 7.1.3 and later releases. Use sample job ELSBKUP (DD statements INDDL/OUTDD) to backup CMNELLOG.\n\nNote 5: There is no sample job for backing up the CMNDELAY file. Use IDCAMS with output QSAM file attributes RECFM=VB, LRECL=5000, BLKSIZE=32700."
+    }
+}

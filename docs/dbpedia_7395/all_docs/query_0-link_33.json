@@ -1,0 +1,36 @@
+{
+    "id": "dbpedia_7395_0",
+    "rank": 33,
+    "data": {
+        "url": "https://stackoverflow.com/questions/69896148/a-value-of-type-xfile-cant-be-assigned-to-a-variable-of-type-file-error",
+        "read_more_link": "",
+        "language": "en",
+        "title": "A value of type 'XFIle' can't be assigned to a variable of type 'File' error",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://lh3.googleusercontent.com/a/AATXAJx03tOfUKKyFL3jHs2NGqWa9Wt5d6AroNUIcUgt=k-s64",
+            "https://lh3.googleusercontent.com/a-/AAuE7mDlgsko126_xxAS_xRutD1CjoycI-qjO4OJztKGxg=k-s64",
+            "https://www.gravatar.com/avatar/4f771f7018084ebcaa7c76eb72f60fe8?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/nTgcd.jpg?s=64",
+            "https://i.sstatic.net/pd05v.jpg?s=64",
+            "https://lh3.googleusercontent.com/a-/AOh14GjPJeilNjqUPv7uSIqaCxqo90zCksPQgLb8DTo=k-s64",
+            "https://stackoverflow.com/posts/69896148/ivc/6e48?prg=3e53f09f-6a2c-4dad-898f-877f3c3be2cd"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2021-11-09T10:00:23",
+        "summary": "",
+        "meta_description": "I am using image_picker: ^0.8.4+4 where I am getting this error. what I can do to make this code right?\nlate File selectedImage;\nbool _isLoading = false;\nCrudMethods crudMethods = CrudMethods();\n\nF...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/69896148/a-value-of-type-xfile-cant-be-assigned-to-a-variable-of-type-file-error",
+        "text": "First, you should create your variable as XFile\n\nBecause this is what you get from image picker.\n\nXFile photo;\n\nvoid _pickImage() async { final ImagePicker _picker = ImagePicker(); photo = await _picker.pickImage(source: ImageSource.camera); if (photo == null) return; }\n\nAnd then you can use your image as a file image.\n\nImage.file(File(photo.path))\n\nThis happens because the package (image_picker ) you are using is relying on XFile and not File, as previously did.\n\nSo, first you have to create a variable of type File so you can work with later as you did, and after fetching the selectedImage you pass the path to instantiate the File. Like this:\n\nFile? selectedImage; bool _isLoading = false; CrudMethods crudMethods = CrudMethods(); Future getImage() async { var image = await ImagePicker().pickImage(source: ImageSource.gallery); setState(() { selectedImage = File(image!.path); // won't have any error now }); } //implement the upload code"
+    }
+}

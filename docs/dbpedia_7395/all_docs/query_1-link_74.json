@@ -1,0 +1,35 @@
+{
+    "id": "dbpedia_7395_1",
+    "rank": 74,
+    "data": {
+        "url": "https://discuss.mxnet.apache.org/t/converting-gluon-neural-style-to-c-feedforward/643",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Converting Gluon Neural Style to C++ Feedforward",
+        "top_image": "https://global.discourse-cdn.com/business4/uploads/mxnet/original/1X/e686111ae49ad78c6f239002a9c0b5919404347f.png",
+        "meta_img": "https://global.discourse-cdn.com/business4/uploads/mxnet/original/1X/e686111ae49ad78c6f239002a9c0b5919404347f.png",
+        "images": [
+            "https://github.githubassets.com/favicons/favicon.svg",
+            "https://avatars2.githubusercontent.com/u/31828310?s=400&v=4",
+            "https://github.githubassets.com/favicons/favicon.svg",
+            "https://global.discourse-cdn.com/business4/uploads/mxnet/original/1X/6c7d69c50048454c1548ffbcb2ae26e71052fb9d.png",
+            "https://global.discourse-cdn.com/business4/uploads/mxnet/original/1X/efa7d472e98a82006c7add0f4271c29b82c2f5a9.jpg",
+            "https://global.discourse-cdn.com/business4/uploads/mxnet/original/1X/efa7d472e98a82006c7add0f4271c29b82c2f5a9.jpg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2018-02-15T05:59:58+00:00",
+        "summary": "",
+        "meta_description": "I would like to be able to save .json and .params from the networks below \nfrom \n\n\nclass Net(Block):\ndef __init__(self, input_nc=3, output_nc=3, ngf=64, \n             norm_layer=InstanceNorm, n_blocks=6, gpu_ids=[]):\n   &hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://global.discourse-cdn.com/business4/uploads/mxnet/optimized/1X/03334b09a777e94763385d8fa16f8b213a08617b_2_32x32.png",
+        "meta_site_name": "Apache MXNet Forum",
+        "canonical_link": "https://discuss.mxnet.apache.org/t/converting-gluon-neural-style-to-c-feedforward/643",
+        "text": "I would like to be able to save .json and .params from the networks below\n\nfrom\n\nhttps://github.com/tornadomeet/mxnet/blob/master/example/gluon/style_transfer\n\nclass Net(Block): def __init__(self, input_nc=3, output_nc=3, ngf=64, norm_layer=InstanceNorm, n_blocks=6, gpu_ids=[]): super(Net, self).__init__() self.gpu_ids = gpu_ids self.gram = GramMatrix() block = Bottleneck upblock = UpBottleneck expansion = 4 with self.name_scope(): self.model1 = nn.Sequential() self.ins = Inspiration(ngf*expansion) self.model = nn.Sequential() self.model1.add(ConvLayer(input_nc, 64, kernel_size=7, stride=1)) self.model1.add(norm_layer(in_channels=64)) self.model1.add(nn.Activation('relu')) self.model1.add(block(64, 32, 2, 1, norm_layer)) self.model1.add(block(32*expansion, ngf, 2, 1, norm_layer)) self.model.add(self.model1) self.model.add(self.ins) for i in range(n_blocks): self.model.add(block(ngf*expansion, ngf, 1, None, norm_layer)) self.model.add(upblock(ngf*expansion, 32, 2, norm_layer)) self.model.add(upblock(32*expansion, 16, 2, norm_layer)) self.model.add(norm_layer(in_channels=16*expansion)) self.model.add(nn.Activation('relu')) self.model.add(ConvLayer(16*expansion, output_nc, kernel_size=7, stride=1)) def setTarget(self, Xs): F = self.model1(Xs) G = self.gram(F) self.ins.setTarget(G) def forward(self, input): return self.model(input)\n\nSo this is cool I just call swap the network ndarray for the “data” symbol and save the .json and the .params, then load the model up in C++\n\nby hacking up the evaluate function in,\n\nhttps://github.com/tornadomeet/mxnet/blob/master/example/gluon/style_transfer/main.py\n\nAs described in:\n\nhttp://gluon.mxnet.io/chapter07_distributed-learning/hybridize.html#Get-the-symbolic-program\n\nin a similar sense to\n\nBut will the data[0] from the classification predict c++ (its actually C API) example be the pixels of the image with the style transferred onto it?\n\nAlso if I save a symbolic model, can I change the size of the image input into the model?\n\nOr is this determined by the size of the image loaded up when the model was saved?\n\nObviously there would need to be one .params and .json file per style, but does this also burn in the resolution of the image the symbolic network is used?\n\nAnyway I tried out the idea and I got stuck when I added the following lines to the end of evaluate\n\nx = mx.sym.var('data') y = style_model(x) y_json = y.tojson() y.save(\"MODEL.json\") y.save_params(\"MODEL.params\")\n\nI get the following trace:\n\nFile \"/asset/common/software/thirdparty/mxnet/1.0.0-build1/python2.7/mxnet/gluon/block.py\", line 360, in __call__ return self.forward(*args) File \"/home/samh/dev/MXNet-Gluon-Style-Transfer/net.py\", line 215, in forward return self.model(input) File \"/asset/common/software/thirdparty/mxnet/1.0.0-build1/python2.7/mxnet/gluon/block.py\", line 360, in __call__ return self.forward(*args) File \"/asset/common/software/thirdparty/mxnet/1.0.0-build1/python2.7/mxnet/gluon/nn/basic_layers.py\", line 53, in forward x = block(x) File \"/asset/common/software/thirdparty/mxnet/1.0.0-build1/python2.7/mxnet/gluon/block.py\", line 360, in __call__ return self.forward(*args) File \"/asset/common/software/thirdparty/mxnet/1.0.0-build1/python2.7/mxnet/gluon/nn/basic_layers.py\", line 53, in forward x = block(x) File \"/asset/common/software/thirdparty/mxnet/1.0.0-build1/python2.7/mxnet/gluon/block.py\", line 360, in __call__ return self.forward(*args) File \"/home/samh/dev/MXNet-Gluon-Style-Transfer/net.py\", line 123, in forward x = self.pad(x) File \"/asset/common/software/thirdparty/mxnet/1.0.0-build1/python2.7/mxnet/gluon/block.py\", line 360, in __call__ return self.forward(*args) File \"/home/samh/dev/MXNet-Gluon-Style-Transfer/net.py\", line 44, in forward return F.pad(x, mode='reflect', pad_width=self.pad_width) File \"<string>\", line 112, in pad AssertionError: Argument data must have NDArray type, but got <Symbol data>\n\nSo it seems that train in Python and use in C++ with gluon has quite a few caveats."
+    }
+}

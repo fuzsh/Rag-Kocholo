@@ -1,0 +1,42 @@
+{
+    "id": "dbpedia_7395_2",
+    "rank": 36,
+    "data": {
+        "url": "https://help.tableau.com/current/server/en-us/db_backup.htm",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Back up Tableau Server Data",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://help.tableau.com/current/server/en-us/Resources/tableau-logo.png",
+            "https://help.tableau.com/current/server/en-us/Img/greencheckmark.png",
+            "https://help.tableau.com/current/server/en-us/Img/greencheckmark.png",
+            "https://help.tableau.com/current/server/en-us/Img/greencheckmark.png",
+            "https://help.tableau.com/current/server/en-us/Img/greencheckmark.png",
+            "https://help.tableau.com/current/server/en-us/Img/greencheckmark.png",
+            "https://help.tableau.com/current/server/en-us/Img/greencheckmark.png",
+            "https://help.tableau.com/current/server/en-us/Img/greencheckmark.png",
+            "https://help.tableau.com/current/server/en-us/Img/greencheckmark.png",
+            "https://help.tableau.com/current/server/en-us/Img/greencheckmark.png",
+            "https://help.tableau.com/current/server/en-us/Img/greencheckmark.png",
+            "https://help.tableau.com/current/server/en-us/Img/greencheckmark.png",
+            "https://help.tableau.com/current/server/en-us/Img/greencheckmark.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "Regularly backing up Tableau Server is an important step in proper administration and maintenance of your server",
+        "meta_lang": "en",
+        "meta_favicon": "",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "Regularly backing up Tableau Server is an important step in proper administration and maintenance of your server. You can use the tsm maintenance restore command to restore Tableau Server backups created using the tsm maintenance backup command. Database backups made in other ways, and virtual machine snapshots are not valid sources for restoring Tableau Server, so it is critical that you have an up-to-date backup.\n\nÂ\n\nYou can only restore from a backup that has the same type of identity store as the running server. For example, a backup from a server using local authentication can be restored to a Tableau Server initialized with local authentication, but a backup from a server using Active Directory authentication cannot be restored to a server initialized with local authentication.\n\nLooking for Tableau Server on Linux? See Back Up Tableau Server Data(Link opens in a new window).\n\nTableau Server data includes data extract files, as well as the Tableau PostgreSQL database, which contains workbook and user metadata, and configuration data. When you use TSM to create a backup, all of this data is saved in a single file with a .tsbak extension. If you are running a distributed installation of Tableau Server data from all the nodes is backed up.\n\nThe frequency of your backups depends on your environment, including how much use your server gets and how much and frequently the content and users change. Any changes or updates that happen after your backup will be lost if there is a system failure and you need to restore Tableau Server. The more activity there is, the more often you need to back the server up.\n\nIn addition to regular backups, you should always create a backup before upgrading to a new version of Tableau Server. The upgrade process does not create a backup except when the version of PostGRES is being updated, and then the upgrade process creates a PostGRES-only backup to be used internally.\n\nTo help protect against data loss, after you create the backup, you should store the .tsbak file on a computer that is not a part of your Tableau Server installation.\n\nDisk Space Usage for Backup\n\nOptimizing Tableau Server Backup\n\nCreate a backup using the TSM command line interface (CLI)\n\nUse the tsm maintenance backup command to create a backup of the data managed by Tableau Server. This data includes data extract files and the Tableau PostgreSQL database, which contains workbook and user metadata.\n\nTo back up server configuration data, use the tsm settings command. When you use the tsm maintenance backup command, the current date is appended to the backup file:\n\ntsm maintenance backup -f <backup_file> -d\n\nFor more information, see tsm maintenance backup.\n\nScript the backup process\n\nIf you back up often, you might want to create a script that performs the backup and related tasks for you. These tasks include:\n\nClean up files and folders before running the backup.\n\nRunning the backup itself.\n\nCopying the backup file to a separate computer for safekeeping.\n\nThis section discusses tsm commands you can use together to perform a backup and related tasks.\n\nNote:Â TSM is a batch file. To run tsm commands in another batch file, use the call command. For example \"call tsm maintenance ziplogs\". Doing this will return control to the batch file. You also need to authenticate to TSM before issuing any commands. For more information, see Authenticating with tsm CLI.\n\nFor additional information about scripting TSMÂ commands, see the Tableau Community Forums(Link opens in a new window).\n\nRemove log files and clear temporary folders\n\nYou can clean old Tableau Server log file and temporary files to reduce the time it takes to create a backup, and to ensure the backup file is as small as possible.\n\nTo clean log files older than a few days, run the following command:\n\ntsm maintenance cleanup\n\nRun the backup\n\nNote: When backing up Tableau Server on Windows to a network drive, the Machine account must have write access to the network share where the backup files are written (this is not normally the case and you are responsible for configuring this if you want to back the server up to a network share).\n\nTo create the backup, use the tsm maintenance backup command:\n\ntsm maintenance backup --file <backup_file> --append-date\n\nNote the following about the command:\n\nAdd --append-date to the command to include the date in the backup file name.\n\nThe backup file is assembled in a temporary location in the data directory and then written to the directory defined in the TSMÂ basefilepath.backuprestore variable. By default:\n\nC:\\ProgramData\\Tableau\\Tableau Server\\data\\tabsvc\\files\\backups\\<filename>.tsbak\n\nFor more information about where backup files are written, and how to change that location, see tsm File Paths. Note:Â Even when you change the backup location, the backup process uses a temporary location in the data directory to assemble the backup file.\n\nCopy the backup file to another computer\n\nAs a best practice, after the backup is created, copy the backup file to another location that is separate from Tableau Server."
+    }
+}

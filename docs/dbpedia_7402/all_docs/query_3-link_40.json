@@ -1,0 +1,33 @@
+{
+    "id": "dbpedia_7402_3",
+    "rank": 40,
+    "data": {
+        "url": "https://stackoverflow.com/questions/38353567/how-to-fuzzy-match-movie-titles-with-difflib-and-pandas",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How to fuzzy match movie titles with difflib and pandas?",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://i.sstatic.net/jbPTV.png?s=64",
+            "https://www.gravatar.com/avatar/cd32815162ebd81bd7e1affba24d3048?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/oAInT.jpg?s=64",
+            "https://stackoverflow.com/posts/38353567/ivc/ae89?prg=2850a787-65f0-4dda-ba51-104087ff19a0"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2016-07-13T13:47:35",
+        "summary": "",
+        "meta_description": "I have 2 lists of potentially overlapping movie titles, but possibly written in a different form.\nThey are in 2 different dataframes from pandas. So I have tried to use the map() function with the",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/38353567/how-to-fuzzy-match-movie-titles-with-difflib-and-pandas",
+        "text": "I have 2 lists of potentially overlapping movie titles, but possibly written in a different form.\n\nThey are in 2 different dataframes from pandas. So I have tried to use the map() function with the fuzzywuzzy library like so:\n\ndf1.title.map(lambda x: process.extractOne(x, choices=df2.title, score_cutoff=95))\n\nWhich gives some good quality results. But the time complexity is such that I can only run it on a very small subset of both data frames. When I try incrementing the size of the data frames then it rapidly becomes unusable.\n\nThen I tried to replace fuzzywuzzy with difflib. And it is much faster. But I can't get the results I want.\n\nAt first I tried:\n\ndf1.title.map(lambda x: difflib.get_close_matches(x, df2.title, n=1)\n\nAnd that was fast but the quality of the results was poor. Even missing some simple uppercase / lowercase changes. Playing with the cutoff did not help.\n\nSo I thought I was using the wrong tool. In the docs and examples I saw get_close_matches used on single words. In titles there are various words.\n\nIs SequenceMatcher a better choice?\n\nAnd if yes, then how do I fit it into the map() so it does the same as the aforementioned functions: return only the best result, and only if the result is above a certain ratio?\n\nI have written a Python package which aims to solve this problem. Amongst other things, it addresses the n^2 complexity of the problem (e.g. with two datasets of length 100, your code needs 10,000 comparisons).\n\nYou can install it using pip install fuzzymatcher\n\nYou can find the repo here and docs here.\n\nBasic usage:\n\nGiven two dataframes df_left and df_right, which you want to fuzzy join, you can write the following:\n\nfrom fuzzymatcher import link_table, left join # Columns to match on from df_left left_on = [\"fname\", \"mname\", \"lname\", \"dob\"] # Columns to match on from df_right right_on = [\"name\", \"middlename\", \"surname\", \"date\"] # The link table potentially contains several matches for each record fuzzymatcher.link_table(df_left, df_right, left_on, right_on)\n\nOr if you just want to link on the closest match:\n\nfuzzymatcher.fuzzy_left_join(df_left, df_right, left_on, right_on)\n\nanswered Dec 4, 2017 at 8:52\n\nRobinLRobinL\n\n11.4k99 gold badges5454 silver badges6969 bronze badges"
+    }
+}

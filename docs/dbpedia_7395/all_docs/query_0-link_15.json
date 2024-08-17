@@ -1,0 +1,35 @@
+{
+    "id": "dbpedia_7395_0",
+    "rank": 15,
+    "data": {
+        "url": "https://fireproofsocks.medium.com/xfile-a-better-way-to-work-with-files-and-directories-in-elixir-d522f5b60534",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Xfile: a better way to work with files and directories in Elixir",
+        "top_image": "https://miro.medium.com/v2/resize:fit:660/1*-4_AVbCXqaYLvSeHL7fl5A.jpeg",
+        "meta_img": "https://miro.medium.com/v2/resize:fit:660/1*-4_AVbCXqaYLvSeHL7fl5A.jpeg",
+        "images": [
+            "https://miro.medium.com/v2/resize:fill:64:64/1*dmbNkD5D-u45r44go_cf0g.png",
+            "https://miro.medium.com/v2/resize:fill:88:88/1*nBpCakK5m83ppSu_kiXb9A.jpeg",
+            "https://miro.medium.com/v2/resize:fill:144:144/1*nBpCakK5m83ppSu_kiXb9A.jpeg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Everett Griffiths",
+            "fireproofsocks.medium.com"
+        ],
+        "publish_date": "2022-04-01T06:38:57.132000+00:00",
+        "summary": "",
+        "meta_description": "Necessity is the mother of invention… or in the case of software, need begets packages. And packages require names, preferably something cool that maybe invokes the supernatural and/or throwbacks to…",
+        "meta_lang": "en",
+        "meta_favicon": "https://miro.medium.com/v2/5d8de952517e8160e40ef9841c781cdc14a5db313057fa3c3de41c6f5b494b19",
+        "meta_site_name": "Medium",
+        "canonical_link": "https://fireproofsocks.medium.com/xfile-a-better-way-to-work-with-files-and-directories-in-elixir-d522f5b60534",
+        "text": "Necessity is the mother of invention… or in the case of software, need begets packages. And packages require names, preferably something cool that maybe invokes the supernatural and/or throwbacks to ’90s television. So here’s my little PSA about Xfile, my latest Elixir package.\n\nRecursively List Files\n\nI kept encountering shortcomings when using Elixir’s built-in File module. One of the bits of boilerplate code that I added to a few different projects was functionality that let me recursively list files stored in a nested directory structure. In adherence to DRY principles, I turned that boilerplate into its own package. Now I can easily traverse deeply nested directories in a uniform way:\n\niex(1)> Xfile.ls!(\"deps\")\n\n|> Enum.to_list()[\"deps/metrics/.hex\", \"deps/metrics/LICENSE\", \"deps/metrics/.fetch\",\n\n\"deps/metrics/README.md\", \"deps/metrics/hex_metadata.config\",\n\n\"deps/metrics/rebar.lock\", ...]\n\nA couple things to point out:\n\nXfile returns its results as a lazily-evaluated stream. This has important performance benefits if you ever wade into folders with indecent numbers of files. You just have to enumerate the stream (here, this is done by converting it to a list via Enum.to_list/1 )\n\nXfile returns the full path segment, e.g. dir/file.txt whereas the built-in File.ls/1 returns just the basename, e.g. file.txt . When I used the File.ls/1, I often found myself needing to concatenate the parent directory onto the results before I could do anything useful with them.\n\nXfile.ls/2 supports recursively listing files, so I can easily peer into deeply nested directory structures without re-inventing wheels.\n\nHaving the above functionality in a reusable package was my MVC, but I realized there was some room for some useful scope creep. (Is “useful scope creep” a trigger phrase for project managers?). Adding a few bits of polish here made the package even more handy as I found myself needing to deal with intermediary file byproducts of long-running ETL processes. And here’s where Xfile.ls/2 gets more horsepower:\n\n4. Xfile.ls/2 supports a :filter option used to evaluate whether or not the given file should be included in the results. The :filter can be a regular expression OR an arity-1 function. To be fair, you could always filter the resulting enumerable AFTER listing the files, but filtering here in the same breath allows us to traverse the list only once.\n\nGrep File Contents\n\nOne of my favorite bash commands is grep -rl — I usually rely on it instead of my IDE when I’m searching a project. Now I can return a list of files that contain any line that matches the pattern:\n\niex> Xfile.grep_rl(\"raise Error\", \"projekt\", recursive: true)\n\n|> Enum.to_list()\n\n[\n\n\"projekt/lib/foo/service.ex\",\n\n\"projekt/lib/db.ex\"\n\n]\n\nSince this exists in code, the pattern can be more than a simple string: you can supply your own arity-1 function to receive each line in the file.\n\nAlthough I use grep -rl more, I also included a grep function inside Xfile for searching single files and returning the matching lines. This can be useful for cherry-picking relevant lines from a file.\n\nHead, Tail, and counting lines\n\nFinally, I will mention a couple other convenience functions that can spare you from writing more boilerplate code after researching solutions on Stackoverflow: head , tail , and line_count .\n\nXfile.head/2 will return the first n lines of the given file:\n\niex> Xfile.head(\".gitignore\", 3)\n\n|> Enum.to_list()\n\n[\n\n\"# The directory Mix will write compiled artifacts to.\\n\",\n\n\"/_build/\\n\",\n\n\"\\n\"\n\n]\n\nXfile.tail/2 does the same, but for returning the last n lines from a file, and Xfile.line_count/1 is more or less an implementation of wc -l .\n\nThis package has made my life easier this week, and I hope it’s useful to the community. Happy coding!"
+    }
+}

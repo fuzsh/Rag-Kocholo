@@ -1,0 +1,50 @@
+{
+    "id": "dbpedia_7402_3",
+    "rank": 49,
+    "data": {
+        "url": "https://www.mongodb.com/docs/manual/reference/operator/query/regex/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "MongoDB Manual v7.0",
+        "top_image": "http://www.mongodb.com/docs/assets/meta_generic.png",
+        "meta_img": "http://www.mongodb.com/docs/assets/meta_generic.png",
+        "images": [
+            "https://webimages.mongodb.com/_com_assets/cms/kuyjf3vea2hg34taa-horizontal_default_slate_blue.svg?auto=format%252Ccompress",
+            "https://webimages.mongodb.com/_com_assets/cms/krc3hljsdwdfd2w5d-web-actions-search.svg?auto=format%252Ccompress",
+            "https://webimages.mongodb.com/_com_assets/icons/atlas_product_family.svg",
+            "https://webimages.mongodb.com/_com_assets/icons/atlas_database.svg",
+            "https://webimages.mongodb.com/_com_assets/icons/atlas_search.svg",
+            "https://webimages.mongodb.com/_com_assets/icons/mdb_vector_search.svg",
+            "https://webimages.mongodb.com/_com_assets/icons/atlas_stream_processing.svg",
+            "https://webimages.mongodb.com/_com_assets/icons/enterprise_advanced_product family.svg",
+            "https://webimages.mongodb.com/_com_assets/icons/community_edition_product_family.svg",
+            "https://webimages.mongodb.com/_com_assets/icons/mdb_compass.svg",
+            "https://webimages.mongodb.com/_com_assets/icons/atlas_integration.svg",
+            "https://webimages.mongodb.com/_com_assets/icons/mdb_migrator.svg",
+            "https://webimages.mongodb.com/_com_assets/icons/atlas_product_family.svg",
+            "https://webimages.mongodb.com/_com_assets/icons/general_events_ask_the_experts.svg",
+            "https://webimages.mongodb.com/_com_assets/icons/general_content_tutorial.svg",
+            "https://webimages.mongodb.com/_com_assets/icons/general_events_session.svg",
+            "https://webimages.mongodb.com/_com_assets/cms/lmqnddlajolelmbus-SearchIcon.svg?auto=format%252Ccompress",
+            "https://webimages.mongodb.com/_com_assets/cms/lvz91dv3bugodsyau-language-selector-globe.svg?auto=format%252Ccompress",
+            "https://webimages.mongodb.com/_com_assets/cms/kuyjf3vea2hg34taa-horizontal_default_slate_blue.svg?auto=format%252Ccompress",
+            "https://webimages.mongodb.com/_com_assets/cms/lmqnddlajolelmbus-SearchIcon.svg?auto=format%252Ccompress"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "LIKE queries",
+            "wildcard matches"
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "Learn how to pattern match on strings in MongoDB Atlas.",
+        "meta_lang": "en",
+        "meta_favicon": "https://www.mongodb.com/docs/assets/favicon.ico",
+        "meta_site_name": "",
+        "canonical_link": "https://www.mongodb.com/docs/manual/reference/operator/query/regex/",
+        "text": "PCRE Versus JavaScript\n\nTo use PCRE-supported features in a regular expression that aren't supported in JavaScript, you must use the $regex operator and specify the regular expression as a string.\n\nTo match case-insensitive strings:\n\n\"(?i)\" begins a case-insensitive match.\n\n\"(?-i)\" ends a case-insensitive match.\n\nFor example, the regular expression \"(?i)a(?-i)cme\" matches strings that:\n\nBegin with \"a\" or \"A\". This is a case-insensitive match.\n\nEnd with \"cme\". This is a case-sensitive match.\n\nThese strings match the example regular expression:\n\n\"acme\"\n\n\"Acme\"\n\nThe following example uses the $regex operator to find name field strings that match the regular expression \"(?i)a(?-i)cme\":\n\nStarting in version 6.1, MongoDB uses the PCRE2 (Perl Compatible Regular Expressions) library to implement regular expression pattern matching. To learn more about PCRE2, see the PCRE Documentation .\n\nCase-Sensitive Queries\n\nFor case sensitive regular expression queries, if an index exists for the field, then MongoDB matches the regular expression against the values in the index, which can be faster than a collection scan.\n\nFurther optimization can occur if the regular expression is a \"prefix expression\", which means that all potential matches start with the same string. This allows MongoDB to construct a \"range\" from that prefix and only match against those values from the index that fall within that range.\n\nA regular expression is a \"prefix expression\" if it starts with a caret (^) or a left anchor (\\A), followed by a string of simple symbols. For example, the regex /^abc.*/ will be optimized by matching only against the values from the index that start with abc.\n\nAdditionally, while /^a/, /^a.*/, and /^a.*$/ match equivalent strings, they have different performance characteristics. All of these expressions use an index if an appropriate index exists; however, /^a.*/, and /^a.*$/ are slower. /^a/ can stop scanning after matching the prefix."
+    }
+}
