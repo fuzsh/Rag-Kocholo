@@ -1,0 +1,35 @@
+{
+    "id": "dbpedia_7491_2",
+    "rank": 66,
+    "data": {
+        "url": "https://community.sonarsource.com/t/custom-scanner-problem-with-sonar-scanner-npm/116611",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Custom scanner problem with sonar-scanner-npm",
+        "top_image": "https://europe1.discourse-cdn.com/sonarsource/uploads/sonarcommunity/original/3X/4/0/406ed50fac50ffd4775c6dae9c70e62f1833ac16.svg",
+        "meta_img": "https://europe1.discourse-cdn.com/sonarsource/uploads/sonarcommunity/original/3X/4/0/406ed50fac50ffd4775c6dae9c70e62f1833ac16.svg",
+        "images": [
+            "https://emoji.discourse-cdn.com/twitter/pray.png?v=12"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "scanner",
+            "sonarqube"
+        ],
+        "tags": null,
+        "authors": [
+            "lauravuo (Laura Vuorenoja)",
+            "ganncamp (G Ann Campbell)",
+            "Lucas_Paulger (Lucas Paulger)"
+        ],
+        "publish_date": "2024-06-04T10:54:40+00:00",
+        "summary": "",
+        "meta_description": "Must-share information: \n\nwhich versions are you using: sonar-scanner-npm 3.5.0\nhow is SonarQube deployed: sonar-scanner installed in local environment\nwhat are you trying to achieve: scanning with pre-installed scanner\nw&hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://europe1.discourse-cdn.com/sonarsource/uploads/sonarcommunity/optimized/3X/5/b/5b45c94bfc9f75230c4bf9284ead89f998c27076_2_32x32.png",
+        "meta_site_name": "Sonar Community",
+        "canonical_link": "https://community.sonarsource.com/t/custom-scanner-problem-with-sonar-scanner-npm/116611",
+        "text": "Hi,\n\nWelcome to the community and thanks for this report!\n\nI’m not quite following what’s going wrong. Could you provide the job log, or a more detailed account of what’s happening?\n\nThx,\n\nAnn\n\nThanks for your reply. But this is not the case. The scanner binary is in my path and works ok. But your wrapper is unable to find it as it first searches for the folder node_modules/.bin and finds the wrapper’s scanner-script there. And ends up running the wrapper twice, as I explain above.\n\nIf I rename the script node_modules/.bin/sonar-scanner to something else, everything works as expected.\n\nI believe that you have the sonarqube-scanner both installed globally and as a project dependency. If that’s the case just uninstall the global version and rely on the project version\n\nnpm uninstall -g sonarqube-scanner\n\nCould you check the output of which sonar-scanner\n\nif installed globally it will output something like\n\nwhich sonar-scanner /Users/***/.nvm/versions/node/v20.11.1/bin/sonar-scanner\n\nAnd this won’t work with the customScanner\n\nIf you only have a pre-installed sonar-scanner, for example, sonar-scanner-5.0.1.3006-macosx stored in $PATH, when running the customScanner as a project dependency you will see something like:\n\nV4\n\n[INFO] Bootstrapper: Retrieving info from \"package.json\" file [INFO] Bootstrapper: Platform: darwin arm64 [INFO] Bootstrapper: Server URL: http://localhost:9000 [INFO] Bootstrapper: Version: 4.0.1 [INFO] Bootstrapper: SonarQube server version: 10.5.0 [INFO] Bootstrapper: JRE provisioning is NOT supported [INFO] Bootstrapper: Falling back on using sonar-scanner-cli [INFO] Bootstrapper: Local scanner is requested, will not download sonar-scanner-cli [INFO] Bootstrapper: Trying to find sonar-scanner [INFO] Bootstrapper: Starting analysis INFO: Scanner configuration file: /Users/***/Documents/sonar-scanner-5.0.1.3006-macosx/conf/sonar-scanner.properties INFO: Project root configuration file: /Users/***/Documents/react-demo/sonar-project.properties INFO: SonarScanner 5.0.1.3006 ... ...\n\nV3.5.0\n\n[22:55:42] Starting analysis... [22:55:42] Trying to find a local install of the SonarScanner: sonar-scanner [22:55:42] Local install of Sonarscanner found. INFO: Scanner configuration file: /Users/***/Documents/sonar-scanner-5.0.1.3006-macosx/conf/sonar-scanner.properties INFO: Project root configuration file: /Users/***/Documents/react-demo/sonar-project.properties 22:55:43.360 INFO: SonarScanner 5.0.1.3006 ... ...\n\nI hope this helps"
+    }
+}
