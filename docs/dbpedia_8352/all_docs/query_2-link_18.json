@@ -1,0 +1,37 @@
+{
+    "id": "dbpedia_8352_2",
+    "rank": 18,
+    "data": {
+        "url": "https://stackoverflow.com/questions/46569404/angular-4-error-no-provider-for-httpclient",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Angular 4 Error: No provider for HttpClient",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/42642684b7974ba951d9f06e34794cec?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/1506664e7181bebc6fd6f0e3b91dd2c7?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/gQxiV.png?s=64",
+            "https://lh4.googleusercontent.com/-JfZKwdQpRS8/AAAAAAAAAAI/AAAAAAAAAEc/-EqsPqF930c/photo.jpg?sz=64",
+            "https://i.sstatic.net/TnMQZ.png?s=64",
+            "https://lh3.googleusercontent.com/a-/AOh14GgaJVEKEDWkq0Lz_r_1a4T1tjyA0Xdc9ErEeLFV=k-s64",
+            "https://www.gravatar.com/avatar/052c315b73bf1329e49e3aaeaea15fa0?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/46569404/ivc/5f39?prg=7bc52a88-8142-4a5a-ac47-ba8d5c76b0af"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2017-10-04T16:05:25",
+        "summary": "",
+        "meta_description": "I am starting a new angular project with the CLI and am running into a no provider for HttpClient error.\n\nI have added HttpClientModule to my module imports which seems to be the usual culprit in t...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/46569404/angular-4-error-no-provider-for-httpclient",
+        "text": "I am starting a new angular project with the CLI and am running into a no provider for HttpClient error.\n\nI have added HttpClientModule to my module imports which seems to be the usual culprit in this scenario. Not finding a lot online other than that so I am not sure what the issue may be.\n\nmy app.module.ts\n\n@NgModule({ declarations: [ AppComponent ], imports: [ BrowserModule, HttpClientModule ], providers: [], bootstrap: [AppComponent] }) export class AppModule { }\n\nand my service\n\n@Injectable() export class FlexSearchService { constructor(private http: HttpClient) {} getSavedSearchResult(index: string, queryName: string, query: string ): Observable<any> { const url = `${environment.flexUrl}/${index}/search`; const item = new SearchQuery({queryName: queryName, variables: {q: query}}); return this.http.post(url, item); } }\n\nand ng version gives the following output\n\n@angular/cli: 1.4.2 node: 6.9.4 os: darwin x64 @angular/animations: 4.4.4 @angular/common: 4.4.4 @angular/compiler: 4.4.4 @angular/core: 4.4.4 @angular/forms: 4.4.4 @angular/http: 4.4.4 @angular/platform-browser: 4.4.4 @angular/platform-browser-dynamic: 4.4.4 @angular/router: 4.4.4 @angular/cli: 1.4.2 @angular/compiler-cli: 4.4.4 @angular/language-service: 4.4.4 typescript: 2.3.4\n\nmy tsconfig\n\n{ \"compileOnSave\": false, \"compilerOptions\": { \"outDir\": \"./dist/out-tsc\", \"sourceMap\": true, \"declaration\": false, \"moduleResolution\": \"node\", \"emitDecoratorMetadata\": true, \"experimentalDecorators\": true, \"target\": \"es5\", \"typeRoots\": [ \"node_modules/@types\" ], \"lib\": [ \"es2017\", \"dom\" ] } }\n\nMy test\n\nimport { TestBed, inject } from '@angular/core/testing'; import { HttpClientModule } from '@angular/common/http'; import { FlexSearchService } from './flex-search.service'; describe('FlexSearchService', () => { beforeEach(() => { TestBed.configureTestingModule({ providers: [FlexSearchService, HttpClientModule] }); }); it('should be created', inject([FlexSearchService], (service: FlexSearchService) => { expect(service).toBeTruthy(); }));\n\nAny help is GREATLY appreciated!"
+    }
+}
