@@ -1,0 +1,32 @@
+{
+    "id": "dbpedia_7736_0",
+    "rank": 53,
+    "data": {
+        "url": "https://discourse.mc-stan.org/t/rstan-stanheaders-merger-a-heads-up/24894",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Rstan & StanHeaders merger? A heads-up!",
+        "top_image": "https://global.discourse-cdn.com/standard14/uploads/mc_stan/original/3X/e/e/eeaa089d307a4feb17e53c8a738d5a70f44e75cf.png",
+        "meta_img": "https://global.discourse-cdn.com/standard14/uploads/mc_stan/original/3X/e/e/eeaa089d307a4feb17e53c8a738d5a70f44e75cf.png",
+        "images": [
+            "https://sjc6.discourse-cdn.com/standard14/user_avatar/discourse.mc-stan.org/wds15/48/908_2.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Christopher-Peterson"
+        ],
+        "publish_date": "2021-10-18T14:10:08+00:00",
+        "summary": "",
+        "meta_description": "Hi everyone! \nAs outline previously, updating RStan on CRAN is difficult due to having StanHeaders (includes Stan-math) and RStan (includes the parser) in separate packages. In the long run it would be much preferable to&hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://global.discourse-cdn.com/standard14/uploads/mc_stan/optimized/3X/e/e/eeaa089d307a4feb17e53c8a738d5a70f44e75cf_2_32x32.png",
+        "meta_site_name": "The Stan Forums",
+        "canonical_link": "https://discourse.mc-stan.org/t/rstan-stanheaders-merger-a-heads-up/24894",
+        "text": "Hi everyone!\n\nAs outline previously, updating RStan on CRAN is difficult due to having StanHeaders (includes Stan-math) and RStan (includes the parser) in separate packages. In the long run it would be much preferable to have everything in a single R package RStan. However, this would leave StanHeaders essentially defunct, but that is something we can’t afford as this would mean that all depending packages must change, which is unlikely given the inertia in all of this.\n\nInstead we are considering to make StanHeaders a “proxy” package which essentially forwards the includes of Stan-math to respective includes contained in RStan. This would mean that in the future we have\n\nStanHeaders with a dependency on RStan\n\nRStan without a dependency on StanHeaders\n\nPackages including things from StanHeaders a given file xyz.hpp would then get a forwarded xyz.hpp file living inside RStan.\n\nNow… the difficult thing coming into play here is the license: Right now StanHeaders is BSD licensed while RStan is GPL licensed. In this new setup it’s not clear if StanHeaders can stay BSD. Despite the fact that any program which compiles wrt to Stan-math (contained in StanHeaders) will only contain BSD licences source code… the actual Stan-math sources would be pulled from within RStan, which itself is GPLed.\n\nIn short: StanHeaders might have to be re-licensed under the GPL. What exactly the situation is from a legal perspective is unclear at this stage, but we would need to find this out, possibly with the support of NumFOCUS? The question is if a proxy StanHeaders can possibly stay BSD or not. The “easy” solution is to re-license the proxy StanHeaders under the GPL (in this case anyone requiring BSD style Stan-math could just copy it from our GitHub and include a copy in his/her own package).\n\nTagging @SGB and @Stan_Development_Team for attention.\n\nBest,\n\nSebastian, Ben, Hamada, Steve, Andrew J\n\nHi!\n\nA short question. Why do we not release a new rstan r package (say called rstan2 or so) that solves these issues (ie includes stan headers) and then in practice make old rstan and old stanheaders deprecated, but pointing to the new package. This would most likely not break anyone’s current code (except casting a deprecated warning for packages using rstan).\n\nThen the R package developers can change at their own pace to the new r package as dependency. We could probably keep the old rstan package around for quite a while.\n\nJust a quick thought as an R package developer. Although I have missed some stan meetings so I might have missed some ongoing discussions. Sorry if that is the case.\n\n/Måns\n\nHi,\n\nI was actually thinking about ggplot2 as a good example. I guess we would have a similar situation. If we would have a rstan2 with StanHeaders we would not need to do a rstan3 and so forth.\n\nIf it is a lot of extra maintenance, then that would be a problem. My guess, though, is that most users would move quite rapidly and hence the additional burden would go down quite quickly. Hence the long-term gain might be larger than the short-term loss. However, @bgoodri can judge this much better than me.\n\nWith kind regards\n\nMåns\n\nThis is an interesting question… I am not an expert, but these packages would have to be GPLed as a consequence from this (is my take). To avoid that they could make a copy of Stan-math from GitHub and then use that instead. The GitHub copy is BSD.\n\nIn case there is broad interest one could consider releasing a StanHeadersCPP R package, which is only there to be BSD licensed (and it would not be used by RStan). I am not sure if CRAN would appreciate that… and upgrading this R package will become a headache quickly given that Stan is NOT meant to be C++ wise a stable thing. Stan is meant to maintain compatibility on the Stan language level. Not more.\n\nAnd there’s no convenient way around that, given recent improvements in compilation times? For example, requiring users to compile the models they need only once per installation of such an R package? Integrating this into the installation itself might be hard and might not always make sense, so users would probably have to do so after installation (usually before they need a specific model for the first time). The rstantools package could provide a function for compiling only a subset of the models from a package. And the package itself could offer a wrapper for that rstantools function, but setting an appropriate default for the subset of models to be compiled. Of course, this wouldn’t be as convenient as rstan, but given the development resources that rstan and StanHeaders seem to take, it could be an acceptable compromise."
+    }
+}

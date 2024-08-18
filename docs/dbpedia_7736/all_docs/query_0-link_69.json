@@ -1,0 +1,35 @@
+{
+    "id": "dbpedia_7736_0",
+    "rank": 69,
+    "data": {
+        "url": "https://docs.checkmk.com/latest/en/agent_freebsd.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "The agent for FreeBSD in detail",
+        "top_image": "https://docs.checkmk.com/assets/images/share_image.png",
+        "meta_img": "https://docs.checkmk.com/assets/images/share_image.png",
+        "images": [
+            "https://docs.checkmk.com/assets/images/docs_logo.png",
+            "https://docs.checkmk.com/assets/images/logo_icon.svg",
+            "https://docs.checkmk.com/assets/images/search.svg",
+            "https://docs.checkmk.com/latest/images/agent_freebsd_discovery.png",
+            "https://docs.checkmk.com/latest/images/agent_freebsd_mrpe.png",
+            "https://docs.checkmk.com/latest/images/agent_freebsd_local.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "The FreeBSD agent is a simple shell script and therefore maximally transparent. How to use, extend and configure the agent can be found here.",
+        "meta_lang": "en",
+        "meta_favicon": "/favicon.png",
+        "meta_site_name": "Checkmk Docs",
+        "canonical_link": null,
+        "text": "There are many good reasons for using FreeBSD instead of Linux or other unix-type systems: For example, the 'Jails' container feature, which has been available since 2000, its high performance even under heavy I/O loads, the robustness of the UFS2 file system, or the excellent support for the modern ZFS transactional file system. Checkmk provides an agent for FreeBSD which is based on the agent for Linux, but which has been adapted for FreeBSD entities, such as using different output formats of the command line tools and different path conventions. However, installation and functional testing must be largely manual, as there is no provision for packaging or deployment via the Agent Bakery.\n\nNote regarding other BSD systems: This article explains the installation and setup of the agent for FreeBSDâââAgents for OpenBSD and NetBSD are also available. The installation for those is similar to the that described here. If you use DragonFly BSD, we would welcome tests and any suggested patches for the FreeBSD agent.\n\nThe basic structure of the FreeBSD agent is the same as described for the Linux agent: It is a pure shell script, which can be executed via an internet superserver (inetd or xinetd) or an SSH tunnel, which makes it lightweight and secure.\n\nIn general we assume in this article that you have some experience with Linux or Solaris, so here we will mainly focus on the differences.\n\n3.1. FreeBSD inetd\n\nThe easiest way to access the agent is the inetd provided with FreeBSD. Alternatively, the Linux xinetd is available from the security section in the FreeBSD Ports. Its configuration is exactly the same as described in the Linux agent article. The inetd binds the output of the agent to TCP port 6556 andâââif necessaryââârestricts access to certain Checkmk servers.\n\nFirst, check if your /etc/services already contains an entry for port 6556:\n\nroot@bsd:/root # grep6556/ /etc/services\n\nIf this is not the case, Checkmk must be identified as a service. To do this, add the following line:\n\n/etc/services\n\ncheckmk-agent 6556/tcp #Checkmk monitoring agent\n\nNow add the following line to the /etc/inetd.conf configuration file:\n\n/etc/inetd.conf\n\ncheckmk-agent stream tcp nowait root /usr/local/bin/check_mk_agent check_mk_agent\n\nThe inetd must always be activated. To do this, append the following line to the /etc/rc.conf file:\n\n/etc/rc.conf\n\ninetd_enable=\"YES\"\n\nIf access restriction is necessary, edit the /etc/hosts.allow file. First comment out the line that allows access from anywhere, then add a line that allows access only to the Checkmk serverâââhere with the IP address 10.2.3.4. The first parameter is the name of the command executed by inetd:\n\n/etc/hosts.allow\n\n# The rules here work on a \"first match wins\" basis. # ALL : ALL : allow sshd : ALL : allow check_mk_agent : 10.2.3.4 : allow\n\nOnce the configuration changes have been made, reboot:\n\nroot@bsd:/root # reboot\n\nNow access to the agent from the monitoring server should work.\n\nThe easiest way to test this is with netcat or nc. Run the following command as the site user on the Checkmk server to test the network connection to the agent (in this example, to the host with the IP address 10.2.3.5). The command output is here abbreviated to show only the first lines:\n\nOMD[mysite]:~$ nc10.2.3.56556 <<<check_mk>>> Version: 2.1.0i1 AgentOS: freebsd\n\nThe inclusion into the monitoring is performed by an automatic service discovery, as with all other systems. For a 'bare' FreeBSD with no server services configured yet, at least 12 services should be discovered, and ten additional ones for file system information if installed on ZFS:\n\nBecause of the completely manual configuration, the lack of automatic distribution and the different file paths compared to Linux, it is recommended to test the most important plug-in mechanisms. This is started using MRPE.\n\n5.2. Agent plug-ins\n\nThe installation of the agent plug-ins is the same as described in the Linux agent article. Be sure to use the correct Shebang when installing any plug-ins. Perl and Python are installed in /usr/local/bin on FreeBSD, and many a shell script that works with /bin/sh on Linux actually requires the Bourne Again shell installed in /usr/local/bin/bash on FreeBSD.\n\nFor testing, a simple local check is suitable, with which the evaluation of whether the monitored service is OK, WARN or CRIT is done directly on the monitored host. While weâre at it, letâs use a two-liner to test the Python interpreter. Again, note the different default paths compared to Linux:\n\n/usr/local/lib/check_mk_agent/local/hello.py\n\n#!/usr/local/bin/python3 print(\"0 \\\"Hello Beastie\\\" - Just check paths and Python interpreter!\")\n\nDonât forget to make the script executable:\n\nroot@bsd:/root # chmod0755 /usr/local/lib/check_mk_agent/local/hello.py\n\nAlso in this case the service is found immediately:\n\nThe new service \"Hello Beastie\" was found"
+    }
+}

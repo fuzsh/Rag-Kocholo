@@ -1,0 +1,31 @@
+{
+    "id": "dbpedia_7737_2",
+    "rank": 10,
+    "data": {
+        "url": "https://www.emacswiki.org/emacs/amarok.el",
+        "read_more_link": "",
+        "language": "en",
+        "title": "EmacsWiki: amarok.el",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://www.emacswiki.org/images/logo218x38.png",
+            "https://www.emacswiki.org/pics/cc-GPL-a.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "",
+        "meta_favicon": "",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "Download\n\n(defun amarok-dired-add-files () \"Add marked files to Amarok playlist.\" (interactive) (dired-map-over-marks (let ((file (dired-get-filename))) (shell-command (format \"dcop amarok playlist addMedia \\\"%s\\\"\" file))) nil)) (defun amarok-dired-play-current-file () \"Play current file in Amarok.\" (interactive) (shell-command (format \"dcop amarok playlist playMedia \\\"%s\\\"\" (dired-get-filename)))) (defun amarok-clear-playlist () \"Clear Amarok playlist.\" (interactive) (shell-command (format \"dcop amarok playlist clearPlaylist\"))) (defun amarok-play () \"Start playback in Amarok.\" (interactive) (amarok-player \"play\")) (defun amarok-pause () \"Pause playback in Amarok.\" (interactive) (amarok-player \"pause\")) (defun amarok-play-pause () \"Toggle play/pause in Amarok.\" (interactive) (amarok-player \"playPause\")) (defun amarok-player (command) \"Send COMMAND to Amarok player.\" (shell-command (format \"dcop amarok player %s\" command))) (defun amarok-setup-dired-key-bindings () \"Setup convenient bindings for Amarok in dired. The following bindings will be set up: C-c a p - Play/pause C-c a c - Clear playlist C-c a a - Add marked files to playlist C-c a . - Play current file\" (interactive) (define-key dired-mode-map (kbd \"C-c a p\") 'amarok-play-pause) (define-key dired-mode-map (kbd \"C-c a c\") 'amarok-clear-playlist) (define-key dired-mode-map (kbd \"C-c a a\") 'amarok-dired-add-files) (define-key dired-mode-map (kbd \"C-c a .\") 'amarok-dired-play-current-file)) (provide 'amarok)"
+    }
+}
