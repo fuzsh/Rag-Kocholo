@@ -1,0 +1,34 @@
+{
+    "id": "dbpedia_7937_1",
+    "rank": 18,
+    "data": {
+        "url": "https://stackoverflow.com/questions/56758712/correct-zoneid-for-eastern-time-et-either-us-eastern-or-america-new-york",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Correct ZoneId for eastern time (ET): either \"US/Eastern\" or \"America/New_York\"?",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/59873d5c010ca863c32c41281faf81bc?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/lUM5Z.jpg?s=64",
+            "https://www.gravatar.com/avatar/8283c64511fa80afed5259d10850168f?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/441a8e45c455f1297926f21586a8f1a1?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://stackoverflow.com/posts/56758712/ivc/fe8a?prg=2365ad35-80eb-4b3a-bf99-d700ff4b175b"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2019-06-25T16:51:54",
+        "summary": "",
+        "meta_description": "I have to use the time zone \"ET\" (Eastern Time). In Java, there is no ZoneId.of(\"ET\").\n\nWhich one should I use to represent the \"ET\" correctly:\n\nZoneId TIMEZONE_ET = ZoneId.of(\"US/Eastern\");\r\nor\n\nZ...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/56758712/correct-zoneid-for-eastern-time-et-either-us-eastern-or-america-new-york",
+        "text": "Given that your requirement is to use the \"Eastern zone,\" I'd use US/Eastern, but note:\n\nIt's just a link to America/New_York.\n\nThis file in Paul Eggert's tz repo says those links are to link \"old\" names (such as US/Eastern) to current names. \"Old\" may well mean \"deprecated\" in this context. Paul Eggert is the TZ Coordinator for IANA's Time Zone list, so this is a clearly canonical source.\n\nGiven that, you're probably best off with America/New_York, but given that the change is listed as being from 1993, clearly the old names aren't going away any time soon.\n\nEither will contain the DST rules, etc. On my system, for instance:\n\nvar zoneRules = ZoneId.of(\"US/Eastern\").getRules(); System.out.println(zoneRules.isDaylightSavings(Instant.parse(\"2019-07-01T12:00:00Z\"))); // true System.out.println(zoneRules.isDaylightSavings(Instant.parse(\"2019-01-01T12:00:00Z\"))); // false\n\nNote that noon on July 1st is in DST, and noon on January 1st is not.\n\nMore:\n\nIn the IANA Time Zone Database files, I've found:\n\nto2050.tzs:\n\nLink America/New_York US/Eastern\n\n...which suggests the two are aliases (altough ZoneId#equals doesn't return true for them). Also, in northamerica they have:\n\n# US eastern time, represented by New York\n\nwith notes citing the relevant law.\n\nSo it seems clear to me that at the moment, they're synonymous. It's also clear that US/Eastern is the \"old name.\" Of course, in theory, New York could decide at some point not to be part of the Eastern timezone anymore (perhaps to be closer, time-wise, to the UK and Europe), but that seems really unlikely...\n\nAmerica/New_York\n\nThe answer is in the List of tz database time zones: US/Eastern is deprecated and is just a link to America/New_York. So to be sure of future compatibility you should use America/New_York.\n\nWikipedia on the names of time zones\n\nThe Wikipedia article tz database says (excerpts):\n\nThe time zones have unique names in the form \"Area/Location\", e.g. \"America/New_York\". …\n\nArea is the name of a continent, an ocean, or \"Etc\". The continents and oceans currently used are Africa, America, Antarctica, Arctic, Asia, Atlantic, Australia, Europe, Indian, and Pacific.\n\nLocation is the name of a specific location within the area – usually a city or small island.\n\nCountry names are not used in this scheme, primarily because they would not be robust, owing to frequent political and boundary changes. The names of large cities tend to be more permanent. …\n\nSo the name US/Eastern is from a time when names were created following other rules.\n\nAbout the abbreviation, ET\n\nSince I sensed a doubt in a couple of the comments: North American Eastern Time may be and is commonly abbreviated ET. One way to see this is in the Time Zone Abbreviations – Worldwide List. You can also see that ET may either comprise both EST (Eastern Standard Time) and EDT (Eastern Daylight Time) or be used as a synonym for EST, also known as Tiempo del Este in Spanish. When you study the list, you will also see that very many abbreviations are ambiguous.\n\nOr in Java (using REPL):\n\njshell> ZoneId.of(\"America/New_York\").getDisplayName(TextStyle.SHORT, Locale.US) $3 ==> \"ET\"\n\nJust out of curiosity and not recommended because of the risk of ambiguity: you may also go the other way and obtain the ZoneId from the abbreviation:\n\njshell> var dtf = DateTimeFormatter.ofPattern(\"z\", Locale.US); dtf ==> ZoneText(SHORT) jshell> ZoneId.from(dtf.parse(\"ET\")) $7 ==> America/New_York\n\nI repeat: don’t try this last trick at home.\n\nIf you do:\n\nSystem.out.println(TimeZone.getTimeZone((\"US/Eastern\"))); System.out.println(TimeZone.getTimeZone((\"America/New_York\")));\n\nThe output is:\n\nsun.util.calendar.ZoneInfo[id=\"US/Eastern\",offset=-18000000,dstSavings=3600000,useDaylight=true,transitions=235,lastRule=java.util.SimpleTimeZone[id=US/Eastern,offset=-18000000,dstSavings=3600000,useDaylight=true,startYear=0,startMode=3,startMonth=2,startDay=8,startDayOfWeek=1,startTime=7200000,startTimeMode=0,endMode=3,endMonth=10,endDay=1,endDayOfWeek=1,endTime=7200000,endTimeMode=0]] sun.util.calendar.ZoneInfo[id=\"America/New_York\",offset=-18000000,dstSavings=3600000,useDaylight=true,transitions=235,lastRule=java.util.SimpleTimeZone[id=America/New_York,offset=-18000000,dstSavings=3600000,useDaylight=true,startYear=0,startMode=3,startMonth=2,startDay=8,startDayOfWeek=1,startTime=7200000,startTimeMode=0,endMode=3,endMonth=10,endDay=1,endDayOfWeek=1,endTime=7200000,endTimeMode=0]]\n\nWhich shows every value that is set is exactly the same. There is no difference between the two.\n\nHowever, thanks to Andreas's comment, it would be optimal to use America/New_York instead of US/Eastern as it is deprecated, shown here and official list here.\n\nAccording to the official list on the github by the author of the database, US/Eastern exists solely for backwards compatibility."
+    }
+}

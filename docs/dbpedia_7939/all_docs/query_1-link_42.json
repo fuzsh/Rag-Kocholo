@@ -1,0 +1,43 @@
+{
+    "id": "dbpedia_7939_1",
+    "rank": 42,
+    "data": {
+        "url": "https://stackoverflow.com/questions/10545960/how-to-tackle-daylight-savings-using-timezone-in-java",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How to tackle daylight savings using TimeZone in Java",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://i.sstatic.net/NxxWB.jpg?s=64",
+            "https://www.gravatar.com/avatar/4229643e6d6add9e98483afb71594f57?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/6d8ebb117e8d83d74ea95fbdd0f87e13?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/V7t6V.png",
+            "https://i.sstatic.net/ZWEI3.jpg?s=64",
+            "https://www.gravatar.com/avatar/2d8cb0eaa4de7f781e42328ec7544ca3?s=64&d=identicon&r=PG",
+            "https://lh5.googleusercontent.com/-3lBYul0vsCA/AAAAAAAAAAI/AAAAAAAAAGQ/gfgfYDzTb2s/photo.jpg?sz=64",
+            "https://www.gravatar.com/avatar/a007be5a61f6aa8f3e85ae2fc18dd66e?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/lJHAY.jpg?s=64",
+            "https://www.gravatar.com/avatar/d90a93e7cd4c3ce95627cac62e6f4109?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/FuxZo.jpg?s=64",
+            "https://graph.facebook.com/1796803811/picture?type=large",
+            "https://www.gravatar.com/avatar/890df1e3d10c37659083bfac09820a1c?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/10545960/ivc/fe8a?prg=6ae55d58-1d3b-4b8c-8ea1-60a4e3b062a5"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2012-05-11T05:37:10",
+        "summary": "",
+        "meta_description": "I have to print the EST time in my Java application. I had set the time zone to EST using:\n\nCalendar cal = Calendar.getInstance(TimeZone.getTimeZone(\"EST\"));\r\nBut when the daylight savings is being",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/10545960/how-to-tackle-daylight-savings-using-timezone-in-java",
+        "text": "This is the problem to start with:\n\nCalendar cal = Calendar.getInstance(TimeZone.getTimeZone(\"EST\"));\n\nThe 3-letter abbreviations should be wholeheartedly avoided in favour of TZDB zone IDs. EST is Eastern Standard Time - and Standard time never observes DST; it's not really a full time zone name. It's the name used for part of a time zone. (Unfortunately I haven't come across a good term for this \"half time zone\" concept.)\n\nYou want a full time zone name. For example, America/New_York is in the Eastern time zone:\n\nTimeZone zone = TimeZone.getTimeZone(\"America/New_York\"); DateFormat format = DateFormat.getDateTimeInstance(); format.setTimeZone(zone); System.out.println(format.format(new Date()));\n\nOther answers are correct, especially the one by Jon Skeet, but outdated.\n\njava.time\n\nThese old date-time classes have been supplanted by the java.time framework built into Java 8 and later.\n\nIf you simply want the current time in UTC, use the Instant class.\n\nInstant now = Instant.now();\n\nEST is not a time zone, as explained in the correct Answer by Jon Skeet. Such 3-4 letter codes are neither standardized nor unique, and further the confusion over Daylight Saving Time (DST). Use a proper time zone name in the \"continent/region\" format.\n\nPerhaps you meant Eastern Standard Time in east coast of north America? Or Egypt Standard Time? Or European Standard Time?\n\nZoneId zoneId = ZoneId.of( \"America/New_York\" ); ZoneId zoneId = ZoneId.of( \"Africa/Cairo\" ); ZoneId zoneId = ZoneId.of( \"Europe/Lisbon\" );\n\nUse any such ZoneId object to get the current moment adjusted to a particular time zone to produce a ZonedDateTime object.\n\nZonedDateTime zdt = ZonedDateTime.now( zoneId ) ;\n\nAdjust that ZonedDateTime into a different time zone by producing another ZonedDateTime object from the first. The java.time framework uses immutable objects rather than changing (mutating) existing objects.\n\nZonedDateTime zdtGuam = zdt.withZoneSameInstant( ZoneId.of( \"Pacific/Guam\" ) ) ;\n\npublic static float calculateTimeZone(String deviceTimeZone) { float ONE_HOUR_MILLIS = 60 * 60 * 1000; // Current timezone and date TimeZone timeZone = TimeZone.getTimeZone(deviceTimeZone); Date nowDate = new Date(); float offsetFromUtc = timeZone.getOffset(nowDate.getTime()) / ONE_HOUR_MILLIS; // Daylight Saving time if (timeZone.useDaylightTime()) { // DST is used // I'm saving this is preferences for later use // save the offset value to use it later float dstOffset = timeZone.getDSTSavings() / ONE_HOUR_MILLIS; // DstOffsetValue = dstOffset // I'm saving this is preferences for later use // save that now we are in DST mode if (timeZone.inDaylightTime(nowDate)) { Log.e(Utility.class.getName(), \"in Daylight Time\"); return -(ONE_HOUR_MILLIS * dstOffset); } else { Log.e(Utility.class.getName(), \"not in Daylight Time\"); return 0; } } else return 0; }\n\nIn java, DateFormatter by default uses DST,To avoid day Light saving (DST) you need to manually do a trick,\n\nfirst you have to get the DST offset i.e. for how many millisecond DST applied, for ex somewhere DST is also for 45 minutes and for some places it is for 30 min\n\nbut in most cases DST is of 1 hour\n\nyou have to use Timezone object and check with the date whether it is falling under DST or not and then you have to manually add offset of DST into it. for eg:\n\nTimeZone tz = TimeZone.getTimeZone(\"EST\"); boolean isDST = tz.inDaylightTime(yourDateObj); if(isDST){ int sec= tz.getDSTSavings()/1000;// for no. of seconds Calendar cal= Calendar.getInstance(); cal.setTime(yourDateObj); cal.add(Calendar.Seconds,sec); System.out.println(cal.getTime());// your Date with DST neglected }"
+    }
+}
