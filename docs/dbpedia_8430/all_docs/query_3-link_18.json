@@ -1,0 +1,39 @@
+{
+    "id": "dbpedia_8430_3",
+    "rank": 18,
+    "data": {
+        "url": "https://community.openstreetmap.org/t/how-can-i-find-pois-using-overpass-in-a-city-starting-from-latitude-and-longitude/5677",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How can I find POIs using overpass in a city, starting from latitude and longitude?",
+        "top_image": "https://community-cdn.openstreetmap.org/uploads/default/original/1X/1ec32427766f2efdc81c1fd1a6879e4084bfd00d.png",
+        "meta_img": "https://community-cdn.openstreetmap.org/uploads/default/original/1X/1ec32427766f2efdc81c1fd1a6879e4084bfd00d.png",
+        "images": [
+            "https://community-cdn.openstreetmap.org/letter_avatar_proxy/v4/letter/m/a587f6/48.png",
+            "https://community-cdn.openstreetmap.org/user_avatar/community.openstreetmap.org/discostu36/48/575_2.png",
+            "https://community-cdn.openstreetmap.org/letter_avatar_proxy/v4/letter/m/a587f6/48.png",
+            "https://community-cdn.openstreetmap.org/letter_avatar_proxy/v4/letter/m/a587f6/48.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "poi",
+            "boundaries",
+            "nominatim",
+            "overpass-turbo",
+            "overpass"
+        ],
+        "tags": null,
+        "authors": [
+            "Mateusz_Konieczny (Mateusz Konieczny)"
+        ],
+        "publish_date": "2022-11-19T11:25:34+00:00",
+        "summary": "",
+        "meta_description": "Hi, \nI’m trying to develop an application that finds POIs of a city like museums, user input is country name and city name, this get translated to latitude and longitude using nominatim service, I would like to write a q&hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://community-cdn.openstreetmap.org/uploads/default/optimized/1X/e9768dc0a7cbe8d58a55e515a89a6af817534bbf_2_32x32.png",
+        "meta_site_name": "OpenStreetMap Community Forum",
+        "canonical_link": "https://community.openstreetmap.org/t/how-can-i-find-pois-using-overpass-in-a-city-starting-from-latitude-and-longitude/5677",
+        "text": "Hi,\n\nI’m trying to develop an application that finds POIs of a city like museums, user input is country name and city name, this get translated to latitude and longitude using nominatim service, I would like to write a query for overpass that starting from those cohordinates lists me all pois inside the city.\n\nieg: users enter England, London and gets a list of museums in London city boundaries. I choosed to use both country and city names for locating the starting point to avoid city duplication.\n\nIs it possible to do so?\n\nI’m doing some exeperiments using overpass-turbo to try to find the right query before putting in my software, anyway I still haven’t found something that gives me results I would like and in a reasonable time.\n\nThis is my current overpass query:\n\nis_in(41.8933203,12.4829321)->.a; area(area.a)[boundary=administrative] ->.fi; area(area.fi)[admin_level=8]->.city; node(area.city)['amenity'='museum']; out;\n\nI accept any kind of suggestion.\n\nbest regards,\n\nmagowiz\n\nUnder the hood, overpass turbo simply calls Nominatim, then replaces the .searchArea by whatever was returned by Nominatim (also adds some special offset value for areas). OP probably can’t include overpass turbo in their app, and needs to implement something similar.\n\nYour query is not valid, Overpass API doesn’t support area in area queries like this one here:\n\narea(area.a)[boundary=administrative] ->.fi;\n\nEssentially it means, the (area.a) is being ignored, and you’re processing all areas worldwide (!).\n\nOne way to specify these filters would be:\n\nis_in(41.8933203,12.4829321)->.all_areas; area.all_areas[boundary=administrative][admin_level=8]->.city; nw(area.city)[tourism=museum]; out center;\n\nThis works without querying Nominatim, but may not work depending on how admin boundaries are mapped.\n\nBTW: I also changed amenity=museum to tourism=museum, as that’s the correct tagging for a museum (overpass turbo wizard fixed that already, see above). Also, I added ways in the result, as not every museum is mapped as a node. And finally, I returned the center point for each POI. You might want to include relations as well, ymmv.\n\nHi all,\n\nthank you for your responses: I meanwhile found something that works, I didn’t know I can use two different concentric areas, since user input is country and city I found this suitable:\n\narea[name=\"France\"]; rel[name=\"Paris\"](area); map_to_area; ( node[\"tourism\"=\"museum\"](area); way[\"tourism\"=\"museum\"](area); relation[\"tourism\"=\"museum\"](area); ); out;\n\nIn any case if you find that for any reason my query is not optimized like yours let me know, I found a similar example in “area” part of official documentation and I tried to adapt it.\n\nI’m using overpy which is a python library that performs overpass api queries, I cannot use overpass turbo specific syntax\n\n@Mateusz_Konieczny for what is usage of mine app I plan to place a request every new travel, so I mean I need to plan a travel to Paris and I will lookup openstreetmap once to get all pois, that will be cached and saved locally, I don’t know if this could be a wider use, in any case I will found a solution\n\n@mmd in terms of performance do you think that using is_in instead of query I proposed, is better?\n\nThanks again for the information you gave to me.\n\nShould I mark this as solved? Since we have here 2 working queries.\n\nok thank you very much for your contribute, seeing what you proposed I changed a bit mine final query\n\nthis is my python code that generates query:\n\nTOURIST_ATTRACTIONS is a list of possible tourism values I use in or, in the clause, I choose to get with out both meta and geom to be sure I get: latitude and longitude (so I can generate a osm link) and also few information like opening hours when available. But also in this case correct me if I’m wrong.\n\ncl_tags = '|'.join(TOURIST_ATTRACTIONS) clause = f'nwr[\"tourism\"~\"{cl_tags}\"](area.searchArea);' query = f\"\"\" area[name={self.country_name}]; rel[name=\"{self.city_name}\"](area); map_to_area ->.searchArea; {clause} out meta geom; \"\"\"\n\nMaybe you could add ^ and $ to your regular expressions for exact string matches:\n\nnwr[\"tourism\"~\"^(hotel|museum)$\"];\n\nYou put {self.city_name} in quotation marks, but you left them out for the country name {self.country_name}. I would use them everywhere to avoid issues with countries like “United States of America”.\n\nIf a user can provide any of these values as input, don’t forget to sanitize / escape values as needed.\n\nperfect, thank you for suggestions:\n\nhere it is the code:\n\ncl_tags = '|'.join(TOURIST_ATTRACTIONS) clause = f'nwr[\"tourism\"~\"^({cl_tags})$\"](area.searchArea);' query = f\"\"\" area[name=\"{self.country_name}\"]; rel[name=\"{self.city_name}\"](area); map_to_area ->.searchArea; {clause} out meta geom; \"\"\" result = self.overpass_api.query(query)\n\nI agree with you that user input needs somehow to get sanitized, since location is the most important thing on my app I spent a little more effort to avoid free input and in the same time give user possibility to easily choose: user inserts letters (part of name of a city for example), I perform then a query on another library (countryinfo) to fetch only valid values, so I prevent user to insert not valid values, he/she is able only to search and select across valid combinations."
+    }
+}

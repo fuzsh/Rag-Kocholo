@@ -1,0 +1,41 @@
+{
+    "id": "dbpedia_8430_2",
+    "rank": 51,
+    "data": {
+        "url": "https://stackoverflow.com/questions/17551156/get-the-nearest-longitude-and-latitude-from-mssql-database-table",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Get the nearest longitude and latitude from MSSQL database table?",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/abf13058a202ab8d3805937e8b15af85?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/PgzRj.png",
+            "https://i.sstatic.net/Xy6oB.png",
+            "https://i.sstatic.net/wgHm4.png",
+            "https://i.sstatic.net/PgsRE.png",
+            "https://i.sstatic.net/oQ40I.jpg?s=64",
+            "https://www.gravatar.com/avatar/db83411b2a7593e682053a4235b52bbc?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/f3b9936c43f72d26a385f7e9ea90769d?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/zGsvQ.jpg?s=64",
+            "https://www.gravatar.com/avatar/11646005668a23c7cb18912713b1235b?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/4cdHb.png?s=64",
+            "https://stackoverflow.com/posts/17551156/ivc/9878?prg=1908840e-e7b3-4880-820b-ce509b9b209b"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2013-07-09T14:41:06",
+        "summary": "",
+        "meta_description": "Ok I have searched SO and Google but haven't really found a definitive answer so throwing it out there for the SO community.\n\nBasically I have a table of longitudes and latitudes for specific point...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/17551156/get-the-nearest-longitude-and-latitude-from-mssql-database-table",
+        "text": "Let's look at a simple example of using the STDistance function in SQL Server 2008 (and later).\n\nI'm going to tell SQL Server that I'm in London, and I want to see how far away each of my offices are. Here's the results that I want SQL Server to give me:\n\nFirst, we'll need some sample data. We'll create a table containing a few locations of Microsoft offices, and we'll store their longitude & latitude values in a geography field.\n\nCREATE TABLE [Offices] ( [Office_Id] [int] IDENTITY(1, 1) NOT NULL, [Office_Name] [nvarchar](200) NOT NULL, [Office_Location] [geography] NOT NULL, [Update_By] nvarchar(30) NULL, [Update_Time] [datetime] ) ON [PRIMARY] GO INSERT INTO [dbo].[Offices] VALUES ('Microsoft Zurich', 'POINT(8.590847 47.408860 )', 'mike', GetDate()) INSERT INTO [dbo].[Offices] VALUES ('Microsoft San Francisco', 'POINT(-122.403697 37.792062 )', 'mike', GetDate()) INSERT INTO [dbo].[Offices] VALUES ('Microsoft Paris', 'POINT(2.265509 48.833946)', 'mike', GetDate()) INSERT INTO [dbo].[Offices] VALUES ('Microsoft Sydney', 'POINT(151.138378 -33.796572)', 'mike', GetDate()) INSERT INTO [dbo].[Offices] VALUES ('Microsoft Dubai', 'POINT(55.286282 25.228850)', 'mike', GetDate())\n\nNow, supposing we were in London. Here's how to make a geography value out of London's longitude & latitude values:\n\nDECLARE @latitude numeric(12, 7), @longitude numeric(12, 7) SET @latitude = 51.507351 SET @longitude = -0.127758 DECLARE @g geography = 'POINT(' + cast(@longitude as nvarchar) + ' ' + cast(@latitude as nvarchar) + ')';\n\nAnd finally, lets see how far each of our offices is.\n\nSELECT [Office_Name], cast([Office_Location].STDistance(@g) / 1609.344 as numeric(10, 1)) as 'Distance (in miles)' FROM [Offices] ORDER BY 2 ASC\n\nAnd this gives us the results we were hoping for.\n\nObviously, you could slip in a TOP(1) if you just wanted to see the closest office.\n\nCool, hey ?\n\nThere's just one snag. When you have a lot of geography points to compare against, performance isn't brilliant, even if you add a SPATIAL INDEX on that database field.\n\nI tested a point against a table of 330,000 geography points. Using the code shown here, it found the closest point in about 8 seconds.\n\nWhen I modified my table to store the longitude and latitude values, and used the [dbo].[fnCalcDistanceMiles] function from this StackOverflow article, it found the closest point in about 3 seconds.\n\nHowever...\n\nAll of the \"distance between two points\" samples I found on the internet either used the SQL Server STDistance function, or mathematical formulae involving the (CPU-intensive) cos, sin and tan functions.\n\nA faster solution was to travel back in time to high school, and remember how Pythagoras calculated the distance between two points.\n\nSupposing we wanted to know the distance between London and Paris.\n\nAnd here's my SQL Server function:\n\nCREATE FUNCTION [dbo].[uf_CalculateDistance] (@Lat1 decimal(8,4), @Long1 decimal(8,4), @Lat2 decimal(8,4), @Long2 decimal(8,4)) RETURNS decimal (8,4) AS BEGIN DECLARE @d decimal(28,10) SET @d = sqrt(square(@Lat1-@Lat2) + square(@Long1-@Long2)) RETURN @d END\n\nNow, remember this function doesn't return a value in miles, kilometers, etc... it's merely comparing the longitude & latitude values. And Pythagoras is meant to be used in 2D, and not comparing points on a round planet !\n\nHowever, in my tests, it found the closest point within 1 second, and produced the same results as using SQL Server's STDistance function.\n\nSo, feel free to use this function for comparing relative distances, but don't use this function if you need the actual distance itself.\n\nHope all this helps."
+    }
+}

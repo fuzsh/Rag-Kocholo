@@ -1,0 +1,38 @@
+{
+    "id": "dbpedia_8430_3",
+    "rank": 19,
+    "data": {
+        "url": "https://stackoverflow.com/questions/4661888/finding-cities-close-to-one-another-using-longitude-and-latitude",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Finding cities close to one another using longitude and latitude",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://cdn.sstatic.net/Img/teams/teams-promo.svg?v=e507948b81bf",
+            "https://www.gravatar.com/avatar/f5295bb1f09b65597d960ced3b4da670?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/15b8e1deba43bba16890123d9fc917f0?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/a007be5a61f6aa8f3e85ae2fc18dd66e?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/LBxjW.jpg?s=64",
+            "https://i.sstatic.net/oK3oC.jpg?s=64",
+            "https://www.gravatar.com/avatar/ca3f7e968f1df433b6bc9adc9072f2cc?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/e4bac7ebd5f5a06c716f508af656e24b?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/4661888/ivc/9878?prg=3f47c07c-5e2d-4c09-90f9-7d0322953a86"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2011-01-11T19:47:21",
+        "summary": "",
+        "meta_description": "Each user in my db is associated to a city (with it's longitude and latitude)\n\nHow would I go about finding out which cities are close to one another?\n\ni.e. in England, Cambridge is fairly close to",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/4661888/finding-cities-close-to-one-another-using-longitude-and-latitude",
+        "text": "Getting coordinates from City names is called reverse geo coding. Google maps has a nice Api fot that.\n\nThere is also the Geonames project where you get huge databases of cities, zip codes etc and their cooridnates\n\nHowever if you already have the coordinates, its a simple calculation to get the distance.\n\nThe tricky thing is to get a nice performant version of it. You probably have it stored in a mysql database, so you need to do it there and fast.\n\nIt is absolutely possible. I once did a project including that code, I will fetch it and post it here.\n\nHowever to speed things up I would recommend first doing a rectangular selection around the center coordinates. This is very, very fast using bee tree indexes or even better stuff like multidimensional range search. Then inside that you can then calculate the exact distances on a limited set of data. Outside that recangular selection the directions are so vast that it does not need to be displayed or calculated so accurately. Or just display the country, continent or something like that.\n\nI am still at the office but when i get home i can fetch the codes for you. Int he meantime it would be good if you could inform me how you store your data.\n\nEdit: in the mean time here you have a function which looks right to me (i did it without a function in one query...)\n\nCREATE FUNCTION `get_distance_between_geo_locations`(`lat1` FLOAT, `long1` FLOAT, `lat2` FLOAT, `long2` FLOAT) RETURNS FLOAT LANGUAGE SQL DETERMINISTIC CONTAINS SQL SQL SECURITY DEFINER COMMENT '' BEGIN DECLARE distance FLOAT DEFAULT -1; DECLARE earthRadius FLOAT DEFAULT 6371.009; -- 3958.761 --miles -- 6371.009 --km DECLARE axis FLOAT; IF ((lat1 IS NOT NULL) AND (long1 IS NOT NULL) AND (lat2 IS NOT NULL) AND (long2 IS NOT NULL)) THEN -- bit of protection against bad data SET axis = (SIN(RADIANS(lat2-lat1)/2) * SIN(RADIANS(lat2-lat1)/2) + COS(RADIANS(lat1)) * COS(RADIANS(lat2)) * SIN(RADIANS(long2-long1)/2) * SIN(RADIANS(long2-long1)/2)); SET distance = earthRadius * (2 * ATAN2(SQRT(axis), SQRT(1-axis))); END IF; RETURN distance; END;\n\ni quoted this from here: http://sebastian-bauer.ws/en/2010/12/12/geo-koordinaten-mysql-funktion-zur-berechnung-des-abstands.html"
+    }
+}

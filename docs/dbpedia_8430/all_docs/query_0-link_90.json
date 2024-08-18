@@ -1,0 +1,34 @@
+{
+    "id": "dbpedia_8430_0",
+    "rank": 90,
+    "data": {
+        "url": "https://stackoverflow.com/questions/62366229/work-out-the-50-miles-radius-from-london-latitude-and-longitude-coordinates",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Work out the 50 miles radius from London latitude and Longitude coordinates",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://cdn.sstatic.net/Img/survey-cta.svg?v=171e02557b0d",
+            "https://www.gravatar.com/avatar/7b2ec254f2eed46ce041f294e8240240?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/WfzI3.jpg?s=64",
+            "https://www.gravatar.com/avatar/38b1c37530189ec4471a43a618e33f67?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/62366229/ivc/9878?prg=9c1cd71e-27be-42b2-bc2a-2e547817ed59"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2020-06-13T22:23:55",
+        "summary": "",
+        "meta_description": "I have written a Java API, which consumes another API, which is a list of users, with the following properties in JSON format.  Users have firstname, lastname, IP address, email, and location coord...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/62366229/work-out-the-50-miles-radius-from-london-latitude-and-longitude-coordinates",
+        "text": "The way to properly and accurately calculate distance between two points on the earth is with the Inverse/Forward formulas (written in 1975; as far as I know, no one has managed to come up with better formulas since then).\n\nSince your distance is short, you might be able to get away with using sphere-based calculations, but if you want to be truly correct, Inverse/Forward is the way to do it. This is because our planet is not a perfect sphere. The distance from pole to pole is slightly smaller than the equatorial diameter, so the planet is a “squashed” sphere, formally known as an oblate spheroid. This difference is enough to matter when navigating and calculating distances, unless those distances are very small.\n\nTranslating the original Inverse/Forward Fortran code is possible (I’ve done it for more than one project), but it’s likely to be easier to make use of the free libraries which do it, such as this one.\n\nThe numbers that describe the difference between the planet’s polar and equatorial diameters are known as a “reference ellipsoid.” The one most commonly used is the WGS84 ellipsoid, which is accurate enough for most purposes. It just so happens that the above class has a convenient static WGS84 instance defined.\n\nBefore you can calculate anything, first you need to define what “within a 50 mile radius” means. Within 50 miles of what, exactly? The center of London?\n\nWikipedia says that London is at 51°30′26″N 0°7′39″W, which seems like as reasonable a starting point as any for distance calculations.\n\nTraditionally, latitude and longitude are expressed in decimal degrees when doing calculations, which means a double precision floating point number (that is, a Java double) whose integer part is the number of degrees, and whose decimal part is the minutes and seconds. By convention, positive values are north or east, while negative values are south or west.\n\nThus, 50°30′N 99°15′W is a latitude of 50.5 and a longitude of -99.25, in decimal degrees.\n\nYour code is obtaining latitude and longitude as ints. I very much doubt that your locations are integer numbers of degrees, since very few locations are at, for example, exactly 49° north. Only you know how those int values are intended to represent minutes and seconds. It is up to you to convert those values to decimal degrees.\n\nOnce you have London’s location in decimal degrees, and you know how to convert your user locations into decimal degrees, you can invoke the Inverse method of the Geodesic class I linked to above:"
+    }
+}
