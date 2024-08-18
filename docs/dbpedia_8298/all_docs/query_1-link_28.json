@@ -1,0 +1,32 @@
+{
+    "id": "dbpedia_8298_1",
+    "rank": 28,
+    "data": {
+        "url": "https://stackoverflow.com/questions/74789464/libigl-tutorial-example-102-windows-visual-studio-code-with-build-tools-integra",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Libigl Tutorial Example 102 WINDOWS Visual Studio Code with Build Tools (integrated CMake and compiler cl.exe)",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://lh3.googleusercontent.com/a/AEdFTp7X4QhyT4AMG-RSE-ltRZtVwZoCTAXNOMHczCRd=k-s64",
+            "https://lh3.googleusercontent.com/a/AEdFTp7X4QhyT4AMG-RSE-ltRZtVwZoCTAXNOMHczCRd=k-s64",
+            "https://stackoverflow.com/posts/74789464/ivc/ccf8?prg=15201cf4-59c2-4160-98f9-3b0078a8b5fb"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2022-12-13T18:33:59",
+        "summary": "",
+        "meta_description": "I am using Visual Studio 2022 and its build tools in Windows. In particular, I use Visual Studio with x64 Native Tools Command Prompt for VS 2022 to open VS and use its integrated CMake and compile...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/74789464/libigl-tutorial-example-102-windows-visual-studio-code-with-build-tools-integra",
+        "text": "After some time working on how to correctly build libigl in my computer, I finally have a solution to my question. I hope this information is also helpful for users who are used to working with Visual Studio Code (not Visual Studio!) in the Windows system. So here I go.\n\nFirst of all, I insist on the difference between VSC (Visual Studio Code) and Visual Studio. While VSC is a code editor, VS is a full-featured Integrated Development Environment (IDE). VS can easily manipulate solution files, but for Visual Studio Code this is different. Hence, by default, there is no solution explorer in Visual Studio Code. However, we will be able to build solution files in VSC without any problem.\n\nTo have VSC well set for the project, we need to install Microsoft Visual Studio Build Tools. Although these tools are for Visual Studio, they also work for Visual Studio Code. In particular, these tools will allow us to use the default compiler of Visual Studio Code: cl. Notice that if we want to use these tools, the only way VSC can recognise them is by opening VSC from the Developer Command Prompt, which has this special function. Thus, the compiler cl will not be recognised in the Windows terminal or in the integrated terminal of VSC.\n\nOnce we have downloaded libigl from the github repository, we want to use CMake to configure our project. For this, we will use the CMakeLists.txt in the root folder. Also, if you want to start with the libigl-example-project, for ease of use, place libigl and libigl-example-project in the same folder and then start configuring the last one.\n\nLet´s continue with libigl...\n\nHowever, be careful! Before the CMake process, there is something you have to modify in one of the .cpp files of the project. Apparently, in the file Viewer.cpp line 187, the identifier GLVersion is undefined! If you do nothing about it, you will have 2 errors when building the solution file libigl.sln after. In order to correct these two errors, you can just simply comment out the line.\n\nNow, for CMake, there are two options:\n\nUse CMake extensions of VSC: CMake and CMake Tools. When you open the folder, you will be asked to select a kit. You simply choose the native compiler and the project will be configured automatically.\n\nInstall CMake for Windows: https://github.com/libigl/libigl/issues/1052#issuecomment-449656124 Here everything is well-explained (thank you!)\n\nYou will end up with a full build folder. We are interested in the file libigl.sln, which is a solution file. There are two ways to build this file:\n\nUse Visual Studio, which has the option of opening solutions. The solution will be opened and you will see the structure of the project. You then right-click on the solution and build it.\n\nIn the integrated terminal of VSC (more comfortable) go to the build folder (the solution is located there) and write MSBuild.exe along with the solution file: MSBuild.exe ./libigl.sln. The building process will start.\n\nIn both cases, you will have a bin folder located in build and inside the Debug folder you will see all the executables for the tutorials! In order to run them, it suffices to do the usual: go to this folder and write ./nameoftutorial.exe.\n\nI would also like to refer to these two videos of youtube which have helped me during this task: https://youtu.be/HRGZDnNMc5U?list=PLalVdRk2RC6o5GHu618ARWh0VO0bFlif4 https://youtu.be/gGxi500Q5uE\n\nIf there is something to be added or commented, please do not hesitate. Now, enjoy!"
+    }
+}

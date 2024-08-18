@@ -1,0 +1,28 @@
+{
+    "id": "dbpedia_8299_1",
+    "rank": 43,
+    "data": {
+        "url": "https://chrisdone.com/posts/ghcjs/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Experimenting with GHCJS, the HaskellâJavaScript compiler",
+        "top_image": "",
+        "meta_img": "",
+        "images": [],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "",
+        "meta_favicon": "",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "JavaScript per se is insufficient. The depths to which JavaScript fails is well-documented and well-understood. Its main faults are its verbose function syntax , late binding , which has led to the creation of various static analysis tools to alleviate this language flaw , but with limited success (there is even a static type checker ), finicky equality, this behaviour, and lack of static types and modules .\n\nUsing JavaScript for what it is good for , but not using the language per se, is therefore desirable, and many are working to achieve this , in some form or another. There various ways to do it , but I will opt for compiling an existing language, Haskell, to JavaScript, because I do not have time to learn or teach other people a new language, garner a new library set and a new type checker and all that Haskell implementations provide.\n\nGiven the option, Iâd choose GHC because it is the flagship Haskell compiler, with the most features, which most Haskellers write all their projects with. Haskell has a standard, presently Haskell 2010, but I think that most projects out there use quite a few language extensions outside of the standard; Haskellers target GHC. This is not to say that for compiling to JS, Haskell 98 wouldnât be a vast improvement.\n\nFortunately there is a project maintained by Victor Nazarov called GHCJS. You can use GHC 6.12.3 or GHC 7+. For my experimentation I am using 6.12.3. I followed the instructions given, with a fix for the build process , and some tweaks to the libraries . In order to build the libraries and copy them to the examples/ directory, I wrote a little script , which helps automate this. There is also BuildTest.hs in the examples/ dir which gentle reader should try first.\n\nAfter much twiddling and fudging with the example file and the provided FFI, some help from Victor Nazarov, with some trial and error, I managed to get some fundamental things working that are necessary to be able to write effectively in the JavaScript environment . Timers work (and AJAX requests will), but this example is merely a clickable blank page which alerts ââEllo, World!â. Uninteresting functionally, but a good test of the fundamentals (see the pasted Haskell source).\n\nNext up, I will write a simple pong game to test integration with the canvas element and speed of the runtime and establish some sort of base library and project template from which other Haskellers can more easily experiment. Perhaps we could even have in the future a browser-based IDE and compiler which can of course run the compiled code in the userâs browser. That would be nice."
+    }
+}

@@ -1,0 +1,30 @@
+{
+    "id": "dbpedia_8303_1",
+    "rank": 32,
+    "data": {
+        "url": "https://docs.bleachbit.org/doc/command-line-interface.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "BleachBit Documentation : Command Line Interface",
+        "top_image": "",
+        "meta_img": "",
+        "images": [],
+        "movies": [
+            "https://www.youtube-nocookie.com/embed/Tdn81MXqcZo"
+        ],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "",
+        "meta_site_name": "",
+        "canonical_link": "https://docs.bleachbit.org/doc/command-line-interface.html",
+        "text": "Command Line Interface\n\nMost anything you can do with the graphical user interface, you can do with BleachBit’s command line interface which serves two needs:\n\nAutomating cleaning in scripts, batch files, and scheduled tasks\n\nRunning BleachBit headless in terminal-only connections.\n\nThis page includes some examples.\n\nVideo\n\nThis video introduces the command line interface for Microsoft Windows.\n\nMicrosoft Windows\n\nIn Windows, use the executable bleachbit_console.exe to console output. The directory isn’t added automatically to the path, so you use the full path C:\\Program Files (x86)\\BleachBit\\bleachbit_console.exe. Where acceptable, it is best to substitute the environment variable %ProgramFiles(x86)% for C:\\Program Files (x86)\\.\n\nLinux\n\nRunning bleachbit (which is in the path) with arguments runs BleachBit in command line mode. Without arguments, BleachBit runs in graphical mode. The clipboard can only be cleaned under an X session (which is generally not available over SSH or in cron).\n\nListing options\n\nTo see a list of cleaners and their options, run:\n\nbleachbit --list\n\nPreview\n\nTo preview deleting Firefox cache, run:\n\nbleachbit --preview firefox.cache\n\nMultiple arguments are allowed. To preview deleting Firefox cache and Opera cache, run:\n\nbleachbit --preview firefox.cache opera.cache\n\nWildcards are allowed for options (though not cleaners), so to preview deleting all options for Opera, run:\n\nbleachbit --preview opera.*\n\nTo select the same options as in the GUI, use --preset, which may be combined with other options:\n\nbleachbit --preview --preset firefox.cookies\n\nDeleting files\n\nWhen you are ready to delete files and make other permanent changes, replace --preview with --clean. To vacuum Firefox, for example, run:\n\nbleachbit --clean firefox.vacuum\n\nOverwriting files\n\nTo overwrite the contents of files, so they cannot be undeleted later, add --overwrite:\n\nbleachbit --overwrite --clean firefox.vacuum\n\nWithout --overwrite, BleachBit checks the configuration set in the graphical user interface.\n\nShredding files\n\nTo shred any file, so its contents cannot be recovered, use --shred. While --overwrite refers to the files identified by --clean, the option --shred shreds any file anywhere. For example, this shreds one file named yoga_emails.txt:\n\nbleachbit --shred ~/yoga_email.txt\n\nTo shred all files under a directory, pass the name of the directory like this:\n\nbleachbit --shred \"C:\\Microsoft Exchange\\Top Secret Emails\\\"\n\nWiping free space\n\nWhen files are deleted without shredding, the contents might be recoverable from the disk’s free space. To prevent recovery from free space, you can wipe the free space. Unlike wiping specific files, wiping free space takes a long time.\n\nYou might want to wipe free space for each logical drive. For example, on Windows you might wipe C: and D:, if you have both and write sensitive files to them both. On Linux, you might want to wipe / and /home if they are separate partitions and if you write sensitive information to both.\n\nTo wipe any partition, pass any writable directory in that partition to --wipe-free-space. For example:\n\nbleachbit --wipe-free-space ~/.cache/\n\nWiping free space does not change how much free space is left, when the process is done. For example, if you start with 10GB free, then you will still have 10GB free when the process is done.\n\ncron example (Linux)\n\nTo vacuum Firefox each night at 03:00, run:\n\ncrontab -e\n\nand add this line:\n\n0 3 * * * bleachbit --clean firefox.vacuum\n\nWindows Task Scheduler\n\nTo vacuum Firefox each night at 03:00:"
+    }
+}

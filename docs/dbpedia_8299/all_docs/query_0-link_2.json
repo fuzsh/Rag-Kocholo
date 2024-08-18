@@ -1,0 +1,35 @@
+{
+    "id": "dbpedia_8299_0",
+    "rank": 2,
+    "data": {
+        "url": "https://stackoverflow.com/questions/5515786/what-are-the-key-semantic-differences-between-ruby-and-javascript",
+        "read_more_link": "",
+        "language": "en",
+        "title": "What are the key semantic differences between Ruby and Javascript",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/1338192ab1de622c9562ad3a105568da?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/ed181f8c80df53d2b67a4f4fff088ed4?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/2024054e404233ed97b7d9287aff103d?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/b21548c2aa3b582a8b88347af9ea79d6?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/51dcf0a6e20c2734423118e7eee9e45d?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/5515786/ivc/ccf8?prg=30c58277-2034-4338-bad2-9316da3a6077"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2011-04-01T15:53:28",
+        "summary": "",
+        "meta_description": "If one were to implement Ruby on top of a Javascript engine (either in the browser or on top of standalone V8 or Spidermonkey), what would be the key impedance mismatches between the Ruby and JS ob...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/5515786/what-are-the-key-semantic-differences-between-ruby-and-javascript",
+        "text": "The most in-your-face one is obviously the fact that ECMAScript is prototype-based and Ruby is class-plus-mixin-based. Also, in Ruby, encapsulation is done with objects, in ECMAScript with closures.\n\nHowever, my guess is that Ruby's control flow constructs are going to be a much bigger hurdle than its object model. After all, James Coglan's JS.Class is basically an implementation of Ruby's object model in ECMAScript and it's not that big.\n\nECMAScript simply lacks the tools needed to build your own control-flow constructs on top of it. Typically, you need either GOTO, continuations or proper tail calls. If you have one of those, you can easily implement everything else: exceptions, loops, switches, threads, Fibers, generators, coroutines, … you name it.\n\nBut ECMAScript doesn't have them (and for good reason, at least in the case of GOTO). The only control-flow construct ECMAScript has that is powerful enough to be able to build other constructs on top of is exceptions. Unfortunately, those are pretty slow. (Nonetheless, they have been used as an implementation substrate, for example in the Microsoft Live Labs Volta compiler, which used ECMAScript exceptions to implement .NET exceptions, iterators, generators and even threads.)\n\nSo, basically you are stuck with implementing at least your own call stack if not an entire interpreter (as is the case with HotRuby), performing global CPS transforms or something like that.\n\nBasically, what you want from a Ruby engine running on top of ECMAScript, is\n\na faithful implementation of the RubySpec (specifically the control-flow constructs such as threads, fibers, throw/catch, exceptions etc.),\n\nperformance and\n\ntight integration with ECMAScript (i.e. the ability to pass objects and call methods back and forth between the two languages).\n\nUnfortunately, when you have to resort to tricks like managing your own stack, doing CPS transforms, building on top of exceptions, … it turns out that you can only pick two of the three goals.\n\nJavaScript is Turing-complete, so theoretically you can implement anything, including other programming languages in it. It doesn't matter how different the implementation (JavaScript) and the target language (Ruby) are. The impedance mismatch between languages like Ruby and C is huge, and there you have Ruby, Python, Perl, and JavaScript itself, all implemented in C.\n\nImplementing Ruby in JavaScript should be orders of magnitude easier than doing so in a lower level language. To your advantage, you have that much of Ruby and Ruby's standard library are written in Ruby itself, so once you get a basic interpreter going, things should gradually be more and more downhill.\n\nImplementing an efficient Ruby interpreter in JavaScript may be harder, but it's still possible. You may end up translating Ruby to JavaScript so the excellent optimizers available can kick in.\n\nSo, do not think about the differences between Ruby and JavaScript. Take a look at the standard implementation of Ruby, and think about how you would implement that in JavaScript."
+    }
+}

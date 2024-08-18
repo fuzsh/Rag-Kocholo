@@ -1,0 +1,46 @@
+{
+    "id": "dbpedia_8301_2",
+    "rank": 67,
+    "data": {
+        "url": "https://www.inovex.de/en/blog/apache-mesos-build-your-own-framework/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Apache Mesos: Build your own Framework",
+        "top_image": "https://www.inovex.de/wp-content/uploads/2015/09/artikelbild-cut.jpg",
+        "meta_img": "https://www.inovex.de/wp-content/uploads/2015/09/artikelbild-cut.jpg",
+        "images": [
+            "https://www.inovex.de/wp-content/uploads/softwaredev-icon-150x150.png",
+            "https://www.inovex.de/wp-content/uploads/data-ai-icon-150x150.png",
+            "https://www.inovex.de/wp-content/uploads/infrastructure-icon-150x150.png",
+            "https://www.inovex.de/wp-content/uploads/digital-strategy-icon-150x150.png",
+            "https://www.inovex.de/wp-content/uploads/digital-product-icon-150x150.png",
+            "https://www.inovex.de/wp-content/uploads/Leistungs-Icon_Academy-150x150.png",
+            "https://www.inovex.de/wp-content/uploads/2015/09/artikelbild-cut-1500x876.jpg",
+            "https://www.inovex.de/wp-content/uploads/2015/09/framework-1024x690.png",
+            "https://www.inovex.de/wp-content/uploads/2015/09/kommunikation.png",
+            "https://www.inovex.de/wp-content/uploads/2015/09/sprachen.png",
+            "https://www.inovex.de/wp-content/uploads/2015/09/imports.png",
+            "https://www.inovex.de/wp-content/uploads/2015/09/code-1.png",
+            "https://www.inovex.de/wp-content/uploads/2015/09/code-2.png",
+            "https://www.inovex.de/wp-content/uploads/2015/09/code-3.png",
+            "https://www.inovex.de/wp-content/themes/inovex/assets/dist/img/avatars/avatar-5.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Johannes M. Scheuermann"
+        ],
+        "publish_date": "2015-09-30T09:50:04+00:00",
+        "summary": "",
+        "meta_description": "In this final blog post of our 3 part series we will have a look at how you can build your own Apache Mesos framework.",
+        "meta_lang": "de",
+        "meta_favicon": "https://www.inovex.de/wp-content/uploads/cropped-inovex-logo-square-1-32x32.png",
+        "meta_site_name": "inovex GmbH",
+        "canonical_link": "https://www.inovex.de/de/blog/apache-mesos-build-your-own-framework/",
+        "text": "In this final blog post of our 3 part series we will have a look at how you can build your own Apache Mesos framework. If you’re new to Mesos have a look at our introduction first and learn how to run tasks and applications using Marathon â otherwise jump right in.\n\nHow Mesos frameworks work\n\nA Mesos framework has a scheduler and an executor. Normally the scheduler isÂ be started manually by yourself or byÂ Marathon. The scheduler takes offers from the Mesos master and decidesÂ how itÂ will distributeÂ the tasks toÂ the offers itÂ gets. The SchedulerDriver is needed to communicate with the Mesos master so basically the driver is a kind of a translator.\n\nWhen the scheduler takes an offer and sends a taskinfo (which is the description of a task) to a slave (over the Mesos master) the Mesos slave will create an executor. The executor can start one or more tasks and can communicate withÂ the Mesos master over the ExecutorDriver. The executor can send status updates thatÂ contain information about the status of the tasks like staging, running and finished.\n\nIn aÂ first step the Scheduler registers itself withÂ the Mesos master. The scheduler gets the registered message from the Mesos master to see if everything worked Fine. In the next step the scheduler can request resources for his tasks after which the Mesos master will send offers from the Slaves to the Scheduler. When the scheduler has decided how itÂ will start the tasks and which resources itÂ will use the scheduler sends a launch message. Finally the Mesos master will send status updates about the tasks to the scheduler.\n\nGetting started\n\nWhen you want to start to write your own framework you have a very wide choice of programming languages:\n\nWe programmed the example framework with Python. To start with Python and Mesos you need to install the Mesos python egg. You can simply fetch the Python eggs from Mesosphere. The example is available on github.Â Also, there are some more examples, feel free to test these examples and have a look howÂ theyÂ work.\n\nWe import the standard scheduler to override the API functions we need. We also import the Mesos protobuf to access or create information and finallyÂ the MesosSchedulerDriver which allows us to talk toÂ the Mesos master.\n\nNext we create the HelloWorldScheduler which inherits from the Scheduler. Now we can override the functions we want to useâif we donât override a function the Scheduler will use the default function. We define a registered()Â Â method which will be called when the framework has registered at the Mesos master. The method simply prints out the framework id and the hostname of the Mesos master.\n\nThe method resourceOffers()Â will be called when the framework receives an offer from the Mesos master. In this case we simply take all offers and create new tasks which say ‚helloâ‘. With the last statement we send a list of tasks (acutally the list only contains one task but we have to send a list) to the Mesos master viaÂ the driver so they can be started. In the statusUpdate()Â method we simply print the status of each taskâthere are 8 different TaskStatesÂ thatÂ indicate the state of a task.\n\nTo create a new task we need to create a TaskInfo. Now we can assign a unique task idÂ and a slave id which we get from the offer. We can also assign the task a human readable name to identify it.\n\nIn the next steps we assign the task resource 0.1 CPU and 10 MB RAM. If you need to specify some other resources just have a look at the Mesos protobuf.Â Finally we want to launch our Frameowork:\n\nWe create a FrameworkInfo and assign the framework name âhello-worldâ. The framework assumes that itâs running on the master. Now you can start the framework with python hello_framework.pyÂ . When you go to the Mesos web UI and look inside the framework tab you will see that our framework appears there. Of course you can also see the tasks which are started by the framework.\n\nGet in touch\n\nFor all your data center needs visit our website, drop us an Email at list-blog@inovex.deÂ or callÂ +49 721 619 021-0. Any suggestions? Feel free to leave a comment below!\n\nWe’re hiring!\n\nLooking for a change? We’re hiring BigData Systems Engineers skilled in Hadoop (Hortonworks), Flume, Spark, Flink, Hive and Cloudera. Apply now!\n\nOur series on Apache Mesos"
+    }
+}

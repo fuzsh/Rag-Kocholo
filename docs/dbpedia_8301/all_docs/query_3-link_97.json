@@ -1,0 +1,43 @@
+{
+    "id": "dbpedia_8301_3",
+    "rank": 97,
+    "data": {
+        "url": "https://www.inovex.de/en/blog/apache-mesos-an-introduction/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Apache Mesos: An introduction",
+        "top_image": "https://www.inovex.de/wp-content/uploads/2015/09/artikelbild-cut.jpg",
+        "meta_img": "https://www.inovex.de/wp-content/uploads/2015/09/artikelbild-cut.jpg",
+        "images": [
+            "https://www.inovex.de/wp-content/uploads/softwaredev-icon-150x150.png",
+            "https://www.inovex.de/wp-content/uploads/data-ai-icon-150x150.png",
+            "https://www.inovex.de/wp-content/uploads/infrastructure-icon-150x150.png",
+            "https://www.inovex.de/wp-content/uploads/digital-strategy-icon-150x150.png",
+            "https://www.inovex.de/wp-content/uploads/digital-product-icon-150x150.png",
+            "https://www.inovex.de/wp-content/uploads/Leistungs-Icon_Academy-150x150.png",
+            "https://www.inovex.de/wp-content/uploads/2015/09/artikelbild-cut-1500x876.jpg",
+            "https://www.inovex.de/wp-content/uploads/2015/09/1-classical-cluster-setup-new-1024x537.png",
+            "https://www.inovex.de/wp-content/uploads/2015/09/2-cluster-mesos-scheduler-new-1024x621.png",
+            "https://www.inovex.de/wp-content/uploads/2015/09/3-mesos-architecture-new-1024x621.png",
+            "https://www.inovex.de/wp-content/uploads/2015/09/4-mesos-resources-new-1024x621.png",
+            "https://www.inovex.de/wp-content/themes/inovex/assets/dist/img/avatars/avatar-5.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Johannes M. Scheuermann"
+        ],
+        "publish_date": "2015-09-21T10:35:22+00:00",
+        "summary": "",
+        "meta_description": "Read on for the nitty gritty details in this first article in our Mesos mini series.",
+        "meta_lang": "de",
+        "meta_favicon": "https://www.inovex.de/wp-content/uploads/cropped-inovex-logo-square-1-32x32.png",
+        "meta_site_name": "inovex GmbH",
+        "canonical_link": "https://www.inovex.de/de/blog/apache-mesos-an-introduction/",
+        "text": "One of the biggest challenges in data centers is to maintain multiple clusters for different workloads. SayÂ you want to run Hadoop, Kafka and Storm which means that you have to maintain 3 different clusters. These different clusters are hardly utilized most of the timeÂ so for example when you run Hadoop you need many resources to get theÂ job done but the rest of the day these resources stay idle. With a very simple calculation you can see how much time your resources are idle and only waste space and money (and we didnât talkÂ about hardware replacements at this point!). Read on for the nitty gritty details in this first article in our Mesos mini series.\n\nSay aÂ Hadoop cluster runs a 3 hour job, thisÂ means the cluster is idle 21 hours a day. Looking at theÂ whole year we haveÂ a cluster which is idle for 7665 hours (!). AndÂ this calculation does not even take into account that weÂ usuallyÂ want to overprovision our cluster so that we can handleÂ load peaks.\n\nIn 2009 Benjamin Hindman and his team at UC Berkley had the same problem with multiple Hadoop clusters. So they created Apache Mesos which is a distributed system kernel and works as a cluster scheduler. Mesos abstracts the resources (CPU, memory, I/O, network) of a cluster for end users. So Mesos abstracts the whole cluster resources into one big computer and allows the user to have OS functionalities on a cluster-level. Â Mesos providesÂ a Web UI as well asÂ an API for resource and scheduling management. One of the first and biggest Mesos adopters is Twitter.\n\nApache Mesos runs on anyÂ POSIX oriented operating system (e.g. Linux and OSX) and allows you to share resources between multiple frameworks, which are handled kind of like an application.Â With Mesos youÂ are able to combine all these resources into oneÂ big cluster and run different workloads on it. When we introduce an intelligent time scheduling for example Hadoop runs only at a specific time and we can reduce the size of the cluster. Another approach is to run best effort jobs which run when some resources are idle and can be killed if a high priority job comes in. This oversubscription approach for Mesos is in development by Mesosphere, Intel and some other big companies.\n\nItâs pretty helpful to be able toÂ run different frameworks on your cluster without the need to provision new resources. So for example when you have some Tasks which can be better done with a special framework, e.g. Storm, you can simply run it on your cluster.\n\nMesos vs. regular OSes\n\nWhen we compare Mesos to a regularÂ OS we see that Mesos provides all the abstraction layers on a cluster-level which are provided by an OS on a single computer. One of the first things an operation system provides is process isolation, this means every process gets its own file descriptors, memory space etc. Mesos does the same by providing isolation with the help of cgroups, Docker or LXC.\n\nIn the next step an OS provides you resource sharing: GenerallyÂ you donât want to worry about resources â Â you just want to haveÂ the resources and let a scheduler assign them. This also allows you to share resources between different processes. Mesos does this usingÂ the DRF-algorithm (Dominant Resource Fairness). We will have a more detailed look at the scheduling part of Mesos later.\n\nOne of the last important things an OS provides (I know this is not a complete list by far) is a common infrastructure for the user. For example as developer you want to use functions like Read(), Write(), Open()â¦ and (most of the time) you donât really care about details of this functions‘ implementation. For Mesos the common infrastructure are functions like LaunchTask(), KillTask(), â¦ which allowÂ the framework to interact with Mesos.\n\nMesos â Architecture\n\nThere are 4 important components to run Mesos:\n\nMaster: Coordinates the work and decides which framework gets how many resources\n\nZookeeper: Used as distributed storage, enables the coordination of the masters\n\nSlave: AÂ worker node which provides itsÂ resources to run tasks of a framework\n\nFramework: Has a scheduler component which decides where a task gets launched and an executor which executes one or more tasks at the Slave.\n\nObviously we need resources to run our workload on a Mesos cluster:\n\nAnd this is how it works: When a Slave notices that itÂ has free resources itÂ sends an offer to the Mesos master which includes itsÂ Slave ID and the free resources. The allocation module inside the master decides which framework will get the offer. When a framework receives an offer it can decide how many of the resources it will take. For example the framework mayÂ only take the CPUs of an offer to start itsÂ tasks. When the framework has decided which resources it will take and how many tasks it will start it sends a message to the master. The message contains the number of tasks and the resources that it will allocate for each task. In aÂ last step the master passes this information on to the slave thatÂ reads these taskinfos (taskname, slave id, ressources) and starts theÂ tasks. When the tasks have finished and the resources are free again all these steps will be repeated.\n\nRun tasks on Mesos\n\nWhen we have a Mesos cluster we also want to run our jobs on it. The simplest way to run your tasks on Mesos is to use an existing framework (this is not a complete list of all Mesos frameworks). If you have some exotic workload or no framework fits your needs you can also build your own frameworkÂ â But I would only recommend this step if you really know what you are doing or if you want to get some insights into Mesos.\n\nGetting started\n\nTo get started right away you can use Vagrant to spin up a mini cluster to play around with\n\nhttps://github.com/everpeace/vagrant-mesos\n\nhttps://github.com/mesosphere/playa-mesos\n\nOr install you own cluster with the Mesosphere prebuilt packages https://mesosphere.com/downloads\n\nRead on\n\nIn the next part of this seriesÂ we will show you howÂ toÂ use Marathon (an init system for Mesos) to run your tasks on Mesos.\n\nGet in touch\n\nFor all your data center needs visit our website (now available in English, too!), drop us an Email at list-blog@inovex.deÂ or callÂ +49 721 619 021-0.\n\nOur series on Apache Mesos"
+    }
+}

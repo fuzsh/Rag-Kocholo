@@ -1,0 +1,32 @@
+{
+    "id": "dbpedia_8298_1",
+    "rank": 14,
+    "data": {
+        "url": "https://stackoverflow.com/questions/68652041/why-boostmultiprecisionexp-gets-stuck-when-evaluating-complex-valued-integra",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Why boost::multiprecision::exp gets stuck when evaluating complex-valued integral?",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/2d7c7812f912b61774b0c6b57637dccb?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/2d7c7812f912b61774b0c6b57637dccb?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://stackoverflow.com/posts/68652041/ivc/ccf8?prg=fd2260b7-fcd7-4ac0-b7a6-1f114f1cdb15"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2021-08-04T13:23:11",
+        "summary": "",
+        "meta_description": "I am new to Boost C++ Libraries, and naturally I have encountered many problems when using them (due to lack of knowledge and examples available :)\nOne of these problems comes from the following pi...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/68652041/why-boostmultiprecisionexp-gets-stuck-when-evaluating-complex-valued-integra",
+        "text": "I am new to Boost C++ Libraries, and naturally I have encountered many problems when using them (due to lack of knowledge and examples available :)\n\nOne of these problems comes from the following piece of code\n\n#include <iostream> #include <boost/math/constants/constants.hpp> #include <boost/math/quadrature/exp_sinh.hpp> #include <boost/multiprecision/mpc.hpp> #include <boost/multiprecision/mpfr.hpp> #include <boost/math/special_functions/fpclassify.hpp> namespace mpns = boost::multiprecision; typedef mpns::number<boost::multiprecision::mpc_complex_backend <50> > mpc_type ; typedef mpc_type::value_type mp_type ; int main() { using boost::math::constants::root_pi ; mpc_type z{mp_type(1),mp_type(1)} ; auto f = [&](mp_type x) { //actually I did not test if all these conditions are needed... if (boost::math::fpclassify<mp_type> (x) == FP_ZERO) { return mpc_type(mp_type(1)) ; }; if (boost::math::fpclassify<mp_type> (x) == FP_INFINITE) { return mpc_type(mp_type(0)) ; }; mp_type x2 = mpns::pow(x,2U) ; if (boost::math::fpclassify<mp_type> (x2) == FP_ZERO) { return mpc_type(mp_type(1)) ; }; if (boost::math::fpclassify<mp_type> (x2) == FP_INFINITE) { return mpc_type(mp_type(0)) ; }; mpc_type ex2 = mpns::exp(-z*x2) ; if (boost::math::fpclassify<mpc_type> (ex2) == FP_ZERO) { return mpc_type(mp_type(0)) ; }; return ex2 ; } ; mp_type termination = boost::math::tools::root_epsilon <mp_type> () ; mp_type error; mp_type L1; size_t max_halvings = 12; boost::math::quadrature::exp_sinh<mp_type> integrator(max_halvings) ; mpc_type res = integrator.integrate(f,termination,&error,&L1) ; mpc_type div = 2U*mpns::sqrt(z) ; mpc_type result = (mpc_type(root_pi<mp_type> ())/div) - res ; return 0; }\n\nWhen the code reaches mpc_type ex2 = mpns::exp(-z*x2) ;it gets stuck. Namely, it hangs when calculating the exponent. I spent some time trying to find out what is wrong but could not find a solution.\n\nI did several tests. For instance, <boost/multiprecision/mpfr.hpp> works just fine.,i.e. a real-valued version of the integrand can be integrated to arbitrary precision. I tested the mpfr-type version of the code up to boost::multiprecision::mpfr_float_backend <2000>.\n\nCalling the lambda-function f is possible and it returns correct numbers.\n\nI used different integrands, e.g. z*x , z*tgamma(x) and the program worked fine, with the same definitions of z and x which you can find in the example above.\n\nI use the latest version of the Boost libraries as provided by Tumbleweed, i.e. boost_1_76_0-gnu-mpich-hpc-devel\n\nCompiler : g++\n\ncppStandard : gnu++17\n\nWhat could be a source of this problem?\n\nSorry for a lengthy question."
+    }
+}

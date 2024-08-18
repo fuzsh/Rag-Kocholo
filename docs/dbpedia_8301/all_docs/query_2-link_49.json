@@ -1,0 +1,44 @@
+{
+    "id": "dbpedia_8301_2",
+    "rank": 49,
+    "data": {
+        "url": "https://www.techtarget.com/searchitoperations/tutorial/Build-a-successful-Apache-Mesos-installation-on-Linux-servers",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Build a successful Apache Mesos installation on Linux servers",
+        "top_image": "https://cdn.ttgtmedia.com/visuals/searchWindowsServer/active_directory/windowsserver_article_003.jpg",
+        "meta_img": "https://cdn.ttgtmedia.com/visuals/searchWindowsServer/active_directory/windowsserver_article_003.jpg",
+        "images": [
+            "https://www.techtarget.com/visuals/searchWindowsServer/active_directory/windowsserver_article_003_searchsitetablet_520X173.jpg",
+            "https://cdn.ttgtmedia.com/rms/onlineImages/rowe_walker.jpg",
+            "https://cdn.ttgtmedia.com/rms/editorial/053019_SITO_Apache-Mesos-dashboard_mobile.png",
+            "https://cdn.ttgtmedia.com/rms/onlineimages/code_g1127196618_searchsitetablet_520X173.jpg",
+            "https://cdn.ttgtmedia.com/rms/onlineimages/garn_damon.jpg",
+            "https://cdn.ttgtmedia.com/rms/onlineimages/toolGearArrow_g140057613_searchsitetablet_520X173.jpg",
+            "https://cdn.ttgtmedia.com/rms/onlineimages/garn_damon.jpg",
+            "https://cdn.ttgtmedia.com/rms/onlineimages/security_a385093447_searchsitetablet_520X173.jpg",
+            "https://cdn.ttgtmedia.com/rms/onlineImages/wallen_jack.jpg",
+            "https://cdn.ttgtmedia.com/rms/onlineimages/container_g1294273513_searchsitetablet_520X173.jpg",
+            "https://cdn.ttgtmedia.com/rms/onlineImages/wallen_jack.jpg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Walker Rowe",
+            "Damon Garn",
+            "Jack Wallen"
+        ],
+        "publish_date": "2019-06-03T12:34:00+00:00",
+        "summary": "",
+        "meta_description": "Learn how to create an Apache Mesos installation on two Ubuntu servers with this tutorial. Prepare for snags early in the process, know how to choose commands that can increase this tool's benefits, and apply some testing best practices.",
+        "meta_lang": "en",
+        "meta_favicon": "/favicon.ico",
+        "meta_site_name": "IT Operations",
+        "canonical_link": "https://www.techtarget.com/searchitoperations/tutorial/Build-a-successful-Apache-Mesos-installation-on-Linux-servers",
+        "text": "Apache Mesos is an open source cluster management tool that abstracts and isolates resources within distributed IT environments. Enterprises use Mesos with, or as an alternative to, Kubernetes for container orchestration in large-scale deployments.\n\nMesos has a master-agent architecture, in which a master daemon manages agent daemons that run on a cluster node. In this tutorial for Apache Mesos installation, we set up a master on one server and an agent on a second -- but it is possible to run both on one machine. There is no difference in procedure; the only difference is where the master is located when you start the agent.\n\nReaders should expect the build process -- compiling and linking the components of Apache Mesos -- to take about one hour on a two-core machine with 8 GB of memory.\n\nFirst, avoid these pitfalls\n\nClose any servers and end any running tasks on your machine before you begin compiling the Apache Mesos installation. This process can take 100% of the memory and prevent even SSH login attempts.\n\nAll commands must execute via the sudo command, which enables you to act as the administrative root user.\n\nTest frameworks are not critical: It's a complicated process to write a Mesos test framework, and a regular user is unlikely to need one. Instead, IT admins are more likely to use a Mesos framework developed by an established vendor such as Hadoop, Spark or Cassandra.\n\nApache Mesos installation setup and prerequisites\n\nMesos runs on most Linux distributions, MacOS and Windows. This tutorial uses Ubuntu 16.04; installation instructions differ for MacOS and Windows.\n\nOpen firewall port 5050 on both the master and agent daemons. If you don't have the necessary permissions for that port, use a port that is normally open -- an online port scanner can check for those.\n\nRun all the commands below. If you already have JDK 1.8, skip the step to install the Java development kit, in line two. Check for JDK 1.8 with the java -v command.\n\nsudo apt-get install -y tar wget git\n\nsudo apt-get install -y openjdk-8-jdk\n\nsudo apt-get install -y autoconf libtool\n\nsudo apt-get -y install build-essential python-dev python-six python-virtualenv libcurl4-nss-dev libsasl2-dev libsasl2-modules maven libapr1-dev libsvn-dev zlib1g-dev iputils-ping\n\nNow download and unzip the Apache Mesos installation files. Store these files in the /usr/share folder, which is available to all users.\n\ncd /usr/share/\n\nsudo mkdir mesos\n\nsudo wget http://www.apache.org/dist/mesos/1.7.2/mesos-1.7.2.tar.gz\n\nsudo tar -zxf mesos-1.7.2.tar.gz\n\ncd /usr/share/mesos/mesos-1.7.2\n\nBuild the software\n\nYou will need to build -- compile and link -- the software. Users can download a binary distribution, but at time of publication, the version number is several iterations behind what is available.\n\nThe simple build command, make, starts up the master and agent processes, and the following code should work: Installing the test frameworks that Mesos provides in Python and Java will probably fail.\n\nsudo mkdir build\n\ncd build\n\n../configure\n\nsudo make\n\nAn option to speed up the Mesos installation is to use all of the available CPU on the machine and to turn off logging, by adding to the make command:\n\n-j <number of cores> V=0\n\nInstall example frameworks\n\nApache Mesos does not run programs: It runs frameworks, which, in turn, run programs. Install the example frameworks. It will take about an hour to run.\n\nsudo make check\n\nStart Mesos\n\nComplete the installation by starting up the cluster orchestrator. Use an IP address that is accessible from the internet to use a cloud provider and the browser interface: For example, Amazon Elastic Compute Cloud usually uses a 172.* address. Amazon networking uses network address translation to expose internal networks to the internet. Don't use the loopback interface 127.0.0.1, as that only works locally.\n\nThe next step in this Apache Mesos installation is to start the master daemon:\n\ncd /usr/share/mesos/mesos-1.7.2/build/bin\n\nsudo ./mesos-master.sh --ip=172.31.47.43 --work_dir=/var/lib/mesos\n\nAnd then start the agent. This step can be done as many times as there are available agents. For a two-server setup, you could install the agent on both the operator server and the master to better emulate a cluster. Agent installation is exactly the same as that for the master, but starts a different program. To start the agent, assign to it the master's IP address and default port, 5050:\n\ncd /usr/share/mesos/mesos-1.7.2/build/bin\n\nsudo ./mesos-master.sh --hostname=(public domain name of you server) --ip=(ip address on your internal network) --work_dir=/var/lib/mesos\n\nOpen the browser via the public IP address, for example: http://ec2-35-180-230-169.eu-west-3.compute.amazonaws.com:5050/#/\n\nThe browser dashboard displays all agents' statuses; here, one agent is running, and zero tasks are ongoing.\n\nTest the framework\n\nTo test your Apache Mesos installation, configure it to run with a cluster-computing framework, such as Apache Spark. Or run any of the three commands listed below, which will configure the build as well, but they work only if the make check command returns a clean compile. The Python example requires Python version 2.7. Spark escapes that concern.\n\n./src/test-framework --master=127.0.0.1:5050\n\n./src/examples/java/test-framework 127.0.0.1:5050\n\npython test_framework.py 172.31.47.43:5050\n\nEstablish high availability\n\nHigh availability enables more than one copy of the master to run so that the system continues to work if a single master fails.\n\nTo set up Mesos in high availability mode, first run Apache ZooKeeper, a centralized service for distributed applications that helps maintain configuration information, synchronization and other operational aspects. Then start the masters and agents with the --zk argument: --zk=zk://host1:port1,host2:port2. This command alerts Mesos to the other master instances."
+    }
+}
