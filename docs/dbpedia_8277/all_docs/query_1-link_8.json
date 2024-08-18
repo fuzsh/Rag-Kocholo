@@ -1,0 +1,33 @@
+{
+    "id": "dbpedia_8277_1",
+    "rank": 8,
+    "data": {
+        "url": "https://discourse.julialang.org/t/test-oriented-development-julia-and-me/10245",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Test-oriented development, Julia, and me",
+        "top_image": "https://global.discourse-cdn.com/julialang/original/3X/4/d/4d76a1d8062ed9397f2f00f22abdd69926b51785.png",
+        "meta_img": "https://global.discourse-cdn.com/julialang/original/3X/4/d/4d76a1d8062ed9397f2f00f22abdd69926b51785.png",
+        "images": [
+            "https://sea2.discourse-cdn.com/julialang/user_avatar/discourse.julialang.org/non-jedi/48/3645_2.png",
+            "https://emoji.discourse-cdn.com/twitter/wink.png?v=12"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "testing"
+        ],
+        "tags": null,
+        "authors": [
+            "non-Jedi"
+        ],
+        "publish_date": "2018-04-09T14:27:53+00:00",
+        "summary": "",
+        "meta_description": "Like many users of Julia, I’m an engineer who mostly uses it to write one-off \nscripts and do ad-hoc calculations. But I’ve also started to try to wrap up \nsome of my more commonly-used functionality into packages for re&hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://global.discourse-cdn.com/julialang/optimized/3X/5/2/52e282d46eadd4022c458057bb740061d8efad72_2_32x32.png",
+        "meta_site_name": "Julia Programming Language",
+        "canonical_link": "https://discourse.julialang.org/t/test-oriented-development-julia-and-me/10245",
+        "text": "Like many users of Julia, I’m an engineer who mostly uses it to write one-off\n\nscripts and do ad-hoc calculations. But I’ve also started to try to wrap up\n\nsome of my more commonly-used functionality into packages for re-use and finding\n\nout: I have no idea how to write proper tests.\n\nThe two big questions I can’t seem to figure out are:\n\nHow big of pieces of functionality count as a unit and should have tests\n\nwritten for them?\n\nHow do you structure a package so that it’s easily testable? I find this\n\nespecially difficult since some of the packages I’m writing wrap\n\nfunctionality from other sources, and I don’t really want to test that the\n\nexternal dependency is working as expected nor require installation of the\n\nexternal dependency for execution of tests.\n\nAny advice? Or maybe a good tutorial on testing that’s language-agnostic enough\n\nto be applicable to Julia?\n\nYou learn these by doing, it is difficult to give general advice. There are books on the topic, but the best teacher is experience, along the lines of “if I tested that I would have saved two days of debugging”. That said,\n\nyou can (and should) test small pieces when it makes sense,\n\nbreak up things into small functions, which is good style anyway, and the compiler likes it too, so it is an overall win.\n\nyou don’t need to test functions from other packages. If you find something lacking coverage, just make a PR for that package.\n\nTo be more clear, I’m specifically talking about wrapping non-Julia stuff in\n\npoint 2. For example, this weekend I hacked together a lightweight wrapper for\n\ntaskwarrior. Most of the top-level functions\n\neventually call a function that calls taskwarrior. How do I structure the\n\nlibrary so that I can test that kind of stuff without actually calling the\n\ntask binary?\n\nHard to say without seeing your code. If, for example, you have functions that emit/parse data for/from an external library, you can test these.\n\nNote, however, that your will not be testing important functionality if you don’t test the actual interface to this library. Setting up a testing framework for this is usually more involved, eg your test script would need to download and install it.\n\nI don’t think you can really test a wrapper, without having the external dependency available for the tests.\n\nIf there is some stuff that you want to use in the tests, which isn’t required for people just using the package, then you can have a separate REQUIRE file in your test subdirectory.\n\nFor 2. I think you want to test that your wrapper interact correctly with the library, say if you have a launch function that starts taskwarrior, you want to check that it actually starts it. When it comes to dependencies, most packages download/install/build them for you when it’s possible, and that’s part of the tests (it’s also very tedious to test it manually on different machines, so having it in the tests saves you some pain). Since taskwarrior seems to be available on most package manager that shouldn’t be too hard to do with BinDeps.\n\nThanks everyone. This was all helpful as basic as I’m sure it seemed to y’all. I\n\nthink part of the problem I was having was that I was laboring under the\n\nimpression that the units in “unit testing” were separate pieces of code that\n\nshould only be tested independently from each other. There was a comment made on\n\ngitter today saying that when testing, you should think of units building up\n\ninto bigger units building up into bigger units, and tests should be done at\n\neach level of agglomeration. Thinking about it that way, the proper approach\n\nseems much more clear.\n\nAnyway, thanks again for entertaining the super-basic questions of an engineer\n\nwho doesn’t really know what he’s doing in software."
+    }
+}

@@ -1,0 +1,33 @@
+{
+    "id": "dbpedia_8277_1",
+    "rank": 97,
+    "data": {
+        "url": "https://stackoverflow.com/questions/58157555/taskwarrior-is-it-possible-to-report-on-the-time-spent-on-tasks",
+        "read_more_link": "",
+        "language": "en",
+        "title": "taskwarrior - Is it possible to report on the time spent on tasks?",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/e2ee38ab18379e0f3528dca99b44689b?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/jD8Bm.jpg?s=64",
+            "https://www.gravatar.com/avatar/313185d12dd3e9776fdfbb69cdbab50b?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://stackoverflow.com/posts/58157555/ivc/cdb8?prg=c7b8ff41-c6d7-4a7d-b484-eda78aa1a383"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2019-09-29T17:26:02",
+        "summary": "",
+        "meta_description": "I'm trying to use taskwarrior to track time for billing purposes. \n\nTo do that I'm trying to generate a report showing the hours spend on each task. The standard completed report gives the Created ...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/58157555/taskwarrior-is-it-possible-to-report-on-the-time-spent-on-tasks",
+        "text": "I don't think taskwarrior can create those reports by itself, but you could use timewarrior to do that.\n\nAfter you set up timewarrior, the time spent on each task will be tracked. Example:\n\n➜ ~ task add reply on stack overflow Created task 341. ➜ ~ task start 341 Starting task 81b73133 'reply on stack overflow'. Started 1 task. Tracking \"reply on stack overflow\" Started 2020-04-10T12:07:58 Current 59 Total 0:00:01 ➜ ~ task 341 done Completed task 81b73133 'reply on stack overflow'. Completed 1 task. Recorded \"reply on stack overflow\" Started 2020-04-10T12:07:58 Ended 09:12 Total 0:01:14\n\nBy default you will see how much time you spent on the task. In case you start and stop the task multiple times or want to see the time you spent on a project or on tasks with a certain tag, you can query timewarrior directly:\n\n➜ ~ timew summary 'reply on stack overflow' Wk Date Day Tags Start End Time Total W15 2020-04-10 Fri reply on stack overflow 12:07:58 12:09:12 0:01:14 0:01:14 0:01:14\n\nThis shows you the time you spent today on that task. You can also specify a time interval in case you want to see the total time spent on the task/project/tag. Example:\n\n➜ ~ timew summary 2020-01-01 - tomorrow 'reply on stack overflow' Wk Date Day Tags Start End Time Total W15 2020-04-10 Fri reply on stack overflow 12:07:58 12:09:12 0:01:14 0:01:14 0:01:14\n\nTo see how much time you spent on project test you can just run:\n\ntimew summary 2018-01-01 - tomorrow test\n\nThis will also include the tasks named 'test' and tasks with the tag test.\n\nAs mentioned by Tom Dörr use timewarrior to summarize by tags.\n\nThis is the way I do:\n\nCollect the tags by date range, modify the date range for your needs:\n\ntimew tags :week\n\nRemove the headings from the output:\n\ntimew tags :week | tail -n+4\n\nUse awk to separate the fields by dash and print first field:\n\ntimew tags :week | tail -n+4 | awk 'BEGIN {FS=\"-\"}; {print $1}'\n\nThis results in a list of tags for the selected date range, each in one line. Now you can use a script (for example summarize.sh) to loop through these tags to summarize:\n\n#!/bin/bash while read TAG; do [ \"${TAG}\" = \"\" ] && continue timew summary :week \"${TAG}\" done < <(timew tags :week | tail -n+4 | awk 'BEGIN {FS=\"-\"}; {print $1}')\n\nThis way you can handle tags containing whitespace also.\n\nAt least, run a loop in shell/bash to update permanently, for example every second:\n\nwhile :; do clear; date; ./summarize.sh; sleep 1; done"
+    }
+}

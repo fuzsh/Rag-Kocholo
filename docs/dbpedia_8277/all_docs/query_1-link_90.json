@@ -1,0 +1,39 @@
+{
+    "id": "dbpedia_8277_1",
+    "rank": 90,
+    "data": {
+        "url": "https://lock.cmpxchg8b.com/lotusagenda.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Lotus Agenda.",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://lock.cmpxchg8b.com/img/hqdefault.jpg",
+            "https://lock.cmpxchg8b.com/img/lotus-manual.jpg",
+            "https://lock.cmpxchg8b.com/img/lotus-agenda-startup.gif",
+            "https://lock.cmpxchg8b.com/img/lotus-agenda-quickstart.gif",
+            "https://lock.cmpxchg8b.com/img/lotus-agenda-projects.gif",
+            "https://lock.cmpxchg8b.com/img/agenda-view.png",
+            "https://lock.cmpxchg8b.com/img/lotus-agenda-editor.gif",
+            "https://lock.cmpxchg8b.com/img/agenda-broken-display.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Tavis Ormandy"
+        ],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "",
+        "meta_favicon": "",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "Getting Started\n\nIâm using DOSEMU2 to run Agenda, which also works with WSL on Windows. The primary benefit of DOSEMU over other options is that it has a terminal mode that translates VGA text mode to terminal escape sequences. This makes old MS-DOS applications look and feel like native ncurses applications.\n\nTerminal tools like GNU screen work, you can copy and paste between native applications, and you can use it over ssh. Naturally, it also supports filesystem and shell redirection, so you can access host directories, and execute host commands as if they were DOS commands.\n\nHereâs how Agenda looks when itâs first installed.\n\nYouâve probably noticed the empty screen regions, well, thatâs because Agenda only supports standard VGA Text Modes. I usually use a 100x30 terminal, so that leaves some blank space. If you use GNU screen you can just put something else in there, how about ncal!\n\nI configured DOSEMU to map a few directories so I can save my files in the usual places, you just need to add something like lredir I: \\\\linux\\fs\\home\\taviso\\Documents to autoexec.bat.\n\nLearning Agenda\n\nI started making my way through the Quick Start guide, I found a scan online if you want to take a look. The guide has you use Agenda as a task planner to enter upcoming events, like âCall Sarah this Friday to give her feedback on her proposalâ, and demonstrates how Agenda can extract dates and activities from text you enter.\n\nHere is a gif to demonstrate, I enter a task and it correctly populates some of the other columns. Playing around with different ways of writing tasks, I find the metadata extraction works quite well. Time specification parsing in particular is quite polished, things like âCheck data retention policy every four months starting Tuesdayâ just work. Iâm also relieved that it appears to be Y2K compliant (haha!).\n\nThe pitch in the Quick Start Guide is that if you have a call with Tom, you can quickly generate a report for all the things you wanted to discuss. If youâre going to a specific location, you can list all the things you needed to do there, and so on.\n\nAgenda is flexible software that can be used for more than just task management, but to keep this article brief Iâm sticking to using it as a planner.\n\nUsing The Planner\n\nIâve entered enough tasks now to get a feel for usage, and all the standard stuff works well. Things like notes, setting alarms, adding contacts, assigning priorities, searching and sorting, and so on. The sort of things that get tedious can be automated, like marking all the results of a search, then bulk assigning or marking done.\n\nAgenda is pretty stable, I guess some of those $395 dollars went towards QA. I did find one crash, I was trying to make an assignment action for a pseudo category in the show view! I think Iâm the first person to discover this, I canât find any other references to it!\n\nI had to change my workflow a bit, Iâm used to organizing my tasks into subtasks, so for example I might have a to-do list like this:\n\nDeploy Death Star\n\nChoose Target\n\nVerify Design\n\nCheck for weak points\n\nCall maintenance\n\nAssign Staff\n\nCall Mom\n\nThat isnât really how Agenda works, instead you would create each of these tasks and assign them to the same project. This is a shift for me, but it has benefits, such as allowing a task to be assigned to multiple projects.\n\nYou can see in this clip Iâve changed the layout, youâre free to add or remove columns and change their order, width, and so on. You can also add filters, so you might want to only see Tasks due today, for example.\n\nYou can save an unlimited number layouts (Agenda calls these Views). You can switch to the view that suits your current task, preferred level of information density, and so on.\n\nYou might have a âChoresâ view while at home that just shows the things you need to do at home, or a âDevelopmentâ view while working on code. This can let you display your tasks in the most appropriate way.\n\nHonestly, I think Agenda does this quite well, and getting a finely tuned view with sections and filters set up precisely was quite satisfying. There are different kinds of views as well, such as datebook view (like a calendar), expense view (for tallying expenses associated with a project), and so on.\n\nIn my main dashboard I have three sections:\n\nThings I have due within a week Tasks [-Done,When(<->A week from today)] Things that dont have a due date Tasks [-Done,-When] Things Iâve completed recently Done [Done(2 days ago<->)]\n\nI actually wrote the filter as âday before yesterdayâ, and it automatically rewrote it to 2 days ago. Neat. I have a few more views with more columns and project filters that I switch to as I need them. You can either press F8 to browse the list of views, or use Alt-N (Next) and Alt-P (Prev) to cycle between them.\n\nEntering Notes\n\nAgenda does have a built-in editor for keeping notes. Itâs okay. It supports a few basic editing options and has rebindable keys and macros. Luckily it supports importing external files, so you can just use Vim.\n\nIn fact, I wrote a macro to switch to vim whenever I type Ctrl-F5 in the editor. Here is a clip of me opening the Macro Manager, showing that I have an âEditorâ macro bound to {CtlF5}, and then editing a note in Vim.\n\nI wish I could say the macro language is pretty, but it is not. I think it was inspired by the macro language from 1-2-3, itâs geared towards reading whats on the screen and simulating keystrokes. It has basic control flow, string manipulation, and so on. Itâs functional.\n\nHere is that macro you just saw in the editor clip.\n\n{Editor} {LET;%FILE;C:\\TMP\\NOTE.TXT} {WINDOWSOFF} {F10}E{TYPE;%FILE} {ENTER} {ENTER} {SELECTION;File already exists} {IF;(#PROMPT <> File already exists:);EDITOR} {F3}Replace{ENTER} {LABEL;EDITOR} {F5} {F10}ULVIM {TYPE;%FILE} {ENTER} {F5} {F10}C {ENTER} {F10}I{TYPE;%FILE} {ENTER} {ENTER} {WINDOWSON}\n\nI can say a few positive things about the macro language, the manual is pretty good and it comes with lots of samples. It can automate all parts of Agenda, but Iâve mostly just used it to rebind keys.\n\nIn fact, in the 1980s third party developers wrote commercial add-ons for Agenda. Apparently there was a popular package called Presidentâs Planner. I havenât tried it, but I suppose I have a morbid curiousity what an application written in this language can do!"
+    }
+}

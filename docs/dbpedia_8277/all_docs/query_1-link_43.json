@@ -1,0 +1,35 @@
+{
+    "id": "dbpedia_8277_1",
+    "rank": 43,
+    "data": {
+        "url": "https://stackoverflow.com/questions/51140417/gnutls-or-libuuid-missing-while-building-taskwarrior-from-source-code-in-windows",
+        "read_more_link": "",
+        "language": "en",
+        "title": "GNUTLS or libuuid missing while building taskwarrior from source code in Windows 10",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/c8cadc2e4aeaacc49c993ef97d0d1527?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/7ee7ce08b5c3d30ddbdbe2d1b957ece3?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/c8cadc2e4aeaacc49c993ef97d0d1527?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://stackoverflow.com/posts/51140417/ivc/cdb8?prg=f1104aa4-d8df-4854-87c6-c736ed8688a7"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "a.t"
+        ],
+        "publish_date": "2018-07-02T16:37:20",
+        "summary": "",
+        "meta_description": "For the past 4 days I have been working to get taskwarrior and taskwarrior server running on windows 10. It has proven quite a challenge for me.\n\nI followed the steps written below: \"Building the S...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/51140417/gnutls-or-libuuid-missing-while-building-taskwarrior-from-source-code-in-windows",
+        "text": "I am likely to have misunderstood the context. GnuTLS Appears to be a program that works/is made for a linux/debian operating system.\n\nNevertheless, the following two solutions were effective in:\n\nFinding and using the UUID library in Windows.\n\nSolving the XY-problem and using GnuTLS on a \"windows pc\" (with Linux on it).:\n\nFor the missing UUID missing library error:\n\nOpen explorer>go to C: (or other system disc)>search for: uuid.lib>Memorize the path to the/any uuid.lib file. (For me C:/Program Files (x86)/Microsoft SDKs/Windows/v7.1A/Lib worked)\n\nOpen Cmake and in UUID_LIBRARY_DIR enter:\n\nC:/Program Files (x86)/Microsoft SDKs/Windows/v7.1A/Lib\n\nThen in UUID_LIBRARY enter: C:/Program Files (x86)/Microsoft SDKs/Windows/v7.1A/Lib/Uuid.Lib Where you substitute C:/Program Files (x86)/Microsoft SDKs/Windows/v7.1A/Lib with the path you found yourself for your own UUID.lib at step 1.\n\nThat made CMake overcome the UUID error in windows.\n\nNow for the GnuTLS I could not find a solution in windows itself. But when I read the taskserver installation guide on: https://gitpitch.com/GothenburgBitFactory/taskserver-setup#/4/4 I learned that Taskwarrior is not intended to run on Windows itself/natively, but in a linux environment (To be specific, the linux distribution Ubuntu is recommended to be installed on windows as is specified here: https://taskwarrior.org/download/) it takes 1 click to completely download and install the linux distribution (which currently looks like an emulator to me).\n\nIn the windows store one can download Ubuntu and other Linux distributions as Debian GNU/Linux: https://learn.microsoft.com/en-us/windows/wsl/install-win10. Since I had quite a bit of difficulties installing GnuTLS I tried the debian GNU/Linux distribution, hoping it would be pre-installed in the distribution. The following commands successfully installed taskwarrior and GnuTLS and Taskserver on the debian GNU/Linux:\n\nsudo apt-get update\n\nsudo apt-get install taskwarrior\n\ncd /home/a/\n\nthen create new directory 'taskwarrior'\n\nmkdir taskwarrior\n\ncd /home/a/taskwarrior\n\nTask Server installation in Debian:\n\nsudo apt install g++\n\nsudo apt install libgnutls28-dev\n\nsudo apt install uuid-dev\n\nsudo apt install cmake\n\n**sudo apt install gnutls-utils**\n\ngnutls failed so:\n\n**sudo apt-get update**\n\n**sudo apt install gnutls-utils**\n\nsudo apt-get update\n\nsudo apt-get install git-core\n\nSource: https://gitpitch.com/GothenburgBitFactory/taskserver-setup#/6/1 suggests you enter: git clone --recurse-submodules=yes https://github.com/GothenburgBitFactory/taskserver.git taskserver.git that gave the following error: optionrecurse-submodulestakes no value, so rewrite it to:\n\ngit clone https://github.com/GothenburgBitFactory/taskserver.git taskserver.git\n\ncd taskserver.git/\n\ngit checkout master\n\ncmake -DCMAKE_BUILD_TYPE=release .\n\nmake\n\nNow you can test the build as described in: https://gitpitch.com/GothenburgBitFactory/taskserver-setup#/6/8 Note: the SOURCEDIR now is home/a/taskwarrior/taskserver.git (/test I currently do not know whether /test is a subfolder of the source or the actual source directory)\n\nsudo make install\n\nNote: You can Verify GnuTLS installation with:\n\ntask diagnostics | grep libgnutls\n\nsudo apt install taskd\n\nRemaining unanswered The above only answers half of my question (and solves the XY-problem). The installation of GnuTLS on windows itself is still not solved. I currently am unsure about the download\n\nGNU for windows\n\nLatest w64 version on gitlab gnutls_3_6_0_1:mingw64\n\non https://gnutls.org/download.html.\n\nIt contains a lib and a bin folder, which seems to indicate that even the files listed under \"windows\" are intended for a Linux Operating System(OS) (since I think those type of folders are not used conventionally used in windows/I do not know what to do with them/how to install them).\n\nThat would imply that GnuTLS assumes that the only application of GnuTLS, even on a Windows operating system happens in a Linux system. It could also just be my lack of knowledge/work/understanding in how to use/install those files in windows.\n\nSo if anyone can still answer how GnuTLS on windows is intended to be applied, I would greatly appreciate the insight!"
+    }
+}

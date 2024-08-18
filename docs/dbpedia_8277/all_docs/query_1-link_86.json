@@ -1,0 +1,30 @@
+{
+    "id": "dbpedia_8277_1",
+    "rank": 86,
+    "data": {
+        "url": "https://24hoursintheterminal.com/articles/setting-up-audible-reminders-in-terminal-with-taskwarrior",
+        "read_more_link": "",
+        "language": "en",
+        "title": "9am: Setting Up Audible Reminders in the Terminal: Mastering Taskwarrior",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://24hoursintheterminal.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo.cae3c55b.png&w=16&q=75 16w, /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo.cae3c55b.png&w=32&q=75 32w, /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo.cae3c55b.png&w=48&q=75 48w, /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo.cae3c55b.png&w=64&q=75 64w, /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo.cae3c55b.png&w=96&q=75 96w, /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo.cae3c55b.png&w=128&q=75 128w, /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo.cae3c55b.png&w=256&q=75 256w, /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo.cae3c55b.png&w=384&q=75 384w, /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo.cae3c55b.png&w=640&q=75 640w, /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo.cae3c55b.png&w=750&q=75 750w, /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo.cae3c55b.png&w=828&q=75 828w, /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo.cae3c55b.png&w=1080&q=75 1080w, /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo.cae3c55b.png&w=1200&q=75 1200w, /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo.cae3c55b.png&w=1920&q=75 1920w, /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo.cae3c55b.png&w=2048&q=75 2048w, /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo.cae3c55b.png&w=3840&q=75 3840w"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2023-05-28T00:00:00",
+        "summary": "",
+        "meta_description": "Boost your productivity by integrating Taskwarrior with macOS \"say\" command to set up audible reminders. Discover the power of command-line task management with this step-by-step guide and never miss a task again.",
+        "meta_lang": "en",
+        "meta_favicon": "",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "Let's get organised. Using the terminal and Taskwarrior, we can set some reminders and have your Mac read them out loud.\n\nWhat does this article replace?\n\nAs we enter the fourth hour of our terminal day, we are making sure that you never miss a task again. Replace your standard to-do list apps with a more sophisticated and interactive command-line alternative.\n\nHow long will it take to set up?\n\nWhile it might seem like a complex task, setting up audible reminders with Taskwarrior and your Mac's \"say\" command is surprisingly straightforward. Even if you're not very familiar with using the terminal, you should be able to have everything up and running in less than 30 minutes. This includes installing necessary packages, setting up Taskwarrior, writing your reminder script, and scheduling it with cron. Remember, each minute spent setting this up will save you time and stress in the future, helping you stay on top of your tasks effortlessly. So, let's get started!\n\nMastering Taskwarrior\n\nGet your audible task management system ready in just 15 minutes!\n\n3 out of 5 stars\n\nDifficulty Rating:\n\nEnabling text-to-speech on your Mac to have it read your tasks aloud requires a moderate level of difficulty, rated 3 out of 5. It involves configuring system settings, utilizing command-line tools or scripting languages, and implementing the necessary commands to convert and play text as speech. While it may require some technical knowledge and familiarity with the command line, following the instructions provided will enable you to have your tasks read out loud by your Mac, adding a unique and interactive element to your workflow.\n\nStep 1: Create a task with a due date\n\nFor this example, we'll create a task called \"Attend meeting\" that's due at 2 PM. You would create this task in Taskwarrior as follows:\n\ntask add \"Attend meeting\" due:2pm\n\nMake sure you have set the due time correctly as per your system's time settings.\n\nStep 2: Script to check for upcoming tasks\n\nNext, we'll create a script that checks for tasks due within the next hour. If such tasks exist, the script will have your Mac read them out loud.\n\nCreate a new file named task_reminder.sh and open it in your preferred text editor. You could create this file in your home directory for simplicity.\n\nPaste the following code into task_reminder.sh:\n\n#!/bin/bash tasks=$(task +READY due.before:now+1h export | jq -r '.[].description') if [ -n \"$tasks\" ]; then say \"You have the following tasks due within the next hour: $tasks\" fi\n\nThis script uses jq to parse the JSON output of the Taskwarrior command. If jq isn't installed on your system, you can install it using Homebrew with brew install jq.\n\nSave the file and then make it executable with the following command:\n\nchmod +x ~/task_reminder.sh\n\nStep 3: Schedule the script\n\nNow, we need to schedule this script to run periodically. One way to do this is using cron. Open your crontab file using the command crontab -e and add the following line:\n\n*/15 * * * * /Users/yourusername/task_reminder.sh\n\nReplace yourusername with your actual username. This cron job will run task_reminder.sh every 15 minutes.\n\nAnd that's it! Your Mac will now read out your tasks that are due within the next hour, every 15 minutes. Of course, this is a simple example, and there's much more you can do when you integrate Taskwarrior with the say command, like customizing voices or creating more complex reminders. But this should get you started.\n\nTaskwarrior integrated with the 'say' command, offers a unique task management experience. Keep your tasks in check and always stay on top of your game. Stay tuned for the next hour's challenge!"
+    }
+}

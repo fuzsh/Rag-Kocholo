@@ -1,0 +1,40 @@
+{
+    "id": "dbpedia_8277_2",
+    "rank": 6,
+    "data": {
+        "url": "https://softwareengineering.stackexchange.com/questions/152662/is-there-a-point-to-writing-in-c-or-c-instead-of-c-without-knowing-specifical",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Is there a point to writing in C or C++ instead of C# without knowing specifically what would make a program faster?",
+        "top_image": "https://cdn.sstatic.net/Sites/softwareengineering/Img/apple-touch-icon@2.png?v=1ef7363febba",
+        "meta_img": "https://cdn.sstatic.net/Sites/softwareengineering/Img/apple-touch-icon@2.png?v=1ef7363febba",
+        "images": [
+            "https://cdn.sstatic.net/Sites/softwareengineering/Img/logo.svg?v=e86f7d5306ae",
+            "https://www.gravatar.com/avatar/498f20465c08db69a48f10e852ba6263?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/2d8d174122cbc741a1fafcfdb8de8b72?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/5777ec600a6249f1d94951b2619b6aa4?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/ca515fc19f765871e7d7b8ac744da24c?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/24d12badced116f66491642accccb632?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/08a0d787d228f759f228712b26558398?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/d8209c0118ceb99fe4ed98c0c079c0bf?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/e1f108eee2fa3ded8d3288a175de3b86?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/jtI82.jpg?s=64",
+            "https://softwareengineering.stackexchange.com/posts/152662/ivc/cdb8?prg=37e5ffcd-ee80-4925-969e-62f120989899"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2012-06-13T05:51:14",
+        "summary": "",
+        "meta_description": "I wrote a small library in Python for handling the xbox 360's STFS files to be used on my web applications. I would like to rewrite it for use in the many desktop programs people are writing for 36...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/softwareengineering/Img/favicon.ico?v=c4f35a1e3900",
+        "meta_site_name": "Software Engineering Stack Exchange",
+        "canonical_link": "https://softwareengineering.stackexchange.com/questions/152662/is-there-a-point-to-writing-in-c-or-c-instead-of-c-without-knowing-specifical",
+        "text": "The advantage of C# over C++ is the speed and momentum in development (unless you're one of the very few C++ gurus, who can claim to do competitive RAD in C++ and not hurt themselves in the process; but then again good luck finding teammates who can reasonably claim the same thing). Compiler optimizations won't help you code faster, and with fewer errors, especially coming from a Python background.\n\nYou can tweak your performance if it is really an issue, by writing critical portions of code in C++/CLI, or even C with PInvoke, but - if you're in the Microsoft world - there will usually be a place for C# code high up on your stack, while C/C++ may be completely absent in some solutions. Therefore, perhaps you should start with C#, and complement with C++, not viceversa.\n\nYou should first consider if the languages you're already comfortable with are suitable for the task. If you conclude that you know no languages that are well-suited for the task, then you should investigate which would be the best to learn.\n\nFrom the brief description you gave, I'd say C# is well suited for desktop development and XBOX integration. So why waste time and effort learning C++ (with its steep learning curve)? But if your requirement is for the program to be potentially portable, for example, C# immediately loses points. So make sure you define your requirements to yourself properly.\n\nIf your app deals with a lot of handles and connections you may prefer C++ for it's RAII resource management. Garbage collectors don't work for handles to shared resources. If you are using C# or java you are forced to de-volve into the old \"malloc\" style all over again with explicit release calls.\n\nC++ deals with resource management in a cleaner and more elegant way that is not possible in other languages. C++ is light years ahead of C#. And there's no sign of C# or Java catching up as their best answer to RAII is \"using\" blocks which are not RAII, just a syntactic sugar over an explicit try/finally/close. It does not have the built in fail-safe of popping off the stack. ie you must remember to try/close it just as you always did, but with a nicer syntax.\n\nI've seen countless C# and java systems fail because developers left connections and handles to the garbage collector...\n\nThis sounds like an extreme form of premature optimisation to me. Don't do it. As @vski said - (Assuming the choice is C#,C++ or C) stick with C# and use to C++ in the one place of code where (in the extremely unlikely event ) that it might make a difference.\n\nEdit : In response to the comment by @gbjbaanb :\n\nThis also leads to the question - \"Is rewriting you Python App really required or is it optimizing prematurely.\"\n\nIt's not given that your code will run faster all by itself just by using a lower level language like C or C++. Python or C# should fare just fine, and with good code can be nearly as fast as C or C++ code. If your code is too slow, then you can profile it to see what parts to optimize, but don't worry about that when choosing what language to use for implementation.\n\nInstead of switching languages you'd probably fare much better spending some effort on buying a book for further education on the one you already know or best practices, profiling etc.\n\nOne thing that may be worth consideration though, is portability. Using C or C++ your code can be more portable, and have less dependencies on runtime environments etc. This may be of value to others using your code, as they don't have to install a big runtime environment or language just to run your program. If you assume most of your users will have these parts in place anyways, this also becomes a moot point.\n\nFrom your description, it sounds as if the bottleneck for performance here will be in I/O, and when it comes to the reads/writes here, neither language will show any significant difference. So if the performance of the intermediary code of modifying the data is your concern for performance, you could probably be modifying any read data while you continue to read more in a separate thread, making the choice of language here for performance fairly moot, IMO.\n\nI encourage you to write it in assembly lol. Bigger learning curve but if it is speed you want well written assembly can provide it.\n\nThe next runner up in speed would be C. Though everyone says that it is not that much faster than C++ it is not the only benefit. C is IMO has been written better and has much more potential for an increase in speed. Classes in C++ add quite a bit of overhead and unneeded complexity of learning the language. Without them you might as well be writing C and get that increase in speed.\n\nThough I have not written any C# or even seen the source code for a C# program I know I don't like it as I'm a Linux guy. Thus why I strongly do not recommend C#. This sounds like it would be a useful program o many Linux users as well.\n\nPython seem like a good choice though to me it seems more unstable due to the high level of abstraction for a lower level function. It would allow it to be moved back and forth between Linux Windows and Mac."
+    }
+}

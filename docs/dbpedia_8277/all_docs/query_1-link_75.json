@@ -1,0 +1,30 @@
+{
+    "id": "dbpedia_8277_1",
+    "rank": 75,
+    "data": {
+        "url": "http://mrcook.uk/time-warrior-released",
+        "read_more_link": "",
+        "language": "en",
+        "title": "TimeWarrior 1.0.0 - A golang time tracker",
+        "top_image": "",
+        "meta_img": "",
+        "images": [],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Michael R. Cook"
+        ],
+        "publish_date": "2017-12-25T15:27:31+01:00",
+        "summary": "",
+        "meta_description": "TimeWarrior is a new CLI tool to help you track how much time you’ve spent working on a project. Written in the Go language.",
+        "meta_lang": "en",
+        "meta_favicon": "",
+        "meta_site_name": "Michael R. Cook",
+        "canonical_link": "http://mrcook.uk/time-warrior-released",
+        "text": "After barely programming in Go these past two years I really wanted to get back into using the language, and figured a good starter project would be to port my Ruby time tracker to Go. So a few weeks back I started rewriting that old CLI application in Go, and have now released TimeWarrior 1.1.0 on Github.\n\nTimeWarrior is a CLI based time tracking application used to record timeslips for your freelance and personal projects. Timeslips for a project are stored in their own project data files, with each timeslip saved as a valid JSON string.\n\nProject and Task names are given as CamelCase; separated by a period. You would start a new timeslip like this:\n\n$ tw s MyProject.SomeTask\n\nYou can pause and resume a timeslip at any time (the p and r shortcuts are available), and once work on a task is complete, you can mark it as done:\n\n$ tw d \"Some nice description of the work\"\n\nIt’s also possible to adjust the time you’ve currently worked on a pending timeslip with the adjust command:\n\n$ tw adjust 10m\n\nI recommend you visit the Github repository which has full installation and usage instructions.\n\nAt the moment you will need to build the executable yourself, but hopefully I’ll have ready-made downloads for Windows and macOS soon, once I’ve run some tests on a Windows machine!\n\nPlease note that there’s currently no reporting functionality. I have a simple old script for my own needs, which I’ll eventually look into adding to the app.\n\nIf you’re impatient and you’d like to implement a report command yourself, please feel free to submit a PR!\n\nThe Backstory\n\nAs I wrote above, this Go version is a rewrite of an old Ruby GEM; two major versions that I’ve been running now for the past five years.\n\nBack in 2012 I’d started with a lot more freelance/consulting work and was tracking all my time using the excellent Sigma tool from Arrow UK, which integrated directly with the online accounting software I used at the time. However, not only did I want more control of this data, I also wanted to start tracking time for my own projects, so needed something more independent.\n\nAfter some research I found the very nice TaskWarrior app, but this is really a TODO list rather than a time tracker. In fact there were a number of other possible solutions but none that would allow me to generate simple timeslips, so I wrote my own.\n\nTaskWarrior did have some nice features, which I used as inspiration for my own app: I liked how they used the Project.Task format for naming of the project/task as well as their pending/complete file format - okay, so you might also notice that the name is similar; originally TimeWarrior was just a WIP name, but well, it seems to have stuck over these last 5 years!\n\nHere’s an example of that first timeslip data format:\n\nThis worked well for a while, but I didn’t like the commands and that data format was not so nice to parse. So with new ideas in hand, I created v2. The UI was update, which was actually very similar to the new Go version, but I also refreshed timeslips format from a custom string to a valid JSON string:\n\nAlthough the key names changed, it’s mostly the same. I refrained from wrapping everything in an array [{\"project\":\"Name\" ...}] to reduce the need to parse the file contents when adding a new timeslip, which also meant there was less chance for data loss.\n\nThe latest Go version of TimeWarrior saves timeslips in a project based data file, and renames a couple of field names.\n\nProject data files are generated from the CamelCase project name, by converting to snake_case. duration is renamed to worked and comment to description.\n\nThe CLI commands are also mostly the same, with the biggest change to starting a new project, changing from tw s -p Project.Task to tw s Project.Task …fewer key strokes is always a good thing!\n\nA new adjust command was added for this release - I was always forgetting to pause/resume a timeslip so needed to edit the .pending file and manually adjust the time. Now there’s a command for that!"
+    }
+}

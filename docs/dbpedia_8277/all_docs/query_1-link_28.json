@@ -1,0 +1,30 @@
+{
+    "id": "dbpedia_8277_1",
+    "rank": 28,
+    "data": {
+        "url": "https://freddieridell.com/open-source/hyper-task",
+        "read_more_link": "",
+        "language": "en",
+        "title": "FreddieRidell.com",
+        "top_image": "",
+        "meta_img": "",
+        "images": [],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Freddie Ridell"
+        ],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "undefined - FreddieRidell.com",
+        "meta_lang": "en",
+        "meta_favicon": "/icons/icon-48x48.png",
+        "meta_site_name": "FreddieRidell.com",
+        "canonical_link": null,
+        "text": "I've recently spent some time re-writing my js task manager in rust.\n\nThe old version was running fantastically slowly, with simple queries and modifications taking up to a minute. This was completely down to poor architectural decisions on my part, mostly because I was trying out some novel ideas. In this re-build I instead focused on finishing a rock-solid and performant tool, then I'll worry about clever ideas later.\n\nThe JS version was never in a good enough to demo or write-up, but this version is already good enough to talk about!\n\nPurpose\n\nThe overall goal of this tool is to provide a powerful and expressive cli to track and manage tasks in my life. It should allow for arbitrary filtering of tasks, and sort them by a heuristic function so that a user can easily see what tasks are the most pressing. It should also handle recurring tasks\n\nSyntax\n\nAdd a task\n\nAdds a recurring task with the description \"take out the trash\", that's due now, has the tag chores and recurs once every 3 days\n\nModify a task\n\nSelects every task with the tag chores, and the task with the id f2peyd5aw4n7e22f and changes them to recur once a week\n\nMark a task as complete\n\nSelects every task with the tag chores, and the task with the id f2peyd5aw4n7e22f and marks them as done; these tasks will no longer show up in task summaries\n\nSpecial Tags\n\nSome tags have special semantic meanings:\n\n+timely: if this task is overdue, it's internal score will be doubled, moving it up the ranking\n\n+urgent this task's score we always be doubled, this stacks with +timely, so an overdue task with both tags will have quadruple its regular score\n\nTask Warrior\n\nThese commands should look very familiar to anyone who's used task warrior before. I was a regular user of task warrior for a few years, and think it's a fantastic piece of software. It's far more expressive than hypertask, and anyone looking for the most powerful CLI task manager should look no further than task warrior.\n\nDespite this, I decided to move away from task warrior for the following reasons:\n\nTask Sharing\n\nThe internal data format for task warrior strongly resists being shared in a conflict-resolvable way between different devices. I have a phone, laptop, and desktop, and as a contractor I often need to use new devices at whatever business I'm currently embedded in. It's very important to me that I can share tasks between all of these devices.\n\nTask Warrior does provide a server architecture, but it is really quite hard to setup and configure. There are SaaS task-server hosting solutions, but they can't avoid some of the idiosyncrasies that task warrior introduces with it's client-server architecture.\n\nMore powerful than I need\n\nTask warrior has enough features that you could conceivably use it as a JIRA replacement, as well as a personal to do list. I found that this was far more functionality that I actually wanted for my use case. The feature rich nature of task warrior also made it quite hard to wrap my head around the mobile port, and web clients that exist for it; there was simply too much information for me to digest.\n\nMy experience with rust\n\nI'd previously spent almost two years piecing this project together in javascript. What I ended up with was, quite frankly, rubbish. I was trying out a variety of new ideas and all of them turned out to be novel but shit. I also struggled constantly against js' lack of typing, this project requires rock solid and reliable data manipulations based on possibly faulty user input in a DSL which ends up being a prime breeding ground for bugs and type errors.\n\nRe-writing this project in rust was a pleasure. This is the largest rust codebase I've worked on, and it was starkly apparent how much more effective rust's type system is compared to [flow][flow] or [typescript][ts].\n\nRust's enums and iterators are also fantastic features that I love playing with. I often found myself reworking my code to make better use of them, simply because they're such a pleasure to use.\n\nFinally - and I'm not exaggerating here - the growing ecosystem of reusable crates might be the greatest achievement in open source software to date. Every problem I encountered was cleanly and effectively solved by a 3rd party crate. Installing these crates is incredibly simple, and I've yet to encounter a crate that doesn't work exactly as documented. Although the rust community is still comparatively small I believe that the bar of quality set by the crates ecosystem will come to effect and inform every other programming language sooner or later.\n\nFuture of hypertask"
+    }
+}

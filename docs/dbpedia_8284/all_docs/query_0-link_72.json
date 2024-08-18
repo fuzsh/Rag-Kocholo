@@ -1,0 +1,42 @@
+{
+    "id": "dbpedia_8284_0",
+    "rank": 72,
+    "data": {
+        "url": "https://cplusplus.com/forum/general/118160/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Using C++ to INSERT INTO MySql Database",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://cplusplus.com/img/link.png",
+            "https://cplusplus.com/img/link.png",
+            "https://cplusplus.com/img/link.png",
+            "https://cplusplus.com/img/link.png",
+            "https://cplusplus.com/img/link.png",
+            "https://cplusplus.com/img/link.png",
+            "https://cplusplus.com/img/link.png",
+            "https://cplusplus.com/img/link.png",
+            "https://cplusplus.com/img/link.png",
+            "https://cplusplus.com/img/link.png",
+            "https://cplusplus.com/img/link.png",
+            "https://cplusplus.com/img/link.png",
+            "https://cplusplus.com/img/link.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "",
+        "meta_favicon": "/favicon.ico",
+        "meta_site_name": "",
+        "canonical_link": "https://cplusplus.com/forum/general/118160/",
+        "text": "#include <mysql.h> #include <iostream> #include <iomanip> #include <fstream> using namespace std; MYSQL *conn, mysql; MYSQL_RES *res; MYSQL_ROW row; int query_state; int main() { const char *server=\"students\"; const char *user=\"*****\"; const char *password=\"********\"; const char *database=\"*****\"; mysql_init(&mysql); conn=mysql_real_connect(&mysql, server, user, password, database, 0, 0, 0); if(conn==NULL) { cout<<mysql_error(&mysql)<<endl<<endl; return 1; } query_state=mysql_query(conn, \"select * from Instrument\"); if(query_state!=0) { cout<<mysql_error(conn)<<endl<<endl; return 1; } res=mysql_store_result(conn); cout<<\"MySQL Tables in mysql database.\"<<endl<<endl; while((row=mysql_fetch_row(res))!=NULL) { cout<<left; cout<<setw(18)<<row[0] <<setw(18)<<row[1] <<setw(18)<<row[2] <<setw(18)<<row[3]<<endl; } cout<<endl<<endl; ifstream infile; infile.open(\"Instrument.txt\"); if(infile.fail()) { cout<<\"ERROR. Could not open file!\"<<endl; return 1; } infile.seekg(0, infile.end); int len=infile.tellg(); infile.seekg(0, infile.beg); string instnum, insttype, maker, year, plID, name, salary, startdate; string rating; string instrument=\"INSERT INTO Instrument (InstrumentID, InstrumentType, MakerName, YearMade) VALUES ( '\"+instnum+\"', '\"+insttype+\"', '\"+maker+\"', '\"+year+\"')\"; string player=\"INSERT INTO Player (PlayerID, Name, Salary, StartDate) values (plID, name, salary, startdate)\"; string plays=\"INSERT INTO Plays (InstrumentID, PlayerID, Rating) values (instnum, plID, rating)\"; // mysql_query(conn, \"DELETE FROM Instrument WHERE MakerName='maker'\"); while(infile) { infile>>instnum; cout<<instnum<<endl; infile>>insttype; cout<<insttype<<endl; infile>>maker; cout<<maker<<endl; infile>>year; cout<<year<<endl; query_state=mysql_query(conn, instrument.c_str()); } if(query_state!=0) { cout<<mysql_error(conn)<<endl<<endl; return 1; } cout<<endl<<endl; mysql_free_result(res); mysql_close(conn); return 0;\n\nmysql> USE local Reading table information for completion of table and column names You can turn off this feature to get a quicker startup with -A Database changed mysql> SHOW TABLES; +-----------------+ | Tables_in_local | +-----------------+ | website | +-----------------+ 1 row in set (0.00 sec)\n\nmysql> SELECT * FROM website; +----+------------+----------+-----------------------------------+------------+ | id | date | time | comments | username | +----+------------+----------+-----------------------------------+------------+ | 1 | 2013-05-16 | 01:53:00 | This is a comment by yours truly! | BHXSpecter | | 2 | 2013-05-17 | 13:13:00 | COMMENT TESTING!!!!! | BHXSpecter | | 3 | 0000-00-00 | 00:00:00 | Comments | BHXSpecter | | 4 | 2013-05-25 | 04:50:00 | I LOVE MY WIFE!!!!!!!!!!! | BHXSpecter | +----+------------+----------+-----------------------------------+------------+ 4 rows in set (0.00 sec)\n\n#include <mysql.h> #include <cstdio> int main() { MYSQL *conn; MYSQL_RES *res; MYSQL_ROW row; char *server = \"server\"; char *user = \"username\"; char *password = \"password\"; char *database = \"local\"; conn = mysql_init(NULL); mysql_real_connect(conn, server, user, password, database, 0, NULL, 0); mysql_query(conn, \"SELECT * FROM website\"); res = mysql_use_result(conn); printf(\"id \\t date\\t time \\t comments\\t\\t user\\n\"); while ((row = mysql_fetch_row(res)) != NULL) { printf(\"%s \\t %s\\t %s\\t %s\\t\\t %s\\n\", row[0], row[1], row[2], row[3], row[4]); } mysql_free_result(res); mysql_close(conn); return 0; }"
+    }
+}
