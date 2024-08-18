@@ -1,0 +1,37 @@
+{
+    "id": "dbpedia_8307_0",
+    "rank": 26,
+    "data": {
+        "url": "https://stackoverflow.com/questions/7664826/how-to-get-flat-clustering-corresponding-to-color-clusters-in-the-dendrogram-cre",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How to get flat clustering corresponding to color clusters in the dendrogram created by scipy",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://i.sstatic.net/hj00i.png",
+            "https://www.gravatar.com/avatar/a007be5a61f6aa8f3e85ae2fc18dd66e?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/7543066b996b2053a554951bfeae16b0?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/1ee252bffc50832a2c1a465e453c67d0?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/2cfb3af403cf4a627a0f0567d13be553?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/a6058b7f60496b8a669a708a89a59cea?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/e4879ebd0169a932d991aac769ca5ed4?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/7664826/ivc/c8b8?prg=e27c7230-fcc2-408a-801b-a9ee60d5a7c8"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2011-10-05T16:51:17",
+        "summary": "",
+        "meta_description": "Using the code posted here, I created a nice hierarchical clustering:\r\nLet's say the the dendrogram on the left was created by doing something like\n\nY = sch.linkage(D, method='average') # D is a di...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/7664826/how-to-get-flat-clustering-corresponding-to-color-clusters-in-the-dendrogram-cre",
+        "text": "I think you're on the right track. Let's try this:\n\nimport scipy import scipy.cluster.hierarchy as sch X = scipy.randn(100, 2) # 100 2-dimensional observations d = sch.distance.pdist(X) # vector of (100 choose 2) pairwise distances L = sch.linkage(d, method='complete') ind = sch.fcluster(L, 0.5*d.max(), 'distance')\n\nind will give you cluster indices for each of the 100 input observations. ind depends on what method you used in linkage. Try method=single, complete, and average. Then note how ind differs.\n\nExample:\n\nIn [59]: L = sch.linkage(d, method='complete') In [60]: sch.fcluster(L, 0.5*d.max(), 'distance') Out[60]: array([5, 4, 2, 2, 5, 5, 1, 5, 5, 2, 5, 2, 5, 5, 1, 1, 5, 5, 4, 2, 5, 2, 5, 2, 5, 3, 5, 3, 5, 5, 5, 5, 5, 5, 5, 2, 2, 5, 5, 4, 1, 4, 5, 2, 1, 4, 2, 4, 2, 2, 5, 5, 5, 2, 5, 5, 3, 5, 5, 4, 5, 4, 5, 3, 5, 3, 5, 5, 5, 2, 3, 5, 5, 4, 5, 5, 2, 2, 5, 2, 2, 4, 1, 2, 1, 5, 2, 5, 5, 5, 1, 5, 4, 2, 4, 5, 2, 4, 4, 2]) In [61]: L = sch.linkage(d, method='single') In [62]: sch.fcluster(L, 0.5*d.max(), 'distance') Out[62]: array([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1])\n\nscipy.cluster.hierarchy sure is confusing. In your link, I don't even recognize my own code!\n\nI wrote some code to decondense the linkage matrix. It returns a dictionary containing the indexes of labels that are grouped by each agglomeration step. I've only tried it out on the results of the complete linkage clusters. The keys of the dict start at len(labels)+1 because initially, each label is treated as its own cluster. This may answer your question.\n\nimport pandas as pd import numpy as np from scipy.cluster.hierarchy import linkage np.random.seed(123) labels = ['ID_0','ID_1','ID_2','ID_3','ID_4'] X = np.corrcoef(np.random.random_sample([5,3])*10) row_clusters = linkage(x_corr, method='complete') def extract_levels(row_clusters, labels): clusters = {} for row in xrange(row_clusters.shape[0]): cluster_n = row + len(labels) # which clusters / labels are present in this row glob1, glob2 = row_clusters[row, 0], row_clusters[row, 1] # if this is a cluster, pull the cluster this_clust = [] for glob in [glob1, glob2]: if glob > (len(labels)-1): this_clust += clusters[glob] # if it isn't, add the label to this cluster else: this_clust.append(glob) clusters[cluster_n] = this_clust return clusters\n\nReturns:\n\n{5: [0.0, 2.0], 6: [3.0, 4.0], 7: [1.0, 0.0, 2.0], 8: [3.0, 4.0, 1.0, 0.0, 2.0]}"
+    }
+}

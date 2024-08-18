@@ -1,0 +1,38 @@
+{
+    "id": "dbpedia_8307_1",
+    "rank": 92,
+    "data": {
+        "url": "https://stackoverflow.com/questions/20075884/python-import-module-from-another-directory-at-the-same-level-in-project-hierar",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Python: import module from another directory at the same level in project hierarchy",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://cdn.sstatic.net/Img/survey-cta.svg?v=171e02557b0d",
+            "https://www.gravatar.com/avatar/4ce6378063b76a9b0f91630f2784ba01?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/70b13a9ae1aae1ca1aa6ac8dab4643f2?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/feZwC.jpg?s=64",
+            "https://i.sstatic.net/RRNRg.jpg?s=64",
+            "https://www.gravatar.com/avatar/425a49cd03fff2f516525d70f730d542?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/36b7185fc0063f74ba1f2d2f77fd205b?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/7j9G3.jpg?s=64",
+            "https://stackoverflow.com/posts/20075884/ivc/c8b8?prg=08e05c53-094a-4f71-9efa-bed08cbe3cb3"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2013-11-19T15:45:11",
+        "summary": "",
+        "meta_description": "I've seen all sorts of examples and other similar questions, but I can't seem to find an example that exactly matches my scenario.  I feel like a total goon asking this because there are so many si...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/20075884/python-import-module-from-another-directory-at-the-same-level-in-project-hierar",
+        "text": "If I move CreateUser.py to the main user_management directory, I can easily use: import Modules.LDAPManager to import LDAPManager.py --- this works.\n\nPlease, don't. In this way the LDAPManager module used by CreateUser will not be the same as the one imported via other imports. This can create problems when you have some global state in the module or during pickling/unpickling. Avoid imports that work only because the module happens to be in the same directory.\n\nWhen you have a package structure you should either:\n\nUse relative imports, i.e if the CreateUser.py is in Scripts/:\n\nfrom ..Modules import LDAPManager\n\nNote that this was (note the past tense) discouraged by PEP 8 only because old versions of python didn't support them very well, but this problem was solved years ago. The current version of PEP 8 does suggest them as an acceptable alternative to absolute imports. I actually like them inside packages.\n\nUse absolute imports using the whole package name(CreateUser.py in Scripts/):\n\nfrom user_management.Modules import LDAPManager\n\nIn order for the second one to work the package user_management should be installed inside the PYTHONPATH. During development you can configure the IDE so that this happens, without having to manually add calls to sys.path.append anywhere.\n\nAlso I find it odd that Scripts/ is a subpackage. Because in a real installation the user_management module would be installed under the site-packages found in the lib/ directory (whichever directory is used to install libraries in your OS), while the scripts should be installed under a bin/ directory (whichever contains executables for your OS).\n\nIn fact I believe Script/ shouldn't even be under user_management. It should be at the same level of user_management. In this way you do not have to use -m, but you simply have to make sure the package can be found (this again is a matter of configuring the IDE, installing the package correctly or using PYTHONPATH=. python Scripts/CreateUser.py to launch the scripts with the correct path).\n\nIn summary, the hierarchy I would use is:\n\nuser_management (package) | |------- __init__.py | |------- Modules/ | | | |----- __init__.py | |----- LDAPManager.py | |----- PasswordManager.py | Scripts/ (*not* a package) | |----- CreateUser.py |----- FindUser.py\n\nThen the code of CreateUser.py and FindUser.py should use absolute imports to import the modules:\n\nfrom user_management.Modules import LDAPManager\n\nDuring installation you make sure that user_management ends up somewhere in the PYTHONPATH, and the scripts inside the directory for executables so that they are able to find the modules. During development you either rely on IDE configuration, or you launch CreateUser.py adding the Scripts/ parent directory to the PYTHONPATH (I mean the directory that contains both user_management and Scripts):\n\nPYTHONPATH=/the/parent/directory python Scripts/CreateUser.py\n\nOr you can modify the PYTHONPATH globally so that you don't have to specify this each time. On unix OSes (linux, Mac OS X etc.) you can modify one of the shell scripts to define the PYTHONPATH external variable, on Windows you have to change the environmental variables settings.\n\nAddendum I believe, if you are using python2, it's better to make sure to avoid implicit relative imports by putting:\n\nfrom __future__ import absolute_import\n\nat the top of your modules. In this way import X always means to import the toplevel module X and will never try to import the X.py file that's in the same directory (if that directory isn't in the PYTHONPATH). In this way the only way to do a relative import is to use the explicit syntax (the from . import X), which is better (explicit is better than implicit)."
+    }
+}
