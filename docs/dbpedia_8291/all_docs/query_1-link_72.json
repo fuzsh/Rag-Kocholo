@@ -1,0 +1,32 @@
+{
+    "id": "dbpedia_8291_1",
+    "rank": 72,
+    "data": {
+        "url": "https://www.veritas.com/support/en_US/article.100020618",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Error \"Unable to login, status:525\" when logging into Java administration console on Redhat Linux",
+        "top_image": "https://www.veritas.com/etc.clientlibs/support/clientlibs/support/clientlib/resources/img/favicon/android-icon-192x192.png",
+        "meta_img": "https://www.veritas.com/etc.clientlibs/support/clientlibs/support/clientlib/resources/img/favicon/android-icon-192x192.png",
+        "images": [
+            "https://www.veritas.com/content/dam/support-new/logo/veritas-red.png",
+            "https://www.veritas.com/etc.clientlibs/support/clientlibs/support/clientlib/resources/img/componentIcons/Veritas_Print.png",
+            "https://www.veritas.com/content/dam/support-new/logo/veritas-red.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "/etc.clientlibs/support/clientlibs/support/clientlib/resources/img/favicon/apple-icon-57x57.png",
+        "meta_site_name": "",
+        "canonical_link": "https://www.veritas.com/support/en_US/article.100020618",
+        "text": "Problem\n\nError \"Unable to login, status: 525\" when logging into Java administration console on Redhat Linux\n\nError Message\n\nUnable to login, status: 525, Can not connect to the NB-Java authentication service via VNETD on <hostname> on port 13724.\n\nCause\n\nIf the above error is encountered when attempting to log into the NetBackup Java administration console on a Redhat Linux server, a possible cause is that xinetd, the extended Internet services daemon, is not running. xinetd is provided by the Linux operating system and acts as a listener for network applications like ftp and telnet. In the case of NetBackup it is listening for incoming connections to bpcd and vnetd.\n\nSolution\n\nRun the following Linux RedHat command to verify that the xinetd package is installed:\n\nrpm -qa | grep xinetd\n\nIf installed the output will look similar to:\n\nxinetd-2.3.13-4.4E.1\n\nIf there is no output generated the xinetd package needs to be obtained from RedHat and installed on this client.\n\nIf the xinetd package is installed and the error is still being encountered, check that xinetd is running by executing the following command:\n\nps -ef | grep xinetd\n\nIf running, the output looks similar to:\n\nroot 5040 1 0 11:41 ? 00:00:00 xinetd -stayalive -pidfile /var/run/xinetd.pid\n\nIf xinetd is installed and not running, the Redhat operating system will need to be configured so that xinetd is started each time the system boots.\n\nOnce xinetd is installed and running, the following commands can be used to verify that vnetd and bpcd are listening:\n\nnetstat -a | grep bpcd\n\nnetstat -a | grep vnetd\n\nThe output from these commands should show the following outputs, respectively:\n\n# netstat -a | grep bpcd\n\ntcp 0 0 *:bpcd *:* LISTEN\n\n# netstat -a | grep vnetd\n\ntcp 0 0 *:vnetd *:* LISTEN\n\nIf bpcd and vnetd are in a listen state and backups continue to fail, additional troubleshooting needs to be performed and may require contacting NetBackup support."
+    }
+}

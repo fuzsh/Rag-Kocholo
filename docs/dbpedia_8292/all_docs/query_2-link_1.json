@@ -1,0 +1,36 @@
+{
+    "id": "dbpedia_8292_2",
+    "rank": 1,
+    "data": {
+        "url": "https://clonezilla.org/create_clonezilla_live_from_scratch.php",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Create Clonezilla Live from scratch",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://clonezilla.org/images/clonezilla_logo_small.png",
+            "https://www.clustrmaps.com/map_v2.png?u=CCBf&d=bmkqu3_7K1DtIMVDM4DA1fNTdXlQ-1t6hcXC6H3FY6g",
+            "https://sflogo.sourceforge.net/sflogo.php?group_id=115473&type=16",
+            "https://clonezilla.org/images/pp.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "Clonezilla",
+            "a free and open source software for disk/partition imaging and cloning."
+        ],
+        "tags": null,
+        "authors": [
+            "Clonezilla Team"
+        ],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "././images/clonezilla_logo_transparent.gif",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "This doc is about creating Clonezilla live 2.x. //NOTE// Because Debian Sid changes everyday, this doc is only for reference. Since Clonezilla project provides testing Clonezilla live almost every week, it's recommended to modify the root file system of the live system instead of creating Clonezilla live from scratch. For more info about modifying the root file system, check this doc.\n\nFind a machine with memory size larger than 1 GB.\n\nDownload Clonezilla live 2.6.6-15 amd64 version.\n\nFollow this doc to create a bootable Clonezilla live boot media, then boot it on an x86 machine. After language and keyboard are selected, choose \"Start_Clonezilla\" -> \"device-image\", then mount a working directory, the space should large enough to put the live CD and some temp files. It's recommended to choose local_dev to mount local partition as /home/partimag, since live-build will use some low level commands and it might fail in network-based directory. Also make sure the partition is the filesystem of Linux, like ext4 or reiserfs, _NOT_ FAT or NTFS filesystem, because they do not support some file types in Linux.\n\nWhen Clonezilla live asks you to choose save or restore disk/partition, choose \"exit\" to enter command line prompt.\n\nRun \"sudo -i\" or \"sudo su -\" to become root.\n\nRun \"ocs-live-netcfg\" to configure the network so that we can access Debian repository later.\n\nModify /etc/apt/sources.list if you want to assign different apt repository.\n\ncd /home/partimag/\n\nIf the available space in dir /tmp/ is less than 500 MB, tune it to be larger than 500 MB. You can make it by the commands like:\n\nmount -t tmpfs -o \"nosuid,size=60%,mode=1777\" tmpfs /tmp\n\nOr\n\nmount -t tmpfs -o \"nosuid,size=524288000,mode=1777\" tmpfs /tmp\n\napt-get purge drbl clonezilla\n\napt-get update\n\nDo NOT run \"apt-get dist-upgrade\" or \"apt-get upgrade\" to upgrade any packages, otherwise this will break the rest of procedure.\n\napt-get -y install drbl clonezilla\n\nIf you want to add more packages in Clonezilla live, and you are sure the packages are included in Debian repository, e.g. ncpfs, you can edit /etc/drbl/drbl.conf, append ncpfs in variable PKG_FROM_DBN_WHICH_OCS_LIVE_NEED.\n\napt-get -y install live-build=1:20200314.drbl1 debootstrap xorriso\n\nIf you want to use Debian Sid as the running OS of Clonezilla live, use the experimental drbl live repository (-l e), and unstable drbl repository (-b unstable), you can run it as:\n\ncreate-debian-live -l unstable -b unstable -d sid -i customized\n\nFor more options about create-debian-live, you can run \"create-debian-live --help\".\n\nMore examples, like:\n\ncreate-debian-live -r -a 'firmware-linux-free live-boot=1:20190627-drbl1 live-boot-initramfs-tools=1:20190627-drbl1 live-co nfig=5.20190519.drbl1 live-config-systemd=5.20190519.drbl1 live-tools cryptsetup aria2 ctorrent mktorrent transmission-cli ezi o-static ocs-bttrack python3-crypto python3-libtorrent shim-signed grub-efi-amd64-signed syslinux=3:6.04~git20190206.bf6db5b4+ dfsg1-1 extlinux=3:6.04~git20190206.bf6db5b4+dfsg1-1 syslinux-common=3:6.04~git20190206.bf6db5b4+dfsg1-1' -f amd64 -l unstable -b unstable -d sid -m http://free.nchc.org.tw/debian -s http://free.nchc.org.tw/debian-security -g http://free.nchc.org.tw/dr bl-core -k 5.6.0-2 -i 2.6.7-5-amd64\n\n(//NOTE// Since Debian Sid repository changes everyday, the above command might have to be modified so it can work with Debian Sid.)\n\nOther examples:\n\nIf you want some special kernel version, and you are sure it exists in your Debian repository, e.g. kernel 3.11-2, you can make Clonezilla live by:\n\ncreate-debian-live -l e -b unstable -k 3.11-2 -i customized\n\n(\"-l e\" means to use the live-experimental branch in drbl respository, this also means packages from live-stable, live-testing or live-unstable can be used. \"-b unstable\" means to use the unstable branch of drbl.). You can refer to this URL to check the packages in DRBL repository http://free.nchc.org.tw/drbl-core/pool/drbl/).\n\nIf everything runs smooth, you will get a Debian live with file name \"debian-live-for-ocs-customized.iso\". Later we will use this Debian live as a template for Clonezilla live.\n\nRun:\n\nocs-iso -s --extra-boot-param \"quiet\" -j debian-live-for-ocs-customized.iso -i customized\n\nocs-live-dev -c -s --extra-boot-param \"quiet\" -j debian-live-for-ocs-customized.iso -i customized\n\nthen 2 files, clonezilla-live-customized.iso and clonezilla-live-customized.zip will be created, respectively."
+    }
+}

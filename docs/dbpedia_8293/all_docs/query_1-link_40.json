@@ -1,0 +1,33 @@
+{
+    "id": "dbpedia_8293_1",
+    "rank": 40,
+    "data": {
+        "url": "https://stackoverflow.com/questions/16626298/clonezilla-custom-ocs-bash-script-failing-on-ocs-onthefly-command",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Clonezilla custom-ocs bash script failing on ocs-onthefly command",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/4c32465ec2dde9cbb0ba45c065d13a5b?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/4eb1ac0128da7ec448eb3c1ea59a80a7?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/75ee864ee3bef78f2a144398789fed25?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/16626298/ivc/0c39?prg=ff2ea2ed-0101-4f2e-8df0-42b991f348b9"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2013-05-18T16:05:23",
+        "summary": "",
+        "meta_description": "I'm doing a custom clonezilla.. one for source to send a local disk to remote disk with ocs-onthefly... that custom-ocs is working fine.\n\nHowever, the custom-ocs for the destination for some reason...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/16626298/clonezilla-custom-ocs-bash-script-failing-on-ocs-onthefly-command",
+        "text": "I'm doing a custom clonezilla.. one for source to send a local disk to remote disk with ocs-onthefly... that custom-ocs is working fine.\n\nHowever, the custom-ocs for the destination for some reason is not working.. the problem is the last line \"/usr/sbin/ocs-onthefly -s $src_ip -t $dest_disk\" .. for some reason clonezilla is balking at that line and gives the usage/help output instead of running the command..\n\nAny ideas on why the ocs-onthefly command is not accepting the parameters? The parameters are correct. If you run \"/usr/sbin/ocs-onthefly -s 192.168.150.1 -t sda\" it runs fine.\n\ncustom-ocs for destination script is here: https://www.dropbox.com/s/9mfrt0n50sheayn/custom-ocs_destination-REVISED.txt\n\nAttempting a code block also:\n\n#!/bin/bash # Author: Steven Shiau <steven _at_ nchc org tw> # License: GPL # Ref: http://sourceforge.net/forum/forum.php?thread_id=1759263&forum_id=394751 # In this example, it will allow your user to use clonezilla live to choose # (1) backup the image of /dev/hda1 (or /dev/sda1) to /dev/hda5 (or /dev/sda5) # (2) restore image in /dev/hda5 (or /dev/sda5) to /dev/hda1 (or /dev/sda1) # When this script is ready, you can run # ocs-iso -g en_US.UTF-8 -k NONE -s -m ./custom-ocs # to create the iso file for CD/DVD. or # ocs-live-dev -g en_US.UTF-8 -k NONE -s -c -m ./custom-ocs # to create the zip file for USB flash drive. # Begin of the scripts: # Load DRBL setting and functions DRBL_SCRIPT_PATH=\"${DRBL_SCRIPT_PATH:-/usr/share/drbl}\" . $DRBL_SCRIPT_PATH/sbin/drbl-conf-functions . /etc/drbl/drbl-ocs.conf . $DRBL_SCRIPT_PATH/sbin/ocs-functions # load the setting for clonezilla live. [ -e /etc/ocs/ocs-live.conf ] && . /etc/ocs/ocs-live.conf # Load language files. For English, use \"en_US.UTF-8\". ask_and_load_lang_set en_US.UTF-8 # The above is almost necessary, it is recommended to include them in your own custom- ocs. # From here, you can write your own scripts. # functions decide_sda_or_hda() { if [ -n \"$(grep -Ew sda1 /proc/partitions)\" ]; then disk=sda elif [ -n \"$(grep -Ew hda1 /proc/partitions)\" ]; then disk=hda else [ \"$BOOTUP\" = \"color\" ] && $SETCOLOR_FAILURE echo \"No hard disk detected!\" echo \"Program terminated!\" [ \"$BOOTUP\" = \"color\" ] && $SETCOLOR_NORMAL fi # src_part: hda1 or sda1, tgt_part: hda5 or sda5 dest_disk=${disk} } ################## ###### MAIN ###### ################## # Set network on destination workstation 1 # Determine if active link then set act_eth while [ -z \"$(/sbin/mii-tool 2>/dev/null | awk -F \":\" '/link ok/ {print $1}')\" ]; do dialog --title \"NO LINK!!\" --msgbox \"\\n Need an active link in order to continue!!\" 6 50 done act_eth=`/sbin/mii-tool 2>/dev/null | awk -F \":\" '/link ok/ {print $1}'` # Set IP Address of destination workstation 1 /sbin/ifconfig $act_eth 192.168.150.2 netmask 255.255.255.0 up /sbin/route add default gw 192.168.150.254 /bin/echo \"nameserver 8.8.8.8\" >> /etc/resolv.conf # Find the disk device decide_sda_or_hda # Prompt for IP address of source disk OUTPUT=\"./input.txt\" >$OUTPUT dialog --title \"Need SOURCE IP\" --inputbox \"Enter IP address of the SOURCE server: \" 8 60 2>$OUTPUT src_ip=$(<$OUTPUT) # Ready the destination disk to receive from source (source should already be waiting in clonezilla), and contact source to start transfer to destination /usr/sbin/ocs-onthefly -s $src_ip -t $dest_disk\n\nWhen I test via echo (not within clonezilla but just on a linux box) the dialog output for $src_ip and also $dest_disk it outputs the variables fine, so I really don't know why ocs-onthefly is not accepting it."
+    }
+}

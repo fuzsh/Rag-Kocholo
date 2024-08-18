@@ -1,0 +1,35 @@
+{
+    "id": "dbpedia_8293_0",
+    "rank": 58,
+    "data": {
+        "url": "https://unix.stackexchange.com/questions/542554/got-input-output-error-when-execute-any-commands",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Got \"input output error\" when execute any commands",
+        "top_image": "https://cdn.sstatic.net/Sites/unix/Img/apple-touch-icon@2.png?v=32fb07f7ce26",
+        "meta_img": "https://cdn.sstatic.net/Sites/unix/Img/apple-touch-icon@2.png?v=32fb07f7ce26",
+        "images": [
+            "https://cdn.sstatic.net/Sites/unix/Img/logo.svg?v=eb6eb2b9e73c",
+            "https://i.sstatic.net/MC1FH.png?s=64",
+            "https://lh3.googleusercontent.com/-LHxpsCO4smk/AAAAAAAAAAI/AAAAAAAAAAA/ACevoQNVBzXQd5wQlgLA6Yp-Q99OUXl3Eg/mo/photo.jpg?sz=64",
+            "https://i.sstatic.net/MC1FH.png?s=64",
+            "https://www.gravatar.com/avatar/6b5ee4951031b87479ff66174c49494b?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://unix.stackexchange.com/posts/542554/ivc/0c39?prg=4ece1668-1ad2-4a52-8320-08dffeaedaf7"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2019-09-19T03:13:55",
+        "summary": "",
+        "meta_description": "Last Monday morning, I found my server can't run any command, and it shouws \"input output error\". With tried for half an hour, I found the only command can executed is sudo poweroff -f (must use fl...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/unix/Img/favicon.ico?v=fb86ccabb921",
+        "meta_site_name": "Unix & Linux Stack Exchange",
+        "canonical_link": "https://unix.stackexchange.com/questions/542554/got-input-output-error-when-execute-any-commands",
+        "text": "However, in the worst case, you would see kernel messages like this spewing on the screen:\n\nata2.00: exception Emask 0x0 SAct 0x0 SErr 0x0 action 0x0 ata2.00: irq_stat 0x40000001 ata2.00: failed command: READ DMA EXT ata2.00: cmd 25/00:08:78:15:c5/00:00:6c:00:00/e0 tag 0 dma 4096 in res 51/40:00:78:15:c5/00:00:6c:00:00/e0 Emask 0x9 (media error) ata2.00: status: { DRDY ERR } ata2.00: error: { UNC } ata2.00: configured for UDMA/100 sd 1:0:0:0: [sda] Unhandled sense code sd 1:0:0:0: [sda] Result: hostbyte=DID_OK driverbyte=DRIVER_SENSE sd 1:0:0:0: [sda] Sense Key : Medium Error [current] [descriptor] Descriptor sense data with sense descriptors (in hex): 72 03 11 04 00 00 00 0c 00 0a 80 00 00 00 00 00 6c c5 15 78 sd 1:0:0:0: [sda] Add. Sense: Unrecovered read error - auto reallocate failed sd 1:0:0:0: [sda] CDB: Read(10): 28 00 6c c5 15 78 00 00 08 00 end_request: I/O error, dev sda, sector 1824855416 Buffer I/O error on device sda, logical block 228106927 ata2: EH complete\n\nLook for the key parts:\n\nDRDY, ERR and UNC in braces\n\nMedium Error status\n\nUnrecovered read error sense message\n\nIf you glanced and find these in the messages (even once), they show that you are facing physical disk error.\n\nWhen this is the case, don't let dd finish, press Ctrl+C to stop, NOW; shut down your system, and bring your disk to a data recovery shop you trust.\n\n1 Cautionary tale: My housemate once ignored this warning, and keep filesystem checker grinding on his desktop system anyway. He didn't wait for me to check it up until it eventually failed to boot. Once I got a chance to check it, the disk damage had been already beyond recover (the 500 GB disk could only barely read at snail-pace KB/s, and there was no significant continuous readable area found even after several days).\n\nOn the other hand, in another case with the same symptom, the machine owner heeded my warning and left the thing off until I could check it. Of course, it was a hard disk failure. After half a day of GNU DDRescue session and one new hard disk, I brought a good news to him that his system and data was 100% recovered at block level- i.e. all files intact, and ready to boot again without any modification."
+    }
+}

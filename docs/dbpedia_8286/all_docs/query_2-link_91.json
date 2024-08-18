@@ -1,0 +1,28 @@
+{
+    "id": "dbpedia_8286_2",
+    "rank": 91,
+    "data": {
+        "url": "https://kb.iu.edu/d/apnn",
+        "read_more_link": "",
+        "language": "en",
+        "title": "About the MySQL for Sitehost data backup and restoration policy",
+        "top_image": "",
+        "meta_img": "",
+        "images": [],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2024-07-22T11:59:20",
+        "summary": "",
+        "meta_description": "On this page:",
+        "meta_lang": "en",
+        "meta_favicon": "/favicon.ico",
+        "meta_site_name": "",
+        "canonical_link": "https://kb.iu.edu/d/apnn",
+        "text": "On this page:\n\nOverview\n\nMySQL restoration policy\n\nManually back up your MySQL for Sitehost schemas\n\nCreate a backup using MySQL Workbench\n\nCreate a backup from the command line\n\nLoad a MySQL dump from MySQL Workbench\n\nOverview\n\nMySQL for Sitehost uses the MySQL Enterprise Backup features on a nightly schedule. These backups are retained for 14 days for service-wide disaster recovery purposes.\n\nMySQL restoration policy\n\nIf you need to back up or restore your data for any purpose (development, transference from production to test, etc.), you should take advantage of the functionality and tools that MySQL Workbench offers (for example, mysqldump or Data Export and Import Wizard).\n\nThe Database Administration team will perform MySQL data restoration in extremely limited cases, such as data loss due to SQL injection or unforeseen corruption. Data restoration services are performed on a case-by-case basis and are subject to review and approval by administrators. In all cases, data restoration is limited to the previous night's updates. Binary logs are not active, and it is not possible to provide point-in-time recovery. Data restoration may take up to 48 business hours to process.\n\nTo request data restoration, contact Tier 2. Include the date and time the incident requiring data recovery occurred and the type of incident that spurred your request. You may be asked to provide information about what steps you have taken to mitigate the need for future data restoration. Staff will forward your request to the Database Administration team, who will contact you with options or further questions they may have.\n\nDepartments and owners of sites who require 24x7 data backup and restoration services are encouraged to contact the Database Administration team to discuss options, which may include creating an Enterprise MySQL instance for just that site's content and on-call data recovery services. A fee may be associated with these services.\n\nManually back up your MySQL for Sitehost schemas\n\nCreate a backup using MySQL Workbench\n\nConnect to your MySQL database.\n\nSelect Server on the main tool bar.\n\nSelect Data Export.\n\nSelect the tables you want to back up.\n\nUnder Export Options, select where you want your dump saved. By default, it will save to your Documents folder in a subfolder titled dumps.\n\nSelect Start Export.\n\nNote:\n\nYou may get a message about a mismatch between your mysqldump.exe version and the MySQL Server version. You can update your local MySQL version or continue.\n\nYou now have a backup version of your site. Store this content securely in a manner consistent with your MySQL schema content's data classification.\n\nCreate a backup from the command line\n\nOpen a command or terminal window (CMD or PowerShell on Windows, or Terminal in macOS).\n\nRun ssh username@ssh.sitehost.iu.edu \"mysqldump -u root_user -h host -d database name --no-tablespaces -p\" > path to result file.\n\nFor example:\n\nssh sitehost_user@ssh.sitehost.iu.edu \"mysqldump -u account_root -h mysql.uits.iu.edu -d account_database --no-tablespaces -p\" > result.sql\n\nThe above example connects to the SSH server as sitehost_user, prompts for a password, and auto-sends a Duo push. Once the push is accepted, it prompts for the MySQL password for the account_root user on mysql.uits.iu.edu, and then writes the output to the result.sql file in the current directory.\n\nLoad a MySQL dump from MySQL Workbench\n\nTo load a MySQL dump file after a database failure or corruption:"
+    }
+}

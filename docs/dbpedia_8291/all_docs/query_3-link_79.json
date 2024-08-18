@@ -1,0 +1,30 @@
+{
+    "id": "dbpedia_8291_3",
+    "rank": 79,
+    "data": {
+        "url": "https://confluence.atlassian.com/display/BitbucketServerKB/How%2Bdo%2BI%2Buse%2Bxinetd%2Bto%2Bforward%2Bport%2B22%2Bfor%2BSSH%2Bconnections%2Bto%2BBitbucket%2BServer",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How do I use xinetd to forward port 22 for SSH connections to Bitbucket Server",
+        "top_image": "https://confluence.atlassian.com/staticassets/4.6.11/dist/common/images/favicon.png",
+        "meta_img": "https://confluence.atlassian.com/staticassets/4.6.11/dist/common/images/favicon.png",
+        "images": [
+            "https://confluence.atlassian.com/staticassets/4.6.11/dist/common/images/media-viewer-image-icon.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "/staticassets/4.6.11/dist/common/images/favicon.png",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "Still need help?\n\nThe Atlassian Community is here for you.\n\nAsk the community\n\nThe content on this page relates to platforms which are not supported. Consequently, Atlassian Support cannot guarantee providing any support for it. Please be aware that this material is provided for your information only and using it is done so at your own risk.\n\nPurpose\n\nBy default, Bitbucket Server listens for SSH connections on port 7999, this guide will help forward port 22 so that SSH operations can be accessed at ssh://git@bitbucket.mycompany.com/PROJECT/repo.git instead of ssh://git@bitbucket.mycompany.com:7999/PROJECT/repo.git. The default sshd service will need to be moved to an alternative port other than 22.\n\nThis is an alternative to using HAProxy as described in Setting up SSH port forwarding.\n\nSolution\n\nSingle IP Address Available\n\nUsing the package manager for your distribution (apt-get, yum, or rpm), install xinetd\n\nCreate a configuration file named bitbucket_ssh under /etc/xinetd.d with the following content\n\nservice bitbucket_ssh { disable = no type = UNLISTED socket_type = stream protocol = tcp user = nobody wait = no redirect = 127.0.0.1 7999 port = 22 }\n\nRestart xinetd with /etc/init.d/xinetd restart\n\nOnce port forwarding is set up, you will need to configure the SSH base URL in Bitbucket Server so that the clone urls presented in Bitbucket Server indicate the correct host and port to clone from. See the SSH base URL section in Enable SSH access to Git repositories.\n\nMultiple IP Addresses Available\n\nThis option is available if more than one IP address is available on the server. sshd_config will need to be modified so that it listens to only one of the IP addresses.\n\nUsing the package manager for your distribution (apt-get, yum, or rpm), install xinetd\n\nCreate a configuration file named bitbucket_ssh under /etc/xinetd.d with the following content\n\nservice bitbucket_ssh { disable = no type = UNLISTED socket_type = stream protocol = tcp user = nobody wait = no redirect = 127.0.0.1 7999 bind = 192.168.1.11 port = 22 }\n\nModify /etc/ssh/sshd_config so that it will only bind to one of the IP addresses (different from what xinetd is listening on\n\n/etc/ssh/sshd_config\n\n# Package generated configuration file # See the sshd_config(5) manpage for details # What ports, IPs and protocols we listen for Port 22 # Use these options to restrict which interfaces/protocols sshd will bind to #ListenAddress :: ListenAddress 192.168.1.10 ListenAddress 127.0.0.1 Protocol 2 # HostKeys for protocol version 2 HostKey /etc/ssh/ssh_host_rsa_key HostKey /etc/ssh/ssh_host_dsa_key\n\nRestart xinetd with /etc/init.d/xinetd restart\n\nRestart sshd with service sshd restart\n\nOnce port forwarding is set up, you will need to configure the SSH base URL in Bitbucket Server so that the clone urls presented in Bitbucket Server indicate the correct host and port to clone from. See the SSH base URL section in Enable SSH access to Git repositories.\n\nWas this helpful?\n\nYes\n\nNo\n\nIt wasn't accurate\n\nIt wasn't clear\n\nIt wasn't relevant\n\nProvide feedback about this article\n\nPowered by Confluence and Scroll Viewport."
+    }
+}

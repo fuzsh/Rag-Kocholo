@@ -1,0 +1,30 @@
+{
+    "id": "dbpedia_8290_2",
+    "rank": 41,
+    "data": {
+        "url": "https://knowledge.broadcom.com/external/article/264780/xcom-ports-not-starting-with-xinetd.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "XCOM ports not starting with XINETD",
+        "top_image": "https://knowledge.broadcom.com/broadcom-log.png",
+        "meta_img": "https://knowledge.broadcom.com/broadcom-log.png",
+        "images": [
+            "https://cdn.wolkenservicedesk.com/wolken-footer-image.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "https://knowledge.broadcom.com/broadcom-log.png",
+        "meta_site_name": "",
+        "canonical_link": "https://knowledge.broadcom.com/external/article/264780/xcom-ports-not-starting-with-xinetd.html",
+        "text": "We completed the XCOM installation on RHEL8 server and we are able to transfer files from the server to other servers i.e linux and windows.\n\nBut when we try to transfer from other servers to RHEL8 we are getting below error:\n\n#XCOMU0298E Unable to allocate remote transaction program: Txpi 211: Socket connect error return value = 111\n\nThe XCOM ports are not in a LISTEN state after starting XINETD.\n\nThe reason why XINETD could not start the XCOM ports was found in the /var/log/messages file. In this case XINETD received the following message when in started:\n\nSELinux is preventing /usr/sbin/xinetd from search access on the directory /etc/xinetd.d/txpi\n\nSELinux is preventing /usr/sbin/xinetd from search access on the directory /etc/xinetd.d/txpis\n\nSELinux is preventing /usr/sbin/xinetd from search access on the directory /etc/xinetd.d/txpi6\n\nSELinux is preventing /usr/sbin/xinetd from search access on the directory /etc/xinetd.d/txpi6s\n\nIn addition to other messages.\n\nIn this case XINETD needed the proper access/permission in order to read the XINETD.D directory. That is the directory that contains the XCOM txpi* files that XINETD needs in order to start the XCOM ports. Please address this with your Linux/Unix Security Admin/Programmer.\n\nOnce that is corrected, the XINETD service needs to be restarted using command: systemctl restart xinetd\n\nYou can then issue the following command to check if the ports are in a LISTEN statue: netstat -tulpn | grep LISTEN\n\nSeveral things that can be checked for this particular problem:\n\n1. Review the following XCOM KD\n\n2. Make sure that the following statement is part of the xinetd.conf file: includedir /etc/xinetd.d. The statement tells XINETD to read the XINETD.D directory when it starts."
+    }
+}

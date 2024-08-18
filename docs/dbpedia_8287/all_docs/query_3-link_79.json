@@ -1,0 +1,57 @@
+{
+    "id": "dbpedia_8287_3",
+    "rank": 79,
+    "data": {
+        "url": "https://refactoring.guru/design-patterns/factory-method",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Factory Method",
+        "top_image": "https://refactoring.guru/images/refactoring/social/facebook-share-preview.png?id=dbf9e98269595be86eb668f365be6868",
+        "meta_img": "https://refactoring.guru/images/refactoring/social/facebook-share-preview.png?id=dbf9e98269595be86eb668f365be6868",
+        "images": [
+            "https://refactoring.guru/images/content-public/ann/summer/sunbed.svg?id=b1e7314a63715a13870a6bd1a43613f7",
+            "https://refactoring.guru/images/content-public/ann/summer/reading-book.svg?id=36006ea720df8c171968cf613e8ea164",
+            "https://refactoring.guru/images/patterns/content/factory-method/factory-method-en.png?id=cfa26f33dc8473e803fadae0d262100a",
+            "https://refactoring.guru/images/patterns/diagrams/factory-method/problem1-en.png?id=de638561be0bbb1025ada6bfcb815def",
+            "https://refactoring.guru/images/patterns/diagrams/factory-method/solution1.png?id=fc756d2af296b5b4d482e548214d08ef",
+            "https://refactoring.guru/images/patterns/diagrams/factory-method/solution2-en.png?id=db5de848c1d490b835666ef54d131d46",
+            "https://refactoring.guru/images/patterns/diagrams/factory-method/solution3-en.png?id=b6f53911fc0d56f9ef99501fc4aec059",
+            "https://refactoring.guru/images/patterns/diagrams/factory-method/structure.png?id=4cba0803f42517cfe8548c9bc7dc4c9b",
+            "https://refactoring.guru/images/patterns/diagrams/factory-method/structure-indexed.png?id=4c603207859ca1f939b17b60a3a2e9e0",
+            "https://refactoring.guru/images/patterns/diagrams/factory-method/example.png?id=67db9a5cb817913444efcb1c067c9835",
+            "https://refactoring.guru/images/patterns/icons/csharp.svg?id=da64592defc6e86d57c39c66e9de3e58",
+            "https://refactoring.guru/images/patterns/icons/cpp.svg?id=f7782ed8b8666246bfcc3f8fefc3b858",
+            "https://refactoring.guru/images/patterns/icons/go.svg?id=1a89927eb99b1ea3fde7701d97970aca",
+            "https://refactoring.guru/images/patterns/icons/java.svg?id=e6d87e2dca08c953fe3acd1275ed4f4e",
+            "https://refactoring.guru/images/patterns/icons/php.svg?id=be1906eb26b71ec1d3b93720d6156618",
+            "https://refactoring.guru/images/patterns/icons/python.svg?id=6d815d43c0f7050a1151b43e51569c9f",
+            "https://refactoring.guru/images/patterns/icons/ruby.svg?id=b065b718c914bf8e960ef731600be1eb",
+            "https://refactoring.guru/images/patterns/icons/rust.svg?id=1f5698a4b5ae23fe79413511747e4a87",
+            "https://refactoring.guru/images/patterns/icons/swift.svg?id=0b716c2d52ec3a48fbe91ac031070c1d",
+            "https://refactoring.guru/images/patterns/icons/typescript.svg?id=2239d0f16cb703540c205dd8cb0c0cb7",
+            "https://refactoring.guru/images/patterns/banners/patterns-book-banner-3.png?id=7d445df13c80287beaab234b4f3b698c",
+            "https://refactoring.guru/images/patterns/book/web-cover-en.png?id=328861769fd11617674e3b8a7e2dd9e7",
+            "https://refactoring.guru/images/content-public/logos/logo-new.png?id=97d554614702483f31e38b32e82d8e34",
+            "https://refactoring.guru/images/content-public/logos/logo-new-mobile.png?id=ea18aa9b032eaa92835ed6d472b03b4a",
+            "https://refactoring.guru/images/content-public/icons/fa-building.svg?id=afddb5806968b0a9acfc1df75a181234",
+            "https://refactoring.guru/images/content-public/icons/fa-building.svg?id=afddb5806968b0a9acfc1df75a181234"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Alexander Shvets"
+        ],
+        "publish_date": "2023-01-01T00:00:00",
+        "summary": "",
+        "meta_description": "Factory Method is a creational design pattern that provides an interface for creating objects in a superclass, but allows subclasses to alter the type of objects that will be created.",
+        "meta_lang": "en",
+        "meta_favicon": "/favicon.png",
+        "meta_site_name": "",
+        "canonical_link": "https://refactoring.guru/design-patterns/factory-method",
+        "text": "Problem\n\nImagine that you’re creating a logistics management application. The first version of your app can only handle transportation by trucks, so the bulk of your code lives inside the Truck class.\n\nAfter a while, your app becomes pretty popular. Each day you receive dozens of requests from sea transportation companies to incorporate sea logistics into the app.\n\nGreat news, right? But how about the code? At present, most of your code is coupled to the Truck class. Adding Ships into the app would require making changes to the entire codebase. Moreover, if later you decide to add another type of transportation to the app, you will probably need to make all of these changes again.\n\nAs a result, you will end up with pretty nasty code, riddled with conditionals that switch the app’s behavior depending on the class of transportation objects.\n\nPseudocode\n\nThis example illustrates how the Factory Method can be used for creating cross-platform UI elements without coupling the client code to concrete UI classes.\n\nThe base Dialog class uses different UI elements to render its window. Under various operating systems, these elements may look a little bit different, but they should still behave consistently. A button in Windows is still a button in Linux.\n\nWhen the factory method comes into play, you don’t need to rewrite the logic of the Dialog class for each operating system. If we declare a factory method that produces buttons inside the base Dialog class, we can later create a subclass that returns Windows-styled buttons from the factory method. The subclass then inherits most of the code from the base class, but, thanks to the factory method, can render Windows-looking buttons on the screen.\n\nFor this pattern to work, the base Dialog class must work with abstract buttons: a base class or an interface that all concrete buttons follow. This way the code within Dialog remains functional, whichever type of buttons it works with.\n\nOf course, you can apply this approach to other UI elements as well. However, with each new factory method you add to the Dialog, you get closer to the Abstract Factory pattern. Fear not, we’ll talk about this pattern later."
+    }
+}

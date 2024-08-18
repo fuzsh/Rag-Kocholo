@@ -1,0 +1,40 @@
+{
+    "id": "dbpedia_8290_1",
+    "rank": 66,
+    "data": {
+        "url": "https://forums.freebsd.org/threads/inetd-app-startup-problem.54235/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "inetd app startup problem",
+        "top_image": "https://forums.freebsd.org/styles/freebsd/xenforo/logo.og.png",
+        "meta_img": "https://forums.freebsd.org/styles/freebsd/xenforo/logo.og.png",
+        "images": [
+            "https://forums.freebsd.org/styles/freebsd/xenforo/freebsd_logo.png",
+            "https://forums.freebsd.org/styles/default/xenforo/xenforo-logo.png",
+            "https://forums.freebsd.org/styles/default/xenforo/add_to_home.gif",
+            "https://forums.freebsd.org/data/avatars/m/42/42320.jpg?1424842341",
+            "https://forums.freebsd.org/data/avatars/m/1/1677.jpg?1413407984",
+            "https://forums.freebsd.org/styles/default/xenforo/reactions/emojione/handshake.png",
+            "https://forums.freebsd.org/data/avatars/m/42/42320.jpg?1424842341",
+            "https://forums.freebsd.org/data/avatars/m/1/1677.jpg?1413407984"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "jungleboogie",
+            "OP jungleboogie"
+        ],
+        "publish_date": "2015-12-02T06:38:51+00:00",
+        "summary": "",
+        "meta_description": "Hello All,\n\nThanks for reading. I've asked a few questions on the -questions mailing list before but I think I'll post this problem here for visibility now...",
+        "meta_lang": "en",
+        "meta_favicon": "/styles/freebsd/xenforo/logo.og.png",
+        "meta_site_name": "The FreeBSD Forums",
+        "canonical_link": "https://forums.FreeBSD.org/threads/inetd-app-startup-problem.54235/",
+        "text": "Hello All,\n\nThanks for reading. I've asked a few questions on the -questions mailing list before but I think I'll post this problem here for visibility now and in the future.\n\nI found out about a project called caddy, which is written in the go language:\n\nhttps://caddyserver.com\n\nIt's a simple to deploy (as in a single binary) webserver that can be started up with just nohup caddy &\n\nI'd like to run this on my FreeBSD 10.2-release system on digital ocean but using inetd because inetd is pretty efficient, and I don't want to make a startup script for caddy. Additionally, I don't want caddy to run as root for port 80, etc.\n\nThe problem is either with caddy's code or my inetd configuration. I would appreciate some eyeballs reviewing my configurations so the developer of Caddy can then look into what the problem may be.\n\nHere's my /etc/services:\n\nCode:\n\ncaddy2 2022/tcp # caddy test\n\nHere's my /etc/inetd.conf:\n\nCode:\n\ncaddy2 stream tcp nowait.1000 sean /home/sean/bin/caddy2/caddy /home/sean/bin/caddy2/caddy --conf=\"/home/sean/bin/caddy2/Caddyfile\"\n\nThe way I'm reading this is that inetd will start caddy at the path /home/sean/bin/caddy2/caddy with the Caddyfile[0] at /home/sean/bin/caddy2/Caddyfile.\n\nWhen starting inetd in debug mode and going to my page, I see this in the stio:\n\nCode:\n\ninetd: someone wants caddy2 inetd: accept, ctrl 8 inetd: 52066 execl /home/sean/bin/caddy2/caddy inetd: handling signal flag C inetd: 52066 reaped, status 1\n\nI'm not an inetd expert but this looks like it processed the request, as requested.\n\nThe problem with this is when you review the contents on the webpage, you will see:\n\nCode:\n\n2015/12/02 06:29:12 open \"/home/sean/bin/caddy2/Caddyfile\": no such file or directory\n\nDid inetd really process the request successfully and this is simply an application problem, or is there a glaring inetd problem I'm overlooking?\n\nI have not yet tried xinetd as I'd like to try and have inetd up and running first.\n\nThanks,\n\nJB\n\n[0] https://caddyserver.com/docs/caddyfile"
+    }
+}

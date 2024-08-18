@@ -1,0 +1,34 @@
+{
+    "id": "dbpedia_8291_1",
+    "rank": 17,
+    "data": {
+        "url": "https://www.vskills.in/certification/certified-linux-administrator-system-daemons-xinetd-inetd-rsyslogd-and-cron",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Certified Linux Administrator System daemons (xinetd, inetd, rsyslogd and cron)",
+        "top_image": "https://www.vskills.in/certification/image/catalog/favicon.png",
+        "meta_img": "https://www.vskills.in/certification/image/catalog/favicon.png",
+        "images": [
+            "https://www.facebook.com/tr?id=1039928866040694&ev=PageView&noscript=1",
+            "https://www.vskills.in/certification/image/catalog/vskills-logo1.jpg",
+            "https://www.vskills.in/certification/image/catalog/vskills-logo1.jpg",
+            "https://www.vskills.in/certification/image/catalog/vskills-logo1.jpg",
+            "https://vskills.in/certification/images/back.jpg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "https://www.vskills.in/certification/image/catalog/favicon.png",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "A daemon is a background process that performs a specific function or system task. In keeping with the UNIX and Linux philosophy of modularity, daemons are pro-grams rather than parts of the kernel. Many daemons start at boot time and continue to run as long as the system is up. Other daemons are started when needed and run only as long as they are useful.\n\nDaemons made their way from Multics to UNIX to Linux, where they are so popular that they need a superdaemon ( xinetd or inetd) to manage them.\n\nBefore inetd was written, all daemons started at boot time and ran continuously (or more accurately, they blocked waiting for work to do). Over time, more and more daemons were added to the system. The daemon population became so large that it began to cause performance problems. In response, the Berkeley gurus developed inetd, a daemon that starts other daemons as they are needed. inetd successfully popularized this superdaemon model, which remains a common way to minimize the number of processes running on a server. Most versions of UNIX and Linux now use a combination of inetd and always-running daemons.\n\nINIT\n\ninit is the first process to run after the system boots, and in many ways it is the most important daemon. It always has a PID of 1 and is an ancestor of all user processes and all but a few system processes. At startup, init either places the system in single-user mode or begins to execute the scripts needed to bring the system to multiuser mode. When you boot the system into single-user mode, init runs the startup scripts after you terminate the single-user shell by typing exit or .\n\nIn multiuser mode, init is responsible for making sure that processes are available to handle logins on every login-enabled device. Logins on serial ports are generally handled by some variant of getty (e.g., agetty , mgetty , or mingetty. init also supervises a graphical login procedure that allows users to log directly in to X Windows.\n\nIn addition to its login management duties , init also has the responsibility to exor-cise undead zombie processes that would otherwise accumulate on the system. init defines several “run levels” that determine what set of system resources should be enabled. There are seven levels, numbered 0 to 6. The name “s” is recognized as a synonym for level 1 (single-user mode). The characteristics of each run level are defined in the /etc/inittab file.\n\ninit usually reads its initial run level from the /etc/inittab file, but the run level can also be passed in as an argument from the boot loader. If “s” is specified, init enters single-user mode. Otherwise, it scans /etc/inittab for entries that apply to the re-quested run level and executes their corresponding commands.\n\nThe telinit command changes init ’s run level once the system is up. For example, telinit 4 forces init to go to run level 4 (which is unused on our example systems). telinit ’s most useful argument is q, which causes init to reread the /etc/inittab file.\n\nCRON\n\nThe cron daemon (known as crond on Red Hat) is responsible for running com-mands at preset times. It accepts schedule files (“crontabs”) from both users and administrators. cron is frequently employed for administrative purposes, including management of log files and daily cleanup of the filesystem.\n\nThe atd daemon runs commands scheduled with the at command. Most versions of Linux also include the anacron scheduler, which executes jobs at time intervals rather than at specific times. anacron is particularly useful on systems that are not always turned on, such as laptops.\n\nXINETD\n\nxinetd and inetd are daemons that manage other daemons. They start up their client daemons when there is work for them to do and allow the clients to die grace-fully once their tasks have been completed. The traditional version of inetd comes to us from the UNIX world, but most Linux distributions have migrated to xinetd , a souped-up alternative that incorporates security features similar to those formerly achieved through the use of tcpd , the “TCP wrappers” package. xinetd also provides better protection against denial of service attacks, better log management features, and a more flexi-ble configuration language.\n\nxinetd and inetd only work with daemons that provide services over the network. To find out when someone is trying to access one of their clients, xinetd and inetd attach themselves to the network ports that would normally be managed by the qui-escent daemons. When a connection occurs, xinetd/inetd starts up the appropriate daemon and connects its standard I/O channels to the network port. Daemons must be written with this convention in mind if they are to be compatible.\n\nTo change the daemons that loads at boot on Red Hat Linux, in a console, become root (type su -) and type setup, then in the menu select System Services. Various daemons are"
+    }
+}

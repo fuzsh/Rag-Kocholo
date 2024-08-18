@@ -1,0 +1,32 @@
+{
+    "id": "dbpedia_8290_0",
+    "rank": 8,
+    "data": {
+        "url": "https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/6/html/security_guide/sect-security_guide-tcp_wrappers_and_xinetd",
+        "read_more_link": "",
+        "language": "en",
+        "title": "2.6. TCP Wrappers and xinetd",
+        "top_image": "https://access.redhat.com/webassets/avalon/d/Red_Hat_Enterprise_Linux-6-Security_Guide-en-US/images/c17e3b1498d923b288486036038e845e/tcp_wrap_diagram.png",
+        "meta_img": "",
+        "images": [
+            "https://docs.redhat.com/Logo-Red_Hat-Documentation-A-Reverse-RGB.svg",
+            "https://access.redhat.com/webassets/avalon/d/Red_Hat_Enterprise_Linux-6-Security_Guide-en-US/images/c17e3b1498d923b288486036038e845e/tcp_wrap_diagram.png",
+            "https://docs.redhat.com/Logo-Red_Hat-Documentation-A-Reverse-RGB.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "2.6. TCP Wrappers and xinetd | Red Hat Documentation",
+        "meta_lang": "",
+        "meta_favicon": "",
+        "meta_site_name": "",
+        "canonical_link": "https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/6/html/security_guide/sect-security_guide-tcp_wrappers_and_xinetd",
+        "text": "download PDF\n\nControlling access to network services is one of the most important security tasks facing a server administrator. Red Hat Enterprise Linux provides several tools for this purpose. For example, an iptables-based firewall filters out unwelcome network packets within the kernel's network stack. For network services that utilize it, TCP Wrappers add an additional layer of protection by defining which hosts are or are not allowed to connect to \"wrapped\" network services. One such wrapped network service is the xinetd super server. This service is called a super server because it controls connections to a subset of network services and further refines access control.\n\nFigure 2.4, “Access Control to Network Services” is a basic illustration of how these tools work together to protect network services.\n\nFigure 2.4. Access Control to Network Services\n\nFor more information about using firewalls with iptables, see Section 2.8.9, “IPTables”.\n\n2.6.1. TCP Wrappers\n\nThe TCP Wrappers packages (tcp_wrappers and tcp_wrappers-libs) are installed by default and provide host-based access control to network services. The most important component within the package is the /lib/libwrap.so or /lib64/libwrap.so library. In general terms, a TCP-wrapped service is one that has been compiled against the libwrap.so library.\n\nWhen a connection attempt is made to a TCP-wrapped service, the service first references the host's access files (/etc/hosts.allow and /etc/hosts.deny) to determine whether or not the client is allowed to connect. In most cases, it then uses the syslog daemon (syslogd) to write the name of the requesting client and the requested service to /var/log/secure or /var/log/messages.\n\nIf a client is allowed to connect, TCP Wrappers release control of the connection to the requested service and take no further part in the communication between the client and the server.\n\nIn addition to access control and logging, TCP Wrappers can execute commands to interact with the client before denying or releasing control of the connection to the requested network service.\n\nBecause TCP Wrappers are a valuable addition to any server administrator's arsenal of security tools, most network services within Red Hat Enterprise Linux are linked to the libwrap.so library. Such applications include /usr/sbin/sshd, /usr/sbin/sendmail, and /usr/sbin/xinetd.\n\nNote\n\nTo determine if a network service binary is linked to libwrap.so, type the following command as the root user:\n\nldd <binary-name> | grep libwrap\n\nReplace <binary-name> with the name of the network service binary. If the command returns straight to the prompt with no output, then the network service is not linked to libwrap.so.\n\nThe following example indicates that /usr/sbin/sshd is linked to libwrap.so:\n\n~]# ldd /usr/sbin/sshd | grep libwrap libwrap.so.0 => /lib/libwrap.so.0 (0x00655000)\n\n2.6.1.1. Advantages of TCP Wrappers\n\nTCP Wrappers provide the following advantages over other network service control techniques:\n\nTransparency to both the client and the wrapped network service — Both the connecting client and the wrapped network service are unaware that TCP Wrappers are in use. Legitimate users are logged and connected to the requested service while connections from banned clients fail.\n\nCentralized management of multiple protocols — TCP Wrappers operate separately from the network services they protect, allowing many server applications to share a common set of access control configuration files, making for simpler management."
+    }
+}

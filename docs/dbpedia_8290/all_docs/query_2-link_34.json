@@ -1,0 +1,35 @@
+{
+    "id": "dbpedia_8290_2",
+    "rank": 34,
+    "data": {
+        "url": "https://superuser.com/questions/1220363/run-xinetd-program-upon-telnet-connection",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Run xinetd program upon telnet connection",
+        "top_image": "https://cdn.sstatic.net/Sites/superuser/Img/apple-touch-icon@2.png?v=e869e4459439",
+        "meta_img": "https://cdn.sstatic.net/Sites/superuser/Img/apple-touch-icon@2.png?v=e869e4459439",
+        "images": [
+            "https://cdn.sstatic.net/Sites/superuser/Img/logo.svg?v=4bc8a703ebac",
+            "https://i.sstatic.net/4C0ep.gif?s=64",
+            "https://i.sstatic.net/4C0ep.gif?s=64",
+            "https://superuser.com/posts/1220363/ivc/0c39?prg=e3c56a9d-6bd0-4a5f-8406-c991353a8a06"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "jon.s"
+        ],
+        "publish_date": "2017-06-17T23:16:29",
+        "summary": "",
+        "meta_description": "I'm trying to set up an ASCII Art Telnet Server like the classic ASCII Star Wars Project: \n\ntelnet towel.blinkenlights.nl \n\nhttps://github.com/nitram509/ascii-telnet-server\n\nI've had success at set...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/superuser/Img/favicon.ico?v=4852d6fb3f5d",
+        "meta_site_name": "Super User",
+        "canonical_link": "https://superuser.com/questions/1220363/run-xinetd-program-upon-telnet-connection",
+        "text": "I'm trying to set up an ASCII Art Telnet Server like the classic ASCII Star Wars Project:\n\ntelnet towel.blinkenlights.nl\n\nhttps://github.com/nitram509/ascii-telnet-server\n\nI've had success at setting up a telnet server, but I'm missing the last step of making the asciiplayer run upon telnetting in. (Ideally, I'd like it to work like towel.blinkenlights.nl, where you don't have to log in and the ASCII Movie immediately starts.)\n\nSETTING UP TELNET\n\nHere are the steps I've followed using a fresh Digital Ocean droplet running Ubuntu 16.04.2 x64 after setting up a firewall and opening port 23.\n\ninstall telnetd and xinetd: sudo apt-get install xinetd telnetd\n\ncreate telnet file in /etc/xinetd.d: sudo nano /etc/xinetd.d/telnet\n\n# default: on # description: The telnet server serves telnet sessions; it uses # unencrypted username/password pairs for authentication. service telnet { disable = no flags = REUSE socket_type = stream wait = no user = root server = /usr/sbin/in.telnetd log_on_failure += USERID }\n\nRestart xinetd service: sudo service xinetd restart\n\nGETTING THE ASCIIPLAYER WORKING\n\nI've confirmed that this allows telnet access (using a username/password)\n\nI uploaded the asciiplayer folder to /opt/\n\nAccording to the README for asciiplayer, I need to replace the above configuration into /etc/xinetd.d/telnet with the bit below:\n\n# default: on # description: An telnet service playing an ASCII movie service telnet { disable = no socket_type = stream protocol = tcp port = 23 user = root wait = no instances = 10 log_type = FILE /var/log/asciiplayer log_on_success += PID HOST DURATION log_on_failure = HOST server = /usr/bin/python server_args = -u -OO /opt/asciiplayer/ascii_telnet_server.py -f /opt/asciiplayer/sw1.txt --stdout }\n\nAfter doing so, I can no longer telnet into the server. It simply returns:\n\ntelnet: Unable to connect to remote host: Connection refused\n\nWhat part of the process am I missing? I feel like it's very close. I've done the above process a few times and simply can't get the ascii_telnet_server.py to run upon telnetting. The world needs more ASCII movies over telnet!! Any help would be greatly appreciated..."
+    }
+}

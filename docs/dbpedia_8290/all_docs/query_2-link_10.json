@@ -1,0 +1,31 @@
+{
+    "id": "dbpedia_8290_2",
+    "rank": 10,
+    "data": {
+        "url": "https://access.redhat.com/solutions/9098",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How to configure xinetd ?",
+        "top_image": "https://access.redhat.com/webassets/avalon/g/shadowman-200.png",
+        "meta_img": "https://access.redhat.com/webassets/avalon/g/shadowman-200.png",
+        "images": [
+            "https://access.redhat.com/chrome_themes/nimbus/img/red-hat-customer-portal.svg",
+            "https://static.redhat.com/libs/redhat/brand-assets/2/corp/logo--on-dark.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2014-09-16T12:35:00+00:00",
+        "summary": "",
+        "meta_description": "How to configure telnet service using xinetd? How to enable xinetd services using /etc/xinetd.conf file and /etc/xinetd.d/ directory ?",
+        "meta_lang": "en",
+        "meta_favicon": "https://access.redhat.com/webassets/avalon/g/favicon.ico",
+        "meta_site_name": "Red Hat Customer Portal",
+        "canonical_link": "https://access.redhat.com/solutions/9098",
+        "text": "Resolution\n\nThe configuration files for xinetd are as follows:\n\n/etc/xinetd.conf - The global xinetd configuration file.\n\n/etc/xinetd.d/ directory - The directory containing all service-specific files.\n\nThe xinetd daemon is a TCP wrapped super service which controls access to a subset of popular network services including FTP, IMAP, and Telnet. It also provides service-specific configuration options for access control, enhanced logging, binding, redirection, and resource utilization control.\n\nWhen a client host attempts to connect to a network service controlled by xinetd , the super service receives the request and checks for any TCP wrappers access control rules. If access is allowed, xinetd verifies that the connection is allowed under its own access rules for that service and that the service is not consuming more than its allotted amount of resources or in breach of any defined rules. It then starts an instance of the requested service and passes control of the connection to it. Once the connection is established, xinetd does not interfere further with communication between the client host and the server.\n\nThe /etc/xinetd.conf File\n\nThe /etc/xinetd.conf file contains general configuration settings which effect every service under xinetd's control. It is read once when the xinetd service is started, so for configuration changes to take effect, the administrator must restart the xinetd service. Below is a sample /etc/xinetd.conf file:\n\ndefaults { instances = 60 log_type = SYSLOG authpriv log_on_success = HOST PID log_on_failure = HOST cps = 25 30 } includedir /etc/xinetd.d\n\nThese lines control the following aspects of xinetd:\n\ninstances - Sets the maximum number of requests xinetd can handle at once.\n\nlog_type - Configures xinetd to use the authpriv log facility, which writes log entries to the /var/log/secure file. Adding a directive such as FILE /var/log/xinetdlog would create a custom log file called xinetdlog in the /var/log/ directory.\n\nlog_on_success - Configures xinetd to log if the connection is successful. By default, the remote host's IP address and the process ID of server processing the request are recorded.\n\nlog_on_failure - Configures xinetd to log if there is a connection failure or if the connection is not allowed.\n\ncps - Configures xinetd to allow no more than 25 connections per second to any given service. If this limit is reached, the service is retired for 30 seconds.\n\nincludedir /etc/xinetd.d/ - Includes options declared in the service-specific configuration files located in the /etc/xinetd.d/ directory .\n\nNote: Often, both the log_on_success and log_on_failure settings in /etc/xinetd.conf are further modified in the service-specific log files. For this reason, more information may appear in a given service's log than the /etc/xinetd.conf file may indicate.\n\nThe /etc/xinetd.d/ Directory\n\nThe files in the /etc/xinetd.d/ directory contains the configuration files for each service managed by xinetd and the names of the files correlate to the service. As with xinetd.conf , this file is read only when the xinetd service is started. For any changes to take effect, the administrator must restart the xinetd service.\n\nThe format of files in the /etc/xinetd.d/ directory use the same conventions as /etc/xinetd.conf . The primary reason the configuration for each service is stored in a separate file is to make customization easier and less likely to effect other services.\n\nTo gain an understanding of how these files are structured, consider the /etc/xinetd.d/telnet file:\n\nservice telnet { flags = REUSE socket_type = stream wait = no user = root server = /usr/sbin/in.telnetd log_on_failure += USERID disable = yes }\n\nThese lines control various aspects of the telnet service:\n\nservice - Defines the service name, usually one listed in the /etc/services file.\n\nflags - Sets any of a number of attributes for the connection. REUSE instructs xinetd to reuse the socket for a Telnet connection.\n\nsocket_type - Sets the network socket type to stream.\n\nwait - Defines whether the service is single-threaded (yes) or multi-threaded (no).\n\nuser - Defines what user ID the process process will run under.\n\nserver - Defines the binary executable to be launched.\n\nlog_on_failure - Defines logging parameters for log_on_failure in addition to those already defined in xinetd.conf .\n\ndisable - Defines whether or not the service is active."
+    }
+}

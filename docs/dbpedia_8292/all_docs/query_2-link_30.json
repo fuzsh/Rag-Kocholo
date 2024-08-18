@@ -1,0 +1,46 @@
+{
+    "id": "dbpedia_8292_2",
+    "rank": 30,
+    "data": {
+        "url": "https://forum.manjaro.org/t/clonezilla-backup/141877",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Clonezilla backup",
+        "top_image": "https://forum.manjaro.org/uploads/default/optimized/3X/c/9/c98ad4cd270073a77be41c47a6697036a06caf4b_2_1024x768.jpeg",
+        "meta_img": "https://forum.manjaro.org/uploads/default/optimized/3X/c/9/c98ad4cd270073a77be41c47a6697036a06caf4b_2_1024x768.jpeg",
+        "images": [
+            "https://forum.manjaro.org/user_avatar/forum.manjaro.org/fabby/48/20235_2.png",
+            "https://forum.manjaro.org/images/emoji/twitter/clap.png?v=12",
+            "https://forum.manjaro.org/uploads/default/optimized/3X/c/9/c98ad4cd270073a77be41c47a6697036a06caf4b_2_666x500.jpeg",
+            "https://rescuezilla.com/favicon.ico",
+            "https://forum.manjaro.org/user_avatar/forum.manjaro.org/bedna/48/46829_2.png",
+            "https://forum.manjaro.org/uploads/default/optimized/3X/f/f/ff9ff182cd7ea7e72c4da06d56529a11fad6e5aa_2_666x500.jpeg",
+            "https://forum.manjaro.org/images/emoji/twitter/man_shrugging.png?v=12",
+            "https://github.githubassets.com/favicons/favicon.svg",
+            "https://opengraph.githubassets.com/804eee213f99d18e5174ccbbef09abcb81a3764e7c310ed23199dc92ad172f4b/rescuezilla/rescuezilla",
+            "https://forum.manjaro.org/letter_avatar_proxy/v4/letter/m/839c29/48.png",
+            "https://forum.manjaro.org/images/emoji/twitter/slightly_frowning_face.png?v=12",
+            "https://forum.manjaro.org/images/emoji/twitter/roll_eyes.png?v=12",
+            "https://www.linuxbabe.com/wp-content/uploads/2021/08/cropped-linuxbabe-logo-32x32.png",
+            "https://www.linuxbabe.com/wp-content/uploads/2016/03/Boot-ISO-Files-From-GRUB2-Boot-Loader.jpg",
+            "https://forum.manjaro.org/images/emoji/twitter/smiley.png?v=12"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "grub"
+        ],
+        "tags": null,
+        "authors": [
+            "system Closed"
+        ],
+        "publish_date": "2023-06-06T18:52:06+00:00",
+        "summary": "",
+        "meta_description": "(instructions in the tutorial thread to post here and link to the tutorial) \n\n\nI tried following the above tutorial but the “iso in /opt” does not work. Besides, I want to do backups on the drive that my /opt and / and /&hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://forum.manjaro.org/uploads/default/optimized/3X/8/0/80c60f019b54c2be817a1139a463e9b67631ebad_2_32x32.svg",
+        "meta_site_name": "Manjaro Linux Forum",
+        "canonical_link": "https://forum.manjaro.org/t/clonezilla-backup/141877",
+        "text": "(instructions in the tutorial thread to post here and link to the tutorial)\n\nI tried following the above tutorial but the “iso in /opt” does not work. Besides, I want to do backups on the drive that my /opt and / and /root is mounted so its out of the question anyway.\n\nJust using another directory on other drives does not work either ofc.\n\nI could just use a usb stick but what is the fun in that? Besides, you can make damn sure that if I ever HAVE to restore, that usb stick will never be found. xD\n\nI looked the instructions on Clonezilla and using and modifying the method described there with a TON of trial and error I managed to load clonezilla from grub by using following line in /etc/grub.d/40_custom\n\nThe drive in question is a mechanical WD red formated in ntfs and the iso file is stored in / of that drive if that matters.\n\ninsmod search_fs_uuid search --no-floppy --set=isopart --fs-uuid CE8C0EC38C0EA655 menuentry \"Clonezilla-live ISO\" { ISO=\"/clonezilla-live-3.1.0-22-amd64.iso\" loopback loop ($isopart)$ISO linux (loop)/live/vmlinuz boot=live union=overlay username=user config components quiet noswap edd=on nomodeset locales= keyboard-layouts= ocs_live_run=\"ocs-live-general\" ocs_live_extra_param=\"\" ocs_live_batch=\"no\" vga=791 ip= net.ifnames=0 splash i915.blacklist=yes radeonhd.blacklist=yes nouveau.blacklist=yes vmwgfx.enable_fbdev=1 findiso=$ISO initrd (loop)/live/initrd.img }\n\nAnd then sudo update-grub\n\nI now find “Clonezilla-live ISO” in the grub menu, I can run it, backup and restore both whole disk and separate partitions (yes, I have tried to restore, and it works)\n\nI store my backups on a partition that is never mounted on my system except for when doing backups/restores as recommended in the tutorial (clever, I would not have thought about that).\n\nBut when I try to shut down or reboot after I’m done in clonezilla my computer gets stuck (see pic) and I can’t even ctrl+alt+delete my way out of there, have to hard reset my computer with the reset button or hold power for 5s.\n\nAny thoughts into how to solve this?\n\nUPDATE!\n\nSomething has changed since I tried this a few weeks ago.\n\nThings that did not work before is now working. Not sure if I should be happy or cry. xD\n\nThe reason the /opt version doesn’t work for me might be because I use btrfs, I read that somewhere while doing further research today, but now I can’t recall where so I could use it as reference…\n\nI now have following in /etc/grub.d/40_custom\n\nmenuentry \"Clonezilla-live ISO (UUID)\" { insmod search_fs_uuid search --no-floppy --set=isopart --fs-uuid CE8C0EC38C0EA655 ISO=\"/clonezilla-live-3.1.0-22-amd64.iso\" loopback loop ($isopart)$ISO linux (loop)/live/vmlinuz boot=live findiso=$ISO initrd (loop)/live/initrd.img } menuentry \"Clonezilla-live-ISO (HD)\" { insmod ntfs set isofile=\"/clonezilla-live-3.1.0-22-amd64.iso\" loopback loop (hd1,2)$isofile linux (loop)/live/vmlinuz boot=live findiso=$isofile initrd (loop)/live/initrd.img }\n\nMy hd is at the moment at /dev/sdb2 so in second entry it becomes hd1,2. (hd0 is sda)\n\nNo need to put ANY options now apparently.\n\nI think the first entry is preferable, the uuid will never change, but I have noticed that sometimes, not often but sometimes the device order of the disks change and that will require me to change the second entry.\n\nThanks to @MrLavender who provided me a link, that led me to the following link, a nice reference to a few different iso files and tips on how to mount them in grub."
+    }
+}

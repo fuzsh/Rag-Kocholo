@@ -1,0 +1,28 @@
+{
+    "id": "dbpedia_8290_2",
+    "rank": 43,
+    "data": {
+        "url": "https://checkmk.com/linux-knowledge/ip-address-remote-host-under-xinetd",
+        "read_more_link": "",
+        "language": "en",
+        "title": "IP address of the remote host under xinetd",
+        "top_image": "https://checkmk.com/packages/tribe29_core/themes/checkmk/images/share_image.png",
+        "meta_img": "https://checkmk.com/packages/tribe29_core/themes/checkmk/images/share_image.png",
+        "images": [],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "If you use xinetd to provide services on the internet you also run a shell script for e.g., Portknocking. But therefore you need to know the IP of the host.",
+        "meta_lang": "en",
+        "meta_favicon": "/favicon.ico",
+        "meta_site_name": "Checkmk",
+        "canonical_link": "https://checkmk.com/linux-knowledge/ip-address-remote-host-under-xinetd",
+        "text": "Your requirement\n\nYou use xinetd to provide one or more services on the Internet. As the server you use your own program, e.g., a shell script. With this you want to realise e.g., Portknocking and therefore you want to find out the IP address of the host which has connected to you.\n\nThe solution\n\nxinetd communicates the IP address of the remote host to the called program via the environment. This variable is called REMOTE_HOST.\n\nAn example\n\nLet’s assume you attach a shell script /root/test.sh to UDP port 8888. Your configuration for xinetd will look something like this:\n\n/etc/xinetd.d/test:service test { disable = no type = UNLISTED socket_type = dgram protocol = udp user = root wait = yes port = 8888 server = /bin/bash server_args = /root/test.sh }\n\nThe test script can access the address as follows:\n\n/root/test.sh:#!/bin/bash logger \"xinetd: Verbindung auf Port 8888 von IP-Adresse $REMOTE_HOST\"\n\nYou can also access the REMOTE_HOST variable from a C program. The getenv() function is available for this purpose:"
+    }
+}

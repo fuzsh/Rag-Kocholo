@@ -1,0 +1,35 @@
+{
+    "id": "dbpedia_8290_0",
+    "rank": 5,
+    "data": {
+        "url": "https://serverfault.com/questions/777391/xinetd-read-post-data",
+        "read_more_link": "",
+        "language": "en",
+        "title": "xinetd read post data",
+        "top_image": "https://cdn.sstatic.net/Sites/serverfault/Img/apple-touch-icon@2.png?v=9b1f48ae296b",
+        "meta_img": "https://cdn.sstatic.net/Sites/serverfault/Img/apple-touch-icon@2.png?v=9b1f48ae296b",
+        "images": [
+            "https://cdn.sstatic.net/Sites/serverfault/Img/logo.svg?v=43f5b6d5f65b",
+            "https://www.gravatar.com/avatar/3b2ea53f955db5d860da7b5d8cc284b8?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/3b2ea53f955db5d860da7b5d8cc284b8?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/00c04e13ffea50e9519a9831885ed264?s=64&d=identicon&r=PG",
+            "https://lh5.googleusercontent.com/-UjszkMj9_Cc/AAAAAAAAAAI/AAAAAAAAAAA/AKxrwcbuVr-7swUAsBOX0L3mFeJ389YsOQ/mo/photo.jpg?sz=64",
+            "https://serverfault.com/posts/777391/ivc/0c39?prg=604679e7-57e2-4f6b-a2a8-dd52221b93b1"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2016-05-17T23:06:17",
+        "summary": "",
+        "meta_description": "I'm trying to write a simple handler for a webhook using xinetd and bash. I have the trivial case working with this config for xinetd:\n\nservice github-hooks\n{\n    port            = 61000\n    socket...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/serverfault/Img/favicon.ico?v=18e9cc4f2aea",
+        "meta_site_name": "Server Fault",
+        "canonical_link": "https://serverfault.com/questions/777391/xinetd-read-post-data",
+        "text": "I'm trying to write a simple handler for a webhook using xinetd and bash. I have the trivial case working with this config for xinetd:\n\nservice github-hooks { port = 61000 socket_type = stream protocol = tcp wait = no user = ubuntu server = /home/ubuntu/github-hooks.sh }\n\nand this bash script:\n\n#!/bin/bash echo -e \"HTTP/1.1 200 OK\"\n\nnow, I want to read in the post data that is being sent in the webhook so I can do something more interesting that always returning 200.\n\nHow do I do read the post data from my bash script?\n\nI've tried:\n\nwhile read line; do echo \"$line\" >> /home/ubuntu/test done < /dev/stdin\n\nbut that is not working for me.\n\nEdit\n\nThanks to the suggestion below, I stopped xinetd and used nc to see what raw data was coming over the wire:\n\n$nc -l 61000\n\nand got this:\n\nPOST / HTTP/1.1 Host: <snip>:61000 Accept: */* User-Agent: GitHub-Hookshot/375c44e X-GitHub-Event: pull_request X-GitHub-Delivery: 2dc1fb00-1c8e-11e6-9955-64afafb6ce32 content-type: application/json X-Hub-Signature: sha1=45afd85b7d4312fa8ac4c56638e8e9699e2ddb36 Content-Length: 20558 {\"action\":\"opened\",\"number\":116,\"pull_request\": <snip>\n\nSo, the data is being sent. Now, Knowing that there are exactly 11 lines being sent, I read exactly 11 lines:\n\nfor i in {0..10} do read line echo \"$line\" >> /home/ubuntu/test done\n\nAnd, I get the same output (great success :)\n\nPOST / HTTP/1.1 Host: <snip>:61000 Accept: */* User-Agent: GitHub-Hookshot/375c44e X-GitHub-Event: pull_request X-GitHub-Delivery: 2dc1fb00-1c8e-11e6-9955-64afafb6ce32 content-type: application/json X-Hub-Signature: sha1=45afd85b7d4312fa8ac4c56638e8e9699e2ddb36 Content-Length: 20558 {\"action\":\"opened\",\"number\":116,\"pull_request\": <snip>"
+    }
+}

@@ -1,0 +1,45 @@
+{
+    "id": "dbpedia_8286_2",
+    "rank": 81,
+    "data": {
+        "url": "https://teslascada.com/HTML/mysql-workbench.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Databases > MySQL > MySQL Workbench",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://teslascada.com/HTML/btn_prev_n.png",
+            "https://teslascada.com/HTML/btn_home_n.png",
+            "https://teslascada.com/HTML/btn_next_n.png",
+            "https://teslascada.com/HTML/mysqlworkbench.png",
+            "https://teslascada.com/HTML/mysqlworkbenchpassword.png",
+            "https://teslascada.com/HTML/mysqlworkbenchbegin.png",
+            "https://teslascada.com/HTML/createdatabase.png",
+            "https://teslascada.com/HTML/createnameofdatabase.png",
+            "https://teslascada.com/HTML/sqlscripttodatabase2.png",
+            "https://teslascada.com/HTML/lastcreatedatabase.png",
+            "https://teslascada.com/HTML/timezoneerror.png",
+            "https://teslascada.com/HTML/workbenchtimezone.png",
+            "https://teslascada.com/HTML/executetimzone.png",
+            "https://teslascada.com/HTML/myinifilepath.png",
+            "https://teslascada.com/HTML/mysqlusersettings.png",
+            "https://teslascada.com/HTML/mysqllocation.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "MySQL Workbench",
+        "meta_lang": "",
+        "meta_favicon": "",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "MySQL Workbench is a visual database design tool that integrates database design, modeling, creation and operation. Its capabilities will be useful to us for:\n\nâ¢ backing up and restoring the database (also useful for transferring the database to another PC).\n\nâ¢ settings for connecting to a remote database.\n\nâ¢ changing the path of saving the database - \"by default\" is saved to disk \"C\".\n\nâ¢ viewing database statistics.\n\nIf the database was installed according to the instructions in the previous section, then MySQL Workbench was installed along with MySQL, otherwise it can be downloaded from this link: http://dev.mysql.com/downloads/workbench/\n\nAfter starting MySQL Workbench, you need to select an instance of the MySQL server in order to connect to it. In our case, it is only one (local) - click on it:\n\nEnter the root user password (which was invented when setting up MySQL):\n\nAfter connecting to the MySQL server, we will see the start page:\n\n1. Administration - Settings of the MySQL server.\n\n2. Schemas (Database area) - the list of created databases is displayed here. Also, when you first turn it on, test databases can be displayed here - they can be deleted by clicking on the name of the database with RMB - a pop-up menu will appear in which you need to select \"Drop Schema\".\n\nCreate database\n\nYou have to create database manually:\n\nOpen \"Schemas\" tab. Click \"Create a new schema in the connected server\" icon:\n\nEnter \"Name\" of the schema and click Apply:\n\n\"Apply SQL script to Database\" window will be appeared. Click Apply:\n\nThen click \"Finish\":\n\nChange server time zone\n\nIf you get during the first running TeslaSCADA2 IDE or TeslaSCADA2 Runtime the Error message like this:\n\nYou can fix it in 2 ways:\n\n1. Set global by SQL query (it's a temporary solution, after restart your MySQL server the problem will return).\n\nTo do this you have to setup time zone for your My SQL server to do this open MySQL Workbench and click icon \"Create a new SQL tab for executing queries\":\n\nEnter: SET GLOBAL time_zone = '+3:00';\n\nWhere instead of '+3:00' you have to enter your time zone. And then click \"Execute...\" icon:\n\nNow you can try Run TeslaSCADA2 project again in TeslaSCADA2 IDE or in TeslaSCADA2 Runtime.\n\n2. Change my.ini (Windows) or my.inf (Linux) file.\n\n2.1 Find my.ini or my.inf file. It's an initialization file for MySQL server. Usually it's placed in C:/ProgramData/MySQL/MySQL Server 8.0/:\n\n2.2. Open file my.ini and add this line: default-time-zone='+03:00' Where instead of '+3:00' you have to enter your time zone.\n\n2.3. Save file (your current user should have access to this folder).\n\n2.4. Restart your MySQL server.\n\nNow you can try Run TeslaSCADA2 project again in TeslaSCADA2 IDE or in TeslaSCADA2 Runtime.\n\nSettings required for connecting to a remote database\n\n1.Select the item \"Users and Privileges\".\n\n2. Select the user \"root\".\n\n3.In the \"Limit to Hosts Matching\" field, enter \"%\".\n\n4. Save the changes by clicking the \"Apply\" button.\n\nNow you can connect to the database from a remote PC.\n\nChanging the database save path\n\nTo change the path for saving the database, you should do the following:\n\nâ¢ stop the MySQL service via Windows services.\n\nâ¢ move the entire \"data\" directory from the current location (by default \"C: \\ ProgramData \\ MySQL \\ MySQL Server 5.x \\ data\") to a new one (cut - paste).\n\nNext, you need to run MySQL Workbench \"as administrator\" and change the \"datadir\" parameter to a new location for the data directory:"
+    }
+}

@@ -1,0 +1,40 @@
+{
+    "id": "dbpedia_8290_1",
+    "rank": 79,
+    "data": {
+        "url": "https://en.wikipedia.org/wiki/Inetd",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Wikipedia",
+        "top_image": "https://en.wikipedia.org/static/favicon/wikipedia.ico",
+        "meta_img": "https://en.wikipedia.org/static/favicon/wikipedia.ico",
+        "images": [
+            "https://en.wikipedia.org/static/images/icons/wikipedia.png",
+            "https://en.wikipedia.org/static/images/mobile/copyright/wikipedia-wordmark-en.svg",
+            "https://en.wikipedia.org/static/images/mobile/copyright/wikipedia-tagline-en.svg",
+            "https://upload.wikimedia.org/wikipedia/en/thumb/9/99/Question_book-new.svg/50px-Question_book-new.svg.png",
+            "https://upload.wikimedia.org/wikipedia/en/thumb/9/96/Symbol_category_class.svg/16px-Symbol_category_class.svg.png",
+            "https://upload.wikimedia.org/wikipedia/en/thumb/d/db/Symbol_list_class.svg/16px-Symbol_list_class.svg.png",
+            "https://login.wikimedia.org/wiki/Special:CentralAutoLogin/start?type=1x1",
+            "https://en.wikipedia.org/static/images/footer/wikimedia-button.svg",
+            "https://en.wikipedia.org/static/images/footer/poweredby_mediawiki.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Contributors to Wikimedia projects"
+        ],
+        "publish_date": "2005-07-05T13:26:24+00:00",
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "/static/apple-touch/wikipedia.png",
+        "meta_site_name": "",
+        "canonical_link": "https://en.wikipedia.org/wiki/Inetd",
+        "text": "Unix daemon\n\ninetd (internet service daemon) is a super-server daemon on many Unix systems that provides Internet services. For each configured service, it listens for requests from connecting clients. Requests are served by spawning a process which runs the appropriate executable, but simple services such as echo are served by inetd itself. External executables, which are run on request, can be single- or multi-threaded. First appearing in 4.3BSD,[1] it is generally located at /usr/sbin/inetd. inetd is based on the (service) activator pattern[2]\n\nOften called a super-server, inetd listens on designated ports used by Internet services such as FTP, POP3, and telnet. When a TCP packet or UDP packet arrives with a particular destination port number, inetd launches the appropriate server program to handle the connection. For services that are not expected to run with high loads, this method uses memory more efficiently, since the specific servers run only when needed. Furthermore, in inetd's \"nowait\" mode of service management, no network code is required in the service-specific programs, as inetd hooks the network stream directly to stdin and stdout of the spawned process. For protocols that have frequent traffic, such as HTTP and POP3, either inetd's \"wait\" mode of operation, or a dedicated server that intercepts the traffic directly may be preferable.\n\nThe list of services that will be serviced is given in a configuration file, usually /etc/inetd.conf. A GUI for managing the configuration file is an optional accessory. The daemon may need a signal in order to re-read its configuration. For an example, telnet can be configured as follows (line taken from a machine running AIX version 5.1):\n\ntelnet stream tcp6 nowait root /usr/sbin/telnetd telnetd -a\n\nThe first word, telnet, is the official name of the service. It is resolved using the system database to map port numbers and protocols to service names. In this case, /etc/services should contain:\n\ntelnet 23/tcp\n\nThe second and third words describe the type of socket and underlying protocol respectively. The /etc/protocols database is consulted.\n\nThe fourth word is the wait/nowait switch. A single-threaded server expects inetd to wait until it finishes reading all the data. Otherwise inetd lets the server run and spawns new, concurrent processes for new requests.\n\nThe fifth word is the user name, from the /etc/passwd database, that the service program should run as.\n\nFinally, the path and the arguments of an external program are given. As usual, the first argument is the program name. In the example, inetd is told to launch the program /usr/sbin/telnetd with the command line arguments telnetd -a. inetd automatically hooks the socket to stdin, stdout, and stderr of the server program.\n\nGenerally TCP sockets are handled by spawning a separate server to handle each connection concurrently. UDP sockets are generally handled by a single server instance that handles all packets on that port.\n\nSome simple services, such as echo, are handled directly by inetd, without spawning an external server.\n\nThis is a simple inetd service, written in C. It expects a command line argument containing a filename for a log file, and then it logs all strings sent through the socket to the log file. Note that this is a very insecure example program.\n\n#include<stdio.h> #include<stdlib.h> intmain(intargc,char**argv) { constchar*fn=argv[1]; FILE*fp=fopen(fn,\"a+\"); if(fp==NULL) exit(EXIT_FAILURE); charstr[4096]; /* inetd passes its information to us in stdin. */ while(fgets(str,sizeofstr,stdin)){ fputs(str,fp); fflush(fp); } fclose(fp); return0; }\n\nThe example uses stdio functions and it responds to network traffic coming in on stdin. In this case, we want all messages logged to a single file, so we only want one instance of the service running to service all requests. This means UDP is the correct protocol to use. First, an unused port number must be selected. In this sample, 9999 will be used. The /etc/services entry will look like this:\n\nerrorLogger 9999/udp\n\nAnd the entry in /etc/inetd.conf will look like this:\n\nerrorLogger dgram udp wait root /usr/local/bin/errlogd errlogd /tmp/logfile.txt\n\nThis tells inetd to run the /usr/local/bin/errlogd program, with the commandline: errlogd /tmp/logfile.txt (refer to the inetd.conf man page for information on the other arguments). The first argument contains the filename to be used for the log file: /tmp/logfile.txt. inetd will run the service when needed, and attach port 9999 to the input and output streams, and all strings sent to that port will be logged to the file. By specifying wait, it tells inetd to only use one instance of the server to handle all requests.\n\nNote: the functionality of the above example is usually implemented by using syslog and a process like syslogd. syslogd would normally be started in parallel with inetd, not as an inetd service.\n\nIn recent years, because of the security limitations in the original design of inetd, it has been replaced by xinetd, rlinetd, ucspi-tcp, and others in many systems. Distributions of Linux especially have many options and Mac OS X (beginning with Mac OS X v10.2) uses xinetd. As of version Mac OS X v10.4, Apple has merged the functionality of inetd into launchd.\n\nThe services provided by inetd can be omitted entirely. This is becoming more common where machines are dedicated to a single function. For example, an HTTP server could be configured to just run httpd and have no other ports open. A dedicated firewall could have no services started.\n\nsystemd supports inetd services, and expands socket activation beyond IP messaging (AF INET+6) to include AF UNIX, AF NETLINK and more.[3][4]\n\nWhile the inetd concept as a service dispatcher is not inherently insecure, the long list of services that inetd traditionally provided gave computer security experts pause. The possibility of a service having an exploitable flaw, or the service just being abused, had to be considered. Unnecessary services being disabled and \"off by default\" became the mantra. It is not uncommon to find an /etc/inetd.conf with almost all the services commented out in a modern Unix distribution.\n\nTCP Wrapper\n\nxinetd\n\nList of TCP and UDP port numbers\n\nSvchost.exe"
+    }
+}

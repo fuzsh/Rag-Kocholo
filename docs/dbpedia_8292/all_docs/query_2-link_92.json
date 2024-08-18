@@ -1,0 +1,33 @@
+{
+    "id": "dbpedia_8292_2",
+    "rank": 92,
+    "data": {
+        "url": "https://www.nathanhunstad.com/blog/2011/03/customizing-clonezillas-custom-ocs/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Customizing Clonezilla’s custom-ocs",
+        "top_image": "https://www.nathanhunstad.com/blog/wp-content/uploads/2023/05/facicon-stretched.jpg",
+        "meta_img": "https://www.nathanhunstad.com/blog/wp-content/uploads/2023/05/facicon-stretched.jpg",
+        "images": [
+            "https://www.nathanhunstad.com/blog/wp-content/uploads/2023/05/NHLogo4.png",
+            "https://www.nathanhunstad.com/blog/wp-content/uploads/2023/05/NHLogo4.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Nathan Hunstad"
+        ],
+        "publish_date": "2011-03-07T15:03:14-06:00",
+        "summary": "",
+        "meta_description": "In a (very popular by search engine standards) previous post, I talked about moving from Norton Ghost to Clonezilla. Part of the move from Ghost to Clonezilla was creating a method of automatically determining the computer model I was imaging, and selecting the right image. This is possible by changing the custom-ocs file, and here",
+        "meta_lang": "en",
+        "meta_favicon": "https://www.nathanhunstad.com/blog/wp-content/uploads/2023/05/cropped-FavIcon-32x32.jpg",
+        "meta_site_name": "The blog of Nathan Hunstad |",
+        "canonical_link": "https://www.nathanhunstad.com/blog/2011/03/customizing-clonezillas-custom-ocs/",
+        "text": "In a (very popular by search engine standards) previous post, I talked about moving from Norton Ghost to Clonezilla. Part of the move from Ghost to Clonezilla was creating a method of automatically determining the computer model I was imaging, and selecting the right image. This is possible by changing the custom-ocs file, and here are the changes I made to do it.\n\nI made a number of minor changes to the stock custom-ocs file, but they were powerful enough to get the job done.\n\nmount /dev/sdb2 /home/partimag/\n\nThis is often overlooked, but make sure that you mount the proper location for your image files! On the external hard drive I used for imaging, I have two partitions: the first is tiny and has the Clonezilla software, the second is huge and holds the images. Hence, I want the second one (/sdb2) mounted as the image store.\n\necho “Type c to create image; defaults to imaging computer if nothing typed.”\n\nread -n 1 -t 7 createimg\n\necho\n\nif [[ $createimg == “c” ]] && [[ -n “${createimg}” ]]\n\nthen\n\necho “Image will be created from current machine.”\n\nelse\n\necho “Hard drive will be overwritten with disk image.”\n\ncreateimg=”g”\n\nfi\n\nThis code determines if I want to create a new image from the current machine, or push an image onto the current machine. The “read –n 1 –t 7 createimg” line reads one character (-n 1) into the variable createimg, with a 7 second timeout (-t 7). The “if [[ $createimg == “c” ]] && [[ -n “${createimg}” ]]” line tests to see if createimg is equal to ‘c’ and not empty. If so, a reassurance that the image will be created from the current machine is displayed.\n\nx=`sudo dmidecode -t 1 | grep -i Product | tr -d ‘\\n’`\n\ny=${x#*: }\n\ny=${y// /}\n\nHere is the most important section. This determines the model of the attached computer. It looks hairy (like a lot of bash scripts), but it’s not too bad. It pipes the dmidecode output of system info (-t 1) to grep, which pulls out the line containing “Product”, and then trims the newline. The next line (y=${x#*: }) removes everything before the colon, and the following line (y=${y// /}) removes all the spaces. You are left with a variable containing the Product Name as stored in the BIOS, without spaces. Very convenient.\n\necho The following model has been detected:\n\necho $y\n\necho Please press q to abort.\n\nread -n 1 -t 5 abort\n\nif [[ $abort == “q” ]] && [[ -n “${abort}” ]]\n\nthen\n\necho Aborting!\n\nexit 1\n\nelse\n\necho Continuing…\n\nfi\n\nThis displays the just-detected model information, and once pauses for input, this time for 5 seconds (-t 5). This way, if something terrible has gone wrong and the wrong model has been detected, or you made a mistake, you can abort. I set it up with timeouts like these so when I plug my external HD into a computer and boot from it, it will automatically push the image onto that machine without any further intervention from me. If you are nervous, then remove the timeouts and do things manually.\n\necho Running Clonezilla\n\ncase $y in\n\nOptiPlex780*)\n\nif [[ $createimg == “c” ]]\n\nthen\n\necho Now saving image…\n\necho y | /opt/drbl/sbin/ocs-sr -q2 -c -j2 -rm-win-swap-hib -z1 -i 2000 -p poweroff savedisk “Dell780” “sda”\n\nelse\n\necho Now ghosting machine…\n\necho y | /opt/drbl/sbin/ocs-sr -g auto -e1 auto -r -j2 -p reboot restoredisk “Dell780” “sda”\n\nfi\n\nexit 0\n\n;;\n\n*)\n\necho The computer could not be correctly identified!\n\nexit 1\n\n;;\n\nesac\n\nHere’s where each individual model is handled. In this sample case block, the only listed model is an OptiPlext780. If ‘c’ was pressed earlier to signal the creation of a new image from the current machine, then the line echo y | /opt/drbl/sbin/ocs-sr -q2 -c -j2 -rm-win-swap-hib -z1 -i 2000 -p poweroff savedisk “Dell780” “sda” does that for us. Going through, it echoes ‘y’ (so we don’t have to hit it manually) to the Clonezilla script that creates an image using partclone, with confirmation, with the hidden data between the MBR and 1st partition, removing the swap and hibernation files, with gzip compression, with the image split into 2000 MB pieces, power off after completion, save the entire disk, call it “Dell780”, and save device “sda”. If c was not pressed, and the image is put onto the machine, then it’s almost the exact same thing, with a few different parameters (“restoredisk” instead of “savedisk”, for example).\n\nThe default block is run if none of the model numbers match. Always a good sanity check.\n\nIf you had several different image types for each model, you could add additional prompts with read and case in each model block. The functionality is limited only by your needs and technical expertise.\n\nEver since I set up this custom-ocs file, it has run beautifully, needing only tweaks to add new models as necessary. It makes imaging a breeze."
+    }
+}

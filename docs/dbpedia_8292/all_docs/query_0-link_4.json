@@ -1,0 +1,35 @@
+{
+    "id": "dbpedia_8292_0",
+    "rank": 4,
+    "data": {
+        "url": "https://stackoverflow.com/questions/19988226/how-can-i-tell-in-bash-script-if-a-clonezilla-batch-mode-backup-succeeded",
+        "read_more_link": "",
+        "language": "en",
+        "title": "how can i tell (in bash script) if a clonezilla batch mode backup succeeded?",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://i.sstatic.net/agMKZ.png?s=64",
+            "https://www.gravatar.com/avatar/f9fc3db116e229398ec55fd1eb87e87e?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/agMKZ.png?s=64",
+            "https://www.gravatar.com/avatar/9454b4f0e682b835a2cf50f451cb61d6?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/19988226/ivc/0c39?prg=d25f6400-da69-43b3-a565-47bb4365a8f8",
+            "https://stackoverflow.com/js-false.gif"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2013-11-14T20:57:53",
+        "summary": "",
+        "meta_description": "I'm using slightly customized Clonezilla-Live cd's to backup the drives on four PCs.  Each cd is for a specific PC, saving an image of its disk(s) to a box-specific backup folder on a samba server....",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/19988226/how-can-i-tell-in-bash-script-if-a-clonezilla-batch-mode-backup-succeeded",
+        "text": "I'm using slightly customized Clonezilla-Live cd's to backup the drives on four PCs. Each cd is for a specific PC, saving an image of its disk(s) to a box-specific backup folder on a samba server. That's all pretty much working. But once in a while, Something Goes Wrong, and the backup isn't completed properly. Things like: the cat bit through a cat5e cable; I forgot to check if the samba server had run out of room; etc. And it is not always readily apparent that a failure happened.\n\nI will admit right now that I am pretty much a noob as far as linux system administration goes, even though i managed somehow to setup a centos 6 box (i wish i'd picked ubuntu...) with samba, git, ssh, and bitnami-gitlab back in february.\n\nI've spent days and days and days trying to figure out if clonezilla leaves a simple clue in a backup as to whether it succeeded completely or not, and have come up dry. Looking in the folder for a particular backup job (on the samba server) I see that the last file written is named \"clonezilla-img\". It seems to be a console dump that covers the backup itself. But it does not seem to include the verification pass.\n\nRegardless of whether the batch backup task succeeded or failed, I can run a post-process bash script automagically, that I place on my clonezilla cds. I have this set to run just fine, though its not doing a whole lot right now. What I would like this post-process script to do is determine if the backup job succeeded or not, and then rename (mv) the backup job directory to include some word like \"SUCCESS\" or \"FAILURE\". I know how to do the renaming part. It's the test for success or failure that I'm at a loss about.\n\nFor your case I think you could do what you are looking for with ocs_prerun and ocs_postrun scripts.\n\nFor my setup I'm using a pen/falsh drive for some test systems and also pxe with NFSmount. PXE and nfs are much easier to test and modify quickly.\n\nI haven't tested this yet, but I was thinking that I might be able to search the logs in /var/log/{clonezilla.log, partclone.log} via an ocs_postrun script to validate success or failure. I haven't seen anything that indicates the result is set in the environment so I'm thinking the logs might be the quick easy method over mounting or running a crc check. Clonezilla does have an option to validate the image, the results of which might be in the local logs.\n\nAnother option might be to create a custom ocs_live_run script to do something similar. There is an example at this URL http://clonezilla.org/fine-print-live-doc.php?path=./clonezilla-live/doc/07_Customized_script_with_PXE/00_customized_script_with_PXE.doc#00_customized_script_with_PXE.doc\n\nMaybe in the script the exit code of ocs-sr can be checked? As I said I haven't tried any of this, just some thoughts.\n\nI updated the above to reflect the log location (/var/log). The logs are in the log folder of course.\n\nDharman♦\n\n32.6k2626 gold badges9494 silver badges140140 bronze badges\n\nanswered Feb 25, 2016 at 16:52\n\napxapx\n\n1122 bronze badges"
+    }
+}

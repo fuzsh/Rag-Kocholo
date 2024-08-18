@@ -1,0 +1,41 @@
+{
+    "id": "dbpedia_8292_0",
+    "rank": 2,
+    "data": {
+        "url": "https://community.spiceworks.com/t/clonezilla-scripting/391011",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Clonezilla Scripting",
+        "top_image": "https://global.discourse-cdn.com/spiceworks/original/1X/7a73606d7df2f794c4789897e49693fb3c471b23.png",
+        "meta_img": "https://global.discourse-cdn.com/spiceworks/original/1X/7a73606d7df2f794c4789897e49693fb3c471b23.png",
+        "images": [
+            "https://secure.intelligence52.com/795141.png",
+            "https://sea1.discourse-cdn.com/spiceworks/user_avatar/community.spiceworks.com/woland/48/27047_2.png",
+            "https://sea1.discourse-cdn.com/spiceworks/user_avatar/community.spiceworks.com/woland/48/27047_2.png",
+            "https://global.discourse-cdn.com/spiceworks/original/4X/e/e/1/ee11c1495bdf774e3d0489e7392668e3a865160e.png",
+            "https://emoji.discourse-cdn.com/twitter/slight_smile.png?v=12",
+            "https://global.discourse-cdn.com/spiceworks/original/4X/b/1/0/b107c1b1c927f180e2bbf61ac81dea7255c8711f.png",
+            "https://emoji.discourse-cdn.com/twitter/slight_smile.png?v=12",
+            "https://zdbb.net/l/z0WVjCBSEeGLoxIxOQVEwQ/"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "general-linux",
+            "question"
+        ],
+        "tags": null,
+        "authors": [
+            "mtonn (MTonn)",
+            "woland (Woland)"
+        ],
+        "publish_date": "2015-03-26T14:42:05+00:00",
+        "summary": "",
+        "meta_description": "Does anyone from the community have experience with scripting clonezilla? If so could you provide some helpful documents and tips. \nLooking to create a bootable usb key that you can choose from a list to restore an image&hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://global.discourse-cdn.com/spiceworks/optimized/1X/a254df83358a951c43ed6ee756b5e0011a8d58bc_2_32x32.png",
+        "meta_site_name": "Spiceworks Community",
+        "canonical_link": "https://community.spiceworks.com/t/clonezilla-scripting/391011",
+        "text": "You will need to edit the syslinux.cfg file and create the three menus inside (one for each Windows7 x86, Windows7 x64 and Windows 8)\n\nMy clonezilla USB drive like looks like this:\n\n1st partition = 4GB FAT32 bootable (clonezilla)\n\n2nd partition = remaining space NTFS (for images)\n\nIf you look at my menu below, I have chosen to have the clonezilla images on the second partition of the USB drive in a folder /home/partimag. (ocs_prerun1=“mount /dev/sdb2 /home/partimag”)\n\nThis line is the actual restore command and HP-210-EC-img is the image located in /home/partimag on sdb2:\n\nocs_live_run=“/usr/sbin/ocs-sr -g auto -e1 auto -e2 -c -r -j2 -p true restoredisk HP-210-EC-img sda”\n\nIf you copy and paste the text in code below three times in your syslinux.cfg, modify the MENU LABEL for each one to and modify the restoredisk HP-210-EC-img with your own image folder you should be good to go\n\nFor expert options try like Jim4232 suggested- reimage one manually with expert options in place then check the string when it’s done and modify ocs_live_run to include that stuff\n\n# Since no network setting in the squashfs image, therefore if ip=, the network is disabled. That's what we want. label Clonezilla live #MENU DEFAULT # MENU HIDE MENU LABEL Clonezilla Image HP 210(VGA 1024x768) # MENU PASSWD kernel /live/vmlinuz append initrd=/live/initrd.img boot=live username=user config quiet noswap edd=on nomodeset noeject nolocales keyboard-layouts=NONE noprompt toram=filesystem.squashfs vga=791 ip= nosplash i915.blacklist=yes radeonhd.blacklist=yes nouveau.blacklist=yes vmwgfx.enable_fbdev=no ocs_prerun1=\"mount /dev/sdb2 /home/partimag\" ocsprerun2=\"sleep 10\" ocs_live_run=\"/usr/sbin/ocs-sr -g auto -e1 auto -e2 -c -r -j2 -p true restoredisk HP-210-img sda\" TEXT HELP * Boot menu for BIOS machine * Clonezilla live version: 2.2.3-25-i686-pae. (C) 2003-2014, NCHC, Taiwan * Disclaimer: Clonezilla comes with ABSOLUTELY NO WARRANTY ENDTEXT\n\nThanks Will4232. Hope it works out for you MTonn\n\nNote: if you uncomment MENU DEFAULT, when clonezilla boots it will always select that image no matter if it’s first or last in the syslinux.cfg list\n\ntoram=filesystem.squashfs is not required, I do however use it when I image from a network and only have one USB with me, will load to RAM on boot, so USB can be unplugged and used on the next device without waiting for the image to finish."
+    }
+}

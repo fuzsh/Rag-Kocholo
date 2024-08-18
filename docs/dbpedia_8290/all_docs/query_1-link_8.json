@@ -1,0 +1,31 @@
+{
+    "id": "dbpedia_8290_1",
+    "rank": 8,
+    "data": {
+        "url": "https://code.kx.com/q/kb/inetd/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "inetd, xinetd â Knowledge Base â kdb+ and q documentation",
+        "top_image": "https://code.kx.com/q/local/favicon.ico",
+        "meta_img": "https://code.kx.com/q/local/favicon.ico",
+        "images": [
+            "https://code.kx.com/q/local/img/kx.svg",
+            "https://code.kx.com/q/local/img/kx.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "On *nix-like operating systems, a q server can work under inetd to provide a private server for each connection established on a designated port.",
+        "meta_lang": "en",
+        "meta_favicon": "../../local/favicon.ico",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "inetd, xinetd¶\n\nOn *nix-like operating systems, inetd (or its successor xinetd) maintains a list of passive sockets for various services configured to run on that particular machine.\n\nWhen a client attempts to connect to one of the service, inetd will start a program to handle the connection based on the configuration files.\n\nThis way, inetd will run the server programs as they are needed by spawning multiple processes to service multiple network connections.\n\nA kdb+ server can work under inetd to provide a private server for each connection established on a designated port.\n\nFor Windows you might be able to have kdb+ run under inetd using Cygwin.\n\nCygwin\n\nA useful page about configuring Cygwin inetd\n\nConfiguration¶\n\nTo configure a kdb+ server to work under inetd or xinetd you have to decide on the name of the service and port on which this server should run and declare it in the /etc/services configuration file.\n\nNote\n\nThis operation can be performed only by an administrative user (root).\n\n/etc/services:\n\nâ¦ # Local services kdbtaq 2015/tcp # kdb server for the taq database â¦\n\nIf you have multiple databases which should be served over inetd, add multiple entries in the /etc/services file and make sure you are using different ports for each service name.\n\nAlso, as a safety measure, create one applicative group (ex: kdb) and two applicative users on your system, one (e.g. kdb) owning the q programs and the databases and another one (e.g. kdbuser) having the rights to execute and read data from the database directories.\n\nThis can be achieved by assigning the two users to the applicative group mentioned above and setting the permissions on the programs to be readable and executable by the group, and the database directories readable and executable (search) by the group: rwxr-x---.\n\nOnce this is configured, you'll need to configure inetd/xinetd to make it aware of the new service.\n\nIf you are running inetd, youâll need to add the service configuration into /etc/inetd.conf (see the inedt.conf man page for more details).\n\n/etc/inetd.conf:\n\nâ¦ kdbtaq stream tcp nowait kdbuser /home/kdb/q/l64/q q /home/kdb/taq -s 4 â¦\n\nFor xinetd, youâll need to create a configuration file (kdbtaq for example) for the new service in the /etc/xinetd.d directory (see the xinetd.conf man page for more details).\n\n/etc/xinetd.d/kdbtaq:\n\n# default: on service kdbtaq { flags = REUSE socket_type = stream wait = no user = kdbuser env = QHOME=/home/kdb/q QLIC=/home/kdb/q server = /home/kdb/q/l64/q server_args = /home/kdb/taq -s 4 -q -g 1 # use taskset to conform to license # server = /bin/taskset # server_args = -c 0,1 /home/kdb/q/l64/q -q -g 1 # only_from = 127.0.0.1 localhost # bind = 127.0.0.1 # instances = 5 # per_source = 2 }\n\nAfter the configuration is finished, you will have to find your process ID for your inetd/xinetd server and send it the SIGHUP signal to read the new configuration:\n\n$ ps -e|grep inetd 3848 ? 00:00:00 xinetd $ kill -HUP 3848"
+    }
+}

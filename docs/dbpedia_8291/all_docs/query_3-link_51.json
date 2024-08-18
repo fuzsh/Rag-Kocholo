@@ -1,0 +1,30 @@
+{
+    "id": "dbpedia_8291_3",
+    "rank": 51,
+    "data": {
+        "url": "https://knowledge.broadcom.com/external/article/311193/determining-if-the-xinetd-service-is-run.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Determining if the xinetd service is running on an ESX host",
+        "top_image": "https://knowledge.broadcom.com/broadcom-log.png",
+        "meta_img": "https://knowledge.broadcom.com/broadcom-log.png",
+        "images": [
+            "https://cdn.wolkenservicedesk.com/wolken-footer-image.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "https://knowledge.broadcom.com/broadcom-log.png",
+        "meta_site_name": "",
+        "canonical_link": "https://knowledge.broadcom.com/external/article/311193/determining-if-the-xinetd-service-is-run.html",
+        "text": "Issue/Introduction\n\nIn some cases the vmware-vmkauthd daemon may have stopped responding. This prevents the required authentication from taking place when adding an ESX host to inventory.\n\nThis article provides steps to assist you in determining the current state of the xinetd daemon (which manages vmware-vmkauthd) and steps to start the service if it is not running.\n\nSymptoms:\n\nYou are unable to add and connect an ESX host to VirtualCenter/vCenter Server inventory\n\nCannot contact the specified host (10.145.210.51). The host may not be available on the network, a network configuration problem may exist, or the management services configuration problem may exist on this host may not be responding.\n\nThe VMware Infrastructure/vSphere Client connection directly to an ESX host works\n\nThis error is generated in vCenter Server:\n\nFailed to connect to host\n\nIn the hostd.log you see errors similar to:\n\nF6400B90 warning 'Proxysvc Req00023'] Connection to localhost:8089 failed with error N7Vmacore15SystemExceptionE(Connection refused).\n\nResolution\n\nTo determine the state and start the xinetd service:\n\nLog into the ESX host using an SSH client. For more information, see Opening a command or shell prompt (1003892).\n\nRun the following command to verify that the xinetd service is running:\n\n# service xinetd status\n\nIf it is not running, xinetd is stopped will be returned. Issue the following xinetd start command:\n\n# service xinetd start\n\nRun service xinetd status again to verify the service is now running. If successful, you will see:\n\nxinetd (pid number) is running..."
+    }
+}

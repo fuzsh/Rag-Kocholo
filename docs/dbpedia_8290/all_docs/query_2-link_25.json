@@ -1,0 +1,34 @@
+{
+    "id": "dbpedia_8290_2",
+    "rank": 25,
+    "data": {
+        "url": "https://stackoverflow.com/questions/3514893/linux-how-to-make-a-daemon-service-usable-with-xinetd",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Linux: How to make a daemon/service usable with xinetd?",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://i.sstatic.net/fHZcV.jpg?s=64",
+            "https://i.sstatic.net/MaCKR.jpg?s=64",
+            "https://www.gravatar.com/avatar/e92a9af9e53cc8e5af575c4b18b34c21?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/S1F3v.jpg?s=64",
+            "https://stackoverflow.com/posts/3514893/ivc/0c39?prg=f5057fd6-db5b-4af4-9c25-ab7ea796731f"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2010-08-18T17:35:34",
+        "summary": "",
+        "meta_description": "Anybody knows what changes are necessary for a server to work with xinetd ?\n\nThe server being a .NET mailserver that runs on Linux.\n\nSee the bottom of this post for reference:\nLumisoft Mailserver F...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/3514893/linux-how-to-make-a-daemon-service-usable-with-xinetd",
+        "text": "An inetd service runs differently from a standalone server. inetd services read stdin and write to stdout, letting inetd handle the gory details of TCP/IP, rather than keeping track of their own sockets. If you want to make a server run under inetd, it'll have to do the same.\n\nThe following program runs just fine under xinetd on my machine:\n\n#include <iostream> #include <string> using namespace std; // yeah, i'm lazy. int main() { string name; cout << \"What's your name? \" << flush; cin >> name; cout << \"Hi, \" << name << \"!\" << endl; }\n\nNote i'm not at all worried about sockets -- xinetd arranges things so that the service can read standard input and write to standard output. You just write your app like you'd be running it on the console, for the most part. The socket details are specified in the config file for the service. (Note, you might be able to get/set details about the socket using stdin/stdout, which may be the actual socket -- i'm not sure -- but you really should leave that stuff up to inetd.)\n\nAn inetd services are really great for one off apps that need to take in data and act with some degree of interaction with the user. IT works over tcp/udp by piping the data viva a socket from (x)inetd to std{in,out,err}. inetd apps also works well with tcpwrappers to inhance security though system policy files and ACL.\n\nSo yes you would write your app like its a console app since in reality it is a console app. Just think of inetd as a transparent reverse proxy from the network to your app's inputs.\n\nA Word of advice, write your code to handle the process signals correctly and if you need to interact with another process on the system use unix sockets/fifo for that.\n\nAlso, don't try to write an app that streams a lot of data all at once or needs a lot of connections. Scalability is an issue as inetd becomes a bottle neck, this is why Apache and Sendmail dropped support for inetd and sit as mono apps instead. HTTP fits this role better and a fastcgi (or insert favorite framework) script with nginx works best for that use case.\n\nA good example for an inetd would be:\n\nlock = Mutex.new trap :HUP { #log the connection and cleanup } trap :USR1 { lock.synchronize do #stuff; end } trap :TERM { #clean up } trap :KILL { #clean up and die with error codes } puts \"App name - version\" loop do ('%s> ' % Console.prompt).display input = gets.chomp command, *params = input.split /\\s/ case command when /\\Ahelp\\z/i puts App.help_text when /\\Ado\\z/i Action.perform *params when /\\Aquit\\z/i exit else puts 'Invalid command' end end exit\n\nEdit your /etc/services to include your app like this: myapp port#/proto\n\nand add your app to /etc/inetd.conf (or xinetd.d) like this: myapp stream tcp6 nowait myappuser /path/to/myapp myapp -arg_flags\n\nAs for xinetd this has its own c like syntax for each config and depending on the distro could live in /etc/xinetd.conf or /etc/xinetd.d/myapp.conf. Would suggest one to read up on the manpage: https://linux.die.net/man/5/xinetd.conf\n\nAn example config say in-cpio.conf would look something like:\n\nservice ftp { socket_type = stream wait = no user = nobody server = /usr/bin/cpio server_args = -idv instances = 1 nice = 10 only_from = 127.0.0.1 }"
+    }
+}

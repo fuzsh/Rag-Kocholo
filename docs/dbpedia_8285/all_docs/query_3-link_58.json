@@ -1,0 +1,37 @@
+{
+    "id": "dbpedia_8285_3",
+    "rank": 58,
+    "data": {
+        "url": "https://cloud.google.com/sql/docs/mysql/admin-tools",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Connect from other MySQL tools",
+        "top_image": "https://cloud.google.com/_static/cloud/images/social-icon-google-cloud-1200-630.png",
+        "meta_img": "https://cloud.google.com/_static/cloud/images/social-icon-google-cloud-1200-630.png",
+        "images": [
+            "https://www.gstatic.com/devrel-devsite/prod/v20ab951cf37b43fc7a428ae75ce91d8269f391204ca16525bc8a5ececea0ab56/cloud/images/cloud-logo.svg",
+            "https://www.gstatic.com/devrel-devsite/prod/v20ab951cf37b43fc7a428ae75ce91d8269f391204ca16525bc8a5ececea0ab56/cloud/images/cloud-logo.svg",
+            "https://cloud.google.com/static/sql/images/mysql-workbench-01.png",
+            "https://cloud.google.com/static/sql/images/mysql-workbench-02.png",
+            "https://cloud.google.com/static/sql/images/mysql-workbench-03.png",
+            "https://cloud.google.com/static/sql/images/toad-01.png",
+            "https://cloud.google.com/static/sql/images/toad-02.png",
+            "https://cloud.google.com/static/sql/images/squirrel-sql-01.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "https://www.gstatic.com/devrel-devsite/prod/v20ab951cf37b43fc7a428ae75ce91d8269f391204ca16525bc8a5ececea0ab56/cloud/images/favicons/onecloud/favicon.ico",
+        "meta_site_name": "Google Cloud",
+        "canonical_link": "https://cloud.google.com/sql/docs/mysql/admin-tools",
+        "text": "Stay organized with collections Save and categorize content based on your preferences.\n\nMySQL | PostgreSQL | SQL Server\n\nThis page describes several common database administration and reporting tools that you can use to connect to your Cloud SQL instances.\n\nOverview\n\nDatabase administration and reporting tools provide varying degrees of support for managing your database. Select a tool based on the type of administration and reporting that you need to do. For example, if you need to connect to one database and issue a few SQL commands, consider using the MySQL client. See Connecting MySQL Client Using IP Addresses. If you need to design or manage many databases simultaneously, then use one of the visual-based tools discussed here.\n\nWe discuss a limited number of tools in this page. If your tool is not discussed, it's likely that you can successfully connect by following the steps for a similar tool.\n\nConnect with MySQL Workbench\n\nThis section shows how to connect to your Cloud SQL instance database with MySQL Workbench.\n\nIn the MySQL Workbench home view, click New Connection.\n\nIn the Setup new connection form, provide a Connection Name, Hostname, Username, and Default Schema, if applicable, as show in Figure 1.\n\nClick Test Connection. You are prompted for a password.\n\nOptionally, click Advanced, and fill in the information for connecting with SSL as shown in Figure 2. Be sure to select Use SSL if available and specify an SSL CA File, an SSL CERT File, and an SSL key File. Learn more about using SSL certificates with Cloud SQL.\n\nClick Test Connection to make sure all the advanced parameters are set correctly.\n\nClick Close.\n\nConnect with the connection you created.\n\nOnce connected, you can test if you're using SSL by executing the following SQL statement:\n\nSHOW STATUS like 'ssl_cipher';\n\nBack to top\n\nConnect with Toad for MySQL\n\nThis section shows how to connect to your Cloud SQL instance database with Toad for MySQL.\n\nIn Toad for MySQL, create a new connection.\n\nIn the New MySQL Connection form, fill in the following information:\n\nUser: The name of a user in your MySQL database.\n\nPassword: The password for the specified user.\n\nHost: The IP address of your instance. For more information, see Configuring Application Access Control. If you've mapped the IP address to the hostname of your local server, you can use that in this field.\n\nDatabase: The database instance to connect to.\n\nClick Test Connection to confirm that the connection information is correct.\n\nClick OK to start the connection.\n\nIn the Enter Password dialog box, enter the password for the user. This dialog box appears because we did not choose Save password (encrypted) in the Create New Connection dialog box.\n\nConfigure Toad to use SSL\n\nIn Figure 5, a Create New Connection dialog box is shown with information for connecting with SSL. All versions of Toad might not support connecting with SSL.\n\nOnce connected, you can test if you're using SSL by executing the following SQL statement and verifying that the ssl_cipher value is not empty:\n\nSHOW STATUS like 'ssl_cipher';\n\nBack to top\n\nConnect with SQuirrel SQL\n\nThis section shows how to connect to your Cloud SQL instance database with SQuirrel SQL.\n\nIn the SQuirrel SQL client, select the Aliases panel to make it active.\n\nIn the Aliases menu, select New Alias.\n\nFill out the information, as shown in Figure 6. Be sure to select the MySQL Driver and provide values for <instance-ip>, <database>, and <user-name>.\n\nClick Test to test the connection. You are prompted for a password.\n\nClick OK to save the alias.\n\nIn the Aliases panel, right-click the alias you created and select Connect.\n\nConfigure SQuirrel SQL to use SSL\n\nThis section assumes that you've created an SSL certificate (see Configuring SSL for an instance) and you have three files:\n\nA CA certificate file, for example, ca-cert.pem.\n\nA client public key certificate file, for example, client-cert.pem.\n\nA client private key file, for example, client-key.pem.\n\nUse these files as described in Connecting Securely Using SSL in the MySQL Reference Manual to create keystore and truststore files. You need to specify the keystore and truststore files when you start SQuirrel SQL. One way to do this is to edit the script that launches the SQuirrel SQL application as follows:\n\n$JAVACMD -Djavax.net.ssl.keyStore=<path-to-keystore> \\ -Djavax.net.ssl.keyStorePassword=<keystore-password> \\ -Djavax.net.ssl.trustStore=<path-to-truststore> \\ -Djavax.net.ssl.trustStorePassword=<truststore-password> \\ [existing launch parameters]\n\nAfter you've started SQuirrel SQL with the valid keystore and truststore information, you can connect with:\n\njdbc:mysql://<instance-ip>:3306/<database>?verifyServerCertificate=true&useSSL=true&requireSSL=true\n\nOnce connected, you can test if you're using SSL by executing the following SQL statement and verifying that the ssl_cipher value is not empty:\n\nSHOW STATUS like 'ssl_cipher';\n\nBack to top"
+    }
+}

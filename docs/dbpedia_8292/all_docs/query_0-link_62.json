@@ -1,0 +1,28 @@
+{
+    "id": "dbpedia_8292_0",
+    "rank": 62,
+    "data": {
+        "url": "https://raymii.org/s/tutorials/Customize-your-clonezilla-live-CD.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Customize your Clonezilla Live CD",
+        "top_image": "",
+        "meta_img": "",
+        "images": [],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "At work we need to image laptops. We do that with clonezilla.\n\nBut some people think the clonezilla menu is to hard. So A colleague and I made a script to do it in 2 steps (mount and enter image name).\n\nBut that had to be integrated in to the clonezilla live CD.\n\nThat is a pain to do if you're on a windows vista PC.\n\nBut it worked, and I wanted to share it with the rest of the world.\n\nOur script to backup can be found at the bottom of the page.\n\nBut how do I get that script on to the live USB?\n\nThis is how I do it:\n\nmkdir rw.fs mkdir clonscript (above is only required once). mount -t unionfs -o dirs=rw.fs=rw:/mnt=ro unionfs clonscript cd clonscript mkdir clondir1 copy the scripts, or nano them. (To launch a clonezilla script as root, make a launcher script, and put this in it: *#!/bin/sh sudo su -c /path/to/script/you/just/made.sh* cd ../../ umount clonscript mksquashfs ./rw.fs ./filesystem.squashfs\n\nNow the 2 filesystems are being put together.\n\nThe next time, mount it again, make a new directory (say clondir2) and cp all the scripts from clondir1 into clondir2, and edit them from there. Also change your root launch script to the new dir.\n\nNow edit the isolinux/isolinux.cfg file. To start a script as root,\n\nmake a link to it as described earlier. Here is my setup:\n\n* label RESTORE # MENU DEFAULT # MENU HIDE MENU LABEL RESTORE # MENU PASSWD kernel /live/vmlinuz1 append initrd=/live/initrd1.img boot=live union=aufs hostname=jaunty edd=on nolocales ocs_live_run=\"/path/to/your/root/launcher/script.sh\" ocs_live_extra_param=\"\" ocs_live_keymap=\"NONE\" ocs_live_batch=\"no\" ocs_lang=\"\" noprompt mode_option=800x600 toram=filesystem.squashfs ip=frommedia TEXT HELP TEST RESTORE ENDTEXT *\n\nNote this part: ocs live run=\"/path/to/your/root/launcher/script.sh\". Change that every time you make a change to the script. (For every change to the script you make you must make a new directory and change your root launcher script. This is because your merging a read only file system. And read only cannot be overwritten.) Now make an ISO of it again. (At work I need to use the tool\n\nfolder2iso which can be downloaded here.\n\nafter you made the ISO, unetbootin it to USB or burn it to CD.\n\nYou can remove the USB stick or CD when clonezilla is imaging, because this boot script loads it into the ram.\n\nIf this can be done with less work, please post it in a comment, I hate this way... (first start fcking vista, then virtualbox a mint, then share a folder, then mount and edit, then folder2iso and at last unetbootin...)... And thanks to the people of clonezilla for making such a wonderfull alternative to ghost and acronis ^.^\n\nExample Backup Script\n\n#!/bin/sh dhclient echo \"###############################\" echo \"# Script made by Remy & David #\" echo \"###############################\" echo echo echo Voer nu het wachtwoord van de laptop in echo mount -t cifs -o username=\"daniel\" //192.168.1.2/image /home/partimag echo echo echo \"Er komt nu een lijst met images\" echo \"IMAGES: \" ls -n /home/partimag echo echo -n \"Voer de naam van het image in(schoon#): \"; read NAME; /opt/drbl/sbin/ocs-sr -q -c -z1 -p true saveparts \"$NAME\" \"sda2\"\n\nTags: bash , clonezilla , imaging , live-cd , tutorials"
+    }
+}

@@ -1,0 +1,48 @@
+{
+    "id": "dbpedia_8290_2",
+    "rank": 42,
+    "data": {
+        "url": "https://talk.plesk.com/threads/issue-with-xinetd-need-assistance.61286/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Issue with xinetd. Need assistance",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://talk.plesk.com/styles/plesk/images/logo.svg",
+            "https://talk.plesk.com/styles/plesk/images/facebook.svg",
+            "https://talk.plesk.com/styles/plesk/images/twitter.svg",
+            "https://talk.plesk.com/styles/plesk/images/logo.svg",
+            "https://talk.plesk.com/data/avatars/s/184/184591.jpg?1629711468",
+            "https://talk.plesk.com/data/avatars/s/149/149994.jpg?1464998131",
+            "https://talk.plesk.com/data/avatars/s/149/149994.jpg?1464998131",
+            "https://talk.plesk.com/styles/plesk/images/partners/automattic.svg",
+            "https://talk.plesk.com/styles/plesk/images/partners/docker.svg",
+            "https://talk.plesk.com/styles/plesk/images/partners/virtuozzo.svg",
+            "https://talk.plesk.com/styles/plesk/images/partners/amazon.svg",
+            "https://talk.plesk.com/styles/plesk/images/partners/microsoft.svg",
+            "https://talk.plesk.com/styles/plesk/images/partners/microsoft-azure.svg",
+            "https://talk.plesk.com/styles/plesk/images/partners/red-hat.svg",
+            "https://talk.plesk.com/styles/plesk/images/partners/alibaba-cloud.svg",
+            "https://talk.plesk.com/styles/plesk/images/logo.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "R rvdmeer Guest",
+            "A acidbox Guest"
+        ],
+        "publish_date": "2005-11-23T14:14:40-08:00",
+        "summary": "",
+        "meta_description": "I checked my /var/log/messages this morning and I'm getting thousands of messages like this:\r\n\r\n\r\nNov 23 17:01:52 talon xinetd[7928]: service poppassd...",
+        "meta_lang": "en",
+        "meta_favicon": "/data/assets/logo/Plesk_192.png",
+        "meta_site_name": "Plesk Forum",
+        "canonical_link": "https://talk.plesk.com/threads/issue-with-xinetd-need-assistance.61286/",
+        "text": "I checked my /var/log/messages this morning and I'm getting thousands of messages like this:\n\nNov 23 17:01:52 talon xinetd[7928]: service poppassd, accept: Invalid argument (errno = 22)\n\nNov 23 17:01:52 talon xinetd[7928]: service submission, accept: Invalid argument (errno = 22)\n\nNov 23 17:01:52 talon xinetd[7928]: service poppassd, accept: Invalid argument (errno = 22)\n\nNov 23 17:01:52 talon xinetd[7928]: service submission, accept: Invalid argument (errno = 22)\n\nNov 23 17:01:52 talon xinetd[7928]: service poppassd, accept: Invalid argument (errno = 22)\n\nNov 23 17:01:52 talon xinetd[7928]: service submission, accept: Invalid argument (errno = 22)\n\nNov 23 17:01:52 talon xinetd[7928]: service poppassd, accept: Invalid argument (errno = 22)\n\nNov 23 17:01:52 talon xinetd[7928]: service submission, accept: Invalid argument (errno = 22)\n\nNov 23 17:01:52 talon xinetd[7928]: service poppassd, accept: Invalid argument (errno = 22)\n\nNov 23 17:01:52 talon xinetd[7928]: service submission, accept: Invalid argument (errno = 22)\n\nI've tried restarting xinetd and qmail with no resolve. The process looks like this:\n\n# ps -aux | grep xinetd\n\nCode:\n\nroot 7928 0.1 0.0 2148 928 ? S Nov22 2:16 xinetd -stayalive -pidfile /var/run/xinetd.pid root 30944 0.0 0.0 2148 932 ? S 17:00 0:00 xinetd -stayalive -pidfile /var/run/xinetd.pid\n\n/var/run/xinetd.pid contains:\n\n30944 refers back to the process listed above. Beyond this, I have no clue what this means.\n\nDoes anyone know what this means and how to fix it?\n\nI'm on RHEL3 and mine looks like this:\n\nservice poppassd\n\n{\n\nsocket_type = stream\n\nprotocol = tcp\n\nport = 106\n\nwait = no\n\ndisable = no\n\nuser = root\n\ninstances = 1000\n\nflags = KEEPALIVE\n\nserver = /usr/local/psa/admin/bin/poppassd\n\n}\n\nAppears to be the same as yours. I haven't made any changes to anything related to this, and it's been running fine for months, which is why I find this error odd.\n\nThere are 2 pids running?\n\nHmmm on a normal server ther is just one pid running. they might fight with eachother.. i would recommend killing the pid. The only thing is.. be sure you 're able to reboot the server with a powerswitch if something goes wrong with connections.\n\nOriginally posted by rvdmeer\n\nThere are 2 pids running?\n\nHmmm on a normal server ther is just one pid running. they might fight with eachother.. if you restart the xinet process, what happens?\n\n/etc/init.d/xinetd restart\n\n...\n\nI know. weird.\n\nafter restarting, i still show:\n\nCode:\n\nroot 7928 0.1 0.0 2148 928 ? S Nov22 2:16 xinetd -stayalive -pidfile /var/run/xinetd.pid root 32752 0.0 0.0 2152 940 ? S 17:26 0:00 xinetd -stayalive -pidfile /var/run/xinetd.pid\n\nI checked the messages log and I see that just before the error started, I got this:\n\nCode:\n\nNov 22 11:38:15 edge xinetd[7928]: pmap_set failed. service=sgi_fam program=391002 version=2 Nov 22 11:38:15 edge xinetd[7929]: pmap_set failed. service=sgi_fam program=391002 version=2\n\nAnd right before that, it appears that BIND restarted and qmail restarted.\n\ni corrected by post:\n\nHmmm on a normal server ther is just one pid running. they might fight with eachother.. i would recommend killing the pid. The only thing is.. be sure you 're able to reboot the server with a powerswitch if something goes wrong with connections\n\nWe'll.. i think killing pid: 7928 will fix it as well.\n\nBut i'm not sure of that. And because when killing a pid on something network based you must be able to restore from that with a powerswitch. If your server is not connected to a powerswitch i would recommend rebooting it.\n\nThanks for the help.\n\nI killed the PID and then restarted xinetd. That seems to have fixed it.\n\nI now get:\n\nCode:\n\nNov 23 17:32:32 edge xinetd: xinetd shutdown succeeded Nov 23 17:32:32 edge xinetd: xinetd startup succeeded Nov 23 17:32:32 edge xinetd[564]: pmap_set failed. service=sgi_fam program=391002 version=2 Nov 23 17:32:33 edge xinetd[564]: xinetd Version 2.3.12 started with libwrap loadavg options compiled in. Nov 23 17:32:33 edge xinetd[564]: Started working: 7 available services\n\nwith no errors after it.\n\nNot sure how that got started. One thing I see that looks like an issue is:\n\nCode:\n\nNov 23 17:32:32 edge xinetd[564]: pmap_set failed. service=sgi_fam program=391002 version=2\n\nDo you know what that means?"
+    }
+}

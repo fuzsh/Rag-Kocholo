@@ -1,0 +1,37 @@
+{
+    "id": "dbpedia_8290_1",
+    "rank": 0,
+    "data": {
+        "url": "https://en.wikipedia.org/wiki/Xinetd",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Wikipedia",
+        "top_image": "https://en.wikipedia.org/static/favicon/wikipedia.ico",
+        "meta_img": "https://en.wikipedia.org/static/favicon/wikipedia.ico",
+        "images": [
+            "https://en.wikipedia.org/static/images/icons/wikipedia.png",
+            "https://en.wikipedia.org/static/images/mobile/copyright/wikipedia-wordmark-en.svg",
+            "https://en.wikipedia.org/static/images/mobile/copyright/wikipedia-tagline-en.svg",
+            "https://login.wikimedia.org/wiki/Special:CentralAutoLogin/start?type=1x1",
+            "https://en.wikipedia.org/static/images/footer/wikimedia-button.svg",
+            "https://en.wikipedia.org/static/images/footer/poweredby_mediawiki.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Contributors to Wikimedia projects"
+        ],
+        "publish_date": "2005-07-05T13:29:50+00:00",
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "/static/apple-touch/wikipedia.png",
+        "meta_site_name": "",
+        "canonical_link": "https://en.wikipedia.org/wiki/Xinetd",
+        "text": "xinetdDeveloper(s)Rob BraunFinal release\n\n2.3.15 / 9 May 2012; 12 years ago ( )\n\nRepositorygithub .com /xinetd-org /xinetdWritten inC, Shell[1]Operating systemUnix-likeTypeDaemonLicenseOpen-source[2]Websiteweb .archive .org /web /20051227095035 /http: //www .xinetd .org:80 /[dead link]\n\nIn computer networking, xinetd (Extended Internet Service Daemon) is an open-source super-server daemon which runs on many Unix-like systems, and manages Internet-based connectivity.[3]\n\nIt offers a more secure alternative to the older inetd (\"the Internet daemon\"), which most modern Linux distributions have deprecated.[4]\n\nxinetd listens for incoming requests over a network and launches the appropriate service for that request.[5] Requests are made using port numbers as identifiers and xinetd usually launches another daemon to handle the request.[6] It can be used to start services with both privileged and non-privileged port numbers.\n\nxinetd features access control mechanisms such as TCP Wrapper ACLs, extensive logging capabilities, and the ability to make services available based on time. It can place limits on the number of servers that the system can start, and has deployable defense mechanisms to protect against port scanners, among other things.\n\nOn some implementations of Mac OS X, this daemon starts and maintains various Internet-related services, including FTP and telnet. As an extended form of inetd, it offers enhanced security. It replaced inetd in Mac OS X v10.3, and subsequently launchd replaced it in Mac OS X v10.4. However, Apple has retained inetd for compatibility purposes.\n\nConfiguration of xinetd resides in the default configuration file /etc/xinetd.conf, and configuration of the services it supports resides in configuration files stored in the /etc/xinetd.d directory. The configuration for each service usually includes a switch to control whether xinetd should enable or disable the service.\n\nAn example configuration file for the RFC 868 time server:\n\n# default: off # description: An RFC 868 time server. This protocol provides a # site-independent, machine readable date and time. The Time service sends back # to the originating source the time in seconds since midnight on January first # 1900. # This is the tcp version. service time { disable = yes type = INTERNAL id = time-stream socket_type = stream protocol = tcp user = root wait = no } # This is the udp version. service time { disable = yes type = INTERNAL id = time-dgram socket_type = dgram protocol = udp user = root wait = yes }\n\nThe lines with the \"#\" character at the beginning are comments without any effect on the service. There are two service versions: the first one is based on the Transmission Control Protocol (TCP), the second one is based on the User Datagram Protocol (UDP). The type and planned usage of a service determines the necessary core protocol. In a simple way, the UDP cannot handle huge data transmissions, because it lacks the abilities to rearrange packages in a specified order or guarantee their integrity, but it is faster than TCP. TCP has these functions, but it is slower. There are two columns in each version inside the braces. The first is the type of option, the second is the applied variable.\n\nThe disable option is a switch to run a service or not. In most cases, the default state is yes. To activate the service, change it to no.\n\nThere are three types of services. The type is INTERNAL if the service is provided by xinetd, RPC when it based on Remote procedure call (commonly listed in the /etc/rpc file), or it can be UNLISTED when the service is neither in the /etc/services nor in the /etc/rpc files.\n\nThe id is the unique identifier of the service.\n\nThe socket_type determines the way of data transmission through the service. There are three types: stream, dgram and raw. This last one is useful when we want to establish a service based on a non-standard protocol.\n\nWith the user option, it is possible to choose a user to be the owner of the running service. It is highly recommended to choose a non-root user for security reasons.\n\nWhen the wait is on yes, the xinetd will not receive a request for the service if it has a connection. So, the number of connections is limited to one. It provides very good protection when we want to establish only one connection per time.\n\nThere are many more options available for xinetd. In most Linux distributions, the full list of possible options and their description is accessible with a \"man xinetd.conf\" command.\n\nTo apply the new configuration, a SIGHUP signal must be sent to the xinetd process to make it re-read the configuration files. This can be achieved with the following command: kill -SIGHUP \"PID\". PID is the actual process identifier number of the xinetd, which can be obtained with the command pgrep xinetd.[7][8]"
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "id": "dbpedia_8290_1",
+    "rank": 14,
+    "data": {
+        "url": "https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/4/html/reference_guide/s1-tcpwrappers-xinetd-config",
+        "read_more_link": "",
+        "language": "en",
+        "title": "17.4. xinetd Configuration Files",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://docs.redhat.com/Logo-Red_Hat-Documentation-A-Reverse-RGB.svg",
+            "https://docs.redhat.com/Logo-Red_Hat-Documentation-A-Reverse-RGB.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "17.4. xinetd Configuration Files | Red Hat Documentation",
+        "meta_lang": "",
+        "meta_favicon": "",
+        "meta_site_name": "",
+        "canonical_link": "https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/4/html/reference_guide/s1-tcpwrappers-xinetd-config",
+        "text": "download PDF\n\nThe configuration files for xinetd are as follows:\n\n/etc/xinetd.conf — The global xinetd configuration file.\n\n/etc/xinetd.d/ — The directory containing all service-specific files.\n\n17.4.1. The /etc/xinetd.conf File\n\nThe /etc/xinetd.conf file contains general configuration settings which effect every service under xinetd's control. It is read once when the xinetd service is started, so for configuration changes to take effect, the administrator must restart the xinetd service. Below is a sample /etc/xinetd.conf file:\n\ndefaults { instances = 60 log_type = SYSLOG authpriv log_on_success = HOST PID log_on_failure = HOST cps = 25 30 } includedir /etc/xinetd.d\n\nThese lines control the following aspects of xinetd:\n\ninstances — Sets the maximum number of requests xinetd can handle at once.\n\nlog_type — Configures xinetd to use the authpriv log facility, which writes log entries to the /var/log/secure file. Adding a directive such as FILE /var/log/xinetdlog would create a custom log file called xinetdlog in the /var/log/ directory.\n\nlog_on_success — Configures xinetd to log if the connection is successful. By default, the remote host's IP address and the process ID of server processing the request are recorded.\n\nlog_on_failure — Configures xinetd to log if there is a connection failure or if the connection is not allowed.\n\ncps — Configures xinetd to allow no more than 25 connections per second to any given service. If this limit is reached, the service is retired for 30 seconds.\n\nincludedir /etc/xinetd.d/ — Includes options declared in the service-specific configuration files located in the /etc/xinetd.d/ directory. Refer to Section 17.4.2, “The /etc/xinetd.d/ Directory” for more information.\n\nNote\n\nOften, both the log_on_success and log_on_failure settings in /etc/xinetd.conf are further modified in the service-specific log files. For this reason, more information may appear in a given service's log than the /etc/xinetd.conf file may indicate. Refer to Section 17.4.3.1, “Logging Options” for additional information."
+    }
+}

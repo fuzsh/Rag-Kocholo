@@ -1,0 +1,40 @@
+{
+    "id": "dbpedia_8292_0",
+    "rank": 3,
+    "data": {
+        "url": "https://sourceforge.net/p/clonezilla/discussion/Clonezilla_live/thread/446c5d0c/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Clonezilla live: sudo bash",
+        "top_image": "https://a.fsdn.com/con/img/sandiego/logo-180x180.png",
+        "meta_img": "https://a.fsdn.com/con/img/sandiego/logo-180x180.png",
+        "images": [
+            "https://a.fsdn.com/con/images/sandiego/sf-logo-full.svg",
+            "https://a.fsdn.com/con/images/sandiego/sf-logo-full.svg",
+            "https://a.fsdn.com/con/images/sandiego/sf-logo-full.svg",
+            "https://a.fsdn.com/con/images/sandiego/github-sync.png",
+            "https://a.fsdn.com/allura/p/clonezilla/icon?1513717483&w=90",
+            "https://a.fsdn.com/con/images/sandiego/icons/default-avatar.png",
+            "https://a.fsdn.com/allura/u/steven_shiau/user_icon?1460273416",
+            "https://a.fsdn.com/con/images/sandiego/icons/default-avatar.png",
+            "https://a.fsdn.com/con/images/sandiego/icons/default-avatar.png",
+            "https://a.fsdn.com/con/images/sandiego/icons/default-avatar.png",
+            "https://a.fsdn.com/con/images/sandiego/sf-logo-full.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "https://a.fsdn.com/con/img/sandiego/logo-180x180.png",
+        "meta_site_name": "",
+        "canonical_link": "https://sourceforge.net/p/clonezilla/discussion/Clonezilla_live/thread/446c5d0c/",
+        "text": "#!/bin/bash # Begin of the scripts: # Load DRBL setting and functions DRBL_SCRIPT_PATH=\"${DRBL_SCRIPT_PATH:-/live/image/}\" . $DRBL_SCRIPT_PATH/sbin/drbl-conf-functions . $DRBL_SCRIPT_PATH/conf/drbl-ocs.conf . $DRBL_SCRIPT_PATH/sbin/ocs-functions # load the setting for clonezilla live. [ -e /etc/ocs/ocs-live.conf ] && . /etc/ocs/ocs-live.conf # Load language files. For English, use \"en_US.UTF-8\". ask_and_load_lang_set en_US.UTF-8 # Check to see if network is setup ifconfig | grep eth0 > /tmp/connected FILE=\"\" DIR=\"/home/partimag\" # init # if directory is empty then the network needs to be configured if [ -s \"/tmp/connected\" ]; then clear; echo \"Network is already configured\"; echo; else clear; echo \"Configuring network\"; echo; ocs-live-netcfg clear; fi declare -i mounted # Check if already mounted if mount | grep '/home/partimag'; then mounted=1 clear; echo \"Network is configured\" cat /etc/mtab | grep 10.0.0.10 else mounted=0 fi # If not mounted then get credentials and mount while (($mounted != 1)); do # Get Login info for 10.0.0.10 echo; echo -n \"Enter your CND-A network username: \" read userName echo -n \"Enter your CND-A network password: \" stty -echo read password stty echo; echo; echo; # Get path for that will be used #echo -n \"Enter in the path, starting after 10.0.0.10/images/, that you will be using: \" #read directory; # Mount /home/partimage to path just entered # mount.cifs //10.0.0.10/images/$directory /home/partimag -o username=$userName,password=$password mount.cifs //10.0.0.10/images/ /home/partimag -o username=$userName,password=$password # Check if mount succeeded if mount | grep '/home/partimag'; then mounted=1 else echo; echo; echo \"Mount failed, please enter the information again. \" echo; echo; mounted=0 fi done cd /home/partimag cont=0 while (($cont != 1)); do clear; echo;echo;echo; echo \"***********************************************************************************\" echo \"* *\" echo \"* In order to create a restore disk with multiple images you must first *\" echo \"* use option 4 to create the zip backups of the images you want *\" echo \"* then select option 3 and follow the instruction that are given *\" echo \"* *\" echo \"***********************************************************************************\" echo;echo;echo; echo \"Select on of the following options: \" echo \"1) Create backup of hard drive\" echo \"2) Create iso from backup\" echo \"3) Create multiple iso restore disk fom zips\" echo \"4) Create zip from backup\" echo \"5) Restore clonezilla backup\" echo \"6) Zip to Iso\" echo \"7) Use Clonezilla GUI\" echo \"8) Reboot Computer\" read option; if [ $option -eq 1 ]; then /live/image/createBackup.sh elif [ $option -eq 2 ]; then /live/image/createDVD.sh elif [ $option -eq 3 ]; then /live/image/createMultiple.sh elif [ $option -eq 4 ]; then /live/image/createZip.sh elif [ $option -eq 5 ]; then /live/image/restoreBackup.sh elif [ $option -eq 6 ]; then /live/image/zip2iso.sh elif [ $option -eq 7 ]; then clonezilla elif [ $option -eq 8 ]; then reboot fi done"
+    }
+}

@@ -1,0 +1,36 @@
+{
+    "id": "dbpedia_8291_1",
+    "rank": 24,
+    "data": {
+        "url": "https://stackoverflow.com/questions/8133842/linux-daemon-in-c-to-process-php-requests",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Linux Daemon in C++ to process PHP requests",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://cdn.sstatic.net/Img/teams/teams-promo.svg?v=e507948b81bf",
+            "https://i.sstatic.net/yXfBs.jpg?s=64",
+            "https://www.gravatar.com/avatar/df83229bb066c6059428da00056baa47?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/2c69074600f4d1cdb9c6d78370ab3335?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/a10ec3de7bec751e1633eba0ef28d4cb?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/9e1388be2bbe38ec503b9b93ab1fd492?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/8133842/ivc/0c39?prg=7eb45ba9-6f59-444f-97eb-9c12febcbf6d"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2011-11-15T09:05:43",
+        "summary": "",
+        "meta_description": "OS: Linux(RedHat)\nProgramming Language: C++\n\nI need to create a daemon(process) for Linux using C++ that will continuously listen on a custom port for PHP requests. The PHP will send the request da...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/8133842/linux-daemon-in-c-to-process-php-requests",
+        "text": "Question is rather confused.\n\nI need to create a daemon(process) for Linux using C/C++\n\nWhy does it have to be written in C or C++?\n\nI have also read a little about PHP daemons, but I'm not sure whether they are applicable\n\nDoes that mean it doesn't need to be written in C/++? Why do you think they might not be applicable?\n\nthe daemon will parse the XML using Xerces\n\nWhy does it have to use Xerces? Presumably the daemon is supposed to do something more than just parse XML and compose a response - what else does it do?\n\nWriting a daemon is not a trivial process. Writing a socket server is not a trivial process. It is somewhat simplified by implementing a well defined protocol at each end.\n\n...which rather begs the question, why not just use HTTP as the protocol and a webserver to implement the server stuff, and seperate the application-specific logic into a [f]CGI program. And taking this one step further, why not implement the application-specific logic using PHP.\n\nThe only thing hard and fast is the results i.e succesful communication between the PHP pages and the daemon\n\nSome options:\n\nWrite the application specific part as a PHP page then invoke it via an HTTP request using curl\n\nWrite the server as a single tasking stdio server and use [x]inetd to invoke it, handling the client side connection as a network socket (requires that you define your protocol)\n\nWrite a forking server daemon in PHP handling the connection at both ends as a network socket (requires that you define your protocol)\n\nwrite a single threaded server daemon (using socket_select) in PHP handling the connection at both ends as a network socket (requires that you define your protocol)\n\nOf course anywhere I've mentioned PHP above, you could equally use C, C++, Perl, Java....etc.\n\nIts better that u can use the php socket library to connect with the daemon running in your system and then u can pass data to the daemon and can process the result sent back by the daemon .\n\nYou can refer the PHP Socket Library for creating code to do socket connection with daemon ...\n\nI think this is a better option than using CURL as the daemon is also a custom socket interface , CURL will be most suitable for HTTP request's , but i think here the daemon is not an HTTP one.."
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "id": "dbpedia_8291_1",
+    "rank": 87,
+    "data": {
+        "url": "https://cloud.google.com/looker/docs/port-forwarding",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Port forwarding for a cleaner URL",
+        "top_image": "https://cloud.google.com/_static/cloud/images/social-icon-google-cloud-1200-630.png",
+        "meta_img": "https://cloud.google.com/_static/cloud/images/social-icon-google-cloud-1200-630.png",
+        "images": [
+            "https://www.gstatic.com/devrel-devsite/prod/v20ab951cf37b43fc7a428ae75ce91d8269f391204ca16525bc8a5ececea0ab56/cloud/images/cloud-logo.svg",
+            "https://www.gstatic.com/devrel-devsite/prod/v20ab951cf37b43fc7a428ae75ce91d8269f391204ca16525bc8a5ececea0ab56/cloud/images/cloud-logo.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "Forward the Looker port to create a cleaner URL for your end users.",
+        "meta_lang": "en",
+        "meta_favicon": "https://www.gstatic.com/devrel-devsite/prod/v20ab951cf37b43fc7a428ae75ce91d8269f391204ca16525bc8a5ececea0ab56/cloud/images/favicons/onecloud/favicon.ico",
+        "meta_site_name": "Google Cloud",
+        "canonical_link": "https://cloud.google.com/looker/docs/port-forwarding",
+        "text": "By default, HTTPS assumes that the port will be 443. This means that https://looker.yourdomain.com would automatically be handled as though the user had typed https://looker.yourdomain.com:443. However, using the standard HTTPS port (443) would require running Looker as root, which is unsupported and not recommended.\n\nOne option is to have users specify a port number as part of the URL when they access Looker. For example, if you are using port 9999, then they would type: https://looker.yourdomain.com:9999.\n\nOn customer-hosted instances, for your users' convenience, we recommend setting up a different default port so they can type https://looker.yourdomain.com and still get to the correct port. You can set up a default port for Looker or redirect traffic to a different port using several methods:\n\nUse the --port=<i> Looker startup option to specify the desired port, such as --port=9999. This option is discussed on the Looker startup options documentation page.\n\nCreate a script that uses iptables.\n\nUse xinetd.\n\nUse a Nginx reverse proxy server.\n\nUse a load balancer.\n\nNote that it is better to forward packets directly to Looker, rather than indirectly (through a web proxy), because Looker has functionality to stop a database query when it detects that the browser has canceled a request.\n\niptables on the Looker host\n\nLooker can be accessed from a different port by using iptables. The following script will forward traffic from port 443 to 9999. It was written for Ubuntu Linux and might need to be modified if you are running a different Linux distribution.\n\nCreate the script file:\n\n/etc/network/if-up.d/looker-https-forward\n\nAdd these contents to the file:\n\n#!/bin/sh # Forward HTTPS traffic to the Looker app iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 443 -j REDIRECT --to-port 9999\n\nMake it executable:\n\nsudo chmod 755 /etc/network/if-up.d/looker-https-forward\n\nRun the script, which will automatically run on the next system or network restart:\n\nsudo /etc/network/if-up.d/looker-https-forward\n\nxinetd on the Looker host\n\nAnother technique involves using xinetd.\n\nMake sure xinetd allows incoming traffic from all desired addresses. In the default section of /etc/xinetd.conf add:\n\n{ only_from = 0.0.0.0 # or replace 0.0.0.0 with an IP range # (i.e., 128.0.0.0/16) if desired }\n\nCreate a file named: /etc/xinetd.d/lookerhttps\n\nAdd these contents to the file:\n\n# default: on # description: Redirect HTTPS/443 requests to # Looker default port 9999 service https { disable = no id = lookerhttps socket_type = stream protocol = tcp user = root wait = no redirect = 127.0.0.1 9999 }\n\nReverse proxy servers\n\nIt is possible to use reverse proxies with Looker. Our suggested reverse proxy server is Nginx. It is the only reverse proxy we test and fully support, although we don't necessarily prohibit other options. You can find a sample Nginx configuration on the Sample Nginx configuration documentation page.\n\nNote that the Apache reverse proxy has a bug in it that prevents Looker from being able to properly close connections. This means that every database query will run to completion, even if a user cancels it. For this reason, you should avoid using the Apache reverse proxy with Looker.\n\nLoad balancer\n\nThere are many load balancers solutions available. From a high level, the load balancer would be configured to listen on port 443 and forward all requests to Looker on port 9999. In this case, your SSL server certificates would be installed on the load balancer.\n\nNext steps"
+    }
+}

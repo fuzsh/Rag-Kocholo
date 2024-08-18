@@ -1,0 +1,35 @@
+{
+    "id": "dbpedia_8292_3",
+    "rank": 88,
+    "data": {
+        "url": "https://corylation.medium.com/creating-a-uefi-bootable-clonezilla-usb-drive-on-macos-ventura-ab6aa307b912",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Creating a UEFI-Bootable Clonezilla USB Drive on macOS Ventura",
+        "top_image": "https://miro.medium.com/v2/resize:fit:735/1*7xkXeQyiBawsjWCSaLvGvQ.png",
+        "meta_img": "https://miro.medium.com/v2/resize:fit:735/1*7xkXeQyiBawsjWCSaLvGvQ.png",
+        "images": [
+            "https://miro.medium.com/v2/resize:fill:64:64/1*dmbNkD5D-u45r44go_cf0g.png",
+            "https://miro.medium.com/v2/resize:fill:88:88/1*dmbNkD5D-u45r44go_cf0g.png",
+            "https://miro.medium.com/v2/resize:fill:144:144/1*dmbNkD5D-u45r44go_cf0g.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Cory",
+            "corylation.medium.com"
+        ],
+        "publish_date": "2022-12-14T16:33:56.757000+00:00",
+        "summary": "",
+        "meta_description": "Clonezilla is one of my most-used tech tools. It lets me take backups of systems before I touch them, and restore those backups trivially if I break something. I keep an ISO of it on my trusty…",
+        "meta_lang": "en",
+        "meta_favicon": "https://miro.medium.com/v2/5d8de952517e8160e40ef9841c781cdc14a5db313057fa3c3de41c6f5b494b19",
+        "meta_site_name": "Medium",
+        "canonical_link": "https://corylation.medium.com/creating-a-uefi-bootable-clonezilla-usb-drive-on-macos-ventura-ab6aa307b912",
+        "text": "Clonezilla is one of my most-used tech tools. It lets me take backups of systems before I touch them, and restore those backups trivially if I break something. I keep an ISO of it on my trusty Easy2Boot drive that I carry around with me, but sometimes I find myself wanting a standalone USB drive purpose-built to boot Clonezilla and store an image. Beyond that, more and more systems are now UEFI-only boot systems, which won’t recognize legacy bootable USB drives. I recently spent a bunch of time figuring out how to make one of these purpose-built drives from my Mac, and figured I’d save you the hassle.\n\nThe steps below will show you how to format a USB drive with two partitions. We’ll install a bootable Clonezilla image on the first one, and the second one remains available for storing the images you take or restore with Clonezilla.\n\nStep 1 — Find the USB Drive\n\nConnect the USB drive you want to use to your Mac, then open a Terminal window and find the disk number assigned to your USB drive.\n\ndiskutil list\n\nVerify that you’ve chosen the External (1) disk that you connected to the system, and that the (2) Size matches the size of your external drive. In this case, the external drive is addressable as disk4.\n\nBe careful! Choosing the wrong disk number can irrevocably destroy data on your computer!\n\nStep 2 — Format the Drive\n\nIn this case we’ll format the drive with two partitions, the first as a FAT-32 partition (required by UEFI), and the second as ExFAT. (The second parition can be any format, really, but using ExFat means it won’t show up in the boot menu which reduces confusion/complexity.)\n\nThe first partition just needs to be large enough to hold the Clonezilla files, and 1GB is plenty for that. We allocate the rest of the drive to the second partition, for storing the Clonezilla images.\n\nUsing these assumptions, we can use this command to do the format:\n\ndiskutil partitionDisk disk4 MBR MS-DOS CLONEZILLA 1G ExFAT IMAGES R\n\nThis command, broken down, does the following:\n\ndiskutil — the macOS command to format and partition drives\n\npartitionDisk — use the disk formatting feature of diskutil\n\ndisk4 — the disk to format, which we found in Step 1\n\nMBR — format the drive with a Master Boot Record (as opposed to GPT)\n\nMS-DOS — format the first partition as a FAT-32/MS-DOS partition\n\nCLONEZILLA — label the first partition as “CLONEZILLA”\n\nNote: This label can be anything you want!\n\n1G — allocate 1GB space for the first partition\n\nExFat — create a second partition after the first, formatted as ExFAT\n\nIMAGES — label the second parition as “IMAGES”\n\nNote: This label can be anything you want!\n\nR — use the remainder of the space on the drive for this partition\n\nRun this command, and you should see output like this:\n\nStep 3 — Installing Clonezilla\n\nNow that we have the drive formatted, we need to install the Clonezilla files onto the first partition so that there’s something there to boot from.\n\nDownload the Clonezilla files here, choosing the amd64 architecture, the zip file type, and auto for the repository.\n\nOnce downloaded, run this command to extract the files to your USB drive, noting that you may have to adjust the path to the downloaded zip file:\n\nunzip ~/Downloads/clonezilla-live-*-amd64.zip -d /Volumes/CLONEZILLA\n\nAfter that command completes, run this command to observe the files now present on the drive:\n\nls -al /Volumes/CLONEZILLA\n\nYou should see output like this:\n\nStep 4 — Boot a System with Clonezilla\n\nYou’re done! The USB drive should be fully functional now. Plug it into a UEFI-bootable system and you should see another boot option that lets you boot from your USB drive.\n\nHappy Cloning!"
+    }
+}

@@ -1,0 +1,42 @@
+{
+    "id": "dbpedia_8292_3",
+    "rank": 23,
+    "data": {
+        "url": "https://community.spiceworks.com/t/imaging-for-free-using-clonezilla-live/1004197",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Imaging for Free using Clonezilla live",
+        "top_image": "https://global.discourse-cdn.com/spiceworks/original/1X/7a73606d7df2f794c4789897e49693fb3c471b23.png",
+        "meta_img": "https://global.discourse-cdn.com/spiceworks/original/1X/7a73606d7df2f794c4789897e49693fb3c471b23.png",
+        "images": [
+            "https://secure.intelligence52.com/795141.png",
+            "https://emoji.discourse-cdn.com/twitter/slight_smile.png?v=12",
+            "https://emoji.discourse-cdn.com/twitter/slight_smile.png?v=12",
+            "https://global.discourse-cdn.com/spiceworks/original/4X/9/6/a/96a7e852e64076edaa2208d92a70e9b154e9cec8.jpeg",
+            "https://zdbb.net/l/z0WVjCBSEeGLoxIxOQVEwQ/"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "freeware",
+            "general-windows",
+            "howto"
+        ],
+        "tags": null,
+        "authors": [
+            "othni (Othni)",
+            "corneliousjd (CorneliousJD)",
+            "nightfire (NightFire)",
+            "martinpeverley (Limey)",
+            "markgilbey (MGilbey)"
+        ],
+        "publish_date": "2009-05-04T08:30:12+00:00",
+        "summary": "",
+        "meta_description": "Ghost and Acronis are very pricey, many admins use the two software packages in an illegal way.  If you aren’t paying roughly $30-$50 per PC then you are probably using it illegally. This is a great way to get the same f&hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://global.discourse-cdn.com/spiceworks/optimized/1X/a254df83358a951c43ed6ee756b5e0011a8d58bc_2_32x32.png",
+        "meta_site_name": "Spiceworks Community",
+        "canonical_link": "https://community.spiceworks.com/t/imaging-for-free-using-clonezilla-live/1004197",
+        "text": "Ghost and Acronis are very pricey, many admins use the two software packages in an illegal way. If you aren’t paying roughly $30-$50 per PC then you are probably using it illegally. This is a great way to get the same functionality if not more and be legit.\n\nThis is a beginners guide to Clonezilla live. Clonezilla is an open source clone system based on debian, It has the same look and feel as Norton Ghost. In this example we will use the Ubuntu version. All you need is a File Server with NTFS and the Clonezilla ISO and you will be able to image a PC across the network in no time. I have created this How-to with the windows admin in mind. Linux geeks can skip this guide, there is a wonderful CLI to script everything with.\n\nFor those of you in a SMB setting you may want to consider FOG instead, it allows multicasting and image management via a PXE environment. It is better suited to your needs. But for a single PC clone situation this is a great way to do it.\n\nCheck the FOG how-to here: http://community.spiceworks.com/how_to/show/373\n\nStep 1: Get Clonezilla Live\n\nhttp://clonezilla.org/\n\nGet the Live Ubuntu version for CD/DVD, better driver support.\n\nOnce downloaded, burn to a CD/DVD\n\nStep 2: Set up a Share\n\nI like to image to a share for simplicity I don’t want to carry around a USB drive everywhere and fight with it. So in this example we are going to create a share called ‘images’ and set permissions.\n\nLog onto a server, in this case it will be ‘BACKUPSERVER’\n\nCreate Folder named ‘Images’\n\nShare the folder as Images\n\nSet permissions appropriately, in my case I will just let the domain administrator use the share. You may use whatever you want. Just remember it as you will need these credentials later.\n\nNOTE:\n\nJust make sure that the fileserver you use has enough space to save the images to. I would also suggest using a NTFS partition as Fat32 doesn’t play nice with big files.\n\nStep 3: Boot from Clonezilla\n\nPut the Clonezilla CD you created in step 1 in the drive of the PC that needs cloned change the boot order to boot to CD.\n\nA bunch of text will go by then a splash screen will come up. Just hit Enter.\n\nAt the Language screen, select English or your preferred language. Enter\n\nDon’t Touch Keymap, enter\n\nStart Clonezilla! Enter\n\nStep 4: Clone!\n\nIn this example we are going to start easy with a device-image. Meaning the information cloned will be saved to a neatly wrapped up image on the share we created earlier.\n\nDevice-image. Enter.\n\nSamba_Server. Enter (We will Use SAMBA as this allows us to access windows file shares.)\n\nDHCP (whatever is necessary on your LAN). Enter\n\nEnter the name of the server from step 2. BACKUPSERVER enter.\n\nEnter domain domain.tld Enter.\n\nSince I used domain admin I will leave ‘Administrator’ for the share permissions. Enter.\n\nSince I used Images as my share, I will leave this as default. Enter.\n\nEnter\n\nEnter the password at the bottom of the screen for the Administrator.\n\nYou will see \\BACKUPSERVER\\Images at the bottom of the list if authentication was successful. Enter.\n\nBeginner Mode.\n\nHere is where you get to choose to restore an image or save a new one, the steps are the same. but for our example lets select ‘savedisk’ Enter\n\nGive the image a descriptive name, I like to keep the date and the name of the model of PC. Enter\n\nMake sure you are backing up the correct disk in case there are multiple on the local system. Hit Enter.\n\nIt may be useful to note the command in green if you want to avoid using the GUI next time. Enter\n\nVerify information in yellow. then hit ‘y’ Enter\n\n17 you will get a status report on the progress. On my network we run about 500-900MB/min just so you have a benchmark.\n\nWhen done eject the disk and check the file share to see your image. Just remember, with linux you will be unable to eject your disk until AFTER you shutdown…\n\nYou now have a snapshot of your image that you can restore at any time. You restore using the exact same process but on step 5 part 12 you just select restore image instead.\n\nImportant notes!\n\nIf you are going to deploy this image to multiple PCs, remember you SHOULD to sysprep a windows install BEFORE you clone. Otherwise you will create a lot of havoc on your network with Identifiers being duplicated. This will manifest in WSUS servers not detecting your PC properly, and some pcs being unable to accomplish certain tasks.\n\nMake sure your firewall allows traffic through to the server or you will error out.\n\nYou can multicast with clonezilla server, meaning you can take a single image and push it to as many PCs as you want from your desk. Ahhh laziness I will work on that how-to next.\n\nI have had no issues with any of our PCs with SATA drives. You must have an old version of ghost. No tweaking necessary with either clonezilla or FOG.\n\nMultiple drives Nightfire? Never done it, that would be a considerably difficult task. Thus why most people dont use multiple drives for dual booting unless absolutely necessary.\n\nI know you can specify which device to restore to so possibly you could take 2 images, specify the dev path for each then run two separate restores. But I dont know how that would work with GRUB, it theoreticaly would work but I cannot guarantee.\n\nThe install for FOG is really fast, best to try it and see if it works for you."
+    }
+}

@@ -1,0 +1,32 @@
+{
+    "id": "dbpedia_8293_0",
+    "rank": 54,
+    "data": {
+        "url": "https://stackoverflow.com/questions/72420484/shasum-check-says-ok-for-multiple-algorithms",
+        "read_more_link": "",
+        "language": "en",
+        "title": "shasum --check says ok for multiple algorithms?",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/2b781bfc7fb2ed808483053463379b3c?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/3f265dbe3edef5d671947a604f7171bf?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://stackoverflow.com/posts/72420484/ivc/0c39?prg=5c60b920-5410-4482-93a9-3a50858e44ad"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2022-05-29T02:19:56",
+        "summary": "",
+        "meta_description": "I wanted to have an easy one line command to check software I downloaded matches the checksum. I found this command here:\necho &quot;",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/72420484/shasum-check-says-ok-for-multiple-algorithms",
+        "text": "YES. It's actually a perl script, so you can easily see for yourself. In sub verify, after some setup, for each line it starts by doing:\n\nif (/^[ \\t]*\\\\?SHA/) { $modesym = '*'; ($bslash, $alg, $fname, $sum) = /^[ \\t]*(\\\\?)SHA(\\S+) \\((.+)\\) = ([\\da-fA-F]+)/; $alg =~ tr{/}{}d if defined $alg; } else { ($bslash, $sum, $modesym, $fname) = /^[ \\t]*(\\\\?)([\\da-fA-F]+)[ \\t]([ *^U])(.+)/; $alg = defined $sum ? $len2alg{length($sum)} : undef; }\n\nIn case you don't know perl, variable names usually begin with $ but in certain cases @ or %, and /.../ contains a regexp which when used in if( ) simply returns true if the current data item (here a line from the checksum file) matches, and when used in an assignment like ($a,$b,$c,$d) = /.../ it parses said data item and returns the 'capture groups' marked in the regexp by unbackslashed parentheses, for assignment to the respective variables.\n\nThe first branch handles the format used by BSD cksum/md5/sha1/etc which states the algorithm name, then the filename in parentheses (in a regexp, backslashed parentheses are data characters), a spaced equal sign, and the hash value. The second branch handles GNU format, which is your case, and it determines the hash algorithm based on the length of the value using the map* len2alg which was defined as:\n\nmy %len2alg = (40 => 1, 56 => 224, 64 => 256, 96 => 384, 128 => 512); $len2alg{56} = 512224 if $alg == 512224; $len2alg{64} = 512256 if $alg == 512256;\n\ni.e. it determines the algorithm from the length of the hash value, except that the lengths corresponding to SHA-224 and SHA-256 are 'shared' with SHA-512/224 and SHA-512/256 so it defaults to the former and for the latter you must use -a which was processed earlier to set $alg. This is noted on the man page:\n\nWhen verifying SHA-512/224 or SHA-512/256 checksums, indicate the algorithm explicitly using the -a option, e.g. shasum -a 512224 -c checksumfile\n\n(although it doesn't say this is only needed for GNU format, not BSD format) which by exceptio probat implies that to verify hashes other than those two you don't need -a."
+    }
+}

@@ -1,0 +1,45 @@
+{
+    "id": "dbpedia_8290_2",
+    "rank": 52,
+    "data": {
+        "url": "https://www.percona.com/blog/postgresql-application-connection-failover-using-haproxy-with-xinetd/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "PostgreSQL Application Connection Failover Using HAProxy with xinetd",
+        "top_image": "https://www.percona.com/blog/wp-content/uploads/2019/10/PostgreSQL-Application-Connection-Failover-HAProxy.png",
+        "meta_img": "https://www.percona.com/blog/wp-content/uploads/2019/10/PostgreSQL-Application-Connection-Failover-HAProxy.png",
+        "images": [
+            "https://www.percona.com/blog/wp-content/uploads/2023/02/logo.svg",
+            "https://www.percona.com/wp-content/uploads/2023/04/mysqlicon-1.png",
+            "https://www.percona.com/blog/wp-content/uploads/2023/03/lucas.speyer_grey_texture_of_diamonds_in_a_database_grey_colors_7e002cad-f4c6-404d-8d2f-af8df5d79f7f.jpg",
+            "https://www.percona.com/blog/wp-content/uploads/2019/05/slonik_with_black_text_and_tagline-300x190.png",
+            "https://secure.gravatar.com/avatar/2f06ebff71823abb213c4b64a86b9557?s=96&d=mm&r=g",
+            "https://secure.gravatar.com/avatar/b3e314bbf4bec1eeca20175ca8018a56?s=96&d=mm&r=g",
+            "https://www.percona.com/wp-content/uploads/2022/10/blog-image.jpg",
+            "https://www.percona.com/blog/wp-content/uploads/2024/08/Open-Source-PostgreSQL-TDE-Extension.jpg",
+            "https://www.percona.com/blog/wp-content/uploads/2024/08/Recovering-MySQL-Group-Replication-From-Failures.jpg",
+            "https://www.percona.com/blog/wp-content/uploads/2024/08/pg_upgrade-and-lc_collate-mismatch.jpg",
+            "https://www.percona.com/blog/wp-content/uploads/2023/03/big-data-data-center-3d-rendering.jpg",
+            "https://www.percona.com/blog/wp-content/uploads/2023/03/lucas.speyer_an_icon_of_an_electronic_cloud_orange_sunrise_colo_3073ada1-8b7c-4a9b-879a-331eb856b2f1.png",
+            "https://www.percona.com/blog/wp-content/uploads/2023/03/big-data-data-center-3d-rendering-1.jpg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Jobin Augustine",
+            "Avinash Vallarapu"
+        ],
+        "publish_date": "2019-10-31T15:00:35+00:00",
+        "summary": "",
+        "meta_description": "In this post, we discuss how to implement a PostgreSQL application connection failover using HAProxy with xinetd, one of the most traditional approaches.",
+        "meta_lang": "en",
+        "meta_favicon": "https://www.percona.com/blog/wp-content/uploads/2023/02/cropped-percona-favicon-32x32.png",
+        "meta_site_name": "Percona Database Performance Blog",
+        "canonical_link": "https://www.percona.com/blog/postgresql-application-connection-failover-using-haproxy-with-xinetd/",
+        "text": "Recently we published a blog about a very simple application failover using libpq features which could be the simplest of all automatic application connection routing. In this blog post, we are discussing how a proxy server using HAProxy can be used for connection routing which is a well-known technique with very wide deployment. There are multiple ways HAProxy can be configured with PostgreSQL which we shall cover in upcoming blogs, but configuring a xinetd service to respond to Http requests on individual nodes of a database cluster is one of the most traditional approaches.\n\nOn HAProxy\n\nHAProxy could be the most popular connection routing and load balancing software available. Along with PostgreSQL, it is used across different types of High Availability Clusters. HAProxy, as the name indicates, works as a proxy for TCP (Layer 4) and HTTP (Layer 7), but it has additional features of load balancing also. The TCP proxying feature allows us to use it for database connections of PostgreSQL. There are three objectives of connection routing of a PostgreSQL cluster:\n\nRead-Write load to Master\n\nRead-Only load to Slave\n\nLoad balancing of multiple slaves is achievable by HAProxy.\n\nHAProxy maintains an internal routing table. In this blog, we are going to take a look at the most traditional approach to configure HAProxy with PostgreSQL. This approach is independent of underlying clustering software and can be used even with the traditional PostgreSQL built-in replication feature without any clustering or automation solutions.\n\nIn this generic configuration, we won’t use any special software or capabilities offered by clustering frameworks. This requires us to have 3 components:\n\nA simple shell script to check the status of the PostgreSQL instance running on the local machine.\n\nA xinetd service daemonizer.\n\nHAProxy: Which maintains the routing mechanism.\n\nConcept:\n\nHAProxy has a built-in check for PostgreSQL with option pgsql-check. (Documentation is available here) This is good enough for basic Primary failover. But the lack of features to detect and differentiate the Primary and Hot-Standby nodes makes it less useful.\n\nMeanwhile, HAProxy with xinetd would give us the luxury to see what is the Master and what is a hot standby to redirect connections appropriately. We will be writing about the built-in check pgsql-check in upcoming blog posts and explain how to make use of it effectively.\n\nXinetd (Extended Internet Service Daemon) is a Super-server daemon. It can listen to requests on custom ports and respond to requests by executing custom logic. In this case, we have custom scripts to check the status of the database. In the script we use writes HTTP header with status code. Different status code represents the status of the database instance. Status code 200 if PostgreSQL instance is Primary, 206 if PostgreSQL is Hot Standby, and 503 if status cannot be verified.\n\nEvery database server needs to have a xinetd service running on a port for status checks of PostgreSQL instances running in them. Generally, port: 23267 is used for this purpose, but we can use any port of our choice. This service uses a custom-developed script (shell script) to understand the 3 different statuses of PostgreSQL instances.\n\nPrimary database\n\nStandby database\n\nUnable to connect to PostgreSQL – Indication of PostgreSQL down\n\nSince the status check is available through a port exposed by xinetd, HAProxy can send a request to that port and understand the status from the response.\n\nInstallation and Configuration\n\nFirst, we need to have a script that can check the status of a PostgreSQL instance. It is quite simple, the shell script invokes psql utility and executes pg_is_in_recovery() function of postgres. Based on the result, it can understand whether it is a master or slave or whether it failed to connect.\n\nA sample script is here:\n\nInstead of password-based authentication, any password-less authentication methods can be used.\n\nIt is a good practice to keep the script in /opt folder, but make sure that it has got execute\n\nNow we can install xinetd on the server. Optionally, we can install a telnet client so that we can test the functionality.\n\nNow let us create a xinetd definition/configuration.\n\nAdd a configuration specification to the same file as below:\n\nAdd the pgsqlchk service to /etc/services.\n\nNow xinetd service can be started.\n\nConfiguring HAProxy to use xinetd\n\nWe need to have HAProxy installed on the server:\n\nCreate or modify the HAProxy configuration. Open /etc/haproxy/haproxy.cfg using a text editor.\n\nA sample HAProxy configuration file is given below:\n\nAs per the above configuration, the key points to note are\n\nHAProxy is configured to use TCP mode\n\nHAProxy service will start listening to port 5000 and 5001\n\nPort 5000 is for Read-Write connections and 5001 is for Read-Only connections\n\nStatus check is done using http-check feature on port 23267\n\nBoth server pg0 and pg1 are candidates for both Read-write and Read-only connections\n\nBased on the http-check and the status returned, it decides the current role\n\nNow everything is set for starting the HAProxy service.\n\nVerification and Testing\n\nAs per HAProxy configuration, we should be able to access the port 5000 for a read-write connection.\n\nFor read-only connection, we should be able to access the port 5001:\n\nConclusion\n\nThis is a very generic way of configuring HAProxy with a PostgreSQL cluster, but it’s not limited to any particular cluster topology. Healthcheck is done by a custom shell script and the result of the health check is available through xinetd service. HAProxy uses this information for maintaining the routing table and redirecting the connection to the appropriate node in the cluster."
+    }
+}

@@ -1,0 +1,34 @@
+{
+    "id": "dbpedia_8290_2",
+    "rank": 67,
+    "data": {
+        "url": "https://forums.rockylinux.org/t/unable-to-set-up-an-xinetd-like-socket-service-pair/14833",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Unable to set up an xinetd-like socket-service pair",
+        "top_image": "https://global.discourse-cdn.com/business7/uploads/rockylinux/original/1X/91b7219eec10e30013422e4df76c1d898711a5d5.svg",
+        "meta_img": "https://global.discourse-cdn.com/business7/uploads/rockylinux/original/1X/91b7219eec10e30013422e4df76c1d898711a5d5.svg",
+        "images": [
+            "https://global.discourse-cdn.com/business7/uploads/rockylinux/optimized/2X/7/76f56704fd93f615754eb5ca1495d950d6c55d62_2_690x233.png",
+            "https://global.discourse-cdn.com/business7/uploads/rockylinux/optimized/2X/6/6e170c911d4f33aa2c3e9c69839b67308c033638_2_308x500.png",
+            "https://global.discourse-cdn.com/business7/uploads/rockylinux/original/2X/3/33685683a44ad62611b29ee4a54a7f382ae3ef8a.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "rocky-linux-9"
+        ],
+        "tags": null,
+        "authors": [
+            "james-p"
+        ],
+        "publish_date": "2024-06-27T02:46:41+00:00",
+        "summary": "",
+        "meta_description": "I am trying to emulate on rocky 9.4 an xinetd setup I had in CentOS 7. \nAn app uses the old-fashioned socket machinery to send a request on \nport 10090 for program mfdraw to draw something on the screen for it. \nI made s&hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://global.discourse-cdn.com/business7/uploads/rockylinux/optimized/1X/5a44d1354a3d786cc25c51b92418abc77cc6d922_2_32x32.png",
+        "meta_site_name": "Rocky Linux Forum",
+        "canonical_link": "https://forums.rockylinux.org/t/unable-to-set-up-an-xinetd-like-socket-service-pair/14833",
+        "text": "I am trying to emulate on rocky 9.4 an xinetd setup I had in CentOS 7.\n\nAn app uses the old-fashioned socket machinery to send a request on\n\nport 10090 for program mfdraw to draw something on the screen for it.\n\nI made socket and service files based on all the examples I could find\n\nbefore asking for help here. I cannot get my mfdraw.socket to start my\n\nmfdraw program. Here is my socket file (stored in /etc/systemd/system):\n\n[Socket]\n\nListenStream=10090\n\nAccept=yes\n\n[Install]\n\nWantedBy=sockets.target\n\nAnd here is my template service file, also in /etc/systemd/system:\n\n[Unit]\n\nDescription=Run mfdraw\n\nDefaultDependencies=no\n\nAfter=Default.target\n\n[Service]\n\nType=exec\n\nExitType=main\n\nExecStart=/user/local/bin/mfdraw\n\nRestart=on-success\n\nStandardInput=socket\n\nStandardOutput=socket\n\nUser=cdr\n\nGroup=cdr\n\nI did ‘systemctl enable mfdraw.socket’ and ‘systemctl start mfdraw.socket’.\n\nWhen I run my app and it sends its startup info to port 10090, mfdraw\n\nnever gets started as proved with log and gdb tests and code in my app\n\nprints a ‘broken socket’ error message.\n\n‘systemctl status mfdraw.socket’ gives this:\n\n● mfdraw.socket\n\nLoaded: loaded (/etc/systemd/system/mfdraw.socket; enabled; preset: disabled)\n\nActive: active (listening) since Sun 2024-06-23 21:22:42 EDT; 3 days ago\n\nUntil: Sun 2024-06-23 21:22:42 EDT; 3 days ago\n\nTriggers: ● mfdraw@6-127.0.0.1:10090-127.0.0.1:60964.service\n\n● mfdraw@7-127.0.0.1:10090-127.0.0.1:39304.service\n\n● mfdraw@5-127.0.0.1:10090-127.0.0.1:49742.service\n\n● mfdraw@4-127.0.0.1:10090-127.0.0.1:57406.service\n\n● mfdraw@0-127.0.0.1:10090-127.0.0.1:42662.service\n\n● mfdraw@2-::1:10090-::1:53746.service\n\n● mfdraw@3-127.0.0.1:10090-127.0.0.1:34290.service\n\n● mfdraw@1-::1:10090-::1:37066.service\n\nListen: [::]:10090 (Stream)\n\nAccepted: 8; Connected: 0;\n\nTasks: 0 (limit: 98133)\n\nMemory: 4.0K\n\nCPU: 11ms\n\nCGroup: /system.slice/mfdraw.socket\n\nApparently the ‘Triggers’ listed above are for various tests I tried.\n\nA typical status report ‘systemctl status mfdraw@1.service’ gives this:\n\n× mfdraw@1.service - Run mfdraw\n\nLoaded: loaded (/etc/systemd/system/mfdraw@.service; static)\n\nActive: failed (Result: resources)\n\nCPU: 0\n\nJun 25 21:37:36 marengo4 systemd[1]: mfdraw@1.service: Got no socket.\n\nJun 25 21:37:36 marengo4 systemd[1]: mfdraw@1.service: Failed to run ‘start’ task: Invalid argument\n\nJun 25 21:37:36 marengo4 systemd[1]: mfdraw@1.service: Failed with result ‘resources’.\n\nJun 25 21:37:36 marengo4 systemd[1]: Failed to start Run mfdraw.\n\nAny ideas what I am doing wrong?\n\nThanks,\n\nGeorge\n\nThanks again. I now have it working and am more or less happy you guys told me not to just disable selinux. To make a long story short: The suggestion in the alert to use “ausearch -c ‘(mfdraw)’ …” did not work. I did ‘setenforce 0’ and ran some more tests. There was a new alert about the program trying to use mmap() (not my code, maybe something in the plot libraries I use). I did the suggested fix ‘setsebool -P domain_can_mmap_files 1’. Now I get an alert on some read operation. The suggested fix was just like the original one, except instead of “ausearch -c ‘(mfdraw)’ …” it had “ausearch -c ‘mfdraw’ …”, i.e. the parens around ‘mfdraw’ were no longer there. I did the suggested fix this way, without the ‘-X 300’ and got a message that the old my-mfdraw module at priority 300 was overridden by the new one at priority 400. This new version worked, i.e. the app talks to mfdraw, it draws what it should, and both programs terminate normally. This can be repeated, I guess because I used the template ‘mfdraw@.service’.\n\nSo: OK, I can move on. But I like to know what I am doing, and so I am unhappy that the alerts and alert details and alert troubleshooting windows never actually told me what my program was doing that was being blocked, or what function was doing it, and I have no idea why the ‘(mfdraw)’ it told me to use was wrong and ‘mfdraw’ without the parens was OK. Comments welcome, but I will assume this thread is finished now.\n\nGeorge"
+    }
+}

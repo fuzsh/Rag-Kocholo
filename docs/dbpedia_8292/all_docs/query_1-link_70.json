@@ -1,0 +1,37 @@
+{
+    "id": "dbpedia_8292_1",
+    "rank": 70,
+    "data": {
+        "url": "https://medium.com/daniels-tech-world/using-cloudberry-to-upload-clonezilla-disk-images-to-cloud-object-storage-2f32eea62024",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Using Cloudberry to upload Clonezilla disk images to cloud object storage",
+        "top_image": "https://miro.medium.com/v2/resize:fit:1074/1*GqWSVJEQjyj9FyAUbcjquA.png",
+        "meta_img": "https://miro.medium.com/v2/resize:fit:1074/1*GqWSVJEQjyj9FyAUbcjquA.png",
+        "images": [
+            "https://miro.medium.com/v2/resize:fill:64:64/1*dmbNkD5D-u45r44go_cf0g.png",
+            "https://miro.medium.com/v2/resize:fill:88:88/2*p4YnJUGvmtRcmKBHPfAgmA.jpeg",
+            "https://miro.medium.com/v2/resize:fill:48:48/1*N7zSjhnUe15SGP5cPTDW8Q.png",
+            "https://miro.medium.com/v2/resize:fill:144:144/2*p4YnJUGvmtRcmKBHPfAgmA.jpeg",
+            "https://miro.medium.com/v2/resize:fill:64:64/1*N7zSjhnUe15SGP5cPTDW8Q.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Daniel Rosehill",
+            "danielrosehill.medium.com"
+        ],
+        "publish_date": "2020-05-10T08:04:13.939000+00:00",
+        "summary": "",
+        "meta_description": "When it comes to full disk imaging, Clonezilla is one of the most simple and effective low-level tools out there. Unlike, say, dd, Clonezilla’s sort-of GUI provides plenty of instruction for how to…",
+        "meta_lang": "en",
+        "meta_favicon": "https://miro.medium.com/v2/5d8de952517e8160e40ef9841c781cdc14a5db313057fa3c3de41c6f5b494b19",
+        "meta_site_name": "Medium",
+        "canonical_link": "https://medium.com/daniels-tech-world/using-cloudberry-to-upload-clonezilla-disk-images-to-cloud-object-storage-2f32eea62024",
+        "text": "When it comes to full disk imaging, Clonezilla is one of the most simple and effective low-level tools out there.\n\nUnlike, say, dd, Clonezilla’s sort-of GUI provides plenty of instruction for how to use it effectively through command prompts — and it can be run off a lightweight live USB to back up just about any type of disk or partition (including ext4 filesystems hosting Linux distributions and Windows installs living on NFTS-formatted partitions.)\n\nClonezilla does support creating backups directly to remote (offsite/cloud storage):\n\nSpecifically, the tool can can save the backup\n\nOver SSH\n\nTo a local SAMBA server\n\nTo an NFS server\n\nTo a WebDAV server\n\nTo an AWS S3 server\n\nWhile this is the most direct means of backing up a Clonezilla image to an offsite location, there are a few significant drawbacks:\n\nIf you’re running Clonezilla in its most simple mode, then you cannot use your computer while the imaging process is taking place\n\nOver a typical home internet connection, saving a full disk image of say, 30 GB, directly offsite would take days\n\nIn light of the above, taking a two-step approach to saving Clonezilla images to the cloud is sometimes the best option.\n\n2. Create A Backup Plan in Cloudberry\n\nMSP360 (formerly Cloudberry) make a backup client for Linux and Windows.\n\nThe program can be purchased for a lifetime perpetual license of $29.99 (at the time of writing). This pro version includes advanced features like compression and encryption. But the basic (freeware) version contains everything needed to push (unencrypted uncompressed) backups to the cloud. (Note: Clonezilla supports compression in its advanced mode).\n\nOf course, you could also use a CLI like rclone to get the job done — but, despite being a longtime Linux user, I don’t believe in making life difficult for no reason!\n\nAfter selecting “Create a Backup Plan” in Cloudberry Backup I went ahead and added a bucket I created in Backblaze just for Clonezilla images:\n\nI then gave the backup plan a name and provided the software with the location of my Clonezilla image. It can be set to run when you are ready to push to the cloud.\n\nIt’s also useful to think about whether the ‘do not backup hidden file’ option — by default disabled — needs to be enabled.\n\nOf course, if you wanted to build a (very) simple Bash script, or just run a command, you could execute\n\n#!/bin/bashsudo rclone -v sync /home/daniel/my_backups/clonezilla_backups B2:myclonezillabackups/exit\n\nYou will just need to run\n\nsudo rclone config\n\nBefore you do so that the root user has a valid configuration file for rclone. The CLI will not automatically import the configuration file belonging to the user and the terminal will give the following error message:\n\nNOTICE: Config file “/root/.config/rclone/rclone.conf” not found — using defaults\n\nI used ‘show hidden files’ in my file editor to verify that the Clonezilla image directory did not include any hidden files:\n\nIt’s worth looking at the file of the Clonezilla archive in order to estimate how long pushing the backup up to the cloud is going to take:\n\nAnd the using DownloadTimeCalculator.com to estimate how long the process is going to take to run.\n\nUnfortunately because this is a local → cloud backup there are no tricks — like backing up from an EC2 instance — to be relied upon.\n\nGood luck running your backups!"
+    }
+}

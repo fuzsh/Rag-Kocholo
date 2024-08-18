@@ -1,0 +1,53 @@
+{
+    "id": "dbpedia_8292_0",
+    "rank": 78,
+    "data": {
+        "url": "https://emeneye.wordpress.com/2012/05/17/integrating-clonezilla-live-into-fogs-pxe-menu/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Integrating Clonezilla Live into FOG’s PXE Menu",
+        "top_image": "https://emeneye.wordpress.com/wp-content/uploads/2012/12/image_thumb1.png",
+        "meta_img": "https://emeneye.wordpress.com/wp-content/uploads/2012/12/image_thumb1.png",
+        "images": [
+            "https://emeneye.wordpress.com/wp-content/uploads/2012/12/image_thumb1.png?w=624&h=231",
+            "https://emeneye.wordpress.com/wp-content/uploads/2012/12/image_thumb2.png?w=619&h=227",
+            "https://emeneye.wordpress.com/wp-content/uploads/2012/12/image_thumb3.png?w=621&h=225",
+            "https://emeneye.wordpress.com/wp-content/uploads/2012/12/image_thumb4.png?w=634&h=524",
+            "https://0.gravatar.com/avatar/?s=60&d=identicon&r=G",
+            "https://emeneye.wordpress.com/wp-content/uploads/2021/09/windows-11-wallpaper-2.jpg",
+            "https://0.gravatar.com/avatar/?s=48&d=identicon&r=G",
+            "https://0.gravatar.com/avatar/?s=48&d=identicon&r=G",
+            "https://0.gravatar.com/avatar/?s=48&d=identicon&r=G",
+            "https://0.gravatar.com/avatar/?s=48&d=identicon&r=G",
+            "https://0.gravatar.com/avatar/?s=48&d=identicon&r=G",
+            "https://0.gravatar.com/avatar/?s=48&d=identicon&r=G",
+            "https://0.gravatar.com/avatar/?s=48&d=identicon&r=G",
+            "https://emeneye.files.wordpress.com/2016/02/gp-order-2_thumb.jpg?w=40&h=40&crop=1",
+            "https://emeneye.files.wordpress.com/2013/10/ou-diagram.jpg?w=40&h=40&crop=1",
+            "https://emeneye.files.wordpress.com/2013/09/image_thumb15.png?w=40&h=40&crop=1",
+            "https://emeneye.files.wordpress.com/2021/09/clip_image002_thumb.jpg?w=40&h=40&crop=1",
+            "https://emeneye.files.wordpress.com/2018/12/clip_image003_thumb.png?w=40&h=40&crop=1",
+            "https://0.gravatar.com/avatar/31fc79b67823ea96ad40c4127f585bf068ec895778757f445c22efa977f53e4a?s=40&d=identicon&r=G",
+            "https://0.gravatar.com/avatar/31fc79b67823ea96ad40c4127f585bf068ec895778757f445c22efa977f53e4a?s=40&d=identicon&r=G",
+            "https://emeneye.files.wordpress.com/2013/09/image_thumb19.png?w=40&h=40&crop=1",
+            "https://s2.wp.com/i/logo/wpcom-gray-white.png",
+            "https://s2.wp.com/i/logo/wpcom-gray-white.png",
+            "https://pixel.wp.com/b.gif?v=noscript"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2012-05-17T00:00:00",
+        "summary": "",
+        "meta_description": "I came across a number of potential solutions while looking into some way of backing up my FOG server but what I’ve settled with is using Clonezilla to clone the Ubuntu box itself to safeguard the entire FOG server for disaster recovery purposes (the FOG server is installed on Ubuntu). I’ve been experimenting with it…",
+        "meta_lang": "en",
+        "meta_favicon": "https://s1.wp.com/i/favicon.ico",
+        "meta_site_name": "Me, Myself and IT",
+        "canonical_link": "https://emeneye.wordpress.com/2012/05/17/integrating-clonezilla-live-into-fogs-pxe-menu/",
+        "text": "I came across a number of potential solutions while looking into some way of backing up my FOG server but what I’ve settled with is using Clonezilla to clone the Ubuntu box itself to safeguard the entire FOG server for disaster recovery purposes (the FOG server is installed on Ubuntu).\n\nI’ve been experimenting with it a couple of times and I like it so much I decided to add it to FOG’s PXE menu just for fun.\n\nI understand that with this setup I cant use Clonezilla from the FOG PXE menu to backup the same machine running FOG but I think I can live with using the live CD for that. In fact I’ve left the disk in the drive so I don’t have to scramble for it when I need it.\n\nThat’s enough background information. Let’s get on with the actual instructions which is what this post is supposed to be about…\n\nLaunch terminal and type the following command\n\nsudo chown emeneye /tftpboot\n\nThis changes the owner of the /tftpboot directory to emeneye. Replace ‘emeneye’ with the your own username\n\nenter root password\n\nDownload the latest clonezilla zip file from http://clonezilla.org/downloads.php\n\nRight click on the clonezilla zip file and choose ‘Open with Archive Mounter’.\n\nOpen the mounted folder and from the /live directory copy the following files to the /tftpboot directory:\n\nvmlinuz\n\ninitrd.img\n\nfilesystem.squashfs\n\nGo back to the Terminal and type the following command\n\nsudo gedit /tftpboot/pxelinux.cfg/default\n\nThis will launch a text document. At the end of the document add the following entry (before “PROMPT 0”):\n\nlabel Clonezilla-live MENU LABEL Clonezilla Live KERNEL vmlinuz APPEND initrd=initrd.img boot=live config noswap nolocales edd=on nomodeset ocs_live_run=\"ocs-live-general\" ocs_live_extra_param=\"\" ocs_live_keymap=\"\" ocs_live_batch=\"no\" ocs_lang=\"\" vga=788 nosplash noprompt fetch=tftp://IP_ADDRESS_OF_FOG_SERVER/filesystem.squashfs\n\nSave and close the document.\n\nReboot your client machine and PXE-boot into FOG and you should see a new menu option labeled Clonezilla Live.\n\nPS.\n\nThis will also come handy if I ever come across a situation when I need to back up a Linux box in future without having to use the live cd."
+    }
+}

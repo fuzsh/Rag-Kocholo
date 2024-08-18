@@ -1,0 +1,35 @@
+{
+    "id": "dbpedia_8285_1",
+    "rank": 50,
+    "data": {
+        "url": "https://www.nuget.org/packages/MySqlBackup.NET/2.3.6.1",
+        "read_more_link": "",
+        "language": "en",
+        "title": "MySqlBackup.NET 2.3.6.1",
+        "top_image": "https://api.nuget.org/v3-flatcontainer/mysqlbackup.net/2.3.6.1/icon",
+        "meta_img": "https://api.nuget.org/v3-flatcontainer/mysqlbackup.net/2.3.6.1/icon",
+        "images": [
+            "https://api.nuget.org/v3-flatcontainer/mysqlbackup.net/2.3.6.1/icon",
+            "https://nuget.org/Content/gallery/img/nuget-trends.svg",
+            "https://www.nuget.org/profiles/adriancs/avatar?imageSize=64",
+            "https://nuget.org/Content/gallery/img/facebook.svg",
+            "https://nuget.org/Content/gallery/img/twitter.svg",
+            "https://nuget.org/Content/gallery/img/rss.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "A tool to backup and restore MySQL database in C#/VB.NET/ASP.NET.",
+        "meta_lang": "en",
+        "meta_favicon": "/favicon.ico",
+        "meta_site_name": "",
+        "canonical_link": "https://www.nuget.org/packages/MySqlBackup.NET/2.3.6.1",
+        "text": "About\n\nA tool to backup and restore MySQL database in C#/VB.NET/ASP.NET.\n\nRuns on MySql.Data.DLL, MySqlConnector.DLL and Devart.Express.MySql.DLL\n\nMore documentation is available at the Project Github website.\n\nFor MySql.Data.DLL PM> Install-Package MySqlBackup.NET https://www.nuget.org/packages/MySqlBackup.NET/\n\nFor dotConnector Devart.Express.MySql PM> Install-Package MySqlBackup.Net.DevartExpress https://www.nuget.org/packages/MySqlBackup.Net.DevartExpress/\n\nFor MySqlConnector (MIT) PM> Install-Package MySqlBackup.NET.MySqlConnector https://www.nuget.org/packages/MySqlBackup.NET.MysqlConnector/\n\nBackup/Export a MySQL Database\n\nstring constring = \"server=localhost;user=root;pwd=qwerty;database=test;convertzerodatetime=true;\"; string file = \"C:\\\\backup.sql\"; using (MySqlConnection conn = new MySqlConnection(constring)) { using (MySqlCommand cmd = new MySqlCommand()) { using (MySqlBackup mb = new MySqlBackup(cmd)) { cmd.Connection = conn; conn.Open(); mb.ExportToFile(file); conn.Close(); } } }\n\nImport/Restore a MySQL Database\n\nstring constring = \"server=localhost;user=root;pwd=qwerty;database=test;convertzerodatetime=true;\"; string file = \"C:\\\\backup.sql\"; using (MySqlConnection conn = new MySqlConnection(constring)) { using (MySqlCommand cmd = new MySqlCommand()) { using (MySqlBackup mb = new MySqlBackup(cmd)) { cmd.Connection = conn; conn.Open(); mb.ImportFromFile(file); conn.Close(); } } }\n\nIntroduction\n\nMySqlBackup.NET is a tool (DLL) that can backup/restore MySQL database in .NET Programming Language. It is an alternative to MySqlDump.\n\nThis tool is developed in C# but able to be used in any .NET Language (i.e. VB.NET, F#, etc.).\n\nAnother benefit of making this tool is, we don't have to rely on two small programs - MySqlDump.exe and MySql.exe to perform the backup and restore task. We will have better control on the output result in .NET way.\n\nThe most common way to backup a MySQL Database is by using MySqlDump and MySQL Workbench.\n\nMySQL Workbench is good for developers, but when comes to the client or end-user, the recommended way is to get every parameter preset and all they need to know is press the big button \"Backup\" and everything is done. Using MySQL Workbench as a backup tool is not a suitable solution for the client or end-user.\n\nOn the other hand, MySqlDump.exe cannot be executed directly from the Web Server. As some providers forbid that, MySqlBackup will be helpful in building a web-based (ASP.NET) backup tool.\n\nFeatures\n\nBackup and Restore of MySQL Database\n\nCan be used in any .NET Languages.\n\nExport/Import to/from MemoryStream\n\nConditional Rows Export (Filter Tables or Rows)\n\nProgress Report is Available for Both Export and Import Task.\n\nAble to export rows into different modes. (Insert, Insert Ignore, Replace, On Duplicate Key Update, Update)\n\nCan be used directly in ASP.NET or web services.\n\nPrerequisite and Dependencies for Development, Compile and Production Usage\n\nMySqlBackup.NET relies on the following component to work.\n\nOption 1: MySql.Data (Connector/NET)\n\nMySQL dot net Connector/Net (MySql.Data.DLL)\n\nMySql.Data.DLL is developed by Oracle Corporation, licensed under GPL License (http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)._\n\nOption 2: Devart Express (dotConnect)\n\nDevart dotConnect for MySQL Express\n\nFor license agreement, please read: https://www.devart.com/dotconnect/mysql/licensing-faq.html\n\nDevart.Data.DLL\n\nDevart.Data.MySql.DLL\n\nOption 3: MySqlConnector (MIT)\n\nMySqlConnector: High Performance MySQL Library for .NET\n\nProject URL: https://github.com/mysql-net/MySqlConnector\n\nLicensed under MIT\n\nMySqlConnector.DLL\n\nReminder\n\nReminder 1\n\nMySqlBackup.NET (or MySqlBackup.DLL) stands on top of MySql.Data.DLL which also stands on top of .NET Framework, which uses UTF8 encoding by default. If your database involves any UTF8 or Unicode Characters. You must use a MySQL database with default character of UTF8 while handling Unicode Characters, such as\n\nWestern European specific languages, the character of 'À', 'ë', 'õ', 'Ñ'.\n\nRussian, Hebrew, India, Arabic, Chinese, Korean, Japanese characters, etc.\n\nYou are recommended to apply the connection string option of charset=utf8. Example:\n\nserver=localhost;user=root;pwd=mypwd;charset=utf8;\n\nor\n\nserver=localhost;user=root;pwd=mypwd;charset=utf8mb4;\n\nReminder 2\n\n(For MySql.Data connector only) DateTime conversion between MySQL and .NET Framework. In MySQL, there are various of DateTime format, such as null value or Date only data. But, in .NET Framework, there is no null value (or Date only) for DateTime. This error is not caused by MySqlBackup.DLL. MySql.Data.DLL (developed by Oracle) has decided to throw an exception of Data Conversion Error. Therefore, you are strongly recommended to apply the connection string option of convertzerodatetime=true. Example:"
+    }
+}

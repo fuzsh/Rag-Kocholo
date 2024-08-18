@@ -1,0 +1,39 @@
+{
+    "id": "dbpedia_8290_2",
+    "rank": 65,
+    "data": {
+        "url": "https://xerocrypt.wordpress.com/2013/06/17/ips-features-of-xinetd/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "IPS Features of xinetd",
+        "top_image": "https://xerocrypt.wordpress.com/wp-content/uploads/2013/06/xlog.png",
+        "meta_img": "https://xerocrypt.wordpress.com/wp-content/uploads/2013/06/xlog.png",
+        "images": [
+            "https://xerocrypt.wordpress.com/wp-content/uploads/2023/07/cropped-the-rose-2022-1.png",
+            "https://xerocrypt.wordpress.com/wp-content/uploads/2013/06/xlog.png?w=529",
+            "https://1.gravatar.com/avatar/849ce05e09dee548fa4fe271336f570f?s=320",
+            "https://xerocrypt.wordpress.com/wp-content/uploads/2017/03/github-logo-1.png?w=200",
+            "https://xerocrypt.wordpress.com/wp-content/uploads/2015/06/istqb.jpg",
+            "https://xerocrypt.wordpress.com/wp-content/uploads/2018/01/edited-with-vim.gif",
+            "https://1.gravatar.com/avatar/849ce05e09dee548fa4fe271336f570f?s=320",
+            "https://xerocrypt.wordpress.com/wp-content/uploads/2023/07/cropped-the-rose-2022.png?w=50",
+            "https://xerocrypt.wordpress.com/wp-content/uploads/2023/07/cropped-the-rose-2022.png?w=50",
+            "https://pixel.wp.com/b.gif?v=noscript"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2013-06-17T00:00:00",
+        "summary": "",
+        "meta_description": "That little problem experienced by Cryptome.org's sysadmin got me thinking, how does one host 70,000+ publicly-available documents and deal with an attacker that uses wget to scrape the entire site every 24 hours? Was this a Denial of Service designed to eat up bandwidth allowance, or was it some intelligence gathering effort related to the…",
+        "meta_lang": "en",
+        "meta_favicon": "https://xerocrypt.wordpress.com/wp-content/uploads/2023/07/cropped-the-rose-2022.png?w=32",
+        "meta_site_name": "The Krypt",
+        "canonical_link": "https://xerocrypt.wordpress.com/2013/06/17/ips-features-of-xinetd/",
+        "text": "That little problem experienced by Cryptome.org’s sysadmin got me thinking, how does one host 70,000+ publicly-available documents and deal with an attacker that uses wget to scrape the entire site every 24 hours? Was this a Denial of Service designed to eat up bandwidth allowance, or was it some intelligence gathering effort related to the NSA leak?\n\nIt just so happened that I recently discovered xinetd (Extended Network Daemon) and have been experimenting with it. It’s basic stuff I should have known already, xinetd being a core component that kills several birds with one stone on a UNIX system.\n\nBackground and History: inetd\n\nThe manpage for this daemon states:\n\n‘Instead of having such servers started at system initialization time, and be dormant until a connection request arrives, xinetd is the only daemon process started and it listens on all service ports for the services listed in its configuration file. When a request comes in, xinetd starts the appropriate server.’\n\nTo really appreciate its role in securing the OS against network-based threats, we first need an understanding of the more conventional inetd. This is a component of UNIX that manages network-enabled services – primarily it launches a specific program when an incoming request is received.\n\nPorts are mapped to generic service names (not the programs themselves) in /etc/services. The file /etc/inetd.conf maps those services to whatever programs handle them on the local system, although it seems the package manager removed this when replacing the daemon with xinetd.\n\nFor most users the contents of these files shouldn’t change, unless programs are installed/removed or the system’s being hardened to function as a bastion host. Pretty straightforward to understand.\n\nExtended inetd, or xinetd\n\nWhere xinetd differs from the older daemon is the functionality – when properly configured, xinetd has a number of features that protect the local system from network-based threats, and by implication mitigates the effects of certain malware. These are listed on the official xinetd site.\n\nApart from using different configuration files than inetd (/etc/xinetd.conf and /etc/xinetd.d for program-specific settings), xinetd does exactly the same but enables granular access controls to be set, for example limiting the number of programs running simultaneously, limiting the number of incoming connections, etc. Now we can start to see its use as a host-based intrusion prevention system and one possible way of dealing with Denial of Service attacks.\n\nAfter installation, there should be a configuration file for the daemon in /etc/init, indicating that it’s launched in place of the older inetd when the system enters runlevel 2. Configuration is simple enough, if we understand the format and what each field means. A service’s entry will look something like:\n\nservice imap\n\n{\n\nsocket_type = stream\n\nprotocol = tcp\n\nwait = no\n\nuser = root\n\nonly_from = 198.72.5.0 localhost\n\nbanner = /usr/local/etc/deny_banner\n\nserver = /usr/local/sbin/imapd\n\n}\n\nCreating a log file for xinet is also straightforward. In the command line, enter:\n\n$xinetd -filelog xlog.txt\n\nThis creates a log file called xlog.txt in the user’s home directory. Out of the box, the daemon should produce something like:\n\nBut no services or logging policies have been added to xinetd.conf yet. To start logging, add log_on_failure and log_on_success to whatever services along with values to define what to record. Logging (and a few other parameters) can also be set globally for all services with the xinet.conf entry:\n\ndefaults\n\n{\n\ninstances = 25\n\nlog_type = FILE /var/log/servicelog\n\nlog_on_success = HOST PID\n\nlog_on_failure = HOST RECORD\n\ndisabled = tftp\n\n}\n\nDenial of Service and Related Stuff\n\nBack to the original problem, this is quite easily solved with xinetd configured as an Intrusion Prevention System. Most DoS attacks (basic definition here) involve sending continuous requests to a server with the aim of disrupting whatever service, perhaps by sending more requests than the server can handle, or by consuming processor and memory resources. Or perhaps both. The scraper targeting Cryptome.org would be a classic example, if it manages to take the site offline by exhausting its bandwidth allowance. We therefore want to configure it in a way that handles this. Here are some of the parameters we could use:\n\n* per_source: Max number of services that a source IP address can access at once.\n\n* deny_time: Discontinue access to a service for a source that sets off a SENSOR flag.\n\n* cps: Connections per second allowed for a service. This is suffixed with time delay for restarting the service.\n\nIn addition, there are resource limiting parameters that restrict the memory, CPU, etc. usage for a service. These are also very important, to prevent the system becoming so totally screwed it’s unmanageable."
+    }
+}

@@ -1,0 +1,28 @@
+{
+    "id": "dbpedia_8290_1",
+    "rank": 1,
+    "data": {
+        "url": "https://github.com/rglaue/xinetd_bash_http_service",
+        "read_more_link": "",
+        "language": "en",
+        "title": "rglaue/xinetd_bash_http_service: An HTTP service for xinetd written in bash",
+        "top_image": "https://opengraph.githubassets.com/29ebb9f60b4bb91f9f16dfa5cdef4eb82b5b249c16ad64669ad766305564d430/rglaue/xinetd_bash_http_service",
+        "meta_img": "https://opengraph.githubassets.com/29ebb9f60b4bb91f9f16dfa5cdef4eb82b5b249c16ad64669ad766305564d430/rglaue/xinetd_bash_http_service",
+        "images": [],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "An HTTP service for xinetd written in bash. Contribute to rglaue/xinetd_bash_http_service development by creating an account on GitHub.",
+        "meta_lang": "en",
+        "meta_favicon": "https://github.com/fluidicon.png",
+        "meta_site_name": "GitHub",
+        "canonical_link": "https://github.com/rglaue/xinetd_bash_http_service",
+        "text": "An HTTP service for xinetd written in bash\n\nThis is written as a starting framework example for servicing HTTP requests to obtain health of some local service that is desired to be monitored. It can also be used on the command line to obtain the same health information.\n\nIf you need a monitoring application that is heavy in client connections, or needs to store stateful information, consider writing a daemon that runs on its own as opposed to an xinetd application. However, if your needs are light, and you want HTTP REST-like capabilities, perhaps this meets your needs.\n\nVersion 0.3 was updated to parse HA Proxy's X-Haproxy-Server-State HTTP header when HAProxy uses the configuration option httpchk with http-check send-state. By default, this xinetd script can send results back to HA Proxy with both option tcp-check and option httpchk without differing configuration. See HA Proxy Use below.\n\nEdit the xinetdhttpservice.sh file, modifying the script at the bottom to add your custom code. Look for the section titled \"Add your health checking logic below\". You can modify or remove the example code that is in this section.\n\nget_http_req_uri_params_value <param-name>\n\nThis function will obtain the value of a paramter provided in the HTTP request.\n\nget_haproxy_server_state_value <param-name>\n\nThis function will obtain the value of a paramter provided in the HTTP request header X-Haproxy-Server-State.\n\nhttp_response <http-code> <message>\n\nThis function will return a HTTP response and exit. It will do nothing and return if the --http-response option is not set to 1, or if the request came from the command line and not as a HTTP request.\n\ndecrease_health_value\n\nThis function will decrease the global health value\n\ndecrease_health_value\n\ndisplay_health_value\n\nThis function displays the global helath value in a HTTP response or standard output for the command line, and then exits.\n\ndisplay_health_value\n\nHTTP GET\n\nHTTP POST\n\nHTTP POST Config: MAX_HTTP_POST_LENGTH\n\nAt the top of the xinetdhttpservice.sh bash script, there is a global variable that define the maximum allowed length of posted data. Posted data that has a length greater than this will be cut off.\n\nMAX_HTTP_POST_LENGTH=200\n\nHTTP POST Config: READ_BUFFER_LENGTH\n\nIf a non-compliant HTTP client is posting data that is shorter than the Content-Length, then the READ_BUFFER_LENGTH should be set to 1. By default this value is the size of the Content-Length, which is more efficient.\n\nNote: The maximum length of posted data that is accepted is the Content-Length or the MAX_HTTP_POST_LENGTH, whichever is shorter. If the HTTP client is posting data, yet provides a Content-Length of 0, no data will be read in.\n\nlinux$ xinetdhttpservice.sh Success\n\nTo configure this script as an xinetd service, add the xinetdhttpservice_config file to the system /etc/xinetd.d/ directory.\n\nThen restart xinetd\n\nCentOS-Flavors$ systemctl restart xinetd\n\nThen query the service via a HTTP call\n\nFirst setup the xinetd service, as described previously. Once setup, you should be able to get the service status via TCP or HTTP check in HAProxy. This can be tested as follows. Both TCP and HTTP checks will work without differing configuration in the xinetd_bash_http_service script because the http_response function only delivers output if the client made an HTTP request.\n\nTesting the health checks\n\nEnsure xinetd script outputs for both HTTP and TCP\n\nConfigure HA Proxy\n\nCopyright (C) 2018 Center for the Application of Information Technologies, Western Illinois University. All rights reserved.\n\nApache License 2.0, see LICENSE.\n\nThis program is free software."
+    }
+}

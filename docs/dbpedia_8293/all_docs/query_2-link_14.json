@@ -1,0 +1,50 @@
+{
+    "id": "dbpedia_8293_2",
+    "rank": 14,
+    "data": {
+        "url": "https://forums.freebsd.org/threads/is-it-possible-to-convert-a-bootable-iso-to-a-bootable-ssd.44129/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Is it possible to convert a bootable .iso to a bootable SSD?",
+        "top_image": "https://forums.freebsd.org/styles/freebsd/xenforo/logo.og.png",
+        "meta_img": "https://forums.freebsd.org/styles/freebsd/xenforo/logo.og.png",
+        "images": [
+            "https://forums.freebsd.org/styles/freebsd/xenforo/freebsd_logo.png",
+            "https://forums.freebsd.org/styles/default/xenforo/xenforo-logo.png",
+            "https://forums.freebsd.org/styles/default/xenforo/add_to_home.gif",
+            "https://forums.freebsd.org/data/avatars/m/31/31064.jpg?1414773199",
+            "https://forums.freebsd.org/data/avatars/m/7/7721.jpg?1413417517",
+            "https://forums.freebsd.org/styles/default/xenforo/reactions/emojione/handshake.png",
+            "https://forums.freebsd.org/data/avatars/m/31/31064.jpg?1414773199",
+            "https://forums.freebsd.org/data/avatars/m/31/31064.jpg?1414773199",
+            "https://forums.freebsd.org/data/avatars/m/7/7721.jpg?1413417517",
+            "https://forums.freebsd.org/data/avatars/m/31/31064.jpg?1414773199",
+            "https://secure.gravatar.com/avatar/cc9825432304835b4e6e4b0899708e6f?s=96",
+            "https://forums.freebsd.org/data/avatars/m/1/1677.jpg?1413407984",
+            "https://forums.freebsd.org/data/avatars/m/31/31064.jpg?1414773199",
+            "https://forums.freebsd.org/data/avatars/m/1/1677.jpg?1413407984",
+            "https://forums.freebsd.org/data/avatars/m/1/1677.jpg?1413407984"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Chris_H",
+            "K kpa",
+            "wblock@ Developer",
+            "OP Chris_H",
+            "jrm@ Developer"
+        ],
+        "publish_date": "2014-01-05T21:38:06+00:00",
+        "summary": "",
+        "meta_description": "Greetings, all.\n\nI'm looking to convert a bootable install CD/DVD into a bootable flash/SSD image. My thoughts are; that it's faster, and more...",
+        "meta_lang": "en",
+        "meta_favicon": "/styles/freebsd/xenforo/logo.og.png",
+        "meta_site_name": "The FreeBSD Forums",
+        "canonical_link": "https://forums.FreeBSD.org/threads/is-it-possible-to-convert-a-bootable-iso-to-a-bootable-ssd.44129/",
+        "text": "Greetings, all.\n\nI'm looking to convert a bootable install CD/DVD into a bootable flash/SSD image. My thoughts are; that it's faster, and more \"environmentally friendly\" to experiment/develop from an SSD, than turning CD/DVD media into \"coasters\". That said; I'm looking to create an install image from a USB SSD image.\n\nWhich I boot from;\n\nthen load the entire contents into RAM;\n\nthen begin the install process from the contents now in RAM.\n\nThis leaves me the ability to then wipe the contents of the flash/SSD drive. So as to install to it. In my mind, this makes it a snap to test installs, and complete systems, that I can later save and dump to media for later deployment. So I have a bootable .iso image, and am wondering how/if I can mount it, and then dump it to a USB SSD, so I can boot from it, to test it. Is it possible? How do I do it? I know about dd(). But don't know enough to apply it to my situation.\n\nThank you for all your time, and consideration.\n\n--Chris\n\nOh, I almost forgot: this is on an 8.4-STABLE system.\n\nRe: Is it possible to convert a bootable .iso to a bootable\n\nwblock@ said:\n\nYes, there are USB memory stick images to install FreeBSD. Look in the ISO directory of the release for the \"-memstick.img\" file. Just download one of those rather than the CD or DVD image. There is also mfsBSD, a very nice minimal memory stick version of FreeBSD.\n\nThanks @wblock@,\n\nBut I have an (custom) .iso image. Is it not possible to simply use dd() to dump it onto the USB SSD drive? Will it still be bootable, as the .iso is now? Remember, as I noted in the OP, this is for deployment of modified/customized images. Intended to be used to duplicate the same configuration across many servers. Kind of like cloning one of the servers, but not quite.\n\nThanks again for the reply, @wblock@.\n\n--Chris\n\nRe: Is it possible to convert a bootable .iso to a bootable\n\nActually, the original did not mention customized images. I had written some about that, but then went back and deleted it as irrelevant.\n\nNo, ISO uses a different layout than a standard disk, and the blocks are 2048 bytes instead of 512. There is no point in using an ISO for a customized image because it gives no advantages and makes things more difficult.\n\nClonezilla and g4u are two backup systems that will do what you want, but not very well. They use dd(1), which is a mistake because it copies everything, not just occupied space. Later versions of Clonezilla can copy just used blocks in UFS filesystems, but insist on copying swap space as binary.\n\nAn alternate way: create two partitions on a memory stick. The first needs to be just large enough to hold mfsBSD. The second is for a filesystem to hold dump(8) files. A script can be written to automate the restore, but be careful: it's easy to overwrite a working system. See Backup Options For FreeBSD for instructions on using dump(8) and restore(8).\n\nRe: Is it possible to convert a bootable .iso to a bootable\n\nThank you very much for your informative reply, @wblock@.\n\nwblock@ said:\n\nActually, the original did not mention customized images. I had written some about that, but then went back and deleted it as irrelevant.\n\nI'm sorry. I'm afraid I didn't think my post through, before I made it. Because I know what I was attempting to do, I made too many assumptions, while making the post.\n\nwblock@ said:\n\nNo, ISO uses a different layout than a standard disk, and the blocks are 2048 bytes instead of 512. There is no point in using an ISO for a customized image because it gives no advantages and makes things more difficult.\n\nClonezilla and g4u are two backup systems that will do what you want, but not very well. They use dd(1), which is a mistake because it copies everything, not just occupied space. Later versions of Clonezilla can copy just used blocks in UFS filesystems, but insist on copying swap space as binary.\n\nAn alternate way: create two partitions on a memory stick. The first needs to be just large enough to hold mfsBSD. The second is for a filesystem to hold dump(8) files. A script can be written to automate the restore, but be careful--it's easy to overwrite a working system. See Backup Options For FreeBSD for instructions on using dump(8) and restore(8).\n\nThanks for all the pointers. I'm not sure it's exactly what I'm looking for. But it's definitely close enough. If I still have trouble. I'll take more time to better articulate what I'm trying to accomplish, before I post.\n\nThanks again @wblock@.\n\n--Chris"
+    }
+}

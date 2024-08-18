@@ -1,0 +1,36 @@
+{
+    "id": "dbpedia_8292_0",
+    "rank": 84,
+    "data": {
+        "url": "http://www.solmu.org/pub/help/clonezilla/clonezilla-boot-parameters.php",
+        "read_more_link": "",
+        "language": "en",
+        "title": "",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "http://www.solmu.org/pub/images/clonezilla_logo_transparent.gif",
+            "http://www.solmu.org/pub/images/clonezilla_logo_transparent.gif",
+            "http://www.solmu.org/pub/images/fine-print.jpg",
+            "http://www.solmu.org/pub/images/text-icon.gif",
+            "http://www.solmu.org/pub/images/index.gif",
+            "http://www.solmu.org/pub/images/fine-print.jpg",
+            "http://www.solmu.org/pub/images/index.gif"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "../../images/clonezilla_logo_transparent.gif",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "Clonezilla live is based on Debian live with clonezilla installed. Therefore there are 2 kinds of boot parameters:\n\nBoot parameters from live-initramfs. You can refer to this manual of live-initramfs.\n\nBoot parameters specially for Clonezilla. All of them are named as \"ocs_*\", e.g. ocs_live_run, ocs_live_extra_param, ocs_live_batch, ocs_lang.\n\nocs_live_run is the main program to run in Clonezilla live to save or restore. or other command. Available program: ocs-live-general, ocs-live-restore or any command you write. Use the Absolute path in Clonezilla live.\n\ne.g. ocs_live_run=\"ocs-live-general\"\n\n//NOTE// You might have to use \"sudo\" command inside your own script, or you can assign it like: ocs_live_run=\"sudo bash /my-clonezilla\"\n\nocs_live_extra_param will be used only when ocs_live_run=ocs-live-restore (not for ocs-live-general or any other), then it will be passed to ocs-sr. Therefore these parameters are actually those of ocs-sr.\n\ne.g. ocs_live_extra_param=\"-b -c restoredisk sarge-r5 hda\"\n\nocs_live_keymap is for keymap used in Clonezilla live. Man install-keymap for more details.\n\ne.g. ocs_live_keymap=\"NONE\" (won't change the default layout)\n\nocs_live_keymap=\"/usr/share/keymaps/i386/azerty/fr-latin9.kmap.gz\" (French keyboard)\n\nbatch mode or not (yes/no), if no, will run interactively.\n\ne.g. ocs_live_batch=\"no\"\n\nocs_lang is the language used in Clonezilla live. Available value: en_US.UTF-8, zh_TW.UTF-8... (see $DRBL_SCRIPT_PATH/lang/bash/) e.g. ocs_lang=\"en_US.UTF-8\"\n\nocs_debug (or ocs-debug) is for you to enter command line prompt before any clonezilla-related action is run. This is easier for you to debug.\n\nocs_daemonon, ocs_daemonoff, ocs_numlk, ocs_capslk.\n\nEx. for the first 2 parameters, ocs_daemonon=\"ssh\", then ssh service will be turned on when booting. For the last 2 parameters, use \"on\" or \"off\", e.g. ocs_numlk=on to turn on numberlock when booting.\n\nocs_prerun, ocs_prerun1, ocs_prerun2... is for you to run a shell script before Clonezilla is started. E.g. ocs_prerun=\"/live/image/myscript.sh\". If you have more commands to run, you can assign them in the order: ocs_prerun=..., ocs_prerun1=..., ocs_prerun2=.... If more than 10 parameters, remember to use ocs_prerun01, ocs_prerun02..., ocs_prerun11 to make it in order.\n\nocs_live_run_tty. This option allows you to specify the tty where $ocs_live_run is run. By default $ocs_live_run is run on /dev/tty1 only. (It was also on /dev/ttyS0 before, but since Clonezilla live >= 1.2.3-22 no more this due to a problem). If you want to use ttyS0, for example, add live-getty and console=ttyS0,38400n81 in the boot parameter.\n\n//NOTE//\n\nThis parameter was added in Clonezilla live 1.2.3-22 or later.\n\nIf \"live-getty console=$tty,38400n81\" are assigned in the boot parameters, ocs_live_run_tty will honor $tty, even other value is assigned to ocs_live_run_tty in boot parameter.\n\nIt's recommended to assign ocs_lang and ocs_live_keymap in the boot parameters too.\n\nBesides, \"live-netdev\" (yes, not ocs_live_netdev) can be used when using PXE booting, you can force to assign the network device to get filesystem.squashfs. This is useful when there are two or more NICs are linked. E.g. live-netdev=\"eth1\" allows you to force the live-initramfs to use eth1 to fetch the root file system filesystem.squashfs.\n\nYou can find some examples about using these boot parameters in the Clonezilla Live Doc."
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "id": "dbpedia_8291_3",
+    "rank": 12,
+    "data": {
+        "url": "https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/6/html/6.3_technical_notes/xinetd",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Red Hat Product Documentation",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://docs.redhat.com/Logo-Red_Hat-Documentation-A-Reverse-RGB.svg",
+            "https://docs.redhat.com/Logo-Red_Hat-Documentation-A-Reverse-RGB.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "5.360. xinetd | Red Hat Documentation",
+        "meta_lang": "",
+        "meta_favicon": "",
+        "meta_site_name": "",
+        "canonical_link": "https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/6/html/6.3_technical_notes/xinetd",
+        "text": "5.360. xinetd\n\ndownload PDF\n\n5.360.1. RHBA-2012:1162 — xinetd bug fix update\n\nAn updated xinetd package that fixes one bug is now available for Red Hat Enterprise Linux 6.\n\nXinetd is a secure replacement for inetd, the Internet services daemon. Xinetd provides access control for all services based on the address of the remote host and/or on time of access, and can prevent denial-of-access attacks. Xinetd provides extensive logging, has no limit on the number of server arguments, and allows users to bind specific services to specific IP addresses on a host machine. Each service has its own specific configuration file for Xinetd; the files are located in the /etc/xinetd.d directory.\n\nBug Fix\n\nBZ#841916\n\nDue to incorrect handling of a file descriptor array in the service.c source file, some of the descriptors remained open when xinetd was under heavy load. Additionally, the system log was filled with a large number of messages that took up a lot of disk space over time. This bug has been fixed in the code, xinetd now handles the file descriptors correctly and no longer fills the system log.\n\nAll users of xinetd are advised to upgrade to this updated package, which fixes this bug.\n\n5.360.2. RHBA-2012:0409 — xinetd bug fix update\n\nAn updated xinetd package that fixes multiple bugs is now available for Red Hat Enterprise Linux 6.\n\nThe xinetd daemon is a secure replacement for xinetd, the Internet services daemon. The xinetd daemon provides access control for all services based on the address of the remote host, on time of access, or both, and can prevent denial of service (DoS) attacks.\n\nBug Fixes\n\nBZ#694820\n\nUnder certain circumstances, the xinetd daemon could become unresponsive (for example, when trying to acquire an already acquired lock for writing to its log file) when an unexpected signal arrived. With this update, the daemon handles unexpected signals correctly and no longer hangs under these circumstances.\n\nBZ#697783\n\nPreviously, a bug in the xinetd code could cause corruption of the time_t variable resulting in the following compiler warning:\n\nwarning: dereferencing type-punned pointer will break strict-aliasing rules\n\nA patch has been applied to address this issue, so that the warning no longer occurs.\n\nBZ#697788\n\nPreviously, the xinetd daemon ignored the \"port\" line of the service configuration file, and it was therefore impossible to bind certain RPC services to a specific port. The underlying source code has been modified to ensure that xinetd honors the \"port\" line, so that the port numbers are now handled appropriately.\n\nBZ#711787\n\nIncorrect use of the realloc() function could cause memory corruption. This resulted in the xinetd daemon terminating unexpectedly right after the start when a large number of services had been configured. The realloc() function has been removed, which ensures that memory corruption no longer occurs in this scenario, and the xinetd daemon starts successfully even when configuring a large number of services.\n\nAll users of xinetd are advised to upgrade to this updated package, which fixes these bugs."
+    }
+}

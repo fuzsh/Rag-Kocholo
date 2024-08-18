@@ -1,0 +1,30 @@
+{
+    "id": "dbpedia_8291_3",
+    "rank": 89,
+    "data": {
+        "url": "http://zipcon.net/~swhite/docs/computers/linux/xinetd_config.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How to make xinetd launch HTTP, SSH, and FTP on Linux",
+        "top_image": "http://zipcon.net/~swhite/docs/computers/linux/favicon.ico",
+        "meta_img": "http://zipcon.net/~swhite/docs/computers/linux/favicon.ico",
+        "images": [],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Steve White"
+        ],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "How to make xinetd launch HTTP, SSH, and FTP on Linux.  (Outdated.)",
+        "meta_lang": "en",
+        "meta_favicon": "favicon.ico",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "Apache (httpd), SSH (sshd) and ProFTP (in.ftpd) are usually set up in Linux distributions to be launched by the init scripts. This is the ideal configuration for heavily-used servers, but for a system in which they’re only occasionally used, it makes more sense to launch them with xinetd (used to be inetd).\n\nFirst, make sure they aren’t being launched by init.\n\nThe directory /etc/xinetd.d should contain only files\n\nhttp, proftpd-xinetd, and ssh\n\nUse some existing config file as a template. Each file should contain the lines\n\ndisable = no wait = no flags = REUSE socket_type = stream protocol = tcp user = root\n\nThen, port has to be set appropriately, server is the full path to the binary of the server, server_args is sometimes important—see below.\n\nApache\n\nNote that this doesn’t work for Apache2. There seems to be no way for that version.\n\nOn my system, the Apache server is /usr/sbin/httpd. It sits on port 80.\n\nIn /etc/httpd/conf/httpd.conf, make sure the ServerType line reads\n\nServerType inetd.\n\nTo enable certain modules, the -D flag has to be set. For example,\n\nserver_args = -D HAVE_PERL -D HAVE_PHP4 -D HAVE_SSL -D SSL\n\nThe docs seem to discourage launching it with xinetd, but I think that’s only when you expect heavy use. My primary use is to experiment with web pages; any other use I expect to be very light.\n\nSSH\n\nOn my system, the SSH server is /usr/sbin/sshd. It sits on port 22.\n\nTo make sshd run in inetd mode, put the line\n\nserver_args = -i\n\nin the corresponding xinetd config file.\n\nBut now I see the man page says this is discouraged, on account that it might take a long time to generate keys. On the other hand, I don’t expect to often log in from different computers.\n\nProFTP\n\nOn my system, the ProFTP server is /usr/sbin/in.ftpd. It sits on port 21.\n\nIn /etc/proftpd.conf, make sure the ServerType line is"
+    }
+}

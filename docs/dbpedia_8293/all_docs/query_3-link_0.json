@@ -1,0 +1,42 @@
+{
+    "id": "dbpedia_8293_3",
+    "rank": 0,
+    "data": {
+        "url": "https://stackoverflow.com/questions/22577767/get-the-perl-rename-utility-instead-of-the-built-in-rename",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Get the Perl rename utility instead of the built",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/a007be5a61f6aa8f3e85ae2fc18dd66e?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/012887c491865ba57856a610a7e316af?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/7bfc7728cf3e556a8b9da88e662f4fd3?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/def1b1fd4342d9e332b7a3bf41f57a00?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/4784644a7b852ad6458f0e6e93abb77c?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/1bda02d154cb859341655d20f436be2e?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/jgGXb.jpg?s=64",
+            "https://i.sstatic.net/yhE6n.jpg?s=64",
+            "https://www.gravatar.com/avatar/a007be5a61f6aa8f3e85ae2fc18dd66e?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/cFkXD.jpg?s=64",
+            "https://www.gravatar.com/avatar/090684e258a31ef64e03943219c9412e?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/xwwIY.jpg?s=64",
+            "https://stackoverflow.com/posts/22577767/ivc/0c39?prg=78247d2a-f816-469e-a653-b9dbf86152fd"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2014-03-22T12:44:51",
+        "summary": "",
+        "meta_description": "Many sites (including various SO articles) talk about using \"rename\" using Perl expressions to rename files.\n\nThis would be perfect, but apparently this is not the rename utility I have, and none of",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/22577767/get-the-perl-rename-utility-instead-of-the-built-in-rename",
+        "text": "I can only speak for Debian. The two programs are called\n\n/usr/bin/rename.ul from the util-linux package (hence the .ul suffix)\n\n/usr/bin/prename from the perl package\n\nThe actual rename command works via the /etc/alternatives mechanism, whereby\n\n/usr/bin/rename is a symlink to /etc/alternatives/rename\n\n/etc/alternatives/rename is a symlink to /usr/bin/prename\n\nThe same problem has been bugging me on Cygwin, which is a Red Hat product, so should be more similar to Fedora. I'll have a look on my company laptop on Monday. And I remember the Perl-rename having worked there sometimes. Probably before I installed util-linux.\n\nIf you install the Perl-rename to /usr/local/bin it will have precedence over rename from util-linux. Same goes for the manpage when installed to /usr/local/share/man/man1/.\n\nI've just created a separate Perl-rename package on Github: https://github.com/subogero/rename\n\nYou can install it using cpan, which is the perl repository similar to pip for python.\n\nHere is a tutorial on using cpan.\n\nIf you try to run rename it it looks like this\n\nrename --help\n\ncall: rename from to files...\n\nTo install the perl rename you can do the following. You might need to install a few dependencies, you can generally just push enter\n\ncpan\n\ncpan1> install File::Rename\n\nCPAN: Storable loaded ok (v2.20)\n\nGoing to read '/root/.cpan/Metadata'\n\nDatabase was generated on Wed, 30 Sep 2015 08:17:02 GMT\n\nRunning install for module 'File::Rename'\n\n....\n\nRunning Build install\n\nInstalling /usr/local/share/man/man1/rename.1\n\nInstalling /usr/local/share/perl5/File/Rename.pm\n\nInstalling /usr/local/share/man/man3/File::Rename.3pm\n\nInstalling /usr/local/bin/rename\n\nWriting /usr/local/lib64/perl5/auto/File/Rename/.packlist\n\nRMBARKER/File-Rename-0.20.tar.gz\n\n./Build install -- OK\n\nThat is how you would install the rename from cpan.\n\nNext is to get it working on your system. As you might have more then one rename installed.\n\nwhich rename /usr/bin/rename\n\nWhen you actually want this one.\n\n/usr/local/bin/rename --help Usage: rename [ -h|-m|-V ] [ -v ] [ -n ] [ -f ] [ -e|-E *perlexpr*]*|*perlexpr* [ *files* ] Options: -v, -verbose Verbose: print names of files successfully renamed. -n, -nono No action: print names of files to be renamed, but don't rename. -f, -force Over write: allow existing files to be over-written. -h, -help Help: print SYNOPSIS and OPTIONS. -m, -man Manual: print manual page. -V, -version Version: show version number. -e Expression: code to act on files name. May be repeated to build up code (like \"perl -e\"). If no -e, the first argument is used as code. -E Statement: code to act on files name, as -e but terminated by ';'.\n\nI just put it into /usr/bin/ but with a slight different name to make sure I did not break any existing scripts / programs the depend on the old one.\n\nln -s /usr/local/bin/rename /usr/bin/rename.pl\n\nOn RedHat 8.4 (but may work on Fedora)\n\nsudo yum install perl-CPAN sudo cpan install module::Build install File::Rename\n\nthan you can create an alias:\n\nalias prename='/usr/local/bin/rename'\n\nAn example:\n\ntouch pic.jpeg prename 's/\\.jpeg$/.jpg/' *.jpeg\n\nHere you create an empty file with the .jpeg extension. The next line renames all the files with .jpeg extension in the current directory: it removes the e from the jpeg extension of these files. (The first line is there to be sure that there is at least one file like that in the directory.)\n\n(On Debian/Ubuntu you can install the rename package, then you'll have the rename command same as the prename above. Also read SzG's answer about alternatives and symbolic links: it may or may not be as simple as I wrote.\n\nAlternatively you need to install the libpath-tiny-perl package to install CPAN.)"
+    }
+}

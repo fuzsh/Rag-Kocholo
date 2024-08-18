@@ -1,0 +1,35 @@
+{
+    "id": "dbpedia_8285_1",
+    "rank": 15,
+    "data": {
+        "url": "https://learn.microsoft.com/en-us/answers/questions/778625/mysql-to-c-connection-error",
+        "read_more_link": "",
+        "language": "en",
+        "title": "MySQL to C# Connection Error",
+        "top_image": "https://learn.microsoft.com/en-us/media/open-graph-image.png",
+        "meta_img": "https://learn.microsoft.com/en-us/media/open-graph-image.png",
+        "images": [
+            "https://learn-attachment.microsoft.com/api/attachments/184791-image.png?platform=QnA",
+            "https://learn-attachment.microsoft.com/api/attachments/184772-image.png?platform=QnA",
+            "https://learn-attachment.microsoft.com/api/attachments/184680-image.png?platform=QnA",
+            "https://learn-attachment.microsoft.com/api/attachments/184710-image.png?platform=QnA",
+            "https://learn-attachment.microsoft.com/api/attachments/184730-image.png?platform=QnA",
+            "https://learn-attachment.microsoft.com/api/attachments/184720-image.png?platform=QnA"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "",
+        "meta_site_name": "",
+        "canonical_link": "https://learn.microsoft.com/en-us/answers/questions/778625/mysql-to-c-connection-error",
+        "text": "Hi @Mohamed Rafi N , welcome to Microsoft Q&A forum.\n\nAs I understand you want to connect to on-premise MySQL Database through C# application.\n\nFirstly before we make code change I would request you to check to connect to the MySQL Server using MySQL workbench or any other tool and notice the connection string parameters mentioned in your code works.\n\nNow, you are using the SQLClient classes to connect to MySQL Database. You need to install MySQL Client. You can add the NuGet Package by going through:\n\nTools -> NuGet Package Manager -> Manage NuGet Package for Solution and search for 'MySql.Data.MySqlClient' as shown in below screenshot:\n\nAfter installing it, please add the reference of it at the top using:\n\nusing MySql.Data.MySqlClient;\n\nThen we need to make changes to code as mentioned below:\n\nstring connectionString; MySqlConnection cnn; connectionString = \"server=localhost;database=test;uid=root;pwd=pwwdtest;\"; cnn = new MySqlConnection(connectionString); cnn.Open();\n\nNote the format of connection string and try using it same way.\n\nPlease let us know if this works with you else we can discuss further on the same.\n\n----------"
+    }
+}

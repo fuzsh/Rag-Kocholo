@@ -1,0 +1,37 @@
+{
+    "id": "dbpedia_8290_2",
+    "rank": 56,
+    "data": {
+        "url": "https://serverfault.com/questions/246710/tcpwrappers-still-in-use",
+        "read_more_link": "",
+        "language": "en",
+        "title": "TCPWrappers still in use?",
+        "top_image": "https://cdn.sstatic.net/Sites/serverfault/Img/apple-touch-icon@2.png?v=9b1f48ae296b",
+        "meta_img": "https://cdn.sstatic.net/Sites/serverfault/Img/apple-touch-icon@2.png?v=9b1f48ae296b",
+        "images": [
+            "https://cdn.sstatic.net/Sites/serverfault/Img/logo.svg?v=43f5b6d5f65b",
+            "https://www.gravatar.com/avatar/0badad420e8e5ef6285e105e81766904?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/42aa353db48aba46e0d2947220e8d8a1?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/1fb33c0507faeb381309536779716850?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/2c69074600f4d1cdb9c6d78370ab3335?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/0c8509417939f553fb9681b6868ff099?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/zWZob.jpg?s=64",
+            "https://serverfault.com/posts/246710/ivc/0c39?prg=3b448ae1-14b5-4f80-b9e1-ffb8b08d4a35"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2011-03-12T22:38:20",
+        "summary": "",
+        "meta_description": "According to my current understanding, tcpwrappers can be used via inetd or xinetd. Lately I have been informed that inetd/xinetd came into existence to make more efficient use of hardware in earlier",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/serverfault/Img/favicon.ico?v=18e9cc4f2aea",
+        "meta_site_name": "Server Fault",
+        "canonical_link": "https://serverfault.com/questions/246710/tcpwrappers-still-in-use",
+        "text": "tcpwrappers was originally implemented as a standalone program which would check hosts.allow and hosts.deny. If the connection passed, then it the desired daemon would be started to run a single request. The configuration for inetd would be configured to run the tcpd wrapper with the daemon's program and options as parameters.\n\nxinted is an extended inetd. Is has significantly more configuration options than the old inetd. The trivial services like echo, chargen, time, daytime, and discard are built-in. Many daemon process which often run continuously can be run from xinetd. This is usually done when the service is rarely used. This limits the number of processes which need to be running at the expense of slower start-up times. Services which can be run this way include mail servers, vnc, apache, and many other daemons.\n\ninetd performs the same tasks as xinetd but with a simple one line configuration for each service. This limits it ability to be configured, but simplifies automatic configuration. Installation procedures which can automatically configure inetd may not be able to do the same for xinetd. Many sites now choose to use xinetd rather than inetd.\n\nThe wrapper code has been made into a library and is often linked with daemons which are always running. These daemons will use the library to check incoming connections before using them. This allows name based restrictions which can not be reliably implemented in a firewall. This includes a number of DNS based checks. One of the daemons which is usually built using the library is xinetd.\n\nServices that run constantly on certain ports. The reason inetd and suchlike saved memory is because they didn't require daemons to run all the time, just on demand. These days, on-demand daemons are pretty rare.\n\nThings like Apache, MySQL, and Tomcat all stay running and listening to their designated ports. Some even spin up new processes to handle each connection, others just handle it in the same process. By not having to load a bunch of code each time a connection starts, the cost to establish a specific connection is smaller than it would be with inetd-like processes.\n\nYou are wrong about both TCPwrappers and [x]inetd.\n\ntcpwrappers can be used via inetd or xinetd\n\nYes - but you can use them with any network daemon - it's just a matter of using a different lib when you build the application.\n\ninetd/xinetd came into existence to make more efficient use of hardware in earlier days and are therefore seen rarely nowadays\n\nNo not really - running services via [x]inetd has always been very inneficient compared to a standalone daemon - the difference they make is that the code is much simpler, and is only mapped into memory when a connection is made.\n\nThis is still true today - if you're running a dedicated webserver, then there's not much point in keeping daemons running for, say POP messages if there's only a single user connecting a couple of times a day to collect mail generated from cron jobs. Or starting a VNC server when you need remote GUI access on a headless machine.\n\nOne of the nice things about tcpwrappers is that they make scripting complex responses very simple compared with a kernel based firewall.\n\ninetd/xinetd came into existence in the days when people were running lots of remote accessible services on every machine - including things like time/date/chargen etc. These days, given a more hostile internet and a greater awareness of potential for using such things to launch DDOS attacks, most machines will run very few servers (very few should be running anything other than SSH), with specific machines for things like DNS, SMTP etc. As such, the newer daemons that implement such protocols usually have everything that the wrappers did inside them.\n\nAdditionally, firewall capabilities can be used to provide most of what tcpd/udpd used to do."
+    }
+}

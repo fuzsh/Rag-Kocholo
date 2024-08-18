@@ -1,0 +1,41 @@
+{
+    "id": "dbpedia_8293_2",
+    "rank": 2,
+    "data": {
+        "url": "https://serverfault.com/questions/59112/what-is-the-best-way-to-backup-a-standalone-linux-server",
+        "read_more_link": "",
+        "language": "en",
+        "title": "What is the best way to backup a standalone linux server",
+        "top_image": "https://cdn.sstatic.net/Sites/serverfault/Img/apple-touch-icon@2.png?v=9b1f48ae296b",
+        "meta_img": "https://cdn.sstatic.net/Sites/serverfault/Img/apple-touch-icon@2.png?v=9b1f48ae296b",
+        "images": [
+            "https://cdn.sstatic.net/Sites/serverfault/Img/logo.svg?v=43f5b6d5f65b",
+            "https://www.gravatar.com/avatar/1f9ef748f1bc8045bb97fb9a2944db0a?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/55fd56dfef815d7aa543be09ad3ed3e9?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/057241f8d4e193de01a8839b9f6ca094?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/qf3CK.jpg?s=64",
+            "https://www.gravatar.com/avatar/7776063fafb29c1d896ec1e239eddd11?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/21a10c379a9dfc3284a4a75edb933745?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/21a10c379a9dfc3284a4a75edb933745?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/6b0520bdfb86e53f35945f22e82ff085?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/9be8c05b64403113dc7402587a6cf248?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/974938b8250a08cf9e22714aff1f9fcc?s=64&d=identicon&r=PG",
+            "https://serverfault.com/posts/59112/ivc/0c39?prg=90d31ce1-964c-425f-bb3f-787575641037"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2009-08-26T16:18:47",
+        "summary": "",
+        "meta_description": "I have a standalone linux IDS system that I have been putting together.  It runs MySQL locally, as well ntop, nagios, base, snort, apache etc. I want to be able to make a backup of the system that ...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/serverfault/Img/favicon.ico?v=18e9cc4f2aea",
+        "meta_site_name": "Server Fault",
+        "canonical_link": "https://serverfault.com/questions/59112/what-is-the-best-way-to-backup-a-standalone-linux-server",
+        "text": "You know, I'm a REALLY big fan of shutting OFF the server and using something like Clonezilla or Norton Ghost to image that sucker.\n\nEven if its 11pm on a Friday night, one a month... you get the idea.\n\nA couple hours of \"scheduled downtime\" is worth HOURS and HOURS of crash recovery.\n\nLike I tell my assistant, \"I'm not saying this because I'm smart. I'm saying this because I WAS stupid at one point and learned my lesson the HARD WAY!\"\n\nThank you for your update. Okay, so no downtime for this server.\n\nIs it possible to build a \"warm standby\" you can use for the 2-3 hours it will take to clone the drive?\n\nIs taking the network down at 3am on a Sunday morning an option?\n\nSurely there has to be SOME sort of way to schedule some downtime?\n\nI'm just trying to give you a \"simple\" solution here. :-)\n\nUsually one can just rsync the file system contents to another location and that's that. The incremental backup should be pretty fast (a few minutes? depending on the bandwidth available to rsync and how often you backup) so you can even take problematic services down for the duration with almost no effect (I did note the \"no down time\" requirement).\n\nThe usual offender for this practice is the MySQL database that doesn't handle snapshotting well. You can tackle this problem by either using Kamil's suggestion of dumping to SQL file and backing up that, or doing some sort of \"hot backup\". The advantage with the latter approach is that rsync likes it much better - creating a new SQL dump for each backup tends to cause rsync to copy the entire database everytime which is a lengthy process for large databases. using \"hot backup\", you can take advantage of rsync's ability to copy only changes to the data. Innobase (creators of InnoDB) sell a commercial product to do hot backup to the entire database. I found that as long as you do not have a lot of DB writes, you can get away with LOCK TABLES, rsync the binary files, and UNLOCK TABLES. when you restore MySQL thinks you had a server crash and recovers nicely (you do want to run mysqlcheck after recovery).\n\nAnother method for backing up your server, slightly like Dave's first suggestion, is to backup a standby raid device. This is a very different approach then my first answer so I'm putting it in another answer.\n\nWhat you can do is to setup your server using software raid (mdraid) with mirroring. Then when you want to take a snapshot, disconnect one raid device (mdadm /dev/md0 --fail /dev/sdb1 --remove /dev/sdb1), dd the contents of the disconnected device of the server, and reattach it to the raid (mdadm --re-add /dev/sdb1). The raid sync will copy all the data that was changed while the device was off.\n\nWhen you restore you can dd the same data to both raid devices (its a mirror anyway). The restored image would look, at worst, as if the server lost power during a transaction so you should use a journaling file system and transactional databases anyway.\n\nYou'd probably want to use a 3 drive system in such a case so your system can handle a disaster during backup, in which case you'd either want to have a 3-way mirror and disconnect the 3rd device for backup, or even have it mounted on a hot-switch bay and just take it away physically as described in this thread (please read the thread through if you want to do it this way - the original poster has some issues with the specific commands and their order)"
+    }
+}

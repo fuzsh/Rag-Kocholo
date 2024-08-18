@@ -1,0 +1,62 @@
+{
+    "id": "dbpedia_8292_0",
+    "rank": 85,
+    "data": {
+        "url": "https://www.tecmint.com/clone-linux-partitions/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How to Clone a Partition or Hard drive in Linux",
+        "top_image": "https://www.tecmint.com/wp-content/uploads/2018/12/Clone-Linux-Partitions.png",
+        "meta_img": "https://www.tecmint.com/wp-content/uploads/2018/12/Clone-Linux-Partitions.png",
+        "images": [
+            "https://www.tecmint.com/wp-content/uploads/2020/07/logo.png",
+            "https://www.tecmint.com/wp-content/uploads/2020/07/logo.png",
+            "https://www.tecmint.com/wp-content/uploads/2018/12/List-Linux-Partitions.png",
+            "https://www.tecmint.com/wp-content/uploads/2018/12/Clone-Linux-Partition-with-dd-Command.png",
+            "https://www.tecmint.com/wp-content/uploads/2018/12/Verify-Linux-Partition-Cloning.png",
+            "https://www.tecmint.com/wp-content/uploads/2018/12/Clone-Hard-Drive-in-Linux.png",
+            "https://www.tecmint.com/wp-content/uploads/2018/12/Verify-Linux-Hard-Drive-Cloning.png",
+            "https://www.tecmint.com/wp-content/uploads/2018/12/Backup-MBR-in-Linux.png",
+            "https://www.tecmint.com/wp-content/uploads/2024/04/TecMint-Giveway-Contest.webp",
+            "https://secure.gravatar.com/avatar/1a488abfc89d7db68797f78d5b66fdb3?s=100&d=blank&r=g",
+            "https://www.tecmint.com/wp-content/uploads/2014/07/Linux-Disk-Clonning-Tools-1.png",
+            "https://www.tecmint.com/wp-content/uploads/2015/09/Create-Encrypted-Linux-File-System-Backups.png",
+            "https://www.tecmint.com/wp-content/uploads/2018/09/Tomb-File-Encryption-in-Linux.png",
+            "https://www.tecmint.com/wp-content/uploads/2016/03/Linux-Backup-Tools.png",
+            "https://www.tecmint.com/wp-content/uploads/2020/07/Clone-Linux-Server-Rsync.png",
+            "https://www.tecmint.com/wp-content/uploads/2013/01/Install-Urbackup-on-Ubuntu.png",
+            "https://secure.gravatar.com/avatar/b2043a4286dd7fac778aa78d6f1053e9?s=50&d=blank&r=g",
+            "https://secure.gravatar.com/avatar/3bf1e4b51b249db76cba4596aedc405d?s=50&d=blank&r=g",
+            "https://secure.gravatar.com/avatar/3bf1e4b51b249db76cba4596aedc405d?s=50&d=blank&r=g",
+            "https://secure.gravatar.com/avatar/96dfd14418f6244f70ac77c9a40d276b?s=50&d=blank&r=g",
+            "https://secure.gravatar.com/avatar/f9a3b0378908c92f5aa1906ca1cb4d17?s=50&d=blank&r=g",
+            "https://secure.gravatar.com/avatar/96942cb9e36c2e04aa7525d859f13a24?s=50&d=blank&r=g",
+            "https://secure.gravatar.com/avatar/7badddbc53297b2e8ed7011cf45df0c0?s=50&d=blank&r=g"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "backup linux partition",
+            "clone linux hard drive",
+            "clone partition in linux",
+            "clone linux partitions",
+            "linux tricks"
+        ],
+        "tags": null,
+        "authors": [
+            "Marin Todorov",
+            "Frank Zimmerman",
+            "Alexander von Essen",
+            "Romualdo Soler González",
+            "Ravi Saive"
+        ],
+        "publish_date": "2018-12-18T11:14:52+05:30",
+        "summary": "",
+        "meta_description": "There are many reasons why you may want to clone a Linux partition or even hard drive, most of which are related to creating backups of your data.",
+        "meta_lang": "en",
+        "meta_favicon": "https://www.tecmint.com/wp-content/uploads/2020/07/favicon.ico",
+        "meta_site_name": "How to Clone a Partition or Hard drive in Linux",
+        "canonical_link": "https://www.tecmint.com/clone-linux-partitions/",
+        "text": "There are many reasons why you may want to clone a Linux partition or even hard drive, most of which are related to creating backups of your data. There are multiple ways you can achieve this in Linux by using some external tools such as partimage or Clonezilla.\n\nHowever in this tutorial we are going to review Linux disk cloning with tool called dd, which is most commonly used to convert or copy files and it comes pre-installed in most Linux distributions.\n\nHow to Clone Linux Partition\n\nWith dd command you can copy entire hard drive or just a Linux partition. Lets start with cloning one of our partitions. In my case I have the following drives: /dev/sdb, /dev/sdc.. I will clone /dev/sdb1/ to /dev/sdc1.\n\nRead Also: How to Clone Linux Partitions Using ‘cat’ Command\n\nFirst list the these partitions using the fdisk command as shown.\n\n# fdisk -l /dev/sdb1/ /dev/sdc1\n\nNow clone a partition /dev/sdb1/ to /dev/sdc1 using the following dd command.\n\n# dd if=/dev/sdb1 of=/dev/sdc1\n\nThe above command tells dd to use /dev/sdb1 as input file and write it to output file /dev/sdc1.\n\nAfter cloning Linux partition, you can then check both partitions with:\n\n# fdisk -l /dev/sdb1 /dev/sdc1\n\nHow to Clone Linux Hard Drive\n\nCloning a Linux hard drive is similar to cloning a partition. However, instead of specifying the partition, you just use the entire drive. Note that in this case it is recommended that the hard drive is same in size (or bigger) than the source drive.\n\n# dd if=/dev/sdb of=/dev/sdc\n\nThis should have copied the drive /dev/sdb with its partitions on the target hard drive /dev/sdc. You can verify the changes by listing both drives with fdisk command.\n\n# fdisk -l /dev/sdb /dev/sdc\n\nHow to Backup MBR in Linux\n\ndd command can also be used to backup your MBR, which is located at the first sector of the device, before the first partition. So if you want to create backup of your MBR, simply run:\n\n# dd if=/dev/sda of=/backup/mbr.img bs=512 count=1.\n\nThe above command tells dd to copy /dev/sda to /backup/mbr.img with step of 512 bytes and the count option tells to copy only 1 block. In other words you tell dd to copy the first 512 bytes from /dev/sda to the file you have provided."
+    }
+}

@@ -1,0 +1,28 @@
+{
+    "id": "dbpedia_8290_1",
+    "rank": 52,
+    "data": {
+        "url": "https://documentation.xojo.com/api/files/standardoutputstream.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "StandardOutputStream — Xojo documentation",
+        "top_image": "",
+        "meta_img": "",
+        "images": [],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "../../_static/favicon.png",
+        "meta_site_name": "",
+        "canonical_link": "https://documentation.xojo.com/api/files/standardoutputstream.html",
+        "text": "Method descriptions\n\nStandardOutputStream.Flush\n\nFlush\n\nImmediately sends the contents of internal write buffers to disk or to the output stream.\n\nThis function can be useful in point-to-point communication over sockets and similar connections: To optimize for transmission performance, some types of output streams try to collect small pieces of written data into one larger piece for sending instead of sending each piece out individually. By calling Flush, the data collection is stopped and the data is sent without further delay, reducing latency.\n\nWhen using this on a stream that ends up as a file on disk, it is useful, too: Any short parts of previously written data are written to disk right away, ensuring the data is actually on disk if the application terminates abruptly, e.g. due to a crash.\n\nAvoid calling this method too often. For example, do not call it between successive Write calls because you'll slow down performance without getting much benefit.\n\nA typical use case would look like this:\n\nStandardOutputStream.Operator_Convert\n\nOperator_Convert As TCPSocket\n\nUsed to convert to a TCPSocket. See the Operator Convert method.\n\nStandardOutputStream incorporates a conversion operator so that you can use StdOut and StdErr as TCPSockets. This is useful only for services that are started for you by xinetd on macOS or Linux. Here is an example of how to use this:\n\nStandardOutputStream.Write\n\nWrite(Data As String)\n\nWrites the passed data to the output stream.\n\nNote that in order to make sure that the data actually ends up on disk or gets sent to the socket it is connected to, the stream must either get closed or the Flush method be called. Otherwise, the data, if small, may end up temporarily in a write buffer before either a certain time has passed or more data is written. This buffering increases performance when writing lots of small pieces of data, but may be causing unwanted delays when another process, e.g. the other end of a socket connection, is waiting for the data. Consider calling the Flush method to reduce latencies that this buffering may cause in such cases.\n\nIf Write fails, an IOException will be raised.\n\nThis example displays the Save As dialog box and writes the contents of the TextArea1 to a text file.\n\nStandardOutputStream.WriteLine\n\nWriteLine(data As String)\n\nWrites data to the output stream. WriteLine appends the NewLine character to data."
+    }
+}

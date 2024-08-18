@@ -1,0 +1,31 @@
+{
+    "id": "dbpedia_8290_2",
+    "rank": 13,
+    "data": {
+        "url": "https://uit.stanford.edu/service/kerberos/xinetd",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Kerberos xinetd Configuration",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://uit.stanford.edu/sites/all/themes/stanford_uit/logo.svg",
+            "https://uit.stanford.edu/sites/all/themes/stanford_uit/images/footer-stanford-logo@2x.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "Red Hat Linux prefers xinetd to inetd, as do other Linux distributions. Some offer it as an option and some system administrators prefer it. It is also sometimes used on other versions of UNIX instead of the classic inetd daemon. inetd uses a simple configuration file with one line for each service. xinetd uses a separate file for each service, with more complex settings.",
+        "meta_lang": "en",
+        "meta_favicon": "https://uit.stanford.edu/sites/all/themes/stanford_uit/favicon.ico",
+        "meta_site_name": "",
+        "canonical_link": "https://uit.stanford.edu/service/kerberos/xinetd",
+        "text": "Red Hat Linux prefers xinetd to inetd, as do other Linux distributions. Some offer it as an option and some system administrators prefer it. It is also sometimes used on other versions of UNIX instead of the classic inetd daemon.\n\ninetd uses a simple configuration file with one line for each service. xinetd uses a separate file for each service, with more complex settings. xinetd configuration for the Kerberos servers for rlogin and rsh may not be included with your Linux distribution, so here are samples that you can use.\n\nThese files should be saved into the xinetd configuration location (generally /etc/xinetd.d) and named after the service. You will need to also add the relevant services to /etc/services if they are not already present. The lines to put in /etc/services are:\n\neklogin 2105/tcp # Kerberos encrypted rlogin kshell 544/tcp krcmd # Kerberized `rsh' (v5)\n\nYou only need configuration files for the services you are going to use. If you want to disable a service, change the disable line to:\n\ndisable = yes\n\nAfter adding these configuration files, you must restart the xinetd daemon in order for the new configuration to take effect. You can usually use the command skill -USR1 xinetd, or can restart xinetd via its init script.\n\nConfiguration for the rlogin server:\n\nservice eklogin { flags = REUSE socket_type = stream wait = no user = root server = /usr/sbin/klogind server_args = -5ec disable = no }\n\nConfiguration for the rsh server (also used for rcp):\n\nservice kshell { flags = REUSE socket_type = stream wait = no user = root server = /usr/sbin/kshd server_args = -5ec disable = no }\n\nChange the server line if klogind and kshd are in a different location on your system.\n\nThanks to Andrew Stacey for providing us with this information."
+    }
+}

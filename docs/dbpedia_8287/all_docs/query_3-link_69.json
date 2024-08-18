@@ -1,0 +1,30 @@
+{
+    "id": "dbpedia_8287_3",
+    "rank": 69,
+    "data": {
+        "url": "https://bookdown.org/rwnahhas/IntroToR/logical.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "An Introduction to R for Research",
+        "top_image": "",
+        "meta_img": "",
+        "images": [],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Ramzi W. Nahhas"
+        ],
+        "publish_date": "2024-06-25T00:00:00",
+        "summary": "",
+        "meta_description": "This text was written to provide Wright State University MPH students an introduction to the R programming language for use in research.",
+        "meta_lang": "",
+        "meta_favicon": "",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "1.13 Logical operators\n\nThe basic logical values in R are TRUE (or just T) and FALSE (or just F). These come up very often in R when you are checking an object, for example using is.na(x), or comparing an object to a value or another object, as in x > 5 or x > y.\n\nSome commonly used logical operators:\n\n> (greater than)\n\n>= (greater than or equal to)\n\n< (less than)\n\n<= (less than or equal to)\n\n== (equal to)\n\n!= (not equal to)\n\nMany of these are exactly what you would expect (like >) but remember to use TWO equal signs rather than one when assessing equality (== not =). If you use just one equal sign, R thinks you are trying to assign a value to an object.\n\n## [1] TRUE\n\nYou can combine logical conditions using & (and), | (or), and ! (not).\n\n## [1] TRUE\n\n## [1] FALSE\n\n## [1] TRUE\n\n## [1] TRUE\n\nYou can apply logical operators elementwise to vectors or matrices.\n\n## [1] TRUE TRUE FALSE\n\nSome additional useful operators are the following.\n\nany() (TRUE if any element meets the condition)\n\nall() (TRUE if all elements meet the condition)\n\n%in% (TRUE if any element is in the following vector)\n\n## [1] TRUE\n\n## [1] FALSE\n\n## [1] FALSE TRUE TRUE\n\nx %in% c(0, 1, 2) returned FALSE, TRUE, TRUE because the first element of x (-1) is not in the vector c(0, 1, 2), but the other two elements of x (0 and 1) are.\n\nR also has the logical operators && and ||. According to the R help (?'&&'), “& and && indicate logical AND and | and || indicate logical OR. The shorter form performs elementwise comparisons in much the same way as arithmetic operators. The longer form evaluates left to right examining only the first element of each vector. Evaluation proceeds only until the result is determined. The longer form is appropriate for programming control-flow and typically preferred in if clauses.” If you do not understand this paragraph, then do not use && or ||. For the purpose of this text, you will not need them.\n\nYou can convert logical values to 0s and 1s using as.numeric() or by multiplying by 1.\n\n## [1] TRUE TRUE FALSE\n\n## [1] 1 1 0\n\n## [1] 1 1 0\n\nA common use of logical operators is to subset a vector or matrix based on some condition.\n\n## [1] -5 -4 -3 -2 -1 0 1 2 3 4 5\n\n## [1] 0 1 2 3 4 5\n\n## [1] -5 -4 -3 3 4 5\n\nBe careful of missing values\n\nWhen using a logical operator to subset an object in base R, missing values can lead to unexpected results. Consider the vector below that has some missing values and what happens when we attempt to subset it to include only the values greater than 5.\n\n## [1] NA 8\n\nThe missing value is treated as if it meets the logical condition, which is often not what is intended. Instead, explicitly exclude missing values from the logical subset statement.\n\n## [1] 8\n\nSo if you just want the non-missing values that meet the condition, make sure to explicitly exclude the missing values."
+    }
+}

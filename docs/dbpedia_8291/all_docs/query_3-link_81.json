@@ -1,0 +1,40 @@
+{
+    "id": "dbpedia_8291_3",
+    "rank": 81,
+    "data": {
+        "url": "https://forum.checkmk.com/t/installing-1-6-0-p17-on-sles15-sp1/20707",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Installing 1.6.0.p17 on SLES15 SP1",
+        "top_image": "https://forum.checkmk.com/uploads/default/original/3X/0/3/034f35b30b6e2128dafd73f35803e243cfb9e76a.png",
+        "meta_img": "https://forum.checkmk.com/uploads/default/original/3X/0/3/034f35b30b6e2128dafd73f35803e243cfb9e76a.png",
+        "images": [
+            "https://software.opensuse.org/favicon.ico",
+            "https://forum.checkmk.com/user_avatar/forum.checkmk.com/mradu/48/14060_2.png",
+            "https://forum.checkmk.com/images/emoji/twitter/wink.png?v=12",
+            "https://forum.checkmk.com/images/emoji/twitter/slight_smile.png?v=9",
+            "https://forum.checkmk.com/images/emoji/twitter/slightly_smiling_face.png?v=9"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "r.sander (Robert Sander)",
+            "fayepal (Faye)",
+            "system (system) Closed",
+            "mradu (M.Radu)",
+            "athomaidis (anastasios)"
+        ],
+        "publish_date": "2020-09-23T09:53:46+00:00",
+        "summary": "",
+        "meta_description": "Hi, \nThe check-mk-enterprise-1.6.0p17-sles15sp1-38.x86_64.rpm lists “xinetd” as a dependency, however the xinetd was removed from this distribution. \nWhat is the proper way to deploy the CheckMK server on SLES15 SP1 ? \nT&hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://forum.checkmk.com/uploads/default/optimized/3X/b/1/b1ae5c3f058f5b90ca2134ea5a2b9227d1b24a75_2_32x32.png",
+        "meta_site_name": "Checkmk Community",
+        "canonical_link": "https://forum.checkmk.com/t/installing-1-6-0-p17-on-sles15-sp1/20707",
+        "text": "Hi,\n\nThe check-mk-enterprise-1.6.0p17-sles15sp1-38.x86_64.rpm lists “xinetd” as a dependency, however the xinetd was removed from this distribution.\n\nWhat is the proper way to deploy the CheckMK server on SLES15 SP1 ?\n\nThanks\n\nHi @athomaidis.\n\nUnfortunately that won’t help. The OP asked about the installation of the checkmk server which has a requirement in its RPM package for xinetd.\n\nIt is needed for the livestatus daemon. The commands omd config set LIVESTATUS_TCP… basically manipulate the (per-site) xinetd configuration.\n\nBut you are right, the agent can be operated without xinetd. Its RPM has no special Requires statements.\n\nCheers,\n\nDirk\n\nIndeed I am talking about the server and not the agent.\n\n@r.sander: I do have the “web and scripting” module and the “development tools” module configured as suggested in the documentation but the xinetd is not available in any of them.\n\n@Dirk: The repository you suggested only provides xinetd for SLES15 but not for SLES15 SP1.\n\nI am still looking for a solution here…\n\nActually Dirk’s suggestion worked !\n\nI went ahead and downloaded the SLES15 version of xinetd from the link he suggested and I was able to install that on my SLES15 SP1 (I was expecting to get a warning about a distro mismatch…)\n\nAfterwards the cmk server installation was possible without any further issues.\n\nMaybe someone can update the documentation related to SLES15 SP1 installation procedure.\n\nMany thanks !\n\n@fayepal, while you are at it you may also want to discuss Nagvis crash due to missing dependency in rhel8 installer\n\nThe problem is that the checkmk-enterprise RPM package does not explicitely mention the dependency\n\nRequires: php-json\n\nYet, this package is needed if Nagvis is used, e.g. to display maps."
+    }
+}

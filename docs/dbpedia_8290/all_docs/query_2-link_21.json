@@ -1,0 +1,57 @@
+{
+    "id": "dbpedia_8290_2",
+    "rank": 21,
+    "data": {
+        "url": "https://dhavalkapil.com/blogs/Combining-chroot-and-xinetd/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Combining chroot and xinetd",
+        "top_image": "https://dhavalkapil.com/assets/images/home.png",
+        "meta_img": "https://dhavalkapil.com/assets/images/home.png",
+        "images": [
+            "https://dhavalkapil.com/assets/images/github.gif",
+            "https://dhavalkapil.com/assets/images/twitter.gif",
+            "https://dhavalkapil.com/assets/images/linkedin.gif",
+            "https://dhavalkapil.com/assets/images/email.gif",
+            "https://dhavalkapil.com/assets/images/google.gif",
+            "https://dhavalkapil.com/assets/images/keybase.gif",
+            "https://dhavalkapil.com/assets/images/rss.gif"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "xinetd",
+            "chroot",
+            "jail",
+            "network",
+            "daemon",
+            "linux",
+            "service",
+            "dhaval",
+            "kapil",
+            "vampire",
+            "gatech",
+            "iit",
+            "roorkee",
+            "sdslabs",
+            "security",
+            "developer",
+            "geek",
+            "programmer",
+            "pianist",
+            "github"
+        ],
+        "tags": null,
+        "authors": [
+            "Dhaval Kapil"
+        ],
+        "publish_date": "2015-05-04T00:00:00",
+        "summary": "",
+        "meta_description": "Running network services in a chroot jail",
+        "meta_lang": "",
+        "meta_favicon": "/assets/images/home.png",
+        "meta_site_name": "https://dhavalkapil.com",
+        "canonical_link": "https://dhavalkapil.com/blogs/Combining-chroot-and-xinetd/",
+        "text": "Introduction\n\nIn this blog we will talk about running network applications securely. A simple program(that takes I/O from the console) can be run as a secure service using a combination of xinetd and chroot. I used this technique while developing challenges for Backdoor. The ECHO challenge is a good example.\n\nKey points:\n\nThe program running in the background takes I/O directly from the console.\n\nxinetd handles all the network related requests.\n\nThe program is run in a jail directory using chroot with restricted access to directory structure.\n\nI will give a simple walkthrough but first I expect the reader to be familiar with the following:\n\nxinetd\n\nThis is what wikipedia says:\n\nInstead of starting each server individually, xinetd is the only daemon process to be started. It listens for each and every service listed in its configuration and starts the appropriate service whenever a new request comes up.\n\nchroot\n\nAgain from wikipedia:\n\nSetting up a chroot jail is easy though time consuming.\n\nWalkthrough - reader\n\nWe’ll write a simple service to that takes the name of a file as the input and prints the first 1024 bytes of the file.\n\n1. Write source program for the service\n\nDownload it here\n\n2. Creating a chroot jail\n\nFirst of all let’s compile our code and generate the binary.\n\ngcc reader.c -o reader\n\nAs it will be jailed, we need to import all the libraries that our binary reader will require. For finding all the required libraries we will use ldd.\n\nThis is a sample output on my machine and it may vary for yours. So basically I copy the two libraries (libc.so.6 and ld-linux-x86-64.so.2) maintaining the same directory structure relative to my program. My directory structure now looks like this:\n\nTo test that you have successfully created a jail try this:\n\nchroot . ./reader\n\nYou won’t be able to view any file outside the reader’s directory. If you can then you did something wrong!\n\n3. Adding a configuration file in xinetd for reader\n\nFirst of all make sure that /etc/xinetd.conf contains the following line:\n\nincludedir /etc/xinetd.d\n\nAfter that create a new configuration file /etc/xinetd.d/reader\n\nYou can download the file here.\n\nExplanation:\n\ntype = UNLISTED: Standard services are listed in /etc/services. Our service is not standard so we will also need to specify the protocol and port.\n\nprotocol = tcp: We shall use tcp protocol.\n\nsocket_type = stream: We will use connection oriented socket\n\nport = 8001: The port number our service will listen to\n\nwait = no: Our service is multithreaded. There can be more than one client connected to it at a time.\n\nserver = /usr/sbin/chroot: This is the chroot binary in my machine. You can find yours by executing which chroot.\n\nserver_args = /home/vampire/reader/ ./reader: These are the parameters passed to chroot command.\n\nuser = root: Only root users can run chroot.\n\nFor complete list see the man page.\n\n4. Restart the xinetd daemon\n\nThe xinetd daemon can be restarted using the following command:\n\n/etc/init.d/xinetd restart\n\nxinetd logs in /var/log/syslog by default.\n\nHurray! We have successfully run our service securely. To test it run the following command:\n\nnc localhost 8001\n\nChange the IP/port accordingly. You should be able to run the program correctly. Also try giving different source file path names. You won’t be able to access any file other than one in /home/vampire/reader/. Also keep in mind to flush the buffer so that the text is displayed instantly.\n\nComments are welcome. If you know of a better way to do this, feel free to tell me!"
+    }
+}

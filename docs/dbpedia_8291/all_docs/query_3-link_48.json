@@ -1,0 +1,57 @@
+{
+    "id": "dbpedia_8291_3",
+    "rank": 48,
+    "data": {
+        "url": "https://talk.plesk.com/threads/xinetd-service-regularly-failing-on-obsidian-centos-7-8.358266/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Issue - Xinetd service regularly failing on Obsidian / CentOS 7.8",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://talk.plesk.com/styles/plesk/images/logo.svg",
+            "https://talk.plesk.com/styles/plesk/images/facebook.svg",
+            "https://talk.plesk.com/styles/plesk/images/twitter.svg",
+            "https://talk.plesk.com/styles/plesk/images/logo.svg",
+            "https://talk.plesk.com/data/avatars/m/173/173885.jpg?1712049240",
+            "https://bugzilla.redhat.com//extensions/RedHat/web/css/favicons/production.ico?v=0",
+            "https://talk.plesk.com/data/avatars/m/173/173885.jpg?1712049240",
+            "https://talk.plesk.com/data/attachments/16/16454-72c60d5faac004b78ab5480ad7ee382a.jpg",
+            "https://talk.plesk.com/data/attachments/16/16455-ee86ce9b09e524f87283d0ee8dece7c9.jpg",
+            "https://talk.plesk.com/data/avatars/m/173/173885.jpg?1712049240",
+            "https://talk.plesk.com/data/avatars/m/173/173885.jpg?1712049240",
+            "https://talk.plesk.com/data/avatars/m/173/173885.jpg?1712049240",
+            "https://talk.plesk.com/data/attachments/16/16457-2dcec156ce5de2e007cd36f63374a331.jpg",
+            "https://talk.plesk.com/data/attachments/16/16458-72552d0e432352f4e9fcef9531e0a901.jpg",
+            "https://talk.plesk.com/data/avatars/m/173/173885.jpg?1712049240",
+            "https://talk.plesk.com/data/avatars/s/173/173837.jpg?1697794534",
+            "https://talk.plesk.com/data/avatars/s/173/173837.jpg?1697794534",
+            "https://talk.plesk.com/styles/plesk/images/partners/automattic.svg",
+            "https://talk.plesk.com/styles/plesk/images/partners/docker.svg",
+            "https://talk.plesk.com/styles/plesk/images/partners/virtuozzo.svg",
+            "https://talk.plesk.com/styles/plesk/images/partners/amazon.svg",
+            "https://talk.plesk.com/styles/plesk/images/partners/microsoft.svg",
+            "https://talk.plesk.com/styles/plesk/images/partners/microsoft-azure.svg",
+            "https://talk.plesk.com/styles/plesk/images/partners/red-hat.svg",
+            "https://talk.plesk.com/styles/plesk/images/partners/alibaba-cloud.svg",
+            "https://talk.plesk.com/styles/plesk/images/logo.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "M mow Silver Pleskian"
+        ],
+        "publish_date": "2020-10-16T11:28:45-07:00",
+        "summary": "",
+        "meta_description": "Hi,\n\nRecently we have been encountering an issue with the Xinetd service on our Plesk servers hanging.\nThis issue occurs spontaneously after clients have...",
+        "meta_lang": "en",
+        "meta_favicon": "/data/assets/logo/Plesk_192.png",
+        "meta_site_name": "Plesk Forum",
+        "canonical_link": "https://talk.plesk.com/threads/xinetd-service-regularly-failing-on-obsidian-centos-7-8.358266/",
+        "text": "Hi,\n\nRecently we have been encountering an issue with the Xinetd service on our Plesk servers hanging.\n\nThis issue occurs spontaneously after clients have made serveral FTP connections to the vhosts on the server, which leads me to believe the issue is tied to the ProFTPD service configuration.\n\nThere is sparse logging available in the server (both the ftp logs and /var/log/messages report nothing), and the service seems to be in a fine state when examined with systemctl.\n\nWhen restarting the Xinetd service, the issue resolves and the following logging is available:\n\nSep 30 11:32:32 dev systemd: Stopping Xinetd A Powerful Replacement For Inetd...\n\nSep 30 11:32:32 dev xinetd[15887]: unexpected signal: 18 (Continued) in signal pipe\n\nSep 30 11:32:32 dev xinetd[15887]: Exiting...\n\nSep 30 11:32:32 dev systemd: Stopped Xinetd A Powerful Replacement For Inetd.\n\nSep 30 11:32:32 dev systemd: Starting Xinetd A Powerful Replacement For Inetd...\n\nSep 30 11:32:32 dev systemd: Started Xinetd A Powerful Replacement For Inetd.\n\nSep 30 11:32:32 dev xinetd[26727]: xinetd Version 2.3.15 started with libwrap loadavg labeled-networking options compiled in.\n\nSep 30 11:32:32 dev xinetd[26727]: Started working: 2 available services\n\nBut i think the signal 18 is normal / expected behaviour when restarting the xinetd service (?)\n\nThe problem occurs on multiple Plesk servers, all running on CentOS 7.8 and with Plesk Obsidian (i've encountered the issue on at least 4 of our servers).\n\nI haven't seen this issue occur before updating to Obsidian 18.0.29, and all the servers that have the problem occur are either on 18.0.29 or 18.0.30.\n\nHas anything been changed in the Xinetd or ProFTPD configurations with the 18.0.29 update?\n\nHello!\n\nWe are constantly having to restart xinetd in one of our servers. Usually our ftp client program just displays a message to the effect of \"uploading\" but nothing occurs, there is no progress or error on that end.\n\nWe restart the service, cancel then restart the transfer and all works fine for a period of time. We can experience this several times a day depending on load.\n\nA few times the server has refused the connection and we have to restart xinetd for the connection to be successful.\n\nOur Plesk version is: Version 18.0.30 Update #2 but this has been happening since around the original upgrade to 18.0.30\n\nWe refer to @ospsanderm's technical description since we are experiencing the same issue. No need to post the same content again.\n\nAccording to\n\nthe start/stop messages you are seeing are not harmful and can be ignored.\n\nCould you please describe the issue a bit more in detail? How do you know that it is xinetd that is hanging? Why can't it be anything else, what exactly are the symptoms that make you feel that something is hanging?\n\nIn our experience it is the only service we need to reload/restart to correct the issue. Some times days pass in which we have no use for FTP and we connect and transfer files using SSH. Then, when using FTP we cannot connect and the clients 'hang' while attempting to connect, they don't freeze or crash. They 'wait' for the connection to complete, they don't even time out.\n\nThat or we work successfully and at some point FTP transfers stop, never time out... they just stop working. Only solution is to restart the service and re-queue the transfers.\n\nThe clients we use are: Filezilla and PHPStorm's built-in client.\n\nTo fix we connect to the server using SSH and reload/restart the service and it all goes back to normal. I understand that is only a description of our experience has no technical details but if you have any suggestions as to what logs might be useful to share here we will post them.\n\nI am not sure if the first diagnosis here is correct. You cannot really derive that there is an issue with either xinetd or proftpd from the fact that it starts working again when you kill xinetd. There could equally well be an issue with network traffic or anything else, e.g. a lack of resources.\n\nMy suggestion in this case is to investigate the issue from a different angle:\n\n# netstat -tap\n\nand examine what the ftp port is doing when ftp became unresponsive\n\n# ps aux | grep ftp | grep -v grep\n\nthat gives you a list of ongoing ftp processes. From there examine what the processes are actually doing by\n\n# strace -p <process id>\n\n@Peter Debik\n\nWe experienced the issue a few minutes ago and these are the results of the commands you suggested, a bit sanitized.\n\n(removed some lines that seemed unnecesary)\n\n# netstat -tap\n\n# ps aux | grep ftp | grep -v grep\n\n(sanitized, no lines removed)\n\n# strace -p <process id>\n\nwhen I run it against the id of the connection that froze first I got:\n\nstrace: attach: ptrace(PTRACE_SEIZE, 24052): Operation not permitted\n\nI then started trying the id's of the others I got the same result.\n\nThis morning reload was not enough. We had to restart the xinetd. I am not 100% that reload did work in the past. I will add a note so we keep track of this as well.\n\nThank you for the time you are putting into this. We really appreciate your interest in helping us resolve this matter.\n\nThis looks correct. I was hoping that a resource limit in xinetd would cause the problems, because in your case FTP seems to stop at exactly 10 open connections. /etc/proftpd.conf knows another \"MaxInstances\" parameter, but this only applies if proftp runs stand-alone, so that probably is not the case for the hick-up either.\n\nWe operate several dedicated servers with Obsidian, and we for sure have many more simultaneous FTP connections on them, so it should work in your installation, too. Of what other limits could you think on your machine? Is it a CentOS 7.8 default installation from the EPEL repository on a dedicated machine? In that case we would not need to look on the machine longer, because all the default settings will work. Or is it a virtual server? In that case maybe there are limits in your virtualization environment that your servers started hitting lately? And one more important question is whether it only occurs in connections between specific clients and the machine or all clients?\n\nPlesk Lives inside of an AWS EC2 m4.xlarge instance.\n\nIt was created from a \"Plesk AMI\" so it was all configured as Plesk originally designed the AMI. I am sure throughout the years we have tweaked a few things to nothing specific to this and not around the time FTP started demonstrating this behavior.\n\nI have personally experienced this while overseas through a VPN to the office on the company issued laptop. Now that I am back at the office using my workstation directly, no VPN - same issue.\n\nAs far as software I have also personally experienced the issue using filezilla, which uses multiple, concurrent connections and using phpStorm which as far as I know only uses a single connection. Same on both laptop and workstation.\n\nRegarding the \"operation not permitted\" by strace that is strange, too. I have only seen that before when you're not logged in as root. All of our dedicated systems for customers are CentOS 7.8 and with hours on them daily I should have seen this before in some setting, but have not.\n\nI have checked the Amazon docs on AWS EC2 m4.xlarge and cannot see any limit that could cause the symptoms.\n\nSo summing it all up from my end: I cannot solve this issue, absolutely not sure where to look further. I still think though that Plesk itself is the wrong place to look, because they don't touch OS files, neither on their initial installation, nor on updates."
+    }
+}

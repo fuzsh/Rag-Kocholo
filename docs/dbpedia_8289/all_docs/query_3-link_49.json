@@ -1,0 +1,28 @@
+{
+    "id": "dbpedia_8289_3",
+    "rank": 49,
+    "data": {
+        "url": "https://www.unison-lang.org/docs/labs/wordle/docs/core-logic/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "🧱 Core logic and data modeling · Unison programming language",
+        "top_image": "https://unison-lang.org/assets/unison-social.png",
+        "meta_img": "https://unison-lang.org/assets/unison-social.png",
+        "images": [],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "A friendly programming language from the future.",
+        "meta_lang": "en",
+        "meta_favicon": "/favicon.svg",
+        "meta_site_name": "",
+        "canonical_link": "https://unison-lang.org",
+        "text": "One possible way to model the domain:\n\nLet's look how we might transform a raw text value into our respectivebasic.Guessandbasic.Targettypes.\n\nFirst, we'll write aText.normalizefunction to lowercase and strip whitespace from the incoming text. We don't want thebasic.Guessto fail to match thebasic.Targetbecause of casing or whitespace issues.\n\nThen we break down theTextbody into aListofCharwith thetoCharListfunction frombase.Working in theListtype allows us to calldistributed.lib.base.data.List.indexedso we can pair the character with its index for position lookup later.\n\nWe do the same sequence of transformations for thebasic.Targettype, with the additional step of callingdistributed.lib.base.data.Set.fromListto create aSetwhich includes the indices of the characters, and we can define a function to create a mapping of characters to their number of occurrences in the target word.\n\nNext we'll break down the overallbasic.Guess.scorefunction implementation.\n\nWe first define a helper function that can take a single character and its position in the guess, as well as a tuple that represents both the current target and the results of each letter comparison so far. The function then decides which of the result types the current character fits into.\n\nFirstly, it can simply check if the character, position tuple is in the target set, which results in a new target with one less occurrence of the character and a newbasic.Result.InPlaceto append to the results.\n\nIf the character, position tuple is not in the target set, it must then check how many occurrences of the character are in the current target. If there never were any, or there are no more left, then the new result isbasic.Result.NotFound.If there are still occurrences left, then the new result isbasic.Result.Exists,and we must update the target to reduce the occurrences by 1."
+    }
+}

@@ -1,0 +1,43 @@
+{
+    "id": "dbpedia_8293_0",
+    "rank": 38,
+    "data": {
+        "url": "https://forums.freebsd.org/threads/the-fastest-hd-cloning.38009/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "The fastest HD cloning",
+        "top_image": "https://forums.freebsd.org/styles/freebsd/xenforo/logo.og.png",
+        "meta_img": "https://forums.freebsd.org/styles/freebsd/xenforo/logo.og.png",
+        "images": [
+            "https://forums.freebsd.org/styles/freebsd/xenforo/freebsd_logo.png",
+            "https://forums.freebsd.org/styles/default/xenforo/xenforo-logo.png",
+            "https://forums.freebsd.org/styles/default/xenforo/add_to_home.gif",
+            "https://forums.freebsd.org/styles/default/xenforo/reactions/emojione/handshake.png",
+            "https://secure.gravatar.com/avatar/3d53595cb2a89131fb3be7b55b3a9ef0?s=96",
+            "https://forums.freebsd.org/data/avatars/m/7/7721.jpg?1413417517",
+            "https://forums.freebsd.org/styles/default/xenforo/reactions/emojione/handshake.png",
+            "https://forums.freebsd.org/data/avatars/m/7/7721.jpg?1413417517",
+            "https://secure.gravatar.com/avatar/3d53595cb2a89131fb3be7b55b3a9ef0?s=96"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "binyo66",
+            "wblock@ Developer",
+            "A Anonymous Guest",
+            "B Beastie"
+        ],
+        "publish_date": "2013-02-25T08:01:43+00:00",
+        "summary": "",
+        "meta_description": "I need to clone a running FreeBSD/386 with some applications inside it (the 300G HD was set up using GPT), to 20+ identical system and HD (well, it is 22...",
+        "meta_lang": "en",
+        "meta_favicon": "/styles/freebsd/xenforo/logo.og.png",
+        "meta_site_name": "The FreeBSD Forums",
+        "canonical_link": "https://forums.FreeBSD.org/threads/the-fastest-hd-cloning.38009/",
+        "text": "If clone mean to simply copy the entire disk what better and safer way than dd. If there is anything faster how could you trust? If it skip one byte without your knowledge, you got problems. dd would never do that because it don't know how and you can write a very simple script to do all you need.\n\nIt's too important not to dedicate the time. It takes me about 68 minutes if I attach a blank/clean 500GB hard-drive to the machine and run a live CD to copy my working drive to the blank hard-drive. If I remember correctly, it takes half that time if I run dd from my working drive (ada0) and want to copy (ada1) to (ada2) ... which means I have three drives on the same machine. For me, for now I prefer the CD way. Forget the hype, you use the right tool for a given job. I use Arch Linux CD and on a partition to do this job but you can use a live FreeBSD CD if you like. A foreign OS has no knowledge to complain about anything. Also I think you're not using bs=64K (the true dd max); that's why it takes you three hours unless your machine was made before 2003. Btw: for cloning NEVER use conv=anything. Only do it this way and use (K) for Linux and small (k) for BSD and you will never go wrong.\n\ncopy a to b\n\nCode:\n\ndd if=/dev/sda of=/dev/sdb bs=64K 7631040 + 1 record in 7631040 + 1 record out 500107862016 bytes 500105.25 (500GB) 4096.69-sec 1-h 8-min 122MB/s\n\ncopy 0 to 1 - coping working\n\ndrive using CD in the middle\n\nCode:\n\ndd if=/dev/ada0 of=/dev/ada1 bs=64k\n\ncopy 1 to 2 - using 3\n\ndrive on one machine\n\nCode:\n\ndd if=/dev/ada1 of=/dev/ada2 bs=64k\n\nThis should work for you. I plan to test every kind of way using FreeBSD only when I find free time, but for now Arch has been doing a very fine job without any single issue when it comes to dd'ing.\n\nbtw: if GPT is a problem it might be better to use the CD thing in the middle running a non-BSD live OS to get the job done fuss-free.\n\nbinyo66 said:\n\nI run dd to clones boot from live DVD. The reason I asked, because I have check that only 24% out of 300GB been used (so dd wasted a lot of 0z here), ...\n\nYes dd for cloning GPT partitioned disks, is only a viable option if you clone exactly the same partition sizes (this is your case), and the disk to clone is almost full, otherwise you would lose much more in total time than you gain in transfer speed (as you found out the hard way).\n\nIn order to avoid this, you need to do cloning on the file system level. There is a perl script in the ports sysutils/clonehdd which auto-partitions the new disk, and uses dump(8)()/restore(8)() for the actual copying.\n\nPersonally, I have not so good experiences with the performance of dump(8)()/restore(8)(), however, people keep recommending this because of its reliability.\n\nSome weeks ago, I released my own tool for file system cloning, and it is also in the ports of FreeBSD - sysutils/clone. However, this does not partition the new disk, and this need to be done manually or by a script before cloning.\n\nOther options are net/rsync, which is not the fastest in town, but would outperform dump/restore.\n\nGiven that you seem to have plenty of disk space left, you could also simply use cp(1)().\n\n# cp -pxR /source /destination\n\nThis would not honour hard links, i.e. copy them as separate files, however this would not be a problem at all, if a GByte or so of extra space wouldn't matter. In my experience, cp is pretty fast.\n\nMy general strategy is:\n\n1) dd the MBR, save it to a file\n\n2) Use dump to make a dump of the filesystems\n\n3) Go to the new machine, restore the MBR from the image created with dd earlier\n\n4) Make filesystems with newfs\n\n5) Now restore the filesystem images created with dump using restore\n\nThe advantage of dump is that it only dumps files, and not unused space. If you have a 250GB disk with only 10GB used, dd will also copy the unused 240GB, which is a waste of time.\n\nYou can also restore dump files to a filesystem of a different size.\n\nYou can also use tar or other tools, but dump has the advantage of preserving file flags etc. by default.\n\nI'm not sure about GPT. But I would guess that just using dd to copy the first 150MB of /dev/ad0 should always be enough? This is still fairly fast (several seconds).\n\nAs an illustration, here are my notes for a Linux system, I boot the target system from parted magic over PXE, of course, connecting the destination drive to the source system and booting the source system is easier if that's possible.\n\nDon't copy this mindlessly, use your brain, this is just to give you an idea of how this works.\n\ndump:\n\nCode:\n\nmkdir /nfs mount_nfs 192.168.1.37:/mnt/images /nfs cd /nfs dd if=/dev/sda of=image.mbr.20130206 bs=512 count=63 dump -0 -f image.boot.20130206.dump /dev/sda1 dump -0 -f image.root.20130206.dump /dev/sda2\n\nrestore:\n\nCode:\n\nmount_nfs 192.168.1.37:/mnt/images /nfs cd /nfs dd if=image.mbr.20130206 of=/dev/sda # Nieuwe partitie: reboot opnieuw naar parted magic en remount nfs mkfs.ext3 -L /boot /dev/sda1 mkfs.ext3 -L / /dev/sda2 mkdir /dest mount /dev/sda2 /dest cd /dest /nfs/dump/restore -r -f /nfs/images.root.20130206.dump mount /dev/sda1 /dest/boot /nfs/dump/restore -r -f /nfs/images.boot.20130206.dump\n\nCarpetsmoker said:\n\nYou can also use tar or other tools, but dump has the advantage of preserving file flags etc. by default.\n\nnet/rsync with the FLAGS option set will do that now, also. And while rsync copies to an empty filesystem can be slow, just syncing up a previously-copied drive is much faster than pretty much anything else. Again, I point to sysutils/rsnapshot, which will make local or remote rsync copies and uses hard links to conserve space.\n\nI'm not sure about GPT. But I would guess that just using dd to copy the first 150MB of /dev/ad0 should always be enough? This is still fairly fast (several seconds).\n\nNo, that's not enough. GPT has a second partition table at the end of the disk for redundancy. gpart(8)'s backup and restore options can correctly copy partition tables from one drive to another, even if the second drive is larger (as far as I recall, anyway).\n\nAnother option is Clonezilla, which is nearly smart enough. Think of it as a cross-platform version of dump(8). The only problem I've seen in very limited tests with FreeBSD is that it does not recognize swap partitions and wants to copy them as binary data.\n\nOne final note about dump(8): thanks to snapshots with -L, it can run while the system is being used. Backup Options For FreeBSD shows examples of things like backup over SSH."
+    }
+}

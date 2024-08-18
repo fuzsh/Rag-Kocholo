@@ -1,0 +1,34 @@
+{
+    "id": "dbpedia_8292_0",
+    "rank": 25,
+    "data": {
+        "url": "https://serverfault.com/questions/89784/clonezilla-live-vs-partimage",
+        "read_more_link": "",
+        "language": "en",
+        "title": "CloneZilla Live vs. PartImage?",
+        "top_image": "https://cdn.sstatic.net/Sites/serverfault/Img/apple-touch-icon@2.png?v=9b1f48ae296b",
+        "meta_img": "https://cdn.sstatic.net/Sites/serverfault/Img/apple-touch-icon@2.png?v=9b1f48ae296b",
+        "images": [
+            "https://cdn.sstatic.net/Sites/serverfault/Img/logo.svg?v=43f5b6d5f65b",
+            "https://www.gravatar.com/avatar/222fc1ad4f1993620a21cb57fa816f16?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/75701db94a46fcd9b5923ac60d209bcf?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/378a0850ffa708413ef732d43c09d39b?s=64&d=identicon&r=PG",
+            "https://serverfault.com/posts/89784/ivc/0c39?prg=7ddbe967-48fb-490d-abe4-bed833bad738"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2009-12-01T13:15:30",
+        "summary": "",
+        "meta_description": "For use on a test computer, I need a free cloning tool to save NTFS and ext3 partitions to the same disk, ie. no need to up/download images from a server.\n\nCloneZilla Live and PartImage (available ...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/serverfault/Img/favicon.ico?v=18e9cc4f2aea",
+        "meta_site_name": "Server Fault",
+        "canonical_link": "https://serverfault.com/questions/89784/clonezilla-live-vs-partimage",
+        "text": "you can to with ntfsclone (man) for ntfs and ... well... tar for ext3 :)\n\ni can really advise you using ntfsclone for ntfs, i am using it excessively, it's simple and efficient, quick and small, therefore well scriptable.\n\nyou can use tar to back-up and clone ext2/ext3 filesystems, but I'd rather suggest you using xfs, as it has enterprise-like backup software, called xfsdump, which can restore the XFS filesystem just as it was (with even security attributes too)\n\nThe way I am backing up my system (shell code snippets)\n\nCOMPRESS=pbzip2 -c sudo xfsdump -p 30 -l 0 - /dev/sda1 | ${COMPRESS} | ccrypt -k /tmp/passfile -e > ${DEST}/${DATE}-root.xfsdump.bz2.ccrypt dd if=/dev/sda of=${DEST}/${DATE}-mbr.dump bs=1 count=512\n\nYMMV, but after a time I'm sure you will find xfsdump and ntfsdump very useful. The best thing they provide that both filesystem and filesystem content is saved in one step, both are command line utils, therefore it's easier to \"script\" them than gui-based competition, plus xfsdump creates a (shrinked) file format you can even loop-mount to inspect the contents.\n\nClonezilla actually uses partimage, ntfsclone, and other software packages under the hood:\n\nBased on Partclone (default), Partimage (optional), ntfsclone (optional), or dd to image or clone a partition. However, Clonezilla, containing some other programs, can save and restore not only partitions, but also a whole disk.\n\nIt seems like if you want a multipurpose utility that can handle just about any disk task, Clonezilla is the most popular free software solution. However, if you are just trying to accomplish a single specific task, you might find it simpler to use a more focused tool."
+    }
+}

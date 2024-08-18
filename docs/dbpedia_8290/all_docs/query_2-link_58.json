@@ -1,0 +1,41 @@
+{
+    "id": "dbpedia_8290_2",
+    "rank": 58,
+    "data": {
+        "url": "https://www.oreilly.com/library/view/linux-security-cookbook/0596003919/ch03s03.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "3.3. Enabling/Disabling a Service (xinetd)",
+        "top_image": "https://www.oreilly.com/library/cover/0596003919/1200w630h/",
+        "meta_img": "https://www.oreilly.com/library/cover/0596003919/1200w630h/",
+        "images": [
+            "https://cdn.oreillystatic.com/images/sitewide-headers/oreilly_logo_mark_red.svg",
+            "https://cdn.oreillystatic.com/oreilly/images/app-store-logo.png",
+            "https://cdn.oreillystatic.com/oreilly/images/google-play-logo.png",
+            "https://cdn.oreillystatic.com/oreilly/images/roku-tv-logo.png",
+            "https://cdn.oreillystatic.com/oreilly/images/amazon-appstore-logo.png",
+            "https://cdn.oreillystatic.com/images/sitewide-headers/oreilly_logo_mark_red.svg",
+            "https://cdn.oreillystatic.com/oreilly/images/report-software-architecture-patterns-553x420.jpg",
+            "https://cdn.oreillystatic.com/oreilly/images/laptop-flat-topics-ml-1124x638.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Daniel J. Barrett",
+            "Richard E. Silverman",
+            "Robert G. Byrnes"
+        ],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "3.3. Enabling/Disabling a Service (xinetd) Problem You want to prevent a specific TCP service from being invoked on your system by xinetd . Solution If the service’s name is “myservice,” …  - Selection from Linux Security Cookbook [Book]",
+        "meta_lang": "en",
+        "meta_favicon": "//www.oreilly.com/favicon.ico",
+        "meta_site_name": "O’Reilly Online Learning",
+        "canonical_link": "https://www.oreilly.com/library/view/linux-security-cookbook/0596003919/ch03s03.html",
+        "text": "Solution\n\nIf the service’s name is “myservice,” locate its configuration in /etc/xinetd.d/myservice or /etc/xinetd.conf and add:\n\ndisable = yes\n\nto its parameters. For example, to disable telnet , edit /etc/xinetd.d/telnet:\n\nservice telnet { ... disable = yes }\n\nThen inform xinetd by signal to pick up your changes:\n\n# kill -USR2 `pidof xinetd`\n\nTo permit access, remove the disable line and resend the SIGUSR2 signal.\n\nDiscussion\n\nInstead of disabling the service, you could delete its xinetd configuration file (e.g., /etc/xinetd.d/telnet), or even delete the service’s executable from the machine, but such deletions are harder to undo. (Don’t remove the executable and leave the service enabled, or xinetd will still try to run it and will complain.)\n\nAlternatively use ipchains or iptables [Recipe 2.7] if you want to keep the service runnable but restrict the network source addresses allowed to invoke it. Specific services might also have their own, program-level controls for restricting allowed client addresses."
+    }
+}

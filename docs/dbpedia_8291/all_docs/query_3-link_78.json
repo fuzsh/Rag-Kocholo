@@ -1,0 +1,34 @@
+{
+    "id": "dbpedia_8291_3",
+    "rank": 78,
+    "data": {
+        "url": "https://serverfault.com/questions/1046561/xinetd-doesnt-read-included-directory",
+        "read_more_link": "",
+        "language": "en",
+        "title": "xinetd doesn't read \"included directory\"",
+        "top_image": "https://cdn.sstatic.net/Sites/serverfault/Img/apple-touch-icon@2.png?v=9b1f48ae296b",
+        "meta_img": "https://cdn.sstatic.net/Sites/serverfault/Img/apple-touch-icon@2.png?v=9b1f48ae296b",
+        "images": [
+            "https://cdn.sstatic.net/Sites/serverfault/Img/logo.svg?v=43f5b6d5f65b",
+            "https://www.gravatar.com/avatar/1c1806ae596bd8311104f8b22dc0cb98?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/33083c0a20869ae868b62c6e6ae9316c?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/33083c0a20869ae868b62c6e6ae9316c?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://serverfault.com/posts/1046561/ivc/0c39?prg=96fbba87-9040-4e60-a5fa-1310a16b46e4"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2020-12-17T09:08:17",
+        "summary": "",
+        "meta_description": "I want to monitor my pfSense-Box with check_mk. Therefore I need access to a certain port via xinetd. I found a descripton for that in:\nhttps://forum.netgate.com/topic/99612/pfsense-2-3-check_mk-wo...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/serverfault/Img/favicon.ico?v=18e9cc4f2aea",
+        "meta_site_name": "Server Fault",
+        "canonical_link": "https://serverfault.com/questions/1046561/xinetd-doesnt-read-included-directory",
+        "text": "I want to monitor my pfSense-Box with check_mk. Therefore I need access to a certain port via xinetd. I found a descripton for that in: https://forum.netgate.com/topic/99612/pfsense-2-3-check_mk-working-with-xinetd/2\n\nAfter reloading filters, I get following in Status | System logs | General:\n\nUnable to read included directory: /opt/etc/xinetd.d [file=/var/etc/xinetd.conf] [line=1]\n\n/var/etc/xinetd.conf contains:\n\nincludedir /opt/etc/xinetd.d\n\n/opt/etc/xinet.d has rights set to 775:\n\ndrwxrwxr-x 2 root wheel 512 Dec 6 15:36 xinet.d\n\nThe file /opt/etc/xinetd/check_mk is from above post. The important part is:\n\nservice check_mk { type = UNLISTED port = 6556 socket_type = stream protocol = tcp wait = no user = root server = /opt/bin/check_mk_agent #server = /usr/bin/check_mk_caching_agent # configure the IP address(es) of your Nagios server here: only_from = 127.0.0.1 192.168.129.12 192.168.129.33 log_on_success = disable = no }\n\nSo to me everything looks fine, but since the xinetd-rule is not beeing loaded, I can't connect to the check_mk_agent from my monitoring-server.\n\nLooking even deeper in it, I found that the line\n\nfclose($xinted_fd);\n\nis twice in the file '/etc/inc/filter.inc' - in line 2256 and in 2479. I added the line to include '/opt/etc/xinetd.d' before both of them. Nothing changed after reloading the filter. There are the same error-messages in the log.\n\nWhen I start xinetd by hand with\n\nxinetd -f /var/etc/xinetd.conf\n\nit starts and I can get my checks from the monitor-host. After rebooting, xinetd is not running any more :-(("
+    }
+}

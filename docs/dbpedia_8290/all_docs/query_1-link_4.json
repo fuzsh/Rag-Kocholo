@@ -1,0 +1,44 @@
+{
+    "id": "dbpedia_8290_1",
+    "rank": 4,
+    "data": {
+        "url": "http://johansdevblog.blogspot.com/2009/11/writing-python-xinetd-server.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Johan's Dev Blog: Writing a Python xinetd Server",
+        "top_image": "http://johansdevblog.blogspot.com/favicon.ico",
+        "meta_img": "http://johansdevblog.blogspot.com/favicon.ico",
+        "images": [
+            "https://resources.blogblog.com/img/icon18_edit_allbkg.gif",
+            "https://resources.blogblog.com/img/widgets/arrow_dropdown.gif",
+            "https://resources.blogblog.com/img/icon_feed12.png",
+            "https://resources.blogblog.com/img/widgets/subscribe-netvibes.png",
+            "https://resources.blogblog.com/img/widgets/subscribe-yahoo.png",
+            "https://resources.blogblog.com/img/icon_feed12.png",
+            "https://resources.blogblog.com/img/widgets/arrow_dropdown.gif",
+            "https://resources.blogblog.com/img/icon_feed12.png",
+            "https://resources.blogblog.com/img/widgets/arrow_dropdown.gif",
+            "https://resources.blogblog.com/img/icon_feed12.png",
+            "https://resources.blogblog.com/img/widgets/subscribe-netvibes.png",
+            "https://resources.blogblog.com/img/widgets/subscribe-yahoo.png",
+            "https://resources.blogblog.com/img/icon_feed12.png",
+            "https://resources.blogblog.com/img/widgets/arrow_dropdown.gif",
+            "https://resources.blogblog.com/img/icon_feed12.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "Yesterday I discovered the xinetd ; an internet services daemon. I immediately liked the idea of writing simple services that work on stdin ...",
+        "meta_lang": "",
+        "meta_favicon": "http://johansdevblog.blogspot.com/favicon.ico",
+        "meta_site_name": "",
+        "canonical_link": "http://johansdevblog.blogspot.com/2009/11/writing-python-xinetd-server.html",
+        "text": "Writing a Python xinetd Server\n\nYesterday I discovered the xinetd; an internet services daemon. I immediately liked the idea of writing simple services that work on stdin and stdout but that can be accessed over the internet via sockets. So, I set out to write a simple Python server that can be integrated with xinetd. Here is the server:\n\n#!/usr/bin/python\n\nimport sys\n\nrequest = ''\n\nwhile True:\n\ndata = sys.stdin.readline().strip()\n\nrequest = request + data + '<br>'\n\nif data == \"\":\n\nprint 'HTTP/1.0 200 OK'\n\nprint ''\n\nprint '<html><body><p>'+request+'</p></body></html>'\n\nsys.stdout.flush()\n\nbreak;\n\nI am assuming that a web browser will connect to my server, the server will then 'echo' the request back to the browser allowing the browser to display the request. As you can see the input is received via stdin and output is returned via stdout.\n\nIf xinetd is not already installed then you will obviously have to install it first. Since I am doing this on Ubuntu the following works for me:\n\nsudo apt-get install xinetd\n\nAfter installing xinetd you need to create a config file for the service. I called my service http_echo and my config file (located in /etc/xinetd.d) is named similarly; http_echo. My configuration file looks like this:\n\nservice http_echo\n\n{\n\nprotocol = tcp\n\ndisable = no\n\nport = 9991\n\nflags = REUSE\n\nsocket_type = stream\n\nwait = no\n\nuser = johan\n\nserver = /home/johan/code/http_echo/http_echo\n\nlog_on_failure += USERID\n\n}\n\nMost of this file is quite self explanatory. Please refer to the xinetd documentation for more information.The port property should make the service run on the specified port without having to add an entry in the services file (/etc/services) . I have had to add an entry in my services file to make this setup work:\n\nhttp_echo 9991/tcp\n\nThen simply restart the xinetd service:\n\nsudo /etc/init.d/xinetd restart\n\nPointing a browser to the server on the specified port (9991), will yield the pleasing results below:\n\nGET / HTTP/1.1\n\nHost: localhost:9991\n\nConnection: keep-alive\n\nUser-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.0; en-US) AppleWebKit/532.0 (KHTML, like Gecko) Chrome/3.0.195.33 Safari/532.0\n\nCache-Control: max-age=0\n\nAccept: application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5\n\nAccept-Encoding: gzip,deflate,sdch\n\nAccept-Language: en-US,en;q=0.8\n\nAccept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.3\n\nAnd that is how simple it is to write a service in Python that runs under xinetd."
+    }
+}

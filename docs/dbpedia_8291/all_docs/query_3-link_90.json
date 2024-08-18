@@ -1,0 +1,53 @@
+{
+    "id": "dbpedia_8291_3",
+    "rank": 90,
+    "data": {
+        "url": "https://tcpip.wtf/en/pfsense-xinetd-readjusting-service.htm",
+        "read_more_link": "",
+        "language": "en",
+        "title": "pfsense xinetd on rampage: readjusting service",
+        "top_image": "https://tcpip.wtf/media/uploads/2020/04/xinet-min-1587760117.jpg",
+        "meta_img": "https://tcpip.wtf/media/uploads/2020/04/xinet-min-1587760117.jpg",
+        "images": [
+            "https://tcpip.wtf/sites/mysite/themes/default/images/layout/logo.png",
+            "https://tcpip.wtf/sites/mysite/themes/default/images/layout/logo.png",
+            "https://tcpip.wtf/media/uploads/2020/04/pfsense-proxy-nat.png",
+            "https://tcpip.wtf/media/uploads/2020/04/elmo.gif",
+            "https://tcpip.wtf/media/uploads/shield.follow.svg",
+            "https://tcpip.wtf/media/uploads/shield.TLSv3.svg",
+            "https://tcpip.wtf/media/uploads/shield.ipv6.svg",
+            "https://tcpip.wtf/media/uploads/shield.rss.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "blog",
+            "tech",
+            "technology",
+            "blogger",
+            "tools",
+            "scripts",
+            "games",
+            "gaming",
+            "esport",
+            "web",
+            "networks",
+            "networking",
+            "wifi",
+            "tcpip",
+            "wtf",
+            "wifi",
+            "unifi"
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2020-04-17T17:00:00+00:00",
+        "summary": "",
+        "meta_description": "One of the",
+        "meta_lang": "en",
+        "meta_favicon": "",
+        "meta_site_name": "tcpip.wtf - Private thoughts on technology and network stuff",
+        "canonical_link": "https://tcpip.wtf/en/pfsense-xinetd-readjusting-service.htm",
+        "text": "Cause I’m not „blogging“ regularly on this page I just want to post more things in a “Today I learned” fashion. Specially if you work on/at Events and IT there are a lot of things which leave you puzzled questioning thing and forcing you to find solutions “RIGHT NOW”. While others in normal IT Ops have time to test things, Event-IT things are often MacGyver jobs. Working on a remote unknown site with other people’s IT Infrastructure and take what you get, at the end nobody cares – it need to work.\n\nReadjusting service\n\nSo last thing I had was a pfSense running at 99% CPU without actually have a lot of load on it, just about 100-200 Mbit over VPN. That’s a peace of cake for the used Hardware but still system load was rather high. Having a look at the system logs showed where it came from. There were thousands and ten of thousands log entries just from last couple minutes caused by xinetd. It clearly went wild and the log process itself was so busy that even opening the log took several seconds. The Log then was spammed with:\n\nApr 16 09:06:06 xinetd 17607 readjusting service 19402-udp Apr 16 09:06:06 xinetd 17607 readjusting service 19401-udp Apr 16 09:06:06 xinetd 17607 readjusting service 19400-udp Apr 16 09:06:06 xinetd 17607 readjusting service 19400-tcp Apr 16 09:06:06 xinetd 17607 readjusting service 19399-udp Apr 16 09:06:06 xinetd 17607 readjusting service 19399-tcp Apr 16 09:06:06 xinetd 17607 readjusting service 19398-udp Apr 16 09:06:06 xinetd 17607 readjusting service 19398-tcp Apr 16 09:06:06 xinetd 17607 readjusting service 19397-udp Apr 16 09:06:06 xinetd 17607 readjusting service 19397-tcp Apr 16 09:06:06 xinetd 17607 readjusting service 19396-udp Apr 16 09:06:06 xinetd 17607 readjusting service 19396-tcp Apr 16 09:06:06 xinetd 17607 readjusting service 19395-udp Apr 16 09:06:06 xinetd 17607 readjusting service 19395-tcp Apr 16 09:06:06 xinetd 17607 readjusting service 19394-udp ...\n\nGoing through a lot of Ports from 19000 to 29000 and back. I immediate try to figure out why or better where this is coming from. If you are not Familiar with “inetd“ it’s a service handling incoming connections on your host. Let’s say a “outsourcing” for connection handling for local running services. Instead they implement there own listening Service you can configure INETD to Listen on specific Port and if a connection comes in it is internally relayed to a specific process or binary to handle it. Pfsense use Xinetd for that purpose.\n\nNext step was to have a look at the netstat output. pfsense use FreeBSD so you can use sockstat -4 -l to show all listeners on IPv4 and yeah something is happening here:\n\nroot xinetd 17607 589 tcp4 127.0.0.1:19292 *:* root xinetd 17607 590 udp4 127.0.0.1:19292 *:* root xinetd 17607 591 tcp4 127.0.0.1:19293 *:* root xinetd 17607 592 udp4 127.0.0.1:19293 *:* root xinetd 17607 593 tcp4 127.0.0.1:19294 *:* root xinetd 17607 594 udp4 127.0.0.1:19294 *:* root xinetd 17607 595 tcp4 127.0.0.1:19295 *:* root xinetd 17607 596 udp4 127.0.0.1:19295 *:* root xinetd 17607 597 tcp4 127.0.0.1:19296 *:* root xinetd 17607 598 udp4 127.0.0.1:19296 *:* ...\n\nI googled for “pfsense xinetd readjusting service” and found some hits suggesting it is caused by a faulty TFTP Proxy config, but on that system I do not use TFTP or TFTP Proxy. So let’s see, digging a bit deeper and have a look at the xinetd local config file;\n\n/var/etc/xinetd.conf\n\nActually it should be empty because I do not use any external services on this machine, just router and Firewall. But instead of having a empty config I found a big config file containing a lot of those:\n\nservice 19000-tcp { type = unlisted bind = 127.0.0.1 port = 19000 socket_type = stream protocol = tcp wait = no user = nobody server = /usr/bin/nc server_args = -w 2000 10.246.10.10 5060 } service 19000-udp { type = unlisted bind = 127.0.0.1 port = 19000 socket_type = dgram protocol = udp wait = yes user = nobody server = /usr/bin/nc server_args = -u -w 2000 10.246.10.10 5060 } ...\n\nGuess what happened\n\nThe Firewall was “mis”-configured to use a Feature called “NAT+Proxy” instead of doing a pure Network Address Translation (NAT) as common for IPv4 it creates a listener for each “listening” port in your local Network. On one specific local system a PBX was running, using UDP for SIP Protocol. The way those work is that they use Port Ranges as “Passive Ports” you maybe know that behavior from the FTP Protocol. Cause each SIP Channel need some free ports for the communication most of those Systems reserve a big port Range. So what happened is that the firewall use the Proxy NAT to create one xinetd listener for all those 10.000 ports – whow. Actually this should not happen, pfsense Documentation clearly say it will not create NAT Reflection Proxys for Ranges >500 but it did.\n\nReflection rules for use with the proxy are not created for ranges larger than 500 ports and will not be used for more than 1000 ports total between all port forwards. This mode does not work with UDP, only with TCP.\n\nSo blame goes to the Reflection Proxy here. Because as you can see in the xinetd config above, it still created one entry for UDP and one for TCP.\n\nSystem > Advanced > Firewall & NAT\n\nI still don’t know exactly what caused that readjusting exactly, but anyway we should not Proxy NAT all those things. So either you do not use NAT Reflection (Most times you do not need it) or use a pure nat instead. How ever be sure to not use Proxy NAT if you do not absolutely know what it is doing and you have to, or you could ending:"
+    }
+}

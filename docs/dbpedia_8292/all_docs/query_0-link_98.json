@@ -1,0 +1,39 @@
+{
+    "id": "dbpedia_8292_0",
+    "rank": 98,
+    "data": {
+        "url": "https://unix.stackexchange.com/questions/80305/mounting-a-squashfs-filesystem-in-read-write",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Mounting a squashfs filesystem in read-write",
+        "top_image": "https://cdn.sstatic.net/Sites/unix/Img/apple-touch-icon@2.png?v=32fb07f7ce26",
+        "meta_img": "https://cdn.sstatic.net/Sites/unix/Img/apple-touch-icon@2.png?v=32fb07f7ce26",
+        "images": [
+            "https://cdn.sstatic.net/Sites/unix/Img/logo.svg?v=eb6eb2b9e73c",
+            "https://www.gravatar.com/avatar/e6ce48656d5e39227a10b37a51754134?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/5b21d46f034d5a7360c82804e4730270?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/d750514b9393cf4898b1300571966331?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/c8053e7d7aac8830f25a47135ce07bec?s=64&d=identicon&r=PG",
+            "https://lh4.googleusercontent.com/-92K2PhLmscg/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuclIvlp4YoNamTmW_ittafjTgW0R8w/s96-c/photo.jpg?sz=64",
+            "https://www.gravatar.com/avatar/829d758998db1e4a910de7b8c7dfd0ac?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/xNPjb.png?s=64",
+            "https://www.gravatar.com/avatar/9aac4650ec3567058eb8b3f5611b88ec?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://unix.stackexchange.com/posts/80305/ivc/0c39?prg=be5415d1-a64e-47ec-b02f-fe49f131f9a8"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2013-06-21T19:57:10",
+        "summary": "",
+        "meta_description": "I have a Clonezilla installation on a USB stick and I'd like to make some modifications to the operating system. Specifically, I'd like to insert a runnable script into /usr/sbin to make it easy to...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/unix/Img/favicon.ico?v=fb86ccabb921",
+        "meta_site_name": "Unix & Linux Stack Exchange",
+        "canonical_link": "https://unix.stackexchange.com/questions/80305/mounting-a-squashfs-filesystem-in-read-write",
+        "text": "This assumes that you are root and that squashfs-tools is installed on your system:\n\nCopy filesystem.squashfs to some empty dir, e.g.:\n\ncp /path/to/filesystem.squashfs /path/to/workdir cd /path/to/workdir\n\nUnpack the file then move it somewhere else (so you still have it as a backup):\n\nunsquashfs filesystem.squashfs mv filesystem.squashfs /path/to/backup/\n\nGo in squashfs-root, add/modify as per your taste then recreate1 filesystem.squashfs:\n\ncd /path/to/workdir mksquashfs squashfs-root filesystem.squashfs\n\nCopy the newly created filesystem.squashfs over the existing one on your USB drive, e.g.:\n\ncp filesystem.squashfs /mnt/clonezilla/live/\n\nthen reboot and use your LIVE USB.\n\n1: Consult the manual for additional options that you can pass, like -b 4M -comp lz4 or -comp xz -Xbcj x86 etc\n\nIf your system supports some uion-filesystem, such as aufs or overlayfs, you don't have to extract your original squashfs file.\n\nFor example the overlayfs is used( a kernel option to enable it): You can mount your squashfs.file to /fm or somewhere else first. Prepare a writable filesystem with 2 directories in it, say /to and /temp. prepare another writable directory /fin for the merged results. Mount them together as an overlayfs to your system ---\n\nmount -t overlay -o lowerdir=/fm,upperdir=/to,workdir=/temp overlay /fin\n\nNow you can add/modify files in /fin. Once everything done, you can mksquashfs /fin to a new squashfs file,\n\nmksquashfs /fin newfile; umount /fin\n\n, then clear/unmount all the other used directories as you will.\n\nThe squashfs and some unionfs are commonly used for a live-cd.\n\nNote: question written in 2013, now is 2021, I assume overlayfs (one of unionfs filesystems) is supported. This answer is basically merge of two other answers with some things written explicitly, proficient Linux users might see something as obvious (like using sudo), but not everybody is at that level, I've understood some things along the way and writing complete (IMO) instructions. Texts after # are comments, no need to copy them, on my system bash safely ignores them.\n\ncd somefolder # some folder, no need for much free space, enough for modified data only mkdir fm # for mounting original mkdir to # for upper unionfs layers mkdir temp # some overlayfs technical folder mkdir fin # resulting folders/files would be there sudo mount /full_path/filesystem.squashfs fm -t squashfs -o loop sudo mount -t overlay -o lowerdir=fm,upperdir=to,workdir=temp overlay fin\n\nNow can modify/add/delete files/folders in either \"to\" or \"fin\" folders. Changes to them are \"mirrored\".\n\nTo undo deletion of original file delete \"deleted\" file from \"to\" with sudo rm path/file.\n\nAfter done with modifications to make new squashfs file in full_path folder, needs to be free space there:\n\nsudo mksquashfs fin /full_path/filesystem.squashfs\n\nWhen you don't need your working files anymore:\n\nsudo umount fin sudo umount fm sudo rm -R fm fin temp to\n\nP.S. After change to quashfs I wanted to recreate iso file of modern distro which support both legacy and EFI boot. Why some options to below genisoimage command are critical, I don't know, for me I was trial-and-error way. Boots both EFI and legacy, however start of iso is different: starts 33 ed 90 instead of 45 52 08, e.g. mjg59.dreamwidth.org/11285.html hints me Apple support is missing.\n\nmkdir iso,efi sudo losetup --partscan --show --find original.iso # if output of previous loop0 sudo mount /dev/loop0p1 iso sudo mount /dev/loop0p2 efi # not necessary, just to see contents sudo mount -t overlay -o lowerdir=iso,upperdir=to,workdir=temp overlay fin\n\nReplace what is needed in fin. Initially did sudo dd if=/dev/loop0p2 fin/EFI/BOOT/usb.efi to make image for efi, then found out it is already present in grub folder. If one takes available efi image, than losetup+mount /dev/loop steps can be replaced by simpler sudo mount original.iso iso\n\nsudo genisoimage -lJr -o new.iso -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 --boot-info-table -eltorito-alt-boot -e boot/grub/efi.img -no-emul-boot fin sudo isohybrid --uefi new.iso\n\nUsing overlayfs as shown is the best way to have pseudo \"squashfs rw\" ; It requires however to run on > 4.x kernel (or ubuntu >14.x trusty ).\n\nAn alternative solution when one is sitting on older live cd without any overlayfs/aufs/unionfs is to make use of squashfs'own capabilities\n\nImportant: Without unsquashfs, so this can be done on low storage system\n\nExample:\n\nModify squashfs's \"usr\" directory\n\nmount squashfs_file /mnt # 1 cp -a /mnt/usr $HOME # 2 Modify whatever $HOME/usr as needed mksquashfs /mnt new_squashfs_file -wildcards -e usr # 3 mksquashfs $HOME/usr new_squashfs_file -keep-as-directory # 4 umount /mnt # 5 Cleanup\n\nLine 3 builds temporarily squashfsfile excluding olddir_usr\n\nLine 4 appends modified-usr-dir into new_squashfsfile\n\nSee here append squashfs"
+    }
+}

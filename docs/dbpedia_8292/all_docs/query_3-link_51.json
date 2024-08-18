@@ -1,0 +1,38 @@
+{
+    "id": "dbpedia_8292_3",
+    "rank": 51,
+    "data": {
+        "url": "https://serverfault.com/questions/568227/prepare-a-disk-to-be-imaged-by-clonezilla-for-use-on-smaller-disks",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Prepare a disk to be imaged by Clonezilla for use on smaller disks?",
+        "top_image": "https://cdn.sstatic.net/Sites/serverfault/Img/apple-touch-icon@2.png?v=9b1f48ae296b",
+        "meta_img": "https://cdn.sstatic.net/Sites/serverfault/Img/apple-touch-icon@2.png?v=9b1f48ae296b",
+        "images": [
+            "https://cdn.sstatic.net/Sites/serverfault/Img/logo.svg?v=43f5b6d5f65b",
+            "https://www.gravatar.com/avatar/d7f246bf61e26365ccd68b5aa204ef43?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/dfb28eb05705f66b58e7ef0f7973fded?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/e406d8ec5727ac5337577a9b88486620?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/341e52df9aef1581203e6112af5a7ed9?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/5ec8a00cda38a288a0e3d1176a47d3b4?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/8c78eeb2468fd90c816dee829dcbeb25?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/gPZyx.png?s=64",
+            "https://serverfault.com/posts/568227/ivc/0c39?prg=22c4ed7c-442b-4b57-8cc8-a617e81efcb7"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2014-01-18T17:14:02",
+        "summary": "",
+        "meta_description": "A recurring problem we have is that the computers we use to build our master images on may have larger hard drives than some of the target systems' drives. Its well-known that Clonezilla won't put ...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/serverfault/Img/favicon.ico?v=18e9cc4f2aea",
+        "meta_site_name": "Server Fault",
+        "canonical_link": "https://serverfault.com/questions/568227/prepare-a-disk-to-be-imaged-by-clonezilla-for-use-on-smaller-disks",
+        "text": "Inside every clonezilla image, there is a file called sda-pt.parted. You can edit the sector size of /dev/sda to be smaller than your target hard drive.\n\nHere is how we do it:\n\nInstall OS and programs\n\nShrink partition in OS to lowest possible value (we find under 80 works best)\n\nSysprep and clone\n\nEdit image/sda-pt.parted\n\nBelow is a sample of an edited sda-pt.parted file\n\nModel: ATA ST31000524AS (scsi) Disk /dev/sda: 78200000s Sector size (logical/physical): 512B/512B Partition Table: msdos Number Start End Size Type File system Flags 1 2048s 206847s 204800s primary ntfs boot 2 206848s 78135295s 77928448s primary ntfs\n\nOriginal:\n\nModel: ATA ST31000524AS (scsi) Disk /dev/sda: 1953525168s\n\nIn creating your Master Image, resize the partitions or \"total non Free space area\" to be smaller than your smallest target drive will be.\n\nUse the expert mode instead of beginner in Clonezilla.\n\nIf you are sure all the data from the image could fit the smaller disk, add the option \"-icds\"\n\nCloneZilla will work fine Imaging to a smaller drive than the image was created on.\n\nThe other fix provided here worked for me. The file to edit is image/sda-pt.parted inside the image folder itself.\n\nIn that file, just shrink number in the line that says\n\nDisk /dev/sda: #########s\n\nIf you know the target size you want in bytes, you can divide by the sector size to get the number of sectors you want. In my case, I'd built out a 40GB system with 40GB partitions but it was on a 320GB drive. Sure enough, just changing the disk size to 40GB / 512 sectors (40000000000/512=78125000s) did the trick.\n\nAlternatively, you can just look at the end of your partition table in that file and use a number just bigger than that the endpoint of your last partition.\n\nI should also note that none of the options I found when I searched clonezilla help for pushing bigger images to smaller drives worked (\"expert mode\", resize, etc.). It seems like the best approach is to build your image, then adjust the disk size to be as small as possible before pushing.\n\nWe started using a 64Gb SSD to build our images. We have a drive reserved for this purpose. When building a new image, we first put this drive in the computer to be used as a template. We find this also helps us produce and capture images faster, as well as ensuring the resulting image will fit in any system we have in service.\n\nEdit image/sda-pt.parted inside the image folder does not work with Clonezilla 20170905-zesty.\n\nhttps://sourceforge.net/p/clonezilla/support-requests/65/\n\nOption \"-C\" is for Partclone only. Therefore you can not find it in Clonezilla expert mode. However, if you turn on \"-icds\" and \"-k1\" of Clonezilla, it will use the option \"-C\" for partclone when running partclone.\n\nBTW, to restore an image for that saved in a larger disk to smaller disk might not work. You have to make sure all the used blocks are within the boundary, and the partition table layout can not be too complicated so that Clonezilla is able to deal with that.\n\nSee advanced parameters for restoring mode: http://clonezilla.org/clonezilla-live/doc/02_Restore_disk_image/advanced/09-advanced-param.php"
+    }
+}

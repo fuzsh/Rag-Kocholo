@@ -1,0 +1,45 @@
+{
+    "id": "dbpedia_8293_2",
+    "rank": 7,
+    "data": {
+        "url": "https://serverfault.com/questions/19881/complete-restore-of-linux-system",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Complete restore of linux system",
+        "top_image": "https://cdn.sstatic.net/Sites/serverfault/Img/apple-touch-icon@2.png?v=9b1f48ae296b",
+        "meta_img": "https://cdn.sstatic.net/Sites/serverfault/Img/apple-touch-icon@2.png?v=9b1f48ae296b",
+        "images": [
+            "https://cdn.sstatic.net/Sites/serverfault/Img/logo.svg?v=43f5b6d5f65b",
+            "https://www.gravatar.com/avatar/83bc7b777bd8debd1398b9c12f3e450d?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/4bd85743f6bd4df590ee962137c8524a?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/55fd56dfef815d7aa543be09ad3ed3e9?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/73e93f7498c8d37c00a6684ca6f40191?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/15b97f86fdc1d305c885d4987fe17d05?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/1dff9bfdc1eae5b72c26a52c0d3aed6c?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/66794c4ba328e1cde4074dc78cbfee11?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/99c032d6037064046ac48634e362b2fa?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/6b1e9918e84b34a9ef31ee4371b463b0?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/3b4632df049b9838f29f5c610dd395a1?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/b960882d6346521c5fa2eef090415103?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/5fbb2dd9cbfb6aab6dfd541b1c885353?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/7c866ac84e832e585c6bd3abe1149c47?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/63ca18e130d527d0741f1da54bb129a7?s=64&d=identicon&r=PG",
+            "https://serverfault.com/posts/19881/ivc/0c39?prg=ecce4244-1158-4ed5-b542-01c0cea4e1e8"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2009-06-04T17:31:47",
+        "summary": "",
+        "meta_description": "I am familiar with using rsync to back up various files from my system but what is the best way to completely restore a machine.\n\nWhat I have tried in the past is:\r\nDo a basic format/reinstall from...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/serverfault/Img/favicon.ico?v=18e9cc4f2aea",
+        "meta_site_name": "Server Fault",
+        "canonical_link": "https://serverfault.com/questions/19881/complete-restore-of-linux-system",
+        "text": "Your procedure can cause numerous problems, and should be avoided.\n\nThere are two primary recommended ways to go about this, and a third if you are purely trying to build a development environment.\n\nImaging\n\nIf the hardware that you will be restoring TO will be the same, or similar enough, use a disk imaging tool to make a copy of the entire hard drive or array. When you wish to restore, simply re-image the machines in question with this image. If you image to multiple machines, be aware that you will need to update any machine-specific settings on the other devices (hostname, static IP address, etc...) such that they do not conflict with one another.\n\nTo do the actual imaging, I would recommend any tool or product that can clone hard drives.\n\nConfiguration/Home Directory backups\n\nOn your primary machine, regularly back up (with whatever method you like) whichever of the following directories (or others) you require:\n\n/home - All user personal settings, documents, and files\n\n/etc - configurations\n\n/opt - special software not installed via the package manager\n\n/usr/local - special software not installed via the package manager\n\n/var - logs and such\n\nWhen restoring, re-install the OS on the machines in question, and then copy each of these (or the relevant files only) to its proper location.\n\nVirtual Machines with snapshots\n\nCreate a virtual machine in VMWare (or whatever else you prefer). When it is configured as you wish it to be, create a snapshot. This snapshot can then easily be restored to any number of new or existing virtual machines.\n\nIn general, you should only back up data and configurations (however you define these). The OS and software can trivially be rebuilt at any time: only your own content is valuable. If this setup is for development, and you need to ensure an identical environment (as opposed to simply getting things working again), then snapshots in a virtual machine are really your best bet.\n\nImaging is the brute force solution. If you can, just back up your data, and don't worry about the OS itself. Trying to restore it entirely is asking for trouble.\n\nIf you can clarify what your final intent is here, I can provide a more detailed solution."
+    }
+}

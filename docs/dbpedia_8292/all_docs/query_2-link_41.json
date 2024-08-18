@@ -1,0 +1,41 @@
+{
+    "id": "dbpedia_8292_2",
+    "rank": 41,
+    "data": {
+        "url": "https://itsfoss.community/t/how-to-use-clonezilla-to-create-a-clone-system/6853",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How to use Clonezilla to create a clone system?",
+        "top_image": "https://itsfoss.community/uploads/default/original/1X/f274f9749e3fd8b4d6fbae1cf90c5c186d2f699c.png",
+        "meta_img": "https://itsfoss.community/uploads/default/original/1X/f274f9749e3fd8b4d6fbae1cf90c5c186d2f699c.png",
+        "images": [
+            "https://itsfoss.community/images/emoji/twitter/stuck_out_tongue.png?v=9",
+            "https://itsfoss.community/images/emoji/twitter/relaxed.png?v=9",
+            "https://itsfoss.community/user_avatar/itsfoss.community/akito/48/565_2.png",
+            "https://itsfoss.community/images/emoji/twitter/brain.png?v=12",
+            "https://itsfoss.community/images/emoji/twitter/eyes.png?v=12",
+            "https://itsfoss.community/images/emoji/twitter/+1.png?v=9",
+            "https://itsfoss.community/uploads/default/optimized/2X/2/203d76d3d92a0e15a602c60a05c0f3defe868b9b_2_499x375.jpeg",
+            "https://itsfoss.community/images/emoji/twitter/+1.png?v=9"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "kgwoo (Kim Whitmyre)",
+            "UnixGuy (Ken)",
+            "jrmwalsh (Michael Walsh)"
+        ],
+        "publish_date": "2021-05-25T22:55:04+00:00",
+        "summary": "",
+        "meta_description": "So, I finally got PeerGuardian working on my initial 20.04 install! :stuck_out_tongue: \nI repeated the same process on my other 20.04 machine, and got nowhere…So the need to clone the 1st machine’s 20.04 install to the o&hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://itsfoss.community/uploads/default/optimized/1X/e0f1bf7bd9a4e0cb57efa3542673c89d2211611b_2_32x32.png",
+        "meta_site_name": "It's FOSS Community",
+        "canonical_link": "https://itsfoss.community/t/how-to-use-clonezilla-to-create-a-clone-system/6853",
+        "text": "So, I finally got PeerGuardian working on my initial 20.04 install!\n\nI repeated the same process on my other 20.04 machine, and got nowhere…So the need to clone the 1st machine’s 20.04 install to the other has arisen!!\n\nWhat do I need to look out for, even though I have been reading on the Clonezilla site to prepare for this, I do not want to make it harder, but easier!!\n\nCalling all Xperienced Clonezilla operators!\n\nI came across this while researching for the cloning. After cloning a drive, this fellow found that Ubuntu booted very slowly, likely due to the change in the UUID. On “Ask Ubuntu,” this solution was offered:\n\n\"Boot from Ubuntu installation media.\n\nSelect Try Ubuntu without installing.\n\nStep 1 : Reinstall the Ubuntu GRUB boot loader.\n\nOpen a terminal and execute :\n\nsudo mount /dev/sda2 /mnt sudo mount /dev/sda1 /mnt/boot/efi for i in /dev /dev/pts /proc /sys /run; do sudo mount -B $i /mnt$i; done sudo chroot /mnt grub-install /dev/sda update-grub exit\n\nStep 2 : Correct the UUID entries in the fstab file.\n\nOpen another terminal and execute :\n\nsudo blkid\n\nOpen another terminal and execute :\n\nsudo gedit /mnt/etc/fstab\n\nReplace the UUID entries of sda1 | sda2 | sda3 | sda4\n\nwith those of the output given from the blkid command.\n\nClose all terminals and reboot into Ubuntu operating system.\"\n\nThis solved the issue for the OP.\n\nI think the best recommendation is that @Akito said about disconnect/unmount any external drive or device before cloning if it is not strictly necessary to be connected; better safer than sorry!\n\nThe UUID is a well-known trouble when you Backup your OS and later try to restore the image in another similar or different Hardware but not the original. The comment of @UnixGuy remembers me every time I’ve used SysPrep on Windows machines to avoid that problem. Fortunately, Ubuntu has a specific menu for creating an OEM installation à la SysPrep:\n\nIf you only want to backup your current Ubuntu installation for personal purposes, simply turn off your GNU/Linux machine, disconnect any external devices or media (except the media destination for your Backup), then Backup booting from Clonezilla DVD/USB and follow the screen instructions. You can restore later your image on another computer and fix the trouble using blkid as you said. That’s fine for me if is only a couple of computers.\n\nIn case your goal is to clone that installation for distributing in more than a couple of machines (no matter if exact or similar Hardware), then I recommend you to install Ubuntu using OEM mode since no personal data nor passwords or UUID are stored (and you can customize everything you need) and use later Clonezilla for Backup and clone the disk/partitions you previously made. This is how I normally do in some centers such as schools, hospitals, etc. Later you can use Clonezilla in Multicast mode using an 8/16/24/48… Switch port and quickly restore the original OEM installation in other machines. You can also automatize the whole process using a script. Not tested by me but, perhaps you could automatize the blkid in that script…\n\nI think Clonezilla is a perfect solution for cloning machines; no matter if GNU/Linux or DualBoot/other OSes installed but, for someone who hate/fear the shell, I recommend RescueZilla (forked from RedoBackup and latest versions are fully compatible with Clonezilla Backups) with a GUI and other tools for Internet browsing and recovering data…\n\nCheers!"
+    }
+}

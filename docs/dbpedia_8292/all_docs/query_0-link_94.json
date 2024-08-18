@@ -1,0 +1,32 @@
+{
+    "id": "dbpedia_8292_0",
+    "rank": 94,
+    "data": {
+        "url": "https://community.nethserver.org/t/does-anyone-know-how-to-run-dd-to-backup-for-clonezilla-live/3948/21",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Does anyone know how to run dd to backup for Clonezilla live?",
+        "top_image": "https://community.nethserver.org/uploads/db8506/original/2X/2/2f257fa1c036d90bc10d91f6d7fec797ac652e4b.png",
+        "meta_img": "https://community.nethserver.org/uploads/db8506/original/2X/2/2f257fa1c036d90bc10d91f6d7fec797ac652e4b.png",
+        "images": [
+            "https://community.nethserver.org/images/emoji/twitter/slight_smile.png?v=5"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Hunv (Kristian Reukauff)"
+        ],
+        "publish_date": "2016-07-20T06:03:02+00:00",
+        "summary": "",
+        "meta_description": "Greetings after so many mishaps with my server of my own fault I want to know is their actually a way that i can clone a hard drive in a live environment.  And force it to ssh out to another server.. Maybe DD commands or&hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://community.nethserver.org/uploads/db8506/optimized/2X/2/2f257fa1c036d90bc10d91f6d7fec797ac652e4b_2_32x32.png",
+        "meta_site_name": "NethServer Community",
+        "canonical_link": "https://community.nethserver.org/t/does-anyone-know-how-to-run-dd-to-backup-for-clonezilla-live/3948?page=2",
+        "text": "how does the backup module work with my customized file locations and website.conf files…\n\nI guess what i am asking is what all does it backup?\n\nDoes it get my mysql files?\n\ndf -h reveals some thing i was not expecting…\n\nSo what exactly should be backed up?? will just /dev/sda work or will it require me to back up everything individually…\n\nThis dosen’t make since why would things be stored all in one directory?\n\n[root@webserver ~]# df -h Filesystem Size Used Avail Use% Mounted on /dev/mapper/VolGroup-lv_root 290G 33G 243G 12% / tmpfs 4.9G 0 4.9G 0% /dev/shm /dev/sda1 504M 66M 413M 14% /boot [root@webserver ~]#\n\nsfdisk -l -uM shows…\n\n[root@webserver ~]# sfdisk -l -uM Disk /dev/sda: 39162 cylinders, 255 heads, 63 sectors/track Units = mebibytes of 1048576 bytes, blocks of 1024 bytes, counting from 0 Device Boot Start End MiB #blocks Id System /dev/sda1 * 1 512 512 524288 83 Linux /dev/sda2 513 307199 306687 314047488 8e Linux LVM /dev/sda3 0 - 0 0 0 Empty /dev/sda4 0 - 0 0 0 Empty Disk /dev/mapper/VolGroup-lv_swap: 636 cylinders, 255 heads, 63 sectors/track Disk /dev/mapper/VolGroup-lv_root: 38456 cylinders, 255 heads, 63 sectors/track [root@webserver ~]#\n\nso in theory would /dev/sda just copy all drives??\n\nYou realize there’s no such thing as in instantaneous snapshot of a hd?\n\nHow will you reconcile changes that occur during the time that passes while you’re reading through the file system?\n\nUnderstand, dd will basically start at the beginning of the disk and read toward the end of the disk, the os will write wherever the hell it feels like it, too bad if it’s somewhere that dd has already read.\n\nI would figure that during that time no traffic other than basic web and minecraft along with some teamspeak traffic would be occuring but for the most part that is all stored in their proper folders…\n\nAs far as server side configuration it should get things close…\n\nso far the biggest issue during an installation of Nethserver is getting the system to understand what ip it is and the proper gateway…\n\nGetting the system some what copied over would be a good thing and save about 14 hrs of work…\n\nBefore we released 6.8, I installed a server, setup several modules, (backup, ips, users, samba, owncloud, mail), loaded a bunch of files, let the backup run, destroyed the server, installed it again, got it on the lan, installed backup, pointed it to the share where the backups were, hit restore and off the top of my head, that was probably 90-120 minutes.\n\nThe reinstall and restore, probably about 45.\n\nYou cannot have confidence in your restore if your try to backup a live server, I would never do that in production, I’m not saying it can’t be done, but rsync and tar at least work with the operating system.\n\nI guess i forgot about rsync Good thought i should look into that…\n\nAs far as backups… Yea i imagine tonight i will shut the thing done run clonezila live to back it up… Its kinda one of those things where we have to run a ton of specialized commands to get it to talk to the network and being that i am not actually sitting next to the server and its located in a datacenter up in Canada makes it a little more challenging to initialize the original startup web page… I have managed quite well with a vm of xubuntu but still not exactly ideal…\n\nIn short I really wish that the backup modules allowed for the use of a secondary hard disk to back files up to this way during re-installation i could just pull from the backup hard drive…\n\nNot really a big fan of file share per say ie samba… but really like sftp if possible…\n\nOn a another note do you have any recommendations to pull all the sql files down to a folder ? my thought was i could write up a shell script to copy them over as well to the backup drive folder…"
+    }
+}
