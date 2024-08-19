@@ -1,0 +1,53 @@
+{
+    "id": "dbpedia_1534_3",
+    "rank": 82,
+    "data": {
+        "url": "https://lornajane.net/posts/2014/running-multiple-versions-of-php",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Running Multiple Versions of PHP",
+        "top_image": "https://lornajane.net/wp-content/uploads/2020/07/lj_email.png",
+        "meta_img": "",
+        "images": [
+            "https://lornajane.net/wp-content/themes/lornajane_2022/images/small.png",
+            "https://secure.gravatar.com/avatar/ffebdf905fae3278a260ed03c9d165c7?s=68&d=blank&r=g",
+            "https://secure.gravatar.com/avatar/5ec9d78c57a21fa829d33d710d23f040?s=68&d=blank&r=g",
+            "https://secure.gravatar.com/avatar/bf316dff60306549b6f69c0aac90aa82?s=39&d=blank&r=g",
+            "https://secure.gravatar.com/avatar/4e5dedfa1872f5c2a454ffe73255f923?s=68&d=blank&r=g",
+            "https://secure.gravatar.com/avatar/bf316dff60306549b6f69c0aac90aa82?s=39&d=blank&r=g",
+            "https://secure.gravatar.com/avatar/b6b4d7dbe3fb7cf61b68e36cd80f8698?s=68&d=blank&r=g",
+            "https://secure.gravatar.com/avatar/7ccb38398ad3cbd1a9ea2ed7fa59d9f5?s=68&d=blank&r=g",
+            "https://secure.gravatar.com/avatar/0a201e04032d3b383f9047217dd69b9c?s=68&d=blank&r=g",
+            "https://secure.gravatar.com/avatar/1c8e383e734793b09ce16b1b9d0f1dc7?s=68&d=blank&r=g",
+            "https://secure.gravatar.com/avatar/6672eb1d44b0800c02581d50211dc208?s=68&d=blank&r=g",
+            "https://secure.gravatar.com/avatar/921760752e826fcf2c6b4d45031ad3aa?s=68&d=blank&r=g",
+            "https://secure.gravatar.com/avatar/810c781992b38e05cbd20dd1ea95c0f5?s=68&d=blank&r=g",
+            "https://secure.gravatar.com/avatar/4d8154b3f9ba6f4190483c5231d577d3?s=68&d=blank&r=g",
+            "https://secure.gravatar.com/avatar/6bc65ac9294a7c8d9d8669acda5fcecc?s=68&d=blank&r=g",
+            "https://lornajane.net/wp-content/uploads/2020/07/lj_email.png",
+            "https://lornajane.net/wp-content/uploads/2020/07/lj_twitter.png",
+            "https://lornajane.net/wp-content/uploads/2020/07/lj_twitter.png",
+            "https://lornajane.net/wp-content/uploads/2020/07/lj_git.png",
+            "https://lornajane.net/wp-content/uploads/2020/07/lj_tv.png",
+            "https://lornajane.net/wp-content/uploads/2023/09/php-web-services.jpeg",
+            "https://lornajane.net/wp-content/uploads/2014/10/title_page.jpg",
+            "https://lornajane.net/wp-content/uploads/2013/12/title_page-212x300.png",
+            "https://lornajane.net/wp-content/uploads/2023/09/learning.oreilly.jpeg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2014-08-19T19:22:23+01:00",
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "https://lornajane.net/wp-content/themes/lornajane_2022/images/favicon.ico",
+        "meta_site_name": "",
+        "canonical_link": "https://lornajane.net/posts/2014/running-multiple-versions-of-php",
+        "text": "When I advise people about upgrading their PHP version, I say things like “just run your test suite with the new version” “just grab the new version and try your site with the built-in webserver”. A couple of people recently have asked for more detail on how to actually achieve these things so here’s a quick primer on getting new PHP without touching anything to do with your existing PHP installation.\n\nInstall Your New PHP Version\n\n(These instructions are for *nix systems; I have literally no idea how it works on Windows)\n\nYou will want to download the source code of your desired version of PHP, then compile it. The key thing here is that we’ll put this version of PHP in a different location than your operating system would like to put PHP by default – and so we’ll avoid overwriting anything.\n\nGo and choose your version from http://php.net/downloads.php. Download it into its own directory somewhere and extract the files.\n\nNow we’ll configure the source, but here is the key ingredient: we set a prefix so that it’ll be installed into a separate directory and not interfere with anything. Make a command like this with your path in:\n\n./configure --prefix=/path/to/toy/php\n\nNow we’re all set and we can compile the code and install it to the related location:\n\nmake\n\nmake install\n\nThe make step builds the binaries and the make install step moves them to the correct location – so you may need to sudo make install if your user doesn’t have write permission to the location you set in the prefix earlier on.\n\nYou’re basically done :) Check everything is working by doing:\n\n/path/to/toy/php/bin/php -v\n\nThis should show you what version of PHP you just built.\n\nChecking Your Application With Your New PHP Version\n\nWhatever you have in place for your usual test/build process, you can go through and have it use your /path/to/toy/php/bin/php everywhere it would usually run a php command. This can mean fiddling with environment variables or hardcoding paths in places while you try this out – so if you modify your tools make sure you’re making those changes on a branch in your source control tool.\n\nTo test out your code with the webserver, you just need to start it using the new PHP version. For me, that command looks like this:\n\n/path/to/toy/php/bin/php -S localhost:8080\n\nI am seeing more PHP projects being upgraded now, where once they would have been shipped onto a set version, deployed to the server, and left there until they needed replacing. Now we build applications, not just websites, and those need to grow and live along with the companies they exist to serve. The much smoother upgrade process in PHP as well as tools like the webserver make upgrading platforms a perfectly advisable thing to do and I hope the outline above helps someone to make that leap!"
+    }
+}
