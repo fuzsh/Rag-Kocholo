@@ -1,0 +1,47 @@
+{
+    "id": "dbpedia_8583_0",
+    "rank": 25,
+    "data": {
+        "url": "https://community.jamf.com/t5/jamf-pro/munki-autodmg-autopkg-jssimporter-etc/m-p/108295",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Munki, autodmg, autopkg, jssimporter, etc...",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://community.jamf.com/t5/image/serverpage/avatar-name/fastfood/avatar-theme/candy/avatar-collection/food/avatar-display-size/profile/version/2?xdesc=1.0",
+            "https://community.jamf.com/legacyfs/online/avatars/9ace4bd92c3546fda85d6d894e79c7c2.png",
+            "https://community.jamf.com/t5/image/serverpage/avatar-name/fastfood/avatar-theme/candy/avatar-collection/food/avatar-display-size/profile/version/2?xdesc=1.0",
+            "https://community.jamf.com/legacyfs/online/avatars/9ace4bd92c3546fda85d6d894e79c7c2.png",
+            "https://community.jamf.com/t5/image/serverpage/avatar-name/fastfood/avatar-theme/candy/avatar-collection/food/avatar-display-size/profile/version/2?xdesc=1.0",
+            "https://community.jamf.com/t5/image/serverpage/avatar-name/fastfood/avatar-theme/candy/avatar-collection/food/avatar-display-size/profile/version/2?xdesc=1.0",
+            "https://community.jamf.com/legacyfs/online/avatars/a9ee7127cdf44402bcbed171fefd8489.png",
+            "https://community.jamf.com/legacyfs/online/avatars/c4041093eb7c4516ae10ecc0d52c3d34.png",
+            "https://community.jamf.com/legacyfs/online/avatars/31155a2c7b0e4cb083a4d400a0983a82.png",
+            "https://community.jamf.com/t5/image/serverpage/avatar-name/fastfood/avatar-theme/candy/avatar-collection/food/avatar-display-size/profile/version/2?xdesc=1.0",
+            "https://community.jamf.com/legacyfs/online/avatars/c4041093eb7c4516ae10ecc0d52c3d34.png",
+            "https://community.jamf.com/t5/image/serverpage/avatar-name/balloons/avatar-theme/candy/avatar-collection/toys/avatar-display-size/profile/version/2?xdesc=1.0",
+            "https://community.jamf.com/skins/images/3C7018BFED3E064C6B0C86CAD438737B/responsive_peak/images/icon_anonymous_message.png",
+            "https://community.jamf.com/skins/images/3C7018BFED3E064C6B0C86CAD438737B/responsive_peak/images/icon_anonymous_message.png",
+            "https://community.jamf.com/html/@DB007B9D4B38359F399423E43927D581/assets/logo-jamf-blk.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "community.jamf.com",
+            "user-id"
+        ],
+        "publish_date": "2015-02-27T18:30:37+00:00",
+        "summary": "",
+        "meta_description": "Anyone have any thoughts on the best 3rd party tools/workflow to use to keep pkgs in Casper up to date? I am a newbie at this so any advice - 108295",
+        "meta_lang": "en",
+        "meta_favicon": "https://community.jamf.com/html/@341C36E148083396DBCB6E6A9C18E572/assets/favicon.ico",
+        "meta_site_name": "Jamf Nation",
+        "canonical_link": "https://community.jamf.com/t5/jamf-pro/munki-autodmg-autopkg-jssimporter-etc/m-p/108295#M97412",
+        "text": "I go to autopkg at github and the first thing I see is this:\n\nA brief \"getting started\" tutorial\n\nSome parts of this short tutorial assume you have a working Munki repo configured that you can mount from your admin machine. Munki isn't strictly required to use AutoPkg - for example, it can simply build packages - but Munki is so far the only supported system that can be \"imported into.\" If you aren't using Munki, you can still use AutoPkg to find the latest updates, download them, and repackage them (if needed) for deployment -- you would then need to manually import them into whatever software distribution system you are using.\n\nDoes munki provide some whiz bang extras that make the whole process easyer?\n\nTools I use in conjunction with the Casper Suite:\n\na) AutoDMG - to make never-booted up-to-date base OSes with a Recovery Partition included (no screwing around with capturing it as a second image, partitioning, and scripts to hide it)\n\nb) AutoCasperNBI - to make NetBoot images for Casper Imaging\n\nc) AutoPkgr - use this to download packages of software I care about, and optionally add these packages to the JSS and more. http://www.lindegroup.com/autopkgr/ and https://derflounder.wordpress.com/2014/07/15/autopkgr-a-gui-for-autopkg/ and https://www.youtube.com/watch?v=bghtRQ3FAIc\n\nHope this helps,\n\n--Robert\n\nI am sorry but I am confused. The Casper I am talking about is a commercial product from JAMF. My boss is hoping i get good use out of it soon so we see some return on our investment. If you are talking about an open source tool that is also called Casper it might conflict with Munki but JAMF's Casper product is supposed to work fine with Munki.\n\nMunki has nothing to do with JAMF's Casper Suite, Munki manages the installation of software on your computers in an pretty effortless manner, there is no integration between JAMF Casper Suite and Munki.\n\nIf you want to use a program that will keep the software you distribute in Casper Suite up to date, look at Autopkg (which automatically downloads software as it's released) and Autopkgr (which will be the link between Autopkg and your JSS server). The resources in RobertHammen's post are great.\n\nTechnically Autopkgr uses JSS Importer to help link Autopkg to your JSS, Autopkgr is a great GUI to setup and configure everything.\n\n@kyoung\n\nfor a bit of history and perhaps context\n\nautopkg was developed by the same guy that developed munki (plus a couple other developers) so its initial use case was for keeping a munki system up to date with packages.\n\nHowever some developers put it some work to make it also upload packages to a casper server.\n\nThen some more developers came up with AutoPkgr (note the r on the end) which is a GUI front end to autopkg which makes it super simple to have it setup with casper.\n\nThere is no requirement to have munki in order to use autopkg, but you will likely find that the documentation is heavily biased towards that as that is the best use case. But for sure you can just autopkg with Casper"
+    }
+}

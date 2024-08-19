@@ -1,0 +1,40 @@
+{
+    "id": "dbpedia_8583_3",
+    "rank": 80,
+    "data": {
+        "url": "https://dazwallace.wordpress.com/2019/03/12/using-autopkg-for-package-uploads-to-jamf-cloud-only/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Using Autopkg for package Uploads to Jamf Cloud only",
+        "top_image": "https://dazwallace.wordpress.com/wp-content/uploads/2019/02/banner-using-autopkg-for-package-uploads-to-jamf-cloud-only.png",
+        "meta_img": "https://dazwallace.wordpress.com/wp-content/uploads/2019/02/banner-using-autopkg-for-package-uploads-to-jamf-cloud-only.png",
+        "images": [
+            "https://www.kevinmcox.com/wordpress/wp-content/uploads/2019/02/cropped-Apple-Texas-Flag-512x512.png?w=48",
+            "https://2.gravatar.com/avatar/ecf2d7f4e8483407f282da69af30080c179f416e0d1443b9c2f81aca5444ab8d?s=48&d=identicon&r=G",
+            "https://2.gravatar.com/avatar/b52ff012e5527fcb5930338dbf1dfc146fa7d700ccfa5a2164e3889d2b2b5c8f?s=48&d=identicon&r=G",
+            "https://2.gravatar.com/avatar/5a79d18d0e92da84f56aa0211ed1471cf3832e2e827a71e35501640e0ee28e06?s=48&d=identicon&r=G",
+            "https://s-ssl.wordpress.com/wp-includes/images/rss.png?m=1354137473i",
+            "https://s-ssl.wordpress.com/wp-includes/images/rss.png?m=1354137473i",
+            "https://dazwallace.wordpress.com/wp-content/uploads/2017/11/cropped-untitled.png",
+            "https://dazwallace.wordpress.com/wp-content/uploads/2019/02/banner-using-autopkg-for-package-uploads-to-jamf-cloud-only.png?w=902",
+            "https://s2.wp.com/i/logo/wpcom-gray-white.png",
+            "https://s2.wp.com/i/logo/wpcom-gray-white.png",
+            "https://pixel.wp.com/b.gif?v=noscript"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2019-03-12T00:00:00",
+        "summary": "",
+        "meta_description": "Updated 2020.10.08 - As with all things committed to page, this topic has aged! I'll leave the content up for context, but if you're after this feature, take a look at the Wiki page here - https://github.com/grahampugh/jamf-upload/wiki/Jamf-AutoPkg-Processors#uploading-a-package-only Hi all, in a follow up to a previous post on using AutoPKGr with Jamf Cloud (Using AutoPKGr…",
+        "meta_lang": "en",
+        "meta_favicon": "https://s1.wp.com/i/favicon.ico",
+        "meta_site_name": "dazwallace",
+        "canonical_link": "https://dazwallace.wordpress.com/2019/03/12/using-autopkg-for-package-uploads-to-jamf-cloud-only/",
+        "text": "Updated 2020.10.08 – As with all things committed to page, this topic has aged! I’ll leave the content up for context, but if you’re after this feature, take a look at the Wiki page here – https://github.com/grahampugh/jamf-upload/wiki/Jamf-AutoPkg-Processors#uploading-a-package-only\n\nHi all, in a follow up to a previous post on using AutoPKGr with Jamf Cloud (Using AutoPKGr with a Jamf Cloud Distribution Point), I worked with a second customer on how to use the same system, but only to upload the packages. No smart groups, no policies, just the packages!\n\nBut….Why?\n\nA fair question. If you wish to utilise the included Patch Management system you will need to upload packages ready to link them to software versions. As explained in the previous post, this could be a manual task.\n\nAlternatively you can use the AutoPKG recipes to package and upload your software patches, but this will also include smart groups and policies (since this pre-dates the Jamf Patch Management system).\n\nWhat if you could have the best of both worlds? What if you could use AutoPKG/r to package and upload software to your Jamf Cloud server , ready for you to link to your Patch Policies / Versions?\n\nTurns out, you can!\n\nHow?\n\nSo to do this, I took an example .jss policy (in this case the Firefox one) and started removing the various Arguments keys until I found the minimum required. Turns out, it’s only one!\n\n<key>prod_name</key> <string>%NAME%</string>\n\nThat key alone will upload the package into your Jamf Cloud server without any of the Smart Groups or Policies. But, it will also upload it without a category, so if you need / want this, you’ll need the second key:\n\n<key>category</key> <string>CATEGORY GOES HERE</string>\n\nThe JSSImporter processor will automatically create this category if required, upload the package and set the category.\n\nPlease Note: In order to avoid confusion with already existing .jss recipes, I’d suggest using .jss-upload instead of .jss\n\nHow does that look?\n\nWell altogether, the process section of the recipe looks as follows:\n\n<key>Process</key> <array> <dict> <key>Arguments</key> <dict> <key>category</key> <string>CATEGORY GOES HERE</string> <key>prod_name</key> <string>%NAME%</string> </dict> <key>Processor</key> <string>JSSImporter</string> </dict> </array>\n\nI’ve uploaded an example of the changes to a Firefox recipe here.\n\nSummary\n\nThis post covers how to create an AutoPKG recipe to only upload packages to your Jamf Pro server. As always, if you have any questions, queries or comments, let me know below (or @daz_wallace on Mac Admins Slack) and I’ll try to respond to and delve into as many as I can.\n\nThe usual Disclaimer:\n\nWhile the author has taken care to provide our readers with accurate information, please use your discretion before acting upon information based on the blog post. I will not compensate you in any way whatsoever if you ever happen to suffer a loss/inconvenience/damage because of/while making use of information in this blog."
+    }
+}

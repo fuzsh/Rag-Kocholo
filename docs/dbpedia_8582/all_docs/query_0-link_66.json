@@ -1,0 +1,37 @@
+{
+    "id": "dbpedia_8582_0",
+    "rank": 66,
+    "data": {
+        "url": "https://www.meziantou.net/ensuring-best-practices-for-nuget-packages.htm",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Ensuring best practices for NuGet packages",
+        "top_image": "https://www.meziantou.net/assets/cover-92984f.jpg?v=9e52",
+        "meta_img": "https://www.meziantou.net/assets/cover-92984f.jpg?v=9e52",
+        "images": [
+            "https://www.meziantou.net/assets/dotnet-validate-1.png?v=c4a8",
+            "https://www.meziantou.net/assets/nugetpackagevalidation-tool.png?v=ae34",
+            "https://www.meziantou.net/img/bmc.svg?v=0248",
+            "https://www.meziantou.net/assets/blog-image-1-th-w100-h100.jpg?v=aa10",
+            "https://www.meziantou.net/img/mvp.svg?v=8085",
+            "https://www.meziantou.net/img/bmc2.svg?v=d704"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "GÃ©rald BarrÃ©"
+        ],
+        "publish_date": "2022-10-03T12:00:00+00:00",
+        "summary": "",
+        "meta_description": "In this post, I describe how to ensure your NuGet packages follow best practices before publishing them to a repository such as nuget.org",
+        "meta_lang": "en",
+        "meta_favicon": "/favicon.ico?v=28cd",
+        "meta_site_name": "Meziantou's blog",
+        "canonical_link": "https://www.meziantou.net/ensuring-best-practices-for-nuget-packages.htm",
+        "text": "Creating a NuGet package is as easy as dotnet pack. But, you may not be aware of all the best practices that you should follow to ensure your package is as good as it can be. In this post, I describe how to ensure your NuGet packages follow best practices before publishing them to a repository such as nuget.org.\n\n#Discoverability\n\nYou should make your package discoverable by adding the right metadata to your package. It will help users to find your packages from the search in NuGet.org or Visual Studio.\n\nChoose a unique package id (doc)\n\nIf you plan to publish your package to nuget.org, choose a NuGet package id with a prefix that meets NuGet's prefix reservation criteria\n\nIf the package is not intended for public distribution, choose a package id that is not already taken on nuget.org\n\nInclude a short description, up to 4000 characters, to describe your package (doc)\n\nInclude several tags related to your package to help the search algorithm find your packages (doc)\n\nInclude an icon with your package (doc). The icon is displayed on nuget.org and in the NuGet Package Manager in Visual Studio.\n\nIf some users use an older version of NuGet, you can set icon and the deprecated iconUrl in your nuspec file to increase compatibility.\n\nInclude a README file (markdown format) that provides an overview of what your package does and how to get started (doc). This file is displayed on nuget.org.\n\nWrite a high-quality README for NuGet packages\n\nInclude a license file or a license expression (doc)\n\n#Binaries\n\nMost packages contain binary files (dll or exe).\n\nBuild the binary files using the Release configuration\n\nFor libraries, include the xml documentation files in the package\n\nIf you multi-target the library, make sure the same public types and methods are accessible through all compatible targets. For instance, a package that multi-targets for .NET 6 and .NET Standard 2.0 needs to ensure that code compiled against the .NET Standard 2.0 binary can run against the .NET 6 binary.\n\n#Confidence\n\nPeople want to be sure the package contains the advertised DLLs. If the project is open-source, you can check the source code, but how can you be sure the package is built with the sources you see?\n\nFor open-source projects, include the repository URL and the commit in the package metadata (doc)\n\nCompile the package using deterministic builds, so people can reproduce the same binary from the source code. See enabling reproducible builds when building NuGet packages for more info.\n\nIf you want to go further, you can sign your package to prove the identity of the author\n\n#Debuggability\n\nConsumers should be able to debug the code of the package if something doesn't work as expected.\n\nInclude symbols (PDB) for your binaries\n\nUse <DebugType>embedded</DebugType>, include the PDbs in the package, or use a symbol package (snupkg)\n\nPDB should use the portable format to be compatible with all platforms. The file is also smaller than the Windows PDB format.\n\nThe SDK provides a tool to validate NuGet packages right after creating them. At the moment, it provides the following checks:\n\nValidates that there are no breaking changes across versions\n\nValidates that the package has the same set of public APIs for all the different runtime-specific implementations\n\nHelps developers catch any applicability holes\n\nTo enable it, you can add the following property to your project file:\n\nMSBuild project file\n\n<Project> <PropertyGroup> <EnablePackageValidation>true</EnablePackageValidation> <!-- Optional: Detect breaking changes from a previous stable version --> <PackageValidationBaselineVersion>1.0.0</PackageValidationBaselineVersion> </PropertyGroup> </Project>\n\nAnother tool to validate a NuGet package is NuGet Package Explorer. The UI tool shows you the package content and validates the package symbols are ok. This works on local packages and published packages. A CLI tool also exists to validate packages. You can add this tool to your CI pipeline to validate the packages before publishing them.\n\nShell\n\ndotnet tool update --global dotnet-validate --version 0.0.1-preview.304 dotnet validate package local \"mypackage.1.0.0.nupkg\"\n\nI also made a tool to validate the content of a package. It validates package metadata and symbols. It reports errors on the console using a JSON format. Also, it returns a non-zero code when a package is not valid. The source code is available on GitHub.\n\nShell\n\ndotnet tool update --global Meziantou.Framework.NuGetPackageValidation.Tool meziantou.validate-nuget-package \"mypackage.1.0.0.nupkg\"\n\n#Additional resources\n\nPackage authoring best practices\n\nPublishing a NuGet package using GitHub"
+    }
+}

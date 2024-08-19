@@ -1,0 +1,34 @@
+{
+    "id": "dbpedia_8582_0",
+    "rank": 3,
+    "data": {
+        "url": "https://stackoverflow.com/questions/65719848/use-local-source-code-of-nuget-package-to-debug-and-edit-code",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Use local source code of NuGet package to debug and edit code",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/fa0c7e9c1108ac45d5d0ecfe9160394a?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/6cf5cf58c9f3eeded52cd1167a9ed4de?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/W1PE9.png?s=64",
+            "https://www.gravatar.com/avatar/7257f4113017faf08fde0dcb25549d3e?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://stackoverflow.com/posts/65719848/ivc/3e78?prg=8a5a7b0c-8844-4dc9-8d2c-1eded41388b7"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2021-01-14T13:24:26",
+        "summary": "",
+        "meta_description": "I have a solution with an application project (ASP.NET Core) and multiple library projects. I want to separate some of the library projects into a separate solution and turn them into NuGet packages.",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/65719848/use-local-source-code-of-nuget-package-to-debug-and-edit-code",
+        "text": "DNT (Dot Net Tools) does this. You can specify which packages to switch and where they are.\n\nSee the 'switch-to-packages' and 'switch-to-projects' command line switches.\n\nIts a bit fiddley as (when I last tried) you had to create a config file that holds the mapping, and it seems to be easy to break the switching. But its something.\n\nhttps://github.com/RicoSuter/DNT\n\nI've not tried it, but maybe you can use it to switch to packages on a commit for the build server to work correctly? (Or to ensure the references are correct in source control?)\n\nIf you want to use nuget in your project and debug, even modify the source files of the nuget packages, this is not a good choice because you should build the nuget project(generate the new changed dll) and repack it as a nuget package, then reinstall, to enable the changes. It is too complex.\n\nOnce you install the nuget, no matter how many changes you make, it’s useless. The nuget installed at this time is the version you made before any changes. No matter how you change it, it is the previous version. The version stays at that timestamp, unless you repackage the project. Generate nupkg and update the nuget version.\n\nSo nuget is not a good choice for your situation, you should use ProjectReference.\n\nDirectly use the ProjectReference to reference two source projects, build at the same time, and get the changed parts at the same time.\n\nProjectReference could cross two different solutions.\n\nAdd this on the main project:\n\n<ItemGroup> <!--add any nuget project'csproj file like this to debug its source code--> <ProjectReference Include=\"..\\xxx\\xxx.csproj\"> </ProjectReference> </ItemGroup>\n\nIf the proejct is out of the solution, you could directly use the full path of the nuget project's csproj to connect it.\n\nI'm not sure what you mean by \"override\" but you can always add the library project to your ASP.NET Core solution and reference it like normal project references. A project referenced within a solution doesn't have to be physically placed in the same folder as the solution itself.\n\nThis, however, does require that any developer on the project has both GIT repositories cloned locally (given your two solutions are located in separate GIT repos) in order to be able to build the ASP.NET Core solution. But I don't really see that as a downside."
+    }
+}

@@ -1,0 +1,44 @@
+{
+    "id": "dbpedia_8583_3",
+    "rank": 8,
+    "data": {
+        "url": "https://community.jamf.com/t5/jamf-pro/packaging-licensed-applications-any-instructions/m-p/129751",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Jamf Nation Community",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://community.jamf.com/legacyfs/online/avatars/51ce2cd3965f4318abde2bb0050c96fb.png",
+            "https://community.jamf.com/t5/image/serverpage/avatar-name/bear/avatar-theme/candy/avatar-collection/animals/avatar-display-size/profile/version/2?xdesc=1.0",
+            "https://community.jamf.com/legacyfs/online/avatars/51ce2cd3965f4318abde2bb0050c96fb.png",
+            "https://community.jamf.com/legacyfs/online/avatars/dd3ce1dad46e4c539f283263073aa062.png",
+            "https://community.jamf.com/t5/image/serverpage/avatar-name/bear/avatar-theme/candy/avatar-collection/animals/avatar-display-size/profile/version/2?xdesc=1.0",
+            "https://community.jamf.com/legacyfs/online/avatars/44e50daa22d5466e8704b02a0a467323.png",
+            "https://community.jamf.com/html/@3E126ED481C967552FF7A4D5763970CC/rank_icons/jamf-integrator-light.svg",
+            "https://community.jamf.com/legacyfs/online/avatars/51ce2cd3965f4318abde2bb0050c96fb.png",
+            "https://community.jamf.com/t5/image/serverpage/avatar-name/pig/avatar-theme/candy/avatar-collection/animals/avatar-display-size/profile/version/2?xdesc=1.0",
+            "https://community.jamf.com/skins/images/3C7018BFED3E064C6B0C86CAD438737B/responsive_peak/images/icon_anonymous_message.png",
+            "https://community.jamf.com/skins/images/3C7018BFED3E064C6B0C86CAD438737B/responsive_peak/images/icon_anonymous_message.png",
+            "https://community.jamf.com/html/@DB007B9D4B38359F399423E43927D581/assets/logo-jamf-blk.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "community.jamf.com",
+            "user-id"
+        ],
+        "publish_date": "2018-07-31T22:25:53+00:00",
+        "summary": "",
+        "meta_description": "Just to bump this one, since I am also looking for a better means of deploying Tuxera NTFS. The worst part of it seems to be that for the - 129745",
+        "meta_lang": "en",
+        "meta_favicon": "https://community.jamf.com/html/@341C36E148083396DBCB6E6A9C18E572/assets/favicon.ico",
+        "meta_site_name": "Jamf Nation",
+        "canonical_link": "https://community.jamf.com/t5/jamf-pro/packaging-licensed-applications-any-instructions/m-p/129751#M118864",
+        "text": "Hi @Bernard.Huang. This is actually a fairly big topic and I don't think you'll be able to find a one-size-fits-all guide for including license information in packaged apps.\n\nThe primary reason is that not all applications are licensed in the same way. But there are other, equally important, reasons such as:\n\nWhat packaging tools are you comfortable with (and how good are your scripting skills)?\n\nWhat is your deployment model? (i.e. are JSS policies sufficient for you or will you be looking at AutoPKG etc)\n\nWhat are the characteristics of your environment (i.e. predominantly mobile/ static or inside / outside a domain/LAN etc.)\n\nWhat are the T&C's for the particular license you are trying to package? You may be restricted by compliance policies, activation processes etc.\n\nWhat are your personal deployment preferences (i.e. do you want to include the license info in every package or separate these and have a blank installer to be followed by a package/script that applies the licensing?).\n\nSorry if this makes it more confusing. Obviously, the more packaging you do the more you will gain experience and things will make a lot more sense. Some advise to begin with would be to initially approach this on a per-app basis (as you have done with Tuxera NTFS) and go with the best method available for that particular software. There is a wealth of resources in JAMFNation and if you search for specific questions you, more often than not, find the answer.\n\nIn terms of resources, Rich Trouton's blog is a very good resource on using Packages for slightly more complicated titles like Office or Sophos and will give you an idea on how to add pre/post install scripts to your packages. If you want to use Composer the JAMF KB articles are obviously a good resource.\n\nJust to bump this one, since I am also looking for a better means of deploying Tuxera NTFS. The worst part of it seems to be that for the latest release (2018), the \"installer\" is an app that JAMF Admin doesn't like, so I can't push it out through a simple policy. Also, the method in which the license is applied apparently uses a unique identifier from each machine when it writes the license file, so simply packaging it up with Composer fails when installed on another machine (probably some hardware ID, though I don't know for sure).\n\nMy work around has been to create a Composer package that puts the installer app in the /Users/Shared folder with a blank file that has the license key as the name of the file so I can easily copy/paste the license key while running the installer (they added a step in the installer where you can apply the license during the GUI install). If there was a way to run the installer from the command line and feed the serial number in as a option, that would be awesome, but that doesn't seem to be the case.\n\nIn 2016 I contacted Tuxera support about this, and the 2016 installer could be licensed with a plist file generated by the Tuxera support developers, but that does not seem to work with the new 2018 installer."
+    }
+}

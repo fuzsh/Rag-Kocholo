@@ -1,0 +1,46 @@
+{
+    "id": "dbpedia_8582_0",
+    "rank": 58,
+    "data": {
+        "url": "https://accessibleai.dev/post/polyglot_imports/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Importing Code in Polyglot Notebooks",
+        "top_image": "https://accessibleai.dev/img/Polyglot/A_PolyglotImport.png",
+        "meta_img": "https://accessibleai.dev/img/Polyglot/A_PolyglotImport.png",
+        "images": [
+            "https://accessibleai.dev/img/AccessibleAILogo.png",
+            "https://accessibleai.dev/img/Polyglot/A_PolyglotImport.png",
+            "https://accessibleai.dev/img/Polyglot/ImportError.png",
+            "https://accessibleai.dev/img/Polyglot/PolyglotDiagnostics.png",
+            "https://accessibleai.dev/img/Polyglot/PolyglotNuGet.png",
+            "https://accessibleai.dev/img/Profile.png",
+            "https://accessibleai.dev/img/MVPVertical.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "Artificial Intelligence",
+            "Machine Learning",
+            "Data Science",
+            "Data Analytics",
+            "Azure",
+            "Microsoft Azure",
+            "ML.NET",
+            "ML .NET",
+            "DotNet"
+        ],
+        "tags": null,
+        "authors": [
+            "Matt Eland"
+        ],
+        "publish_date": "2023-05-15T00:00:00+00:00",
+        "summary": "",
+        "meta_description": "Let's take a look at how we can work with external code in Polyglot Notebooks using C# and magic commands.",
+        "meta_lang": "en",
+        "meta_favicon": "/img/FavIcon/apple-icon-57x57.png",
+        "meta_site_name": "Accessible AI",
+        "canonical_link": "https://accessibleai.dev/post/polyglot_imports/",
+        "text": "We’ve seen that Polyglot Notebooks allow you to mix together markdown and code (including C# code) in an interactive notebook and these notebooks allow you to share data between cells and between languages. However, frequently in programming you want to reference code that others have written without having to redefine everything yourself.\n\nIn this article we’ll explore how Polyglot Notebooks allows you to import dotnet code from stand-alone files, DLLs, and NuGet packages so your notebooks can take advantage of external code files and the same libraries that you can work with from your code in Visual Studio.\n\nImporting Local Code Files\n\nFirst of all, if you have a small amount of code that lives in an individual C# file and you wanted to reference it in your notebook, you can do this via the #!import magic command as shown below:\n\nThis assumes that there is a file named Person.cs in the current directory, but assuming it is present the code in that file will be imported as if you had declared it in your notebook.\n\nThis can be helpful for hiding code like test data or class definitions that isn’t the main focus of your notebook.\n\nIf your code file has issues, those issues will typically be displayed immediately below the cell as pictured below:\n\nHowever, I have noticed at least one instance where an import silently failed and I could not immediately find a good answer as to why. If this happens to you, I recommend you check VS Code’s Output pane and look at the Polyglot Notebook : diagnostics data source for additional information.\n\nNuGet Packages\n\nOften in dotnet code you’ll want to refer to packages that others have created to complete common tasks. This could be anything from working with JSON, APIs, machine learning, to generating random data.\n\nThe standard dotnet package manager is NuGet Package Manager which many readers will be familiar with from development in Visual Studio.\n\nIt turns out that Polyglot Notebooks support importing NuGet packages via the #r magic command followed by the word nuget: and then the name of the package you wish to import.\n\nFor example, the following block of code imports the Microsoft.ML and Microsoft.ML.AutoML NuGet packages related to ML.NET into the Notebook:\n\nWhen this cell runs you should see the following output:\n\nAfter the NuGet packages are installed you’ll be able to access public classes and namespaces contained in that package, for example:\n\nOne additional thing I want to point out with installing NuGet packages is that some packages may contain extensions for Polyglot Notebooks. If that is the case, you will see those extensions detected and installed into your notebook automatically during their installation process.\n\nFinally, you should note that only NuGet packages compatible with your version of the .NET SDK are ones you can install. Typically this will be something written targeting .NET Standard or .NET 6 or 7. See my article on installing Polyglot Notebooks for more information on .NET versions.\n\nPre-Release Packages\n\nSometimes you’ll want to refer to packages that are currently in pre-release. To work with these particular files, you’ll use slightly different syntax for importing them:\n\nHere we import the Microsoft.DotNet.Interactive.SqlServer package which does not have a non-preview version available at the time of this writing.\n\nIf you do not include the , *-* syntax, NuGet will automatically exclude pre-release packages. This is usually a good thing unless you are trying to work with a NuGet package that is not yet released. In the case where a NuGet package is in pre-release, you need to use the , *-* syntax to refer to it successfully.\n\nCustom NuGet Feeds\n\nSometimes you work with an organization or team that uses its own private NuGet feed. You can tell Polyglot Notebooks about these custom NuGet feeds via the #i syntax as shown below:\n\nNow when you run NuGet install commands Polyglot Notebook will also search your custom NuGet feed.\n\nNote: the above website is fictitious and should not be used. Replace this instead with your custom NuGet feed’s actual URL.\n\nMost users won’t need to care about this feature, but this is very handy if you have a special shared NuGet feed that you and your team use.\n\nImporting Local DLLs\n\nIf you want to work with a local .dll file with dotnet code, you can import that using the following code:\n\nThis is very similar to referencing a NuGet package, but doesn’t require the nuget: prefix and uses a path to the actual .dll file instead of relying on NuGet to find the dependency.\n\nRealistically, you likely won’t work with this too much. I’ve used this feature to test local projects before publishing them to NuGet and to demonstrate things at conferences where I knew I wouldn’t have reliable internet access to install remote dependencies.\n\nAdditionally, I’ve noticed that while referencing NuGet packages extensions are installed automatically, this does not seem to happen when installing .dll files directly.\n\nStill, being able to work with local .dll files can be handy in certain circumstances.\n\nClosing Thoughts\n\nWhile some of these magic commands to import dependencies can be slightly hard to recall exactly, these commands allow you to quickly and easily work with code outside of your notebooks.\n\nThis allows you to focus your notebooks on larger tasks by referencing utilities and libraries from other packages.\n\nLater on this week I’ll illustrate how helpful this can be for working with things like ML .NET for Machine Learning and Azure Cognitive Services inside of Polyglot Notebooks.\n\nFinally, never underestimate the value of importing a simple code file in simplifying your notebooks by pulling non-critical code out of the notebook and into a separate file.\n\nI love Polyglot Notebooks and being able to work with other code from our notebooks just makes them even more awesome."
+    }
+}

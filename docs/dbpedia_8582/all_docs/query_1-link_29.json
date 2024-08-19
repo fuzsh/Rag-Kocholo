@@ -1,0 +1,40 @@
+{
+    "id": "dbpedia_8582_1",
+    "rank": 29,
+    "data": {
+        "url": "https://askubuntu.com/questions/1022007/is-knowledge-of-c-of-any-use-in-a-linux-system",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Is knowledge of C# of any use in a Linux system?",
+        "top_image": "https://cdn.sstatic.net/Sites/askubuntu/Img/apple-touch-icon@2.png?v=c492c9229955",
+        "meta_img": "https://cdn.sstatic.net/Sites/askubuntu/Img/apple-touch-icon@2.png?v=c492c9229955",
+        "images": [
+            "https://cdn.sstatic.net/Sites/askubuntu/Img/logo.svg?v=472cf2768bba",
+            "https://i.sstatic.net/G7HMF.png?s=64",
+            "https://i.sstatic.net/mKUbE.png?s=64",
+            "https://www.gravatar.com/avatar/631f04176f88084e982e7b343c7973f8?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/631f04176f88084e982e7b343c7973f8?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/F6iG6.jpg?s=64",
+            "https://www.gravatar.com/avatar/78a0a4bb106d07b6c6f33a51988155e3?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/ce61e5bfb62f2b2f42277a6b8d9e9d7b?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/d894a427bea90911ed86252888c579dd?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/2959dbf8f0385349c33f12329dac225f?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://askubuntu.com/posts/1022007/ivc/3e78?prg=bb4353da-9a78-43b4-8967-7c1b9bff2109"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2018-04-04T17:57:16",
+        "summary": "",
+        "meta_description": "I know C# and I like to switch between systems and use Linux. Can I use C# to build applications that will natively work on Linux? What should I do to make use of my knowledge of C# in a Linux syst...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/askubuntu/Img/favicon.ico?v=928dfb7c1990",
+        "meta_site_name": "Ask Ubuntu",
+        "canonical_link": "https://askubuntu.com/questions/1022007/is-knowledge-of-c-of-any-use-in-a-linux-system",
+        "text": "Yes, you can develop software on Ubuntu, that itself will run on Ubuntu, in C#. Both Mono and .NET Core support GNU/Linux systems like Ubuntu. (You can use them on other distros, too, like Debian, Raspbian, Fedora, CentOS, Arch, Gentoo, and so forth.) The Unity3D game engine also supports Ubuntu, as you probably know. Unity3D embeds Mono.\n\nA number of packages for Ubuntu, installable with Ubuntu's package manager from officially community-supported software sources, are written in C# and use Mono. This includes the music player Banshee, the notetaking app Tomboy, the raster graphics editor Pinta, and the password manager KeePass (since version 2).\n\nMost text editors, such as Gedit, Vim, and Emacs, have syntax highlighting for C#. MonoDevelop and Visual Studio Code are two popular integrated development environments that run on Ubuntu and support C# development.\n\nLinux provides its native APIs in the C programming language. A native Linux program uses these APIs to access files, I/O devices, sockets (networking), inter-process communications, threading, etc. To create a native Linux app you would write your app in C and then compile it with (most likely) GCC to end up with an executable. You can even go further and use GUI libraries in your program to add GUI (GTK and Qt are two popular ones) or use a packaging system to package your app (like .deb and .rpm files).\n\nC#, F# and VB bring their own compiler (which normally produces IL code instead of machine code) and instead of directly using the Windows or Linux native APIs (both in C), they have their own wrappers around them. This means that there needs to be another extra layer between the compiled code and the OS. This extra layer has to read the IL code and translate that to the native Windows or Linux or macOS APIs. This extra layer can be .NET Framework, Mono or .NET Core (currently just .NET).\n\nNow to answer the question \"Is C# usable for Linux system programming?\", in most cases yes.\n\nThe .NET has libraries for file handling, networking, threading and some I/O devices. Now for example, say you need to access Bluetooth in you app. .NET does not have any APIs for Bluetooth, so in such cases you have two options:\n\nFind the native API in C and call it in C#\n\nSearch in NuGet to see if someone has already done it\n\nOther examples would be WiFi Direct, Gamepad, CPU temperature, Battery Info, Camera, GPS, Laptop Sensors, etc. So for low-level apps you're on your own (this is the case even on Windows unless you go with UWP). For such apps on Linux, C or Python would be a way better choice.\n\nIf you want to add GUI to your app, .NET has GUI libraries but only for Windows. Mono on the other hand has bindings for GTK called GTK# but naturally GTK# would always be behind the GTK development (which is not a problem unless you want the latest features).\n\n.NET 6 has another solution for cross-platform GUI. In .NET 6 you can create a Blazor app with C#, HTML and CSS and use Electron to create a desktop app from it (as of writing this, it's not ready yet).\n\nTo sum up:\n\nPros of C# on Linux\n\nYou'd use your existing skills\n\nIf you stick to .NET libraries your app would be portable to Windows and mac\n\nYou're dealing with a modern clean language instead of a 50-year-old one (hardcore C programmers may disagree :D)\n\nCons of C# on Linux\n\nMany native APIs are not available\n\nOn paper native C code would be faster than framework-dependent C# code. Although it's possible to directly compile for Linux but we'd loose portability and with today's hardware users wouldn't feel the difference anyway.\n\nYour hands are tighter for a GUI app"
+    }
+}

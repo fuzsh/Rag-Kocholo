@@ -1,0 +1,34 @@
+{
+    "id": "dbpedia_8583_1",
+    "rank": 18,
+    "data": {
+        "url": "https://macintoshguy.wordpress.com/tag/autopkg/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "The Macintosh Guy",
+        "top_image": "https://s0.wp.com/i/blank.jpg",
+        "meta_img": "https://s0.wp.com/i/blank.jpg",
+        "images": [
+            "https://macintoshguy.wordpress.com/wp-content/uploads/2020/06/1599px-inside_the_factory.jpg?w=1024",
+            "https://i0.wp.com/www.linkedin.com/img/webpromo/btn_viewmy_160x33.png",
+            "https://s2.wp.com/i/logo/wpcom-gray-white.png",
+            "https://s2.wp.com/i/logo/wpcom-gray-white.png",
+            "https://pixel.wp.com/b.gif?v=noscript"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2020-07-10T09:46:18+10:00",
+        "summary": "",
+        "meta_description": "Posts about autopkg written by Honestpuck",
+        "meta_lang": "en",
+        "meta_favicon": "https://s1.wp.com/i/favicon.ico",
+        "meta_site_name": "The Macintosh Guy",
+        "canonical_link": "https://macintoshguy.wordpress.com/tag/autopkg/",
+        "text": "Here is my fourth post about PatchBot.\n\nIn the first post I gave a short summary of how the system works and introduced JPCImporter, the first AutoPkg custom processor.\n\nIn the second post I introduced patch management and the second custom processor.\n\nIn the third post I showed the third custom processor and the code to run it at the right time.\n\nIn the first three blog posts I explained (in great detail) how my system, PatchBot, works.\n\nToday I am going to cover how to take the pieces and put them together into a complete system.\n\nContinue reading →\n\nAfter my last post Graham Pugh mentioned that the AutoPkg repository list is stored in the AutoPkg preference file as RECIPE_REPOS with the search order in RECIPE_SEARCH_DIRS.\n\nHe suggested doing a while loop on the defaults read output but I thought it was just fiddly enough a task in the shell that I might resort to a few lines of Python, so here it is, a Python script to dump out your repository list in search order. Tiny but it does the job.\n\n(Thanks to Graham for taking the time to comment on the previous post, it was just what I needed to get me to spend the few minutes doing this.)\n\n#!/usr/bin/env python3 # repos.py # print the list of AutoPkg repos in search order # NOTE: Totally lacking in any error checking or handling import plistlib from os import path plist = path.expanduser('~/Library/Preferences/com.github.autopkg.plist') fp = open(plist, 'rb') prefs = plistlib.load(fp) search = prefs['RECIPE_SEARCH_DIRS'] repos = prefs['RECIPE_REPOS'] # start at 3 to skip the built in ones for i in range(3, len(search)): print(repos[search[i]]['URL'])\n\nHere’s a little one for you. I needed to keep the recipe repositories in sync across two machines.\n\nAutoPkg will happily give you a repo-list- here’s part of mine:\n\nautopkg repo-list /Users/Anthony.WILLIAMS/Library/AutoPkg/RecipeRepos/com.github.autopkg.48kRAM-recipes (https://github.com/autopkg/48kRAM-recipes) /Users/Anthony.WILLIAMS/Library/AutoPkg/RecipeRepos/com.github.autopkg.HobbitHardcase-recipes (https://github.com/autopkg/HobbitHardcase-recipes) /Users/Anthony.WILLIAMS/Library/AutoPkg/RecipeRepos/com.github.autopkg.MichalMMac-recipes (https://github.com/autopkg/MichalMMac-recipes) /Users/Anthony.WILLIAMS/Library/AutoPkg/RecipeRepos/com.github.autopkg.adobe-ccp-recipes (https://github.com/autopkg/adobe-ccp-recipes) /Users/Anthony.WILLIAMS/Library/AutoPkg/RecipeRepos/com.github.autopkg.arubdesu-recipes (https://github.com/autopkg/arubdesu-recipes) /Users/Anthony.WILLIAMS/Library/AutoPkg/RecipeRepos/com.github.autopkg.aysiu-recipes (https://github.com/autopkg/aysiu-recipes)\n\nUnfortunately that isn’t in a form you can feed to AutoPkg’s repo-add command. We need something like sed to make it right. Here we go.\n\nautopkg repo-list | sed \"s#[^(]*(\\([^)]*\\)).*#\\1#\" https://github.com/autopkg/48kRAM-recipes https://github.com/autopkg/HobbitHardcase-recipes https://github.com/autopkg/MichalMMac-recipes https://github.com/autopkg/adobe-ccp-recipes https://github.com/autopkg/arubdesu-recipes https://github.com/autopkg/aysiu-recipes\n\nNow we add them on the other computer. Pipe the above into repos.txt and then:\n\nwhile read -r line ; do autopkg repo-add $line done < repos.txt\n\nNow if AutoPkg had an option to list the repositories in search order rather than alphabetical…\n\nOver the weekend I was feeling a little bored so I decided to try my hand at writing a shell script to add custom completion for autopkg to bash.\n\n(tl;dr – the script is on GitHub.)\n\nI found an example for the zsh shell which lacked a couple of features and I spent some time examining the script for brew so I wasn’t totally in the dark.\n\nThere are a number of tutorials available for writing them but none are particularly detailed so that wasn’t much help.\n\nWriting Shell Scripts\n\nThe first thing I should say is that I find writing shell scripts totally different to writing for any other language. I probably write shell scripts incredibly old school, shell and C were the two languages I was paid to write way back in the 1980’s. It feels like coming home.\n\nContinue reading →"
+    }
+}

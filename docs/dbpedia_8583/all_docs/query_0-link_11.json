@@ -1,0 +1,46 @@
+{
+    "id": "dbpedia_8583_0",
+    "rank": 11,
+    "data": {
+        "url": "https://stackoverflow.com/questions/933850/how-do-i-find-the-location-of-the-executable-in-c",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How do I find the location of the executable in C?",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://i.sstatic.net/RIZKi.png?s=64",
+            "https://www.gravatar.com/avatar/069f076c133e192a42ac5d859de582c3?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/6a77f246c6eb4f3dd4a1a381ee81f857?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/2071587c6b585edc883abe69a57895c1?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/41c43e7a2ecd3ae2bccfba1254934090?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/b039a6683550d74705f9d00dcd24b6b7?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/1ca6df53a03c9823bad93783d7067908?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/RIZKi.png?s=64",
+            "https://www.gravatar.com/avatar/4543063559186d4f1f252ffb1ae338ce?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/c61f50fa03287abed5b20c229cc7421d?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/a007be5a61f6aa8f3e85ae2fc18dd66e?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/e0a1b17629a9f1fd51c885366b883fb5?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/109de2257fe0c70b51655470ab333fa0?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/65228c7f0e87e7890fe82e68296b805d?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/933850/ivc/3e78?prg=5ebe87b1-7442-4b53-932c-34dbfbd5bcc1"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "anon anon"
+        ],
+        "publish_date": "2009-06-01T07:29:47",
+        "summary": "",
+        "meta_description": "Is there a way in C/C++ to find the location (full path) of the current executed program?\n\n(The problem with argv[0] is that it does not give the full path.)",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/933850/how-do-i-find-the-location-of-the-executable-in-c",
+        "text": "Please note that the following comments are unix-only.\n\nThe pedantic answer to this question is that there is no general way to answer this question correctly in all cases. As you've discovered, argv[0] can be set to anything at all by the parent process, and so need have no relation whatsoever to the actual name of the program or its location in the file system.\n\nHowever, the following heuristic often works:\n\nIf argv[0] is an absolute path, assume this is the full path to the executable.\n\nIf argv[0] is a relative path, ie, it contains a /, determine the current working directory with getcwd() and then append argv[0] to it.\n\nIf argv[0] is a plain word, search $PATH looking for argv[0], and append argv[0] to whatever directory you find it in.\n\nNote that all of these can be circumvented by the process which invoked the program in question. Finally, you can use linux-specific techniques, such as mentioned by emg-2. There are probably equivalent techniques on other operating systems.\n\nEven supposing that the steps above give you a valid path name, you still might not have the path name you actually want (since I suspect that what you actually want to do is find a configuration file somewhere). The presence of hard links means that you can have the following situation:\n\n-- assume /app/bin/foo is the actual program $ mkdir /some/where/else $ ln /app/bin/foo /some/where/else/foo # create a hard link to foo $ /some/where/else/foo\n\nNow, the approach above (including, I suspect, /proc/$pid/exe) will give /some/where/else/foo as the real path to the program. And, in fact, it is a real path to the program, just not the one you wanted. Note that this problem doesn't occur with symbolic links which are much more common in practice than hard links.\n\nIn spite of the fact that this approach is in principle unreliable, it works well enough in practice for most purposes.\n\nNot an answer actually, but just a note to keep in mind.\n\nAs we could see, the problem of finding the location of running executable is quite tricky and platform-specific in Linux and Unix. One should think twice before doing that.\n\nIf you need your executable location for discovering some configuration or resource files, maybe you should follow the Unix way of placing files in the system: put configs to /etc or /usr/local/etc or in current user home directory, and /usr/share is a good place to put your resource files."
+    }
+}

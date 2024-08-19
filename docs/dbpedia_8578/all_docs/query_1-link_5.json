@@ -1,0 +1,34 @@
+{
+    "id": "dbpedia_8578_1",
+    "rank": 5,
+    "data": {
+        "url": "https://stackoverflow.com/questions/29142663/parse-wkb-string-using-jts-topology-suite",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Parse WKB string using JTS Topology Suite",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/85f48015a90126be64856ac8679b6505?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/19bd40268de8ee7c6560ea2d08344251?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/063085813056f3bb7d9d29894ba5c248?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/4bb8b70f4b7b9c28af004568bb2590d9?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/29142663/ivc/3e78?prg=7d1d6eea-69c3-461f-8907-7b510e93d9b9"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2015-03-19T10:53:56",
+        "summary": "",
+        "meta_description": "It's been a few days that I'm struggling with WKB strings. I need to be able to parse it in order to get the equivalent geometry and extract points coordinates (X,Y,Z). I can't use PostGIS function...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/29142663/parse-wkb-string-using-jts-topology-suite",
+        "text": "It's been a few days that I'm struggling with WKB strings. I need to be able to parse it in order to get the equivalent geometry and extract points coordinates (X,Y,Z). I can't use PostGIS functions. The only java library that I found was the JTS Topology Suite, that i use as follow :\n\nString wkb = \"01ea030000020000009b4d3899fe95154153d97e8f43875941000000000000454003085bc23f9615411b4dc406578759410000000000004740\" byte[] aux = WKBReader.hexToBytes(wkb); try { Geometry geom = new WKBReader().read(aux); } catch (ParseException e) { e.printStackTrace(); System.err.println(\"Bad WKB string.\"); }\n\nBut the it gives me the following error :\n\ncom.vividsolutions.jts.io.ParseException: Unknown WKB type 234\n\n234 is the decimal value of the hexadecimal string 'ea'. It's like the JTS Library was only looking at the frist 2 bytes instead of looking at the 4 bytes 'ea03', that correspond to 1002 in little endian (so a LineStringZ).\n\nMy question is then : does the JTS Topology Suite handle LineStringZ ? If not, why points can have a Z value ? And how can I parse it correctly ?\n\nThanks you for reading !\n\nJTS does support 3D geometries at least in reading and writing. Support may be rather 2.5D than a real 3D but Z values are still carried on in the operations. The problem is that there are two ways for presenting XYZ, XYM, and XYZM geometries in WKB. JTS support the PostGIS EWKB variant as can be seem from the comment in the source code file https://sourceforge.net/p/jts-topo-suite/code/HEAD/tree/trunk/jts/java/src/com/vividsolutions/jts/io/WKBWriter.java\n\nThis implementation also supports the Extended WKB\n\nstandard. Extended WKB allows writing 3-dimensional coordinates\n\nand including the geometry SRID value.\n\nThe presence of 3D coordinates is signified\n\nby setting the high bit of the wkbType word.\n\nThe presence of an SRID is signified\n\nby setting the third bit of the wkbType word.\n\nEWKB format is upward compatible with the original SFS WKB format.\n\nYour WKB is of the OGC variant which is defined in the OGC document http://portal.opengeospatial.org/files/?artifact_id=25355\n\nJTS don't understand the four-digit geometry type codes. This mail thread gives some more information https://lists.osgeo.org/pipermail/geos-devel/2013-December/006757.html.\n\nanswered Feb 11, 2016 at 10:58\n\nuser30184user30184\n\n11611 bronze badge"
+    }
+}

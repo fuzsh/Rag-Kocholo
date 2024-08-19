@@ -1,0 +1,38 @@
+{
+    "id": "dbpedia_8582_0",
+    "rank": 84,
+    "data": {
+        "url": "https://code-maze.com/central-package-management-dotnet/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Central Package Management for .NET Projects",
+        "top_image": "https://code-maze.com/wp-content/uploads/2021/12/social-dotnet-core.png",
+        "meta_img": "https://code-maze.com/wp-content/uploads/2021/12/social-dotnet-core.png",
+        "images": [
+            "https://code-maze.com/wp-content/uploads/2021/02/Code-Maze-Logo-White-Text-Transparent-Small.png",
+            "https://code-maze.com/wp-content/uploads/2021/12/social-dotnet-core.png",
+            "https://code-maze.com/wp-content/uploads/2021/11/ultimate-aspnet-core-banner-v2-690-min.webp",
+            "https://code-maze.com/wp-content/plugins/patron-plugin-pro/plugin/lib/patron-button-and-widgets-by-codebard/images/become_a_patron_button.png",
+            "https://code-maze.com/wp-content/uploads/2021/11/ultimate-aspnet-core-banner-v2-690-min.webp",
+            "https://code-maze.com/wp-content/plugins/patron-plugin-pro/plugin/lib/patron-button-and-widgets-by-codebard/images/become_a_patron_button.png",
+            "https://code-maze.com/wp-content/uploads/2024/06/Book-Cover-Second-Edition-300px.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Bartosz Jarmuż"
+        ],
+        "publish_date": "2022-05-17T06:00:24+00:00",
+        "summary": "",
+        "meta_description": "The central package management feature has been released and it can help us organize our NuGet packages from one centralized place.",
+        "meta_lang": "en",
+        "meta_favicon": "https://code-maze.com/wp-content/uploads/2020/01/Code-Maze-Favicon.png",
+        "meta_site_name": "Code Maze",
+        "canonical_link": "https://code-maze.com/central-package-management-dotnet/",
+        "text": "Nowadays, every non-trivial software project depends on a number of external dependencies. Good software design is all about modularity, and that’s one of the reasons behind NuGet’s success in the .NET world. NuGet is the famous, well-integrated package manager for .NET with hundreds of thousands of public packages. Modern .NET projects utilize NuGet packages a lot, and the tool just got better. The NuGet team has just released the central package management feature.\n\nTo download the source code for this article, you can visit our GitHub repository.\n\nLet’s have a look at what it’s all about!\n\nWhat Is Central Package Management and Why Do We Need It?\n\nCentral Package Management is exactly what its name suggests. It’s a way of controlling versions of NuGet packages in a centralized location. This solution follows the modern pattern of using Directory.*.props files to share the settings between multiple projects.\n\nIn this case, the file is called Directory.Packages.props.\n\nBefore this feature was available, we had to set each NuGet package version in each project one by one. This was tedious and error-prone – even with the ‘Manage Packages for Solution’ feature of Visual Studio. Package version conflicts are annoying when they break our builds, but they are a whole different level of hell when they fail at runtime.\n\nHaving the versions of dependencies in one place guarantees that all projects use the same thing. And since it’s just one file, it’s much faster to edit.\n\nSo, let’s see how to start using it!\n\nHow to Use Central Package Management\n\nFirst of all, we need to add the Directory.Packages.props file into our repository. The root folder of the solution is a good place to start:\n\n<Project> <ItemGroup> <PackageVersion Include=\"Newtonsoft.Json\" Version=\"13.0.1\" /> <PackageVersion Include=\"Serilog\" Version=\"1.59.0\" /> </ItemGroup> </Project>\n\nAdding this file should then enable the central management for all the projects unless they opt-out.\n\nHowever, at the time of writing, this feature is only available in the preview version of Visual Studio (17.2). Until it is officially released, we need to opt-in to enable this feature. In order to do that, we need to add <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally> to our project files. Alternatively, we can use the Directory.Build.props file to control this setting centrally, as we’ve described in our article about setting the C# version for all projects.\n\nNext, let’s adjust the project files to handle centrally managed packages:\n\n<Project Sdk=\"Microsoft.NET.Sdk\"> <PropertyGroup> <TargetFramework>net6.0</TargetFramework> </PropertyGroup> <ItemGroup> <PackageReference Include=\"Newtonsoft.Json\" /> </ItemGroup> </Project>\n\nAs we can see, the project file has only the reference to the package name – it does not contain the Version attribute.\n\nIt’s important to notice, that if we decide to use Central Package Management for a project, we cannot add NuGet packages in the traditional way. If we attempt to do that, we will see an NU1008 error:\n\nProjects that use central package version management should not define the version on the PackageReference items but on the PackageVersion items.\n\nNotice also the subtle difference between the project file and the Directory.Packages.props – the latter specifies PackageVersion elements, not PackageReference. This can be tricky if we just copied the packages section from the project file.\n\nThat’s it – building our project now should trigger proper NuGet resolution. The Preview version of Visual Studio can act a bit flaky – sometimes it helps to restart and delete the hidden .vs folder if it gets stuck.\n\nFine-Tuning the Central Package Management\n\nIn some cases, we might need a bit more granular control over the versions of packages. One of the ways of achieving it is to declare the VersionOverride attribute on the package reference in the project file:\n\n<ItemGroup> <PackageReference Include=\"Newtonsoft.Json\" /> <PackageReference Include=\"Serilog\" VersionOverride=\"2.11.0\" /> </ItemGroup>\n\nIn this case, the current project uses the Serilog package in version 2.11. NuGet will ignore the version specified in Directory.Packages.props.\n\nAnother way of adding more granularity to the package resolution logic is to use more Directory.Packages.props files. The version resolution mechanism applies the file that is closest to the project that is being resolved. This means a subfolder of a repository can have its own Directory.Packages.props file, and the projects in this subfolder and below will have that file applied:\n\nRoot |-- Directory.Packages.props |-- Directory.Build.props |-- NuGet.config |-- MySolution.sln |-- MyProject |-- MyProject.csproj |-- Subfolder |-- Directory.Packages.props |-- ProjectInSubfolder.csproj\n\nHowever, only one file applies to a project. This means that packages are declared in the top-level Directory.Packages.props file don’t apply in projects where a subfolder Directory.Packages.props file exists.\n\nIn order to use them, we need to define them separately!\n\nConclusion\n\nCentral Package Management is a very nice addition to the NuGet ecosystem. It simplifies dependency management, which can be quite challenging in complex projects. Unfortunately, at the time of writing, there is no GUI support for this feature. Luckily, there are plans to include that at some point, so the experience will be even better."
+    }
+}

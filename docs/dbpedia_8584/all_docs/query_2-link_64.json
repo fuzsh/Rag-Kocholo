@@ -1,0 +1,32 @@
+{
+    "id": "dbpedia_8584_2",
+    "rank": 64,
+    "data": {
+        "url": "https://docs.unity.cn/Manual/upm-embed.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Manual: Embedded dependencies",
+        "top_image": "https://unity3d.com/files/images/ogimg.jpg",
+        "meta_img": "https://unity3d.com/files/images/ogimg.jpg",
+        "images": [
+            "https://docs.unity.cn/uploads/Main/upm-embed.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Unity Technologies"
+        ],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "https://unity.com/themes/contrib/unity_base/images/favicons/favicon.ico",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "Embedded dependencies\n\nAny package that appears under your project’s Packages folder is embedded in that project. You can create an embedded packageAn embedded package is a mutable package that you store under the Packages directory at the root of a Unity project. This differs from most packages which you download from a package server and are immutable. More info\n\nSee in Glossary in several ways:\n\nCreate a new package directly in your project’s Packages folder.\n\nManually copy a Unity package from the project’s package cache into your project’s Packages folder.\n\nUse a C# script to embed a version of a package that’s already installed.\n\nEmbedded packages don’t need to appear in the project manifestEach Unity project has a project manifest, which acts as an entry point for the Package Manager. This file must be available in the <project>/Packages directory. The Package Manager uses it to configure many things, including a list of dependencies for that project, as well as any package repository to query for packages. More info\n\nSee in Glossary as a dependency. However, if you embedded a version of an installed package, your project manifest still lists the dependency on the original installed version. In that case, the package on disk takes priority over the version of the package listed as a dependency, so it doesn’t need to be removed from the project manifest. For example, if the project manifest specifies a dependency on version 1.3.1 of the com.unity.example package but the project also has an embedded package with that name, the Package Manager uses the embedded package, regardless of its apparent version, instead of downloading version 1.3.1 from the registry.\n\nMake sure you track the contents of your embedded packages, and any changes you make to it. If your Unity project is under source control, add any packages embedded in that project to the same source control.\n\nCreating a new custom package\n\nTo embed a new package, create your new package content inside a folder under the Packages folder. For more information, follow the instructions for creating your own custom package.\n\nTypically, your new package remains embedded in your project until you are ready to share it with other users and test it in other projects. Then you can publish it to a scoped package registry.\n\nCopying a Unity package from the cache\n\nA package installed from a registry is immutableYou cannot change the contents of an immutable (read-only) package. This is the opposite of mutable. Most packages are immutable, including packages downloaded from the package registry or by Git URL.\n\nSee in Glossary, which means you can’t edit it. If you want to edit a package, you can make it mutableYou can change the contents of a mutable package. This is the opposite of immutable. Only Local packages and Embedded packages are mutable.\n\nSee in Glossary by copying it to your Projects folder. This package type is called an embedded package, and it overrides what’s in your package cache. Later, you can delete that embedded package’s folder from the Project folder, and the Package Manager will automatically change to the immutable, cached package.\n\nThe most reliable way to find your package’s folder in the cache is to locate the installed version directly in the Unity Editor:\n\nOpen the Project window by opening the Window menu and selecting General > Project.\n\nFrom the Project windowA window that shows the contents of your Assets folder (Project tab) More info\n\nSee in Glossary, find the installed package you want to embed.\n\nRight-click the folder of the selected package and select Show in Explorer (Windows) or Reveal in Finder (macOS). That package’s folder opens directly in a file browser and uses the <package-name>@<package-version> naming convention.\n\nNote: If the package you want to embed isn’t in your project, you can get it directly from your project’s package cache (<project>/Library/PackageCache) by using your file browser or command line and navigating to the correct folder. However, it’s more reliable to let the Editor find it for you, because in addition to locating packages in the project cache, it also locates packages that are installed from a local folder or tarball, and packages that are already embedded.\n\nCopy the package folder and paste it directly into your project’s Packages folder. Don’t put it inside the Assets folder, because the Package Manager doesn’t scan that folder for packages.\n\nRemove the @<package-version> part of the folder name.\n\nAdd the newly embedded package to source control if your project is already under source control.\n\nNote: You can also find package folders under the global cache, but the global cache contains packages from all versions of the Unity Editor that have ever been installed on your system, so be careful to pick a version that’s compatible with your project’s Editor version.\n\nIf you want to delete the embedded package, use your file browser or command line to locate that package in your Packages folder. Consider backing up the folder for the embedded package, otherwise you’ll lose any changes you made to the package. Then, delete the folder for that package from your Packages folder. The Package Manager will automatically revert to the immutable, cached package.\n\nAdditional resources"
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "id": "dbpedia_8582_0",
+    "rank": 92,
+    "data": {
+        "url": "https://tomaskohl.com/code/2020-02-11/dotnet-interactive-using-nuget-packages/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Using Nuget packages with .NET Interactive",
+        "top_image": "https://tomaskohl.com/tango/content/images/favicon-32x32.png",
+        "meta_img": "https://tomaskohl.com/tango/content/images/favicon-32x32.png",
+        "images": [
+            "https://tomaskohl.com/code/2020-02-11/hello-c-drive.png",
+            "https://tomaskohl.com/code/2020-02-11/using-taglib-sharp-in-dotnet-interactive.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2020-02-11T00:00:00",
+        "summary": "",
+        "meta_description": "I test how I can use Nuget packages when fooling around with Jupyter notebooks using C#.",
+        "meta_lang": "en",
+        "meta_favicon": "/tango/content/images/apple-touch-icon.png",
+        "meta_site_name": "TomÃ¡Å¡ Kohl",
+        "canonical_link": "https://tomaskohl.com/code/2020-02-11/dotnet-interactive-using-nuget-packages/",
+        "text": "Last time I installed Jupyter with .NET and tried to run a few commands to get a feel for what it's like.\n\nBefore starting today's session and exploring how I could use Nuget packages, I wondered about the limits of Jupyter / .Net Interactive. Specifically, what kind of code I can execute.\n\nDoes it run within a sandbox?\n\nAt first glance, it does not appear to do so.\n\nThis is fine on my PC where I am the only one responsible for what code gets executed, not so much if I wanted to host a Jupyter notebook online.\n\nNuget packages in a notebook\n\nThe docs for .NET Interactive are sparse as of today. I'm exploring it using a few samples that are well hidden inside the repo, specifically a sample for Importing packages, libraries, and scripts.\n\nLet's say we want to play around with taglib-sharp. First, we reference it:\n\n#r \"nuget: TagLibSharp, 2.2.0\"\n\nIn the next cell, we can import its namespace, instantiate its classes and invoke their methods.\n\nFirst, let's expand the original Song class to work with more metadata attributes and make TagLib a dependency.\n\npublic class Song { public Song(TagLib.Tag tag) { _tag = tag; } private readonly TagLib.Tag _tag; public string Title => _tag.Title; public string Artist => string.Join(\", \", _tag.Performers); public string Genre => string.Join(\", \", _tag.Genres); }\n\nThe rest is straightforward:\n\nvar tag = TagLib.File.Create(@\"C:\\Users\\Tomas\\Music\\Library\\Juan D'Arienzo\\Todo de Juan 5\\Ansiedad 12562-1_RP.flac\").Tag; var song = new Song(tag); display(song);\n\nLo and behold, the code can access my song and read its metadata:\n\nVery cool.\n\nIn the next installment, I will look at my hosting options, what the security boundaries are, and what it means for deployment.\n\nPS I reviewed Jupyter docs for public server installation, which is single-user and not really what I meant by \"hosting\".\n\nThe docs led me to JupyterHub, which seems appropriate for class-room use. From what I was able to understand, it's still not meant for a wider public use (aka, \"come to my site and play with my notebooks, anonymously\"). For even more users, there's Jupyter on Kubernetes - I know Docker and k8s well enough to not want to pay for the infrastructure if all I wanted to do was to expose a little playground.\n\nMicrosoft's own docs talk about Binder, which takes the pain (and cost) of Docker deployment out of your hands. As much as I wanted to do this on my own, that's what I would probably use.\n\nPublished on 11 Feb 2020\n\nWhat do you think? Sound off in the comments!"
+    }
+}

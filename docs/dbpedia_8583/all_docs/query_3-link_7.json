@@ -1,0 +1,31 @@
+{
+    "id": "dbpedia_8583_3",
+    "rank": 7,
+    "data": {
+        "url": "https://grahamgilbert.com/blog/2014/06/30/making-packages-with-autopkg/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Making packages with AutoPkg",
+        "top_image": "https://grahamgilbert.com/",
+        "meta_img": "https://grahamgilbert.com/",
+        "images": [],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Unknown",
+            "grahamgilbert.com"
+        ],
+        "publish_date": "2014-06-30T00:00:00",
+        "summary": "",
+        "meta_description": "Over the past few weeks, Iâve had the same conversation over and over: people telling me that once they get started using Munki, their next step will be to start using AutoPkg. I gave each person the same response: âyouâre doing it wrongâ. AutoPkg a has a reputation of being difficult to use. This is totally unjustfied. You donât need to be using Munki for it to be useful, you donât need to set it up to run automatically via Jenkins or a LaunchDaemon.",
+        "meta_lang": "en",
+        "meta_favicon": "/",
+        "meta_site_name": "graham gilbert",
+        "canonical_link": "https://grahamgilbert.com/blog/2014/06/30/making-packages-with-autopkg/",
+        "text": "Over the past few weeks, I’ve had the same conversation over and over: people telling me that once they get started using Munki, their next step will be to start using AutoPkg. I gave each person the same response: “you’re doing it wrong”.\n\nAutoPkg a has a reputation of being difficult to use. This is totally unjustfied. You don’t need to be using Munki for it to be useful, you don’t need to set it up to run automatically via Jenkins or a LaunchDaemon. If you need to get software into a package, AutoPkg is the easiest way.\n\nInstalling AutoPkg\n\nHead over to the releases page on AutoPkg’s GitHub repository and download the latest version (0.3.0 at the time of writing). It’s an Apple package, so double click it and get it installed. If you have Gate Keeper enabled, you’ll need to right-click on the package and choose to install it from there, as it’s not been signed.\n\nRecipes\n\nAutoPkg is useless without recipes. Fortunately, there are hundreds that have already been made by the community.\n\nWe’ll add the set of recipes maintained by AutoPkg’s authors, which contains some of the most common software. Open up a terminal window and enter :\n\nYou’ll see AutoPkg downloading and adding the recipes to your Mac.\n\nUsing the thing\n\nLet’s see what recipes we just added. Still in your terminal, enter:\n\nYou’ll see a whole load of output like:\n\nThe naming convention in AutoPKG is SoftwareName.output. For for example, to run a recipe that downloads Google Chrome and adds it to Munki, you would use the GoogleChrome.munki recipe, but if you just wanted to download it an make a package, you’d use the GoogleChrome.pkg recipe. It just so happens that making a package of Chrome is exactly what we want to do.\n\nBack into your terminal and enter:\n\nThe AutoPkg robot will churn away and you’ll get some output similar to:\n\nAnd when it’s all finished, you’ll be left with a nice package that you can use anywhere you’d use finely crafted packages - ARD, AutoDMG or even Casper if you’re that way inclined (although Allister Banks has been working on a way of automating importing packages into the JSS - see his recent talk for more on that subject).\n\nDoing it all again\n\nWhat happens next time you want to build an updated package?\n\nRight?\n\nWell, kinda.\n\nWhat happens if Google changes the URL AutoPkg uses to download Chrome? Fortunately we’re using the community provided recipes, and if something’s broken they usually get fixed pretty quickly. We just need to tell AutoPkg to update the installed recipes.\n\nAnd then we’re able to build our package safe in the knowledge that someone else has done all of the hard work for us."
+    }
+}

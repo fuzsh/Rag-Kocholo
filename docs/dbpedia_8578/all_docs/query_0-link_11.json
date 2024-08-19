@@ -1,0 +1,37 @@
+{
+    "id": "dbpedia_8578_0",
+    "rank": 11,
+    "data": {
+        "url": "https://gis.stackexchange.com/questions/260313/do-i-need-jts-topology-suite-if-i-use-postgis",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Do I need JTS Topology Suite if I use PostGIS?",
+        "top_image": "https://cdn.sstatic.net/Sites/gis/Img/apple-touch-icon@2.png?v=54e3ab1edcf3",
+        "meta_img": "https://cdn.sstatic.net/Sites/gis/Img/apple-touch-icon@2.png?v=54e3ab1edcf3",
+        "images": [
+            "https://cdn.sstatic.net/Sites/gis/Img/logo.svg?v=524ba4e921b1",
+            "https://i.sstatic.net/GpmAF.png?s=64",
+            "https://www.gravatar.com/avatar/70968a9cc50476c7a7f0606054fa2ef4?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/acYd0.png?s=64",
+            "https://i.sstatic.net/0iahm.jpg?s=64",
+            "https://i.sstatic.net/7Vy7c.png?s=64",
+            "https://www.gravatar.com/avatar/0ed39c2e204183b6d0c840676ebf98e6?s=64&d=identicon&r=PG",
+            "https://gis.stackexchange.com/posts/260313/ivc/3e78?prg=9a42aadd-40f0-4751-94c9-c6dfd699dd9a"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2017-11-01T02:58:41",
+        "summary": "",
+        "meta_description": "They seem to overlap in functionality, so if I only use PostGIS and Postgres SQL, do I miss anything important from JTS Topology Suite?",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/gis/Img/favicon.ico?v=6e585ede6bca",
+        "meta_site_name": "Geographic Information Systems Stack Exchange",
+        "canonical_link": "https://gis.stackexchange.com/questions/260313/do-i-need-jts-topology-suite-if-i-use-postgis",
+        "text": "To expand on the answer given by tinlyx, you will not miss anything as PostGIS utilizes the GEOS library, which is a direct C++ port of JTS, for many of its spatial functions. In addition, PostGIS uses gdal under the hood and proj4, for transforming from one coordinate system to another. PostGIS also supports a raster datatype, so you can do raster/vector operations, very common in GIS, directly in SQL. There is also support for topology, growing support for 3D, Lidar point clouds, routing via pgRouting, and the list goes on... A full list of PostGIS functions should convince you fairly quickly that everything from JTS is covered.\n\nYou also gain the data management environment of Postgres, which is an extremely fully featured, MVCC, ACID compliant RMDBS, which also supports some NoSQL type features via JSONB (binary JSON) and hstore (a key/value extension), which is used by Open Street Map to store attributes.\n\nTL;DR. No, not only will you not miss any functionality from JTS by adopting Postgres/PostGIS but you will also gain a lot of things — not least of which is the huge power that comes from being able to do advanced GIS type functionality in SQL, directly where the data resides. I say all of this as an ex Java developer, who used to use JTS extensively, but I now use Postgres/PostGIS for all my spatial work, as it scales much better.\n\nIs there any particular JTS functionality that you are particularly concerned about -- it would make the answer more focussed, potentially."
+    }
+}

@@ -1,0 +1,30 @@
+{
+    "id": "dbpedia_8583_0",
+    "rank": 52,
+    "data": {
+        "url": "https://www.sphinx-doc.org/en/master/usage/extensions/autodoc.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "sphinx.ext.autodoc – Include documentation from docstrings — Sphinx documentation",
+        "top_image": "https://www.sphinx-doc.org/en/master/_static/favicon.svg",
+        "meta_img": "https://www.sphinx-doc.org/en/master/_static/favicon.svg",
+        "images": [
+            "https://www.sphinx-doc.org/en/master/_static/sphinx-logo.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "../../_static/favicon.svg",
+        "meta_site_name": "",
+        "canonical_link": "https://www.sphinx-doc.org/en/master/usage/extensions/autodoc.html",
+        "text": "These work exactly like autoclass etc., but do not offer the options used for automatic member documentation.\n\nautodata and autoattribute support the annotation option. The option controls how the value of variable is shown. If specified without arguments, only the name of the variable will be printed, and its value is not shown:\n\n.. autodata:: CD_DRIVE :annotation:\n\nIf the option specified with arguments, it is printed after the name as a value of the variable:\n\n.. autodata:: CD_DRIVE :annotation: = your CD device name\n\nBy default, without annotation option, Sphinx tries to obtain the value of the variable and print it after the name.\n\nThe no-value option can be used instead of a blank annotation to show the type hint but not the value:\n\n.. autodata:: CD_DRIVE :no-value:\n\nIf both the annotation and no-value options are used, no-value has no effect.\n\nFor module data members and class attributes, documentation can either be put into a comment with special formatting (using a #: to start the comment instead of just #), or in a docstring after the definition. Comments need to be either on a line of their own before the definition, or immediately after the assignment on the same line. The latter form is restricted to one line only.\n\nThis means that in the following class definition, all attributes can be autodocumented:\n\nclass Foo: \"\"\"Docstring for class Foo.\"\"\" #: Doc comment for class attribute Foo.bar. #: It can have multiple lines. bar = 1 flox = 1.5 #: Doc comment for Foo.flox. One line only. baz = 2 \"\"\"Docstring for class attribute Foo.baz.\"\"\" def __init__(self): #: Doc comment for instance attribute qux. self.qux = 3 self.spam = 4 \"\"\"Docstring for instance attribute spam.\"\"\"\n\nChanged in version 0.6: autodata and autoattribute can now extract docstrings.\n\nChanged in version 1.1: Comment docs are now allowed on the same line after an assignment.\n\nChanged in version 1.2: autodata and autoattribute have an annotation option.\n\nChanged in version 2.0: autodecorator added.\n\nChanged in version 2.1: autoproperty added.\n\nChanged in version 3.4: autodata and autoattribute now have a no-value option.\n\nNote\n\nIf you document decorated functions or methods, keep in mind that autodoc retrieves its docstrings by importing the module and inspecting the __doc__ attribute of the given function or method. That means that if a decorator replaces the decorated function with another, it must copy the original __doc__ to the new function.\n\nThis value controls whether the types of undocumented parameters and return values are documented when autodoc_typehints is set to description.\n\nThe default value is \"all\", meaning that types are documented for all parameters and return values, whether they are documented or not.\n\nWhen set to \"documented\", types will only be documented for a parameter or a return value that is already documented by the docstring.\n\nWith \"documented_params\", parameter types will only be annotated if the parameter is documented in the docstring. The return type is always annotated (except if it is None).\n\nAdded in version 4.0.\n\nAdded in version 5.0: New option 'documented_params' is added.\n\nA dictionary for users defined type aliases that maps a type name to the full-qualified object name. It is used to keep type aliases not evaluated in the document. Defaults to empty ({}).\n\nThe type aliases are only available if your program enables Postponed Evaluation of Annotations (PEP 563) feature via from __future__ import annotations.\n\nFor example, there is code using a type alias:\n\nfrom __future__ import annotations AliasType = Union[List[Dict[Tuple[int, str], Set[int]]], Tuple[str, List[str]]] def f() -> AliasType: ...\n\nIf autodoc_type_aliases is not set, autodoc will generate internal mark-up from this code as following:\n\n.. py:function:: f() -> Union[List[Dict[Tuple[int, str], Set[int]]], Tuple[str, List[str]]] ...\n\nIf you set autodoc_type_aliases as {'AliasType': 'your.module.AliasType'}, it generates the following document internally:\n\n.. py:function:: f() -> your.module.AliasType: ...\n\nAdded in version 3.3."
+    }
+}

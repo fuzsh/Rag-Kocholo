@@ -1,0 +1,53 @@
+{
+    "id": "dbpedia_8582_0",
+    "rank": 86,
+    "data": {
+        "url": "https://www.hanselman.com/blog/exploring-net-cores-sourcelink-stepping-into-the-source-code-of-nuget-packages-you-dont-own",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Exploring .NET Core's SourceLink - Stepping into the Source Code of NuGet packages you don't own",
+        "top_image": "https://www.hanselman.com/blog/content/binary/Windows-Live-Writer/7e5fb7b6dad8_140AA/image_b82245ab-60ba-4279-8436-7c72097985bd.png",
+        "meta_img": "https://www.hanselman.com/blog/content/binary/Windows-Live-Writer/7e5fb7b6dad8_140AA/image_b82245ab-60ba-4279-8436-7c72097985bd.png",
+        "images": [
+            "https://hanselmanblogcontent.azureedge.net/Windows-Live-Writer/7e5fb7b6dad8_140AA/image_b82245ab-60ba-4279-8436-7c72097985bd.png",
+            "https://hanselmanblogcontent.azureedge.net/Windows-Live-Writer/7e5fb7b6dad8_140AA/image_0c73cb8d-bd5a-406e-a51d-a2eb4af12117.png",
+            "https://hanselmanblogcontent.azureedge.net/Windows-Live-Writer/7e5fb7b6dad8_140AA/image_fe75cd29-bd65-46f7-89f0-b020a78d5663.png",
+            "https://hanselmanblogcontent.azureedge.net/Windows-Live-Writer/7e5fb7b6dad8_140AA/image_da44d9e7-6126-429f-85bd-05a48c618637.png",
+            "https://hanselmanblogcontent.azureedge.net/Windows-Live-Writer/7e5fb7b6dad8_140AA/image_00c6a372-f0f8-4e0f-9bcb-aad4e4ebdcb4.png",
+            "https://images.hanselman.com/main/icon-fb.png",
+            "https://images.hanselman.com/main/icon-twitter.png",
+            "https://images.hanselman.com/main/icon-rss.png",
+            "https://images.hanselman.com/main/azure-250x250.png",
+            "https://www.gravatar.com/avatar/cca18087b325346d5007ccbc3bdddb6e?rating=PG&size=80&default=identicon",
+            "https://www.gravatar.com/avatar/b0fbd942cf75fb50b6916f5feb44a3c3?rating=PG&size=80&default=identicon",
+            "https://www.gravatar.com/avatar/721a01bfc7dd2a5df547efb7dee37186?rating=PG&size=80&default=identicon",
+            "https://www.gravatar.com/avatar/8d02a4923abd2ca6d7593f031e4222c2?rating=PG&size=80&default=identicon",
+            "https://www.gravatar.com/avatar/43074670e3a479a1d3ae5242ce00819e?rating=PG&size=80&default=identicon",
+            "https://www.gravatar.com/avatar/ceb0741ac4ae6202ca572d49d64395db?rating=PG&size=80&default=identicon",
+            "https://www.gravatar.com/avatar/39748b194dc4e684b7770ddc92790ac9?rating=PG&size=80&default=identicon",
+            "https://www.gravatar.com/avatar/8ac32db29e5bc37f2baef574334d79c8?rating=PG&size=80&default=identicon",
+            "https://www.gravatar.com/avatar/5f2ef707186eb4974def525534e163fd?rating=PG&size=80&default=identicon",
+            "https://www.gravatar.com/avatar/009474aea1f202c29128e174141191dc?rating=PG&size=80&default=identicon",
+            "https://www.gravatar.com/avatar/27b9aaca2520d605651e0314c557f662?rating=PG&size=80&default=identicon",
+            "https://www.gravatar.com/avatar/32d6223a54a2ac58588ef8c21c92e746?rating=PG&size=80&default=identicon",
+            "https://mssto.112.2o7.net/b/ss/msstoextblogsnojs/1/H.20.2--NS/0"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "DotNetCore",
+            "Open Source",
+            "VS2017"
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "According to https://github.com/dotnet/sourcelink, SourceLink 'enables a great ...",
+        "meta_lang": "",
+        "meta_favicon": "https://images.hanselman.com/main/favicon.ico",
+        "meta_site_name": "",
+        "canonical_link": "https://www.hanselman.com/blog/exploring-net-cores-sourcelink-stepping-into-the-source-code-of-nuget-packages-you-dont-own",
+        "text": "According to https://github.com/dotnet/sourcelink, SourceLink \"enables a great source debugging experience for your users, by adding source control metadata to your built assets.\"\n\nSounds fantastic. I download a NuGet to use something like Json.NET or whatever all the time, I'd love to be able to \"Step Into\" the source even if I don't have laying around. Per the GitHub, it's both language and source control agnostic. I read that to mean \"not just C# and not just GitHub.\"\n\nVisual Studio 15.3+ supports reading SourceLink information from symbols while debugging. It downloads and displays the appropriate commit-specific source for users, such as from raw.githubusercontent, enabling breakpoints and all other sources debugging experience on arbitrary NuGet dependencies. Visual Studio 15.7+ supports downloading source files from private GitHub and Azure DevOps (former VSTS) repositories that require authentication.\n\nLooks like Cameron Taggart did the original implementation and then the .NET team worked with Cameron and the .NET Foundation to make the current version. Also cool.\n\nLet me see if this really works and how easy (or not) it is.\n\nI'm going to make a little library using the 5 year old Pseudointernationalizer from here. Fortunately the main function is pretty pure and drops into a .NET Standard library neatly.\n\nI'll put this on GitHub, so I will include \"PublishRepositoryUrl\" and \"EmbedUntrackedSources\" as well as including the PDBs. So far my CSPROJ looks like this:\n\nPretty straightforward so far. As I am using GitHub I added this reference, but if I was using GitLab or BitBucket, etc, I would use that specific provider per the docs.\n\nNow I'll pack up my project as a NuGet package.\n\nD:\\github\\SourceLinkTest\\PsuedoizerCore [master ≡]> dotnet pack -c release\n\nMicrosoft (R) Build Engine version 15.8.166+gd4e8d81a88 for .NET Core\n\nCopyright (C) Microsoft Corporation. All rights reserved.\n\nRestoring packages for D:\\github\\SourceLinkTest\\PsuedoizerCore\\PsuedoizerCore.csproj...\n\nGenerating MSBuild file D:\\github\\SourceLinkTest\\PsuedoizerCore\\obj\\PsuedoizerCore.csproj.nuget.g.props.\n\nRestore completed in 96.7 ms for D:\\github\\SourceLinkTest\\PsuedoizerCore\\PsuedoizerCore.csproj.\n\nPsuedoizerCore -> D:\\github\\SourceLinkTest\\PsuedoizerCore\\bin\\release\\netstandard2.0\\PsuedoizerCore.dll\n\nSuccessfully created package 'D:\\github\\SourceLinkTest\\PsuedoizerCore\\bin\\release\\PsuedoizerCore.1.0.0.nupkg'.\n\nLet's look inside the .nupkg as they are just ZIP files. Ah, check out the generated *.nuspec file that's inside!\n\nSee under repository it points back to the location AND commit hash for this binary! That means I can give it to you or a coworker and they'd be able to get to the source. But what's the consumption experience like? I'll go over and start a new Console app that CONSUMES my NuGet library package. To make totally sure that I don't accidentally pick up the source from my machine I'm going to delete the entire folder. This source code no longer exists on this machine.\n\nI'm using a \"local\" NuGet Feed. In fact, it's just a folder. Check it out:\n\nSee how I used -s to point to an alternate source? I could also configure my NuGet feeds, be they local directories or internal servers with \"dotnet new nugetconfig\" and including my NuGet Servers in the order I want them searched.\n\nHere is my little app:\n\nAnd the output is [Ħęľľő Ŵőřľđ! !!! !!!].\n\nBut can I step into it? I don't have the source remember...I'm using SourceLink.\n\nIn Visual Studio 2017 I confirm that SourceLink is enabled. This is the Portable PDB version of SourceLink, not the \"SourceLink 1.0\" that was \"Enable Source Server Support.\" That only worked on Windows..\n\nYou'll also want to turn off \"Just My Code\" since, well, this isn't your code.\n\nNow I'll start a Debug Session in my consumer app and hit F11 to Step Into the Library whose source I do not have!\n\nFantastic. It's going to get the source for me! Without git cloning the repository it will seamlessly let me continue my debugging session.\n\nThe temporary file ended up in C:\\Users\\scott\\AppData\\Local\\SourceServer\\4bbf4c0dc8560e42e656aa2150024c8e60b7f9b91b3823b7244d47931640a9b9 if you're interested. I'm able to just keep debugging as if I had the source...because I do! It came from the linked source.\n\nVery cool. I'm going to keep digging into SourceLink and learning about it. It seems that if YOU have a library or published NuGet either inside your company OR out in the open source world that you absolutely should be using SourceLink.\n\nYou can even install the sourcelink global tool and test your .pdb files for greater insight.\n\nThink about how much easier consumers of your library will have it when debugging their apps! Your package is no longer a black box. Go set this up on your projects today."
+    }
+}

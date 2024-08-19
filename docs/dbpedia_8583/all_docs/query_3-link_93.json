@@ -1,0 +1,39 @@
+{
+    "id": "dbpedia_8583_3",
+    "rank": 93,
+    "data": {
+        "url": "https://askubuntu.com/questions/123077/installing-applications-from-source",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Installing applications from source",
+        "top_image": "https://cdn.sstatic.net/Sites/askubuntu/Img/apple-touch-icon@2.png?v=c492c9229955",
+        "meta_img": "https://cdn.sstatic.net/Sites/askubuntu/Img/apple-touch-icon@2.png?v=c492c9229955",
+        "images": [
+            "https://cdn.sstatic.net/Sites/askubuntu/Img/logo.svg?v=472cf2768bba",
+            "https://www.gravatar.com/avatar/d9d19324a2160f90b341a9acf25387c5?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/0949ed792465bbf8c425c9fc0f4c1ef1?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/285b1f0f4caadc088a38c40aea22feba?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/dbd98f264c64096af168747c3ae71a7d?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/e4b24d290836076bb32b6c55968f29bd?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/61d2bc0830d4865a62c42c5e23a8c85f?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/e4b24d290836076bb32b6c55968f29bd?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/7b470e79f9eb14c32bc0b8f3eb47fbd8?s=64&d=identicon&r=PG",
+            "https://askubuntu.com/posts/123077/ivc/3e78?prg=d5ec9238-0dd4-494b-8719-d1536fc016de"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2012-04-18T09:21:42",
+        "summary": "",
+        "meta_description": "I was wondering about generic installations of all applications in linux. And what that means? Well, when I was using windows I knew that if I want to install an application I am double-clicking th...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/askubuntu/Img/favicon.ico?v=928dfb7c1990",
+        "meta_site_name": "Ask Ubuntu",
+        "canonical_link": "https://askubuntu.com/questions/123077/installing-applications-from-source",
+        "text": "Installation instructions vary across programs although there are well-established tools like autotools (includes automake and autoconf) and cmake.\n\nSince programs can come in different programming languages, its hard to give generic commands that suit all packages. For example, Python often have setup.py scripts where C programs often use autotools or at least a Makefile.\n\nI always start with finding the INSTALL, README or similar files. If you need to compile a program from source, you likely need the build-essential package which depends on compilers and other generic development packages.\n\nDepending on the program you're trying to compile, you might need to install other dependencies. Check the README for that or the output of the ./configure script (an executable file located in the root of the extracted source). For example, if it says that you need \"x11 development headers\", try finding \"x11-dev\" or \"libx11-dev\" in the repositories (in this case, it's libx11-dev what you're looking for).\n\nSource distributions that were built with autoconf/automake can be extracted and configured with:\n\ntar xf foo-1.0.tar.gz cd foo-1.0 ./configure make sudo make install\n\nUse ./configure --help for available options. By default, the files are often installed to /usr/local which is perfectly fine. Unless you're going to package the file into a .deb file, do not change this prefix to /usr as it may conflict with the package management system (dpkg).\n\nmake is supposed to start compiling everything where make install installs the files to the designated locations (sudo is necessary for writing to privileged locations like /usr/local). To uninstall it later, run from the source directory sudo make uninstall (providing that the package is properly build with autoconf/automake, which is a responsibility of the developer, not you, the user!\n\nIf you're just interested in compiling a package from the software center on your computer, proceed with (replace package and the version accordingly):\n\nsudo apt-get build-dep package apt-get source package cd package-1.0 dpkg-buildpackage -b -uc -us\n\nSee the respecxtive manual pages for more details on the commands. (e.g. run man dpkg-buildpackage in a terminal). After performing these commands, you'll have a .deb file in the parent directory. It's recommended to use the packages from Ubuntu repositories where possible. The above steps are shown for educational reasons, but generally you want to make a modification to some files before building the package.\n\nFreeCAD is available in the Ubuntu Software Center, so it was not necessary to build and install it from source code.\n\nThe Ubuntu Software Center always the first place where you should look. Installing is just a matter of clicking a button.\n\nThere's an icon for the Ubuntu Software Center in the bar on the left side of the screen.\n\nIf you really want to build and install a program from source, then look for a README file or other instructions that come with the program.\n\nMany software packages use GNU autotools as the build system and can be built and installed with the following commands:\n\n./configure make sudo make install\n\nBefore building a program you'll need to check what the required libraries and other dependencies are (that should also be mentioned in the documentation for the program). On packages.ubuntu.com you can find the Ubuntu packages that contain the required libraries.\n\nSuppose the program needs a library called blah, then you'll probably need to install the package libblah-dev (lookup the exact name on the Ubuntu Packages page I mentioned above).\n\nsudo apt-get install libblah-dev"
+    }
+}

@@ -1,0 +1,51 @@
+{
+    "id": "dbpedia_8578_2",
+    "rank": 66,
+    "data": {
+        "url": "https://webmonkeyswithlaserbeams.wordpress.com/2009/03/04/the-sweet-java-topology-suite-part-ii/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "The Sweet Java Topology Suite – Part II",
+        "top_image": "https://webmonkeyswithlaserbeams.wordpress.com/files/2009/02/jts2blog_2_union1.jpg?w=128",
+        "meta_img": "https://webmonkeyswithlaserbeams.wordpress.com/files/2009/02/jts2blog_2_union1.jpg?w=128",
+        "images": [
+            "https://webmonkeyswithlaserbeams.wordpress.com/wp-content/uploads/2009/02/jts2blog_2_union1.jpg?w=150&h=81",
+            "https://webmonkeyswithlaserbeams.wordpress.com/wp-content/uploads/2009/02/jts2blog_3_union_no_hole1.jpg?w=150&h=81",
+            "https://webmonkeyswithlaserbeams.wordpress.com/wp-content/uploads/2009/02/jts2blog_4_bad_simple.jpg?w=150&h=81",
+            "https://webmonkeyswithlaserbeams.wordpress.com/wp-content/uploads/2009/02/jts2blog_simple0_raw.jpg?w=150&h=81",
+            "https://webmonkeyswithlaserbeams.wordpress.com/wp-content/uploads/2009/02/jts2blog_simple1_lines.jpg?w=150&h=81",
+            "https://webmonkeyswithlaserbeams.wordpress.com/wp-content/uploads/2009/02/jts2blog_simple2_lines.jpg?w=150&h=81",
+            "https://webmonkeyswithlaserbeams.wordpress.com/wp-content/uploads/2009/02/jts2blog_simple3_poly.jpg?w=150&h=81",
+            "https://webmonkeyswithlaserbeams.wordpress.com/wp-content/uploads/2009/02/jts2blog_simple4_poly.jpg?w=150&h=81",
+            "https://webmonkeyswithlaserbeams.wordpress.com/wp-content/uploads/2009/02/jts2blog_compare_before.jpg?w=150&h=121",
+            "https://webmonkeyswithlaserbeams.wordpress.com/wp-content/uploads/2009/02/jts2blog_compare_after.jpg?w=150&h=121",
+            "https://webmonkeyswithlaserbeams.wordpress.com/wp-content/uploads/2009/02/jts2blog_mq_postal_codes.jpg?w=150&h=101",
+            "https://webmonkeyswithlaserbeams.wordpress.com/wp-content/uploads/2009/02/jts2blog_mq_terr_with_hole.jpg?w=150&h=101",
+            "https://2.gravatar.com/avatar/890dc7cdbe7fba8c12a122a940cf516f3ff55f1efd5321454ea04d2436525b02?s=32&d=https%3A%2F%2F2.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D32",
+            "https://1.gravatar.com/avatar/a5736795a3ab77ca3d97b7a914e25dd8bfb62b1b70544a24e7bbb4209b640915?s=32&d=https%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D32",
+            "https://1.gravatar.com/avatar/125740499ae7083b569a82c467575c1f20e5c1df68872a7958711a3f491e3bbe?s=32&d=https%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D32",
+            "https://tonybradshaw.files.wordpress.com/2017/08/site-icon.png?w=32",
+            "https://1.gravatar.com/avatar/dab362de85a439ca196e6db364728ac3a33b238b90f6786393a2647c7bfdbb83?s=32&d=https%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D32",
+            "https://s2.wp.com/i/logo/wpcom-gray-white.png",
+            "https://s2.wp.com/i/logo/wpcom-gray-white.png",
+            "https://pixel.wp.com/b.gif?v=noscript"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Doug Smith"
+        ],
+        "publish_date": "2009-03-04T00:00:00",
+        "summary": "",
+        "meta_description": "In a previous post, we described how we started using the Java Topology Suite (JTS) to manipulate postal/zip code polygons that we are viewing in an application built on MapQuest's Flex API. Since then, we have added the ability to join multiple postal codes into territories. Sometimes over 1,000 postal code polygons will be combined…",
+        "meta_lang": "en",
+        "meta_favicon": "https://s1.wp.com/i/favicon.ico",
+        "meta_site_name": "Web Monkeys with Laserbeams",
+        "canonical_link": "https://webmonkeyswithlaserbeams.wordpress.com/2009/03/04/the-sweet-java-topology-suite-part-ii/",
+        "text": "In a previous post, we described how we started using the Java Topology Suite (JTS) to manipulate postal/zip code polygons that we are viewing in an application built on MapQuest’s Flex API. Since then, we have added the ability to join multiple postal codes into territories. Sometimes over 1,000 postal code polygons will be combined to form a single territory.\n\nWe ran into two significant technical hurdles. First, MapQuest’s API doesn’t support polygons with inner holes. So, a donut-shaped polygon would just look like a circle, with no hole in the middle. The other problem was that some of the postal codes were so complicated that the unify process would fail.\n\nIf you read the other article, you saw that we did use JTS to simplify polygons (by reducing the number of points that make up the polygon). However, we didn’t end up using those in production because the edges of the simplified polygons would not line up. They end up looking like broken glass, because the simplify process had no regard for adjacent polygon edges.\n\nSo, we set out on an adventure to simplify the polygons so that the edges of the simplified postal codes matched up. We received some very responsive and helpful guidance from Martin Davis, one of the principle developers of JTS. He also pointed us to the open source tool OpenJUMP, which he also helped to build. Source code from that tool was very helpful as we created our own automated simplification process.\n\nHere’s the simplification process in a nutshell:\n\nConvert the MapQuest postal code polygon data for the current patch (like the lower 48 states) to Well-Known Text (WKT) and save each postal code polygon to an individual file on the file system. For the lower 48 states, this resulted in more than 41,000 files. Here is an unsimplified version of the few polygons we’ll simplify in this example:\n\nRead all of the WKT files, one per postal code, and store them as JTS Geometry objects in a collection. To support step six (below), we store the postal code in the geometry object using the very handy Geometry.userData property. That way, each original/source geometry remembers what postal code it represents.\n\nUse JTS to convert the polygons to merged LineString objects. This creates a collection of the outlines of every polygon, where the common polygon edges become a single line.\n\nUse JTS to simplify the merged LineStrings by reducing the number of coordinates that define each line. Our code iterates across every merged LineString and uses JTS’s DouglasPeuckerSimplifier with a simplify tolerance of 0.01.\n\nUse JTS to create polygons from the simplified LineStrings. The primary JTS class was the magic Polygonizer class, along with code from OpenJUMP that prepared the line data for the Polygonizer.\n\nNow the tough part. We have a collection of simplified polygons, but they aren’t linked to any postal codes, so we can’t find the polygon and use it in our application. We needed to match the simplified polygon with the original. Since this is among the most involved processes, I’ll describe it in a bit more detail:\n\nAdd each of the original polygons to a JTS SpatialIndex called STRtree. The STRtree provides a quick query interface to find polygons that fall within a spatial constraint.\n\nIterate through each of the simplified polygons, and:\n\nQuery the STRtree to find all of the original polygons that touch the envelope (bounding rectangle) of the current simplified polygon.\n\nFind the polygon in that set which has the smallest distance between its center point and the simplified polygon’s center point.\n\nOnce the best matching simplified polygon is found, we copy the postal code from the original Geometry’s userData.\n\nSome simplified polygons have no match in the original set because of holes, so those non-matches are thrown out in this process.\n\nNow that each simplified polygon has been identified as matching a postal code, we write new WKT files for each postal code. Our code that writes these files automatically creates MultiPolygon objects for those postal codes that are made up of more than one polygon.\n\nIn order to run this process on the lower 48 United States, I had to allocate 7GB of my 8GB of RAM to the JVM so that all 41,000 polygons could be simplified at the same time. Fortunately, it’s worth the time to build. Here are the number of coordinates needed to represent all of the polygons for the three areas, both originally and after simplification, along with the savings realized:\n\nCoordinate Count Original Simplified Reduction Lower 48 United States 6,276,000 544,000 12x smaller Alaska 262,000 15,000 17x smaller Hawaii 72,000 960 75x smaller\n\nHere’s a larger area of polygons, before and after simplification:\n\nIn order to create polygons that maintain any holes in the middle with MapQuest’s polygon API, we used JTS to cut a small slice between any inner features and the exterior of the polygon. This leaves a line in the middle of the polygon, but it’s more acceptable than no hole at all. Hopefully MapQuest will support polygons with inner holes in a later release. In fact, it would be really cool if MapQuest would incorporate other structures and features from JTS, including native WKT support.\n\nWe are very grateful for the Java Topology Suite and the polygon processing it allowed us to complete. The project we’re building for Dave’s Endorsed Local Provider program will be much more successful with these improvements.\n\nTags: ColdFusion, Flex, GIS, Java, Maps"
+    }
+}

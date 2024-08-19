@@ -1,0 +1,30 @@
+{
+    "id": "dbpedia_8583_3",
+    "rank": 69,
+    "data": {
+        "url": "https://discourse.appimage.org/t/opengl-core-context-vulkan/1742",
+        "read_more_link": "",
+        "language": "en",
+        "title": "OpenGL Core Context / Vulkan",
+        "top_image": "https://sjc6.discourse-cdn.com/standard10/images/discourse-logo-sketch-small.png",
+        "meta_img": "https://sjc6.discourse-cdn.com/standard10/images/discourse-logo-sketch-small.png",
+        "images": [
+            "https://sjc6.discourse-cdn.com/standard10/user_avatar/discourse.appimage.org/yuri6037/48/420_2.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2020-06-27T09:02:12+00:00",
+        "summary": "",
+        "meta_description": "Hi, \nAfter some research it appears to me that AppImage is the best way to support portable apps (apps that do not require any installs). The applications I would like to support are games made with a custom 3d game engi&hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://sjc6.discourse-cdn.com/standard10/uploads/appimage/optimized/1X/_129430568242d1b7f853bb13ebea28b3f6af4e7_2_32x32.png",
+        "meta_site_name": "AppImage",
+        "canonical_link": "https://discourse.appimage.org/t/opengl-core-context-vulkan/1742",
+        "text": "Hello @Yuri6037 and welcome to AppImage.\n\nAfter some research it appears to me that AppImage is the best way to support portable apps (apps that do not require any installs).\n\nYes, this is exactly what it was designed for.\n\nI plan to make an SDK tool that can auto package AppImages.\n\nGreat project. I suggest that you check out my work-in-progress GitHub - probonopd/go-appimage: Go implementation of AppImage tools. Still experimental; maybe it is useful for you?\n\nOn GitHub - AppImage/appimage.github.io: Given an URL to an AppImage, the GitHub action in this project inspects the AppImage and puts it into a community-maintained catalog we are using a bash script to download, run and test all submitted AppImages on the oldest still-supported Ubuntu system at any given time, which we consider to be the baseline. As part of the process a screenshot of the running application is taken (and is required in order to pass the test).\n\nHere is the bash script that does it:\n\nIf so how do you deal with AppImages that requires OpenGL 4.0 core context only API for hardware acceleration or Vulkan API for hardware acceleration?\n\nQuite frankly, I don’t have enough clue about how graphics acceleration works so I assume this stuff to be all broken. As a result, e.g., screenshots of some Qt applications are garbled (and I suspect it has something to do with OpenGL but am not sure). Since you seem to be knowledgable about it, do you have an idea on how to do it properly?\n\nAre newly submitted AppImages required to run under sandbox?\n\nIt needs to be able to run like this:\n\nfirejail --quiet --noprofile --net=none --appimage ./Your.AppImage\" &\n\nas you can see in the script linked above.\n\nThis is used to disable any network access while the AppImage is being tested. It does not restrict the application’s ability to access any filesystem locations.\n\n/proc/self/exe will point to the executable inside your AppImage. You can use it to construct a path to your assets inside the AppImage from there.\n\nIf you want to point to assets relative/next to the AppImage, then you need to use the $APPIMAGE environment variable and construct the path from there. Be sure to handle the case when an AppImage is extracted and hence $APPIMAGE is not available (in this case, fall back to /proc/self/exe). Hope this makes sense; feel free to ask if something is unclear.\n\nThanks a lot for all this information.\n\nFrom your answer, I can consider /proc/self/exe will be available and will point to binary location, which is exactly what it is supposed to be (I have both read-only default assets and read-write modded assets given by the user in application data directory which is built from $HOME on linux and OSX, %USERPROFILE% under Windows, and local private app directory under android, and yes I know android will have poor mod support but well Google wants to restrict moddability).\n\nAs for GL this seem to be the greatest problem. Travis does not have a GPU that is compatible with CoreContext GL or Vulkan. The issue here is a lot of 3D based engines will need GPU access to even display anything.\n\nThe best I can think of to allow testing 3D accelerated applications would be to run them on a dedicated server which has a GPU like we would for deep learning based applications.\n\nSo the best plan I can think would be like:\n\nUse gIthub actions which allows for custom runners to be used as testing servers.\n\nCreate a custom runner on a dedicated machine equipped with some kind of NVIDIA GTX or compatible GPU.\n\nCreate a virtual xorg framebuffer and run the GL/VK app under it (a bit like your current script).\n\nAnother solution which I’m not sure is possible and will require much more time and may not even run fast enough for take a screenshot or it will be bugged:\n\nCreate a software rendering driver which implements the VK API and GL 4 API so that the application can use the software based rendering driver instead of the NVIDIA driver or AMD driver. Biggest con to this approach is if it does work it is just going to be super but like super slow…\n\nEDIT: It might be possible to allow people to run the test script on their own machines and then return the results…"
+    }
+}

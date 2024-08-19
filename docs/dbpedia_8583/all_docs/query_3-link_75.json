@@ -1,0 +1,45 @@
+{
+    "id": "dbpedia_8583_3",
+    "rank": 75,
+    "data": {
+        "url": "https://stackoverflow.com/questions/1522990/what-s-the-best-way-to-distribute-a-binary-application-for-linux",
+        "read_more_link": "",
+        "language": "en",
+        "title": "What’s the best way to distribute a binary application for Linux?",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/a007be5a61f6aa8f3e85ae2fc18dd66e?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/ajFOa.jpg?s=64",
+            "https://www.gravatar.com/avatar/b573ee37a32b22fb1f27a2205fd43680?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/2915caaca653f93045ddc1ed5ad36294?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/bf6eddcd47c263a1a5d31bdb4f7b6424?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/RIZKi.png?s=64",
+            "https://www.gravatar.com/avatar/c1e222ebfc0fe1bd1fae05ed4bd3c79b?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/2663ca92840dd2d42ab2176b4d24b953?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/279200995348b680d50a074a204a898b?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/f13cb1b1bd8b16bf6dc6eda558e162a0?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/RIZKi.png?s=64",
+            "https://i.sstatic.net/Fp3hB.jpg?s=64",
+            "https://www.gravatar.com/avatar/39b2db31afd51a223b16bdaaeb98bf8d?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/RIZKi.png?s=64",
+            "https://www.gravatar.com/avatar/1ef120e18d918b79a0e6c1cb06c4a678?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/1522990/ivc/3e78?prg=5d2aeb3c-7271-48e0-a30d-6eb41eec6e95"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2009-10-05T23:56:05",
+        "summary": "",
+        "meta_description": "I just finished porting an application from Windows into Linux.\nI have to create an installer of the application.\nThe application is not open source => I should distribute the application's binaries (",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/1522990/what-s-the-best-way-to-distribute-a-binary-application-for-linux",
+        "text": "Having been through this a couple of times with commercial products, I think the very best answer is to use the native installer for each supported platform. Anything else produces an unpleasant experience for the end-user, and in practice you have to test on every platform you want to support anyway, so it's not really a significant burden to maintain packages for each. The idea that you can create a binary that can \"just work\" on every platform out there, including some you've never even heard of, just really doesn't work all that well.\n\nMy recommendation is that you pick a platform or two to support initially (Red Hat and Ubuntu would be my suggestions) and then let user demand drive the creation of additional installation packages. Perhaps make it known that you're willing to support additional platforms, for a modest fee that covers your time and effort in packaging and testing on that platform. If a platform proves to be very different, you may need to charge more for ongoing support.\n\nOh, and I cannot overemphasize the value of virtual machines for scenarios like this. You need to build VMs for each platform you support, and perhaps multiple VMs per platform to make it easy to test different configurations.\n\nThere were a lot of good answers (mine included :)) here. Although that is more about binary compatibility (which you do need to worry about).\n\nFor installer I would recommend autopackage (we successfully released several versions of our software with it), they did the \"installer.sh\" part already and more (desktop integration for example).\n\nYou have to be careful and test your upgrade scenarios and stuff, depending on how complex you package structure is, but it is pretty neat overall. I fixed few bugs with dependency handling in 1.2.6, so it should be fine.\n\nUPDATE: The original question was deleted, so reposting full answer here, ignore all references to autopackage, that was merged into Listaller, not sure if relevant parts survived.\n\nFor standard libraries (like crypto++, pthreads, etc) that are likely to be available in a distribution -- link dynamically and tell users to get them from their distro repository. Or link statically if it is feasible.\n\nFor weird libraries that you must control version of (if you want to deploy Qt4 app on territory of enemy gnomes for example), compile them yourself and install into a private spot only your app knows about.\n\nNever install private libs into standard places unless you can be sure to not interfere with package systems of all distros you support. (and that they can't interfere with you either).\n\nUse rpath instead of LD_LIBRARY_PATH, and set it properly for all you binaries and all dlls that reference each other. You can set rpath on you binary to \"$ORIGIN;$ORIGIN/../lib;/opt/my/private/libs\" and have linker search those places before any standard paths. (have to setsome linker flag for origin to work I think). Make sure to set rpath on your libs too: for example QtGui needs QtCore, and if user happens to install standard package with different version, you absolutely don't want it picked up (exe -> ../lib/QtGui.so (4.4.3) -> /usr/local/lib/QtCore.so (4.4.2) -- a sure way to die early).\n\nIf you compile with any rpath, you can change it later with chrpath, thus making it possible to tweak install location as part of post processing or install script.\n\nMaintain binary compatibility. GLIB_C is pretty much static for your users, so you should link against some sufficiently old version. 2.3 is a safe bet. You can use APBuild -- a gcc wrapper that enforces GLIB_C version and does few other binary compatibility tricks, so you don't have to compile all you apps on a really old distro.\n\nIf you link to anything statically, it generally will have to be rebuilt with APBuild too, otherwise it is bound to drag newer GLIB_C symbols. All .so's you install privately will naturally have to be built with it too. Sometimes you have to patch third party libs to use older symbols. (I had to patch ruby to return real permissions instead of effective ones, since there is no such functions in older GLIB_C. Still not sure if I broke anything :)).\n\nFor integration with desktop environments (file associations, mime-types, icons, start menu entries, etc) use xdg-utils. Beware though, like everything on linux they don't really like spaces in filenames :). Make sure to test those things on each target distro -- xdg implementations are riddled with bugs and quirks.\n\nFor actual install you can either provide variety of native packages (rpm, deb and a few more), or roll out your own installer, or find installer that works on all distros bypassing native package managers. We successfully used Autopackage (same people who made APbuild) for that.\n\nI tell you an additional possibility, although I am not aware of its status: the Loki installer. Loki was a company doing videogames porting for Linux. It went down in 2002, but the installer is available.\n\nInstallShield is also available for linux. No idea on the status though.\n\nAlthough many people are proposing you to go with tar.gz, please don't. I assume you want to provide a pleasant experience for the installation procedure to your users. A tar.gz is one of the most low level, low quality, low usability choices you can do. It works everywhere because it does basically nothing, as you know.\n\nThe guys at freedesktop.org and the LSB are quite clear on where to put stuff. What you need is a friendly program to do that. Autopackage imho has the numbers (I love it), but despite its age, I haven't seen a single program out there distributed as an autopackage.\n\nEvaluate it carefully, but don't skip the chance of being part of the momentum in favour of it, just because it's not popular. If it works for you, and it works for your users, everything else does not matter."
+    }
+}

@@ -1,0 +1,38 @@
+{
+    "id": "dbpedia_8582_0",
+    "rank": 91,
+    "data": {
+        "url": "https://kaylumah.nl/2024/08/06/fix-vscode-markdown-preview.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Fixing VSCode Markdown preview with symbolic links!",
+        "top_image": "https://kaylumah.nl/assets/images/social_preview.png",
+        "meta_img": "https://kaylumah.nl/assets/images/social_preview.png",
+        "images": [
+            "https://kaylumah.nl/assets/logo.svg",
+            "https://kaylumah.nl/assets/images/social_preview.png",
+            "https://kaylumah.nl/assets/images/posts/20240806/markdown-preview/001_RootPreview.png",
+            "https://kaylumah.nl/assets/images/posts/20240806/markdown-preview/002_FolderPreview.png",
+            "https://kaylumah.nl/assets/images/posts/20240806/markdown-preview/003_SymlinkPreview.png",
+            "https://kaylumah.nl/assets/avatar_background.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "vscode",
+            "markdown"
+        ],
+        "tags": null,
+        "authors": [
+            "Max HamulyÃ¡k"
+        ],
+        "publish_date": "2024-08-06T00:00:00",
+        "summary": "",
+        "meta_description": "Render images from everywhere inside VSCode's markdown preview",
+        "meta_lang": "en",
+        "meta_favicon": "/assets/images/favicon.ico",
+        "meta_site_name": "Max HamulyÃ¡k Â· Kaylumah",
+        "canonical_link": "https://kaylumah.nl/2024/08/06/fix-vscode-markdown-preview.html",
+        "text": "Many static website generators support writing blogs in Markdown. Jekyll and several other generators organize content, such as blog posts, and assets, like images and CSS files, into separate directories.\n\nMy favorite editor for writing Markdown is VSCode. While this separation is useful for organization, it can be somewhat cumbersome when editing and previewing Markdown.\n\nTo illustrate this point, letâs look at an example. A typical directory structure looks like this:\n\n# generated with the command tree -L 2 . âââ _posts âÂ Â âââ hello-world.md âââ assets âÂ Â âââ logo.svg âââ index.html\n\nUsing the Markdown preview feature of VSCode that would look like this:\n\nThe issue\n\nIf youâre like me, your project contains many more files than the few shown in the example. In such cases, I prefer working inside the _posts folder. Unfortunately, as the screenshot below shows, this breaks the image preview functionality.\n\nInstead of displaying my logo, the preview now shows a broken image icon. Technically, this behavior is correct because, relative to our âhello-world.mdâ post, there is no âassetsâ directory. You might think that changing the path to â../assets/â would solve the issue, since thatâs where the folder exists on disk. However, VSCode does not allow this due to security concerns. Even if it did work, it would create the issue that the preview would no longer function correctly when opened from the root directory.\n\nThe solution\n\nTo my knowledge, there is no built-in function in VSCode to address this issue. However, there is an operating system-level solution: using symbolic links.\n\nWe can create a symlink by running the following command inside the \"_posts\" directory\n\nln -s ../assets assets\n\nFrom the filesystem perspective the \"_posts\" folder now has a subfolder called posts. If we now open it inside VSCode it renders the image correctly.\n\nTo consider\n\nPersonally, I believe its a nice workaround for an issue that irritated me. Before you leave I like to leave you with some final thoughts."
+    }
+}

@@ -1,0 +1,41 @@
+{
+    "id": "dbpedia_8582_0",
+    "rank": 85,
+    "data": {
+        "url": "https://zimmergren.net/nuget-error-unable-load-service-index-for-source-unauthorized/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Solving \"Unable to load the service index for source\"",
+        "top_image": "https://zimmergren.net/content/images/2021/04/nugeterror.png",
+        "meta_img": "https://zimmergren.net/content/images/2021/04/nugeterror.png",
+        "images": [
+            "https://certify.alexametrics.com/atrk.gif?account=S2qMw1zDGU20kU",
+            "https://zimmergren.net/content/images/2019/02/blog-logo-2.png",
+            "https://zimmergren.net/content/images/size/w346/2021/04/nugeterror.png 346w,          /content/images/size/w692/2021/04/nugeterror.png 692w,          /content/images/size/w1384/2021/04/nugeterror.png 1384w",
+            "https://zimmergren.net/content/images/size/w128/2022/05/-value-1-.jpg",
+            "https://zimmergren.net/content/images/2021/06/vscodefix.png",
+            "https://zimmergren.net/content/images/size/w320/2022/05/-value-1-.jpg",
+            "https://zimmergren.net/assets/images/tobias-2021-round.jpg?v=836e954e24",
+            "https://zimmergren.net/content/images/size/w346/2024/01/header-productive-not-busy.png",
+            "https://zimmergren.net/content/images/size/w346/2023/10/header-cybersecurity-frameworks.jpg",
+            "https://zimmergren.net/content/images/size/w346/2023/10/header-cisa-nsa-cybersecurity-misconfigurations-top-10.jpg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Tobias Zimmergren"
+        ],
+        "publish_date": "2021-04-12T14:46:48+00:00",
+        "summary": "",
+        "meta_description": "Running a package restore in dotnet should be easy. Sometimes, with NuGet, we bump into problems. Here's a workaround when we get Unauthorized (401).",
+        "meta_lang": "en",
+        "meta_favicon": "https://zimmergren.net/content/images/size/w256h256/2021/05/profile-indoor-colorfixed-small.png",
+        "meta_site_name": "Tobias Zimmergren on Tech",
+        "canonical_link": "https://zimmergren.net/nuget-error-unable-load-service-index-for-source-unauthorized/",
+        "text": "Setting up an entirely new project and getting things off the ground is usually the quickest part of our development process for a project. However, not its not uncommon to stumble into various issues with NuGet, if you're a dotnet dev.\n\nSomething I've ran into several times is when running dotnet restore or dotnet add package <name>, the tool throws and error with Unauthorized. Similar to the below message.\n\ndotnet restore Determining projects to restore... All projects are up-to-date for restore. DragonFruit -v 0.3.0-alpha.20574.7 Determining projects to restore... Writing C:\\Users\\tobia\\AppData\\Local\\Temp\\tmpE602.tmpinfo : Adding PackageReference for package 'System.CommandLine.DragonFruit' into project 'C:\\code\\zimmergren.cli\\zimmergren.cli.csproj'. info : Restoring packages for C:\\code\\zimmergren.cli\\zimmergren.cli.csproj... info : GET https://api.nuget.org/v3-flatcontainer/system.commandline.dragonfruit/index.json error: Unable to load the service index for source https://pkgs.dev.azure.com/redacted_org/_packaging/Core/nuget/v3/index.json. error: Response status code does not indicate success: 401 (Unauthorized).\n\nNotice how we receive an Unauthorized 401 error on the redacted_org url, which is a private repository that I have access to.\n\nI don't want to pull anything from a private repo for my new console app. However, the package restore process decides it needs to check the access to the private/protected repository regardless.\n\nSolution 1. Use a NuGet config file.\n\nTo work around this, I am creating a new nuget.config file and populating it with the basic content it needs for my project to work.\n\nShould you encounter a more long-term solution to this, please drop a comment or email to share, and I'll be happy to update so more devs can avoid these issues.\n\nHere's the basic nuget.config file that I'm adding to the root of my project:\n\n<?xml version=\"1.0\" encoding=\"utf-8\"?> <configuration> <packageSources> <clear /> <add key=\"NuGet Public\" value=\"https://api.nuget.org/v3/index.json\" /> </packageSources> </configuration>\n\nImmediately after the change, the add and restore commands works, and my development continues.\n\nSolution 2. Verify that your Personal Access Token hasn't expired\n\nIf you are pulling packages from private repositories, or you want to solve the problem independently of your specific project, you could look into the tokens you use for the private repositories.\n\nIn Azure DevOps, we have something called Personal Access Tokens. In the case of expired tokens, you may also encounter the aforementioned error.\n\nAs commented by Tom Brown, refreshing or setting up a new PAT (Personal Access Token) can also be a way to achieve success. Thanks for sharing, Tom.\n\nWhen you've got a new/regenerated token, you can tell NuGet to make use of the username + token to get access to your private NuGet repository.\n\nnuget.exe sources add -Name \"Tobias Private Feed\" -Source \"https://your-private-repository.url\" -username irrelevant -password YOUR_TOKEN_VALUE_HERE\n\nSolution 3. Run dotnet restore in Interactive mode\n\nUser db commented that they solved it using the dotnet restore --interactive command when they were using Visual Studio Code. Perhaps this is another way to work around the issue.\n\nTry running the restore like this:\n\ndotnet restore --interactive\n\nIf this solution works for you, feel free to add a comment letting everyone know 🙏\n\nThanks for reading. These are simple workarounds, but I hope it can save someone the time of troubleshooting."
+    }
+}

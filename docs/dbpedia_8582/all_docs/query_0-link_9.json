@@ -1,0 +1,35 @@
+{
+    "id": "dbpedia_8582_0",
+    "rank": 9,
+    "data": {
+        "url": "https://abhishek-ankush.medium.com/creating-custom-nuget-package-in-c-f620c3c67cd8",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Creating Custom NuGet Package in C#",
+        "top_image": "https://miro.medium.com/v2/resize:fit:531/1*p5L51IOQHnVzmpl4W3_HFA.png",
+        "meta_img": "https://miro.medium.com/v2/resize:fit:531/1*p5L51IOQHnVzmpl4W3_HFA.png",
+        "images": [
+            "https://miro.medium.com/v2/resize:fill:64:64/1*dmbNkD5D-u45r44go_cf0g.png",
+            "https://miro.medium.com/v2/resize:fill:88:88/1*QwlgROvqbLOwOc1scSxzyg.jpeg",
+            "https://miro.medium.com/v2/resize:fill:144:144/1*QwlgROvqbLOwOc1scSxzyg.jpeg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Abhishek Ankush",
+            "abhishek-ankush.medium.com"
+        ],
+        "publish_date": "2024-01-21T11:18:10.115000+00:00",
+        "summary": "",
+        "meta_description": "While working in enterprise level projects we create a lot of common code which reduces considerable amount of extra lines. There are multiple ways to create it i.e. common projects, utilities…",
+        "meta_lang": "en",
+        "meta_favicon": "https://miro.medium.com/v2/5d8de952517e8160e40ef9841c781cdc14a5db313057fa3c3de41c6f5b494b19",
+        "meta_site_name": "Medium",
+        "canonical_link": "https://abhishek-ankush.medium.com/creating-custom-nuget-package-in-c-f620c3c67cd8",
+        "text": "While working in enterprise level projects we create a lot of common code which reduces considerable amount of extra lines. There are multiple ways to create it i.e. common projects, utilities, libraries etc.\n\nFor C# project we can create these as NuGet packages.\n\nThis blog is an attempt to create step-by-step guide for creating custom NuGet packages.\n\nOverview\n\nNuGet is the package manager for the Microsoft development platform, allowing developers to easily consume and distribute reusable components.\n\nA NuGet package is a collection of code, assets, and metadata in a single file with the .nupkg extension. It is a standard way of packaging and distributing libraries, tools, and other code artifacts in the .NET ecosystem.\n\nSo if we have a piece of component developed for reuse, we can create them as NuGet Package in .Net.\n\nCharacteristics of NuGet package\n\nPackaging format: NuGet packages have the file extension .nupkg\n\nMetadata: It includes metadata specifying information about the package, such as its name, version, author, description, dependencies, and other relevant details in xml files named .nuspec\n\nVersioning: It should contain Semantic versioning (SemVer), where versions are expressed as MAJOR.MINOR.PATCH to help users understand the compatibility and impact of package updates\n\nDependencies: It specify dependencies on other NuGet packages, ensuring that the necessary dependencies are installed when a package is used.\n\nTarget Frameworks: It can be built to target specific .NET frameworks or versions, allowing developers to consume packages that are compatible with their project’s target framework\n\nCreating custom NuGet package\n\nSteps:\n\nCreate library project\n\nUpdate Assembly information\n\nPackage configuration in .nuspec file\n\nbuild the library\n\nCreate NuGet Package using nuget.exe\n\nUse the package locally without publishing\n\nPublishing the library to public NuGet manager\n\nPublishing the library to custom NuGet locations\n\nCreate library project: Use Visual studio to create a class library project. Update the custom details for the library in the same.\n\nUpdate Assembly Information\n\nUpdate “AssemblyInfo.cs” file under properties with title, description, company, product and copyright Information.\n\nBuild the library:\n\nBuild the library project in release mode. This will generate the necessary binaries (DLLs) and other artifacts.\n\nUpdate Package configuration in .nuspec file:\n\nOpen the folder containing the library project.\n\nInstall the NuGet CLI by downloading it from nuget.org. Add the nuget.exe file to a project folder\n\nOpen the command prompt and enter below command to create .nuspec file\n\nnuget spec\n\nUpdate the .nuspec file with authors, projectUrl, Description, releaseNotes, copyright, tags details\n\nCreate NuGet Package using nuget.exe\n\nRun below command to create NuGet Package.\n\nnuget pack myNugetLibrary.nuspec\n\nNuGet generates a .nupkg file in the form of identifier.version.nupkg in the current folder\n\nUse the package locally without publishing\n\nInstall the package into dependent project using below command\n\nInstall-Package C:\\Path\\To\\Some\\company.myNugetLibrary.1.0.0.nupkg\n\nPublishing the library to public NuGet manager\n\nUse below command to publish the package to Nuget.org. You’ll need an API key associated with your private NuGet feed. This key is used for authentication when pushing packages\n\nnuget push company.myNugetLibrary.1.0.0.nupkg -Source https://api.nuget.org/v3/index.json -ApiKey yourApiKey\n\nConsume the package in the dependent project with below command\n\nnuget install company.myNugetLibrary.1.0.0\n\nPublishing the library to custom NuGet locations\n\nEnsure that you have the NuGet CLI installed. You can download it from the official NuGet CLI download page. You’ll need an API key associated with your private NuGet feed. This key is used for authentication when pushing packages. Consult your private NuGet feed documentation on how to obtain or generate this key. Check if the private source is configured using below command\n\nnuget sources\n\nTo add the private source please use below command\n\nnuget sources add -Name YourPrivateFeed -Source https://your-feed-url -UserName <YourUserName> -Password <YourApiKey>\n\nPush the package using below:\n\nnuget push company.myNugetLibrary.1.0.0.nupkg -Source YourPrivateFeed -ApiKey <YourApiKey>\n\nConsume the package in the dependent project with below command\n\nnuget install company.myNugetLibrary.1.0.0"
+    }
+}

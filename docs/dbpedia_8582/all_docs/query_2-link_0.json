@@ -1,0 +1,33 @@
+{
+    "id": "dbpedia_8582_2",
+    "rank": 0,
+    "data": {
+        "url": "https://stackoverflow.com/questions/64365497/can-i-use-libraries-written-in-a-different-language-than-my-program",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Can I use libraries written in a different language than my program?",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://i.sstatic.net/ipk7S.jpg?s=64",
+            "https://www.gravatar.com/avatar/a6fa3484c98ea90355076991ff194326?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/1b11262da6d1cd26b1b0bc99a2620cee?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/64365497/ivc/3e78?prg=dbb136aa-472f-4a46-a152-542d773afa56"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2020-10-15T05:41:46",
+        "summary": "",
+        "meta_description": "I'm learning .NET framework and basically I'm trying to make a desktop application that converts YouTube URLs into mp3 format. I did some research and found that my best bet would be to use the FFm...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/64365497/can-i-use-libraries-written-in-a-different-language-than-my-program",
+        "text": "TL;DR: Yes, or no, it depends on the type of library. I would suggest you go to nuget.org and check out the available packages that have already done all the legwork for you.\n\nA full answer is probably about a books worth so let me boil down to something more managable and at least things I know. Also, emphasis on things I know.\n\nLet's avoid focusing on C#, and instead focus on .NET, as this answer, nor the ways I will write about, are in any way specific to C#, instead they're specific to .NET.\n\nYou can, in general, reference two types of external libraries from a .NET assembly:\n\nOther .NET Assemblies\n\nWindows DLLs (more about Linux a bit later)\n\nReferencing other .NET assemblies will use the same technology in the final assembly, a reference to it, but to get there you have several options:\n\nYou can create a sibling .NET project in your same solution file, and make a project reference\n\nYou can add a dependency on a Nuget package\n\nYou can add a direct reference to an assembly file you have on disk\n\nThese 3 options will all end up embedding a reference to the assembly in question. This will be just normal .NET code you reference so nothing magical happens here. You've almost certainly already done so.\n\nNow, for Windows DLLs, that is, .dll files that aren't .NET assemblies, you need to do something else.\n\nYou need to use P/Invoke, which is basically the name for how to reference such DLLs and their functions.\n\nTo use this, you would need to declare an extern method with the [DllImport(...)] attribute, as well as careful use of the right parameter types and so on. Here's an example from PInvoke.net:\n\n[DllImport(\"gdi32.dll\")] static extern bool ArcTo(IntPtr hdc, int nLeftRect, int nTopRect, int nRightRect, int nBottomRect, int nXRadial1, int nYRadial1, int nXRadial2, int nYRadial2);\n\nWriting extern methods properly requires careful attention to the data types involved. Unless this is your only option left, I would suggest you try the nuget path instead.\n\nNow, ffmpeg is neither a .NET assembly nor a Windows DLL (to my knowledge), so neither of these two options are available. If the library is available in a library suitable for linking to a C++ program, then what you have to do is write a Interop Assembly, basically create .NET classes in C++ that bridge the gap over to the ffmpeg library you want to use. Since C++.NET projects can both link to such libraries and also produce a .NET assembly, this can be done, but again careful attention to involved types needs to be done.\n\nI would assume someone has already done this job and scouring nuget.org turned up these nuget packages:\n\nFFmpeg.Native\n\nFFmpeg.Win10\n\nand about 160 other packages with ffmpeg in their names\n\nMy suggestion would be to go check out these nuget packages. Since ffmpeg contains several different libraries with different purposes, you would need to find one that gives access to the library you're interested in.\n\nFinally, if you're using .NET Core, and need to do this thing on Linux, you would need to do the same thing as for Windows DLLs above, except that .NET Core on Linux can add similar types of references to .so files. However, everything about interop assemblies written above is still valid if the library you want to link to is not a stand alone library but suitable for linking.\n\nAlso note that creating one assembly that work on both Windows and Linux is also a difficult task.\n\nThe last option is that you can shell out to the ffmpeg command line applications. You would have to store the data you want to process as files on disk, then carefully construct all the parameters to the command line program, call it in such a way that you both capture the output from the program as well as hide it so that the user doesn't see a console window, and finally read back the processed output from the final files.\n\nThis is a simple way if you either can't find the right nuget package and don't want to spend time investigating how to get p/invoke or interop assemblies right, but may be finicky in the sense that you're really starting a separate program and waiting for it to complete, and you may have to parse textual output to figure out what happened during execution, such as whether it succeeded or failed."
+    }
+}

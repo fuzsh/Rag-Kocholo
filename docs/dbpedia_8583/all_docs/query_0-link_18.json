@@ -1,0 +1,47 @@
+{
+    "id": "dbpedia_8583_0",
+    "rank": 18,
+    "data": {
+        "url": "https://derflounder.wordpress.com/2018/07/06/automating-autopkg-runs-with-autopkg-conductor/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Automating AutoPkg runs with autopkg-conductor",
+        "top_image": "https://derflounder.wordpress.com/wp-content/uploads/2018/07/autopkg_new_package_message.png",
+        "meta_img": "https://derflounder.wordpress.com/wp-content/uploads/2018/07/autopkg_new_package_message.png",
+        "images": [
+            "https://derflounder.wordpress.com/wp-content/uploads/2018/07/autopkg_new_package_message.png?w=298&h=126",
+            "https://derflounder.wordpress.com/wp-content/uploads/2018/07/autopkg_no_new_package_message.png?w=299&h=115",
+            "https://derflounder.wordpress.com/wp-content/uploads/2018/07/screen-shot-2018-07-05-at-10-38-32-pm.png?w=299&h=220",
+            "https://derflounder.wordpress.com/wp-content/uploads/2018/07/screen-shot-2018-07-05-at-10-13-10-pm.png?w=595",
+            "https://derflounder.wordpress.com/wp-content/uploads/2018/07/screen-shot-2018-07-05-at-9-14-08-pm.png?w=595",
+            "https://derflounder.wordpress.com/wp-content/uploads/2018/07/screen-shot-2018-07-05-at-10-38-32-pm1.png?w=299&h=220",
+            "https://i0.wp.com/lh5.googleusercontent.com/--II1FaafOT8/AAAAAAAAAAI/AAAAAAAAAIw/D7uH7UUBjxM/photo.jpg?resize=32%2C32&ssl=1",
+            "https://2.gravatar.com/avatar/eb7a55fd73bb493f9c58541095f0fce21122e00109080c7a1e5813f6ef1b31fe?s=32&d=identicon&r=G",
+            "https://1.gravatar.com/avatar/d678374fabfd2ce5e42a8d2ee219c878fe28d4d27ba3bdfe0905bcdd49a78f9f?s=48&d=identicon&r=G",
+            "https://0.gravatar.com/avatar/9a6eb242728c9344e6078f49f7297e7bbe7b5c5af0b3f99952f35686499ef79c?s=48&d=identicon&r=G",
+            "https://0.gravatar.com/avatar/9851bc7e13a6a30c801e72cd65e1fcc49818a778abfbfc923093a7ae8d60564a?s=48&d=identicon&r=G",
+            "https://1.gravatar.com/avatar/d01b71732017a03705b60dcd6ba6669a9b5148633fa12b8ae7531c3143604cc9?s=48&d=identicon&r=G",
+            "https://1.gravatar.com/avatar/da3a0520ed1bfc83e1f3baa3c3947cf7f0ebb511790f996d7eabad8310adcdb1?s=48&d=identicon&r=G",
+            "https://s2.wp.com/i/logo/wpcom-gray-white.png",
+            "https://s2.wp.com/i/logo/wpcom-gray-white.png",
+            "https://pixel.wp.com/b.gif?v=noscript"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Kevin Strick"
+        ],
+        "publish_date": "2018-07-06T00:00:00",
+        "summary": "",
+        "meta_description": "About two weeks ago, I noticed I had an SSL error cropping up with one of my AutoPkg recipes: When I investigated what it meant, I wound up at this lengthy issue opened for Python's requests module. In the end, it seemed to boil down to four issues: I was running AutoPkg on macOS Sierra 10.12.6.…",
+        "meta_lang": "en",
+        "meta_favicon": "https://s1.wp.com/i/favicon.ico",
+        "meta_site_name": "Der Flounder",
+        "canonical_link": "https://derflounder.wordpress.com/2018/07/06/automating-autopkg-runs-with-autopkg-conductor/",
+        "text": "About two weeks ago, I noticed I had an SSL error cropping up with one of my AutoPkg recipes:\n\n[Errno socket error] EOF occurred in violation of protocol (_ssl.c:590)\n\nWhen I investigated what it meant, I wound up at this lengthy issue opened for Python’s requests module. In the end, it seemed to boil down to four issues:\n\nI was running AutoPkg on macOS Sierra 10.12.6.\n\nThe recipe I was running used a processor which called Python’s urllib2 library.\n\nPython’s urllib2 library was calling the OS’s installed version of OpenSSL to connect to a server using TLSv1.2 .\n\nThe version of OpenSSL included with 10.12.6 does not support TLSv1.2 for the urllib2 library.\n\nWhen I looked into the situation on macOS High Sierra 10.13.5, Apple had addressed the problem by replacing OpenSSL with LibreSSL. Among other improvements, LibreSSL allowed Python’s urllib2 library to be able to connect to servers using TLSv1.2. Problem solved!\n\nUntil I ran into another problem.\n\nI had been using AutoPkgr as my way of managing AutoPkg and scheduling AutoPkg runs. However, when I set up AutoPkgr on a 10.13.5 VM and scheduled my AutoPkg nightly run, nothing happened except my CPU spiked to 100% and AutoPkgr locked up with the pinwheel of patience.\n\nOK, maybe it was something with my VM. No problem, set up a new macOS 10.13.5 VM.\n\nSame problem.\n\nMaybe it was because I was trying to run the VM on VMware’s ESXi? Set up a new VM running in VMware Fusion. Same problem.\n\nMaybe AutoPkgr was getting confused by Apple File System? I set up a 10.13.5 VM which used an HFS+ boot volume. Same problem, replicated on both ESXi and Fusion.\n\nNo matter what I tried, trying to run recipes using AutoPkgr on macOS 10.13.x resulted in the following:\n\nThe VM’s CPU spiking to 100%\n\nAutoPkgr locking up with the pinwheel of patience\n\nMy AutoPkg recipes not running\n\nI was able to eliminate AutoPkg itself as being the issue, as running recipes from the command line using AutoPkg worked fine. With that information in mind, I decided to see if I could replicate what I most liked about using AutoPkgr into another form. In the end, my needs boiled down to three:\n\nI wanted to be able to run a list of AutoPkg recipes on a scheduled basis. These recipes would be .jss recipes for uploading to a Jamf Pro server.\n\nI wanted to be able to post information about those AutoPkg recipes to a Slack channel\n\nI wanted all the error messages from an AutoPkg run, but I didn’t care about all the information that came from a successful AutoPkg run.\n\nWith that, I decided to draw on some earlier work done by Sean Kaiser, a colleague who had written a script for managing AutoPkg in the pre-AutoPkgr days. For more details, please see below the jump.\n\nSean’s solution relies on a script and LaunchDaemon running on a Mac, where it runs hourly and is set up to only send him emails if the AutoPkg logs are different from previous runs. The email notifications are a diff against the previous logs, so only the true differences get sent.\n\nFor those interested, Sean’s script is available from here:\n\nhttps://github.com/seankaiser/automation-scripts/tree/master/autopkg\n\nI was more focused on a once-daily run, so I didn’t want to use the diff methodology. After some more research, I found that my colleague Graham Pugh had written pretty much exactly what I needed: An AutoPkg post-processor named Slacker which could be used with an AutoPkg recipe list of .jss recipes to post the results to a Slack channel.\n\nI forked a copy of the Slacker post-processor and (with Graham’s help) made some edits to it to have the output appear exactly the way I wanted it to.\n\nNew package message:\n\nNo new package message:\n\nAlong with the Slacker post-processor, I also found a script for sending multiline output to a Slack channel. This would allow me to send the complete error log from an AutoPkg run to a specified Slack webhook.\n\nUsing all of this, I wrote a script named autopkg-conductor which is designed to do the following:\n\n1. Detect a list of AutoPkg recipes at a defined location and verify that the list is readable.\n\n2. If the AutoPkg recipe list is readable and available, run the following actions:\n\nA. Verify that AutoPkg is installed.\n\nB. Update all available AutoPkg repos with the latest recipes.\n\nC. Run the AutoPkg recipes in the list.\n\nThe AutoPkg run has all actions logged to ~/Library/Logs, with the logfiles being named autopkg-run-for- followed by the date.\n\nIf the optional slack_post_processor and slack_webhook variables are both populated, any AutoPkg .jss recipes should have their output sent to the Slack webhook specified in the slack_webhook variable.\n\nIf only the slack_webhook variable is populated, all output from the AutoPkg run is sent to the Slack channel. No filtering is applied, everything is sent.\n\nIf neither the slack_post_processor or slack_webhook variables are populated, no information is sent to Slack. All AutoPkg run information will be in the logs stored in ~/Library Logs.\n\nFor scheduled runs, I recommend the following:\n\nSet up a user account named autopkg to run AutoPkg in.\n\nCopy the autopkg-conductor script to /usr/local/bin/autopkg-conductor.sh and set the autopkg-conductor.sh script to be executable.\n\nSet up a LaunchDaemon to run /usr/local/bin/autopkg-conductor.sh at a pre-determined time or interval.\n\nFor this example, the LaunchDaemon shown below will run /usr/local/bin/autopkg-conductor.sh as the autopkg user once a day at 2:00 AM.\n\nThe autopkg-conductor script is available below. It’s also available from GitHub using the following link:"
+    }
+}

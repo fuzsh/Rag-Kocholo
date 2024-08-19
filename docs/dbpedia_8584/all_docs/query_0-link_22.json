@@ -1,0 +1,36 @@
+{
+    "id": "dbpedia_8584_0",
+    "rank": 22,
+    "data": {
+        "url": "https://discourse.julialang.org/t/is-there-a-from-zero-set-of-instructions-to-get-emacs-going-with-julia-ts-mode/109031",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Is there a from-zero set of instructions to get Emacs going with julia-ts-mode?",
+        "top_image": "https://global.discourse-cdn.com/julialang/original/3X/4/d/4d76a1d8062ed9397f2f00f22abdd69926b51785.png",
+        "meta_img": "https://global.discourse-cdn.com/julialang/original/3X/4/d/4d76a1d8062ed9397f2f00f22abdd69926b51785.png",
+        "images": [
+            "https://emoji.discourse-cdn.com/twitter/frowning.png?v=12",
+            "https://global.discourse-cdn.com/julialang/original/3X/9/4/94c33621656c87985e28536f38253b3e27d4e596.png",
+            "https://global.discourse-cdn.com/julialang/original/3X/b/2/b2c6df89f298a76060c54a7d981db2f26fe4e28d.png",
+            "https://sea2.discourse-cdn.com/julialang/user_avatar/discourse.julialang.org/non-jedi/48/3645_2.png",
+            "https://global.discourse-cdn.com/julialang/optimized/3X/5/f/5f6fe3fc16eb4b3a3ed58ddb826500cd3c98e28e_2_690x221.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "non-Jedi"
+        ],
+        "publish_date": "2024-01-19T23:40:57+00:00",
+        "summary": "",
+        "meta_description": "I am afraid I’ve gotten very rusty on Emacs. :frowning:",
+        "meta_lang": "en",
+        "meta_favicon": "https://global.discourse-cdn.com/julialang/optimized/3X/5/2/52e282d46eadd4022c458057bb740061d8efad72_2_32x32.png",
+        "meta_site_name": "Julia Programming Language",
+        "canonical_link": "https://discourse.julialang.org/t/is-there-a-from-zero-set-of-instructions-to-get-emacs-going-with-julia-ts-mode/109031",
+        "text": "Could you clarify where you’re getting stuck? To me, the julia-ts-mode README is fairly clear. I can’t test this because I don’t have an emacs installation with internet access at the moment, but it should be as simple as:\n\nInstall MELPA by adding this snippet to your config file:\n\n(require 'package) (add-to-list 'package-archives '(\"melpa\" . \"https://melpa.org/packages/\") t) ;; Comment/uncomment this line to enable MELPA Stable if desired. See `package-archive-priorities` ;; and `package-pinned-packages`. Most users will not need or want to do this. ;;(add-to-list 'package-archives '(\"melpa-stable\" . \"https://stable.melpa.org/packages/\") t) (package-initialize)\n\nInstall julia-ts-mode by adding the snippet from the README (I believe this should just work in emacs 29 since use-package is now included in emacs):\n\n(use-package julia-ts-mode :ensure t :mode \"\\\\.jl$\")\n\nInstall and configure treesit-auto package using the example configuration from its README by adding:\n\n(use-package treesit-auto :custom (treesit-auto-install 'prompt) :config (treesit-auto-add-to-auto-mode-alist 'all) (global-treesit-auto-mode))\n\nNavigate to a julia file with extension .jl using C-x C-f. Respond “yes” to the prompt about installing treesitter grammar, and you should be editing using julia-ts-mode.\n\nThank you, that is helpful. I’m still getting an error though:\n\nIt would be helpful to see a complete init.el file that has the moving parts in the right order.\n\nI think you were probably just missing a :ensure t for treesit-auto. Sorry about that. I don’t personally use use-package, so I missed that detail. I just tested the following in init.el with a fresh --init-directory, and it worked as expected:\n\n;;; init.el --- My emacs config -*- lexical-bindings:t -*- (require 'package) (add-to-list 'package-archives '(\"melpa\" . \"https://melpa.org/packages/\") t) (package-initialize) (use-package julia-ts-mode :ensure t :mode \"\\\\.jl$\") (use-package treesit-auto :ensure t :custom (treesit-auto-install 'prompt) :config (treesit-auto-add-to-auto-mode-alist 'all) (global-treesit-auto-mode))\n\nI should note that if you had followed the directions in the treesit-auto README instead of my bastardization of them above, everything should have worked properly. All issues are with my reading comprehension rather than with upstream documentation.\n\nLooks like treesit-auto tries to build the tree-sitter grammar from source which doesn’t work on Windows without quite a bit of effort to setup a proper build toolchain. The path forward is probably to manually install the already-built grammar dll. I’d need to lookup how to do so, but you can probably use the binary from the jll:\n\nhttps://github.com/JuliaBinaryWrappers/tree_sitter_julia_jll.jl/releases/download/tree_sitter_julia-v0.19.0%2B0/tree_sitter_julia.v0.19.0.x86_64-w64-mingw32.tar.gz"
+    }
+}

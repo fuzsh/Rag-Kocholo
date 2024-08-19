@@ -1,0 +1,33 @@
+{
+    "id": "dbpedia_8578_1",
+    "rank": 86,
+    "data": {
+        "url": "https://www.mooreds.com/wordpress/archives/1523",
+        "read_more_link": "",
+        "language": "en",
+        "title": "On the benefits of a private, internal API – Dan Moore!",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "http://www.mooreds.com/wordpress/wp-content/uploads/2014/08/4495941077_5f79abff3f_q_polygon.jpg",
+            "https://cdn2.mooreds.com/wordpress/wp-content/uploads/2020/08/letters-to-a-new-developer-210x300.png",
+            "https://www.mooreds.com/wordpress/wp-content/uploads/2021/12/Twitter-social-icons-circle-blue.png",
+            "https://blueskyweb.xyz/images/logo-32x32.jpg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2014-08-14T08:44:39-06:00",
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "",
+        "meta_site_name": "",
+        "canonical_link": "https://www.mooreds.com/wordpress/archives/1523",
+        "text": "A few years ago, the company for which I worked went through the monumental task of defining neighborhoods for a number of cities in the area where they had real estate agents. Neighborhood data is hard to get, and this task required a lot of back and forth between the person responsible for the mapping and the people who knew the neighborhoods. The maps were captured in Google’s My Maps feature, and exported as KML to a vendor who would then build neighborhood pages and maps with the data. Much of the neighborhood page would be driven off data entered in an admin back end system (it was a custom CMS, essentially).\n\nAlmost as an afterthought, I asked the vendor to provide an API for the neighborhoods, including the polygon data. I wrote up an API spec, had it reviewed by my team, and obtained approval for the vendor to build it. If I recall, it was in the neighborhood of a couple thousand dollars, and the vendor had never been asked to build something like this before.\n\nThis one API allowed the company to apply dearly won neighborhood information in so many ways:\n\ngenerate statistics by neighborhood against any lat/lng coded data\n\ntag any geocoded content with neighborhood meta data\n\nfind new and sold listings by neighborhood\n\nunderstand who were top listing agents in each neighborhood\n\ncreate internal BI tools\n\nwrite internal recruiting tools\n\npull other geocoded data by neighborhood\n\ntag transactions with neighborhood meta data\n\nMany of these were accomplished with a plugin to the data processing tool (Pentaho Kettle) that used the Java Topology Suite. Creating JTS geometries is expensive, so the plugin caches them with a simple hashmap cache. The plugin java code is garbage collected fully on each data load run, so this simple solution is appropriate, rather than a more complex LRU cache.\n\nHowever, this solution isn’t perfect. Often, if a property was on the boundary, the JTS code would often put it in the wrong neighborhood. Boundaries of neighborhoods are incorrect or overlap. Points are incorrect because geocoding isn’t perfect. Human review is still required.\n\nBut, the very fact that the neighborhood data was so accessible meant that the company could ask questions (how many homes are in each neighborhood, what are the three newest listings in this neighborhood) that simply couldn’t have been asked if there was no API. Having an internal API that exposed hard won business knowledge within the company was beneficial, even if it will never be exposed or monetized outside the company."
+    }
+}

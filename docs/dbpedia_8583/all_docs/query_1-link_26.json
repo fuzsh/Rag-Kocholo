@@ -1,0 +1,46 @@
+{
+    "id": "dbpedia_8583_1",
+    "rank": 26,
+    "data": {
+        "url": "https://stackoverflow.com/questions/46743068/python-auto-import-extension-for-vscode",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Python auto-import extension for VSCode",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/256e13236fd3f35f5d3759695c603ec4?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://lh6.googleusercontent.com/-HD3_jNTPhzw/AAAAAAAAAAI/AAAAAAAADnQ/fE4I1GMR0ZA/photo.jpg?sz=64",
+            "https://www.gravatar.com/avatar/99dc7b3a068fc5b2fcb80cef933102ae?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/d7e4842aa6a1878b1672ad85db70d5be?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://graph.facebook.com/831905787/picture?type=large",
+            "https://www.gravatar.com/avatar/8d88e68408b35e03b8c7fdb05c36dd7d?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/a2GYi.png?s=64",
+            "https://www.gravatar.com/avatar/99dc7b3a068fc5b2fcb80cef933102ae?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/IaNlR.png",
+            "https://i.sstatic.net/YLFLS.png",
+            "https://i.sstatic.net/ovKvp.png",
+            "https://i.sstatic.net/An3gf.jpg?s=64",
+            "https://lh3.googleusercontent.com/-zpFS-Lora0M/AAAAAAAAAAI/AAAAAAAAAW8/x6ZpQUf6ldw/photo.jpg?sz=64",
+            "https://i.sstatic.net/e3xsF.jpg?s=64",
+            "https://i.sstatic.net/ocDYW.png?s=64",
+            "https://www.gravatar.com/avatar/d87dde36373e3b8501812c132e1ba211?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://stackoverflow.com/posts/46743068/ivc/3e78?prg=fd5dc9c7-d1d3-47cd-a57d-053f80389c15"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2017-10-14T09:39:34",
+        "summary": "",
+        "meta_description": "Is there a Python auto-import extension/plugin available for VSCode?\nBy auto-import I mean automatically importing of Python modules, so if you type sys.argv then it should automatically import the...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/46743068/python-auto-import-extension-for-vscode",
+        "text": "(Updated answer as of August 2023)\n\nThese did it for me:\n\n\"python.analysis.indexing\": true, \"python.analysis.autoImportCompletions\": true,\n\nIf that is slowing down your computer too much because it's indexing too many files, then look into specifying patterns and depths of directories to include in the indexing using \"python.analysis.packageIndexDepths\", or using \"python.analysis.exclude\".\n\nNote that I am using Pylance (currently the default, as of January 2023).\n\nCheck out the VSCode python settings reference for more info on each of those settings.\n\nEdit August 2023: removed \"python.analysis.autoImportUserSymbols\" because @YellowStrawHatter pointed out that no longer exists.\n\nNo, but it will soon be a part of vscode-python: https://github.com/Microsoft/vscode-python/pull/636\n\nEDIT: See answer by @Eric, who built such an extension.\n\nEDIT 2: See answer by @Eyal Levin, mentioning such an extension (Pylance).\n\nFrom https://github.com/microsoft/python-language-server/issues/19#issuecomment-587303061:\n\nFor those who wonder how to trigger auto-importing as I did, here are the steps.\n\nEnable Microsoft Python Language Server by removing the check of Python: Jedi Enabled in your settings.\n\nReload the VSCode window.\n\nHover your mouse over the variable that you want to import, and click Quick fix...\n\nFor the last step, if it shows No quick fixes available or Checking for quick fixes, you may need to wait for a while until the extension has finished code analysis. It is also possible to set a shortcut that triggers a quick fix.\n\nYou can set the setting(true) below to settings.json for auto import. *Pylance extension installed automatically when Python extension is installed has the setting(true) below which is false by default and you can see my answer explaning how to open settings.json:\n\n// \"settings.json\" { ... \"python.analysis.autoImportCompletions\": true }\n\nThen, it shows all matched attributes and modules as shown below:\n\nThen, pressing Enter can automatically import what you select as shown below:\n\nIn addition, if you don't set the setting(true) below to settings.json for auto import:\n\n// \"settings.json\" { ... // \"python.analysis.autoImportCompletions\": true }\n\nThen, it only shows below:"
+    }
+}

@@ -1,0 +1,28 @@
+{
+    "id": "dbpedia_8583_0",
+    "rank": 81,
+    "data": {
+        "url": "https://www.appveyor.com/docs/deployment/nuget/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Publishing to NuGet feed",
+        "top_image": "https://www.appveyor.com/assets/img/favicons/favicon-32x32.png",
+        "meta_img": "https://www.appveyor.com/assets/img/favicons/favicon-32x32.png",
+        "images": [],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "#1 Continuous Delivery service for Windows",
+        "meta_lang": "en",
+        "meta_favicon": "/assets/img/favicons/apple-touch-icon.png",
+        "meta_site_name": "AppVeyor",
+        "canonical_link": "https://www.appveyor.com/docs/deployment/nuget/",
+        "text": "NuGet deployment provider publishes artifacts of type NuGet package to remote NuGet feed.\n\nProvider settings\n\nNuGet server URL (server) - NuGet feed URL, e.g. https://nugetserver.com/nuget/feed. If server is not specified package will be pushed to NuGet.org.\n\nAPI key (api_key) - your API key. Use “Encrypt configuration data” page in AppVeyor (Account → Encrypt YAML) to encrypt your API key before saving it to appveyor.yml.\n\nSymbol server URL (symbol_server) - Publishing URL for symbol server, If server is not specified symbol package will be pushed to SymbolSource.org.\n\nDo not publish symbol packages (skip_symbols) - skip publishing of symbol packages.\n\nArtifact(s) (artifact) - artifact name or filename to push. If not specified all artifacts of type NuGet package will be pushed. This can be a regexp such as /.*\\.nupkg/ (or /.*(\\.|\\.s)nupkg/ to include .snupkg files).\n\nConfiguring in appveyor.yml:\n\nYour NuGet API key should be encrypted using this tool: https://ci.appveyor.com/tools/encrypt.\n\nGitHub Package Registry\n\nAppVeyor NuGet deployment provider supports pushing NuGet packages to GitHub Package Registry (GPR). Read more about requirements and limitations of publishing to GPR.\n\nConfiguring publishing to GPR in appveyor.yml:\n\nNative packages with CoApp\n\nIf you are compiling a native package (such as a C++ library) and need to use the CoApp Powershell Tools to build the NuGet packages then this can also be done, but requires a little more work.\n\nThe install script should be used to download and install the CoApp package.\n\nNormally, the CoApp tools use an .autopkg file rather than a .nuspec file to contain the instructions for building the package. In the Appveyor environment, this has one small drawback. Since the package is built on each push to the underlying code repository, multiple builds will happen with the same version number in the .autopkg file. This causes deployment to fail, as a package cannot be uploaded with the same version number as the existing package.\n\nTo solve this, the .autopkg file can be renamed to .autopkg.template, and a placeholder used where the version number should go. The Appveyor build process can then replace this placeholder with the build number, ensuring the generated .autopkg file always has a unique, incrementing version number.\n\nAll this can be achieved in the before_deploy script, which will also use the CoApp tools to create the .nupkg files just before the attempt to deploy them:\n\nThe standard NuGet publishing process above can then be used to deploy these packages."
+    }
+}

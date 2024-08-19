@@ -1,0 +1,37 @@
+{
+    "id": "dbpedia_8584_1",
+    "rank": 10,
+    "data": {
+        "url": "https://stackoverflow.com/questions/38728583/how-to-create-nuget-package-for-native-c",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How to create nuget package for native C++",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://i.sstatic.net/OYbxO.jpg?s=64",
+            "https://www.gravatar.com/avatar/7715c3e6fe3371019681c145695a90d4?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/e634e02646d909ce006da694a9deec28?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/25e93a50d485eca289f887868e1bcea5?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/a007be5a61f6aa8f3e85ae2fc18dd66e?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/1142391efdd7dbf4d19554fd6433574c?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/UZvXv.jpg?s=64",
+            "https://stackoverflow.com/posts/38728583/ivc/3e78?prg=22b6334e-5272-4b1c-8ed2-ab63536f6faa"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2016-08-02T19:05:09",
+        "summary": "",
+        "meta_description": "I want to publish package about sdl_mixer, it's a native package. I did as tutorial said. I put .dll .hand .lib files into package content, but the final package didn't work. So what is right way to",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/38728583/how-to-create-nuget-package-for-native-c",
+        "text": "I want to publish package about sdl_mixer, it's a native package. I did as tutorial said. I put .dll .hand .lib files into package content, but the final package didn't work. So what is right way to create c++ nuget package?\n\nAnother question: I found in nuget, most native c++ package are published in two packages, for example:\n\nsdl2_ttf.v140\n\nsdl2_ttf.v140.redist\n\nWhat is difference between those two files? And how can I publish my packages like that?\n\nUpdate:\n\nI followed the tutorial on how to publish native packages. I have written the following autopkg file\n\nnuget{ nuspec { id = MySdl_mixer; version :2.0.0.0; title: sdl mixer; authors: { Sam Lantinga, Stephane Peter, Ryan Gordon}; owners: {spartawhy117}; licenseUrl: \"http://libsdl.org/license.php\"; projectUrl: \"http://libsdl.org/index.php\"; iconUrl:\"\"; requireLicenseAcceptance:false; summary:Nothing; description: @\"SDL_mixer is a sample multi-channel audio mixer library.... \"; releaseNotes: \"Release of C++ \"; copyright:Copyright 2015; tags: {v140 ,sdl_mixer , native, CoApp }; }; files { #defines { Include = include\\; Bin = bin64\\; Lib = lib64\\; } include:{\"${Include}*\"}; [x64,v140,debug,desktop]{ lib: ${Lib}SDL2_mixer.lib; bin: ${Bin}SDL2_mixer.dll； } [x64,v140,release,desktop]{ lib: ${Lib}SDL2_mixer.lib; bin: ${Bin}SDL2_mixer.dll； } }; targets { Defines += HAS_SDLMIXER; }; }\n\nRunning the command Write-NuGetPackage .\\sdl_mixer.autopkg returns an error unexpected input of the end. What is the problem here?\n\nI searched around for days until I found there is really no help out there on the internet at all. I did managed to piece together how to do it, and through trial and error got it working well. Which I have documented here:\n\nhttps://digitalhouseblog.wordpress.com/2019/08/22/how-to-make-a-nuget-package-for-c/\n\nBut I'll summarize here anyways:\n\nGather or stage your native library files into a folder of your choosing.\n\nCreate a *.nuspec file in that folder.\n\nEdit the *.nuspec file to include the files you want to include in your package.\n\nCreate a *.props file\n\nCall nuget pack to create the package.\n\nPush the nuget package to a feed somewhere.\n\nCreate a packages.config file.\n\nEdit the visual studio project file to import the *.props file\n\nNotice that the nuget tools inside the visual studio IDE are NEVER used. You have to do a LOT manually. See the link for full details and explanations.\n\n0xced\n\n26k1111 gold badges105105 silver badges257257 bronze badges\n\nanswered Aug 22, 2019 at 20:25\n\nC.J.C.J.\n\n16k1010 gold badges6464 silver badges7979 bronze badges"
+    }
+}
