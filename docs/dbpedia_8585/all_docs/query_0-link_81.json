@@ -1,0 +1,36 @@
+{
+    "id": "dbpedia_8585_0",
+    "rank": 81,
+    "data": {
+        "url": "https://medium.com/%40ruzin.saleem/packaging-python-lambda-functions-using-terraform-2da9f108cc6a",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Packaging Python AWS Lambda Functions using Terraform",
+        "top_image": "https://miro.medium.com/v2/da:true/resize:fit:600/1*mMzposHARMThD-QJaW-Zog.gif",
+        "meta_img": "https://miro.medium.com/v2/da:true/resize:fit:600/1*mMzposHARMThD-QJaW-Zog.gif",
+        "images": [
+            "https://miro.medium.com/v2/resize:fill:64:64/1*dmbNkD5D-u45r44go_cf0g.png",
+            "https://miro.medium.com/v2/resize:fill:88:88/1*Qgi8ioEe3S-MLpBw7oTIDQ.jpeg",
+            "https://miro.medium.com/v2/resize:fill:144:144/1*Qgi8ioEe3S-MLpBw7oTIDQ.jpeg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Ruzin Saleem",
+            "medium.com",
+            "@ruzin.saleem"
+        ],
+        "publish_date": "2019-01-29T14:14:45.454000+00:00",
+        "summary": "",
+        "meta_description": "Anyone who’s ever packaged a lambda function, especially one with dependencies, is familiar with how fiddly it can be. Either the zipped up function does not have the right directory structure or…",
+        "meta_lang": "en",
+        "meta_favicon": "https://miro.medium.com/v2/5d8de952517e8160e40ef9841c781cdc14a5db313057fa3c3de41c6f5b494b19",
+        "meta_site_name": "Medium",
+        "canonical_link": "https://medium.com/@ruzin.saleem/packaging-python-lambda-functions-using-terraform-2da9f108cc6a",
+        "text": "Anyone who’s ever packaged a lambda function, especially one with dependencies, is familiar with how fiddly it can be. Either the zipped up function does not have the right directory structure or it’s not world readable or the dependencies haven’t properly been installed.\n\nUnless you have a robust CI/build process, you are going to run into issues. In the case of a complex Lambda deployment, a build/CI server is a must.\n\nHowever, as more and more of us move towards IAC, particularly Terraform, it makes sense to manage small lambda deployments within Terraform. If you can create a lambda resource with Terraform, why not handle the packaging of the code as well?\n\nObviously, I am not the first one to think of this :P. In fact, there are a few Terraform modules available atm to package your lambdas up. The most popular one is Claranet’s Terraform AWS Lambda module. It’s very versatile in that it caters to most languages. However, versatility sometimes has drawbacks.\n\nWhen it comes to packaging of python functions and associated dependencies, I’ve seen some issues:\n\nThe hashing of the source code directory, installation of the dependencies and packaging of the function is handle by THREE separate python scripts. This is normally fine but it is additional overhead, its kinda ugly and completely unnecessary since Terraform has a ‘data archive’ resource that handles hashing and packaging, a total of six lines of code as opposed to 300!!\n\nThey don’t make use of virtualenv. This is a BIG flaw as you lose out on being able to package your function in an isolated python environment. As a result, you are more likely to run into problems with dependencies and versions, and indirectly permissions. All things we want to avoid!\n\nThey use your current system python runtime instead of your AWS Lambda runtime to package your python function and install any dependencies. Say If your AWS lamba function runtime is set to python3.7 and your system runtime is python2.7, you may run into issues again with libraries, dependencies and versions. For example, numpy, a very popular python library, is extremely version specific.\n\nDon’t get me wrong, the folks at Claranet have done a really nice job in terms of simplifying an ugly process and catering to several languages. However, I do think the python packaging can definitely be improved.\n\nSo I rolled up my sleeves and stared at my screen for a few hours and built a terraform_aws_lambda_python module that addresses most of the limitations of Claranet’s Terraform AWS Lambda module.\n\nSo how is my module different?\n\nThe module uses a pair of Terraform’s data archive resource to hash and archive the source_code directory. Total lines of code: 6! and the added benefit of being completely managed within Terraform itself.\n\nIt uses uses virtualenv to create an isolated python environment with the same runtime as that of your aws_lambda function. This eliminates any possible issues that may arise from a difference in runtimes and introduces the benefit of using an isolated python environment. Total lines of code: 10!\n\nNull_resource triggers are used to re-package the code if the hash of source_code directory or requirement.txt file changes. So if you make changes to your source code or add new libraries via requirements.txt, the module will repackage your source code and install any new dependencies.\n\nIt can’t all be sunshine and bugfree surely! Terraform’s data archive resource has a known bug. In the context of my module, this means that the data archive resource used to package the final code will keep re-hashing the code on every terraform plan/apply. There is a workaround to avoid this, however, as it has not impact on functionality other than being mildly annoying, I thought it best to wait for the official fix.\n\nThanks for reading! And if you found it useful, please leave some claps on your way out. Thought of any improvements? Add a PR."
+    }
+}

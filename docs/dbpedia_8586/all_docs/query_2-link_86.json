@@ -1,0 +1,51 @@
+{
+    "id": "dbpedia_8586_2",
+    "rank": 86,
+    "data": {
+        "url": "https://fastapi.tiangolo.com/advanced/generate-clients/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Generate Clients ¶",
+        "top_image": "https://fastapi.tiangolo.com/assets/images/social/advanced/generate-clients.png",
+        "meta_img": "https://fastapi.tiangolo.com/assets/images/social/advanced/generate-clients.png",
+        "images": [
+            "https://fastapi.tiangolo.com/img/sponsors/cryptapi-banner.svg",
+            "https://fastapi.tiangolo.com/img/sponsors/platform-sh-banner.png",
+            "https://fastapi.tiangolo.com/img/sponsors/porter-banner.png",
+            "https://fastapi.tiangolo.com/img/sponsors/bump-sh-banner.svg",
+            "https://fastapi.tiangolo.com/img/sponsors/scalar-banner.svg",
+            "https://fastapi.tiangolo.com/img/sponsors/propelauth-banner.png",
+            "https://fastapi.tiangolo.com/img/sponsors/coherence-banner.png",
+            "https://fastapi.tiangolo.com/img/sponsors/mongodb-banner.png",
+            "https://fastapi.tiangolo.com/img/sponsors/kong-banner.png",
+            "https://fastapi.tiangolo.com/img/sponsors/zuplo-banner.png",
+            "https://fastapi.tiangolo.com/img/sponsors/fine-banner.png",
+            "https://fastapi.tiangolo.com/img/sponsors/liblab-banner.png",
+            "https://fastapi.tiangolo.com/img/icon-white.svg",
+            "https://fastapi.tiangolo.com/img/icon-white.svg",
+            "https://fastapi.tiangolo.com/img/tutorial/generate-clients/image01.png",
+            "https://fastapi.tiangolo.com/img/tutorial/generate-clients/image02.png",
+            "https://fastapi.tiangolo.com/img/tutorial/generate-clients/image03.png",
+            "https://fastapi.tiangolo.com/img/tutorial/generate-clients/image04.png",
+            "https://fastapi.tiangolo.com/img/tutorial/generate-clients/image05.png",
+            "https://fastapi.tiangolo.com/img/tutorial/generate-clients/image06.png",
+            "https://fastapi.tiangolo.com/img/tutorial/generate-clients/image07.png",
+            "https://fastapi.tiangolo.com/img/tutorial/generate-clients/image08.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "FastAPI framework, high performance, easy to learn, fast to code, ready for production",
+        "meta_lang": "en",
+        "meta_favicon": "../../img/favicon.png",
+        "meta_site_name": "",
+        "canonical_link": "https://fastapi.tiangolo.com/advanced/generate-clients/",
+        "text": "Generate Clients¶\n\nAs FastAPI is based on the OpenAPI specification, you get automatic compatibility with many tools, including the automatic API docs (provided by Swagger UI).\n\nOne particular advantage that is not necessarily obvious is that you can generate clients (sometimes called SDKs ) for your API, for many different programming languages.\n\nOpenAPI Client Generators¶\n\nThere are many tools to generate clients from OpenAPI.\n\nA common tool is OpenAPI Generator.\n\nIf you are building a frontend, a very interesting alternative is openapi-ts.\n\nThere are also some company-backed Client and SDK generators based on OpenAPI (FastAPI), in some cases they can offer you additional features on top of high-quality generated SDKs/clients.\n\nSome of them also ✨ sponsor FastAPI ✨, this ensures the continued and healthy development of FastAPI and its ecosystem.\n\nAnd it shows their true commitment to FastAPI and its community (you), as they not only want to provide you a good service but also want to make sure you have a good and healthy framework, FastAPI. 🙇\n\nFor example, you might want to try:\n\nSpeakeasy\n\nStainless\n\nliblab\n\nThere are also several other companies offering similar services that you can search and find online. 🤓\n\nGenerate a TypeScript Frontend Client¶\n\nLet's start with a simple FastAPI application:\n\nNotice that the path operations define the models they use for request payload and response payload, using the models Item and ResponseMessage.\n\nAPI Docs¶\n\nIf you go to the API docs, you will see that it has the schemas for the data to be sent in requests and received in responses:\n\nYou can see those schemas because they were declared with the models in the app.\n\nThat information is available in the app's OpenAPI schema, and then shown in the API docs (by Swagger UI).\n\nAnd that same information from the models that is included in OpenAPI is what can be used to generate the client code.\n\nGenerate a TypeScript Client¶\n\nNow that we have the app with the models, we can generate the client code for the frontend.\n\nInstall openapi-ts¶\n\nYou can install openapi-ts in your frontend code with:\n\nGenerate Client Code¶\n\nTo generate the client code you can use the command line application openapi-ts that would now be installed.\n\nBecause it is installed in the local project, you probably wouldn't be able to call that command directly, but you would put it on your package.json file.\n\nIt could look like this:\n\nAfter having that NPM generate-client script there, you can run it with:\n\nThat command will generate code in ./src/client and will use axios (the frontend HTTP library) internally.\n\nTry Out the Client Code¶\n\nNow you can import and use the client code, it could look like this, notice that you get autocompletion for the methods:\n\nYou will also get autocompletion for the payload to send:\n\nYou will have inline errors for the data that you send:\n\nThe response object will also have autocompletion:\n\nIn many cases your FastAPI app will be bigger, and you will probably use tags to separate different groups of path operations.\n\nFor example, you could have a section for items and another section for users, and they could be separated by tags:\n\nIf you generate a client for a FastAPI app using tags, it will normally also separate the client code based on the tags.\n\nThis way you will be able to have things ordered and grouped correctly for the client code:\n\nIn this case you have:\n\nItemsService\n\nUsersService\n\nClient Method Names¶\n\nRight now the generated method names like createItemItemsPost don't look very clean:\n\n...that's because the client generator uses the OpenAPI internal operation ID for each path operation.\n\nOpenAPI requires that each operation ID is unique across all the path operations, so FastAPI uses the function name, the path, and the HTTP method/operation to generate that operation ID, because that way it can make sure that the operation IDs are unique.\n\nBut I'll show you how to improve that next. 🤓\n\nCustom Operation IDs and Better Method Names¶\n\nYou can modify the way these operation IDs are generated to make them simpler and have simpler method names in the clients.\n\nIn this case you will have to ensure that each operation ID is unique in some other way.\n\nFor example, you could make sure that each path operation has a tag, and then generate the operation ID based on the tag and the path operation name (the function name).\n\nCustom Generate Unique ID Function¶\n\nFastAPI uses a unique ID for each path operation, it is used for the operation ID and also for the names of any needed custom models, for requests or responses.\n\nYou can customize that function. It takes an APIRoute and outputs a string.\n\nFor example, here it is using the first tag (you will probably have only one tag) and the path operation name (the function name).\n\nYou can then pass that custom function to FastAPI as the generate_unique_id_function parameter:\n\nGenerate a TypeScript Client with Custom Operation IDs¶\n\nNow if you generate the client again, you will see that it has the improved method names:\n\nAs you see, the method names now have the tag and then the function name, now they don't include information from the URL path and the HTTP operation.\n\nPreprocess the OpenAPI Specification for the Client Generator¶\n\nThe generated code still has some duplicated information.\n\nWe already know that this method is related to the items because that word is in the ItemsService (taken from the tag), but we still have the tag name prefixed in the method name too. 😕\n\nWe will probably still want to keep it for OpenAPI in general, as that will ensure that the operation IDs are unique.\n\nBut for the generated client we could modify the OpenAPI operation IDs right before generating the clients, just to make those method names nicer and cleaner.\n\nWe could download the OpenAPI JSON to a file openapi.json and then we could remove that prefixed tag with a script like this:\n\nWith that, the operation IDs would be renamed from things like items-get_items to just get_items, that way the client generator can generate simpler method names.\n\nGenerate a TypeScript Client with the Preprocessed OpenAPI¶\n\nNow as the end result is in a file openapi.json, you would modify the package.json to use that local file, for example:\n\nAfter generating the new client, you would now have clean method names, with all the autocompletion, inline errors, etc:\n\nBenefits¶\n\nWhen using the automatically generated clients you would get autocompletion for:\n\nMethods.\n\nRequest payloads in the body, query parameters, etc.\n\nResponse payloads.\n\nYou would also have inline errors for everything.\n\nAnd whenever you update the backend code, and regenerate the frontend, it would have any new path operations available as methods, the old ones removed, and any other change would be reflected on the generated code. 🤓\n\nThis also means that if something changed it will be reflected on the client code automatically. And if you build the client it will error out if you have any mismatch in the data used.\n\nSo, you would detect many errors very early in the development cycle instead of having to wait for the errors to show up to your final users in production and then trying to debug where the problem is. ✨"
+    }
+}

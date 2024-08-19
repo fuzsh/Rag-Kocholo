@@ -1,0 +1,34 @@
+{
+    "id": "dbpedia_8581_1",
+    "rank": 64,
+    "data": {
+        "url": "https://forums.freertos.org/t/can-i-use-c-while-using-freertos-is-there-any-impediment/14538",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Can I use C++ while using FreeRTOS? Is there any impediment?",
+        "top_image": "https://d2v6vdsk2p900z.cloudfront.net/original/1X/7fc8fdb729c645aab5b20282bbe34e57cb407be6.jpeg",
+        "meta_img": "https://d2v6vdsk2p900z.cloudfront.net/original/1X/7fc8fdb729c645aab5b20282bbe34e57cb407be6.jpeg",
+        "images": [],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "rtel (Richard Barry)",
+            "madyn (Harvey)",
+            "richard-damon (Richard Damon)",
+            "juanh (Juan Hauara)",
+            "jjulich (Joseph Julicher)"
+        ],
+        "publish_date": "2022-02-22T15:55:06+00:00",
+        "summary": "",
+        "meta_description": "I have all my libraries (UART, Timers, TCP/IP, Radio, SPI, I2C, etc) writen in C++. Is there any impediment if I use C++ to write my program and use my C++ libraries with FreeRTOS? I have been doing several test all have&hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://d2v6vdsk2p900z.cloudfront.net/optimized/1X/a93f19024d17477329ed9b34f03cf81ca7cfea2b_2_32x32.png",
+        "meta_site_name": "FreeRTOS Community Forums",
+        "canonical_link": "https://forums.freertos.org/t/can-i-use-c-while-using-freertos-is-there-any-impediment/14538",
+        "text": "On top of my head, there are two points I’d like to add:\n\nFirst, remove support for structured exception handling, the main reason being that it creates numerous implicit segments that are hard to place controllably into your linker command file (there are other reasons why SEH is generally not beneficial in Industrial Embedded, but that’s not primarily a C++ concern).\n\nSecond, do NOT use statically allocated global C++ objects because your constructors would then need to be under restrictions of what they can do (the constructors for these objects are called by the C runtime startup libs very early after reset at which time major parts of the system are probably not set up the way you expect).\n\nA few other points to watch out for:\n\nDo not attempt to compile the FreeRTOS files as a ‘C++’ file, but as a C file, they use too many things that make them illegal C++ files (the biggest one is assuming that void* will implicitly convert to other pointer types which works for C but not for C++)\n\nCall-back functions give to FreeRTOS need to be ‘ordinary’ functions, and technically need to be declared 'extern “C” ’ to be compatible with FreeRTOS, but on most platforms, an ordinary C++ function or a static member function will work. Specifically, you can NOT use a member function, as FreeRTOS will not pass them a ‘this’ pointer to make them work. You need to use the ‘void*’ pointer (when available) parameter to pass the object pointer and cast it back to the object pointer and call the member function in your ‘trampoline’ interface function.\n\nAs Hartmut said, be aware that C++ is much more likely to use dynamic memory, so you need to make sure that the system it is using it actually thread safe, either by using something like the newlib __malloc_lock interface, or taking over new/delete and redirect them to the FreeRTOS heap functions (and be aware of what functions can’t be redirected). (I personally try to minimize the use of the heap even in C++ code, which can be difficult). One thing to be aware of is not all systems, even using newlib, are compiled to use the __malloc_lock system, and sometimes you need to find the right version of newlib and replace the system malloc with one using the options to use it.\n\nMy comment on exceptions should be noted. I avoid them but be aware that many implementations don’t make exceptions thread safe, but the stack unwinding uses static variables.\n\nIt may have been stated in slightly different words, however:\n\nA task cannot successfully be owned by a class. References to the variables in the class need either an instance of the class, or passing the “this” argument to the task by means of the argument contained in the class call.\n\nYou can slightly get around that by having the task declaration outside the class in the .hpp file, but I think that’s awkward at best.\n\nIn general terms for mixing C and C++, C++ can call C routines without a problem, C is not happy calling C++ routines. In situations with ST products (HAL layers, for instance), they are callable by C++, but do not seem to be thread safe and require wrappers with semaphores to make them so.\n\n(ST Micro HAL documentation seems lacking in some areas).\n\nI will disagree that a task cannot successfully be owned by a class. My wrappers successfully make class objects that contain a task defined as a member function of that class. The actual task function that is passed to the create task function is an extern “C” thunk that casts the void * pointer that it gets as a parameter to be the Task* object pointer that is the pointer to the Task Wrapper base class for the object. This fully gets around the typing issue.\n\nThe one trick is you need to make sure if the task is being created after the scheduler is started that the task starts out at a low priority then the task creating it, so the constructor finishes before the task starts. Then in the initial task function, if needed, the priority of the task can be set to where you want it.\n\nAs far as C calling C++ functions if the C++ function is declared extern “C” there should be no problems. For many platforms, the extern “C” isn’t actually needed as C and C++ use the same calling conventions so the extern “C” is only needed for functions called by ‘name’ to remove the C++ name mangling from the name of the function.\n\nAs to the ST Hal layers, the problem isn’t C++, it is just that many of those routines are just not written to be thread-safe, and need helpers to make them usable. I thnk that is what you are saying but I am not positive. I often find this a problem with the vendor-supplied I/O library and tend to use it as a guide to write my own. I also have developed a platform-independent I/O layer to meet my usual needs, and that means that the business logic ends up largely platform-independent and can easily be ported to other machines."
+    }
+}

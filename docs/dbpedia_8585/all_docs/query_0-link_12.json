@@ -1,0 +1,31 @@
+{
+    "id": "dbpedia_8585_0",
+    "rank": 12,
+    "data": {
+        "url": "https://www.elliotjordan.com/posts/autopkg-https/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Switch AutoPkg recipes to HTTPS",
+        "top_image": "https://www.elliotjordan.com/favicon-32x32.png",
+        "meta_img": "https://www.elliotjordan.com/favicon-32x32.png",
+        "images": [
+            "https://www.elliotjordan.com/img/logo.svg",
+            "https://www.elliotjordan.com/img/next.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "A script that helps AutoPkg recipe authors use HTTPS in download recipes, and context about why using HTTPS is important.",
+        "meta_lang": "en",
+        "meta_favicon": "/favicon.ico",
+        "meta_site_name": "Elliot Jordan",
+        "canonical_link": "https://www.elliotjordan.com/posts/autopkg-https/",
+        "text": "AutoPkg recipes automate and codify the often tedious tasks involved in packaging and distributing Mac software. Central to AutoPkg’s greatness are the many built-in security measures that verify you’re getting the software you intend — including code signature verification, embedded trust information in overrides, and the autopkg audit command.\n\nAutoPkg recipe authors should also follow another important security practice: use HTTPS URLs instead of HTTP whenever possible. Whether downloading actual software or downloading metadata about the software, using an HTTPS URL helps prevent person-in-the-middle attacks and keep your organization’s software pipeline secure.\n\nIn particular, the arguments and input variables used by the URLDownloader, URLTextSearcher, and SparkleUpdateInfoProvider processors should use HTTPS if the option is available, and recipe authors should perform periodic checks to detect when software developers (or their CDNs) begin offering HTTPS downloads.\n\nThe security benefits aren’t just theoretical; a few years ago, security researchers demonstrated an attack targeting Mac apps using insecure Sparkle feeds. Ben Toms wrote a good article detailing the Mac admin community’s response to the vulnerability.\n\nHTTPS Spotter\n\nChecking for the existence of HTTPS URLs can be tedious if you manage more than a handful of AutoPkg recipes, so I’ve written a Python tool called HTTPS Spotter that will automate the process for you. The source code is on GitHub and embedded below.\n\nRequirements\n\nTo use the script, you’ll need Git and AutoPkg installed.\n\nSteps\n\nClone the script to your Mac (substitute the path to your source, if not ~/Developer).\n\ngit clone https://gist.github.com/66d1c8772baf5f731bb8ddf263f33401.git ~/Developer/https_spotter\n\nRun the script with --help to see usage information.\n\n/usr/local/autopkg/python ~/Developer/https_spotter/https_spotter.py --help\n\nNow run the script again, pointing it to your repository of AutoPkg recipes:\n\n/usr/local/autopkg/python ~/Developer/https_spotter/https_spotter.py ~/Developer/your-autopkg-recipes\n\nYou’ll see output that might look like this:\n\n../homebysix-recipes/NeoFinder/NeoFinder.download.recipe Replace: http://www.cdfinder.de/en/downloads.html With: https://www.cdfinder.de/en/downloads.html ../homebysix-recipes/FontFinagler/FontFinagler.download.recipe Replace: http://www.markdouma.com/fontfinagler/version.xml With: https://www.markdouma.com/fontfinagler/version.xml 2 suggested changes. To apply, run again with --auto.\n\nRun the script again with the --auto flag in order to automatically apply the changes, or apply the changes manually in your preferred text editor.\n\nTest the modified recipes prior to committing/pushing the changes to your public repo on GitHub.\n\ntip\n\nHere's a one-liner that will run recently-modified recipes in \"check only\" mode:\n\nfind * -iname \"*.recipe\" -mtime -1 -exec autopkg run -vvcq \"{}\" '+'\n\nSource code\n\nThe script is below. Suggestions or improvements are welcome!"
+    }
+}

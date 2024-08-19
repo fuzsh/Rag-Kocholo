@@ -1,0 +1,30 @@
+{
+    "id": "dbpedia_8585_1",
+    "rank": 68,
+    "data": {
+        "url": "https://technology.siprep.org/autopkg-recipe-writing-things-to-look-out-for/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "AutoPkg recipe writing: things to look out for",
+        "top_image": "https://i0.wp.com/technology.siprep.org/wp-content/uploads/2015/12/site-logo.png?fit=512%2C623&ssl=1",
+        "meta_img": "https://i0.wp.com/technology.siprep.org/wp-content/uploads/2015/12/site-logo.png?fit=512%2C623&ssl=1",
+        "images": [
+            "https://secure.gravatar.com/avatar/5f3c8e98c10dc7e9d805d08a8c8e65c8?s=32&d=mm&r=g"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2017-05-11T17:16:56+00:00",
+        "summary": "",
+        "meta_description": "AutoPkg is a cool project for Mac admins (in theory, Windows admins could use it, too, and there are even a few Windows recipes). Although it’s a flexible framework that can be applied in man…",
+        "meta_lang": "en",
+        "meta_favicon": "https://i0.wp.com/technology.siprep.org/wp-content/uploads/2015/12/site-logo.png?fit=26%2C32&ssl=1",
+        "meta_site_name": "St. Ignatius College Prep Tech Blog",
+        "canonical_link": "https://technology.siprep.org/autopkg-recipe-writing-things-to-look-out-for/",
+        "text": "AutoPkg is a cool project for Mac admins (in theory, Windows admins could use it, too, and there are even a few Windows recipes). Although it’s a flexible framework that can be applied in many different ways, what it’s most useful for is automating the tedious process of going to a website, downloading a new version of the software, and then importing that download into whatever you’re using to push updates out to your Mac clients.\n\nFor a while, I was using existing recipes (there are many, so this is a totally valid approach), but eventually there was software I didn’t see recipes for, so I started writing my own recipes. At first, I just started by copying existing templates and just modifying certain parts (the download URL, or the regular expressions to search for within the search URL).\n\nHere are some things I noticed, in case you ever want to write your own recipes and run into these issues.\n\nArguments need to be separate\n\nI ran into this issue where I was trying to purge the destination before unarchiving a .zip file, but it didn’t seem to be working. Even though the archive_path and destination_path seemed to work fine without being in the Arguments dictionary, the purge_destination key wasn’t registering until I put them all into the Arguments dictionary, as I should have from the start… so, remember to always put all arguments in an actual Arguments dictionary. Example:\n\n<dict>\n\n<key>Processor</key>\n\n<string>Unarchiver</string>\n\n<key>Arguments</key>\n\n<dict>\n\n<key>purge_destination</key>\n\n<true/>\n\n<key>archive_path</key>\n\n<string>%RECIPE_CACHE_DIR%/downloads/%NAME%.zip</string>\n\n<key>destination_path</key>\n\n<string>%RECIPE_CACHE_DIR%/%NAME%/</string>\n\n</dict>\n\n</dict>\n\nCode signature verification within disk images\n\nWhen you’re doing code signature verification on a disk image, you don’t have to explicitly use the DmgMounter processor to mount the disk image. Instead, you can just treat the .dmg as a folder that includes the bundle to be verified. Here’s an example (where %pathname% refers to the downloaded .dmg):\n\n<dict>\n\n<key>Processor</key>\n\n<string>CodeSignatureVerifier</string>\n\n<key>Arguments</key>\n\n<dict>\n\n<key>input_path</key>\n\n<string>%pathname%/DiskMaker*.app</string>\n\n<key>requirement</key>\n\n<string>identifier “net.gete.diskmakerx” and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = “2U4ZFMT67D”</string>\n\n</dict>\n\n</dict>\n\nDealing with regular expressions\n\nIf you’re not a regex expert, some of the regular expression searches for the URLTextSearcher processor may look like gibberish to you.\n\nA few tips to help with that, apart from (or maybe in addition to?) reading up on all the details of the Python regex documentation:"
+    }
+}

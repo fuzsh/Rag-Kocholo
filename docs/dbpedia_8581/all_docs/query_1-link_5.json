@@ -1,0 +1,38 @@
+{
+    "id": "dbpedia_8581_1",
+    "rank": 5,
+    "data": {
+        "url": "https://quant.stackexchange.com/questions/68767/what-is-c-used-for-when-writing-code-at-high-frequency-trading-firms",
+        "read_more_link": "",
+        "language": "en",
+        "title": "What is C++ used for when writing code at High Frequency Trading firms?",
+        "top_image": "https://cdn.sstatic.net/Sites/quant/Img/apple-touch-icon@2.png?v=efa988ad16f2",
+        "meta_img": "https://cdn.sstatic.net/Sites/quant/Img/apple-touch-icon@2.png?v=efa988ad16f2",
+        "images": [
+            "https://cdn.sstatic.net/Sites/quant/Img/logo.svg?v=6edc2035d622",
+            "https://www.gravatar.com/avatar/1f0c5fa28f635f7a2113528f4d1430c0?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/72ffe16f621a9ec1b0cd6582d45ff9a7?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/1f0c5fa28f635f7a2113528f4d1430c0?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://lh3.googleusercontent.com/a/AATXAJxq0A-GMGjoezrntImLAt0p7s_nFaCGVaxeADoD=k-s64",
+            "https://www.gravatar.com/avatar/b20eb554f9e2d2320bea37eacc4cd289?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/61149107d6a0c54263d92505819119d7?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/96df36271f50a97a34a7f7a1453bed81?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://quant.stackexchange.com/posts/68767/ivc/3f38?prg=5842cbea-1622-4c35-a6bd-c956204936d4"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2021-11-14T16:34:07",
+        "summary": "",
+        "meta_description": "Okay. This might be a pretty dumb question, but I really want to know what is it that the high frequency trading firms write in terms of services that requires C++.\nBackground\nI am a Rust and TypeS...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/quant/Img/favicon.ico?v=cf49f8cc6afd",
+        "meta_site_name": "Quantitative Finance Stack Exchange",
+        "canonical_link": "https://quant.stackexchange.com/questions/68767/what-is-c-used-for-when-writing-code-at-high-frequency-trading-firms",
+        "text": "Start by learning to write simple, clean C++ that is easy to understand by any competent developer with as little magic or reliance on the compiler to do the right thing as possible. Your intentions should be as clear to the compiler as they are to another developer. Some shops use libraries where they have no idea what is happening under the hood, but most prefer to roll their own for low-latency pathways. This means it is good for you to understand some of the issues confronted when writing those magic libraries, especially within the narrow set of problems you will deal with.\n\nFor example, a sorting library may have all sorts of optimizations for all sorts of initial conditions qsort will encounter, but if you only do insertion sorts—which is a common implementation in HFT—you really neither need nor desire a sorting library that handles the generic solution.\n\nYou will use a lot of hash map’s, but there are a lot of things hash maps can be optimized to do—such as merge or an apply—that you will likely never use. So you need to understand how to create a hash that is optimally sized for the number of entries you will deal with, statically allocate what you can and pool memory that will take care of hash collisions. Even if the firm already has an optimal hash for their use, you need to understand how it works, what choices were made and why other options were not pursued.\n\nThe more you can understand about the hardware you are running on, the better. With modern processors there are various rings of memory around the ALUs, and as you get further away from the ALU, the number of cycles to access something increases. We have a saying on this: in the old days, memory was fast, but if you had to go to disk you missed the trade because it was just too slow. Today, cache memory is fast, but if you have to go to main memory, you missed the trade.\n\nWe ran the entire Linux O/S in main memory on diskless machines—OK, there was a little bit of disk for local logging in case of a network failure, but no code was stored there—and we tried to keep everything in the trading code path in layer two cache or better. NICs with DCA (direct cache access) and user space data—aka kernel bypass—helped a lot.\n\nIf you have a good understanding of all the code—yours, the libraries and the O/S—that runs from network to application back to network, you will be a real asset as a C++ developer for an HFT firm."
+    }
+}

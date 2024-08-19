@@ -1,0 +1,36 @@
+{
+    "id": "dbpedia_8590_2",
+    "rank": 84,
+    "data": {
+        "url": "https://community.spiceworks.com/t/dell-force-10-switch-issue/936776",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Dell Force 10 switch issue",
+        "top_image": "https://global.discourse-cdn.com/spiceworks/original/1X/7a73606d7df2f794c4789897e49693fb3c471b23.png",
+        "meta_img": "https://global.discourse-cdn.com/spiceworks/original/1X/7a73606d7df2f794c4789897e49693fb3c471b23.png",
+        "images": [
+            "https://secure.intelligence52.com/795141.png",
+            "https://zdbb.net/l/z0WVjCBSEeGLoxIxOQVEwQ/"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "dell-hardware",
+            "general-networking",
+            "question"
+        ],
+        "tags": null,
+        "authors": [
+            "insurin (insurin)",
+            "adrian_ych (adrian_ych)"
+        ],
+        "publish_date": "2022-09-26T07:33:50+00:00",
+        "summary": "",
+        "meta_description": "I have 2 Dell Force 10 switches which I have been running for the past 7 years. \nFor some reason now, I get a lot of VLT Heatbeat link down then all my VLANS enter the BACKUP state causing a pause on the network of about&hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://global.discourse-cdn.com/spiceworks/optimized/1X/a254df83358a951c43ed6ee756b5e0011a8d58bc_2_32x32.png",
+        "meta_site_name": "Spiceworks Community",
+        "canonical_link": "https://community.spiceworks.com/t/dell-force-10-switch-issue/936776",
+        "text": "I have 2 Dell Force 10 switches which I have been running for the past 7 years.\n\nFor some reason now, I get a lot of VLT Heatbeat link down then all my VLANS enter the BACKUP state causing a pause on the network of about 20 seconds. This happens about once per hour.\n\nThe 2 Force 10’s have 2 x40GB (4 total) cables connecting to each other.\n\nForce10-1#sh vlt brief VLT Domain Brief ------------------ Domain ID: 1 Role: Primary Role Priority: 2 ICL Link Status: Up HeartBeat Status: Up VLT Peer Status: Up Local Unit Id: 1 Version: 6(5) Local System MAC address: 00:01:e8:d8:a1:6c Remote System MAC address: 00:01:e8:d8:a2:2c Configured System MAC address: 02:00:00:00:00:01 Remote system version: 6(5) Delay-Restore timer: 120 seconds Delay-Restore Abort Threshold: 60 seconds Peer-Routing : Disabled Peer-Routing-Timeout timer: 0 seconds Multicast peer-routing timeout: 150 seconds Force10-1#sh run interface port-channel 100 ! interface Port-channel 100 description VLTi - interconnect link no ip address mtu 12000 channel-member fortyGigE 0/56,60 no shutdown Force10-1#sh run interface fortyGigE 0/60 ! interface fortyGigE 0/60 no ip address no shutdown\n\nWhat is causing this. Bad cables?\n\nSep 26 08:48:22.544 London: %STKUNIT0-M:CP %VLTMGR-6-VLT_HBEAT_UP: Heart beat link is up. Sep 26 08:48:21.662 London: %STKUNIT0-M:CP %VLTMGR-6-VLT_HBEAT_DOWN: Heart beat link is down (down). Sep 26 08:08:22.896 London: %STKUNIT0-M:CP %VLTMGR-6-VLT_HBEAT_UP: Heart beat link is up. Sep 26 08:08:22.792 London: %STKUNIT0-M:CP %VRRP-6-VRRP_BACKUP: IPv4 vrid-10 on Vl 130 VRF default entering BACKUP. Sep 26 08:08:22.676 London: %STKUNIT0-M:CP %VRRP-6-VRRP_BACKUP: IPv4 vrid-11 on Vl 120 VRF default entering BACKUP. Sep 26 08:08:22.556 London: %STKUNIT0-M:CP %VRRP-6-VRRP_BACKUP: IPv4 vrid-12 on Vl 110 VRF default entering BACKUP. Sep 26 08:08:22.446 London: %STKUNIT0-M:CP %VRRP-6-VRRP_BACKUP: IPv4 vrid-13 on Vl 100 VRF default entering BACKUP. Sep 26 08:08:22.336 London: %STKUNIT0-M:CP %VRRP-6-VRRP_BACKUP: IPv4 vrid-14 on Vl 32 VRF default entering BACKUP. Sep 26 08:08:22.225 London: %STKUNIT0-M:CP %VRRP-6-VRRP_BACKUP: IPv4 vrid-16 on Vl 30 VRF default entering BACKUP. Sep 26 08:08:22.107 London: %STKUNIT0-M:CP %VRRP-6-VRRP_BACKUP: IPv4 vrid-23 on Vl 260 VRF default entering BACKUP. Sep 26 08:08:21.956 London: %STKUNIT0-M:CP %VRRP-6-VRRP_BACKUP: IPv4 vrid-24 on Vl 245 VRF default entering BACKUP.\n\nI have almost the exact same functional configuration in our environment. I have not encountered the problem that you describe. Here is a config snippet from one of the VLT pair.\n\ninterface ethernet1/1/25 description \"VLTi Link\" no shutdown no switchport flowcontrol receive off flowcontrol transmit off ! interface ethernet1/1/26 description \"VLTi Link\" no shutdown no switchport flowcontrol receive off flowcontrol transmit off ! vlt-domain 1 backup destination ipv6 fda5:74c8:b79e:1::1 discovery-interface ethernet1/1/25-1/1/26 peer-routing primary-priority 4096 vlt-mac ec:33:d9:9a:90:3a !\n\n``` Dell EMC Networking OS10 Enterprise Copyright (c) 1999-2020 by Dell Inc. All Rights Reserved. OS Version: 10.5.2.2 Build Version: 10.5.2.2.258 Build Time: 2020-12-12T02:56:02+0000 System Type: S4148F-ON Architecture: x86_64 Up Time: 82 weeks 5 days 21:50:09 ```\n\nDisconnect both power cables from the main optical switch, Dell Force10 S4810. Once powered off, disconnect the power cable from the switch below, Dell S3048-ON. Once both devices are fully powered-off and after ~10 seconds, reconnected the power to the Dell Force10 S4810 optical switch and allow the device some time to fully initialize. This will be indicated by 4 green status lights in the front-right panel of the switch. Once the Dell Force10 S4810 optical switch is initialized, then reconnect the power to the Dell S3048-ON switch and allow the device to fully reinitialize. Again, indicated by 4 green status lights Once both devices are on and initialized, verify the connection status of the trouble devices.\n\nHope this helps,\n\nJames\n\nthanks all for your inputs.\n\nProblem solved. It was a classic Spanning Tree issue coming from another switch. The cause of the Spanning Tree was due to some of my Unifi Wireless AP’s had ‘Wireless Uplink’ turned on. A new feature I think. I had 2 AP’s into the same switch and then they decided to uplink to each other creating a loop. I didn’t have BPDU-Protection turned on at the time. Anyway, this loop caused Spanning Tree to constantly reconverge and when it hit the Force 10’s it caused them to flip between Master and Backup."
+    }
+}

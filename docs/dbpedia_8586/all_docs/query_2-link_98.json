@@ -1,0 +1,43 @@
+{
+    "id": "dbpedia_8586_2",
+    "rank": 98,
+    "data": {
+        "url": "https://emacs.stackexchange.com/questions/31872/how-to-update-packages-installed-with-use-package",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How to update packages installed with use-package",
+        "top_image": "https://cdn.sstatic.net/Sites/emacs/Img/apple-touch-icon@2.png?v=dbead6deb8b0",
+        "meta_img": "https://cdn.sstatic.net/Sites/emacs/Img/apple-touch-icon@2.png?v=dbead6deb8b0",
+        "images": [
+            "https://cdn.sstatic.net/Sites/emacs/Img/logo.svg?v=ceb7969787d0",
+            "https://www.gravatar.com/avatar/a007be5a61f6aa8f3e85ae2fc18dd66e?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/b557ebdf54e104f505c0b86a7c5dc877?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/e07f5643e4e9331ad5ca713c072b19f9?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/a007be5a61f6aa8f3e85ae2fc18dd66e?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/kEYyQM2b.jpg?s=64",
+            "https://www.gravatar.com/avatar/6bf0300fc4a5c9012fd254d3da2a6e69?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/1f71898dc0a455e56025a67a96b350ac?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/4cb61be3c5374aff4f1f5d2fad72772a?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/1c8e722ff9de19d6fc266aed0f51869d?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/AtBNk.png?s=64",
+            "https://i.sstatic.net/yKdsS.jpg?s=64",
+            "https://www.gravatar.com/avatar/cbe94885745bbdda8c17864e8c6f4b11?s=64&d=identicon&r=PG",
+            "https://emacs.stackexchange.com/posts/31872/ivc/3f38?prg=f66de670-fd3f-4bff-ac2f-823210ae6c92"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2017-04-02T08:43:04",
+        "summary": "",
+        "meta_description": "I'm using use-package to install and configure packages (most of these packages are in melpa).\nIs there a clean automated way of keeping all these packages up-to-date ?\n\nIf not, what is the best work",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/emacs/Img/favicon.ico?v=b21c88e7a219",
+        "meta_site_name": "Emacs Stack Exchange",
+        "canonical_link": "https://emacs.stackexchange.com/questions/31872/how-to-update-packages-installed-with-use-package",
+        "text": "I just do this manually: run list-packages hit Uto mark available upgrades, then review to decide if there are any I don't want to pick up. Then x to upgrade. I do this pretty regularly, and often check what's new at the same time. I've got a couple tweaks to simplify this (see below).\n\nI suspect upgrading could be automated, but you do want to consider the case where an update breaks something and you need to back it out and then prevent your automated updater from just installing it again.\n\nSome package menu tweaks:\n\n(defun package-menu-find-marks () \"Find packages marked for action in *Packages*.\" (interactive) (occur \"^[A-Z]\")) ;; Only in Emacs 25.1+ (defun package-menu-filter-by-status (status) \"Filter the *Packages* buffer by status.\" (interactive (list (completing-read \"Status: \" '(\"new\" \"installed\" \"dependency\" \"obsolete\")))) (package-menu-filter (concat \"status:\" status))) (define-key package-menu-mode-map \"s\" #'package-menu-filter-by-status) (define-key package-menu-mode-map \"a\" #'package-menu-find-marks)\n\nWith this I can use s new to just see what packages are newly available. And after hitting U to mark upgrades I can hit a for an occur buffer list of the ones that were marked, in case I want to dig in to details of what changed etc."
+    }
+}

@@ -1,0 +1,43 @@
+{
+    "id": "dbpedia_8586_1",
+    "rank": 18,
+    "data": {
+        "url": "https://serverfault.com/questions/11712/why-cant-linux-developers-create-a-universal-packaging-format",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Why can't Linux developers create a universal packaging format?",
+        "top_image": "https://cdn.sstatic.net/Sites/serverfault/Img/apple-touch-icon@2.png?v=9b1f48ae296b",
+        "meta_img": "https://cdn.sstatic.net/Sites/serverfault/Img/apple-touch-icon@2.png?v=9b1f48ae296b",
+        "images": [
+            "https://cdn.sstatic.net/Sites/serverfault/Img/logo.svg?v=43f5b6d5f65b",
+            "https://www.gravatar.com/avatar/5386edb95ebf906d70f0fe1e5fe1005e?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/e8105d3e13aa4f2b15557be12cf2e52c?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/2f364c2e36b52bc80296cbf23da8b231?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/dde57efef0cae49397d81f0a33a5b075?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/d2b0006a212b8d9240f6934fca4e4969?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/99660662e89949a4b53cd97bc199ead1?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/c4a74447ffc5d9ff57df068c5ac3820e?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/0907bf9be594f84bd3963073f69cb5e7?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/55fd56dfef815d7aa543be09ad3ed3e9?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/00a83a5177e981a278a8f55a31bd6767?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/9301e0696230863829190c3541cb8164?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/573183de064c5b133deb366ca47c7ff5?s=64&d=identicon&r=PG",
+            "https://serverfault.com/posts/11712/ivc/3f38?prg=473677e6-f7e8-463d-b7d8-d9adf72e137f"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2009-05-24T00:54:19",
+        "summary": "",
+        "meta_description": "Vendor binary package format selections appear to be determined by a form of Murphy's Law: all the distros you don't use have packages. (Corralary: there exists no distribution that satisfies your",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/serverfault/Img/favicon.ico?v=18e9cc4f2aea",
+        "meta_site_name": "Server Fault",
+        "canonical_link": "https://serverfault.com/questions/11712/why-cant-linux-developers-create-a-universal-packaging-format",
+        "text": "It seems appropriate to quote Joel Spolsky on this one:\n\n(By the way, for those of you who follow the arcane but politically-charged world of blog syndication feed formats, you can see the same thing happening over there. RSS became fragmented with several different versions, inaccurate specs and lots of political fighting, and the attempt to clean everything up by creating yet another format called Atom has resulted in several different versions of RSS plus one version of Atom, inaccurate specs and lots of political fighting. When you try to unify two opposing forces by creating a third alternative, you just end up with three opposing forces. You haven't unified anything and you haven't really fixed anything.)\n\n(emphasis added)\n\nYou have (at least) two packaging systems for Linux. That's actually a good thing. A single system will simply create a third system.\n\nThere are many reasons for this, and a bit of history is in order to put things into perspective.\n\nRemember that when we talk about \"Linux\" what we are generally referring to is one of many different Linux distributions. \"Linux\" is actually just an operating system kernel.\n\nThe original goal of Linux was to create a Unix-based system that would run on PCs (initially the 386). The first step was to create the kernel itself. While Linus Torvalds was working on the kernel Richard Stallman was working on his own Free Unix system, under the GNU (GNU's Not Unix) project. To cut a long story short, the two somewhat converged because GNU had the associated utilities (C compiler / library / build tools, shell, text editors etc.) but no core to run it on, and Linux had the core but no utilities to run on top of it to make it useful for the masses.\n\nThis convergence came to be known somewhat officially as GNU/Linux. You will see that a lot of distros still refer to themselves as GNU/Linux distributions.\n\nBecause of the Free and open nature of GNU/Linux anyone could pick it up and create a bundled system to their specific tastes. The result was that many different streams of varying configuration methods were used to create these systems, which had the side-effect of creating almost as many different package management systems to fit in with each one.\n\nEach different complete system had its own strong followers who stuck with them over the years, resulting in what we have today: a handful of widely used, deeply-rooted and stable package management systems like RPM, APT / dpkg and Gentoo's Portage.\n\nThere are projects, such as Autopackage, which are attempting to solve the problem, but the continuous evolution of the various supported package management system means there are many moving targets to follow.\n\nWhat some software vendors end up doing is bundling the specific binaries and copies of dependencies they require into one large package which will work on specific systems.\n\nHaving the same package format wouldn't help anyway. You just can't use the same package in other distributions. You can't often even use it in the different version of the same distribution. And even building the package can have the same problems.\n\nTo install a package you need to meet the dependencies that are formed during the building of the package. To build a package you need to meet the build dependencies. And these things change. To be able to implement the changes, it is easier to support only packages you can modify to work after the changes.\n\nIf all the dependencies would be the same, it wouldn't be a different distribution or different version of the same distribution.\n\nI think cletus, Wayne, and iny answered this pretty well. I'd like to add that really, it's not a huge deal. I work in a mixed environment where we have Gentoo (portage), SUSE (rpm/zypper), and OpenBSD (packages and ports). Installing packages on any one of them is not difficult, and I don't really care what format they are using.\n\nFrom the perspective of packaging software, it's not overtly difficult either. Be it Gentoo, an RPM-based distro, or a deb-based distro, it really just boils down to having recipes for building the software and adding some metadata. Provided the build system of what you are trying to package is not totally insane, usually it takes little more than writing a glorified shell script to create a package."
+    }
+}

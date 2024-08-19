@@ -1,0 +1,39 @@
+{
+    "id": "dbpedia_8585_0",
+    "rank": 78,
+    "data": {
+        "url": "https://derflounder.wordpress.com/2024/02/04/building-distribution-packages-using-autopkg/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Building distribution packages using AutoPkg",
+        "top_image": "https://derflounder.wordpress.com/wp-content/uploads/2024/02/recipe_workflow.png",
+        "meta_img": "https://derflounder.wordpress.com/wp-content/uploads/2024/02/recipe_workflow.png",
+        "images": [
+            "https://derflounder.wordpress.com/wp-content/uploads/2024/02/recipe_workflow.png?w=595",
+            "https://derflounder.wordpress.com/wp-content/uploads/2024/02/recipe_workflow2.png?w=595",
+            "https://1.gravatar.com/avatar/d678374fabfd2ce5e42a8d2ee219c878fe28d4d27ba3bdfe0905bcdd49a78f9f?s=48&d=identicon&r=G",
+            "https://0.gravatar.com/avatar/9a6eb242728c9344e6078f49f7297e7bbe7b5c5af0b3f99952f35686499ef79c?s=48&d=identicon&r=G",
+            "https://0.gravatar.com/avatar/9851bc7e13a6a30c801e72cd65e1fcc49818a778abfbfc923093a7ae8d60564a?s=48&d=identicon&r=G",
+            "https://1.gravatar.com/avatar/d01b71732017a03705b60dcd6ba6669a9b5148633fa12b8ae7531c3143604cc9?s=48&d=identicon&r=G",
+            "https://1.gravatar.com/avatar/da3a0520ed1bfc83e1f3baa3c3947cf7f0ebb511790f996d7eabad8310adcdb1?s=48&d=identicon&r=G",
+            "https://s2.wp.com/i/logo/wpcom-gray-white.png",
+            "https://s2.wp.com/i/logo/wpcom-gray-white.png",
+            "https://pixel.wp.com/b.gif?v=noscript"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2024-02-04T00:00:00",
+        "summary": "",
+        "meta_description": "I've been thinking about the issue of building installer packages using AutoPkg which are ready for installation using MDM commands. Installing an installer package via MDM command requires packages to have the following attributes: Signed with an Apple Developer ID Installer certificate Be a distribution installer package For criteria #2, this references the fact that…",
+        "meta_lang": "en",
+        "meta_favicon": "https://s1.wp.com/i/favicon.ico",
+        "meta_site_name": "Der Flounder",
+        "canonical_link": "https://derflounder.wordpress.com/2024/02/04/building-distribution-packages-using-autopkg/",
+        "text": "I’ve been thinking about the issue of building installer packages using AutoPkg which are ready for installation using MDM commands. Installing an installer package via MDM command requires packages to have the following attributes:\n\nSigned with an Apple Developer ID Installer certificate\n\nBe a distribution installer package\n\nFor criteria #2, this references the fact that there are two kinds of modern installer packages for macOS:\n\nComponent packages: these are the standard type of installer package, which contain an archive of files to install and the information on where the files should be installed.\n\nDistribution packages: These packages can contain one or more component packages, and may also include additional resources to customize and control the user interface shown in the Installer application.\n\nBy default, AutoPkg will build component packages using the PkgCreator processor or the AppPkgCreator processor. But there is a relatively straightforward way to create a a distribution package while using an existing component package as a source, using the productbuild command. To create a distribution installer package from an existing component installer package, you would use a command similar to the one shown below:\n\nNote: If using a signed component installer package as a source, the resulting new distribution package will not be signed. If needed, you will need to sign the distribution package following its creation.\n\nFor those who want to create distribution packages as part of an AutoPkg workflow, I’ve written a DistributionPackageCreator AutoPkg processor which is designed to perform the following tasks:\n\nRename the existing AutoPkg-generated component package.\n\nCreate a new distribution package from the AutoPkg-generated component package.\n\nSet the newly-created distribution package to have the original name of the AutoPkg-generated component package.\n\nFor more details, please see below the jump.\n\nThe DistributionPackageCreator processor is shown below, as well as being available via the following link:\n\nhttps://github.com/rtrouton/AutoPkg_Processors/tree/main/DistributionPackageCreator\n\nUpdate – 2-5-2024: It turns out that both myself and @davidbpirie wrote practically identical AutoPkg processors. His processor is FlatToDistPkg (written in 2022) and it is available in his repo:\n\nhttps://github.com/autopkg/davidbpirie-recipes/tree/main/SharedProcessors\n\nWhen included in an AutoPkg recipe, the DistributionPackageCreator processor will locate AutoPkg-generated component packages by using the pkg_path variable and do the following:\n\nRename the AutoPkg-generated component package from /path/to/package_name_here.pkg to /path/to/package_name_here-component.pkg\n\nCreate a new distribution package from the AutoPkg-generated component package.\n\nSave the distribution package as /path/to/package_name_here.pkg, so that the name matches the original package.\n\nNote: Setting the distribution package’s name to match the original component package’s name allows AutoPkg to continue to work with the distribution installer package.\n\nTo assist folks who want to use this processor, but don’t want to rewrite their existing .pkg recipes, I’ve written an example recipe to assist with this: the .distpkg recipe.\n\nThe .distpkg recipe uses the DistributionPackageCreator processor and is designed to be placed in the AutoPkg workflow between a .pkg recipe and whatever else came next. In this case, the .pkg recipe would be a parent recipe for the .distpkg recipe. In turn, the .distpkg recipe would be used as the parent recipe for whatever came next in the workflow.\n\nA good example would be if you wanted to create a signed distribution package. In that case, you could combine a .pkg recipe, a .distpkg recipe and a .sign recipe into the same workflow to produce a signed distribution package, which should meet all the necessary requirements to install the package via an MDM command.\n\nFor those who want to use .distpkg recipes, there is an example recipe available via the link below:\n\nhttps://github.com/autopkg/rtrouton-recipes/blob/master/SharedProcessors/Example.distpkg.recipe"
+    }
+}

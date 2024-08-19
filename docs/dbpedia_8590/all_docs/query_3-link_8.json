@@ -1,0 +1,37 @@
+{
+    "id": "dbpedia_8590_3",
+    "rank": 8,
+    "data": {
+        "url": "https://networkengineering.stackexchange.com/questions/37181/dell-force10-mxl-10-40gbe-create-trunk-port",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Dell force10 mxl 10/40gbe create trunk port",
+        "top_image": "https://cdn.sstatic.net/Sites/networkengineering/Img/apple-touch-icon@2.png?v=2ae76539f625",
+        "meta_img": "https://cdn.sstatic.net/Sites/networkengineering/Img/apple-touch-icon@2.png?v=2ae76539f625",
+        "images": [
+            "https://cdn.sstatic.net/Sites/networkengineering/Img/logo.svg?v=ecc4997c4794",
+            "https://i.sstatic.net/Fzsg6.jpg",
+            "https://i.sstatic.net/CGxeP.jpg?s=64",
+            "https://www.gravatar.com/avatar/a8447a5bbc548f7915fc1df92a7daf2b?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/jQsNL.png?s=64",
+            "https://www.gravatar.com/avatar/19cc3d84a07dea798f3cff1c705b9c21?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/d678d97555ae7786aca3a3510c188897?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://networkengineering.stackexchange.com/posts/37181/ivc/3f38?prg=6543e37c-f8b6-4b0b-ab6f-f5da414281d8"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2016-12-09T03:03:20",
+        "summary": "",
+        "meta_description": "I have this task. I need to find the way how to configure a trunk in this switch for 3 VLANS 200,201 and 1(native) . I already read the guide. In this switches you need to activate the vlan and then",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/networkengineering/Img/favicon.ico?v=c898b778f3c6",
+        "meta_site_name": "Network Engineering Stack Exchange",
+        "canonical_link": "https://networkengineering.stackexchange.com/questions/37181/dell-force10-mxl-10-40gbe-create-trunk-port",
+        "text": "I have this task. I need to find the way how to configure a trunk in this switch for 3 VLANS 200,201 and 1(native) . I already read the guide. In this switches you need to activate the vlan and then change the port to switchport (layer 2) the you configure it the port inside the vlan.\n\ninterface vlan 200\n\ntagged gi 0/3\n\nexit\n\nand that interface is already a trunk for vlan 200. I did the same with vlan 201 but with vlan 1 I dont have that option.\n\nI dont have the untagged and tagged options. Also I dont see the ip routing option to alloq Vlan communication. How can I do it in this switch?\n\nVLAN 1 is the native VLAN, which means its traffic is untagged. That is fine for a trunk because it will be the only VLAN with untagged traffic.\n\nYou tag traffic on trunks so that the other end of the trunk can separate which frames belong to which VLANs. Having a single untagged (native) VLAN will work with this. It is only if you have multiple untagged VLANs on a trunk where you couldn't separate the frames into VLANs.\n\nanswered Dec 9, 2016 at 13:47\n\nRon Maupin♦Ron Maupin\n\n100k2626 gold badges121121 silver badges198198 bronze badges\n\nAs a best practice, I like to define all \"trunk\" ports as hybrid ports in the Force10 terminology. In my opinion is more flexible, allow you to pass only the relevant VLAN taged and only one untagged.\n\nJust a reminder, Force10 don't like to usee VLAN 1 for production purpose. I always use a fiction \"vlan 2\" as default VLAN.\n\nAnswering your question, try defining the port-channel as \"portmode hybrid\" and \"switchport\". About inter-vlan routing, it's enabled when you assign and ip address to the interface vlan.\n\nanswered Dec 11, 2016 at 19:32\n\nKorXoKorXo\n\n1,15266 silver badges1313 bronze badges"
+    }
+}

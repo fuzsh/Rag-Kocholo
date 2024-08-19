@@ -1,0 +1,32 @@
+{
+    "id": "dbpedia_8585_0",
+    "rank": 77,
+    "data": {
+        "url": "https://blog.eisenschmiede.com/posts/create-dock-items-with-autopkg/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Create Dock Items With Autopkg",
+        "top_image": "https://blog.eisenschmiede.com/",
+        "meta_img": "https://blog.eisenschmiede.com/",
+        "images": [
+            "https://blog.eisenschmiede.com/pics/JamfPro_DockItems.png",
+            "https://blog.eisenschmiede.com/pics/JamfPro_DockItem_Policy.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "",
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "I always prefered to create dock items or entries to enhance the user experience on my managed macOS clients. Not so savy macOS user can find their newly installed applications easily in the dock (in my experience especially Windows users think that the dock is their only way to start software) and experienced user simply get a good indication, that the software was successfully installed (the feedback of Jamf&rsquo;s Self Service is a bit lacking in my opinion).",
+        "meta_lang": "en",
+        "meta_favicon": "https://blog.eisenschmiede.com/img/apple-touch-icon-192x192.png",
+        "meta_site_name": "Blog - eisenschmiede.com",
+        "canonical_link": "https://blog.eisenschmiede.com/posts/create-dock-items-with-autopkg/",
+        "text": "I always prefered to create dock items or entries to enhance the user experience on my managed macOS clients. Not so savy macOS user can find their newly installed applications easily in the dock (in my experience especially Windows users think that the dock is their only way to start software) and experienced user simply get a good indication, that the software was successfully installed (the feedback of Jamf’s Self Service is a bit lacking in my opinion).\n\nIn the past I used great tools like dockutil or docklib to manage dockitems. I predeployed these binaries, and used scripts in the Self Service policies (after the installation) to create the dock items.\n\nAnd yet I searched for an alternative, when I started to build up a new Jamf instance. Dockutil triggers a deprecation warning on macOS 12 Montery (see this issue), since it’s running on python 2.7. You could supress the warning (see Graham’s great blog post), but I didn’t want to build up a new instance with workarounds.\n\nDocklib is working great on Montery, but seemed a bit overkill for my needs. I only want to add dock items of applications at the end of the dock. No need for precise positioning or creating dock items for multiple users on a single machine.\n\nJamf’s Dock Items⌗\n\nJamf Pro provides a mechanism to create dock items for a long time. You can predefine the item in the global settings under Computer Management:\n\nAfter defining them, you can use the item in a policy in the Dock Item Section:\n\nYou have the possability to add the item to the end or the beginning of the dock, or remove it.\n\nDrawbacks compared to the other solutions⌗\n\nLike I already mentioned, you are not able to postion the item precisely. But there are also other positive and negative aspects compared to docklib and dockutil:\n\nPositive⌗\n\nNo custom binary needed on the client (which needs to be installed first and updated) -> Less overhead\n\nNo python dependency -> No need to manage and install python3 like when you want to use docklib\n\nFully manageable via AutoPKG with my written custom processor\n\nEasy to use\n\nNegative⌗\n\nPretty unflexible\n\nNot suitable for multiuser deployments\n\nNo way to control dock restarts (the dock process get’s always killed by Jamf. This causes a ‘screen flashing’ for the user and minimized apps open up again)\n\nUsage via AutoPKG⌗\n\nI guess Jamf’s Dock Items weren’t used often in the “macOS Automation Community”, since a lot of ‘mouse work’ was needed to create a dock entry (create it first in the general settings, switch back to the policy and add it there…).\n\nSo I decided to write a AutoPKG custom processor, which could be used in recipes to create dock entries and automate the process. I took Graham Pugh’s great JamfUploader as a base, and wrote some code to use Jamf’s API (sadly the classic API is needed, since there is no way to create dock items in the v2 API).\n\nGraham was so kind to merge my code into his repo, so you can find the processor in his default recipe repo: autopkg/grahampugh-recipes. If you use already his uploaders, simply update the repo. If you never used his processors, add the repo to AutoPKG: autopkg repo-add grahampugh-recipes.\n\nAfter that you can simply use the processor com.github.grahampugh.jamf-upload.processors/JamfDockItemUploader in your recipes. For example:\n\nAfter the creation of a dock item, you can use it’s name in your policy template:\n\nA full recipe to create an installer and upload a category, the package itself, the dock item and a policy to install the application could look like this:"
+    }
+}

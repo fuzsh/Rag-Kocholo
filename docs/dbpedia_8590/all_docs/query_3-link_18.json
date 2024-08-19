@@ -1,0 +1,36 @@
+{
+    "id": "dbpedia_8590_3",
+    "rank": 18,
+    "data": {
+        "url": "https://niktips.wordpress.com/2016/07/10/dell-force10-part-2-vlt-basics/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Dell Force10 Part 2: VLT Basics",
+        "top_image": "https://niktips.wordpress.com/wp-content/uploads/2016/03/dell-force10.jpg?w=150",
+        "meta_img": "https://niktips.wordpress.com/wp-content/uploads/2016/03/dell-force10.jpg?w=150",
+        "images": [
+            "https://niktips.wordpress.com/wp-content/uploads/2016/03/dell-force10.jpg?w=150&h=65",
+            "https://niktips.wordpress.com/wp-content/uploads/2016/07/basic_vlt3.jpg?w=450",
+            "https://niktips.wordpress.com/wp-content/uploads/2016/07/stp_loop.jpg?w=450",
+            "https://niktips.wordpress.com/wp-content/uploads/2016/07/east_west_traffic6.jpg?w=450",
+            "https://s2.wp.com/i/logo/wpcom-gray-white.png",
+            "https://s2.wp.com/i/logo/wpcom-gray-white.png",
+            "https://pixel.wp.com/b.gif?v=noscript"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2016-07-10T00:00:00",
+        "summary": "",
+        "meta_description": "Last time I made a blog post on initial configuration of Force10 switches, which you can find here. There I talked about firmware upgrade and basic features, such as STP and Flow Control. In this blog post I would like to touch on such a key feature of Force10 switches as Virtual Link Trunking (VLT). VLT is Force10's implementation of Multi-Chassis Link Aggregation Group (MLAG),…",
+        "meta_lang": "en",
+        "meta_favicon": "https://s1.wp.com/i/favicon.ico",
+        "meta_site_name": "Niktips's Blog",
+        "canonical_link": "https://niktips.wordpress.com/2016/07/10/dell-force10-part-2-vlt-basics/",
+        "text": "Last time I made a blog post on initial configuration of Force10 switches, which you can find here. There I talked about firmware upgrade and basic features, such as STP and Flow Control. In this blog post I would like to touch on such a key feature of Force10 switches as Virtual Link Trunking (VLT).\n\nVLT is Force10’s implementation of Multi-Chassis Link Aggregation Group (MLAG), which is similar to Virtual Port Channels (vPC) on Cisco Nexus switches. The goal of VLT is to let you establish one aggregated link to two physical network switches in a loop-free topology. As opposed to two standalone switches, where this is not possible.\n\nYou could say that switch stacking gives you similar capabilities and you would be right. The issue with stacked switches, though, is that they act as a single switch not only from the data plane point of view, but also from the control plane point of view. The implication of this is that if you need to upgrade a switch stack, you have to reboot both switches at the same time, which brings down your network. If you have an iSCSI or NFS storage array connected to the stack, this may cause trouble, especially in enterprise environments.\n\nWith VLT you also have one data plane, but individual control planes. As a result, each switch can be managed and upgraded separately without full network downtime.\n\nVLT Terminology\n\nVirtual Link Trunking uses the following set of terms:\n\nVLT peer – one of the two switches participating in VLT (you can have a maximum of two switches in a VLT domain)\n\nVLT interconnect (VLTi) – interconnect link between the two switches to synchronize the MAC address tables and other VLT-related data\n\nVLT backup link – heartbeat link to send keep alive messages between the two switches, it’s also used to identify switch state if VLTi link fails\n\nVLT – this is the name of the feature – Virtual Link Trunking, as well as a VLT link aggregation group – Virtual Link Trunk. We will call aggregated link a VLT LAG to avoid ambiguity.\n\nVLT domain – grouping of all of the above\n\nVLT Topology\n\nThis’s what a sample VLT domain looks like. S4048-ON switches have six 40Gb QSFP+ ports, two of which we use for a VLT interconnect. It’s recommended to use a static LAG for VLTi.\n\nTwo 1Gb links are used for VLT backup. You can use switch out-of-band management ports for this. Four 10Gb links form a VLT LAG to the upstream core switch.\n\nUse Cases\n\nSo where is this actually helpful? Vast majority of today’s environments are virtualized and do not require LAGs. vSphere already uses teaming on vSwitch uplinks for traffic distribution across all network ports by default. There are some use cases in VMware environments, where you can create a LAG to a vSphere Distributed Switch for faster link failure convergence or improved packet switching. Unless you have a really large vSphere environment this is generally not required, but you may use this option later on if required. Read Chris Wahl’s blog post here for more info.\n\nWhere VLT is really helpful is in building a loop-free network topology in your datacenter. See, all your vSphere hosts are connected to both Force10 switches for redundancy. Since traffic comes to either of the switches depending on which uplink is being picked on a ESXi host, you have to make sure that VMs on switch 1 are able to communicate to VMs on switch 2. If all you had in your environment were two Force10 switches, you would establish a LAG between the two and be done with it. But if your network topology is a bit larger than this and you have at least a single additional core switch/router in your environment you’d be faced with the following dilemma. How can you ensure efficient traffic switching in your network without creating loops?\n\nYou can no longer create a LAG between the two Force10 switches, as it will create a loop. Your only option is to keep switches connected only to the core and not to each other. And by doing that you will cause all traffic from VMs on switch 1 destined to VMs on switch 2 and vise versa to traverse the core.\n\nAnd that’s where VLT comes into play. All east-west traffic between servers is contained within the VLT domain and doesn’t need to traverse the core. As shown above, if we didn’t use VLT, traffic from one switch to another would have to go from switch 1 to core and then back from core to switch 2. In a VLT domain traffic between the switches goes directly form switch 1 to switch 2 using VLTi.\n\nConclusion\n\nThat’s a brief introduction to VLT theory. In the next few posts we will look at how exactly VLT is configured and map theory to practice.\n\nTags: dell, Force10, interconnect, LACP, lag, Ling Aggregation Control Protocol, loop-free, MLAG, Multi-Chassis Link Aggregation Group, peer, stack, topology, trunk, vDS, Virtual Link Trunking, Virtual Port Channels, VLT, vmware, VPC, vSphere, vSphere Distributed Switch"
+    }
+}

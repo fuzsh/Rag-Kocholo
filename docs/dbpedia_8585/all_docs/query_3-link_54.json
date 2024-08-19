@@ -1,0 +1,35 @@
+{
+    "id": "dbpedia_8585_3",
+    "rank": 54,
+    "data": {
+        "url": "https://tex.stackexchange.com/questions/110501/auto-package-download-for-texlive",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Auto Package download for TeXLive",
+        "top_image": "https://cdn.sstatic.net/Sites/tex/Img/apple-touch-icon@2.png?v=eaf26b461720",
+        "meta_img": "https://cdn.sstatic.net/Sites/tex/Img/apple-touch-icon@2.png?v=eaf26b461720",
+        "images": [
+            "https://cdn.sstatic.net/Sites/tex/Img/logo.svg?v=43890f90cb01",
+            "https://www.gravatar.com/avatar/f7ab1a2cd3140f688ca1a7286f4b3c03?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/XuZ4a.png?s=64",
+            "https://i.sstatic.net/4r8yp.png?s=64",
+            "https://i.sstatic.net/Y6tnm.png?s=64",
+            "https://tex.stackexchange.com/posts/110501/ivc/3f38?prg=90becc0f-b8c0-4df1-89b6-79fde74bfe30"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2013-04-24T14:19:53",
+        "summary": "",
+        "meta_description": "I use MiKTeX on Windows and quite satisfied with it. Recently I started switching all my tasks toward open-source alternatives, and in the course I would love to use Linux. In Linux TeXLive is avai...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/tex/Img/favicon.ico?v=91427af8e60a",
+        "meta_site_name": "TeX - LaTeX Stack Exchange",
+        "canonical_link": "https://tex.stackexchange.com/questions/110501/auto-package-download-for-texlive",
+        "text": "While in MiKTeX an installation process is automatically triggered if you have, say, \\usepackage{beamer} in a document preamble without the corresponding package installed, there is no such feature on TeX Live.\n\nThe last statement is not true actually, as pointed out by wasteofspace in the comments there is the texliveonfly package that implements the on demand installation in TeX Live 2010 and later. I never tested it and don't know if it has drawbacks.\n\nHowever, if you install the full (or almost full) TeX Live collection of packages (~2400) you will not need to add new packages, a periodic tlmgr update -all will take care of everything, including the installation of packages added to the TeX Live collection after you first full installation. This feature is explained in the tlmgr manual.\n\nAnalogously, if a package has been added to a collection on the server that is also installed locally, it will be added to the local installation. This is called auto-install and is announced as such when using the option --list. This auto-installation can be suppressed using the option --no-auto-install\n\nThe manual has lots of info on useful commands and it is a recommended reading for every user.\n\nThe downside is of course that you need the full set of packages installed in your machine, which may be a problem if you don't have enough free space. If you really can't spare 2GB from your HD, it is also possible to install TeX Live in a, say, 4GB USB key and live happily ever after :)\n\nEverything I just wrote requires that you install TeX Live with one the methods described here. If you decide to use the TeX packages from your distro you are forced to follow their update policy, which is different for different distros\n\ntexliveonfly\n\nAs mentioned in comments, there is a TeX Live package called texliveonfly which you can use with texliveonfly filename.tex, and it will automatically downloaded the right TeX Live packages.\n\nThis also works for packages for which the LaTeX package name and the TeX Live package name don't match (for example the LaTeX rubikrotation package is contained in the rubik TeX Live package), and it also takes package dependencies into account.\n\nUsage\n\nInstalling It is a Python script so it requires Python to be installed. You can then install it like usually with tlmgr install texliveonfly. If you have to use sudo tlmgr here, you will have to use sudo texliveonfly later.\n\nRunning If you go in your terminal to the directory of your filename.tex file, you can run it with texliveonfly filename.tex.\n\nOther compilers At the moment it uses pdflatex by default, but you can configure it to run with other compiler engines by using the --compiler (or -c) flag, so like texliveonfly --compiler=lualatex filename.tex.\n\nCompiler flags You can pass flags for the compiler you use to texliveonfly using the --arguments (or -a) flag, so for example if you previously used latexmk -shell-escape -pdf filename.tex then you now use texliveonfly --compiler=latexmk --arguments='-shell-escape -pdf' filename.tex.\n\nKnown problems\n\nThere are some cases of missing packages which fail with a non-standard error message, for example babel when it's missing languages, in which case texliveonfly doesn't download them. At the moment the following packages are known to have to be installed manually: (please edit if you find more)\n\nBabel languages, for example for european languages install the collection-langeuropean package\n\nBiblatex styles, e.g. for the nature style you need the biblatex-nature package\n\nfontenc encodings, e.g. to get t2aenc.def you need the cyrillic package, and to get the ly1enc.def you need the ly1 package.\n\nPackages involved when using the minted package, which are minted fvextra upquote lineno xstring framed caption (thanks to pablgonz for testing)\n\nWhen running external programs like texcount in your LaTeX file, texliveonfly does not detect that you need the texcount package.\n\nWhen giving options to texliveonfly, for example for a different compiler, it sometimes hangs for no apparent reason when installing packages. You can most probably work around it by first running texliveonfly without options, so texliveonfly main.tex (so it will download the packages) and then running whatever you wanted to, for example latexmk main.tex.\n\nBackground\n\nEssentially texliveonfly is a build tool like latexmk (which is a Perl script), it wraps the TeX engine. Note however that you can chain them with texliveonfly --compiler=latexmk filename.tex.\n\nIt is a python script which works by trying to run your LaTeX file, and if it fails because a package is missing it will try to install that package.\n\nBesides on ctan.org/pkg/texliveonfly you can view the source at ctan.org/tex-archive/support/texliveonfly or on latex.org/forum\n\nPS I tested this on Arch Linux 4.19.4 and on Travis CI (Ubuntu 14.04)."
+    }
+}

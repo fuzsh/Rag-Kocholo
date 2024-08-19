@@ -1,0 +1,47 @@
+{
+    "id": "dbpedia_8582_3",
+    "rank": 37,
+    "data": {
+        "url": "https://spin.atomicobject.com/local-nuget-package/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Creating and Using a Local NuGet Package",
+        "top_image": "https://spin.atomicobject.com/wp-content/uploads/Nuget.jpg",
+        "meta_img": "https://spin.atomicobject.com/wp-content/uploads/Nuget.jpg",
+        "images": [
+            "https://spin.atomicobject.com/wp-content/themes/spin/images/ao-wordmark-logo.svg",
+            "https://spin.atomicobject.com/wp-content/themes/spin/images/icon-mobile-menu.svg",
+            "https://spin.atomicobject.com/wp-content/themes/spin/images/icon-mobile-close.svg",
+            "https://spin.atomicobject.com/wp-content/themes/spin/images/ao-wordmark-white.svg",
+            "https://spin.atomicobject.com/wp-content/themes/spin/images/ao-wordmark-logo.svg",
+            "https://spin.atomicobject.com/wp-content/themes/spin/images/ao-symbol-red.svg",
+            "https://spin.atomicobject.com/wp-content/uploads/Nuget.jpg",
+            "https://spin.atomicobject.com/wp-content/authors/nick.hazekamp-182.jpg",
+            "https://secure.gravatar.com/avatar/c2e0c4589c9b28a3b1747b84d40c0967?s=100&d=blank&r=PG",
+            "https://spin.atomicobject.com/wp-content/themes/spin/images/ao-wordmark-white.svg",
+            "https://spin.atomicobject.com/wp-content/themes/spin/images/circle-twitter.svg",
+            "https://spin.atomicobject.com/wp-content/themes/spin/images/circle-facebook.svg",
+            "https://spin.atomicobject.com/wp-content/themes/spin/images/circle-github.svg",
+            "https://spin.atomicobject.com/wp-content/themes/spin/images/circle-linkedin.svg",
+            "https://spin.atomicobject.com/wp-content/themes/spin/images/circle-instagram.svg",
+            "https://spin.atomicobject.com/wp-content/uploads/20181218083503/bcorp-2018.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Nick Hazekamp"
+        ],
+        "publish_date": "2021-01-05T13:00:15+00:00",
+        "summary": "",
+        "meta_description": "What a NuGet Package is, how to create one, where to add it locally, and how to consume it from a NuGet feed. This will allow you to quickly create and test your NuGet packages locally.",
+        "meta_lang": "en",
+        "meta_favicon": "https://spin.atomicobject.com/wp-content/themes/spin/images/favicon.ico",
+        "meta_site_name": "Atomic Spin",
+        "canonical_link": "https://spin.atomicobject.com/local-nuget-package/",
+        "text": "Found yourself on a project where you need to create and test NuGet packages? This process can be stressful and slow if you wait until you’ve published the NuGet package on the web to use it. A great way to avoid this issue and create a faster feedback loop is to create a local NuGet Feed. This will allow you to quickly iterate, without pushing up numerous versions in testing.\n\nA Nu-What?\n\nA NuGet package is a fancy way to share compiled code. In practice, a NuGet package is a ZIP file that contains the compiled code, resources used in the code, and a manifest for the package defining important information (such as the version). NuGet packages are a useful mechanism for creating and sharing .NET libraries, and they have become the standard. To use a NuGet package, you simply add a NuGet feed (package repository) and download. To learn more about NuGet packages, Microsoft has some great resources.\n\nBuilding a NuGet Package\n\nLet’s assume you have working code that you want packaged. If your project is like mine, you are working in C# and have a .csproj file. Check in the .csproj file and make sure there is a <PropertyGroup> tag containing <PackageId>, <Version>, <Authors>, and <Company> tags. Here is an example:\n\n<PropertyGroup> <PackageId>SuperCrazyFunLib</PackageId> <Version>1.4.2</Version> <Authors>Nick</Authors> <Company>Atomic</Company> </PropertyGroup>\n\nThough the last two are not strictly necessary, it’s good practice to identify who is creating the package. Additionally, if you know you will be consuming this package quickly and regularly, it can be useful to have the package created whenever the project is built. To do this, simply add <GeneratePackageOnBuild>true</GeneratePackageOnBuild> to the above block. If you do not do this, you will need to manually invoke dotnet pack or pack within your IDE. For more specifics on creating NuGet packages, see Microsoft’s resources.\n\nCreating Local Feed\n\nYou have created a NuGet Package; now you need to use it in a project. If you are doing this properly, you will want to create a test NuGet feed to consume packages from, just like any other feed. This will allow you to test it locally, publish the NuGet package, and use the published package by only changing the order of NuGet feeds or versions.\n\nTo get started, download the NuGet executable. You’ll need to decide where you want your local feed to live. For this example, we’ll use C:\\totally-local-nuget-feed. You’ll also need the local path to your previously created NuGet package, for which we will use absudly\\long\\build\\path\\to\\package\\SuperCrazyFunLib.1.4.2.nupkg.\n\nGiven both of these, it’s as simple as:\n\nnuget add absudly\\long\\build\\path\\to\\package\\SuperCrazyFunLib.1.4.2.nupkg -Source C:\\totally-local-nuget-feed\n\nOr, if you’re like me and didn’t add NuGet to your path… (nuget.exe was moved to my user folder):\n\nnuget.exe add absudly\\long\\build\\path\\to\\package\\SuperCrazyFunLib.1.4.2.nupkg -Source C:\\totally-local-nuget-feed\n\nIf that was done correctly, NuGet should report that the package was added successfully:\n\nInstalling SuperCrazyFunLib 1.4.2. Successfully added package 'absudly\\long\\build\\path\\to\\package\\SuperCrazyFunLib.1.4.2.nupkg' to feed 'C:\\totally-local-nuget-feed'.\n\nYou now have a working local NuGet feed. Read the Microsoft docs for more details.\n\nConsuming the Local Feed\n\nFor this step, I am going to walk you through adding the nuget feed to VisualStudio 2019. In VS19, open your project. From here:\n\nIn the Tools menu, select Options. This will open up the options dialog box.\n\nFind NuGet Package Manager.\n\nSelect Package Sources.\n\nClick the green plus button.\n\nSet Name to something useful (such as Local Feed).\n\nSet Source to the path used above, such as C:\\totally-local-nuget-feed.\n\nClick “Update.”\n\nFor more information and also information about setting this up on a Mac, check out the Microsoft documentation.\n\nIn this walkthrough, I outlined what a NuGet Package is, how to create one, where to add it locally, and how to consume it from a NuGet feed. This will allow you to quickly create and test your NuGet packages locally, which will let you push NuGet packages with certainty to your NuGet feeds, while still using the package as it would be used in practice. Hopefully, this helps clarify a bit of the process and get you back to developing."
+    }
+}

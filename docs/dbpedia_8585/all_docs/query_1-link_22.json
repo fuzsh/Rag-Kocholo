@@ -1,0 +1,38 @@
+{
+    "id": "dbpedia_8585_1",
+    "rank": 22,
+    "data": {
+        "url": "https://community.jamf.com/t5/jamf-pro/autopkg-and-adobe-flash-esr/m-p/106598",
+        "read_more_link": "",
+        "language": "en",
+        "title": "AutoPKG and Adobe Flash ESR",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://community.jamf.com/legacyfs/online/avatars/891268668ccc4a5c8572cfc177ce1048.png",
+            "https://community.jamf.com/legacyfs/online/avatars/9ace4bd92c3546fda85d6d894e79c7c2.png",
+            "https://community.jamf.com/legacyfs/online/avatars/891268668ccc4a5c8572cfc177ce1048.png",
+            "https://community.jamf.com/skins/images/3C7018BFED3E064C6B0C86CAD438737B/responsive_peak/images/icon_anonymous_message.png",
+            "https://community.jamf.com/skins/images/3C7018BFED3E064C6B0C86CAD438737B/responsive_peak/images/icon_anonymous_message.png",
+            "https://community.jamf.com/html/@DB007B9D4B38359F399423E43927D581/assets/logo-jamf-blk.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "community.jamf.com",
+            "user-id"
+        ],
+        "publish_date": "2015-02-26T14:35:40+00:00",
+        "summary": "",
+        "meta_description": "We are looking at starting to use Autopkg in our environment, but we currently use Flash ESR for deployment and would like to see if we - 106598",
+        "meta_lang": "en",
+        "meta_favicon": "https://community.jamf.com/html/@341C36E148083396DBCB6E6A9C18E572/assets/favicon.ico",
+        "meta_site_name": "Jamf Nation",
+        "canonical_link": "https://community.jamf.com/t5/jamf-pro/autopkg-and-adobe-flash-esr/m-p/106598#M95715",
+        "text": "We are looking at starting to use Autopkg in our environment, but we currently use Flash ESR for deployment and would like to see if we could make that work in Autopkg. I see on the autopkg github site that Anthony Reimer has posted a new recipe, where the direct URL for the flash ESR link can be copy and pasted, but would like if there was a more automated way to check if one is on the current version or not.\n\nI, unfortunately, before this Monday have had no experience with Python, to see if this would be possible. I have over the last few days given it my best shot to rewrite the existing AdobeFlashURLProvider.py file, learning Python as I go, but I think I've hit a wall as to the current level of Python knowledge I have at this point. I was wondering if there's anyone else out there who would like to use the Adobe Flash ESR for Autopkg and perhaps has some experience with Python to see where I've gone wrong in the code. I will copy the current version of the AdobeFlashURLProvider.py I have created to the bottom of this discussion.\n\nAlso I'm aware there are probably a number of unneeded references in the current code, and that is mainly due to the fact that since I wasn't quite sure exactly what all the current code was doing, I pretty much just replaced the sections that parsed the Adobe XML with my new code that parses the HTML from the Adobe distribution page.\n\nI'm also going to paste in a second bit of code that is just the HTML parsing code on its own that I wrote, which I am trying to inject and replace the XML code in the original autopkg AdobeFlashURLProvider.py file.\n\nThanks,\n\nLee Weisbecker\n\nHTML Parsing Code\n\n#!/usr/bin/python2.7\n\nimport urllib2\n\nfrom HTMLParser import HTMLParser\n\nimport re\n\nUPDATE_HTML_URL = \"http://adobe.com/products/flashplayer/fp_distribution3.html\"\n\nDOWNLOAD_TEMPLATE_URL = \"http://fpdownload.macromedia.com/get/flashplayer/current/licensing/mac/install_flash_player_%s_osx.dmg\"\n\nFlashHTMLURL = urllib2.Request(UPDATE_HTML_URL)\n\nFlashURL = urllib2.urlopen(FlashHTMLURL)\n\nFlashHTML = FlashURL.read()\n\nclass AdobeFlashHTML(HTMLParser):\n\ncontainer = \"\"\n\ndef handle_data(self, data): if data.find(\"Extended Support Release -\") != -1: self.container += data return self.container\n\nFlash = AdobeFlashHTML()\n\nFlash.feed(FlashHTML)\n\nprint Flash.container\n\nFlashVersionList = re.findall(r'd+.d+.d+.d+', Flash.container)\n\nFlashVersionStr = FlashVersionList[0]\n\nprint (FlashVersionStr)\n\nFlashVersion = FlashVersionStr[0:2]\n\nprint FlashVersion\n\nprint DOWNLOAD_TEMPLATE_URL % FlashVersion\n\nEdited AdobeFlashURLProvider.py File\n\n#!/usr/bin/python2.7\n\n#\n\n#\n\n#\n\n#\n\n#\n\n#\n\n#\n\n#\n\n\"\"\"See docstring for AdobeFlashURLProvider class\"\"\"\n\nimport urllib2\n\nfrom HTMLParser import HTMLParser\n\nimport re\n\nfrom autopkglib import Processor, ProcessorError\n\nall = [\"AdobeFlashURLProvider\"]\n\nUPDATE_HTML_URL = \"http://adobe.com/products/flashplayer/fp_distribution3.html\"\n\nDOWNLOAD_TEMPLATE_URL = \"http://fpdownload.macromedia.com/get/flashplayer/current/licensing/mac/install_flash_player_%s_osx.dmg\"\n\nclass AdobeFlashHTML(HTMLParser):\n\ncontainer = \"\"\n\ndef handle_data(self, data): if data.find(\"Extended Support Release -\") != -1: self.container += data return self.container\n\nclass AdobeFlashURLProvider(Processor): \"\"\"Provides URL to the latest Adobe Flash Player release.\"\"\" description = doc input_variables = { \"url\": { \"required\": False, \"description\": (\"Override URL. If provided, this processor \" \"just returns without doing anything.\"), }, \"version\": { \"required\": False, \"description\": (\"Specific version to download. If not defined, \" \"defaults to latest version.\") }, } output_variables = { \"url\": { \"description\": \"URL to the latest Adobe Flash Player release.\", }, }\n\ndef get_adobe_flash_dmg_url(self): '''Return the URL for the Adobe Flash DMG''' version = self.env.get(\"version\") if not version: # Read update HTML try: FlashHTMLURL = urllib2.Request(UPDATE_HTML_URL) FlashURL = urllib2.urlopen(FlashHTMLURL) FlashHTML = FlashURL.read() except: raise ProcessorError( \"Can't download %s\" % (UPDATE_HTML_URL))\n\n# Parse HTML data try: Flash = AdobeFlashHTML() FlashVersionList = re.findall(r'd+.d+.d+.d+', Flash.container) FlashVersionStr = FlashVersionList[0] except: raise Exception (\"Can't read %s\" % (FlashHTML))\n\n# Extract version number from the HTML version = None if Len(FlashVersionStr) == 10: version = FlashVersionStr\n\nif not version: raise ProcessorError(\"Update HTML in unexpected format.\") else: self.output(\"Using provided version %s\" % version)\n\n# Use version number to build a download URL version = FlashVersionStr[0:2] return DOWNLOAD_TEMPLATE_URL % version\n\ndef main(self): '''Return a download URL for latest Mac Flash Player''' if \"url\" in self.env: self.output(\"Using input URL %s\" % self.env[\"url\"]) return self.env[\"url\"] = self.get_adobeflash_dmg_url() self.output(\"Found URL %s\" % self.env[\"url\"])"
+    }
+}

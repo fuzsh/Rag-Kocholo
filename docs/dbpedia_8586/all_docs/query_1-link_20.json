@@ -1,0 +1,38 @@
+{
+    "id": "dbpedia_8586_1",
+    "rank": 20,
+    "data": {
+        "url": "https://community.jamf.com/t5/jamf-pro/autopkg-script-issues/m-p/51765",
+        "read_more_link": "",
+        "language": "en",
+        "title": "AutoPKG Script Issues",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://community.jamf.com/legacyfs/online/avatars/146ab62b32e340a88c1087f54d7d0bc5.png",
+            "https://community.jamf.com/legacyfs/online/avatars/ca595d62754446ca91601b95d1a1378d.png",
+            "https://community.jamf.com/t5/image/serverpage/avatar-name/balloons/avatar-theme/candy/avatar-collection/toys/avatar-display-size/profile/version/2?xdesc=1.0",
+            "https://community.jamf.com/skins/images/3C7018BFED3E064C6B0C86CAD438737B/responsive_peak/images/icon_anonymous_message.png",
+            "https://community.jamf.com/skins/images/3C7018BFED3E064C6B0C86CAD438737B/responsive_peak/images/icon_anonymous_message.png",
+            "https://community.jamf.com/html/@DB007B9D4B38359F399423E43927D581/assets/logo-jamf-blk.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "community.jamf.com",
+            "user-id"
+        ],
+        "publish_date": "2014-12-09T23:19:50+00:00",
+        "summary": "",
+        "meta_description": "Hey I found this recipe on GitHub by user cgerke. It&#039;s supposed to edit Energy Saver preferences, but I&#039;m running into an issue - 51765",
+        "meta_lang": "en",
+        "meta_favicon": "https://community.jamf.com/html/@341C36E148083396DBCB6E6A9C18E572/assets/favicon.ico",
+        "meta_site_name": "Jamf Nation",
+        "canonical_link": "https://community.jamf.com/t5/jamf-pro/autopkg-script-issues/m-p/51765#M40882",
+        "text": "The opening 'if' statements are the problem. What are you supplying to the script when you run it (not that it matters)? Not very helpful supplying no documentation in the script.\n\nIf $3 is empty then path_root will be empty. If path_root is empty, then the script will exit. If $3 is \"/\", then path_root will be set to an empty string again and so path_root again will be of a value that causes the script to exit.\n\nIn fact, path_root and formatted_date are useless in this script.\n\npath_root=\"$3\"; if [ -z \"${path_root}\" ] || [ \"${path_root}\" = \"/\" ]; then path_root=\"\"; fi #++ fix // formatted_date=$(date +\"%Y%m%d%H%M%S\") #++ date to string if [ \"${path_root}\" != \"/\" ]; then exit 1\n\nSo the script is basically always going to exit and never do it's intended job. Unless path_root is \"/\" then the rest of the script won't run and if path_root is \"/\" then it is changed to \"\", so the rest of the script won't run.\n\nAs for formatted_date, it isn't even referred to in the script.\n\nI'd also ditch the ioreg command. It's not a very efficient way to find out if the model is a Laptop or not. Swap it out for:"
+    }
+}

@@ -1,0 +1,37 @@
+{
+    "id": "dbpedia_8586_1",
+    "rank": 69,
+    "data": {
+        "url": "https://askubuntu.com/questions/856917/mark-installing-packages-as-auto-installed",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Mark installing packages as auto installed",
+        "top_image": "https://cdn.sstatic.net/Sites/askubuntu/Img/apple-touch-icon@2.png?v=c492c9229955",
+        "meta_img": "https://cdn.sstatic.net/Sites/askubuntu/Img/apple-touch-icon@2.png?v=c492c9229955",
+        "images": [
+            "https://cdn.sstatic.net/Sites/askubuntu/Img/logo.svg?v=472cf2768bba",
+            "https://www.gravatar.com/avatar/1db5a33e98229a20cde25431bd690bfd?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/ZuYFV.png?s=64",
+            "https://www.gravatar.com/avatar/72017ece2e5796d224f1f0458a03b4c6?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/74c0cf215f8b51678ac39761d2ce3de5?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/a007be5a61f6aa8f3e85ae2fc18dd66e?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/JjDnv.jpg?s=64",
+            "https://askubuntu.com/posts/856917/ivc/3f38?prg=b91d151a-ed55-42b9-9ae5-a202f0bdb010"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2016-12-04T15:28:12",
+        "summary": "",
+        "meta_description": "apt-mark and similar software can mark packages as automatically installed, but can that be done during installation itself, something akin to apt install --mark-auto packages [...]?",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/askubuntu/Img/favicon.ico?v=928dfb7c1990",
+        "meta_site_name": "Ask Ubuntu",
+        "canonical_link": "https://askubuntu.com/questions/856917/mark-installing-packages-as-auto-installed",
+        "text": "No, you have to run as separate command call apt-mark auto ... Even its action was removed from apt-get.\n\n$ sudo apt-get markauto Reading package lists... Done Building dependency tree Reading state information... Done N: This command is deprecated. Please use 'apt-mark auto' and 'apt-mark manual' instead. E: Handler silently failed\n\nAs a workaround, you could store the package list in a variable then use it with both commands. Another option, create a single shell function that run both commands for any input.\n\nIt really seems there is no built-in way of doing this. So I wrote a little script that does the job.\n\n#!/bin/bash -e NEW_DEPS=$(comm -23 <(xargs -n1 <<< \"$@\" | sort) <(apt-mark showmanual | sort)) apt install $NEW_DEPS apt-mark auto $NEW_DEPS\n\nIt first filters out any packages that are already installed manually and then installs the rest, setting them to automatically installed afterwards.\n\nI usually use this to temporarily install build dependencies. Suppose I need packages A, B and C to build something and have above script available as autoinstall. I can then use the following procedure to keep the build dependencies from remaining on my system after the build.\n\nsudo autoinstall A B C # build stuff... sudo apt autoremove\n\nI use aptitude (sorry, I dislike these types of answers). This is one of my main reasons for using it. Also the dependency management and the conflict resolution tools it contains are very useful to me. You can still use it directly by issuing a command like.\n\naptitude install okular\n\nAnd it will mark all new dependencies as automatically installed."
+    }
+}

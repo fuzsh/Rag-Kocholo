@@ -1,0 +1,33 @@
+{
+    "id": "dbpedia_8586_1",
+    "rank": 66,
+    "data": {
+        "url": "https://swytechnotes.wordpress.com/2013/10/21/autopkg-and-jenkins-under-one-admin-account/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "AutoPkg and Jenkins under one admin account",
+        "top_image": "https://s0.wp.com/i/blank.jpg",
+        "meta_img": "https://s0.wp.com/i/blank.jpg",
+        "images": [
+            "https://1.gravatar.com/avatar/125dfbb1833c88356ff0c09d5af6ec82c8fd5cccc0bf6f02614d8202f2ef150e?s=40&d=identicon&r=G",
+            "https://s2.wp.com/i/logo/wpcom-gray-white.png",
+            "https://s2.wp.com/i/logo/wpcom-gray-white.png",
+            "https://pixel.wp.com/b.gif?v=noscript"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2013-10-21T00:00:00",
+        "summary": "",
+        "meta_description": "Munki is awesome for updating software on macs.  But it can be better, as it first requires an admin to know there's something to update, and to get that update, (sometimes altering the installer so it works properly), and import it to munki.  In a better world, systems will see that an update has been…",
+        "meta_lang": "en",
+        "meta_favicon": "https://s1.wp.com/i/favicon.ico",
+        "meta_site_name": "SWY's technical notes",
+        "canonical_link": "https://swytechnotes.wordpress.com/2013/10/21/autopkg-and-jenkins-under-one-admin-account/",
+        "text": "Munki is awesome for updating software on macs. But it can be better, as it first requires an admin to know there’s something to update, and to get that update, (sometimes altering the installer so it works properly), and import it to munki. In a better world, systems will see that an update has been released and automagically bring it into munki. That better world exists, and it’s brought to us via 2 tools: AutoPKG and Jenkins.\n\nAutoPkg can automatically check for, download and import software updates into munki. It is well documented in the wiki: I won’t be able to rewrite it better, so I direct you there.\n\nJenkins main purpose is to automatically test software builds, but it is also useful for automated tasks- think launchd on steroids, with easier reporting than you’d get from writing your own launchd scripts. It is also decently documented- a great starting point being the PDF and video by Greg Neagle at MacSysAdmin 2013\n\nWhat’s not well documented is how to integrate them together. Your munki+autopkg+jenkins machine (presuming they’re one and the same) will already have an admin user, where you’ve been managing the munki repository. The Jenkins .pkg instaler will install a new Jenkins user for you, with a low uid.\n\nI wanted to manage my autopkg jobs via my existing admin user account. That causes a problem for Jenkins, as it won’t be able to see the recipes imported to my admin account- they write to /Users/admin/Library/AutoPkg/RecipeRepos. My first step was to set ACLs to allow Jenkins to see that path:\n\nchmod +a \"jenkins allow read,list,readattr,execute,readextattr,readsecurity\" /Users/admin/Library chmod +a \"jenkins allow read,list,write,readattr,execute,readextattr,readsecurity\" /Users/admin/Library/Preferences chmod -R +a \"jenkins allow read,write,execute,delete,append,readattr,writeattr,readextattr,writeextattr,readsecurity,writesecurity,chown,file_inherit,directory_inherit\" /Users/admin/Library/AutoPkg\n\nSecond was to set up the Jenkins jobs to run the desired recipes. I set a job per munki entry, running a shell command such as\n\n/usr/local/bin/autopkg run Spotify.munki --search-dir /Users/admin/Library/AutoPkg/RecipeRepos/com.github.autopkg.recipes/ --override-dir /Users/admin/Library/AutoPkg/RecipeOverrides\n\nI also added a simlink from my “real” AutoPkg plist (/Users/admin/Library/com.github.autopkg.plist) to the parallel place in the Jenkins directory, so Jenkins runs will read the configuration of the admin account. It’s important to make sure this plist in the admin account directory maintains the following ACL. If you add a repo or otherwise change the file and alter the ACL, Jenkins runs will break.\n\nchmod +a \"jenkins allow read,write,execute,delete,append,readattr,writeattr,readextattr,writeextattr,readsecurity,writesecurity,chown\" /Users/mdm01admin/Library/Preferences/com.github.autopkg.plist\n\nOn test runs on Jenkins, this gives the builds as desired. I can now create and edit overrides as admin, save them in the expected spot, and have Jenkins run them."
+    }
+}

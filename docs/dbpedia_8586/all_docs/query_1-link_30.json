@@ -1,0 +1,40 @@
+{
+    "id": "dbpedia_8586_1",
+    "rank": 30,
+    "data": {
+        "url": "https://derflounder.wordpress.com/2019/07/26/building-customized-postinstall-scripts-for-autopkg-recipes/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Building customized postinstall scripts for AutoPkg recipes",
+        "top_image": "https://derflounder.wordpress.com/wp-content/uploads/2019/07/screen-shot-2019-07-26-at-4.36.20-pm-1.png",
+        "meta_img": "https://derflounder.wordpress.com/wp-content/uploads/2019/07/screen-shot-2019-07-26-at-4.36.20-pm-1.png",
+        "images": [
+            "https://derflounder.wordpress.com/wp-content/uploads/2019/07/screen-shot-2019-07-26-at-4.36.20-pm-1.png?w=265&h=596",
+            "https://derflounder.wordpress.com/wp-content/uploads/2019/07/screen-shot-2019-07-26-at-2.51.06-pm.png?w=561&h=600",
+            "https://derflounder.wordpress.com/wp-content/uploads/2019/07/autopkg_adobe_creative_cloud_recipe_postinstall_script.png?w=599&h=405",
+            "https://1.gravatar.com/avatar/d678374fabfd2ce5e42a8d2ee219c878fe28d4d27ba3bdfe0905bcdd49a78f9f?s=48&d=identicon&r=G",
+            "https://0.gravatar.com/avatar/9a6eb242728c9344e6078f49f7297e7bbe7b5c5af0b3f99952f35686499ef79c?s=48&d=identicon&r=G",
+            "https://0.gravatar.com/avatar/9851bc7e13a6a30c801e72cd65e1fcc49818a778abfbfc923093a7ae8d60564a?s=48&d=identicon&r=G",
+            "https://1.gravatar.com/avatar/d01b71732017a03705b60dcd6ba6669a9b5148633fa12b8ae7531c3143604cc9?s=48&d=identicon&r=G",
+            "https://1.gravatar.com/avatar/da3a0520ed1bfc83e1f3baa3c3947cf7f0ebb511790f996d7eabad8310adcdb1?s=48&d=identicon&r=G",
+            "https://s2.wp.com/i/logo/wpcom-gray-white.png",
+            "https://s2.wp.com/i/logo/wpcom-gray-white.png",
+            "https://pixel.wp.com/b.gif?v=noscript"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2019-07-26T00:00:00",
+        "summary": "",
+        "meta_description": "As part of some recent work, I needed to build a deployable installer package for an application named Zscaler. This application does not use an installer package, nor can it be installed as a drag-and-drop app. Instead, it uses a third party installer application to install. This is exactly the kind of situation where I…",
+        "meta_lang": "en",
+        "meta_favicon": "https://s1.wp.com/i/favicon.ico",
+        "meta_site_name": "Der Flounder",
+        "canonical_link": "https://derflounder.wordpress.com/2019/07/26/building-customized-postinstall-scripts-for-autopkg-recipes/",
+        "text": "As part of some recent work, I needed to build a deployable installer package for an application named Zscaler. This application does not use an installer package, nor can it be installed as a drag-and-drop app. Instead, it uses a third party installer application to install.\n\nThis is exactly the kind of situation where I want to write an AutoPkg recipe to handle building a deployable installer package for me. As part of that, I had two bits of good news:\n\nThere was a publicly available download URL for the Zscaler installer app.\n\nZscaler has instructions for installing from the command line, so I could wrap up the installer application inside an installer application and use a postinstall script to run the installation process.\n\nI had one bit of bad news:\n\nThe installer process included options for adding things like the Zscaler cloud instance which the app should talk to following the installation as well as various other options which probably shouldn’t be hardcoded into an Autopkg recipe. I especially shouldn’t be hardcoding my own organization’s credentials into a recipe which I was planning to share with other folks.\n\nNormally, sensitive information is something I want to only have in an AutoPkg recipe override. Recipe overrides are locally-stored files that allow you to change certain input variables in AutoPkg recipes. Since the recipe overrides are stored locally on the Mac which is running AutoPkg and not shared with any other resources, the sensitive information is only made available to the AutoPkg installation running on that specific Mac. I’ve used this approach previously for the following:\n\nSensitive URLs: https://derflounder.wordpress.com/2017/06/12/autopkg-recipes-for-apple-enterprise-connect/\n\nSigning AutoPkg-generated installer packages: https://derflounder.wordpress.com/2017/11/10/adding-installer-package-code-signing-to-autopkg-workflows/\n\nThis time though, I didn’t see a way to pass an AutoPkg recipe override’s variables to a postinstall script. I did have one idea though, which was using AutoPkg’s FileCreator processor to create a customized postinstall script. I had previously used the FileCreator processor in other AutoPkg recipes to create postinstall scripts, but those scripts were self-contained and didn’t use variables from the AutoPkg recipe.\n\nThat said, you never know what AutoPkg can do until you try it and sure enough the FileCreator processor was able to pass recipe variables as part of creating a file. For more details, please see below the jump.\n\nI was able to leverage the ability to pass variables to create this script:\n\nI then created a recipe override and added the following demo values from the Zscaler command line options page:\n\ncloudName: zscalertwo.net\n\ndeviceToken: 123456789\n\npolicyToken: 987654321\n\nuserDomain: safemarch.com\n\nThe installer package postinstall script generated by this recipe override had the following contents:\n\nIn turn, this meant that only the Zscaler command-line options with actual values were run as part of the postinstall script:\n\nBeing able to pass variables this way means that the AutoPkg Zscaler .pkg recipe can be used by anyone. Whoever needs to plug in custom variables can do so as part of a recipe override, which allows them to keep their organization-specific information safe while still leveraging AutoPkg’s ability to automatically build installers for deployment.\n\nThis technique also has wider applications for anyone who needs to build custom postinstall scripts as part of an AutoPkg recipe because it means that customizable postinstall scripts can be generated on a per-override basis. For example, if you needed to support packaging for multiple organizations, it’s possible to have one core .pkg recipe along with a FileCreator-generated script which is flexible enough to accommodate whatever variables a particular override provides.\n\nGoing back to the example of Zscaler, if I needed to support three different organizations, all I would need is the one Zscaler .pkg recipe and three overrides. The overrides would have the different organization’s individual settings and running the overrides would result in three installers with organization-specific settings in the individual installer’s postinstall script.\n\nFor folks wanting to take a look at examples, I’ve posted .download, .pkg and .jss recipes for Zscaler to GitHub at the following locations:"
+    }
+}

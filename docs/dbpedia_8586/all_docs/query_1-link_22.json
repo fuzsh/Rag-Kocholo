@@ -1,0 +1,32 @@
+{
+    "id": "dbpedia_8586_1",
+    "rank": 22,
+    "data": {
+        "url": "https://stackoverflow.com/questions/37264861/python-3-iterate-file-contents-and-pass-each-line-into-popen-statement",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Python 3 Iterate file contents and pass each line into Popen statement",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/a007be5a61f6aa8f3e85ae2fc18dd66e?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/c683506654783ea7bc4e4b6183afb00f?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://stackoverflow.com/posts/37264861/ivc/3f38?prg=692bdd7f-1caf-4238-a924-bd339ab7cd52"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2016-05-16T23:39:43",
+        "summary": "",
+        "meta_description": "I'm new to Python and am currently converting a bash script I've created into Python, due to reaching a point where bash was simply not the correct tool for the job.\r\nI'm trying to read a file, ite...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/37264861/python-3-iterate-file-contents-and-pass-each-line-into-popen-statement",
+        "text": "I'm new to Python and am currently converting a bash script I've created into Python, due to reaching a point where bash was simply not the correct tool for the job.\n\nI'm trying to read a file, iterate through each line in the file and then pass each line as a variable to the Popen command.\n\nfrom subprocess import Popen, PIPE lr = open(customoverridefile) for line in lr.readlines(): # print(line, end='') proc = Popen('autopkg repo-update {}'.format(line), stdout=PIPE, stderr=PIPE, shell=True) (out, err) = proc.communicate() print(out)\n\nThe result of this code is:\n\nb'' b'' b'' b'' b'' b'' Process finished with exit code 0\n\nI can't figure out how to pass the line variable to the autopkg repo-update <line> command in Popen. I left the commented out print (line, end='') in there because I am able to iterate through the file and simply print its contents.\n\nEdit (for clarity): So my question is - how do I pipe in the variable line throughout the loop so that the command runs and the output is shown in terminal?\n\nUPDATE:\n\nI figured it out, thanks to help from the comments here. Each line was being appended with a UNIX line return \\n - I resolved this by adding universal_newlines=True into my Popen command:\n\nlr = open(overridesfile) for line in lr.readlines(): proc = Popen('autopkg make-override {}'.format(line), stdout=PIPE, stderr=PIPE, shell=True, universal_newlines=True) (out, err) = proc.communicate() print(out, err, end='')\n\nThanks for the tips & help - glad this wasn't nearly as complicated as I was beginning to expect!\n\nFINAL UPDATE:\n\nI found a solution that formatted the items exactly as I needed. When using the code above, the items would output (and weren't being processed correctly) as such:\n\n['list item 1', 'list item 2', 'list item 3', ...]\n\nI discovered that I couldn't use this, however I found my solution in this StackOverflow post.\n\nwith open(overridesfile, 'r') as f: for line in f: overrideslist = line print(overrideslist, end='')\n\nAgain, hope this helps somebody in the future. Cheers!"
+    }
+}

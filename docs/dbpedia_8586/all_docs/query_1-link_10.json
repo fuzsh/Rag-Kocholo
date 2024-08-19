@@ -1,0 +1,38 @@
+{
+    "id": "dbpedia_8586_1",
+    "rank": 10,
+    "data": {
+        "url": "https://stackoverflow.com/questions/46419607/how-to-automatically-install-required-packages-from-a-python-script-as-necessary",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How to automatically install required packages from a Python script as necessary?",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://i.sstatic.net/d4HTC.jpg?s=64",
+            "https://lh3.googleusercontent.com/-NzgIGIiK2VM/AAAAAAAAAAI/AAAAAAAAEW4/2cUX2QuzpAw/photo.jpg?sz=64",
+            "https://i.sstatic.net/Z99mk.jpg?s=64",
+            "https://i.sstatic.net/czF1r.gif?s=64",
+            "https://i.sstatic.net/i7iLl.jpg?s=64",
+            "https://i.sstatic.net/6JFOF.png?s=64",
+            "https://i.sstatic.net/WWXSU.png?s=64",
+            "https://i.sstatic.net/1reMo.jpg?s=64",
+            "https://stackoverflow.com/posts/46419607/ivc/3f38?prg=fbc64944-a8c4-48ee-b7d5-3f523743aa65"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2017-09-26T06:52:21",
+        "summary": "",
+        "meta_description": "Is there anything in Python or Linux what basically instructs the system to &quot;install whatever is necessary&quot;. Basically I find it annoying to install python packages for each new script/sy...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/46419607/how-to-automatically-install-required-packages-from-a-python-script-as-necessary",
+        "text": "Let's assume that your Python script is example.py:\n\nimport os import time import sys import fnmatch import requests import urllib.request from bs4 import BeautifulSoup from multiprocessing.dummy import Pool as ThreadPool print('test')\n\nYou can use pipreqs to automatically generate a requirements.txt file based on the import statements that the Python script(s) contain. To use pipreqs, assuming that you are in the directory where example.py is located:\n\npip install pipreqs pipreqs .\n\nIt will generate the following requirements.txt file:\n\nrequests==2.23.0 beautifulsoup4==4.9.1\n\nwhich you can install with:\n\npip install -r requirements.txt\n\nYou can use setuptools to install dependencies automatically when you install your custom project on a new machine. Requirements file works just fine if all you want to do is to install a few PyPI packages.\n\nHere is a nice comparison between the two. From the same link you can see that if your project has two dependent packages A and B, all you have to include in your setp.py file is a line\n\ninstall_requires=[ 'A', 'B' ]\n\nOf course, setuptools can do much more. You can include setups for external libraries (say C files), non PyPI dependencies, etc. The documentation gives a detailed overview on installing dependencies. There is also a really good tutorial on getting started with python packaging.\n\nFrom their example, a typical setup.py file would look like this.\n\nfrom setuptools import setup setup(name='funniest', version='0.1', description='The funniest joke in the world', url='http://github.com/storborg/funniest', author='Flying Circus', author_email='[email protected]', license='MIT', packages=['funniest'], install_requires=[ 'markdown', ], zip_safe=False)\n\nIn conclusion, it is so simple to get started with setuptools. This package can make it fairly easy to migrate your code to a new machine.\n\nAutomatic requirements.txt updating approach\n\nI'm not really sure about auto installing what is necessary, but it you stop on using requirements.txt, there are 3 approaches:\n\nGenerate requirements.txt after development, when we want to deploy it. It is performed by pip freeze > requirements.txt or pipreqs for less messy result.\n\nAdd every module to requirements.txt manually after each install.\n\nInstall manager that will handle requirements.txt updates for us.\n\nThere are many answers for the 1-st option on stackoverflow, the 2-d option is self-explanatory, so I would like to describe the 3-d approach. There is a library called to-requirements.txt. To install it type this:\n\npip install to-requirements.txt # Pip install to requirements.txt\n\nIf you read the whole command at once you would see, what it does. After installing you should setup it. Run:\n\nrequirements-txt setup\n\nIt overrides the pip scripts so that each pip install or pip uninstall updates the requirements.txt file of your project automatically with required versions of packages. The overriding is made safely, so that after uninstalling this package the pip will behave ordinary.\n\nAnd you could customize the way it works. For example, disable it globally and activate it only for the required directories, activate it only for git repositories, or allow / disallow to create requirements.txt file if it does not exist.\n\nLinks:\n\nDocumentation - https://requirements-txt.readthedocs.io/en/latest/\n\nGitHub - https://github.com/VoIlAlex/requirements-txt\n\nPyPI - https://pypi.org/project/to-requirements.txt/"
+    }
+}

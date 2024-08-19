@@ -1,0 +1,37 @@
+{
+    "id": "dbpedia_8588_0",
+    "rank": 66,
+    "data": {
+        "url": "https://askubuntu.com/questions/1249907/ubuntu-20-04-no-wifi-adapter-found-dell",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Ubuntu 20.04 - No wifi adapter found DELL",
+        "top_image": "https://cdn.sstatic.net/Sites/askubuntu/Img/apple-touch-icon@2.png?v=c492c9229955",
+        "meta_img": "https://cdn.sstatic.net/Sites/askubuntu/Img/apple-touch-icon@2.png?v=c492c9229955",
+        "images": [
+            "https://cdn.sstatic.net/Sites/askubuntu/Img/logo.svg?v=472cf2768bba",
+            "https://www.gravatar.com/avatar/3cd2890a2235144f2174b43a5477f5f2?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/EQWv9.jpg?s=64",
+            "https://i.sstatic.net/EQWv9.jpg?s=64",
+            "https://www.gravatar.com/avatar/5cc747cf937ed12c948372c03908f855?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/1566e35b5cd838e0bfaeaaf56e76cccd?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/8c9a853d93b9eab765915893c9761216?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://askubuntu.com/posts/1249907/ivc/3f38?prg=90dd9d27-4bda-4a3d-970d-38363e3c18bd"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2020-06-13T12:08:31",
+        "summary": "",
+        "meta_description": "I know there are many questions about this, but no one works for me.\nI have been more than a week testing blogs, github and forum solutions, actually I really don't know what I have installed,",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/askubuntu/Img/favicon.ico?v=928dfb7c1990",
+        "meta_site_name": "Ask Ubuntu",
+        "canonical_link": "https://askubuntu.com/questions/1249907/ubuntu-20-04-no-wifi-adapter-found-dell",
+        "text": "I know there are many questions about this, but no one works for me.\n\nI have been more than a week testing blogs, github and forum solutions, actually I really don't know what I have installed, blacklisted and created to try to get back my wifi adapter.\n\nProblem started after I connect my ipad to my laptop.\n\nManufacturer: Dell Inc. Product Name: Inspiron 3521\n\nKernel release:\n\n5.4.0-37-generic\n\nIf I throw this line:\n\nlspci -knn | grep Net -A3; rfkill list\n\nOutput:\n\n02:00.0 Network controller [0280]: Broadcom Inc. and subsidiaries BCM43142 802.11b/g/n [14e4:4365] (rev 01) Subsystem: Dell Wireless 1704 802.11n + BT 4.0 [1028:0016] Kernel modules: bcma, wl 0: hci0: Bluetooth Soft blocked: no Hard blocked: no\n\nIf I throw this line\n\nsudo modprobe wl\n\nOutput:\n\nmodprobe: FATAL: Module wl not found in directory /lib/modules/5.4.0-37-generic\n\nIf I throw this line:\n\ngrep wl /etc/modprobe.d/*\n\nOutput:\n\n/etc/modprobe.d/iwlwifi.conf:# /etc/modprobe.d/iwlwifi.conf /etc/modprobe.d/iwlwifi.conf:# iwlwifi will dyamically load either iwldvm or iwlmvm depending on the /etc/modprobe.d/iwlwifi.conf:# microcode file installed on the system. When removing iwlwifi, first /etc/modprobe.d/iwlwifi.conf:# remove the iwl?vm module and then iwlwifi. /etc/modprobe.d/iwlwifi.conf:remove iwlwifi \\ /etc/modprobe.d/iwlwifi.conf:(/sbin/lsmod | grep -o -e ^iwlmvm -e ^iwldvm -e ^iwlwifi | xargs /sbin/rmmod) \\ /etc/modprobe.d/RTL810xE.conf:options RTL810xE fwlps=N\n\nBIOS:\n\nsecure boot disable load legacy option Enable Boot list option legacy\n\nSecure Boot not enabled on this system. Done.\n\nif I throw sudo apt install --reinstall bcmwl-kernel-source:\n\nwl.ko: Running module version sanity check. - Original module - No original module exists within this kernel - Installation - Installing to /lib/modules/5.4.0-37-generic/updates/dkms/ depmod......... DKMS: install completed. update-initramfs: deferring update (trigger activated) Processing triggers for man-db (2.9.1-1) ... Processing triggers for initramfs-tools (0.136ubuntu6) ... update-initramfs: Generating /boot/initrd.img-5.4.0-37-generic\n\nAnyone could help me?\n\nThe driver is installed it is shown here:\n\nKernel modules: bcma, wl\n\nwl is the correct driver for this adapter.\n\nBut the problem it is not in use. The reason may be that Secure Boot is enabled in UEFI settings, or it is blacklisted.\n\nCheck if Secure Boot is disabled in UEFI aka BIOS. If that doesn't help, run\n\ngrep wl /etc/modprobe.d/*\n\nand look if wl is blacklisted somewhere.\n\nIf that doesn't help, reinstall wl by\n\nsudo apt install --reinstall bcmwl-kernel-source\n\nanswered Jun 13, 2020 at 12:41\n\nPilot6Pilot6\n\n90.8k9494 gold badges218218 silver badges326326 bronze badges"
+    }
+}

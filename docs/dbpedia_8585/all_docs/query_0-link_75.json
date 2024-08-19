@@ -1,0 +1,33 @@
+{
+    "id": "dbpedia_8585_0",
+    "rank": 75,
+    "data": {
+        "url": "https://tljh.jupyter.org/en/latest/howto/user-env/user-environment.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Install conda, pip or apt packages #",
+        "top_image": "https://tljh.jupyter.org/en/latest/howto/user-env/_images/new-terminal-button.png",
+        "meta_img": "https://tljh.jupyter.org/en/latest/howto/user-env/_images/new-terminal-button.png",
+        "images": [
+            "https://tljh.jupyter.org/en/latest/_static/logo.png",
+            "https://tljh.jupyter.org/en/latest/_images/new-terminal-button.png",
+            "https://tljh.jupyter.org/en/latest/_images/new-terminal-button.png",
+            "https://tljh.jupyter.org/en/latest/_images/new-terminal-button.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "TLJH (The Littlest JupyterHub) starts all users in the same conda environment. Packages / libraries installed in this environment are available to all users on the JupyterHub. Users with admin righ...",
+        "meta_lang": "en",
+        "meta_favicon": "../../_static/favicon.ico",
+        "meta_site_name": "The Littlest JupyterHub",
+        "canonical_link": "https://tljh.jupyter.org/howto/user-env/user-environment.html",
+        "text": "Installing conda packages#\n\nConda lets you install new languages (such as new versions of python, node, R, etc) as well as packages in those languages. For lots of scientific software, installing with conda is often simpler & easier than installing with pip - especially if it links to C / Fortran code.\n\nWe recommend installing packages from conda-forge, a community maintained repository of conda packages.\n\nLog in as an admin user and open a Terminal in your Jupyter Notebook.\n\nIf you already have a terminal open as an admin user, that should work too!\n\nInstall a package!\n\nsudo -E conda install -c conda-forge gdal\n\nThis installs the gdal library from conda-forge and makes it available to all users. gdal is much harder to install with pip.\n\nNote\n\nIf you get an error message like sudo: conda: command not found, make sure you are not missing the -E parameter after sudo.\n\nInstalling apt packages#\n\napt is the official package manager for the Ubuntu Linux distribution. You can install utilities (such as vim, sl, htop, etc), servers (postgres, mysql, nginx, etc) and a lot more languages than present in conda (haskell, prolog, INTERCAL). Some third party software (such as RStudio) is distributed as .deb files, which are the files apt uses to install software.\n\nYou can search for packages with Ubuntu Package search - make sure to look in the version of Ubuntu you are using!\n\nLog in as an admin user and open a Terminal in your Jupyter Notebook.\n\nIf you already have a terminal open as an admin user, that should work too!\n\nUpdate list of packages available. This makes sure you get the latest version of the packages possible from the repositories.\n\nsudo apt update\n\nInstall the packages you want.\n\nsudo apt install mysql-server git\n\nThis installs (and starts) a MySQL database server and git.\n\nUser environment location#\n\nThe user environment is a conda environment set up in /opt/tljh/user, with a python3 kernel as the default. It is readable by all users, but writeable only by users who have root access. This makes it possible for JupyterHub admins (who have root access with sudo) to install software in the user environment easily.\n\nAccessing user environment outside JupyterHub#\n\nWe add /opt/tljh/user/bin to the $PATH environment variable for all JupyterHub users, so everything installed in the user environment is available to them automatically. If you are using ssh to access your server instead, you can get access to the same environment with:\n\nexportPATH=/opt/tljh/user/bin:${PATH}\n\nWhenever you run any command now, the user environment will be searched first before your system environment is. So if you run python3 <somefile>, it’ll use the python3 installed in the user environment (/opt/tljh/user/bin/python3) rather than the python3 installed in your system environment (/usr/bin/python3). This is usually what you want!\n\nTo make this change ‘stick’, you can add the line to the end of the .bashrc file in your home directory.\n\nWhen using sudo, the $PATH environment variable is usually reset, for security reasons. This leads to error messages like:\n\nsudo conda install -c conda-forge gdal sudo: conda:command not found\n\nThe most common & portable way to fix this when using ssh is:\n\nsudoPATH=${PATH} conda install -c conda-forge gdal"
+    }
+}
