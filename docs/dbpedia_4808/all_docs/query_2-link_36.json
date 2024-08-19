@@ -1,0 +1,28 @@
+{
+    "id": "dbpedia_4808_2",
+    "rank": 36,
+    "data": {
+        "url": "https://github.com/delcon/siteground_git_deploy",
+        "read_more_link": "",
+        "language": "en",
+        "title": "delcon/siteground_git_deploy: How to easely deploy to Siteground with git",
+        "top_image": "https://opengraph.githubassets.com/256debb0b198ab29f9ce9bb919dd2f4d875179c6c9d6ae4e03c97986da129fa7/delcon/siteground_git_deploy",
+        "meta_img": "https://opengraph.githubassets.com/256debb0b198ab29f9ce9bb919dd2f4d875179c6c9d6ae4e03c97986da129fa7/delcon/siteground_git_deploy",
+        "images": [],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "How to easely deploy to Siteground with git. Contribute to delcon/siteground_git_deploy development by creating an account on GitHub.",
+        "meta_lang": "en",
+        "meta_favicon": "https://github.com/fluidicon.png",
+        "meta_site_name": "GitHub",
+        "canonical_link": "https://github.com/delcon/siteground_git_deploy",
+        "text": "Deploy to Siteground with Git\n\nA Tutorial for deploying to Siteground with Git\n\nYou must have basic Git knowledge.\n\nConfigure SSH access from your local computer to Siteground. You need to have SSH access from you computer without entering a password. Use PuTTY Authentication Agent. Siteground Tutorial on this topic.\n\nOpen the SSH Console. Test you SSH Connection ssh sitegroundXYZ.biz and do ls and git --version. Adjust for your environment. Leave your console open.\n\nWorkstation with a local git Repository containig your website to deploy. It does not matter how the Repository it is setup.\n\nAn empty directory for your public website. For this tutorial we call it mysite.com and place it at the root of the Siteground home directory.\n\nOpen cPanel File Manager at Siteground.\n\ncPanel File Manger: Create a server git repository directory for your website for example mysite.git at the root of the Siteground home directory.\n\nSSH Console: Change to mysite.git. Type git init --bare. This initializes an empty git repository at your site.\n\ncPanel File Manger: Change to mysite.git/hooks and add a New File named post-receive.\n\ncPanel File Manager: Edit post-receive and insert following code (adjust for your environment). This tells Siteground-Git to checkout to your public website directory after you push to it.\n\n#!/bin/sh GIT_WORK_TREE=/home/userXX/mysite.com git checkout -f\n\ncPanel File Manger: Change Permissions for post-receive: Allow Execute to User, Group, and World.\n\nWorkstation: Add a remote site to your git Repository: git remote add mysite ssh://userxx@amXYZ.siteground.biz:18765/home/userxx/mysite.git (Adjust for your environment)\n\nWorkstation: git push mysite master this pushes the master branch from your local Repository to your Site.\n\nThis tutorial is written for general Git deployment to Siteground Sites. If you use a CMS (WP/Drupal....) Siteground has SG-Git and Staging specifically for these taks.\n\nThis procedure is based on:\n\nCaio Vaccaro and Abhijit Menon-Sen"
+    }
+}

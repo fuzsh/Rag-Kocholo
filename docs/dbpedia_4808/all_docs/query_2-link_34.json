@@ -1,0 +1,34 @@
+{
+    "id": "dbpedia_4808_2",
+    "rank": 34,
+    "data": {
+        "url": "https://wordpress.org/support/topic/unexpected-token-at-siteground-optimizer/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Unexpected token ‘<' (at siteground-optimizer",
+        "top_image": "https://s.w.org/images/home/wordpress-default-ogimage.png",
+        "meta_img": "https://s.w.org/images/home/wordpress-default-ogimage.png",
+        "images": [
+            "https://secure.gravatar.com/avatar/b146f5c35495ac852a15cfd3a2883c8f?s=100&d=retro&r=g",
+            "https://secure.gravatar.com/avatar/e44355937fbf60a9e713bcac03c23d95?s=100&d=retro&r=g",
+            "https://secure.gravatar.com/avatar/b146f5c35495ac852a15cfd3a2883c8f?s=100&d=retro&r=g",
+            "https://secure.gravatar.com/avatar/e44355937fbf60a9e713bcac03c23d95?s=100&d=retro&r=g",
+            "https://s.w.org/style/images/code-is-poetry-for-dark-bg.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2023-04-18T09:33:42+00:00",
+        "summary": "",
+        "meta_description": "[This thread is closed.] Hi, I am trying to call a javascript function that’s present in a .js file, from a custom plugin shortcode function.…",
+        "meta_lang": "en",
+        "meta_favicon": "https://s.w.org/favicon.ico?2",
+        "meta_site_name": "WordPress.org Forums",
+        "canonical_link": "https://wordpress.org/support/topic/unexpected-token-at-siteground-optimizer/",
+        "text": "Hi,\n\nI am trying to call a javascript function that’s present in a .js file, from a custom plugin shortcode function.\n\nHere is my code in the main plugin file (my-custom-hooks.php):\n\n<?php /* Plugin Name: JKY-Custom-Hooks Version : 1.0 Description: Demonstrating WordPress Hooks (Actions and Filters) with multiple examples. Author : Sam Author URI : https://staging59.courses.jkyog.org/ License : GPLv2 or later License URI: https://www.gnu.org/licenses/gpl-2.0.html Text Domain: my-custom-hooks */ add_action( 'wp_enqueue_scripts', 'wp_custom_plugin_js_scripts' ); function wp_custom_plugin_js_scripts() { //wp_register_script( 'my-custom-hooks', plugins_url( '/assets/js/custom-date-scripts.js' , __FILE__ ),array('jquery'),1.0); wp_enqueue_script('custom-date-scripts', plugins_url( '/assets/js/custom-date-scripts.js' , __FILE__ )); } function wpb_hook_get_client_timezonetime($attr) { $input_arr = shortcode_atts( array( 'input_time' => '5:00 PM', 'input_timezone' => 'CST' ), $attr); //wp_enqueue_script( 'my-custom-hooks' ); return \"<script type='text/javascript'>get_client_time( '\". $input_arr['input_time'] .\"', '\". $input_arr['input_timezone'] .\"' );</script>\"; } add_shortcode('get_client_timezonetime', 'wpb_hook_get_client_timezonetime'); //================================================= // Security: Abort if this file is called directly //================================================= if ( !defined('ABSPATH') ) { die; } ?>\n\nHere is the code in .js file:\n\n<script type=\"text/javascript\"> function get_client_time($input_time, $input_timezone) { var dt = moment($input_time, [\"h:mm A\"]).format(\"HH:mm\"); var splitTime = dt.split(/:/) var full_date = moment(new Date().setHours(splitTime[0], splitTime[1], 0)).tz(\"America/Chicago\", true); var dateTime = moment(full_date).format(\"YYYY-MM-DD h:mm:ss a\"); var local_dateTime = moment(full_date).tz(moment.tz.guess()).format(\"YYYY-MM-DD h:mm:ss a\"); var local_time = moment(full_date).tz(moment.tz.guess()).format(\"h:mm a z\"); console.log(\"local date time: \" + local_dateTime); console.log($input_time); console.log($input_timezone); var result = \"<span style='color: #DA4505; font-size: 16px; font-weight: 600; font-style: italic; text-align: center'>\" + local_time + \"</span>\"; document.write(result); //return result; } </script>\n\nBut it is giving me an error\n\nUnexpected token '<' (at siteground-optimizer-combined-js-66c2def00bd088f3ee72d116ef920bfe.js:1:1)\n\nI am stuck. Any help in this regard asap is highly appreciated.\n\nThank you very much for the reply. I don’t know how I missed that. Thank you again.\n\nBut the requirement I am trying to accomplish is still in pending. I want to show the time at appropriate places on the web page. But the list of times that shortcode is outputting is shown at the end of the web page. Why is this happening? How can I make it properly display where they are supposed to be displayed?"
+    }
+}
