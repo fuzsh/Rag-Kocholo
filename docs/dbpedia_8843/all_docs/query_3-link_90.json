@@ -1,0 +1,30 @@
+{
+    "id": "dbpedia_8843_3",
+    "rank": 90,
+    "data": {
+        "url": "https://discussions.unity.com/t/rts-moving-units-in-an-array-to-a-position-over-time/776732",
+        "read_more_link": "",
+        "language": "en",
+        "title": "RTS Moving Units in an Array to a position over time",
+        "top_image": "https://europe1.discourse-cdn.com/unity/original/3X/a/a/aaeab82727497b6f37f4312dcd57be21e6cd25e8.png",
+        "meta_img": "https://europe1.discourse-cdn.com/unity/original/3X/a/a/aaeab82727497b6f37f4312dcd57be21e6cd25e8.png",
+        "images": [
+            "https://dub2.discourse-cdn.com/unity/user_avatar/discussions.unity.com/yoreki/48/155895_2.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "Scripting"
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2020-02-15T15:05:47+00:00",
+        "summary": "",
+        "meta_description": "Hey, \nI’m new to C# and have been stuck on how to move selected units in an array to a position over time, for a while now. \nHere is my code at the moment: \nusing System.Collections;\nusing System.Collections.Generic;\nusi&hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://europe1.discourse-cdn.com/unity/optimized/3X/5/d/5d3b1bfc21f0dea8ce3730e22d85cbf4072b7c02_2_32x32.png",
+        "meta_site_name": "Unity Discussions",
+        "canonical_link": "https://discussions.unity.com/t/rts-moving-units-in-an-array-to-a-position-over-time/776732",
+        "text": "Hi,\n\nyou are calling MoveToPosition with unitManager.selectedUnits[i ].transform as ‘transform’.You then make the Units walk towards this transform… so i’m assuming nothing happens? A description of what happens would be nice if that’s not the case. You also calculate a target and then, inside this script, do nothing with it.\n\nGenerally speaking, if a problem seems too hard, break it down into easier parts:\n\nYou need to select units using the mouse. Store references to these units in an array of selected units. I believe you got this working?\n\nYou need to determine a target location. You are currently doing this a bit weirdly, since you set the target.z (which you do not seem to use for anything) to the current .z position. What if the terrain is not flat? I’d rather keep the result of the raycast (ScreenToWorldPoint) as target and work with that, see 3.\n\nYou need to move a unit from one location on your map to another (being able to do this for one means you can do it for all selected). For this i would recommend looking into NavMesh. NavMesh allows you to navigate terrain from one location to another, or in other words it’s a pathfinding solution. This also fixes the problem where your terrain currently needs to be flat for your movement to work. NavMesh takes care of this for the most part.\n\nI would also recommend building these things a bit more modular. Your units are of some type. This type should contain the methods for walking and so on. So when you need to move a unit somewhere, you’d call unit.Move(target) and it handles the rest. That way, when you need to move an array of units, you can just iterate over it and call unit[ i].Move() and be done with it. This advice is mostly about convenience and maintainability and has nothing to do with your problem tho.\n\nLast but not least, and quite a bit off-topic:\n\nBe aware that RTS are very, and i mean very, beginner unfriendly first games. This is due to the fact that RTS games generally contain hundreds, if not thousands of units at the same time. This will cause serious performance issues you will need to address, especially if you design your game in a way where each unit is a fully fetched gameobject with one or more scripts attached.\n\nOptimizing an RTS to smoothly run with thousands of units will likely involve looking into technologies like data oriented programming (DOTS in Unity), which is very different from object oriented programming (C#) and not exactly easy to get into, especially considering the lack of documentation on DOTS (it’s very new in Unity). So for a beginner, i wouldnt recommend it, unless you are aware of these problems and dont mind spending tons of time learning about optimization and probably getting a bit frustrated in the process.\n\nHope this helped!"
+    }
+}
