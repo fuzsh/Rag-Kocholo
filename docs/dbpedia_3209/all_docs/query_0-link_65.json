@@ -1,0 +1,42 @@
+{
+    "id": "dbpedia_3209_0",
+    "rank": 65,
+    "data": {
+        "url": "https://forum.proxmox.com/threads/migrate-windows-server-2003-vmware-to-proxmox.45148/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Migrate windows server 2003 vmware to proxmox",
+        "top_image": "https://forum.proxmox.com/styles/uix/images/Proxmox-logo-stacked-white-background-1200.png",
+        "meta_img": "https://forum.proxmox.com/styles/uix/images/Proxmox-logo-stacked-white-background-1200.png",
+        "images": [
+            "https://forum.proxmox.com/styles/uix/images/Proxmox-logo-500px.png",
+            "https://forum.proxmox.com/styles/uix/images/Proxmox-logo-black-800.png",
+            "https://forum.proxmox.com/styles/uix/images/Proxmox-logo-500px.png",
+            "https://forum.proxmox.com/styles/uix/images/Proxmox-logo-black-800.png",
+            "https://forum.proxmox.com/data/attachments/7/7488-07b61cdc3ba2992f7405c75faf6b23e6.jpg",
+            "https://forum.proxmox.com/data/avatars/s/3/3641.jpg?1723189659",
+            "https://forum.proxmox.com/data/avatars/s/3/3641.jpg?1723189659",
+            "https://forum.proxmox.com/data/avatars/s/3/3641.jpg?1723189659",
+            "https://forum.proxmox.com/data/avatars/s/3/3641.jpg?1723189659",
+            "https://forum.proxmox.com/data/avatars/s/3/3641.jpg?1723189659",
+            "https://forum.proxmox.com/data/avatars/s/3/3641.jpg?1723189659"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Graz deepdoc.at"
+        ],
+        "publish_date": "2018-07-05T20:44:41+02:00",
+        "summary": "",
+        "meta_description": "Hello,\n\nI have a windows 2003 server in vmware, and I wanted to convert it and import it into proxmox.\n\nI used the vmaware converter to generate the vmdk...",
+        "meta_lang": "",
+        "meta_favicon": "/data/assets/logo/proxmox-logo-symbol-192x192.png",
+        "meta_site_name": "Proxmox Support Forum",
+        "canonical_link": "https://forum.proxmox.com/threads/migrate-windows-server-2003-vmware-to-proxmox.45148/",
+        "text": "ocerda\n\nMember\n\nJan 2, 2018\n\n58\n\n1\n\n8\n\n32\n\nJul 5, 2018\n\n#1\n\nHello,\n\nI have a windows 2003 server in vmware, and I wanted to convert it and import it into proxmox.\n\nI used the vmaware converter to generate the vmdk disk.\n\nOnce I have the disk, I put it in proxmox and I create the proxmox machine.\n\nI use the following command as you indicate on this website.\n\nhttps://pve.proxmox.com/wiki/Migrat...o_Proxmox_VE_.28KVM.29_using_VMware_Converter\n\nqemu-img convert -f vmdk /mnt/usb/windows-server/windows-server.vmdk -O qcow2 /var/lib/vz/images/100/windows-server.qcow2\n\nAnd it does not work for me, I've tried everything.\n\nI have tried to use the disk in vmdk format, qcow2, raw, I have changed the controller from diso to IDE, SATA, SCSI, the type of network to all possible adapters.\n\nIn all the possible combinations the Windows server 2003 starts up and when it is going to load it, it shoots me blue screen and it restarts infinitely many times\n\nSTOP error 0x000007B and more errors, I need to migrate that windows server from vmware to proxmox, can you help me?\n\nAttachments\n\n1.JPG\n\nfireon\n\nDistinguished Member\n\nOct 25, 2010\n\n4,238\n\n407\n\n153\n\nAustria/Graz\n\ndeepdoc.at\n\nJul 5, 2018\n\n#2\n\nOften done and your workflow was correct. But you missed some thinks:\n\nAll Networkinterface change to dhcp\n\nall software special drivers (vmwaretools...) are to deinstall\n\nBefore start vmwareconverter execute Mergeide.reg\n\nOn the first Start IDE and rtl... is the right choice. Only virtio-win-0.1.113 is really working fine on 2003 Server.\n\nocerda\n\nMember\n\nJan 2, 2018\n\n58\n\n1\n\n8\n\n32\n\nJul 6, 2018\n\n#3\n\nI do not understand what you want to say, before running the vmwareconverter, do you want me to run Mergeide.reg and then convert my machine?\n\nThat file that does?\n\nAnd as for virtio, you mean that I must download the virtio driver and install it?\n\nfireon\n\nDistinguished Member\n\nOct 25, 2010\n\n4,238\n\n407\n\n153\n\nAustria/Graz\n\ndeepdoc.at\n\nJul 6, 2018\n\n#4\n\nI do not understand what you want to say, before running the vmwareconverter, do you want me to run Mergeide.reg and then convert my machine?\n\nThat file that does?\n\nAnd as for virtio, you mean that I must download the virtio driver and install it?\n\nYes. Please search the documentation! The Regfile manipulate the that at the first start all the new hardware will be installed.\n\nocerda\n\nMember\n\nJan 2, 2018\n\n58\n\n1\n\n8\n\n32\n\nJul 6, 2018\n\n#5\n\nOk, now use that reg file, and in advanced options I will remove what vmware, a question I have, is it necessary to install the virtio driver? Or can I put the disk to be IDE?\n\nIf it's better with virtio, can you tell me where to download the virtio driver for windows server 2003.\n\nI am very grateful for your help.\n\nfireon\n\nDistinguished Member\n\nOct 25, 2010\n\n4,238\n\n407\n\n153\n\nAustria/Graz\n\ndeepdoc.at\n\nJul 6, 2018\n\n#6\n\nRemove VM-Waretools from your VM before migration.\n\nFirst boot with IDE and network RTL... If everything is running fine, install virtiodrivers for Baloon and others. Then shutdown and do an Snapshot. After that you can do an install with virtio disk and network. Depending on you old 2003 machine that can damage the old 2003er server. So Snapshot first\n\nISO Download here: https://ftp.iteas.at/public/ISO/virtio-win-0.1.113_for_win2003_Server.iso\n\nocerda\n\nMember\n\nJan 2, 2018\n\n58\n\n1\n\n8\n\n32\n\nJul 9, 2018\n\n#7\n\nThank you very much for the iso of the virtio, between today tomorrow I will make the copy again and import it as you have told me.\n\nI'll tell you if it went well.\n\nThank you.\n\nReactions: fireon\n\nocerda\n\nMember\n\nJan 2, 2018\n\n58\n\n1\n\n8\n\n32\n\nJul 10, 2018\n\n#8\n\nThe windows 2003 server has already booted me, but it has no network, what drivers do I have to install? I have installed netKVM of the iso that you gave me, and it does not work, of the iso that folder is?\n\nAnd if not, can you send me the network drivers, intel E1000 or Realtek RTL8139 for windows 2003 server?\n\nI am very grateful for your help.\n\nocerda\n\nMember\n\nJan 2, 2018\n\n58\n\n1\n\n8\n\n32\n\nJul 10, 2018\n\n#9\n\nthanks for your help\n\nI have already solved my problems with the network.\n\nfireon\n\nDistinguished Member\n\nOct 25, 2010\n\n4,238\n\n407\n\n153\n\nAustria/Graz\n\ndeepdoc.at\n\nJul 10, 2018\n\n#10\n\nthanks for your help\n\nI have already solved my problems with the network.\n\nFine. RTL8139 will automatically installed on every windows. E1000 is on the ISO.\n\nocerda\n\nMember\n\nJan 2, 2018\n\n58\n\n1\n\n8\n\n32\n\nJul 23, 2018\n\n#11\n\nHello again,\n\nI have the same problem that I had previously, but this time what I try to migrate is a physical machine.\n\nI pass the vmware convert, before that I import the regedit that you passed me, then I convert the machine to vmdk, but when I import it into proxmox, it gives the same blue screen as before.\n\nTo import physical machines is done in the same way, or is it another?\n\nJordiPalet\n\nNew Member\n\nJul 17, 2024\n\n2\n\n0\n\n1\n\nJul 17, 2024\n\n#12\n\nRemove VM-Waretools from your VM before migration.\n\nFirst boot with IDE and network RTL... If everything is running fine, install virtiodrivers for Baloon and others. Then shutdown and do an Snapshot. After that you can do an install with virtio disk and network. Depending on you old 2003 machine that can damage the old 2003er server. So Snapshot first\n\nISO Download here: https://ftp.iteas.at/public/ISO/virtio-win-0.1.113_for_win2003_Server.iso\n\nTried to download using that link, but not working. Then looked for the equivalent Fedora download, but there is no W2k3 folder... Which one should be using? Tks!\n\nfireon\n\nDistinguished Member\n\nOct 25, 2010\n\n4,238\n\n407\n\n153\n\nAustria/Graz\n\ndeepdoc.at\n\nJul 17, 2024\n\n#13\n\nTried to download using that link, but not working. Then looked for the equivalent Fedora download, but there is no W2k3 folder... Which one should be using? Tks!\n\nYou can use this source: https://fedorapeople.org/groups/vir...ownloads/archive-virtio/virtio-win-0.1.113-1/\n\nJordiPalet\n\nNew Member\n\nJul 17, 2024\n\n2\n\n0\n\n1\n\nJul 17, 2024\n\n#14\n\nTried already but doesn’t have a w 2003 scsi virtio driver folder …"
+    }
+}
