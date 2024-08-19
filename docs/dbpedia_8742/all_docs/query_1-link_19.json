@@ -1,0 +1,38 @@
+{
+    "id": "dbpedia_8742_1",
+    "rank": 19,
+    "data": {
+        "url": "https://packagist.org/packages/contao/core-bundle",
+        "read_more_link": "",
+        "language": "en",
+        "title": "contao/core",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://packagist.org/img/algolia-logo-light.svg?v=1720448048",
+            "https://www.gravatar.com/avatar/87d2e5aefadcb310f9155df28c2b3582?s=48&d=identicon",
+            "https://www.gravatar.com/avatar/adfb055317aa5e5fd8ff410b7b377f77?s=48&d=identicon",
+            "https://camo.githubusercontent.com/f142d1c3b592ee8cf1709aec73dab55548b7ec804140ffcf60fa28a9105f3fb7/68747470733a2f2f696d672e736869656c64732e696f2f7061636b61676973742f762f636f6e74616f2f636f72652d62756e646c652e7376673f7374796c653d666c61742d737175617265",
+            "https://camo.githubusercontent.com/9e1b63faf581cfb4c97709837cdc292ff4f77dd83f0dab7a34d12729edf4c4c4/68747470733a2f2f696d672e736869656c64732e696f2f7061636b61676973742f64742f636f6e74616f2f636f72652d62756e646c652e7376673f7374796c653d666c61742d737175617265",
+            "https://packagist.org/img/private-packagist.svg?v=1720448048",
+            "https://packagist.org/img/datadog-light.png?v=1720448048"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Jordi Boggiano"
+        ],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "Contao Open Source CMS",
+        "meta_lang": "",
+        "meta_favicon": "/favicon.ico?v=1720448048",
+        "meta_site_name": "",
+        "canonical_link": "https://packagist.org/packages/contao/core-bundle",
+        "text": "README\n\nContao is an Open Source PHP Content Management System for people who want a professional website that is easy to maintain. Visit the project website for more information.\n\nContao has been designed as a Symfony bundle, which can be used to add CMS functionality to any Symfony application. If you do not have an existing Symfony application yet, we recommend using the Contao managed edition as basis for your application.\n\nPrerequisites\n\nThe Contao core bundle has a recipe in the symfony/recipes-contrib repository. Be sure to either enable contrib recipes for your project by running the following command or follow the instructions to use the contrib recipe during the installation process.\n\ncomposer config extra.symfony.allow-contrib true\n\nAdd the contao-component-dir to the extra section of your composer.json file.\n\ncomposer config extra.contao-component-dir assets\n\nInstallation\n\nInstall Contao and all its dependencies by executing the following command:\n\ncomposer require \\ contao/core-bundle:4.8.* \\ php-http/guzzle6-adapter:^1.1\n\nNote that you can exchange the php-http/guzzle6-adapter package with any other HTTP client implementation. If you already have an HTTP client implementation, you can omit the package entirely.\n\nConfiguration\n\nConfigure the DATABASE_URL in your environment, either using environment variables or by using the Dotenv component.\n\nEnable ESI in the config/packages/framework.yaml file.\n\nframework: esi: true\n\nAdd the Contao routes to your config/routing.yaml file, and be sure to load the ContaoCoreBundle at the very end, so the catch-all route does not catch your application routes.\n\nContaoCoreBundle: resource: \"@ContaoCoreBundle/config/routes.yaml\"\n\nEdit your config/security.yaml file and merge all the providers, encoders, firewalls and access_control sections:\n\nsecurity: password_hashers: Contao\\User: auto Symfony\\Component\\Security\\Core\\User\\PasswordAuthenticatedUserInterface: auto providers: contao.security.backend_user_provider: id: contao.security.backend_user_provider contao.security.frontend_user_provider: id: contao.security.frontend_user_provider firewalls: contao_backend: request_matcher: contao.routing.backend_matcher provider: contao.security.backend_user_provider user_checker: contao.security.user_checker switch_user: true login_throttling: ~ login_link: check_route: contao_backend_login_link signature_properties: [username, lastLogin] success_handler: contao.security.authentication_success_handler contao_login: remember_me: false logout: path: contao_backend_logout contao_frontend: request_matcher: contao.routing.frontend_matcher provider: contao.security.frontend_user_provider user_checker: contao.security.user_checker access_denied_handler: contao.security.access_denied_handler switch_user: false login_throttling: ~ contao_login: remember_me: true remember_me: secret: '%kernel.secret%' remember_me_parameter: autologin token_provider: doctrine: true logout: path: contao_frontend_logout access_control: - { path: ^%contao.backend.route_prefix%/login$, roles: PUBLIC_ACCESS } - { path: ^%contao.backend.route_prefix%/logout$, roles: PUBLIC_ACCESS } - { path: ^%contao.backend.route_prefix%(/|$), roles: ROLE_USER } - { path: ^/, roles: [PUBLIC_ACCESS] }\n\nThe Contao core-bundle is now installed and activated. Use the contao:migrate command to upgrade the database and the contao:user:create command to create your first back end user.\n\nLicense\n\nContao is licensed under the terms of the LGPLv3.\n\nGetting support"
+    }
+}

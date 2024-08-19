@@ -1,0 +1,28 @@
+{
+    "id": "dbpedia_8742_0",
+    "rank": 81,
+    "data": {
+        "url": "https://docs.contao.org/dev/getting-started/hooks/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Implementing Hooks :: Contao Developer Documentation",
+        "top_image": "https://docs.contao.org/dev/images/favicon.png",
+        "meta_img": "https://docs.contao.org/dev/images/favicon.png",
+        "images": [],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "Implementing your first Hooks in Contao.",
+        "meta_lang": "en",
+        "meta_favicon": "https://docs.contao.org/dev/images/favicon.png",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "Implementing Hooks\n\nAnother core concept of Contao are so called Hooks. They allow you to implement custom logic in certain points of the execution flow of Contao’s framework. To better understand what that means, two examples will be shown in this getting-started tutorial.\n\nAssuming you have autoloaded and autoregistered your services as described here, implementing a hook is as easy as creating one single PHP file containing your hook’s logic. Hooks can be registered through service tagging and thus you can also use annotations directly in your hook’s class to register the hook.\n\nFor our first example we assume that we want to provide more information about the author of a news entry in the news template. Usually $this->author in the news template is filled with by <Author Name>. No other information about the author is available via the news template’s variables. Instead of fetching the information we need with custom PHP code in the template, we can instead implement a parseArticles hook. This hook allows us to enrich the template object of a news entry with additional variables, before the template is parsed for each news entry. The implementation of this hook also uses the concept of Contao’s Models: the database entry of the news entry’s author is fetched via the \\Contao\\UserModel.\n\nNow, in any of our news templates, we can access any information about the news entry’s author directly.\n\nThe following more complex example shows how to customize the personal data update procedure of your members. Assume you have an external service, against which the personal data of members need to be kept in sync, whenever a member changes their personal data. The Personal data module of Contao provides a updatePersonalData hook which will be triggered when, as the name of the hook suggests, a member updates their personal data via this module.\n\nThe hook requests an instance of a hypothetical ExternalMemberService. Whenever a member updates their personal data, the hook will be triggered and the updated data will be sent to that service, which then handles updating the member’s data in that external service.\n\nThese are just some basic examples of what could be done with hooks, providing a glimpse into the possibilities. To learn more about hooks, visit the dedicated article of the framework documentation and have a look at the complete reference of hooks."
+    }
+}

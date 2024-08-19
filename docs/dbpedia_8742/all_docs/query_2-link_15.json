@@ -1,0 +1,42 @@
+{
+    "id": "dbpedia_8742_2",
+    "rank": 15,
+    "data": {
+        "url": "https://devilbox.readthedocs.io/en/latest/examples/setup-contao.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Setup Contao — Devilbox 1.0 documentation",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://devilbox.readthedocs.io/en/latest/_static/logo.png",
+            "https://raw.githubusercontent.com/cytopia/icons/master/11x11/ext-link.png",
+            "https://raw.githubusercontent.com/cytopia/icons/master/11x11/ext-link.png",
+            "https://raw.githubusercontent.com/cytopia/icons/master/11x11/ext-link.png",
+            "https://raw.githubusercontent.com/cytopia/icons/master/11x11/ext-link.png",
+            "https://devilbox.readthedocs.io/en/latest/_images/01-frontend.png",
+            "https://devilbox.readthedocs.io/en/latest/_images/02-license.png",
+            "https://devilbox.readthedocs.io/en/latest/_images/03-install-tool-password.png",
+            "https://devilbox.readthedocs.io/en/latest/_images/04-database-setup.png",
+            "https://devilbox.readthedocs.io/en/latest/_images/05-update-database.png",
+            "https://devilbox.readthedocs.io/en/latest/_images/06-create-admin-user.png",
+            "https://devilbox.readthedocs.io/en/latest/_images/07-finished.png",
+            "https://devilbox.readthedocs.io/en/latest/_images/08-login-screen.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "Attention\n\nYou can now run different PHP versions per project: Release v3.0.0-beta-0.1\n\nSetup ContaoÂ¶\n\nImportant\n\nYou can find a more up-to-date version in the official Contao Documentation: Official Contao Devilbox Documentation\n\nThis example will use composer to install Contao CMS from within the Devilbox PHP container.\n\nImportant\n\nUsing composer requires the underlying file system to support symlinks. If you use Docker Toolbox you need to explicitly allow/enable this. See below for instructions:\n\nDocker Toolbox and Symlinks\n\nAfter completing the below listed steps, you will have a working Contao CMS setup ready to be served via http and https.\n\nTable of Contents\n\nWalk throughÂ¶\n\nIt will be ready in eight simple steps:\n\nEnter the PHP container\n\nCreate a new VirtualHost directory\n\nInstall Contao via composer\n\nSymlink webroot directory\n\nAdd MySQL database\n\nSetup DNS record\n\nVisit http://my-contao.loc in your browser\n\n1. Enter the PHP containerÂ¶\n\nAll work will be done inside the PHP container as it provides you with all required command line tools.\n\nNavigate to the Devilbox git directory and execute shell.sh (or shell.bat on Windows) to enter the running PHP container.\n\nhost> ./shell.sh\n\n2. Create new vhost directoryÂ¶\n\nThe vhost directory defines the name under which your project will be available.\n\n( <vhost dir>.TLD_SUFFIX will be the final URL ).\n\ndevilbox@php-7.2.15 in /shared/httpd $ mkdir my-contao\n\nSee also\n\nTLD_SUFFIX\n\n3. Install ContaoÂ¶\n\nNavigate into your newly created vhost directory and install Contao with composer.\n\ndevilbox@php-7.2.15 in /shared/httpd $ cd my-contao devilbox@php-7.2.15 in /shared/httpd/my-contao $ composer create-project contao/managed-edition contao\n\nHow does the directory structure look after installation:\n\ndevilbox@php-7.2.15 in /shared/httpd/my-contao $ tree -L 1 . âââ contao 1 directory, 0 files\n\n4. Symlink webÂ¶\n\nSymlinking the actual webroot directory to htdocs is important. The web server expects every projectâs document root to be in <vhost dir>/htdocs/. This is the path where it will serve the files. This is also the path where your frameworks entrypoint (usually index.php) should be found.\n\nSome frameworks however provide its actual content in nested directories of unknown levels. This would be impossible to figure out by the web server, so you manually have to symlink it back to its expected path.\n\ndevilbox@php-7.2.15 in /shared/httpd/my-contao $ ln -s contao/web/ htdocs\n\nHow does the directory structure look after symlinking:\n\ndevilbox@php-7.2.15 in /shared/httpd/my-contao $ tree -L 1 . âââ contao âââ htdocs -> contao/web 2 directories, 0 files\n\nAs you can see from the above directory structure, htdocs is available in its expected path and points to the frameworks entrypoint.\n\nImportant\n\nWhen using Docker Toolbox, you need to explicitly allow the usage of symlinks. See below for instructions:\n\nDocker Toolbox and Symlinks\n\n5. Add MySQL DatabaseÂ¶\n\ndevilbox@php-7.2.15 in /shared/httpd/my-contao $ mysql -u root -h mysql -p -e 'CREATE DATABASE my_contao;'\n\n6. DNS recordÂ¶\n\nIf you have Auto DNS configured already, you can skip this section, because DNS entries will be available automatically by the bundled DNS server.\n\nIf you donât have Auto DNS configured, you will need to add the following line to your host operating systems /etc/hosts file (or C:\\Windows\\System32\\drivers\\etc on Windows):\n\n127.0.0.1 my-contao.loc\n\n7. Open your browserÂ¶\n\nOpen your browser at http://my-contao.loc or https://my-contao.loc and follow the installation steps.\n\n7.2 Accept licenseÂ¶\n\nAccept the license by clicking on Accept license\n\n7.3 Set install tool passwordÂ¶\n\nSet a password for the install tool itself\n\n7.4 Database setupÂ¶\n\nDatabase host: mysql\n\nDatabase port: 3306\n\nDatabase user: root\n\nDatabase pass: empty (if not otherwise set during Devilbox configuration)\n\n7.6 Set admin userÂ¶\n\nThe admin user is required to setup Contao itself and to gain access to the backend.\n\n7.7 FinishedÂ¶\n\nInstallation is done, click on the Contao back end to continue to setup the CMS itself.\n\n7.8 LoginÂ¶\n\nUse the admin user credentials created earlier to login in."
+    }
+}

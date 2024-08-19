@@ -1,0 +1,28 @@
+{
+    "id": "dbpedia_8743_0",
+    "rank": 2,
+    "data": {
+        "url": "https://docs.contao.org/manual/en/site-structure/multilingual-websites/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Multilingual websites :: Contao Manual",
+        "top_image": "https://docs.contao.org/manual/images/favicon.png",
+        "meta_img": "https://docs.contao.org/manual/images/favicon.png",
+        "images": [],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "Multilingual websites are also implemented in Contao by using different websites in the site structure. In contrast to multidomain setups, the websites do not differ by domain name but by language.",
+        "meta_lang": "en",
+        "meta_favicon": "https://docs.contao.org/manual/images/favicon.png",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "Multilingual websites\n\nMultilingual websites are also implemented in Contao by using different websites in the site structure. In contrast to the multi-domain mode, the domain name is not used to differentiate between websites but the language.\n\nIn general, there are two ways to display multilingual websites:\n\nFor each language, a separate website is created within the page structure. The structure of the websites can be completely different. For example, the German website does not have to have the same pages and menu items as the English website.\n\nThere is only one web page in the site structure, whose contents are available in different languages. This approach gets by with significantly fewer pages in the page structure, but requires an additional abstraction level for the management of multilingual content.\n\nIn Contao, only the first variant is supported (except for some third party extensions that differ from this concept for managing your own content).\n\nIn order for the language to be added to the URL (e.g. www.example.com/de/), you must add the following lines in the config.yaml located in the app/config/ directory. If the file does not exist yet, you have to create it.\n\nStarting with Contao 4.10 the URL prefix can also be defined for each website root individually and independently of the language of the website root. This way it is also possible have one website root without an URL prefix, while the other website roots of the same domain still have one. For example: example.com for the English version of the website and example.com/de for the German version. In order to be able to configure this setting the »legacy routing« mode must be disabled:\n\nMatching the website root\n\nThe combination of domain name, language and language fallback creates four possibilities that Contao has to check with every frontend call:\n\nIs there a page that matches the domain and language of the visitor?\n\nIs there a page that matches the domain and is marked as the language fallback?\n\nIs there a page without a domain entry that matches the visitor’s language?\n\nIs there a page without a domain entry that is marked as the language fallback?\n\nThe check is carried out from the most specific case, in which both the domain and the browser language match, to the most general case, in which neither the domain nor the browser language match and therefore the home page is loaded. Let us illustrate this with a concrete example scenario.\n\nExample\n\nLet’s assume you have two domains, one business and one private:\n\nwww.company.com\n\nwww.private.com\n\nThe business side is bilingual, so you need a total of three website roots:\n\nDNS settings for the different website roots\n\nPageDomain nameLanguageLanguage fallbackCompany German-en-Company English-enyesPrivateprivate.comenyes\n\nDepending on the accessed domain and the defined language in the browser, visitors will be redirected as follows:\n\nForwarding of visitors to the different website roots\n\nDomainBrowser languageTargetMatchingwww.company.comGermanCompany GermanLanguagewww.company.comEnglishCompany Englishlanguagewww.company.comSpanishCompany English-www.private.com(any)PrivateDomain\n\nThe first three cases all lead to the company page, even if the domain company.com is not explicitly stored in the DNS settings. This is not necessary at all, because the company page is in this case the starting page for unknown domains.\n\nThe first two cases could be clearly assigned to a website root based on the browser language, only in the third case the language fallback page had to be loaded. The third case is therefore the most general case, which catches all requests that cannot be uniquely assigned.\n\nThe fourth case clearly belongs to the private website because of the domain, no matter what language the visitor speaks, and thanks to the language fallback, visitors from all over the world have access to the website. And here you can see the importance of a language fallback: without it, the private website would only be available for German speaking visitors! All others would only see a “No pages found” error message."
+    }
+}

@@ -1,0 +1,28 @@
+{
+    "id": "dbpedia_8742_0",
+    "rank": 57,
+    "data": {
+        "url": "https://docs.contao.org/dev/framework/widgets/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Widgets :: Contao Developer Documentation",
+        "top_image": "https://docs.contao.org/dev/images/favicon.png",
+        "meta_img": "https://docs.contao.org/dev/images/favicon.png",
+        "images": [],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "How to create custom input widgets for the back and front end.",
+        "meta_lang": "en",
+        "meta_favicon": "https://docs.contao.org/dev/images/favicon.png",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "Widgets\n\nYou can create custom Widgets for the front end (see the form generator) or the back end (see DCA fields). In both cases, the custom widget needs to extend from the abstract \\Contao\\Widget class. The custom widget class is then registered either via the $GLOBALS['BE_FFL'] array (back end widgets) or the $GLOBALS['TL_FFL'] array (front end widgets).\n\nAlso in both cases, the abstract method generate() needs to be implemented. However, when the widget is rendered, Contao will execute the parse() method of the widget (also both in the front and back end). It is then up to each widget’s implementation how the output is delivered.\n\nThe abstract class also contains some member variables that control the output and behavior of the widget. The default value of these member variables will need to be set in the custom child class accordingly. Typically, the following member variables are adjusted:\n\n$blnSubmitInput: controls whether this widget actually submits any input.\n\n$blnForAttribute: controls whether a for attribute should be used for the widget’s label.\n\n$strTemplate: the Contao template for the widget.\n\n$strPrefix: controls the CSS class prefix for front end widgets.\n\nCreating Back End Widgets\n\nThe following example creates a simple text input widget for the back end. The input is allowed to be submitted and the generated label should contain the for attribute. The template is set to be_widget, which most back end widgets commonly use. It contains the label as a headline and executes $this->generateWithError(true), which in turn will execute $this->generate().\n\nTo get a better idea on the implementation details and possibilities for back end widgets, have a look at the source of the core’s widgets.\n\nThe widget is registered in the $GLOBALS['BE_FFL'] array with its own key:\n\nNow the widget can be used as an inputType in your DCA.\n\nCreating Front End Widgets\n\nSimilar to the back end example, the following example creates a simple text input widget (form field) for the form generator. The input is allowed to be submitted and the generated label should contain the for attribute. The template is set to form_custom_field and the CSS class prefix is set to widget widget-custom-field.\n\nThis time the widget’s HTML output is done in the template file where we extend the form_row template (see template inheritance).\n\nTo get a better idea on the implementation details and possibilities for front end widgets, have a look at the source of the core’s form fields and their templates.\n\nThe widget is registered in the $GLOBALS['TL_FFL'] array with its own key:\n\nNow the widget can be selected as an additional form field in the form generator. To translate the form field’s name, use the FFL.custom_field.0 & FFL.custom_field.1 key in the contao_default domain, e.g."
+    }
+}

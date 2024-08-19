@@ -1,0 +1,51 @@
+{
+    "id": "dbpedia_8742_2",
+    "rank": 71,
+    "data": {
+        "url": "https://www.howtoforge.com/running-contao-3.x-on-nginx-lemp-on-debian-wheezy-ubuntu-12.10",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Running Contao 3.x On Nginx (LEMP) On Debian Wheezy",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://www.howtoforge.com/images/howtoforge_logo_trans.gif",
+            "https://www.howtoforge.com/images/socialmedia/twitter.png",
+            "https://www.howtoforge.com/images/contao_3.x_nginx_debian_wheezy_ubuntu_12.10/1.png",
+            "https://www.howtoforge.com/images/contao_3.x_nginx_debian_wheezy_ubuntu_12.10/2.png",
+            "https://www.howtoforge.com/images/contao_3.x_nginx_debian_wheezy_ubuntu_12.10/3.png",
+            "https://www.howtoforge.com/images/profile/falko-timme.jpg",
+            "https://www.howtoforge.com/images/pdficon_small.png",
+            "https://www.howtoforge.com/images/print.gif",
+            "https://www.howtoforge.com/images/socialmedia/btn-recommend.png",
+            "https://www.howtoforge.com/images/socialmedia/btn-tweet.png",
+            "https://www.howtoforge.com/images/socialmedia/btn-follow.png",
+            "https://www.howtoforge.com/images/socialmedia/btn-gplus.png",
+            "https://www.howtoforge.com/images/socialmedia/64x64/twitter.png",
+            "https://www.howtoforge.com/images/socialmedia/64x64/facebook.png",
+            "https://www.howtoforge.com/images/socialmedia/64x64/hackernews.png",
+            "https://www.howtoforge.com/images/socialmedia/64x64/rss.png",
+            "https://www.howtoforge.com/images/socialmedia/btn-recommend.png",
+            "https://www.howtoforge.com/images/socialmedia/btn-tweet.png",
+            "https://www.howtoforge.com/images/socialmedia/btn-follow.png",
+            "https://www.howtoforge.com/images/socialmedia/btn-hackernews.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Falko Timme"
+        ],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "Running Contao 3.x On Nginx (LEMP) On Debian Wheezy/Ubuntu 12.10\n\nThis tutorial shows how you can install and run a Contao 3.x web site\n on a Debia...",
+        "meta_lang": "en",
+        "meta_favicon": "",
+        "meta_site_name": "HowtoForge",
+        "canonical_link": "https://www.howtoforge.com/running-contao-3.x-on-nginx-lemp-on-debian-wheezy-ubuntu-12.10",
+        "text": "Running Contao 3.x On Nginx (LEMP) On Debian Wheezy/Ubuntu 12.10\n\nVersion 1.0\n\nAuthor: Falko Timme\n\nFollow me on Twitter\n\nThis tutorial shows how you can install and run a Contao 3.x web site on a Debian Wheezy or Ubuntu 12.10 system that has nginx installed instead of Apache (LEMP = Linux + nginx (pronounced \"engine x\") + MySQL + PHP). nginx is a HTTP server that uses much less resources than Apache and delivers pages a lot of faster, especially static files.\n\nI do not issue any guarantee that this will work for you!\n\n1 Preliminary Note\n\nI want to install Contao in a vhost called www.example.com/example.com here with the document root /var/www/www.example.com/web.\n\nYou should have a working LEMP installation, as shown in this tutorial:\n\nInstalling Nginx With PHP5 (And PHP-FPM) And MySQL Support (LEMP) On Ubuntu 12.10\n\nA note for Ubuntu users:\n\nBecause we must run all the steps from this tutorial with root privileges, we can either prepend all commands in this tutorial with the string sudo, or we become root right now by typing\n\nsudo su\n\n2 Installing APC\n\nAPC is a free and open PHP opcode cacher for caching and optimizing PHP intermediate code. It's similar to other PHP opcode cachers, such as eAccelerator and XCache. It is strongly recommended to have one of these installed to speed up your PHP page.\n\nAPC can be installed as follows:\n\napt-get install php-apc\n\nReload PHP-FPM as follows:\n\n/etc/init.d/php5-fpm reload\n\n3 Installing Contao\n\nThe document root of my www.example.com web site is /var/www/www.example.com/web - if it doesn't exist, create it as follows:\n\nmkdir -p /var/www/www.example.com/web\n\nNext we download Contao (the .tar.gz version) from http://www.contao.org/download.html and place it in our document root:\n\ncd /tmp\n\nwget -O contao-3.0.3.tar.gz https://downloads.sourceforge.net/project/contao/3.0/contao-3.0.3.tar.gz?download\n\ntar xvfz contao-3.0.3.tar.gz\n\ncd contao-3.0.3/\n\nmv * /var/www/www.example.com/web/\n\nIt is recommended to make the document root and the Contao files in it writable by the nginx daemon which is running as user www-data and group www-data:\n\nchown -R www-data:www-data /var/www/www.example.com/web\n\nIf you haven't already created a MySQL database for Contao (including a MySQL Contao user), you can do that as follows (I name the database contao in this example, and the user is called contao_admin, and his password is contao_admin_password):\n\nmysqladmin -u root -p create contao\n\nmysql -u root -p\n\nGRANT ALL PRIVILEGES ON contao.* TO 'contao_admin'@'localhost' IDENTIFIED BY 'contao_admin_password';\n\nGRANT ALL PRIVILEGES ON contao.* TO 'contao_admin'@'localhost.localdomain' IDENTIFIED BY 'contao_admin_password';\n\nFLUSH PRIVILEGES;\n\nquit;\n\nNext we create an nginx vhost configuration for our www.example.com vhost in the /etc/nginx/sites-available/ directory as follows:\n\nvi /etc/nginx/sites-available/www.example.com.vhost\n\nNext make sure you have the following line in /etc/nginx/mime.types:\n\nvi /etc/nginx/mime.types\n\n[...] text/x-component htc; [...]\n\nTo enable the vhost, we create a symlink to it from the /etc/nginx/sites-enabled/ directory:\n\ncd /etc/nginx/sites-enabled/\n\nln -s /etc/nginx/sites-available/www.example.com.vhost www.example.com.vhost\n\nReload nginx for the changes to take effect:\n\n/etc/init.d/nginx reload\n\nNow we can launch the web-based Contao installer by going to http://www.example.com/contao/install.php - first you have to accept the Contao license (LGPL) :\n\nTo make sure that noone else can access the Contao installer in the future, provide a password for the installer (in addition to that, you can delete contao/install.php after successful installation):\n\nNext fill in the database details and click on Save database settings:"
+    }
+}

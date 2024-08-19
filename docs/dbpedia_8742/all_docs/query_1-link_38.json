@@ -1,0 +1,33 @@
+{
+    "id": "dbpedia_8742_1",
+    "rank": 38,
+    "data": {
+        "url": "https://binfalse.de/2019/07/17/dockerising-contao-4/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Dockerising Contao 4",
+        "top_image": "https://binfalse.de/assets/ico/favicon.png",
+        "meta_img": "https://binfalse.de/assets/ico/favicon.png",
+        "images": [
+            "https://binfalse.de/assets/ico/mainpic-2020.png",
+            "https://binfalse.de/assets/ico/mainpic-2020.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Martin Scharm"
+        ],
+        "publish_date": "2019-07-17T00:00:00",
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "",
+        "meta_favicon": "/assets/ico/favicon.png",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "Last year, we moved the website of our department from Typo3 to Contao version 3. I wrote about that in Dockerising a Contao website and Dockerising a Contao website II. Now it was time to upgrade from Contao version 3 to 4. And as usual: Things have changedâ¦ So, how to jail a Contao 4 into a Docker container?\n\nSimilar to Contao 3, we use two images for our Contao 4 site. One is a general Contao 4 installation, the other one is our personalised version.\n\nA general Contao 4 image\n\nThe general Contao 4 is based on an PHP image that includes an Apache webserver. In addition, we need to\n\ninstall a few dependencies,\n\nenable some Apache modules,\n\ninstall some extra PHP extensions,\n\ninstall Composer,\n\nand finally use Composer to install Contao.\n\nThis time, I outsourced the installation of Composer into a seperate script install-composer.sh:\n\nThus, youâll find a current composer installation in /composer.\n\nThe Dockerfile for the general image then boils down to the following:\n\nPLEASE NOTE: sSMTP is not maintained anymore! Please switch to msmtp, for example, as I explained in Migrating from sSMTP to msmtp.\n\nThis image includes the package for sSMTP to enable support for mails. To learn how to configure sSMTP, have a look into my earlier article Mail support for Dockerâs php:fpm.\n\nAlltogether, this gives us a proper recipe to get a dockerised Contao 4. It is also available from the Docker Hub as binfalse/contao.\n\nA personalised Contao 4 image\n\nBased on that general Docker image, you can now create your personalised Docker image. There is a template in the corresponding Github repository.\n\nA few things worth mentioning:\n\nAfter installing additional contao modules, you should clear Contaoâs cache using:\n\nContao still does not respect the HTTP_X_FORWARDED_PROTOâ¦ Thus, if running behind a reverse proxy, Contao assumes its accessed through plain HTTP and wonât deliver HTTPS links. I explained that in Contao 3: HTTPS vs HTTP. However, the workaround for Contao 3 doesnât work anymore - and there seems to be no proper solution for Contao 4. Therefore, we need to inject some code into the app.phpâ¦ Yes, you read correctlyâ¦ Ugly, but anyway, can easily be done using:\n\nThe composer-based installation apparently fails to set the filesâ links. Thus we need to do it manually:\n\nEverything else should be pretty self-explainingâ¦\n\nTying things together\n\nUse Docker-Compose or whatever to spawn a container of your personalised image (similar to Contao 3: Docker-Compose).\n\nJust make sure, you mount a few things correctly into the container:\n\nyour files need to go to /var/www/html/files\n\nContaoâs configuration belongs to /var/www/html/system/config/*.php, as usual\n\nSymfonyâs configuration belongs to /var/www/html/app/config/parameters.yml and /var/www/html/app/config/config.yml\n\nFor the mail configuration see Mail support for Dockerâs php:fpm"
+    }
+}

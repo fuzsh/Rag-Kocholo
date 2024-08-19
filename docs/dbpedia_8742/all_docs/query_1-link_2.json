@@ -1,0 +1,33 @@
+{
+    "id": "dbpedia_8742_1",
+    "rank": 2,
+    "data": {
+        "url": "https://stackoverflow.com/questions/69992502/contao-4-9-on-localhost-no-assets-loaded",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Contao 4.9 on localhost - no assets loaded",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/c38f6255df694b842b5f0b588946beee?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/7ca19d817750b21dbee8ba8da272145d?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/c38f6255df694b842b5f0b588946beee?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/69992502/ivc/cc3b?prg=656666e6-93dd-40d0-8198-fa59ac126f85"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2021-11-16T16:08:16",
+        "summary": "",
+        "meta_description": "I just tried a local Contao CMS 4.4 to 4.9 upgrade, and afterwards I get 404 for all assets.\nI started the site like this:\ncd web &amp;&amp; php -S localhost:8190\nFor example: /assets/images/f/",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/69992502/contao-4-9-on-localhost-no-assets-loaded",
+        "text": "So if you want to use contao with the build-in php webserver (php -S) you need to route assets through the index.php as @fritzmg mentioned.\n\nIt turned out the slightly adjusted drupal .ht.router.php also works here:\n\n<?php /** * @file * Router script for the built-in PHP web server. * * The built-in web server should only be used for development and testing as it * has a number of limitations that makes running Drupal on it highly insecure * and somewhat limited. * * Note that: * - The server is single-threaded, any requests made during the execution of * the main request will hang until the main request has been completed. * - The web server does not enforce any of the settings in .htaccess in * particular a remote user will be able to download files that normally would * be protected from direct access such as .module files. * * The router script is needed to work around a bug in PHP, see * https://bugs.php.net/bug.php?id=61286. * * Usage: * php -S localhost:8888 .ht.router.php * * @see http://php.net/manual/en/features.commandline.webserver.php */ $url = parse_url($_SERVER['REQUEST_URI']); if (strpos($url['path'], 'contao-manager.phar.php') > -1 || file_exists(__DIR__ . $url['path'])) { // Serve the requested resource as-is, also if it calls for the contao manager. return FALSE; } // Work around the PHP bug. $path = $url['path']; $script = 'index.php'; if (strpos($path, '.php') !== FALSE) { // Work backwards through the path to check if a script exists. Otherwise // fallback to index.php. do { $path = dirname($path); if (preg_match('/\\.php$/', $path) && is_file(__DIR__ . $path)) { // Discovered that the path contains an existing PHP file. Use that as the // script to include. $script = ltrim($path, '/'); break; } } while ($path !== '/' && $path !== '.'); } // Update $_SERVER variables to point to the correct index-file. $index_file_absolute = $_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . $script; $index_file_relative = DIRECTORY_SEPARATOR . $script; // SCRIPT_FILENAME will point to the router script itself, it should point to // the full path of index.php. $_SERVER['SCRIPT_FILENAME'] = $index_file_absolute; // SCRIPT_NAME and PHP_SELF will either point to index.php or contain the full // virtual path being requested depending on the URL being requested. They // should always point to index.php relative to document root. $_SERVER['SCRIPT_NAME'] = $index_file_relative; $_SERVER['PHP_SELF'] = $index_file_relative; // Require the script and let core take over. require $_SERVER['SCRIPT_FILENAME'];"
+    }
+}

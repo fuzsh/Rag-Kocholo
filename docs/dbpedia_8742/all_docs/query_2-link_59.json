@@ -1,0 +1,39 @@
+{
+    "id": "dbpedia_8742_2",
+    "rank": 59,
+    "data": {
+        "url": "https://blog.blackfire.io/contao.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Contao: A Small Patch, but a Great Speedup - Blackfire.io Le Blog",
+        "top_image": "https://i0.wp.com/blog.blackfire.io/wp-content/uploads/2023/06/BFlogo_aPSHproduct_Color_H.png?fit=3650%2C1599&ssl=1",
+        "meta_img": "https://i0.wp.com/blog.blackfire.io/wp-content/uploads/2023/06/BFlogo_aPSHproduct_Color_H.png?fit=3650%2C1599&ssl=1",
+        "images": [
+            "https://blog.blackfire.io/wp-content/themes/blackfire/assets/img/logo.svg",
+            "https://blog.blackfire.io/wp-content/themes/blackfire/assets/img/logo.svg",
+            "https://secure.gravatar.com/avatar/70856b10e63abcc92cee0700703f5a5b?s=30&d=mm&r=g",
+            "https://secure.gravatar.com/avatar/70856b10e63abcc92cee0700703f5a5b?s=96&d=mm&r=g",
+            "https://blog.blackfire.io/wp-content/themes/blackfire/assets/img/icon-twitter.svg",
+            "https://blog.blackfire.io/wp-content/themes/blackfire/assets/img/icon-github.svg",
+            "https://blog.blackfire.io/wp-content/themes/blackfire/assets/img/icon-linkedin.svg",
+            "https://blackfire.io/pixel"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Fabien Potencier"
+        ],
+        "publish_date": "2015-01-15T09:47:22+00:00",
+        "summary": "",
+        "meta_description": "A single line of code might hide a big performance bottleneck. Learn how Contao find out a performance issue thanks to Blackfire.",
+        "meta_lang": "en",
+        "meta_favicon": "https://blog.blackfire.io/wp-content/themes/blackfire/assets/img/favicon.ico?v=2",
+        "meta_site_name": "Blackfire.io Le Blog",
+        "canonical_link": "https://blog.blackfire.io/contao.html",
+        "text": "Because of the way PHP works, the speed of your PHP code is directly related to the number of lines to be executed for a request. But you don’t need to have tens of thousands lines of code to suffer from slowness. Today, Yanick Witschi submitted a pull request on Contao, a PHP Open-Source CMS, that vastly improves the performance of all pages… and the patch consists of one little change.\n\nWhen profiling the Contao code with Blackfire.io, he found that the __error() function was called more than 7,000 times for a single page.\n\nThe pull request description does a great job at explaining the problem:\n\nContao uses a custom error handler named __error() and does set it in the initialize.phpusing set_error_handler(). Within that handler, it ignores notices (E_NOTICE) completely.\n\nHowever, whenever a notice is raised, the custom error handler is called, because it’s set to handle all types of errors: set_error_handler('__error');\n\nConsidering that we’re talking about thousands (!!) of notices, mainly caused by Undefined index notices because of a missing isset(), this also equals to thousands of calls of__error()!\n\nAfter applying the patch, Yanick profiled the code again and he shared the comparison graph with us; you can see the performance impact by looking at the __error() node.\n\nCheckout your usages of set_error_handler() in your code with Blackfire.io and you might find a performance optimization. And of course, removing notices in your code is always a good idea as well.\n\nHappy profiling!\n\nEditor’s note: We are always looking for great stories about how Blackfire helped our users find bottlenecks and improve the performance of their apps. Feel free to contact us if you are interested in sharing your experience with Blackfire."
+    }
+}

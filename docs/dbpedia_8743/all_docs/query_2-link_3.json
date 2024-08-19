@@ -1,0 +1,41 @@
+{
+    "id": "dbpedia_8743_2",
+    "rank": 3,
+    "data": {
+        "url": "https://www.trakked.io/en/blog/the-secret-behind-contao-conflicts",
+        "read_more_link": "",
+        "language": "en",
+        "title": "The secret behind \"contao/conflicts\"",
+        "top_image": "https://www.trakked.io/assets/images/d/trakked_the_secret_behind_contao_conflicts-d9d584d6.jpg",
+        "meta_img": "https://www.trakked.io/assets/images/d/trakked_the_secret_behind_contao_conflicts-d9d584d6.jpg",
+        "images": [
+            "https://www.trakked.io/en/blog/layout/images/trakked.svg",
+            "https://www.trakked.io/en/blog/assets/images/5/trakked_the_secret_behind_contao_conflicts-76c363ae.jpg",
+            "https://www.trakked.io/en/blog/assets/images/5/yw-57d0416a.jpg",
+            "https://www.trakked.io/en/blog/assets/images/8/contao-open-source-cms-5-4-0-31ad5495.jpg",
+            "https://www.trakked.io/en/blog/assets/images/b/contao-open-source-cms-5-3-12-04bf5785.jpg",
+            "https://www.trakked.io/en/blog/assets/images/1/contao-open-source-cms-4-13-46-2237c8cd.jpg",
+            "https://www.trakked.io/en/blog/layout/images/trakked.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Yanick Witschi",
+            "Bjarke Ammann",
+            "the guitar",
+            "the African continent"
+        ],
+        "publish_date": "2023-05-17T09:00:00+02:00",
+        "summary": "",
+        "meta_description": "You might have already noticed that in our relatively new extension filter feature, you will find a package called \"contao/conflicts\". What's even more interesting is that if you filter for it, every installation tracked by Contao Manager will be displayed.",
+        "meta_lang": "en",
+        "meta_favicon": "layout/icons/apple-touch-icon.png",
+        "meta_site_name": "",
+        "canonical_link": "https://www.trakked.io/en/blog/the-secret-behind-contao-conflicts",
+        "text": "You may have already noticed a package called contao/conflicts in our extension filtering feature. What is even more interesting is that when filtering for this package, all installations tracked by Contao Manager are displayed. This raises the question: Why does every Contao installation have this conflicts package installed? What is it all about and if every installation needs it, why is it not included in the core of Contao?\n\nPrologue and Standards\n\nContao 4 is a success story, even if some of the Contao community did not see it that way in the beginning. The primary reason for this may have been the decision of the Contao Core team to rely 100% on Composer. Until version 4, Contao was a complete application that you could download as a ZIP file, unzip it and run it on the server. Admittedly, this had its advantages, especially the installation of Contao is a bit more complex today than it was in the past. The biggest advantage of Contao 4 compared to its predecessors is the fact that standards are used everywhere. There are dozens of examples of this, we mention only a few:\n\nContao now has an extremely powerful caching system that is based on the HTTP standards instead of the custom HTML cache we had before. This brings a lot of new possibilities, from Load Balancing to Cache Reverse Proxy'ing.\n\nContao uses ICU libraries almost everywhere to solve language and country specific problems. And so it happens, that blog posts with an ü in the title can be automatically converted to an ue in the German alias and to an u in the English one, respectively.\n\nContao supports two-factor authentication based on TOTP, which is also a standard and that is why so many apps work automatically with Contao.\n\nContao relies on responsive images, this has allowed to introduce support for WEBP or lazy loading.\n\nContao uses the standard PHP password_hash interface. Another standard that ensures that you always get the most secure password hashing algorithm possible.\n\nand much more.\n\nYou see, standards sound unspectacular, but they are an enormous enrichment for Contao. They might even be the ultimate argument for Contao 4.\n\nComposer is a standard too. Composer is the package manager for PHP projects and after the introduction of the Contao Manager and the Composer Resolver Cloud have largely solved the problems of handling the command line and the lack of enough RAM on the server, we are now left with its benefits:\n\nThanks to Composer, we are able to query all installed packages and thus list them in trakked so that you can filter by them.\n\nThanks to Composer we are not only able to query the installed packages, but also to check them for security vulnerabilities. By the way, we use a standardized interface there as well.\n\nThanks to Composer we can provide complete updates of installations via trakked.\n\nConsequences\n\nThe complete switch to Composer brings the following consequence:\n\nContao has long ceased to be a complete ZIP package that you can download from somewhere. Each installation is potentially a unique combination of packages. Just because they have the same Contao version installed, and possibly even the same extensions, does not mean that they are identical. On the contrary, they are most likely different. This is due to the fact that Composer always tries to find the best possible package combination at a given time. Normally this means the latest versions of all allowed packages, if they match. Platform information such as the installed PHP version or the installed PHP extensions are also taken into account. It is therefore quite likely that if installation A runs with PHP 7.4 and installation B with PHP 8.0, they will receive a different package combination.\n\nLikewise, an update to the latest Contao 4 version this morning may give a different result than this afternoon. The reason for this is that new versions of dependencies may have been released in the meantime. This case is even extremely likely because a complete Contao Managed Edition (i.e. a Contao installation that can be managed by the Contao Manager) consists of ~200 packages.\n\nThe ~200 packages are not a disadvantage, but on the contrary: These are 200 libraries that the Contao core team could reuse and the logic of which did not have to be re-implemented.\n\nProblem\n\nThe fact that not all packages originate from Contao also means that Contao cannot control all releases of the dependencies and thus releases of third party packages may potentially cause a problem with Contao at any time of the day or night. To be able to react to this, Composer offers the possibility to record so-called conflicts in its own composer.json. This prevents certain packages from being installed in certain versions. However, this is a manual process and must be repeated for each installation.\n\nSolution\n\nTo solve this problem, the Contao Core team came up with the contao/conflicts package. As you can see on GitHub, this package consists exclusively of a composer.json which is full of conflict definitions. Every Contao installation that is managed with the Contao Manager automatically gets this package in the version @dev (always the latest commit in the repository). This allows the core team to intervene in the dependency resolution process for all Contao users in one central location, so that ideally the vast majority of users will not even notice it.\n\nRésumé\n\nSo the contao/conflicts prevents that a package which is not compatible with your installation or can lead to known errors from being installed. It also saves you the work of having to manually write a known conflict into your composer.json.\n\nNewsletter\n\nSubscribe to our free newsletter and never miss a blog post.\n\nWe will send you no more than one update a week and you can unsubscribe from the newsletter anytime by clicking the respective link in the email. Your email address will only be used for this very newsletter. For more information on data protection regarding our newsletter, please visit our privacy policy."
+    }
+}
