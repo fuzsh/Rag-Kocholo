@@ -1,0 +1,41 @@
+{
+    "id": "dbpedia_1908_2",
+    "rank": 84,
+    "data": {
+        "url": "https://stackoverflow.com/questions/5293715/how-to-use-greek-symbols-in-ggplot2",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How to use Greek symbols in ggplot2?",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://cdn.sstatic.net/Img/teams/teams-promo.svg?v=e507948b81bf",
+            "https://i.sstatic.net/Sh4jD.jpg?s=64",
+            "https://www.gravatar.com/avatar/15b1747755a726b99d2b788d2605f57d?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/KIazX.jpg?s=64",
+            "https://www.gravatar.com/avatar/5cf92204cc3691d9a5155632012d8644?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/ajHn3.png",
+            "https://i.sstatic.net/Rcv1q.jpg?s=64",
+            "https://i.sstatic.net/zRqBI.jpg?s=64",
+            "https://i.sstatic.net/e9Psf.png",
+            "https://i.sstatic.net/nJUZy.png",
+            "https://i.sstatic.net/qsY6z.png?s=64",
+            "https://stackoverflow.com/posts/5293715/ivc/0cff?prg=03d25963-18d2-4587-a8a3-f50492607f33"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2011-03-14T01:02:48",
+        "summary": "",
+        "meta_description": "My categories need to be named with Greek letters.  I am using ggplot2, and it works beautifully with the data.  Unfortunately I cannot figure out how to put those greek symbols on the x axis (at the",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/5293715/how-to-use-greek-symbols-in-ggplot2",
+        "text": "Here is a link to an excellent wiki that explains how to put greek symbols in ggplot2. In summary, here is what you do to obtain greek symbols\n\nText Labels: Use parse = T inside geom_text or annotate.\n\nAxis Labels: Use expression(alpha) to get greek alpha.\n\nFacet Labels: Use labeller = label_parsed inside facet.\n\nLegend Labels: Use bquote(alpha == .(value)) in legend label.\n\nYou can see detailed usage of these options in the link\n\nEDIT. The objective of using greek symbols along the tick marks can be achieved as follows\n\nrequire(ggplot2); data(tips); p0 = qplot(sex, data = tips, geom = 'bar'); p1 = p0 + scale_x_discrete(labels = c('Female' = expression(alpha), 'Male' = expression(beta))); print(p1);\n\nFor complete documentation on the various symbols that are available when doing this and how to use them, see ?plotmath.\n\nSimplest solution: Use Unicode Characters\n\nNo expression or other packages needed.\n\nNot sure if this is a newer feature for ggplot, but it works. It also makes it easy to mix Greek and regular text (like adding '*' to the ticks)\n\nJust use unicode characters within the text string. seems to work well for all options I can think of. Edit: previously it did not work in facet labels. This has apparently been fixed at some point.\n\nlibrary(ggplot2) ggplot(mtcars, aes(mpg, disp, color=factor(gear))) + geom_point() + labs(title=\"Title (\\u03b1 \\u03a9)\", # works fine x= \"\\u03b1 \\u03a9 x-axis title\", # works fine y= \"\\u03b1 \\u03a9 y-axis title\", # works fine color=\"\\u03b1 \\u03a9 Groups:\") + # works fine scale_x_continuous(breaks = seq(10, 35, 5), labels = paste0(seq(10, 35, 5), \"\\u03a9*\")) + # works fine; to label the ticks ggrepel::geom_text_repel(aes(label = paste(rownames(mtcars), \"\\u03a9*\")), size =3) + # works fine facet_grid(~paste0(gear, \" Gears \\u03a9\"))\n\nCreated on 2019-08-28 by the reprex package (v0.3.0)\n\nYou do not need the latex2exp package to do what you wanted to do. The following code would do the trick.\n\nggplot(smr, aes(Fuel.Rate, Eng.Speed.Ave., color=Eng.Speed.Max.)) + geom_point() + labs(title=expression(\"Fuel Efficiency\"~(alpha*Omega)), color=expression(alpha*Omega), x=expression(Delta~price))\n\nAlso, some comments (unanswered as of this point) asked about putting an asterisk (*) after a Greek letter. expression(alpha~\"*\") works, so I suggest giving it a try.\n\nMore comments asked about getting Δ Price and I find the most straightforward way to achieve that is expression(Delta~price)). If you need to add something before the Greek letter, you can also do this: expression(Indicative~Delta~price) which gets you:"
+    }
+}
