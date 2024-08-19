@@ -1,0 +1,37 @@
+{
+    "id": "dbpedia_8643_3",
+    "rank": 21,
+    "data": {
+        "url": "https://tex.stackexchange.com/questions/724061/context-github-context-garden-presentation-example-github-link-is-extremely-co",
+        "read_more_link": "",
+        "language": "en",
+        "title": "(ConTeXt) Github ConTeXT Garden presentation example github link is extremely confusing, can I get help on how to understand it or another template?",
+        "top_image": "https://cdn.sstatic.net/Sites/tex/Img/apple-touch-icon@2.png?v=eaf26b461720",
+        "meta_img": "https://cdn.sstatic.net/Sites/tex/Img/apple-touch-icon@2.png?v=eaf26b461720",
+        "images": [
+            "https://cdn.sstatic.net/Sites/tex/Img/logo.svg?v=43890f90cb01",
+            "https://www.gravatar.com/avatar/028866190f51b3131c178052d1d4a1dc?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/bZNj1nmU.png",
+            "https://i.sstatic.net/XW0oZKXc.png",
+            "https://i.sstatic.net/HFceY.jpg?s=64",
+            "https://tex.stackexchange.com/posts/724061/ivc/3cf8?prg=21a9044c-25a6-4f90-8c3e-42a542b4ae73"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Ferrius Undermine"
+        ],
+        "publish_date": "2024-08-08T04:48:55",
+        "summary": "",
+        "meta_description": "So what I tried doing as a complete novice to ConTeXt was try to figure out how to make document, i come from LaTeX where I am also a novice and I was able to make an AI generated (not entirely but...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/tex/Img/favicon.ico?v=91427af8e60a",
+        "meta_site_name": "TeX - LaTeX Stack Exchange",
+        "canonical_link": "https://tex.stackexchange.com/questions/724061/context-github-context-garden-presentation-example-github-link-is-extremely-co",
+        "text": "can I get help on how to understand it or another template?\n\nWhat I am trying to do is get slides and presentations done in ConTeXt.\n\nTo answer your question more generally, here's a simplified version of my personal ConTeXt presentation style:\n\n%% Basic Setup \\mainlanguage[en] \\setupinteraction[state=start] \\let\\slide=\\page %% Fonts \\usebodyfont[plex, plex-light] \\setupbodyfont[plex, sans, 24pt] %% Colours \\definecolor[light] [x=F3F3F3] \\definecolor[light-faded][x=666666] \\definecolor[dark] [x=202729] \\definecolor[dark-faded] [x=434748] \\setupcolors[textcolor=light] \\setupbackgrounds[page][background=color, backgroundcolor=dark] \\setupinteraction[color=, contrastcolor=,] %% Sectioning \\define\\sectionrule{% \\vskip -0.75em \\dontleavehmode\\centerline{\\blackrule[ width=0.6\\textwidth, color=light-faded, height=2pt, ]}% \\vskip 0.25ex } \\startsetups[style:chapter] \\startstandardmakeup[align=middle] \\headtextcontent \\vskip -0.5ex \\sectionrule \\stopstandardmakeup \\stopsetups \\defineheadalternative[my:chapter][renderingsetup=style:chapter] \\setuphead[chapter][ alternative=my:chapter, page=yes, header=empty, style=\\rmbfc ] \\define[2]\\protectedgobbletwo{} \\setuphead[section][ % Ugly Hack! command=\\protectedgobbletwo, alternative=margintext, page=yes, ] \\setupheader[text][ style={\\rmbic\\veryraggedcenter}, after=\\sectionrule, ] \\setupheadertexts[section] %% Title Page \\startsetups[document:start] \\setupinteraction[ title=\\documentvariable{title}, author=\\documentvariable{author}, ] \\startstandardmakeup[align=middle, pagestate=start] {\\rmbfc \\documentvariable{title}} \\sectionrule {\\ss \\documentvariable{author}} \\stopstandardmakeup \\stopsetups %% Page Layout \\setuppapersize[SW] \\setupinterlinespace[2.75ex] \\setupwhitespace[big] \\setuplayout[ topspace=0.05\\paperheight, backspace=0.1\\paperwidth, width=middle, height=middle, header=0.15\\paperheight, footer=0.05\\paperheight, ] \\setupfootertexts[margin][][{ \\hskip -2.25em \\color[light-faded]{% \\switchtobodyfont[plex-light, sans, 14pt] \\documentvariable{info} } }] %% Page Numbering \\startuseMPgraphic{pagenumber} numeric bar_height; bar_height := 0.025 * PaperHeight; numeric total_width; total_width := 0.9 * TextWidth; numeric bar_width; bar_width := total_width / \\totalnumberofpages; fill unitsquare xyscaled (total_width, bar_height) withcolor \\MPcolor{dark-faded} ; fill unitsquare xyscaled (bar_width, bar_height) shifted ((\\realfolio - 1) * bar_width, 0) withcolor \\MPcolor{light-faded} ; \\stopuseMPgraphic \\setupfooter[style=small] \\setupfootertexts[\\useMPgraphic{pagenumber}] % Steps \\define\\startsteps{\\grabbufferdata[steps][startsteps][stopsteps]} \\let\\nextstep=\\relax \\startluacode interfaces.implement{ name = \"stopsteps\", public = true, actions = function () local buffer = buffers.getcontent(\"steps\") local split = {} for text in buffer:gsub(\"\\\\nextstep\", \"#\"):gmatch\"([^#]+)\" do table.insert(split, text) end for i, text in ipairs(split) do context(table.concat({table.unpack(split, 1, i)}, \"\\n\")) context.page() end end } \\stopluacode %% Tiling, only for this example document % \\definepapersize[demo][ % width=\\dimexpr 3\\paperwidth + 10pt, % height=\\dimexpr 4\\paperheight + 10pt, % ] % \\setuppapersize[SW][demo] % \\setuppaper[nx=3, ny=4] % \\setuparranging[XY] %% Demonstration \\startdocument[ title={Example Presentation}, author={Example Author}, info={Example Info}, ] \\chapter{Example Chapter} \\section{Example Section} \\startsteps First step \\nextstep Second step \\nextstep Third step \\stopsteps \\slide Same section, but a different slide. \\section{Another Section} \\startsteps \\externalfigure[sys:///cow.pdf][ height=0.45\\textheight, background=color, backgroundcolor=white, ] \\nextstep \\vfill \\externalfigure[sys:///cow.pdf][ height=0.45\\textheight, width=\\textwidth, background=color, backgroundcolor=white, ] \\stopsteps \\chapter{Another Chapter} \\section{Example Section} Slide one. Still slide one. Also still slide one. \\slide Slide two. Still slide two. Also still slide two. \\section{The End} The end. \\stopdocument\n\nFor a longer sample, you can look at my TUG 2022 presentation which is styled pretty similar to what I posted above.\n\nI would love it if I could have the 12pt TImes New roman style and american setting for my LMTX version slides.\n\nI preferred using your very short code and editing it to utilize 12pt andtimes, it just looked more attractive My goal here is to get the margins to be smaller, I don't know the dimensions of SW in inches and it doesnt seem to say anything on Context garden but I would love to edit this to have even margins, I also recall trying to set .5in margins in a regular doc but I had trouble\n\nSetting the font to Times is quite easy with ConTeXt. It's also fairly easy to change the font and margin sizes, but for presentation slides, it doesn't really make sense to use absolute sizes like 0.5in and 12pt since unlike a sheet of letter/A4 paper, the slides will be whatever size your projection screen is.\n\nBelow is a more basic example that should meet your specified criteria. I also added a background image and changed the colour of the text, but you can remove that if you want."
+    }
+}

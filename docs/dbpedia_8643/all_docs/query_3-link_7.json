@@ -1,0 +1,39 @@
+{
+    "id": "dbpedia_8643_3",
+    "rank": 7,
+    "data": {
+        "url": "https://stackoverflow.com/questions/59988667/typescript-react-fcprops-confusion",
+        "read_more_link": "",
+        "language": "en",
+        "title": "TypeScript React.FC<Props> confusion",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://i.sstatic.net/hy0Bnl.png?s=64",
+            "https://graph.facebook.com/10204350724682404/picture?type=large",
+            "https://i.sstatic.net/5bVqe.png?s=64",
+            "https://graph.facebook.com/10204350724682404/picture?type=large",
+            "https://i.sstatic.net/ETuvm.jpg?s=64",
+            "https://lh6.googleusercontent.com/-PoAJXbkM7UQ/AAAAAAAAAAI/AAAAAAAAAAs/Xi6TKFY8WWw/photo.jpg?sz=64",
+            "https://i.sstatic.net/QhIuV.jpg?s=64",
+            "https://www.gravatar.com/avatar/11be54773cd45f6488c47ac19be2b055?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/6c9f7db9010e9423b407e949abe1e0d0?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/59988667/ivc/3cf8?prg=4f8ea1db-7fbb-4659-a5d5-c05ba0ad249e"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2020-01-30T14:52:54",
+        "summary": "",
+        "meta_description": "I am learning TypeScript and some bits are confusing to me. One bit is below:\ninterface Props {\n  name: string;\n}\n\nconst PrintName: React.FC&lt;Props&gt; = (props) =&gt; {\n  return (\n    &lt;div&gt...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/59988667/typescript-react-fcprops-confusion",
+        "text": "Thanks all for the answers. They are correct but I was looking for a more detailed version. I did some more research and found this on React+TypeScript Cheatsheets on GitHub.\n\nFunction Components\n\nThese can be written as normal functions that take a props argument and return a JSX element.\n\ntype AppProps = { message: string }; /* could also use interface */ const App = ({ message }: AppProps) => <div>{message}</div>;\n\nWhat about React.FC/React.FunctionComponent? You can also write components with React.FunctionComponent (or the shorthand React.FC):\n\nconst App: React.FC<{ message: string }> = ({ message }) => ( <div>{message}</div> );\n\nSome differences from the \"normal function\" version:\n\nIt provides typechecking and autocomplete for static properties like displayName, propTypes, and defaultProps - However, there are currently known issues using defaultProps with React.FunctionComponent. See this issue for details - scroll down to our defaultProps section for typing recommendations there.\n\nIt provides an implicit definition of children (see below) - however there are some issues with the implicit children type (e.g. DefinitelyTyped#33006), and it might be considered a better style to be explicit about components that consume children, anyway.\n\nconst Title: React.FunctionComponent<{ title: string }> = ({ children, title }) => <div title={title}>{children}</div>;\n\nIn the future, it may automatically mark props as readonly, though that's a moot point if the props object is destructured in the parameter list.\n\nReact.FunctionComponent is explicit about the return type, while the normal function version is implicit (or else needs additional annotation).\n\nIn most cases, it makes very little difference which syntax is used, but the React.FC syntax is slightly more verbose without providing clear advantage, so precedence was given to the \"normal function\" syntax.\n\nBest solution:\n\nThe second approach + a return type\n\nconst PrintName2 = ({ prop1, prop2 }: Props): JSX.Element => { /** */}\n\nThis gives you complete control over the Props and is more explicit (there is no hidden magic).\n\nLink to GitHub PR to remove React.FC\n\nKent C Dodds has some thoughts why this is here\n\nSub-optimal solution:\n\nThe first version (React.FC) will add a few types for you - they come from the React Typings\n\ninterface FunctionComponent<P = {}> { (props: PropsWithChildren<P>, context?: any): ReactElement | null; propTypes?: WeakValidationMap<P>; contextTypes?: ValidationMap<any>; defaultProps?: Partial<P>; displayName?: string; }\n\nThis approach is useful for a few reasons but an obvious one is if your component has children, then you don't need to manually add a children prop. It's not great because there are issues with default props and many components don't have children.\n\nSince you are using React and TypeScript, you should always use the first pattern, as it will ensure that your component is more strictly typed since it implies that the PrintName will be of type React Functional Component, and it takes in props of type Props.\n\nconst PrintName: React.FC<Props>\n\nYou may read the full interface definition for Functional Components on the React TypeScript typings repository.\n\nThe second example you have provided does not provide any form of typings, except that it is a function that takes a set of parameters of type Props, and that it can return anything in general.\n\nTherefore, writing\n\nconst PrintName2 = (props:Props)\n\nis akin to\n\nconst PrintName2: JSX.Element = (props:Props)\n\nas TypeScript is definitely unable to automatically infer that it is a Functional Component.\n\nDon't use React.FC anymore. The reason why people used to use React.FC was because it added more types like children to your props.\n\nin your code example you don't need children so just write it like this\n\nconst PrintName: (props: {name:string; priority: \"bold\" | \"normal\"}) => { return ( <div> <p style={{ fontWeight: props.priority ? \"bold\" : \"normal\" }}> {props.name} </p> </div> ) }\n\nbut the problem you will eventually have is that you will want to pass in children to your components and the preferred way of doing this is like this\n\ninterface Props extends React.PropsWithChildren { name: string priority: \"bold\" | \"normal\" } const PrintName: (props: Props) => { return ( <div> <h1>{props.name}</h1> <p style={{ fontWeight: props.priority ? \"bold\" : \"normal\" }}> {props.children} </p> </div> ) }\n\nextending with React.PropsWithChildren is the same as if you typed:\n\ninterface Props { name:string priority: \"bold\" | \"normal\" children?: ReactNode }\n\nReact.PropsWithChildren can also be passed a generic but the default is unknown. If you want you can set children like this, but unless you are sure you only want a specific type I would just use the default.\n\nReact.PropsWithChildren<Button>\n\nand pass in the type of children you want in your component.\n\nYou do not have to pass a return type of JSX.Element, because it's inferred."
+    }
+}
