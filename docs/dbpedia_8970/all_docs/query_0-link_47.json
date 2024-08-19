@@ -1,0 +1,31 @@
+{
+    "id": "dbpedia_8970_0",
+    "rank": 47,
+    "data": {
+        "url": "https://help.hcltechsw.com/commerce/7.0.0/com.ibm.commerce.payments.developer.doc/refs/rpylerl2mst97.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "ISO currency codes",
+        "top_image": "https://help.hcltechsw.com/commerce/7.0.0/favicon.png",
+        "meta_img": "https://help.hcltechsw.com/commerce/7.0.0/favicon.png",
+        "images": [
+            "https://help.hcltechsw.com/assets/images/HCL_Software_Logo_White.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "WebSphere Commerce Payments",
+            "ISO currency codes"
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "A list of ISO 4217 currency codes follows. Use these values with the CURRENCY parameter.",
+        "meta_lang": "en",
+        "meta_favicon": "../../favicon.png",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "Use the ACCEPTPAYMENT command to create Order objects when an electronic wallet is not used. In general, if the command is successful, the order will be placed in Ordered state. If the command fails, the order will not be created. Pass protocol specific data on this command; however, specifics depend on the cassette.\n\nThe APPROVE command is used by the merchant to ask the financial system if the buyer should be allowed to make the purchase. For example, for a credit card system, this command would result in a credit card authorization.\n\nAn ApproveReversal command modifies the approved amount of a payment. For example, if a payment enters the ApprovalExpired state, then you can use the ApproveReversal command either to get a new approval or to void the payment. ApproveReversal is valid for payments in the Approved state. If the ApproveReversal is successful, and the amount specified is \"0,\" then the payment moves to Void state. If the amount specified is not \"0,\" then the payment stays in Approved state and the approved amount is modified.\n\nThe BATCHPURGE command clears out a batch and returns the Batch object to Open state. All Payment and Credit objects associated with this batch are removed from the batch, with Payment objects returned to Approved state and Credit objects returned to Void state. This command is only permissible if the PurgeAllowed attribute is set to true.\n\nThe CASSETTECONTROL command is used to perform cassette-specific functions that do not correspond to any generic commands. CASSETTECONTROL is not interpreted by the framework, but is passed down to the cassette.\n\nThe DEPOSIT command results in the association of a specified payment with a batch and the subsequent deposit of previously approved monies for that payment. The DEPOSIT command is legal when operating on deposits in Approved state.\n\nA DEPOSITREVERSAL command disassociates a payment from a batch. This command is legal for payments in Deposited state. If successful, the payment moves to Approved state or Void state, and the deposited amount is reset to \"0\".\n\nThis command changes the status of the user who has the access rights to WebSphere Commerce Payments. Access control for this function is limited to the Payments Administrators and the Merchant Administrator. The Merchant Administrator can only \"modify user status\" of the user in his merchant.\n\nThe RECEIVEPAYMENT command is used for order creation when there is electronic wallet participation. If successful, the order object is moved to Requested state. Subsequent wallet communication will complete the order and move it to Ordered state.\n\nA REFUND command is used to create a Credit object and is used when the merchant wants to return monies to the cardholder. The REFUND command is legal when the specified order is in Refundable state.\n\nA REFUNDREVERSAL command is used to void existing Credit objects. This command operates on Credit objects in Refunded state. A successful REFUNDREVERSAL call will result in the Credit object moving to Void State. If unsuccessful, the Credit object remains in Refunded state.\n\nThe SETUSERACCESSRIGHTS command is used to set, change, or remove a user's access rights. However, this command will not create or remove users from the WCSRealm you are using to authenticate users. Before using the SetUserAccessRights command, make sure the user has been added to the WCSRealm.\n\nThis section focuses on WebSphere Commerce Payments framework payment and administration objects and states. An object is a collection of data maintained by WebSphere Commerce Payments which represents a real-world entity. Each object is defined, and tables are provided to indicate field names, syntax and descriptions. The state of an object provides information about legal actions for that particular object. Query commands can be used to retrieve the current state of an object. Additional tables list the possible states of a particular object, along with a description of what that state means and which commands are legal for that state.\n\nThe OfflineCard Cassette is a passive cassette used for credit card transactions. Passive cassettes record events that have already happened outside of WebSphere Commerce Payments, but within the WebSphere Commerce Payments object model. With the OfflineCard Cassette, transactions are recorded and maintained only in the WebSphere Commerce Payments database. There is no back-end financial system with which a passive cassette communicates. For example, an Approve command using the OfflineCard Cassette records the results of an approval request which the merchant made using their existing credit card swipe box. Inclusion of this cassette makes WebSphere Commerce Payments usable right out of the box."
+    }
+}

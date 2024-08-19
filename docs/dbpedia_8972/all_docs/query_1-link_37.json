@@ -1,0 +1,44 @@
+{
+    "id": "dbpedia_8972_1",
+    "rank": 37,
+    "data": {
+        "url": "https://www.statalist.org/forums/forum/general-stata-discussion/general/1588305-new-command-pyconvertu-in-ssc",
+        "read_more_link": "",
+        "language": "en",
+        "title": "New command pyconvertu in SSC",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://www.statalist.org/forums/forum/general-stata-discussion/general/images/statalist-forums-logo3.png",
+            "https://www.statalist.org/forums/forum/general-stata-discussion/general/core/image.php?userid=32727&thumb=1&dateline=1605544293",
+            "https://www.statalist.org/forums/forum/general-stata-discussion/general/core/image.php?userid=32727&thumb=1&dateline=1605544293",
+            "https://www.statalist.org/forums/forum/general-stata-discussion/general/core/image.php?userid=32727&thumb=1&dateline=1605544293",
+            "https://www.statalist.org/forums/forum/general-stata-discussion/general/core/image.php?userid=32727&thumb=1&dateline=1605544293",
+            "https://www.statalist.org/forums/forum/general-stata-discussion/general/core/images/default/default_avatar_medium.png",
+            "https://www.statalist.org/forums/forum/general-stata-discussion/general/core/image.php?userid=32727&thumb=1&dateline=1605544293",
+            "https://www.statalist.org/forums/forum/general-stata-discussion/general/core/image.php?userid=32727&thumb=1&dateline=1605544293",
+            "https://www.statalist.org/forums/forum/general-stata-discussion/general/core/image.php?userid=32727&thumb=1&dateline=1605544293",
+            "https://www.statalist.org/img/stata-footer-icon.png",
+            "https://www.statalist.org/img/standardized-fb-icon-rnav.png",
+            "https://www.statalist.org/img/standardized-tw-icon-rnav.png",
+            "https://www.statalist.org/img/standardized-in-icon-rnav.png",
+            "https://www.statalist.org/img/standardized-youtube-icon-rnav.png",
+            "https://www.statalist.org/img/standardized-blog-icon-rnav.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2021-01-04T16:07:07",
+        "summary": "",
+        "meta_description": "I'd like to thank professor Baum for uploading the command to SSC!  The pyconvertu command converts a string variable into a classification from the default or user",
+        "meta_lang": "en",
+        "meta_favicon": "images/favicon.ico",
+        "meta_site_name": "",
+        "canonical_link": "https://www.statalist.org/forums/forum/general-stata-discussion/general/1588305-new-command-pyconvertu-in-ssc",
+        "text": "Code:\n\n* write the complete default JSON file (ISO 3166-1) to data . foreach s in \"iso3\" \"iso2\" \"isoN\" \"name_en\" \"name_fr\" { . pyconvertu __classification, to(`s') gen(`s') . } * print metadata and sources for the default JSON file . pyconvertu __info * generate panel dimensions (ISO 3166-1 alpha-3 codes for the years 2000-2020) . clear . pyconvertu __classification, to(iso3) gen(iso3) . expand `=(2020 - 2000) + 1' . by iso3, sort: gen year = 2000 + (_n - 1) * convert ISO 3166-1 alpha-3 to ISO 3166-1 numeric (where possible) in a dataset . sic install wbopendata . sysuse world-d, clear . pyconvertu countrycode, to(isoN) replace * same example, print the result of conversion instead of writing it to data . sysuse world-d, clear . pyconvertu countrycode, to(isoN) print\n\nMore advanced examples taken from the\n\nCode:\n\n**** * Example 1. Population time series for the Czech Republic (a country in Central Europe, EU member since 2004) **** * RegEx for the indicator, case sensitive! * unoptimized, illustration only . local regex \"Počet\" * ČSÚ's (Czech Statistical Office) file URL for Population . local url \"https://www.czso.cz/documents/10180/123502877/32018120_0101.xlsx/d60b89c8-980c-4f3a-bc0c-46f38b0b8681?version=1.0\" * import the time series data to memory, unit: thousand . xtimportu excel \"`url'\", cellrange(A3) regex(`regex') encode(\"Czech Republic\") tfreq(Y) tde clear * revert underscores to spaces in the unit . replace unit = ustrregexra(unit, \"_\", \" \") * tsset data . tsset year * convert country name to ISO 3166-1 alpha-3 pyconvertu unit, to(iso3) replace **** * Example 2. FDI matrix from UNCTAD's Bilateral FDI statistics (historical data, 2000–2014) **** * RegEx for the EU-28, case sensitive! \"{0,}$\" (0 or more non-word characters) excludes Netherlands Antilles * unoptimized, illustration only . local regex \"`regex'Austria|Belgium|Bulgaria|Croatia|Cyprus|Czech Republic|Denmark|Estonia|\" . local regex \"`regex'Finland|France|Germany|Greece|Hungary|Ireland|Italy|Latvia|Lithuania|\" . local regex \"`regex'Luxembourg|Malta|Netherlands\\W{0,}$|Poland|Portugal|Romania|\" . local regex \"`regex'Slovakia|Slovenia|Spain|Sweden|United Kingdom\" * UNCTAD's (United Nations Conference on Trade and Development) file URL for the U.S. . local url \"https://unctad.org/system/files/non-official-document/webdiaeia2014d3_USA.xls\" * import the panel data to memory, export a copy as a CSV file . xtimportu excel \"`url'\", sheet(\"inflows\") cellrange(E5) regex(`regex') tfreq(Y) clear tde export(delimited \"./usa_fdi_matrix.csv\", replace) * rename variables to form the 28x1 aka the EU-28 x U.S. FDI matrix, unit: million USD . rename unit from . rename value to_USA * xtset data . encode from, gen(id) . xtset id year * convert country names to ISO 3166-1 alpha-3 pyconvertu from, to(iso3) replace"
+    }
+}
