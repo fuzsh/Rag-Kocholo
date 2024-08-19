@@ -1,0 +1,32 @@
+{
+    "id": "dbpedia_7738_0",
+    "rank": 90,
+    "data": {
+        "url": "https://users.rust-lang.org/t/casting-c-memory-to-rust-data-structure-in-a-core-using-rust-gdb/62960",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Casting C memory to rust data structure in a core using rust-gdb",
+        "top_image": "https://global.discourse-cdn.com/business5/uploads/rust_lang/original/2X/8/83e41956eccfd67ad6ff76f15a2c22e58db31d4f.svg",
+        "meta_img": "https://global.discourse-cdn.com/business5/uploads/rust_lang/original/2X/8/83e41956eccfd67ad6ff76f15a2c22e58db31d4f.svg",
+        "images": [
+            "https://avatars.discourse-cdn.com/v4/letter/s/d78d45/48.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "system Closed"
+        ],
+        "publish_date": "2021-07-30T06:38:37+00:00",
+        "summary": "",
+        "meta_description": "Hi, \nI need to debug a core of Suricata process, which mixes C and rust. I need to walk the data structures in the core using a gdb script. Below is backtrace from a running program to illustrate what I am trying to achi&hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://global.discourse-cdn.com/business5/uploads/rust_lang/optimized/2X/e/e011218794dba02ebb2b368fd9b831f5585caffe_2_32x32.ico",
+        "meta_site_name": "The Rust Programming Language Forum",
+        "canonical_link": "https://users.rust-lang.org/t/casting-c-memory-to-rust-data-structure-in-a-core-using-rust-gdb/62960",
+        "text": "Hi,\n\nI need to debug a core of Suricata process, which mixes C and rust. I need to walk the data structures in the core using a gdb script. Below is backtrace from a running program to illustrate what I am trying to achieve.\n\n(gdb) bt #0 suricata::smb::smb::SMBState::free_tx (self=0x7fffe44faec0, tx_id=0) at src/smb/smb.rs:1999 #1 suricata::smb::smb::rs_smb_state_tx_free (state=0x7fffe44faec0, tx_id=0) at src/smb/smb.rs:1999 #2 0x00005555555cbee2 in AppLayerParserTransactionsCleanup (f=0x55555699bb10) at app-layer-parser.c:992 #3 0x000055555569451b in FlowWorker (tv=0x555558645e60, p=0x7fffec26c170, data=0x7fffec2b9020, preq=0x555558b81f00, unused=<optimized out>) at flow-worker.c:294 #4 0x000055555571aeab in TmThreadsSlotVarRun (tv=tv@entry=0x555558645e60, p=p@entry=0x7fffec26c170, slot=slot@entry=0x555558603780) at tm-threads.c:149 #5 0x00005555556f302e in TmThreadsSlotProcessPkt (p=0x7fffec26c170, s=0x555558603780, tv=0x555558645e60) at tm-threads.h:148 #6 AFPParsePacketV3 (pbd=0x7ffff0206000, ppd=0x7ffff0206340, ptv=<optimized out>) at source-af-packet.c:1124 #7 AFPWalkBlock (pbd=0x7ffff0206000, ptv=<optimized out>) at source-af-packet.c:1140 #8 AFPReadFromRingV3 (ptv=<optimized out>) at source-af-packet.c:1190 #9 0x00005555556f738e in ReceiveAFPLoop (tv=0x555558645e60, data=<optimized out>, slot=<optimized out>) at source-af-packet.c:1583 #10 0x000055555571f051 in TmThreadsSlotPktAcqLoop (td=0x555558645e60) at tm-threads.c:375 #11 0x00007ffff67586db in start_thread (arg=0x7ffff1cd8700) at pthread_create.c:463 #12 0x00007ffff4ac771f in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:95 (gdb) frame 1 #1 suricata::smb::smb::rs_smb_state_tx_free (state=0x7fffe44faec0, tx_id=0) at src/smb/smb.rs:1999 1999 state.free_tx(tx_id); (gdb) p state $19 = (suricata::smb::smb::SMBState *) 0x7fffe44faec0 (gdb) p state.transactions.len $20 = 4 (gdb) frame 2 #2 0x00005555555cbee2 in AppLayerParserTransactionsCleanup (f=0x55555699bb10) at app-layer-parser.c:992 992 p->StateTransactionFree(alstate, i); (gdb) p (suricata::smb::smb::SMBState *) 0x7fffe44faec0 No type \"smb\" within class or namespace \"suricata\". (gdb) p (0x7fffe44faec0 as *mut SMBState) A syntax error in expression, near `as *mut SMBState)'. (gdb) frame 1 #1 suricata::smb::smb::rs_smb_state_tx_free (state=0x7fffe44faec0, tx_id=0) at src/smb/smb.rs:1999 1999 state.free_tx(tx_id); (gdb) p (0x7fffe44faec0 as *mut SMBState) $21 = (suricata::smb::smb::SMBState *) 0x7fffe44faec0 (gdb) p (0x7fffe44faec0 as *mut SMBState).transactions.len $22 = 4 (gdb)\n\nIn frame 1, the type of \"state\" is correctly known as it's rust code. In frame 2, if I want to cast the memory at address 0x7fffe44faec0 to SMBState, so that I can walk the datastructures, how would I do it? The following does not work in frame 2 (but works in frame 1)\n\ngdb) p (0x7fffe44faec0 as *mut SMBState) A syntax error in expression, near `as *mut SMBState)'.\n\nThanks in advance for any help.\n\nReference:"
+    }
+}
