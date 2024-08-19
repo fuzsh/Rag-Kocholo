@@ -1,0 +1,37 @@
+{
+    "id": "dbpedia_8306_1",
+    "rank": 6,
+    "data": {
+        "url": "http://hierarchical-cluster-engine.com/blog/2013/12/30/hce-and-distributed-remote-command-execution/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "HCE and Distributed Remote Command Execution",
+        "top_image": "http://hierarchical-cluster-engine.com/wp-content/uploads/2013/12/1-800x507.png",
+        "meta_img": "http://hierarchical-cluster-engine.com/wp-content/uploads/2013/12/1-800x507.png",
+        "images": [
+            "https://i0.wp.com/hierarchical-cluster-engine.com/wp-content/uploads/2013/12/1.png?resize=800%2C507",
+            "https://i0.wp.com/hierarchical-cluster-engine.com/wp-content/uploads/2013/12/1.png?resize=800%2C507",
+            "https://i0.wp.com/hierarchical-cluster-engine.com/wp-content/uploads/2013/12/2.png?resize=574%2C368",
+            "https://i0.wp.com/hierarchical-cluster-engine.com/wp-content/uploads/2013/12/2.png?resize=574%2C368",
+            "http://0.gravatar.com/avatar/ca9d6d5fae063ac9ea301716374c1291?s=49&d=mm&r=g",
+            "http://0.gravatar.com/avatar/ca9d6d5fae063ac9ea301716374c1291?s=49&d=mm&r=g"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Author hce-team"
+        ],
+        "publish_date": "2013-12-30T00:00:00",
+        "summary": "",
+        "meta_description": "General definitions The Distributed Remote Command Execution (DRCE) functionality provides hce-node application clients with the possibility to execute Linux shell commands, to spawn process via pi…",
+        "meta_lang": "en",
+        "meta_favicon": "https://i2.wp.com/hierarchical-cluster-engine.com/wp-content/uploads/2015/12/cropped-hce-logo-small.png?fit=32%2C32",
+        "meta_site_name": "HCE - Hierarchical Cluster Engine",
+        "canonical_link": "http://hierarchical-cluster-engine.com/blog/2013/12/30/hce-and-distributed-remote-command-execution/",
+        "text": "General definitions\n\nThe Distributed Remote Command Execution (DRCE) functionality provides hce-node application clients with the possibility to execute Linux shell commands, to spawn process via pipe, and to interact with the spawned process by std input, output, error as well as by file. Flexible protocol defines custom way to interact with the process, to give him incoming data and to collect produced data. By this service handler integrated inside the hce-node application any kind of computational task can be executed remotely on the low level replica or shard nodes of the cluster hierarchy. Most typical way of possible usage of DRCE:\n\nExecute data processing task, collect and fetch results from down replica or shard nodes according with cluster hierarchy.\n\nManage some Linux host systems remotely by group actions that can be spread wide on correspondent cluster infrastructure.\n\nSpread some data to target cluster nodes for immediate or farther processing.\n\nFetch some data from many target host systems, like logs and collect them at client side.\n\nAny kind of recombination of all above.\n\nMain advantage of DRCE it is that structure of cluster for requests distribution, tasks execution planning, results collection and so on – can be custom defined and changed at run-time period.\n\nExecution units can be connected at any time and extend power of processing pool. Also, execution units can be started on different physical servers and united in balance mode. It is very important to note that request message handling inside one unit is single-threaded, so no any mutexes or blocking as well as asynchronous request/response TCP sockets operation provided with ZMQ sockets library. On schema below simple DRCE computational cluster schema illustrate the connections direction and behavior of nodes in different roles:\n\nImplementation of DRCE functionality in hce-node package includes client-side API for php language and client application to test and benchmark some algorithms and execution environment.\n\nThe Demo Test Suit includes set of prepared requests in json format that can be extended and changed manually. This set covers most important for hce-node execution environment like php and java, as well as provided with base Debian OS distributions like python, ruby and perl. Because very good affinity of hce-node application process instance and CPU kernel – the pool of hce-node replicas can to utilize CPU and I/O resources effective way provides up to 800 rps on one four kernel i5 physical server. On screenshot below the load level and by CPU kernel distribution shown.\n\nAs that can be seen above, for very short task that has execution time about 1 ms and 16 client threads – four computational units loads four CPU kernels in most effective way. Note, that in this test clients that requested tasks (drce.php application) and HCE cluster nodes instances located on the same physical host server. This is test #00 of Demo Tests Suit package of DRСE tests1.\n\nThe client application drce.php supports cli interface and provide usage of prepared jasons in many different tests and demos. Request and response protocols are very simple and formalized in json format. So, can be easy implemented on many other languages that are supported by ZMQ library.\n\nThe DRCE it is a second functionality after the Sphinx search that is natively supported by HCE."
+    }
+}

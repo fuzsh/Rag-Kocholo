@@ -1,0 +1,35 @@
+{
+    "id": "dbpedia_8306_2",
+    "rank": 15,
+    "data": {
+        "url": "https://developers.google.com/earth-engine/guides/clustering",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Unsupervised Classification (clustering)",
+        "top_image": "https://developers.google.com/static/earth-engine/images/og_social_media.png",
+        "meta_img": "https://developers.google.com/static/earth-engine/images/og_social_media.png",
+        "images": [
+            "https://developers.google.com/static/site-assets/logo-github.svg",
+            "https://developers.google.com/static/site-assets/logo-medium.svg",
+            "https://developers.google.com/static/site-assets/logo-gis-stack-exchange.svg",
+            "https://developers.google.com/static/site-assets/logo-twitter.svg",
+            "https://www.gstatic.com/images/icons/material/product/2x/youtube_64dp.png",
+            "https://www.gstatic.com/devrel-devsite/prod/v20ab951cf37b43fc7a428ae75ce91d8269f391204ca16525bc8a5ececea0ab56/developers/images/lockup-google-for-developers.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "https://www.gstatic.com/devrel-devsite/prod/v20ab951cf37b43fc7a428ae75ce91d8269f391204ca16525bc8a5ececea0ab56/developers/images/favicon-new.png",
+        "meta_site_name": "Google for Developers",
+        "canonical_link": "https://developers.google.com/earth-engine/guides/clustering",
+        "text": "The ee.Clusterer package handles unsupervised classification (or clustering) in Earth Engine. These algorithms are currently based on the algorithms with the same name in Weka. More details about each Clusterer are available in the reference docs.\n\nClusterers are used in the same manner as classifiers in Earth Engine. The general workflow for clustering is:\n\nAssemble features with numeric properties in which to find clusters.\n\nInstantiate a clusterer. Set its parameters if necessary.\n\nTrain the clusterer using the training data.\n\nApply the clusterer to an image or feature collection.\n\nLabel the clusters.\n\nThe training data is a FeatureCollection with properties that will be input to the clusterer. Unlike classifiers, there is no input class value for an Clusterer. Like classifiers, the data for the train and apply steps are expected to have the same number of values. When a trained clusterer is applied to an image or table, it assigns an integer cluster ID to each pixel or feature.\n\nHere is a simple example of building and using an ee.Clusterer:\n\nCode Editor (JavaScript)\n\n// Define a region in which to generate a segmented map. var region = ee.Geometry.Rectangle(29.7, 30, 32.5, 31.7); // Load a Landsat composite for input. var input = ee.ImageCollection('LANDSAT/COMPOSITES/C02/T1_L2_32DAY') .filterDate('2001-05', '2001-06') .first() .clip(region); // Display the sample region. Map.setCenter(31.5, 31.0, 8); Map.addLayer(ee.Image().paint(region, 0, 2), {}, 'region'); // Make the training dataset. var training = input.sample({ region: region, scale: 30, numPixels: 5000 }); // Instantiate the clusterer and train it. var clusterer = ee.Clusterer.wekaKMeans(15).train(training); // Cluster the input using the trained clusterer. var result = input.cluster(clusterer); // Display the clusters with random colors. Map.addLayer(result.randomVisualizer(), {}, 'clusters');\n\nPython setup\n\nSee the Python Environment page for information on the Python API and using geemap for interactive development.\n\nimport ee import geemap.core as geemap\n\nColab (Python)\n\n# Define a region in which to generate a segmented map. region = ee.Geometry.Rectangle(29.7, 30, 32.5, 31.7) # Load a Landsat composite for input. input = ( ee.ImageCollection('LANDSAT/COMPOSITES/C02/T1_L2_32DAY') .filterDate('2001-05', '2001-06') .first() .clip(region) ) # Display the sample region. m = geemap.Map() m.set_center(31.5, 31.0, 8) m.add_layer(ee.Image().paint(region, 0, 2), {}, 'region') # Make the training dataset. training = input.sample(region=region, scale=30, numPixels=5000) # Instantiate the clusterer and train it. clusterer = ee.Clusterer.wekaKMeans(15).train(training) # Cluster the input using the trained clusterer. result = input.cluster(clusterer) # Display the clusters with random colors. m.add_layer(result.randomVisualizer(), {}, 'clusters') m\n\nPlease note:"
+    }
+}
