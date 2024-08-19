@@ -1,0 +1,45 @@
+{
+    "id": "dbpedia_1639_0",
+    "rank": 71,
+    "data": {
+        "url": "https://community.st.com/t5/stm32-mcus-embedded-software/problem-with-stm32h747-hs-usb-dma/td-p/165459",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Problem with STM32H747 HS USB DMA.",
+        "top_image": "https://community.st.com/html/@69F73FA73CBA8CB0B32F49AC59A3C841/assets/favicon-32.png",
+        "meta_img": "https://community.st.com/html/@69F73FA73CBA8CB0B32F49AC59A3C841/assets/favicon-32.png",
+        "images": [
+            "https://community.st.com/legacyfs/online/avatars/005",
+            "https://community.st.com/legacyfs/online/avatars/005",
+            "https://community.st.com/legacyfs/online/avatars/005",
+            "https://community.st.com/legacyfs/online/avatars/005",
+            "https://community.st.com/legacyfs/online/avatars/005",
+            "https://community.st.com/legacyfs/online/avatars/005",
+            "https://community.st.com/legacyfs/online/avatars/005",
+            "https://community.st.com/legacyfs/online/avatars/005",
+            "https://community.st.com/html/@3608756CBCA5760A56770C6C8DD42B7E/emoticons/1f642.png",
+            "https://community.st.com/legacyfs/online/avatars/005",
+            "https://community.st.com/html/@536CEDE7C32C81FEF61E5DBD84A13890/emoticons/1f60a.png",
+            "https://community.st.com/skins/images/A19B6D4B29AC54D33C48C920859B1F65/responsive_peak/images/icon_anonymous_message.png",
+            "https://community.st.com/html/@BD84A24F6C33B4216F5F2C3226885C95/assets/stmicro-logo.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "community.st.com",
+            "user-id"
+        ],
+        "publish_date": "2021-09-23T11:25:52+00:00",
+        "summary": "",
+        "meta_description": "Solved: Hello together, after a lot of trouble getting the USB HS port working on the STM32H747 on the STM32H747I-DISCO Discovery kit I’m stuck",
+        "meta_lang": "en",
+        "meta_favicon": "https://community.st.com/html/@69F73FA73CBA8CB0B32F49AC59A3C841/assets/favicon-32.png",
+        "meta_site_name": "",
+        "canonical_link": "https://community.st.com/t5/stm32-mcus-embedded-software/problem-with-stm32h747-hs-usb-dma/td-p/165459",
+        "text": "Hello together,\n\nafter a lot of trouble getting the USB HS port working on the STM32H747 on the STM32H747I-DISCO Discovery kit I’m stuck again. I’m using STM Cube IDE 1.7 and the HAL USB CDC lib.\n\nI was able to get USB CDC working on the M4 thanks to https://community.st.com/s/question/0D53W000002diUsSAI/stm32cubemx-h7x5h7x7-usb-cdc-bug\n\nOn the M7 core it kind of worked out of the box. But when I want to use it with the USB interal DMA enabled it didn’t work at all.\n\nI already figured out I have to disable the D-cache and not use the DTCM SRAM for the buffer: https://community.st.com/s/article/how-to-enable-dma-in-usb-with-stm32h7-devices\n\nI provided a minimal example of code which already results in failure:\n\n... MX_GPIO_Init(); MX_USB_DEVICE_Init(); HAL_Delay(1000); uint8_t buffer1[2000], buffer2[2000]; CDC_Transmit_HS(buffer1, 1468); HAL_Delay(50); CDC_Transmit_HS(buffer2, 4); while (1) { /* USER CODE END WHILE */ /* USER CODE BEGIN 3 */ }\n\nWhen I use CDC_Transmit_HS() it works. I can send data from the provided buffer. I can also do this multiple times. And the DMA seems to work, as the execution time of CDC_Transmit_HS() is rather short and independent of the buffer length.\n\nBUT: I can only send 1468 bytes of data. If I use a buffer length > 1468 bytes it doesn’t send anything.\n\nIf I send say CDC_Transmit_HS(buffer1, 1460) and than CDC_Transmit_HS(buffer1, 12) I get the first 1460 bytes transferred but the second call is not transmitted.\n\nI also tried different memory addresses for the buffer pointer. E.g. 0x30020000 (SRAM2).\n\nAlways the same.\n\nAfter the CDC_Transmit_HS() the CPU is normally executing code, just without any data being sent.\n\nAny idea what I am doing wrong? With internal IP DMA disabled it works fine with large buffers and repeatably.\n\nThanks a lot"
+    }
+}
