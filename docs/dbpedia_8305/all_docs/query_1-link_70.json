@@ -1,0 +1,32 @@
+{
+    "id": "dbpedia_8305_1",
+    "rank": 70,
+    "data": {
+        "url": "https://stackoverflow.com/questions/48236088/clustering-using-t-distributed-sne-coordinates",
+        "read_more_link": "",
+        "language": "en",
+        "title": "clustering using t-distributed sne coordinates",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/b04785566a4115813be0c00ace8e660e?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/XCkw7.jpg?s=64",
+            "https://stackoverflow.com/posts/48236088/ivc/0f69?prg=02b4fd6c-63e2-46ba-890b-58605a3ace13"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2018-01-13T01:19:29",
+        "summary": "",
+        "meta_description": "Let's say you have data on cars: a matrix of 10,000 rows and 10 feature columns (mpg, engine size, horsepower...etc.) and you want to explore the high dimensional data. You could:\n\n(1) Run kmeans o...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/48236088/clustering-using-t-distributed-sne-coordinates",
+        "text": "Let's say you have data on cars: a matrix of 10,000 rows and 10 feature columns (mpg, engine size, horsepower...etc.) and you want to explore the high dimensional data. You could:\n\n(1) Run kmeans or some other clustering algorithm on the dataset...picking the number of clusters (2) First reduce the dimensionality of the dataset with PCA and pass PC1 and PC2 to the clustering algorithm...picking the number of clusters\n\nBUT can you also (3) First reduce the the dimensionality of the dataset with TSNE and pass the 2 TSNE coordinates to the clustering algorithm...picking the number of clusters\n\nDoes anyone do #3? After looking at the results of TSNE the 2D coordinates change each time TSNE is run. For example, a car might have both negative TSNE coordinates and then if the algorithm is run again it can have both positive TSNE coordinates. For example, if the coordinates are passed to a clustering algorithm a car might be in cluster 4 then on re-run it is in cluster 7 or 6 etc. TSNE seems like a great visualization tool and you'd want to be able to cluster off of it. Thoughts?\n\nThis great answer mostly answers your question:\n\nhttps://stats.stackexchange.com/a/264647/7828\n\nIt gives a number of examples where tSNE plots show clusters that don't exist in the input data, I.e., that are very much misleading.\n\nThe one problem not discussed yet is getting tSNE to yield meaningful results on your data at all. tSNE uses squared Euclidean inside of the Gaussian. That means it is very sensitive to scale. As long as your input data has similar scales (it is mostly used on images, where each pixel does have the same scale) it works good. But on your cars data example, you will have the common scaling problems, and get results that are not very statistically meaningful. 1 mph is not the same as 1 wheel. tSNE can't solve this, on the contrary: tSNE is very sensitive to your preprocessing choices (and in fact, in the original tSNE paper, they used PCA as additional preprocessing step).\n\nanswered Jan 13, 2018 at 9:25\n\nHas QUIT--Anony-MousseHas QUIT--Anony-Mousse\n\n77.2k1414 gold badges140140 silver badges196196 bronze badges"
+    }
+}
