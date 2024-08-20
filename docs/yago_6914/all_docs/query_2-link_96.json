@@ -1,0 +1,30 @@
+{
+    "id": "yago_6914_2",
+    "rank": 96,
+    "data": {
+        "url": "https://blog.iandavis.com/2010/06/refactoring-bio-with-einstein-part-5-updated-vocabulary/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Refactoring BIO with Einstein Part 5: Updated Vocabulary",
+        "top_image": "http://www.gravatar.com/avatar/09dc91c92d018a094d7ce79b19034252.png",
+        "meta_img": "http://www.gravatar.com/avatar/09dc91c92d018a094d7ce79b19034252.png",
+        "images": [],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Ian Davis"
+        ],
+        "publish_date": "2010-06-06T07:24:24",
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "",
+        "meta_favicon": "/images/apple-touch-icon-152x152.png",
+        "meta_site_name": "Internet Alchemy",
+        "canonical_link": null,
+        "text": "It's been four years since the last instalment of this series. Over the past couple of months I have revised the BIO vocabulary and have incorporated many of the changes I've been discussing over the course of this series of posts. Now I am going to revisit some of the examples from my earlier posts and bring them up to date with the new vocabulary.\n\nThe BIO Vocabulary models the biography of a person as a series of interrelated events. There are now classes for many different kinds of life event and the beginnings of a series of properties that link these events to people, places, times and other events. The vocabulary can be found at its usual location: http://vocab.org/bio/0.1/\n\nBack in part 1 I set about trying to model this paragraph from Wikipedia:\n\nEinstein was born at Ulm in Württemberg, Germany; about 100 km east of Stuttgart. His parents were Hermann Einstein, a featherbed salesman who later ran an electrochemical works, and Pauline, whose maiden name was Koch. They were married in Stuttgart-Bad Cannstatt. The family was Jewish (and non-observant); Albert attended a Catholic elementary school and, at the insistence of his mother, was given violin lessons.\n\nMy first attempt looked something like this (see this RDF file)\n\nThe first thing that strikes me now is how primitive and unlinked the RDF is, something that the past 3 years of the Linked Data project has really hammered home. Those blank nodes are useful in the example, but quite poor for wide scale integration. Today, I would be using dbpedia URIs for the people and places mentioned in the data, especially since it is based on Wikipedia information in the first place.\n\nWhat changes does the revised BIO Vocabulary make to this example? Actually there are quite a few. There are some new properties that relate events to the people playing particular roles in those events. These are:\n\nbio:agent — a person, organization or group that plays a role in an event.\n\nbio:employer — an agent that is involved in an event as an employer.\n\nbio:officiator — a person that officiates at a ceremonial event.\n\nbio:organization — an organization that plays a role in an event.\n\nbio:parent — a person that takes the parent role in an event.\n\nbio:partner — a person that is involved in a event as a partner in a relationship.\n\nbio:principal — a person that takes the primary and most important role in an event.\n\nbio:spectator — a person that is present at and observes the occurrence of at least part of an event.\n\nbio:witness — a person that witnesses and can bear testimony to the occurrence of an event.\n\nThese are not designed to be comprehensive, but to cover the most common cases and provide building blocks for other types of role. The most important is bio:principal which relates an event to the most important person in the event. In the case of the birth of Albert Einstein, Albert is the bio:principal. We can rewrite the birth event like this:\n\nSome events, such as marriages, have no principal (this is my egalatarian viewpoint, some cultures will view marriage differently). We can rewrite Hermann and Pauline's marriage like this:\n\nI can now also explicitly say that Pauline and Hermann were the mother and father of Albert using the new bio:mother and bio:father properties:\n\nOne of the areas that was confusing in my original example was the use of the Event class for representing time periods. Although an event such as a marriage may extend for a period of time, it isn't strictly correct to say it is a time period. Rather it has a time period. The BIO Vocabulary now has a bio:Interval class to model intervals of time and a pair of properties bio:initiatingEvent and bio:concludingEvent to mark the start and end of time intervals. That means we can model the period of time during which Pauline and Hermann were married as a bio:Interval like this:\n\nBecause bio:Events are not time intervals it's not appropriate to use the OWL-Time properties with them. Instead, the intervals associated with each event need to be explicitly drawn out. The bio:eventInterval property relates an event to the equivalent interval over which the event takes place. We can use this property to move the OWL-Time properties onto the relevant intervals like this:\n\nFinally, putting it all together, this is what the original example from part 1 of this series now looks like:\n\nI hope you'll agree that this has many advantages over the original, with better connections between people, their life events and others who take part in those events. If you want more like this the BIO Vocabulary contains an extensive worked example of Henry VIII and his six wives.\n\nOther posts in the “Refactoring Bio” series:"
+    }
+}
