@@ -1,0 +1,46 @@
+{
+    "id": "yago_412_3",
+    "rank": 89,
+    "data": {
+        "url": "https://stackoverflow.com/questions/3393610/how-to-get-friends-birthday-list-using-facebook-api",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How to get friend's birthday list using facebook api?",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://i.sstatic.net/h88Vk.jpg?s=64",
+            "https://i.sstatic.net/1LKnl.jpg?s=64",
+            "https://www.gravatar.com/avatar/a19f9308334d07d4be19c8f6d11151ff?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/38baaa17b9c289a3be9d861ec83c9186?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/YKQis.png?s=64",
+            "https://www.gravatar.com/avatar/713b0b744db02dc85adf1008f204de5d?s=64&d=identicon&r=PG",
+            "https://graph.facebook.com/1721187264/picture?type=large",
+            "https://www.gravatar.com/avatar/0a04b2cf3f8827fee6310c52d350a5fc?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/NMUlT.png?s=64",
+            "https://i.sstatic.net/XcrJw.png?s=64",
+            "https://i.sstatic.net/P4gaT.jpg?s=64",
+            "https://i.sstatic.net/S9zAa.jpg?s=64",
+            "https://i.sstatic.net/TBzOQ.jpg?s=64",
+            "https://i.sstatic.net/S9zAa.jpg?s=64",
+            "https://www.gravatar.com/avatar/426102d3e02c51fa76b63a3e948a4e22?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/EFjyp.png?s=64",
+            "https://stackoverflow.com/posts/3393610/ivc/cf6b?prg=69abb5da-56fc-4f53-b720-087621c5d4cb"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2010-08-03T04:39:43",
+        "summary": "",
+        "meta_description": "I am trying to get friend birthday list.\n\nBut how to find using my api I dont know.",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/3393610/how-to-get-friends-birthday-list-using-facebook-api",
+        "text": "Since v2.0 of the Graph API, it´s not possible to get friend birthdays anymore. You can only get the birthday of the authorized user by using the user_birthday permission. See the changelog for more information: https://developers.facebook.com/docs/apps/changelog\n\nThere is only one other possibility: If the friend authorized the App with user_birthday, you can get his birthday with the following call: /friend-id?fields=birthday\n\nOf course you need to authorize users with user_friends too, in order to make this work. And you can also just store the birthday of all authorized users and don´t waste an extra API call on it.\n\nFirstly, read the readme on the project page to get started with the SDK.\n\nYou'll then need to look at the API reference and more specifically the user profile section.\n\nAfter you've done all that you'll end up with a JSON object you can parse using the org.json package in the Android SDK.\n\nHopefully that helps you out.\n\nFB.api('me/friends?fields=id,name,birthday') doesnt work as of 09/12/2017.\n\nBelow is the debug message from graph explorer tool when i try to hit the endpoint.\n\nOnly friends who installed this app are returned in API v2.0 and higher. total_count in summary represents the total number of friends, including those who haven't installed the app\n\nFor returning just the friends list of the user, you can try hitting the below endpoint with a valid access token\n\nFB.api('me/friendlists')\n\nBut note that you need read_custom_friendlists permission from the user.\n\nHere is the example URL from Facebook Graph API Explorer:\n\nme?fields=email,birthday,friends{birthday}\n\nAndroid Java Code:\n\nGraphRequest request = GraphRequest.newMeRequest( accessToken, new GraphRequest.GraphJSONObjectCallback() { @Override public void onCompleted(JSONObject object, GraphResponse response) { // Insert your code here } }); Bundle parameters = new Bundle(); parameters.putString(\"fields\", \"email,birthday,friends{birthday}\"); request.setParameters(parameters); request.executeAsync();\n\niOS SDK:\n\nFBSDKGraphRequest *request = [[FBSDKGraphRequest alloc] initWithGraphPath:@\"/me\" parameters:@{ @\"fields\": @\"email,birthday,friends{birthday}\",} HTTPMethod:@\"GET\"]; [request startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) { // Insert your code here }];\n\nJavascript SDK:\n\nFB.api( '/me', 'GET', {\"fields\":\"email,birthday,friends{birthday}\"}, function(response) { // Insert your code here } );\n\ncURL:\n\ncurl -i -X GET \\ \"https://graph.facebook.com/v15.0/me?fields=email%2Cbirthday%2Cfriends%7Bbirthday%7D&access_token=YOUR_ACCESS_TOKEN\"\n\nYou can add more parameters inside the curly braces if you need more details. i.e {birthday, email, first_name, gender, location} and so on."
+    }
+}
