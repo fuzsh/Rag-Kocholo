@@ -1,0 +1,52 @@
+{
+    "id": "dbpedia_9265_3",
+    "rank": 31,
+    "data": {
+        "url": "https://github.com/actions/labeler",
+        "read_more_link": "",
+        "language": "en",
+        "title": "actions/labeler: An action for automatically labelling pull requests",
+        "top_image": "https://opengraph.githubassets.com/a716dda244d8d03f9dae44d7d5f2fb8cd875a5f256becf5981b57db5b6210a42/actions/labeler",
+        "meta_img": "https://opengraph.githubassets.com/a716dda244d8d03f9dae44d7d5f2fb8cd875a5f256becf5981b57db5b6210a42/actions/labeler",
+        "images": [
+            "https://github.com/actions/labeler/actions/workflows/basic-validation.yml/badge.svg?branch=main",
+            "https://avatars.githubusercontent.com/u/11903998?s=64&v=4",
+            "https://avatars.githubusercontent.com/u/11903998?s=64&v=4",
+            "https://avatars.githubusercontent.com/u/54554557?s=64&v=4",
+            "https://avatars.githubusercontent.com/u/85604609?s=64&v=4",
+            "https://avatars.githubusercontent.com/u/16128714?s=64&v=4",
+            "https://avatars.githubusercontent.com/u/169614996?s=64&v=4",
+            "https://avatars.githubusercontent.com/u/4317745?s=64&v=4",
+            "https://avatars.githubusercontent.com/u/4317692?s=64&v=4",
+            "https://avatars.githubusercontent.com/in/29110?s=64&v=4",
+            "https://avatars.githubusercontent.com/u/30500472?s=64&v=4",
+            "https://avatars.githubusercontent.com/u/319655?s=64&v=4",
+            "https://avatars.githubusercontent.com/u/46996400?s=64&v=4",
+            "https://avatars.githubusercontent.com/u/608862?s=64&v=4",
+            "https://avatars.githubusercontent.com/u/98037481?s=64&v=4",
+            "https://avatars.githubusercontent.com/u/101411245?s=64&v=4",
+            "https://avatars.githubusercontent.com/u/130154213?s=64&v=4",
+            "https://avatars.githubusercontent.com/u/27160?s=64&v=4",
+            "https://avatars.githubusercontent.com/u/4342511?s=64&v=4",
+            "https://avatars.githubusercontent.com/u/52323235?s=64&v=4",
+            "https://avatars.githubusercontent.com/u/13227161?s=64&v=4",
+            "https://avatars.githubusercontent.com/u/2119212?s=64&v=4",
+            "https://avatars.githubusercontent.com/u/3742559?s=64&v=4"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "An action for automatically labelling pull requests - actions/labeler",
+        "meta_lang": "en",
+        "meta_favicon": "https://github.com/fluidicon.png",
+        "meta_site_name": "GitHub",
+        "canonical_link": "https://github.com/actions/labeler",
+        "text": "Automatically label new pull requests based on the paths of files being changed or the branch name.\n\nThe ability to apply labels based on the names of base and/or head branches was added (#186 and #54). The match object for changed files was expanded with new combinations in order to make it more intuitive and flexible (#423 and #101). As a result, the configuration file structure was significantly redesigned and is not compatible with the structure of the previous version. Please read the documentation below to find out how to adapt your configuration files for use with the new action version.\n\nThe bug related to the sync-labels input was fixed (#112). Now the input value is read correctly.\n\nBy default, dot input is set to true. Now, paths starting with a dot (e.g. .github) are matched by default.\n\nVersion 5 of this action updated the runtime to Node.js 20. All scripts are now run with Node.js 20 instead of Node.js 16 and are affected by any breaking changes between Node.js 16 and 20.\n\nCreate a .github/labeler.yml file with a list of labels and config options to match and apply the label.\n\nThe key is the name of the label in your repository that you want to add (eg: \"merge conflict\", \"needs-updating\") and the value is a match object.\n\nThe match object allows control over the matching options. You can specify the label to be applied based on the files that have changed or the name of either the base branch or the head branch. For the changed files options you provide a path glob, and for the branches you provide a regexp to match against the branch name.\n\nThe base match object is defined as:\n\nThere are two top-level keys, any and all, which both accept the same configuration options:\n\nFrom a boolean logic perspective, top-level match objects, and options within all are AND-ed together and individual match rules within the any object are OR-ed.\n\nOne or all fields can be provided for fine-grained matching. The fields are defined as follows:\n\nall: ALL of the provided options must match for the label to be applied\n\nany: if ANY of the provided options match then the label will be applied\n\nbase-branch: match regexps against the base branch name\n\nhead-branch: match regexps against the head branch name\n\nchanged-files: match glob patterns against the changed paths\n\nany-glob-to-any-file: ANY glob must match against ANY changed file\n\nany-glob-to-all-files: ANY glob must match against ALL changed files\n\nall-globs-to-any-file: ALL globs must match against ANY changed file\n\nall-globs-to-all-files: ALL globs must match against ALL changed files\n\nIf a base option is provided without a top-level key, then it will default to any. More specifically, the following two configurations are equivalent:\n\nand\n\nIf path globs are combined with ! negation, you can write complex matching rules. See the examples below for more information.\n\nCreate a workflow (e.g. .github/workflows/labeler.yml see Creating a Workflow file) to utilize the labeler action with content:\n\nVarious inputs are defined in action.yml to let you configure the labeler:\n\nName Description Default repo-token Token to use to authorize label changes. Typically the GITHUB_TOKEN secret github.token configuration-path The path to the label configuration file. If the file doesn't exist at the specified path on the runner, action will read from the source repository via the Github API. .github/labeler.yml sync-labels Whether or not to remove labels when matching files are reverted or no longer changed by the PR false dot Whether or not to auto-include paths starting with dot (e.g. .github) true pr-number The number(s) of pull request to update, rather than detecting from the workflow context N/A\n\nYou might want to use action called @actions/checkout to upload label configuration file onto the runner from the current or any other repositories. See usage example below:\n\nNote: in normal usage the pr-number input is not required as the action will detect the PR number from the workflow context.\n\nLabeler provides the following outputs:\n\nName Description new-labels A comma-separated list of all new labels all-labels A comma-separated list of all labels that the PR contains\n\nThe following example performs steps based on the output of labeler:\n\nIn order to add labels to pull requests, the GitHub labeler action requires write permissions on the pull-request. However, when the action runs on a pull request from a forked repository, GitHub only grants read access tokens for pull_request events, at most. If you encounter an Error: HttpError: Resource not accessible by integration, it's likely due to these permission constraints. To resolve this issue, you can modify the on: section of your workflow to use pull_request_target instead of pull_request (see example above). This change allows the action to have write access, because pull_request_target alters the context of the action and safely grants additional permissions. Refer to the GitHub token permissions documentation for more details about access levels and event contexts.\n\nUsing the pull_request_target event trigger involves several peculiarities related to initial set up of the labeler or updating version of the labeler.\n\nWhen submitting an initial pull request to a repository using the pull_request_target event, the labeler workflow will not run on that pull request because the pull_request_target execution runs off the base branch instead of the pull request's branch. Unfortunately this means the introduction of the labeler can not be verified during that pull request and it needs to be committed blindly.\n\nWhen submitting a pull request that includes updates of the labeler action version and associated configuration files, using the pull_request_target event may result in a failed workflow. This is due to the nature of pull_request_target, which uses the code from the base branch rather than the branch linked to the pull request — so, potentially outdated configuration files may not be compatible with the updated labeler action.\n\nTo prevent this issue, you can switch to using the pull_request event temporarily, before merging. This event execution draws from the code within the branch of your pull request, allowing you to verify the new configuration's compatibility with the updated labeler action.\n\nOnce you confirm that the updated configuration files function as intended, you can then revert to using the pull_request_target event before merging the pull request. Following this step ensures that your workflow is robust and free from disruptions."
+    }
+}
