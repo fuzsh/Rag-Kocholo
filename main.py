@@ -61,7 +61,7 @@ if __name__ == '__main__':
         crawler(queries)
 
     if config["get_urls"]:
-        dataset_name = "DBpedia"
+        dataset_name = "YAGO"
         kg, gt = load_dataset(dataset_name=dataset_name, dataset_file="kg_modified.json")
 
         # fix identifiers
