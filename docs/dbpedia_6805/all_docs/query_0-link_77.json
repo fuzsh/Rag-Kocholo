@@ -1,0 +1,40 @@
+{
+    "id": "dbpedia_6805_0",
+    "rank": 77,
+    "data": {
+        "url": "https://stackoverflow.com/questions/8969665/how-do-i-find-segmentation-fault-from-multiple-files-using-gdb",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How do I find segmentation fault from multiple files using GDB",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://i.sstatic.net/wlrC5.jpg?s=64",
+            "https://i.sstatic.net/ITDlC.jpg?s=64",
+            "https://www.gravatar.com/avatar/0d30dfb4a79fbeb45242979f90aa4cd5?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/pJhEk.jpg?s=64",
+            "https://www.gravatar.com/avatar/93a3df0a806e7301ce9b92d0705646ac?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/9400f8ae9bac9317834f2aa9b562c90c?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/7ff54b332fefe951ac565f6ba11231c8?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/NyTPY.jpg?s=64",
+            "https://i.sstatic.net/FdHky.jpg?s=64",
+            "https://www.gravatar.com/avatar/2a371a265babbda7024aa713ac5e16d2?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://stackoverflow.com/posts/8969665/ivc/6ca8?prg=0c9085df-05cc-4b75-b7ad-57a49ac6ec1c"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2012-01-23T09:46:15",
+        "summary": "",
+        "meta_description": "I have been asked in an interview how can you debug segmentation fault in C program using GDB. \n\nI told them we can compile our program with -g option so as it add debugging information to binary f...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/8969665/how-do-i-find-segmentation-fault-from-multiple-files-using-gdb",
+        "text": "$ gcc -ggdb s1.c s2.c s3.c -o myprog $ gdb myprog (gdb) run --arg1 --arg2\n\nGDB will run the program as normal, when the segmentation fault occurs GDB will drop back to its prompt and it will be almost the same as running GDB with a core file. The major difference is there are some things you cannot do/print with a core file that you can when the program has crashed inside of GDB. (You can use print to call some functions inside the program, for example.)\n\nYou can also attach to an already running program using gdb --pid <the programs pid>.\n\nEither with a core file or with one of the methods above, when you have the GDB prompt after the crash, type backtrace (or bt for short) and GDB will show you the stack at the time of the crash, including the file names and line numbers of each call and the currently executing line.\n\nIf you are working under Linux the easier way to find segmentation fault is by using the tool named VALGRIND: http://valgrind.org/ .\n\nYou just need to compile your code with -g flag and then run ./valgrind .\n\nThen you will know exactly in which function and in which line of code there is an error-uninitialized memory/memory read out of allocated space or sth.\n\nYou just run the program under gdb, and the debugger with catch the SIGSEGV and show you the line and instruction that faulted. Then you just examine the variable and/or register values to see what's wrong. Usually it's a rogue pointer value, and trying to access it with GDB will give and error, so it's easy.\n\nAnd yes, recompiling everything with -g would be helpful. The interviewer probably wanted you to describe how you'd figure out which file had the fault (gdb just tells you when it catches the signal) and just recompile that one with debug info. If there's 20,000 source files that might be useful, but with 3 or 4 files, what's the point? Even with larger projects, you usually end up chasing the bad pointer through 10 functions and 5 files anyway, so again, what's the point? Debug info doesn't cost anything at run time, although it costs disk space in an installation.\n\ncompile the code in normal way by giving gcc filename you will get a .out file, start running that and get the process id by giving ps -aef | grep filename.out\n\nin a another window type gdb and enter,inside gdb prompt give attach processid (processid you will get from above command),give c to continue.once the execution finishes give \"bt\" inside gdb.you will get the place where the segmentation is occurring."
+    }
+}
