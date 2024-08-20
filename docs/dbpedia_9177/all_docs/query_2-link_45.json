@@ -1,0 +1,34 @@
+{
+    "id": "dbpedia_9177_2",
+    "rank": 45,
+    "data": {
+        "url": "https://stackoverflow.com/questions/69991518/cesium-js-disable-resizing-of-billboard-labels-and-provide-a-fixed-size",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Cesium JS -Disable resizing of billboard labels and provide a fixed size",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/15d4fb8421a0101bc5c58ca05f331011?s=64&d=identicon&r=PG",
+            "https://lh3.googleusercontent.com/-uhAlhseqK8w/AAAAAAAAAAI/AAAAAAAAArA/Ue0-PUX3Rvw/photo.jpg?sz=64",
+            "https://i.sstatic.net/mJ6P2.png?s=64",
+            "https://www.gravatar.com/avatar/b81779002efe1100426988e5c0a5dbed?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://stackoverflow.com/posts/69991518/ivc/5ee9?prg=4ca4d4a4-79b3-4b8d-bb93-874cfc20ad61"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2021-11-16T15:04:38",
+        "summary": "",
+        "meta_description": "How can we disable resizing of billboard labels ? I have restricted the resizing of the image itself by using the sizeInMeters property. However when I zoom in or out the label associated with the",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/69991518/cesium-js-disable-resizing-of-billboard-labels-and-provide-a-fixed-size",
+        "text": "How can we disable resizing of billboard labels ? I have restricted the resizing of the image itself by using the sizeInMeters property. However when I zoom in or out the label associated with the billboard still scales dynamically. Is there any way to disable this.\n\nSandcastle link\n\nCode copied from link above:\n\nvar viewer = new Cesium.Viewer('cesiumContainer'); var image = new Image(); var entity; image.onload = function() { entity = viewer.entities.add({ position : Cesium.Cartesian3.fromDegrees(-75.1641667, 39.9522222), billboard : { position : Cesium.Cartesian3.fromDegrees(-75.1641667, 39.9522222), scaleByDistance : undefined, sizeInMeters:true, width:100, height:100, image : image }, label : { text : 'Label on top of scaling billboard', font : '20px sans-serif', showBackground : true, horizontalOrigin : Cesium.HorizontalOrigin.CENTER, pixelOffset : new Cesium.Cartesian2(0.0, -image.height), pixelOffsetScaleByDistance : new Cesium.NearFarScalar(1.5e2, 3.0, 1.5e7, 0.5) } }); viewer.zoomTo(viewer.entities); }; image.src = '../images/facility.gif'; var counter = 0; viewer.scene.postUpdate.addEventListener(function(){ if(!Cesium.defined(entity)) { return; } counter += 0.04; if(Math.cos(counter) > 0){ entity.label.text = \"On\"; } else { entity.label.text = \"Off\"; } });\n\nYou have to set \"sizeInMeters\" to false.\n\nI think you have misunderstood the meaning of \"sizeInMeters\". Let's think of a building on the map. Actually, the real size of the building in the world is constant. But whenever we zoom in or out, the size of the building on the map(pixel coordinate) changes. In another word, the building is drawn with different pixel sizes based on the map's scale. This is the same in your case.\n\nanswered Nov 17, 2021 at 1:44\n\nZhefengJinZhefengJin\n\n1,03299 silver badges1919 bronze badges"
+    }
+}
