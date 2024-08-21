@@ -1,0 +1,31 @@
+{
+    "id": "yago_30024_3",
+    "rank": 55,
+    "data": {
+        "url": "https://gist.github.com/cleishm/7318449",
+        "read_more_link": "",
+        "language": "en",
+        "title": "graph-royalty.adoc",
+        "top_image": "https://github.githubassets.com/assets/gist-og-image-54fd7dc0713e.png",
+        "meta_img": "https://github.githubassets.com/assets/gist-og-image-54fd7dc0713e.png",
+        "images": [
+            "https://avatars.githubusercontent.com/u/79651?s=64&v=4",
+            "https://camo.githubusercontent.com/02cb8af976c43f85ebbc64d58a68a01b39dcf9b2f48e5951ff7447b129e04c04/68747470733a2f2f646f63732e676f6f676c652e636f6d2f64726177696e67732f642f31694a78496c69714c7a6a392d4c5756746a31625a6f72723930556c72357333485f66414351706932496d512f7075623f773d39363026683d373230"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "GitHub Gist: instantly share code, notes, and snippets.",
+        "meta_lang": "en",
+        "meta_favicon": "https://gist.github.com/fluidicon.png",
+        "meta_site_name": "Gist",
+        "canonical_link": "https://gist.github.com/cleishm/7318449",
+        "text": "Royalty in Europe\n\nThe Royal families generaly have long histories and are often closely related. This citation from wikipedia can give you better idea:\n\nMaternally, Nicholas was the nephew of several monarchs, including King Frederick VIII of Denmark, Queen Alexandra of the United Kingdom (queen consort of King Edward VII), and King George I of Greece. Nicholas, his wife, Alexandra, and Kaiser Wilhelm II of Germany were all first cousins of King George V of the United Kingdom. Nicholas was also a first cousin of both King Haakon VII and Queen Maud of Norway, as well as King Constantine I of Greece. While not first cousins, Nicholas and Kaiser Wilhelm II were second cousins, once removed, as each descended from King Frederick William III of Prussia, as well as third cousins, as they were both great-great-grandsons of Emperor Paul I of Russia.\n\nThe rulers of Great Britain, Germany and Russia at the beginning of World War I were actually cousins!\n\nSimple family relationships may be represented by following model\n\nSample data\n\nThis sample data set is far from complete but it allows to demonstrate the main point. It contains monarch of Great Britain, Sweden, Denmark and Norway in 18th century.\n\ncreate (britain {name:\"Great Britain\"}) create (hanover {name:\"Hanover\"}) create (denmark {name:\"Denmark and Norway\"}) create (sweden {name:\"Sweden\"}) create (houseOfSstuart {name:\"House of Stuart\"}) create (houseOfHanover {name:\"House of Hanover\"}) create (houseOfOldenburg {name: \"House of Oldenburg\"}) create (anne {name:\"Anne\"}) create (georgeI {name:\"George I\"}) create (georgeII {name:\"George II\"}) create (georgeIII {name:\"George III\"}) create (frederickWales {name:\"Frederick\"}) create (carolineMatilda {name:\"Caroline Matilda\"}) create (georgeII)-[:HAD_SON]->(frederickWales) create (frederickWales)-[:HAD_SON]->(georgeIII) create (frederickWales)-[:HAD_DAUGHTER]->(carolineMatilda) create (anne)-[:MEMBER_OF]->(houseOfSstuart) create (anne)-[:REIGNED]->(britain) create (georgeI)-[:MEMBER_OF]->(houseOfHanover) create (georgeI)-[:SUCCEEDED]->(anne) create (georgeI)-[:REIGNED]->(britain) create (georgeII)-[:MEMBER_OF]->(houseOfHanover) create (georgeII)-[:SUCCEEDED]->(georgeI) create (georgeII)-[:REIGNED]->(britain) create (georgeII)-[:REIGNED]->(hanover) create (georgeIII)-[:MEMBER_OF]->(houseOfHanover) create (georgeIII)-[:SUCCEEDED]->(georgeII) create (georgeIII)-[:REIGNED]->(britain) create (georgeIII)-[:REIGNED]->(hanover) create (frederickIV {name:\"Frederick IV\"}) create (christianVI {name:\"Christian VI\"}) create (frederickV {name:\"Frederick V\"}) create (christianVII {name:\"Christian VII\"}) create (frederickIV)-[:MEMBER_OF]->(houseOfOldenburg) create (frederickIV)-[:REIGNED]->(denmark) create (christianVI)-[:MEMBER_OF]->(houseOfOldenburg) create (christianVI)-[:REIGNED]->(denmark) create (christianVI)-[:SUCCEEDED]->(frederickIV) create (frederickV)-[:MEMBER_OF]->(houseOfOldenburg) create (frederickV)-[:REIGNED]->(denmark) create (frederickV)-[:SUCCEEDED]->(christianVI) create (christianVII)-[:MEMBER_OF]->(houseOfOldenburg) create (christianVII)-[:REIGNED]->(denmark) create (christianVII)-[:SUCCEEDED]->(frederickV) create (christianVII)-[:MARRIED]->(carolineMatilda) create (louise {name:\"Louise of Great Britain\"}) create (georgeII)-[:HAD_DAUGHTER]->(louise) create (frederickV)-[:MARRIED]->(louise) create (sophia {name: \"Sophia Magdalena\"}) create (louise)-[:HAD_DAUGHTER]->(sophia) create (frederickV)-[:HAD_DAUGHTER]->(sophia) create (charlesII {name:\"Charles XII\"}) create (ulrika {name:\"Ulrika Eleonora\"}) create (frederick {name:\"Frederick I\"}) create (adolfF {name:\"Adolf Frederick\"}) create (gustavIII {name:\"Gustav_III_of_Sweden\"}) create (gustavIV {name:\"Gustav IV Adolf\"}) create (charlesII)<-[:SUCEEDED]-(ulrika) create (ulrika)<-[:SUCEEDED]-(frederick) create (frederick)<-[:SUCEEDED]-(adolfF) create (adolfF)<-[:SUCEEDED]-(gustavIII) create (gustavIII)<-[:SUCEEDED]-(gustavIV) create (charlesII)-[:REIGNED]->(sweden) create (ulrika)-[:REIGNED]->(sweden) create (frederick)-[:REIGNED]->(sweden) create (adolfF)-[:REIGNED]->(sweden) create (gustavIII)-[:REIGNED]->(sweden) create (gustavIV)-[:REIGNED]->(sweden) create (gustavIII)-[:MARRIED]->(sophia)\n\nCountry relations\n\nHow were the countries related through royal families?\n\nMATCH path =((c1)<-[:REIGNED]-(r1)-[:HAD_DAUGHTER|MARRIED*0..]-(r2)-[:REIGNED]->(c2)) WHERE c1.name=\"Great Britain\" AND c2.name = 'Denmark and Norway' RETURN path\n\nThere are also other posibilities to query.\n\nThis query will get all successors on the throne\n\nmatch (anne)<-[:SUCCEEDED*0..]-(suc) where anne.name=\"Anne\" return suc.name\n\nThis retrieves just one predecessor.\n\nmatch (g)-[:SUCCEEDED]->(pre) where g.name=\"George II\" return pre.name\n\nindex names for better performance\n\ncrawl wikipedia (or wikidata) to get comprehensive database"
+    }
+}
