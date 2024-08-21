@@ -1,0 +1,37 @@
+{
+    "id": "yago_24146_0",
+    "rank": 92,
+    "data": {
+        "url": "https://medium.com/mathworks/the-worlds-simplest-impossible-problem-d0515b861fc4",
+        "read_more_link": "",
+        "language": "en",
+        "title": "The World’s Simplest Impossible Problem",
+        "top_image": "https://miro.medium.com/v2/resize:fit:640/1*cCKqOOX7eKx543I0e2fO4g.jpeg",
+        "meta_img": "https://miro.medium.com/v2/resize:fit:640/1*cCKqOOX7eKx543I0e2fO4g.jpeg",
+        "images": [
+            "https://miro.medium.com/v2/resize:fill:64:64/1*dmbNkD5D-u45r44go_cf0g.png",
+            "https://miro.medium.com/v2/resize:fill:88:88/2*wnzGdJbKEfIbF87caZ-ckQ.png",
+            "https://miro.medium.com/v2/resize:fill:48:48/1*lh81WrZfbpIKxICyoJ1xxA.png",
+            "https://miro.medium.com/v2/resize:fill:144:144/2*wnzGdJbKEfIbF87caZ-ckQ.png",
+            "https://miro.medium.com/v2/resize:fill:64:64/1*lh81WrZfbpIKxICyoJ1xxA.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "MathWorks Editor",
+            "mathworkseditor.medium.com"
+        ],
+        "publish_date": "2019-07-08T12:00:09+00:00",
+        "summary": "",
+        "meta_description": "Of course, my problem doesn’t have a “right” answer. The solution is not unique. The problem is “underdetermined” or “ill posed.” Most of the people I was having lunch with wouldn’t give me an…",
+        "meta_lang": "en",
+        "meta_favicon": "https://miro.medium.com/v2/5d8de952517e8160e40ef9841c781cdc14a5db313057fa3c3de41c6f5b494b19",
+        "meta_site_name": "Medium",
+        "canonical_link": "https://blogs.mathworks.com/cleve/2019/07/08/the-worlds-simplest-impossible-problem/",
+        "text": "By Cleve Moler\n\n(This is a reprint of the second ever Cleve’s Corner from the Winter 1990 MathWorks Newsletter).\n\nThe other day at lunch with a couple of other MathWorks people, I posed the following problem:\n\n“I’m thinking of two numbers. Their average is 3. What are the numbers?”\n\nNow stop a minute and, before you read any further, provide your own answer to my question.\n\nOf course, my problem doesn’t have a “right” answer. The solution is not unique. The problem is “underdetermined” or “ill posed.”\n\nMost of the people I was having lunch with wouldn’t give me an answer. When I pressed them, one person finally said, “Both numbers could be 3.” Another person said, “Yes, but one could be 6 and the other 0. That’s what I hoped they would say. In some sense, these are both “nice” answers. Nobody said “23 and minus 17,” or “2.71828 and 3.28172.” Those would also have been correct, but not as “nice.”\n\nWhat does this have to do with MATLAB? Well, MATLAB doesn’t balk at impossible problems. It will solve this one. And it does so without complaining like my buddies at lunch.\n\nNaturally the problem is a matrix problem. It is a “system”\n\nA*x = b\n\nof one “simultaneous” linear equation in two unknowns. The matrix is\n\nA = [1/2 1/2]\n\nand the right-hand side is\n\nb = 3\n\nMATLAB’s backslash solves such equations. Typing\n\nx = A\\b\n\ntell’s me\n\nx =\n\n6\n\n0\n\nThe solution is a 2-by-1 matrix representation of one of the “nice” answers I expected. The second half of the help entry for “\\” gives some indication of where this solution came from.\n\nIf A is an m-by-n matrix with m <\n\nor > n and B is a column vector\n\nwith m components, or a matrix with\n\nseveral such columns, then X = A\\B\n\nis the solution in the least squares\n\nsense to the under- or overdetermined\n\nsystem of equations A*X = B.\n\nThe effective rank, k, of A is\n\ndetermined from the QR decomposition\n\nwith pivoting. A solution X is\n\ncomputed which has at most k nonzero\n\ncomponents per column. If k < n\n\nthis will usually not be the same\n\nsolution as PINV(A)*B.\n\nIn our case, we have m = 1 and n = 2. My matrix has full rank, but the most that can be is k = 1. So, we get a solution with at most one nonzero component. Even that isn’t unique. There are exactly two solutions with one nonzero component, [6 0]’ and [0 6]’. We get the one where the nonzero component has the smallest index.\n\nWhat about my other “nice” solution? That comes from the pseudoinverse.\n\nx = pinv(A)*b\n\nproduces\n\nx =\n\n3.0000\n\n3.0000\n\n(The fact that I got that I get 3.000 instead of the integer 3 without the trailing zeros indicates that there has been some roundoff error and I don’t have the other “nice” solution exactly, but you can pursue that yourself if you really want to.)\n\nOf all the possible solutions to A*x = b, this one, x = [3 3]’, is the “shortest.” It minimizes norm(x). In fact x = A\\b has\n\nnorm(x) = 6.0000\n\nwhile x = pinv(A)*b has\n\nnorm(x) = 4.2426\n\nNow, finally, we have uniqueness. Of all the possible solutions to A*x = b, the one which also minimizes norm(x) is unique.\n\nSo, MATLAB not only solves the problem, it gives us a choice between two different solutions, x = A\\b and x = pinv(A)*b. I think the first solution, A\\b = [6 0]’, is “nice”, because it is “simple”; i.e, it has the fewest possible nonzero components. I think the second solution, pinv(A)*b = [3 3]’, is “nice” because it is “short” and “unique”. None of the other possible solutions have such nice characteristics.\n\nThis problem, “Given the average of two numbers, find the numbers,” captures the essence of many ill-posed and underdetermined problems. Computer tomography, which is the life-saving business of generating images from X-ray, magnetic resonance, and other scanners, is really a grown-up version of this question. Additional constraints, like minimum norm or fewest nonzero components, or “good looking picture,” have to be specified to make it a reasonable mathematical and computational task.\n\nBy the way, I first learned about this “World’s Simplest Impossible Problem” from Don Morrison, who also started the University of New Mexico’s Computer Science Department, invented the Fast Fourier Transform before Cooley and Tukey, and, years ago, got me to move to New Mexico. Thanks for all those things, Don.\n\nI have to confess that I wrote this anecdote about posing a problem at a MathWorks lunch before it really happened. The results of the actual experiment were even more interesting. As I had expected, everybody did grumble and complain about my problem. Then one person said “9 and -3.” She had obviously picked up on the idea. Another person said “3 and 1.” Luckily, he is not responsible for any numeric portions of MATLAB. But three people said “2 and 4.” That is certainly another “nice” answer, but the constraints it satisfies are more subtle. They have something to do with requiring the solution to have integer components that are distinct, but near the average. It’s harder to state and compute in MATLAB without just giving the answer.\n\nOkay, now I’m thinking of three numbers whose average is π. What are those numbers?\n\nPublished with MATLAB® R2018b"
+    }
+}
