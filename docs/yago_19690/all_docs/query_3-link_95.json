@@ -1,0 +1,32 @@
+{
+    "id": "yago_19690_3",
+    "rank": 95,
+    "data": {
+        "url": "https://users.rust-lang.org/t/donald-knuths-man-or-boy-test-is-missing-for-rust/13669",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Donald Knuth's Man or Boy test is missing for Rust",
+        "top_image": "https://global.discourse-cdn.com/business5/uploads/rust_lang/original/2X/8/83e41956eccfd67ad6ff76f15a2c22e58db31d4f.svg",
+        "meta_img": "https://global.discourse-cdn.com/business5/uploads/rust_lang/original/2X/8/83e41956eccfd67ad6ff76f15a2c22e58db31d4f.svg",
+        "images": [
+            "https://rosettacode.org/favicon.ico",
+            "https://static.miraheze.org/rosettacodewiki/d/d3/RosettaCodeTitle.png",
+            "https://sea1.discourse-cdn.com/business5/user_avatar/users.rust-lang.org/euclio/48/14719_2.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2017-11-02T11:31:13+00:00",
+        "summary": "",
+        "meta_description": "Seems like no one has implemented this classical old problem in Rust. \nI would have no idea on how to do it, but maybe someone else do?",
+        "meta_lang": "en",
+        "meta_favicon": "https://global.discourse-cdn.com/business5/uploads/rust_lang/optimized/2X/e/e011218794dba02ebb2b368fd9b831f5585caffe_2_32x32.ico",
+        "meta_site_name": "The Rust Programming Language Forum",
+        "canonical_link": "https://users.rust-lang.org/t/donald-knuths-man-or-boy-test-is-missing-for-rust/13669",
+        "text": "Seems like no one has implemented this classical old problem in Rust.\n\nI would have no idea on how to do it, but maybe someone else do?\n\nHere's one solution: playground\n\nThis solution is closer to C than Algol or D, because in Rust it is not possible to create a recursive closure; this doesn't compile:\n\nlet b = || a(b);\n\nThere are various ways around it, but emulating a closure with an explicit type is probably the simplest.\n\nThis version uses an enum to represent a value that can be either simple isize or a pending invocation to B. A very similar version can be written to use trait objects instead of enum, but since trait objects are twice as large as normal references, it uses almost twice as much memory, and runs longer.\n\nThe best solution I've seen so far on Reddit is this one, with small changes:\n\nuse std::{env, thread}; use std::cell::Cell; enum Val<'a> { Imm(isize), Bfn { k: &'a Cell<isize>, x1: &'a Val<'a>, x2: &'a Val<'a>, x3: &'a Val<'a>, x4: &'a Val<'a>, }, } impl<'a> Val<'a> { fn eval(&self) -> isize { match *self { Val::Imm(v) => v, Val::Bfn { k, x1, x2, x3, x4 } => { k.set(k.get() - 1); a(k.get(), self, x1, x2, x3, x4) } } } } fn a<'a>(k: isize, x1: &Val, x2: &Val, x3: &Val, x4: &Val, x5: &Val) -> isize { let k = &Cell::new(k); let b = Val::Bfn { k, x1, x2, x3, x4 }; if k.get() > 0 { b.eval() } else { x4.eval() + x5.eval() } } fn main() { let k = match env::args().nth(1) { Some(k) => k.parse().unwrap(), None => 10, }; thread::Builder::new() .stack_size(6 * 1024 * 1024 * 1024) .spawn(move || { let z = Val::Imm(0); let p = Val::Imm(1); let n = Val::Imm(-1); println!(\"{}\", a(k, &p, &n, &n, &p, &z)) }) .unwrap() .join() .unwrap(); }\n\nIt generates smaller stack frames compared to the object trait versions. For me it runs up to k=26 in few seconds."
+    }
+}

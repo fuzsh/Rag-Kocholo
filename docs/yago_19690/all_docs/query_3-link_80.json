@@ -1,0 +1,31 @@
+{
+    "id": "yago_19690_3",
+    "rank": 80,
+    "data": {
+        "url": "https://pbr-book.org/4ed/Introduction/Literate_Programming",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Literate Programming",
+        "top_image": "https://pbr-book.org/favicon.ico?v=2",
+        "meta_img": "https://pbr-book.org/favicon.ico?v=2",
+        "images": [
+            "https://pbr-book.org/4ed/pbr.jpg",
+            "https://pbr-book.org/mitpress.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "/favicon.ico?v=2",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "1.1 Literate Programming\n\nWhile creating the TEX typesetting system, Donald Knuth developed a new programming methodology based on a simple but revolutionary idea. To quote Knuth, “let us change our traditional attitude to the construction of programs: Instead of imagining that our main task is to instruct a computer what to do, let us concentrate rather on explaining to human beings what we want a computer to do.” He named this methodology literate programming. This book (including the chapter you are reading now) is a long literate program. This means that in the course of reading this book, you will read the full implementation of the pbrt rendering system, not just a high-level description of it.\n\nLiterate programs are written in a metalanguage that mixes a document formatting language (e.g., TEX or HTML) and a programming language (e.g., C++). Two separate systems process the program: a “weaver” that transforms the literate program into a document suitable for typesetting and a “tangler” that produces source code suitable for compilation. Our literate programming system is homegrown, but it was heavily influenced by Norman Ramsey’s noweb system.\n\nThe literate programming metalanguage provides two important features. The first is the ability to mix prose with source code. This feature puts the description of the program on equal footing with its actual source code, encouraging careful design and documentation. Second, the language provides mechanisms for presenting the program code to the reader in an order that is entirely different from the compiler input. Thus, the program can be described in a logical manner. Each named block of code is called a fragment, and each fragment can refer to other fragments by name.\n\nAs a simple example, consider a function InitGlobals() that is responsible for initializing all of a program’s global variables:\n\nvoid InitGlobals() { nMarbles = 25.7; shoeSize = 13; dielectric = true; }\n\nDespite its brevity, this function is hard to understand without any context. Why, for example, can the variable nMarbles take on floating-point values? Just looking at the code, one would need to search through the entire program to see where each variable is declared and how it is used in order to understand its purpose and the meanings of its legal values. Although this structuring of the system is fine for a compiler, a human reader would much rather see the initialization code for each variable presented separately, near the code that declares and uses the variable.\n\nIn a literate program, one can instead write InitGlobals() like this:\n\nThis defines a fragment, called <<Function Definitions>>, that contains the definition of the InitGlobals() function. The InitGlobals() function itself refers to another fragment, <<Initialize Global Variables>>. Because the initialization fragment has not yet been defined, we do not know anything about this function except that it will presumably contain assignments to global variables. (However, we can peek ahead by clicking on the plus sign on the right side of it; doing so expands out all the fragment’s final code.)\n\nJust having the fragment name is just the right level of abstraction for now, since no variables have been declared yet. When we introduce the global variable shoeSize somewhere later in the program, we can then write\n\nshoeSize = 13;\n\nHere we have started to define the contents of <<Initialize Global Variables>>. When the literate program is tangled into source code for compilation, the literate programming system will substitute the code shoeSize = 13; inside the definition of the InitGlobals() function. The symbol after the equals sign indicates that more code will later be added to this fragment. Clicking on it brings you to where that happens.\n\nLater in the text, we may define another global variable, dielectric, and we can append its initialization to the fragment:\n\ndielectric = true;\n\nThe += symbol after the fragment name shows that we have added to a previously defined fragment. Further, the symbol links back to the previous place where <<Initialize Global Variables>> had code added to it.\n\nWhen tangled, these three fragments turn into the code\n\nvoid InitGlobals() { // Initialize Global Variables shoeSize = 13; dielectric = true; }\n\nIn this way, we can decompose complex functions into logically distinct parts, making them much easier to understand. For example, we can write a complicated function as a series of fragments:\n\nAgain, the contents of each fragment are expanded inline in complexFunc() for compilation. In the document, we can introduce each fragment and its implementation in turn. This decomposition lets us present code a few lines at a time, making it easier to understand. Another advantage of this style of programming is that by separating the function into logical fragments, each with a single and well-delineated purpose, each one can then be written, verified, or read independently. In general, we will try to make each fragment less than 10 lines long.\n\nIn some sense, the literate programming system is just an enhanced macro substitution package tuned to the task of rearranging program source code. This may seem like a trivial change, but in fact literate programming is quite different from other ways of structuring software systems."
+    }
+}
