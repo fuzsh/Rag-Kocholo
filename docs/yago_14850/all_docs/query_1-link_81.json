@@ -1,0 +1,30 @@
+{
+    "id": "yago_14850_1",
+    "rank": 81,
+    "data": {
+        "url": "https://blog.iandavis.com/2005/04/refactoring-bio-with-einstein-part-1-first-steps/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Refactoring Bio With Einstein Part 1: First Steps",
+        "top_image": "http://www.gravatar.com/avatar/09dc91c92d018a094d7ce79b19034252.png",
+        "meta_img": "http://www.gravatar.com/avatar/09dc91c92d018a094d7ce79b19034252.png",
+        "images": [],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Ian Davis"
+        ],
+        "publish_date": "2005-04-06T04:56:08",
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "",
+        "meta_favicon": "/images/apple-touch-icon-152x152.png",
+        "meta_site_name": "Internet Alchemy",
+        "canonical_link": null,
+        "text": "I'm going to try to describe the life of Albert Einstein using the BIO vocabulary. I'm expecting this to be quite difficult but hopefully should understand better where the vocabulary is deficient. I'm keen to examine how ordering of events can be achieved using OWL-Time and I'd like to be able to enhance the BIO vocabulary to make expressing common biographical information easy.\n\nI'm basing this micro-project on the Wikipedia biography of Einstein. That work is licensed under the GNU Free Documentation License and so I'm putting this article and associated RDF data under the same license.\n\nWhy Einstein? I chose Einstein because, being a former phycisist, I have an admiration for him and his theories. He is a popular icon, is the subject of dozens of biographies and, having lived in the modern era, there are photographs and movies that could also be relevant.\n\nThis exercise will use a combination of the BIO, FOAF and OWL-Time vocabularies. I'll use the namespace prefixes bio, foaf and time for these.\n\nMy approach is to follow the Wikipedia article and translate each distinct event into RDF.\n\nAccording to the article introduction, Einstein was born on March 14, 1879. A few paragraphs down is the following:\n\nEinstein was born at Ulm in Württemberg, Germany; about 100 km east of Stuttgart. His parents were Hermann Einstein, a featherbed salesman who later ran an electrochemical works, and Pauline, whose maiden name was Koch. They were married in Stuttgart-Bad Cannstatt. The family was Jewish (and non-observant); Albert attended a Catholic elementary school and, at the insistence of his mother, was given violin lessons.\n\nHere's a skeleton document to start off:\n\nThat's a bit dry. I'm not expressing any of the relationship information from the original article. Here's what it could look like if I used the Relationship vocabulary:\n\nHowever, the problem is that the relationship vocabulary assumes a fixed point in time, whereas the bio vocabulary attempts to express different states across a period of time. Some relationships are immutable throughout time, e.g. childOf, whereas others apply for definite periods, e.g. spouseOf. One interpretation is to assume that the relationships hold for at least some period of time but it is not safe to use them for analysis of time-sensitive data. In other words you can ask \"were these two people ever married\" but you cannot ask \"were the parents of this person married when he was born?\"\n\nIt would be possible to use a modified relationship schema where the domain of the properties is some kind of \"Person At Point In Time\" but that feels unnatural. A better way, in my opinion, is to explicitly represent the marriage as a time interval. I can't use the bio:Marriage class because that represents the actual marriage ceremony, instead I need to use an general Event instance:\n\nIn the BIO vocabulary Event is defined as \"A general event, i.e. something that the person participated in.\" - it can be any episode with a duration. I can also relate this event to Hermann and Pauline's marriage:\n\nThe intMeets property says that the married interval starts directly after the marriage event. I've also associated the event of being married with each person so they are explicitly participating in the event.\n\nI can enrich the structure of the biography by asserting that Albert was born during his parent's marriage. It seems to me that it should be possible to derive this fact, but until I understand more about this I need to state it explicitly can do this on the married interval:\n\nor, equivilently, in the Birth event itself:\n\nThe Wikipedia article mentioned that Albert attended a Catholic elementary school and took violin lessons. I'm going to express those as events:\n\nSo, what have I been able to represent from that single paragraph of biography? I've represented Albert Einstein's date and place of birth; his parent's marriage and the fact that Albert was born during the marriage; Albert attending elementary school and taking violin lessons. Each of the events is related to another event to assist with automatic ordering.\n\nWhat haven't I represented? His father's occupation; his mother's maiden name; the family's faith. I haven't explictly stated that Albert is the son of Hermann and Pauline and their participation in the marriage event isn't strong enough to state that they were actually the couple getting married (other people can participate such as a minister or witnesses). Also the events have no colour - I have dry labels describing the mechanics of the event, but nothing with personality.\n\nI need to be able to annotate events and provide commentary. I need also to be able to resolve the roles of participants in events. I'll be thinking about those issues for part two.\n\nHere's an RDF file that collates what I've done so far."
+    }
+}
