@@ -1,0 +1,28 @@
+{
+    "id": "yago_16308_1",
+    "rank": 33,
+    "data": {
+        "url": "https://solr.apache.org/docs/9_1_0/changes/Changes.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Apache Solr Release Notes",
+        "top_image": "",
+        "meta_img": "",
+        "images": [],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "In solrconfig.xml the <mergePolicy> element is deprecated in favor of a similar <mergePolicyFactory> element, the <mergeFactor> and <maxMergeDocs> elements are also deprecated, please see SOLR-8621 for full details.\n\nTo migrate your existing solrconfig.xml, you can replace elements as follows:\n\n<!-- TieredMergePolicy example --> <!-- deprecated --> <mergeFactor>??</mergeFactor> <mergePolicy class=\"org.apache.lucene.index.TieredMergePolicy\"> <bool name=\"useCompoundFile\">???</bool> <!-- deprecated since Lucene/Solr 4.4.0 --> ... </mergePolicy> <!-- replacement --> <useCompoundFile>???</useCompoundFile> <!-- since Lucene/Solr 4.4.0 --> <mergePolicyFactory class=\"org.apache.solr.index.TieredMergePolicyFactory\"> <int name=\"maxMergeAtOnce\">??</int> <!-- formerly the <mergeFactor> element implicitly set this --> <int name=\"segmentsPerTier\">??</int> <!-- formerly the <mergeFactor> element implicitly set this --> ... </mergePolicyFactory>\n\n<!-- Log(ByteSize|Doc)MergePolicy example --> <!-- deprecated --> <maxMergeDocs>????</maxMergeDocs> <mergeFactor>??</mergeFactor> <mergePolicy class=\"org.apache.lucene.index.Log?MergePolicy\"> <bool name=\"useCompoundFile\">???</bool> <!-- deprecated since Lucene/Solr 4.4.0 --> ... </mergePolicy> <!-- replacement --> <useCompoundFile>???</useCompoundFile> <!-- since Lucene/Solr 4.4.0 --> <mergePolicyFactory class=\"org.apache.solr.index.Log?MergePolicyFactory\"> <int name=\"maxMergeDocs\">????</int> <!-- formerly the <maxMergeDocs> element set this --> <int name=\"mergeFactor\">??</int> <!-- formerly the <mergeFactor> element set this --> ... </mergePolicyFactory>\n\nSOLR-2592: Collection specific document routing. The \"compositeId\" router is the default for collections with hash based routing (i.e. when numShards=N is specified on collection creation). Documents with ids sharing the same domain (prefix) will be routed to the same shard, allowing for efficient querying.\n\nExample: The following two documents will be indexed to the same shard since they share the same domain \"customerB!\".\n\n{\"id\" : \"customerB!doc1\" [...] } {\"id\" : \"customerB!doc2\" [...] }>\n\nAt query time, one can specify a \"shard.keys\" parameter that lists what shards the query should cover. http://.../query?q=my_query&shard.keys=customerB!\n\nCollections that do not specify numShards at collection creation time use custom sharding and default to the \"implicit\" router. Document updates received by a shard will be indexed to that shard, unless a \"_shard_\" parameter or document field names a different shard.\n\n(Michael Garski, Dan Rosher, yonik)"
+    }
+}
