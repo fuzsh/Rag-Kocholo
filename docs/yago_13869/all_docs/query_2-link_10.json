@@ -1,0 +1,36 @@
+{
+    "id": "yago_13869_2",
+    "rank": 10,
+    "data": {
+        "url": "https://askubuntu.com/questions/1345356/files-from-windows-with-unsupported-reparse-point-on-ubuntu",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Files from Windows with 'unsupported reparse point' on ubuntu",
+        "top_image": "https://cdn.sstatic.net/Sites/askubuntu/Img/apple-touch-icon@2.png?v=c492c9229955",
+        "meta_img": "https://cdn.sstatic.net/Sites/askubuntu/Img/apple-touch-icon@2.png?v=c492c9229955",
+        "images": [
+            "https://cdn.sstatic.net/Sites/askubuntu/Img/logo.svg?v=472cf2768bba",
+            "https://i.sstatic.net/xNPjb.png?s=64",
+            "https://www.gravatar.com/avatar/a723e56e4e767b777c523325bec6fdba?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/d4360f092114d4ef40058a088c0e4068?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/TZeYd.jpg?s=64",
+            "https://www.gravatar.com/avatar/5fb3db3694d29c9744dce056d915ddcb?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://askubuntu.com/posts/1345356/ivc/5def?prg=bd72cbca-68c0-4898-9a24-fae4644569d2"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2021-06-12T05:05:56",
+        "summary": "",
+        "meta_description": "I'm trying to pass some files that I have on Windows to a HD. As I lost my Windows user password I'm recovering those files through an Ubuntu usb (20.04 focal). However, some files and folders were",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/askubuntu/Img/favicon.ico?v=928dfb7c1990",
+        "meta_site_name": "Ask Ubuntu",
+        "canonical_link": "https://askubuntu.com/questions/1345356/files-from-windows-with-unsupported-reparse-point-on-ubuntu",
+        "text": "I'm trying to pass some files that I have on Windows to a HD. As I lost my Windows user password I'm recovering those files through an Ubuntu usb (20.04 focal). However, some files and folders were shared with OneDrive. When I copied those files to a HD through Ubuntu they appear as broken symlink and by doing ls -l it appears 'unsupported reparse point'. By searching through the Internet I reached the https://jp-andre.pagesperso-orange.fr/advanced-ntfs-3g.html#download page. However, I'm not Linux savy so I don't know what to do. I have tried doing the given steps:\n\nThen, you have to download systcomp.zip from http://jp-andre.pagesperso-orange.fr/advanced-ntfs-3g.html#download and extract the (binary) plugin which matches the cpu you are using. For instance, for an x86_64 cpu:\n\nunzip -x systcomp.zip systcomp/linux-64/ntfs-plugin-80000017.so Now, (as root), you have to relocate the file\n\nntfs-plugin-80000017.so to the proper ntfs plugin directory. A simple way to find this directory, is to run the command:\n\nstrings $(which ntfs-3g) | grep ntfs-plugin\n\nThis will return something like /usr/lib64/ntfs-3g/ntfs-plugin-%08lx.so which is the pattern to locate the plugin (in this case, the plugin must be renamed as /usr/lib64/ntfs-3g/ntfs-plugin-80000017.so). Your actual plugin directory may be different, and you may have to create the directory.\n\nBy doing strings $(which ntfs-3g) | grep ntfs-plugin I got /usr/lib/x86_64-linux-gnu/ntfs-3g/ntfs-plugin-%08lx.so. I created the directory ntfs-3g at /usr/lib/x86_64-linux-gnu/ and copied ntfs-plugin-80000017.so to this directory. What should I do from this point to get/recover the files that appear 'unsupported reparse point'?\n\nEDIT: I have found more instructions regarding OneDrive\n\ndownload and compile ntfs-3g-2017.3.23AR.1 from http://jp-andre.pagesperso-orange.fr/advanced-ntfs-3g.html#download:\n\ntar -xf ntfs-3g_ntfsprogs-2017.3.23AR.1.tgz cd ntfs-3g_ntfsprogs-2017.3.23AR.1 ./configure make\n\n(do not install, so you will not pollute your current installation)\n\ndownload a test version of plugin for OneDrive:\n\nwget http://jp-andre.pagesperso-orange.fr/onedrive.zip\n\nExtract the plugin matching your CPU, for instance :\n\nunzip -x onedrive.zip onedrive/linux-64/ntfs-plugin-9000301a.so\n\nRelocate the plugin to /usr/local/lib/ntfs-3g (you may have to create this directory)\n\nsudo mv onedrive/linux-64/ntfs-plugin-9000301a.so /usr/local/lib/ntfs-3g\n\nUnmount your Windows directory, and remount it read-only with ntfs-3g_ntfsprogs-2017.3.23AR.1 (from the directory used in step 1):\n\nsudo ntfs-3g_ntfsprogs-2017.3.23AR.1/src/ntfs-3g -o ro /dev/your-windows-partition your-windows-mountpoint\n\nList your OneDrive directory and try to access its contents (you may have to do it as root), and report. When done, unmount and remount the usual way.\n\nI have downloaded the ntfs-3g_ntfsprogs-2017.3.23AR.6.tgz file and onedrive plugin. However, by executing sudo ntfs-3g_ntfsprogs-2017.3.23AR.6/src/ntfs-3g -o ro /dev/sda3 /media/ubuntu it transformed the directory OneDrive/Documents into a broken link that cannot be used as target 'unsupported reparse point 0x9000601a' doesn't exist. How can I solve this?\n\nEDIT 2: I downloaded other onedrive tar, with other plugin. But the problem remained. Apparently the broken files are in the cloud, so\n\nthere is no much hope you could access them through ntfs-3g (Jean-Pierre (jean-pierre-andre) wrote on 2017-12-22:).\n\nI was sure my files were at my local. Is there a way to recover my files? Without knowing my password?\n\nThank you very much"
+    }
+}

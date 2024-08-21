@@ -1,0 +1,50 @@
+{
+    "id": "yago_13869_0",
+    "rank": 43,
+    "data": {
+        "url": "https://groups.google.com/g/cp2k/c/1MSVLN71m14",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Running Cp2k in parallel using thread in a PC",
+        "top_image": "https://www.gstatic.com/images/branding/product/1x/groups_32dp.png",
+        "meta_img": "https://www.gstatic.com/images/branding/product/1x/groups_32dp.png",
+        "images": [
+            "https://fonts.gstatic.com/s/i/productlogos/groups/v9/web-48dp/logo_groups_color_1x_web_48dp.png",
+            "https://lh3.googleusercontent.com/a-/ALV-UjXbY8JypNRMvVg3afYmZebcbqzhYAWy47EDGydVstfmOxNAZ-rm=s40-c",
+            "https://lh3.googleusercontent.com/a-/ALV-UjUydJKnPsJSjo0E5YmorVsX0z5cYulTc6lP_GNq1nAdmJ-Hqw=s40-c",
+            "https://lh3.googleusercontent.com/a-/ALV-UjXbY8JypNRMvVg3afYmZebcbqzhYAWy47EDGydVstfmOxNAZ-rm=s40-c",
+            "https://lh3.googleusercontent.com/a-/ALV-UjUydJKnPsJSjo0E5YmorVsX0z5cYulTc6lP_GNq1nAdmJ-Hqw=s40-c",
+            "https://lh3.googleusercontent.com/a-/ALV-UjXbY8JypNRMvVg3afYmZebcbqzhYAWy47EDGydVstfmOxNAZ-rm=s40-c",
+            "https://lh3.googleusercontent.com/a-/ALV-UjUydJKnPsJSjo0E5YmorVsX0z5cYulTc6lP_GNq1nAdmJ-Hqw=s40-c",
+            "https://lh3.googleusercontent.com/a-/ALV-UjWS-9-xz2O7ZXoW-AGFxkZQ2ybpOr8HPB7wCB-QXvTmAo8M3Sg=s40-c",
+            "https://lh3.googleusercontent.com/a-/ALV-UjUydJKnPsJSjo0E5YmorVsX0z5cYulTc6lP_GNq1nAdmJ-Hqw=s40-c",
+            "https://lh3.googleusercontent.com/a-/ALV-UjWQ0pUmFGQKldUiIiVFz7Kd1hJXRi3nOdIxur3pKy4NzNvYBwZjwA=s40-c",
+            "https://lh3.googleusercontent.com/a-/ALV-UjWS-9-xz2O7ZXoW-AGFxkZQ2ybpOr8HPB7wCB-QXvTmAo8M3Sg=s40-c",
+            "https://lh3.googleusercontent.com/a-/ALV-UjWS-9-xz2O7ZXoW-AGFxkZQ2ybpOr8HPB7wCB-QXvTmAo8M3Sg=s40-c",
+            "https://lh3.googleusercontent.com/a-/ALV-UjUydJKnPsJSjo0E5YmorVsX0z5cYulTc6lP_GNq1nAdmJ-Hqw=s40-c",
+            "https://lh3.googleusercontent.com/a-/ALV-UjWS-9-xz2O7ZXoW-AGFxkZQ2ybpOr8HPB7wCB-QXvTmAo8M3Sg=s40-c",
+            "https://lh3.googleusercontent.com/a-/ALV-UjWS-9-xz2O7ZXoW-AGFxkZQ2ybpOr8HPB7wCB-QXvTmAo8M3Sg=s40-c",
+            "https://lh3.googleusercontent.com/a-/ALV-UjXs9QtfFjn7t_8CJpRw-WoozPJ5Nyo7Nids20fVpxow57-_7Uk=s40-c",
+            "https://lh3.googleusercontent.com/a-/ALV-UjUydJKnPsJSjo0E5YmorVsX0z5cYulTc6lP_GNq1nAdmJ-Hqw=s40-c",
+            "https://lh3.googleusercontent.com/a-/ALV-UjXLQFQAg7eMye7GjHWmhW_TcFR1ITqeeK2_bjuysgfDrJ3E=s40-c",
+            "https://lh3.googleusercontent.com/a-/ALV-UjXs9QtfFjn7t_8CJpRw-WoozPJ5Nyo7Nids20fVpxow57-_7Uk=s40-c",
+            "https://lh3.googleusercontent.com/a-/ALV-UjUa-XIFUlMu96zaKHpG2SM-km_QakUqGyyy0dTGa2FQaVqHBSL7=s40-c",
+            "https://lh3.googleusercontent.com/a-/ALV-UjWflfrAG0Zu5kdaP9i7efqLSrmWfeoLWArwF5rDzuHQoUsmeA=s40-c"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "//www.gstatic.com/images/branding/product/1x/groups_32dp.png",
+        "meta_site_name": "",
+        "canonical_link": "https://groups.google.com/g/cp2k/c/1MSVLN71m14",
+        "text": "Hi Matthew,\n\nUnfortunately, there’s no single way to determine the best MPI/OpenMP load. It is system, calculation type, and hardware dependant. I recommend testing the performance. The first thing you could try is check if your CPUs are multithreaded. For example, if they are made of 34 cores and 2 virtual cores per physical core (68 virtual cores in total), you could try OMP_NUM_THREADS=2 and keep your mpirun -np (34*#nodes).\n\nRoughly speaking, MPI creates multiple replica of the calculation (called process), each replica dealing with part of the calculation. CP2K is efficiently parallelized with MPI. OpenMP generated multiple threads on the fly, generally to parallelize a loop. OpenMP can be used in a MPI thread but not the other way around. Typically, having more MPI processed consumes more memory than the same number of OpenMP threads. To use multiple nodes, MPI is mandatory and more efficient. These are generalities and, again, combining both is best but the ideal ratio varies. Testing is the best course of action, check which combination yields the largest number of ps/day with the minimum hardware resources. Doubling the hardware does not double the output, so increasing the number of nodes becomes a waste of resources at some point. A rule of thumb, if the increase in output is less than 75-80% of the ideal case, then, it is not worth it.\n\nAs you can see, there is a lot of try and error, no systematic rule I am afraid.\n\nRegards,\n\nPierre"
+    }
+}
