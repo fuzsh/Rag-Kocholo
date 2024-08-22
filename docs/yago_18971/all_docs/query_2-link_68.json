@@ -1,0 +1,36 @@
+{
+    "id": "yago_18971_2",
+    "rank": 68,
+    "data": {
+        "url": "https://devforum.roblox.com/t/how-to-fire-a-projectile-towards-mouse-in-first-person/2389913",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How to fire a projectile towards mouse in first person?",
+        "top_image": "https://devforum-uploads.s3.dualstack.us-east-2.amazonaws.com/uploads/original/5X/7/1/0/e/710ebeb5021c9798aaaf2a8a65dcea4b4c311caa.jpeg",
+        "meta_img": "https://devforum-uploads.s3.dualstack.us-east-2.amazonaws.com/uploads/original/5X/7/1/0/e/710ebeb5021c9798aaaf2a8a65dcea4b4c311caa.jpeg",
+        "images": [
+            "https://doy2mn9upadnk.cloudfront.net/images/emoji/twitter/expressionless.png?v=12"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "scripting",
+            "help"
+        ],
+        "tags": null,
+        "authors": [
+            "Puppy_lovertheawsome (DapperDuck)",
+            "Dev_Peashie (Dev_Peashie)",
+            "Vanniris (Vanni)",
+            "system (system) Closed"
+        ],
+        "publish_date": "2023-05-22T05:54:08+00:00",
+        "summary": "",
+        "meta_description": "Hello! Today I am here to ask about something I have been thinking about for my game. I am making a game with slingshots and I need to create a script for firing the “Pellets”. Can somebody please explain how this is don&hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://devforum-uploads.s3.dualstack.us-east-2.amazonaws.com/uploads/optimized/5X/b/3/d/0/b3d0a9f2fe866b16e020240b5703a04757781377_2_32x32.png",
+        "meta_site_name": "Developer Forum | Roblox",
+        "canonical_link": "https://devforum.roblox.com/t/how-to-fire-a-projectile-towards-mouse-in-first-person/2389913",
+        "text": "Hello! Today I am here to ask about something I have been thinking about for my game. I am making a game with slingshots and I need to create a script for firing the “Pellets”. Can somebody please explain how this is done? Here’s my 2 scripts so far:\n\nLocal script\n\nlocal Mouse = game.Players.LocalPlayer:GetMouse() local RE = script.Parent:WaitForChild(\"ClassicFire\") Mouse.Button1Down:Connect(function() RE:FireServer(Mouse.Hit.Position) end)\n\nServer Script\n\nlocal Slingshot = script.Parent.Parent local Handle = Slingshot.Handle local Equipped = false local Pellet = game.ServerStorage.Pellets.ClassicPellet local RE = script.Parent:WaitForChild(\"ClassicFire\") local debounce = false Slingshot.Equipped:Connect(function() Equipped = true end) Slingshot.Unequipped:Connect(function() Equipped = false end) local function OnFire(player, MousePos) if Equipped == true then if debounce == false then debounce = true local ClonedPellet = Pellet:Clone() --stuck here end end end RE.OnServerEvent:Connect(OnFire())\n\nThere are probably so many problems with this already… Thanks for reading! (P.S: I know I am messy )\n\nIn first person the mouse is locked to the center of screen by default, you changed that? If you didnt you can use the Camera LookVector.\n\nIf in your game mouse is not locked and can be moved while in first person, then you can get the direction where the mouse is relative to the camera with this\n\nlocal player = game.Players.LocalPlayer local mouse = player:GetMouse() local lookVector = mouse.UnitRay.Direction\n\nIt uses the Camera origin (which is centered) and it consider where the mouse is positioned to get the direction line for a projectile to go into that direction. Im bad at explaining… heres the docu\n\nOk, I just read through your response and I understand it mostly. How could I then send the projectile in that direction?\n\nHow you wanna move the pellet? by using Physics? by changing the CFrame? Tweening?\n\nIts an actual model/part? I had to search for the word “pellet” sorry english is not my native language… xD It just says its a “bolita”… and I dont quite get it\n\nIf you want to move it by using the physics, go for MoversConstraints or BodyMovers\n\n:ApplyImpulse() will be your friend. Physics is always better for this.\n\nSolved! I just followed a yt tutorial! I need to go so I won’t share the link sorry just search up “How to make gun in roblox studio” on youtube!\n\nThis topic was automatically closed 14 days after the last reply. New replies are no longer allowed."
+    }
+}
