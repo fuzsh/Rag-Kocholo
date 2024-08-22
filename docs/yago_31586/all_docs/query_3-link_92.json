@@ -1,0 +1,36 @@
+{
+    "id": "yago_31586_3",
+    "rank": 92,
+    "data": {
+        "url": "https://softwareengineering.stackexchange.com/questions/126900/in-knuths-mmix-how-can-x-be-an-octabyte-64-bits-and-mx-be-a-byte-8-bits",
+        "read_more_link": "",
+        "language": "en",
+        "title": "In Knuth's MMIX, how can x be an octabyte (64 bits) and M[x] be a byte (8 bits)?",
+        "top_image": "https://cdn.sstatic.net/Sites/softwareengineering/Img/apple-touch-icon@2.png?v=1ef7363febba",
+        "meta_img": "https://cdn.sstatic.net/Sites/softwareengineering/Img/apple-touch-icon@2.png?v=1ef7363febba",
+        "images": [
+            "https://cdn.sstatic.net/Sites/softwareengineering/Img/logo.svg?v=e86f7d5306ae",
+            "https://www.gravatar.com/avatar/d6db99aa846a8217f7e2aba6fa198e7c?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/b05d97290df7355d05abf19e1b8481ec?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/fbf2421aadfca785f0c591afe75197f1?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/9b3c7141bc664a469b965b3fb0552363?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/Expqb.jpg?s=64",
+            "https://softwareengineering.stackexchange.com/posts/126900/ivc/cc5e?prg=c444668e-9f5e-44cf-9c03-1adaf611a4ac"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2011-12-24T13:09:37",
+        "summary": "",
+        "meta_description": "In Knuth's Fascicle 1 on MMIX, the \"Memory and Registers\" section on page 4 states:\n\n\"thus if x is any octabyte, M[x] is a byte of memory.\"\n\nand\n\n\"thus if x is any byte, $x is an octabyte.\"\n\nHow ca...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/softwareengineering/Img/favicon.ico?v=c4f35a1e3900",
+        "meta_site_name": "Software Engineering Stack Exchange",
+        "canonical_link": "https://softwareengineering.stackexchange.com/questions/126900/in-knuths-mmix-how-can-x-be-an-octabyte-64-bits-and-mx-be-a-byte-8-bits",
+        "text": "MMIX is a notional 64-bit computer, so its address bus has 64 lines and it can be fitted with up to 2^64 memory cells. Each of these cells, however, holds 1 byte (8 bits) and not 64 bits, therefore you have 2^64 bytes (not octobytes) of RAM. (It is customary to measure RAM in bytes and not in double-, quad- or octo-bytes even when the architecture has more than 8 bits. It is also convenient to retrieve individual bytes from memory because many algorithms require only small numbers in many places. In practice, processor caches obscure this distinction anyway.)\n\nThe registers, however, are full 64-bit registers, therefore $x is an octobyte, not just a byte. Again, this is a convention for processor architecture rather than a fixed law, but most architectures that claim to be X-bit (for an impressively large value of X) also sport X-bit registers, so that when you do want to load X bits from memory simultaneously, you can receive them in just one register without spilling.\n\nBecause “plain ol’” memory addresses address bytes. Notice, though, that if you are addressing more than one byte of memory multiple memory addresses point to the same thing.\n\nTo be sure, there are 2^(64) bytes of memory, 2^(63) wydes, 2^(62) tetrabytes, and 2^(61) octabytes. You basically end up with 3 ignored bits when addressing octabytes.\n\nIn other words, if f(x) is a function from an address x to its memory cell (think of *x in C), f(x) isn’t bijective; moreover, f(x) is only a binary operation when you’re addressing octabytes (i.e., for x in X f(f(x) is in X too).\n\nYou can think of it like pointers to int, double, etc.\n\nNice to see people reading about MMIX!\n\nThere are two separate notations defined here.\n\nThis defines the \"M[x]\" notation where x is an address - addresses are 8 bytes (octabytes):\n\n\"The cells of memory are called M[0], M[1], ..., M[264 - 1]; thus if x is any octabyte, M[x] is a byte of memory\"\n\nM[x] is shorthand for M1[x] - it refers to the single byte at address x. Similarly M2[x] refers to 2 bytes associated with address x. And M4[x] is 4 bytes, M8[x] is 8 bytes of memory.\n\nIt gets interesting with M2[x], M4[x], M8[x] because \"Mt[x]\" is an aligned reference to memory. So M4[x] is not 4 bytes starting at address x. Rather it is the 4 bytes at 4-byte-aligned x.\n\nSuppose addresses 1000-1007 contain hex: 01 23 45 67 89 ab cd ef. Then M4[1002] is not 45 67 89 ab. Instead it is 01 23 45 67 because 1002 aligned to 4 bytes is address 1000. So M4[1000] = M4[1001] = M4[1002] = M4[1003].\n\nThe second notation is \"$x\" where x is a register number. MMIX has 256 registers numbered 0-255. Each register is 64-bits wide. So any register number fits in one byte. And $x - the content of register x - is one octabyte.\n\n\"The general-purpose registers are called $0, $1, ..., $255; thus if x is any byte, $x is an octabyte\"\n\nYou just need to realize \"x\" in the two notations mean different things - the confusion may come from them being defined next to each other."
+    }
+}

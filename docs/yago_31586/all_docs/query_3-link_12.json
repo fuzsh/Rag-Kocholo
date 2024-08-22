@@ -1,0 +1,32 @@
+{
+    "id": "yago_31586_3",
+    "rank": 12,
+    "data": {
+        "url": "https://mmix.cs.hm.edu/doc/instructions/gijmp.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "MMIX Instruction Set",
+        "top_image": "https://mmix.cs.hm.edu/favicon-32x32.png",
+        "meta_img": "https://mmix.cs.hm.edu/favicon-32x32.png",
+        "images": [
+            "https://mmix.cs.hm.edu/mmix200.png",
+            "https://mmix.cs.hm.edu/TOCButton.png",
+            "https://mmix.cs.hm.edu/email.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "",
+        "meta_favicon": "/apple-touch-icon-57x57.png",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "MMIX ordinarily executes instructions in sequence, proceeding from an instruction in tetrabyte M4 [λ] to the instruction in M4 [λ + 4]. But there are several ways to interrupt the normal flow of control, most of which use the Y and Z fields of an instruction as a combined 16-bit YZ field. For example, BNZ $3,@+4000 (branch if nonzero) is typical: It means that control should skip ahead 1000 instructions to the command that appears 4000 bytes after the BNZ, if register 3 is not equal to zero. There are eight branch-forward instructions, corresponding to the eight conditions in the CS and ZS commands that we discussed earlier. And there are eight similar branch-backward instructions; for example, BOD $2,@-4000 (branch if odd) takes control to the instruction that appears 4000 bytes before this BOD command, if register 2 is odd. The numeric OP-code when branching backward is one greater than the OP-code when branching forward; the assembler takes care of this automatically, just as it takes cares of changing ADD from 32 to 33 when necessary. Since branches are relative to the current location, the MMIX assembler treats branch instructions in a special way. Suppose a programmer writes \"BNZ $3,Case5\", where Case5 is the address of an instruction in location l. If this instruction appears in location λ, the assembler first computes the displacement σ = b (l - λ) / 4c. Then if σ is nonnegative, the quantity σ is placed in the YZ field of a BNZ command, and it should be less than 216; if σ is negative, the quantity 216 + σ is placed in the YZ field of a BNZ command with OP-code increased by 1, and σ should not be less than -216. The symbol @ used in our examples of BNZ and BOD above is interpreted by the assembler as an abbreviation for \"the location of the current instruction.\" In the following notes we will define pairs of branch commands by writing, for example, \"BNZ $X,@+4*YZ [-262144]\"; this stands for a branch-forward command that branches to the current location plus four times YZ, as well as for a branch-backward command that branches to the current location plus four times (YZ - 65536). - BN $X,@+4*YZ [-262144] \"branch if negative\". - BZ $X,@+4*YZ [-262144] \"branch if zero\". - BP $X,@+4*YZ [-262144] \"branch if positive\". - BOD $X,@+4*YZ [-262144] \"branch if odd\". - BNN $X,@+4*YZ [-262144] \"branch if nonnegative\". - BNZ $X,@+4*YZ [-262144] \"branch if nonzero\". - BNP $X,@+4*YZ [-262144] \"branch if nonpositive\". - BEV $X,@+4*YZ [-262144] \"branch if even\". If register $X is respectively negative, zero, positive, odd, nonnegative, nonzero, nonpositive, or even, and if this instruction appears in memory location λ, the next instruction is taken from memory location λ + 4YZ (branching forward) or λ + 4(YZ - 216) (branching backward). Thus one can go from location λ to any location between λ - 262,144 and λ + 262,140, inclusive. Sixteen additional branch instructions called probable branches are also provided. They have exactly the same meaning as ordinary branch instructions; for example, PBOD $2,@-4000 and BOD $2,@-4000 both go backward 4000 bytes if register 2 is odd. But they differ in running time: On some implementations of MMIX, a branch instruction takes longer when the branch is taken, while a probable branch takes longer when the branch is not taken. Thus programmers should use a B instruction when they think branching is relatively unlikely, but they should use PB when they expect branching to occur more often than not. Here is a list of the probable branch commands, for completeness: - PBN $X,@+4*YZ [-262144] \"probable branch if negative\". - PBZ $X,@+4*YZ [-262144] \"probable branch if zero\". - PBP $X,@+4*YZ [-262144] \"probable branch if positive\". - PBOD $X,@+4*YZ [-262144] \"probable branch if odd\". - PBNN $X,@+4*YZ [-262144] \"probable branch if nonnegative\". - PBNZ $X,@+4*YZ [-262144] \"probable branch if nonzero\". - PBNP $X,@+4*YZ [-262144] \"probable branch if nonpositive\". - PBEV $X,@+4*YZ [-262144] \"probable branch if even\"."
+    }
+}

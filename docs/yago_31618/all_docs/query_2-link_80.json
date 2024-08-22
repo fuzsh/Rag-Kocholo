@@ -1,0 +1,39 @@
+{
+    "id": "yago_31618_2",
+    "rank": 80,
+    "data": {
+        "url": "https://stackoverflow.com/questions/925409/why-was-matlab-written-in-c-instead-of-fortran",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Why was Matlab written in C instead of Fortran?",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/dc3ab16e835bc43631591ae68dfad659?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/5frum.jpg?s=64",
+            "https://www.gravatar.com/avatar/dd14249e07e1f1d6a949bffa569377ad?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/a0b76a96bc18dfe728fa8774ed32d321?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/wO0su.jpg?s=64",
+            "https://www.gravatar.com/avatar/7e01724270741126f0d814d028078dff?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/2b89f41991fe258a40d7b6f2e5f65a31?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/00aa1356e6f90fca08b36fb3c8d230c5?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/0c23337319aa293d0fe8e0d9ec7ed7aa?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/925409/ivc/cc5e?prg=51d24029-b1c7-44ff-b5e4-1222fa96382c"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2009-05-29T10:47:44",
+        "summary": "",
+        "meta_description": "As you may know, Fortran is a language for scientific computing. however, the kernel of the most famous high level language for scientific computing has been written in C instead of Fortran. Why?",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/925409/why-was-matlab-written-in-c-instead-of-fortran",
+        "text": "To answer your original question: Matlab was originally written in Fortran. But one of the first things that the creator of Matlab, Cleve Moler, and his partner did in 1983 was to rewrite the entire Matlab app in C:\n\nJack Little left his job at the consulting company and bought a new COMPAQ portable computer at Sears. The machine had only 256 KB of memory and no hard disc; Jack had to swap 5-1/4-inch floppies to compile programs. Jack and Steve took a year and a half to re- write MATLAB in C, adding new features they had envi- sioned. (The Growth of MATLAB and The MathWorks over Two Decades)\n\nI think a more relevant question for today would be to ask: why did they switch to C back in 1983 ?\n\nMy guess is that C probably had certain features that Fortran did not have and thus the switch was more out of necessity and in the interest of code maintainability.\n\nOne killer feature missing in Fortran77 was dynamic memory allocation (Dynamic memory allocation was only added in Fortran90). Getting around that single limitation would be a horrible deal breaker in my opinion.\n\nEDIT:\n\ndmckee's answer has a great explanation of why using Fortran77 would be painful.\n\nMy understanding is that Matlab is written in a hodge-podge of languages, including but not limited to C, FORTRAN, Java, and Matlab itself.\n\nI believe it employs best-of-breed libraries behind the scenes, including LAPACK (FORTRAN), FFTW (C) and probably many more.\n\nI think the original version was pure FORTRAN, but as it became more polished and commercial they weren't shy about using the right language for each component. I don't blame them--I'd hate to write a parser or a GUI in FORTRAN!\n\nI want to qualify this answer with the following statement - I know nothing about Fortran or Matlab\n\nHowever i think you almost answer your own question in your question.\n\nWhy would you not use a scientific language to write a kernel. You would use the most appropriate language for the task at hand. A kernel would be best written in C as it is better suited to working with low level tasks like kernels (working with memory management etc)\n\nA Kernel is not a scientific application therefore you wouldn't use a scientific language.\n\nAgain, i may be completely off the mark but i think that is a highly logical answer.\n\nMatlab was originally written in Fortran, it was more a less a wrapper for a bunch of Fortran routines. So the question is why rewrite it in c? In fact why did Fortran lose out to c and other languages that weren't really suited to numerical computing. The answer is Fortran suffered badly from politics. For various reasons the standard committee could decide on a replacement for Fortran 77. So, by the time Fortran 90 eventually came out Fortran had lost a lot of ground to other languages. This situation has now been corrected. Fortran 2003, which is more or less implemented in the gnu compiler, is a nice language its well suited to numeric and in addition has dynamic allocation fast io and OO ish constructs polymorphism derived type etc. (Fortran 2008 will be even better)\n\nModern Fortran isn't designed to write gui interfaces but it is designed to call and be called from C and other languages. So if the matlab exercise was repeated today its quite possible that the numeric bits would be written in Fortran and the user interface in something else."
+    }
+}

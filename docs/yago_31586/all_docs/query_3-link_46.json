@@ -1,0 +1,28 @@
+{
+    "id": "yago_31586_3",
+    "rank": 46,
+    "data": {
+        "url": "https://github.com/mbxt/mmixal-fmt",
+        "read_more_link": "",
+        "language": "en",
+        "title": "format tool for MMIX Assembly Language, written in MMIXAL.",
+        "top_image": "https://opengraph.githubassets.com/c6aca6ef9b00b4032019c9c86de2208eb237d665e0f6f67a321e3955fbe3473b/mbxt/mmixal-fmt",
+        "meta_img": "https://opengraph.githubassets.com/c6aca6ef9b00b4032019c9c86de2208eb237d665e0f6f67a321e3955fbe3473b/mbxt/mmixal-fmt",
+        "images": [],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "A basic auto-format tool for MMIX Assembly Language, written in MMIXAL. - mbxt/mmixal-fmt",
+        "meta_lang": "en",
+        "meta_favicon": "https://github.com/fluidicon.png",
+        "meta_site_name": "GitHub",
+        "canonical_link": "https://github.com/mbxt/mmixal-fmt",
+        "text": "This tool handles basic automatic formatting of MMIXAL files (.mms), including:\n\nAligning label, opcode, operand, and remark fields.\n\nConverting opcodes to uppercase.\n\nRemoving trailing whitespace.\n\nThe idea is to turn a lazily written code like\n\ninto\n\nAn instruction's fields are as follows:\n\nThe number of columns preceding the label, opcode, operands, and remark fields are, respectively: 0,12,20,40. This gives an appearance similar to most example code in \"The Art of Computer Programming,\" but fields are aligned to multiples of four to make life easier for folks who use four space tab indents. This can of course be adjusted by changing the Fields in \"fmt.mms\" and reassembling the program. (Note: having a field width of 12 for the first field allows for longer, less restrictive label names, such as :StackRoom.)\n\nTrailing whitespace is removed from all lines, even when the program gives up trying to format a line (as in the case of string literals in the operand field).\n\nThe MMIX compiler and simulator--\"mmixal\" and \"mmix\", respectively--can be found on the MMIX website.\n\nThe program can be run through the assembler with the command mmixal fmt.mms, which generates the \"fmt.mmo\" object file. This in turn can be run by the simulator with the command mmix fmt.mmo, which formats each line of standard input.\n\nA file can be routed standard input with the MMIX simulator by using the -f<filename> flag. For example, echo the formatted result of some \"myfile.mms\", we could invoke mmix -fmyfile.mms fmt.mmo. (The resulting text would be printed to standard output.)\n\nUnfortunately, we can't directly use that output to replace the input file (e.g., \"myfile.mms\"). We can, however, use a temporary file, along with some common existing command line utilities. Thus, if we want to shore up the formatting on \"myfile.mms\", we could run the following chain of commands:\n\nmmix -fmyfile.mms fmt.mmo > temp.mms && cat temp.mms > myfile.mms\n\nNote: I have elected not to include the assembler and simulator programs in the repo. It's simple enough to download these programs directly from the MMIX site.\n\nThe MMIX is a hypothetical machine designed by Donald Knuth for his book series, \"The Art of Computer Programming,\" published by Addison-Wesley. It is an idealized RISC-based architecture meant to be fun to work with while demonstrating how algorithms (the subject of the book series) work at the machine level. MMIXAL is the assembly language for the MMIX machine.\n\nA source file (.mms) written in MMIXAL gets converted into an object file (.mmo) by the assembler (the \"mmixal\" program). The resulting object file can be run on the simulator (the \"mmix\" program), which gets wired up to standard input and output.\n\nMore information on MMIX can be found on the MMIX website.\n\nUnfortunately, using a single-quoted literal space character in the operand field aligns the trailing single quote to the remark field, as follows:\n\nThis has to do with a simplification in how the formatter distinguishes fields (i.e., by any whitespace). Thus, it is advisable to use a #20 in place of the literal space character.\n\nIt is, however, permissible to use a ' ' space literal (with the single quotes) in the remark field, as no further field alignment occurs after the beginning of the remark field."
+    }
+}

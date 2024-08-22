@@ -1,0 +1,32 @@
+{
+    "id": "yago_31618_1",
+    "rank": 38,
+    "data": {
+        "url": "https://scicomp.stackexchange.com/questions/25114/pagerank-using-inverse-iteration-method-by-cleve-moler",
+        "read_more_link": "",
+        "language": "en",
+        "title": "PageRank using Inverse Iteration Method by Cleve Moler",
+        "top_image": "https://cdn.sstatic.net/Sites/scicomp/Img/apple-touch-icon@2.png?v=935a34102365",
+        "meta_img": "https://cdn.sstatic.net/Sites/scicomp/Img/apple-touch-icon@2.png?v=935a34102365",
+        "images": [
+            "https://i.sstatic.net/KhNJc.png",
+            "https://www.gravatar.com/avatar/0b23ff8634fe942841dab311e4a4590b?s=64&d=identicon&r=PG",
+            "https://scicomp.stackexchange.com/posts/25114/ivc/cc5e?prg=a7281293-0034-4102-8060-28532d45a60a"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2016-10-04T12:25:05",
+        "summary": "",
+        "meta_description": "I was trying to understand how to use the inverse interation method to compute the page rank as an exercise.\n\nIn this chapter (page 4) about page rank (by Cleve Moler), the author suggests to use the",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/scicomp/Img/favicon.ico?v=1ab388836ba8",
+        "meta_site_name": "Computational Science Stack Exchange",
+        "canonical_link": "https://scicomp.stackexchange.com/questions/25114/pagerank-using-inverse-iteration-method-by-cleve-moler",
+        "text": "The MATLAB code that you've computed finds the eigenvector of $A$ associated with the eigenvalue 1. We know for this particular problem that $A$ has 1 as an eigenvalue- this can be shown using the Perron-Frobenius Theorem. This code isn't using the inverse iteration algorithm.\n\nThe inverse iteration algorithm can be used to find an eigenvalue and corresponding eigenvector of $A$ starting with a value of $\\alpha$ that is close to an eigenvalue. The algorithm could be used starting with $\\alpha=1$ to compute the eigenvector of $A$ associated with the eigenvalue 1. However, this is overkill since we already know that the eigenvalue is exactly 1.\n\nYou can easily implement the inverse iteration and start it with $\\alpha=1$ to verify this.\n\nI haven't found all answers to my questions, but in the meantime I found some answers to a few questions.\n\nWhy are we using delta in A = p*G*D + delta?\n\ndelta = $\\delta = \\frac{1 - p}{n}$, as defined in page 2 of C. Moler's article, is the probability that a particular random page is chosen. Note that $1 - p$ is the probability that some arbitrary page is chosen and $p$ is the probability that a random walk from a user follows a specific link.\n\nWhy would this be helpful to answer my question?\n\nIt's helpful because we're defining A we're assuming that there are always outlinks.\n\nWhy is that the case?\n\nIn the same paper, $A$ is defined for the power method as $A = pGD + ez^T$, which is very similar to the formula for the inverse iteration, but we use $ez^T$ instead of delta.\n\n$$ z^T= \\begin{cases} \\delta = \\frac{1 - p}{n}, \\text{ if } c_j \\neq 0 \\\\ \\frac{1}{n}, \\text{ if } c_j = 0 \\end{cases} $$\n\nSo, as we can see from the definition of $z$, by using just $\\delta$ in the inverse iteration method I assume that we're assuming that all nodes have an outgoing link or, equivalently, $c_j \\neq 0$. Note that $n$ is the number of nodes in the graph.\n\nAgain in this chapter (page 4) about page rank (by Cleve Moler), the author says (after those statements above) that (I - A) is theoretically singular. Why is that? ...\n\nWe want to solve the equation $Ax = x$. We know that our sought eigenvalue is $1$, and this is why we're omitting $\\lambda$ in $Ax = \\lambda x$. Given this, we can manipulate the equation as follows\n\n\\begin{align*} Ax &= x \\\\ Ax &= Ix \\\\ Ax - Ix &= \\vec{0} \\\\ (A - I)x &= \\vec{0} \\end{align*}\n\nNow, from the beginning, we're actually assuming $x$ is not the zero vector because it represents the state vector or PageRank vector. Hence, knowing that $x$ can't be $\\vec{0}$, we conclude that $(A - I)$ has a non-trivial null-space (or kernel) or, equivalently, $(A - I)$ is singular, or has determinant zero, or $(A - I)$ is not invertible.\n\n... And how could we avoid it?\n\nIt's explained in page $4$ of the previously mentioned article. Apparently, using Guassian elimination (i.e. \\ operator in Matlab, which is a robust operation that takes into account many possibilities regarding the operands), roundoff errors seem to make $(A - I)$ not singular and the computation not fail. From the article:\n\nBecause $I − A$ is theoretically singular, with exact computation some diagonal element of the upper triangular factor of $I − A$ should be zero and this computation should fail.\n\nBut with roundoff error, the computed matrix $I - A$ is probably not exactly singular. Even if it is singular, roundoff during Gaussian elimination will most likely prevent any exact zero diagonal elements.\n\nWe know that Gaussian elimination with partial pivoting always produces a solution with a small residual, relative to the computed solution, even if the matrix is badly conditioned.\n\nThe vector obtained with the backslash operation, (I - A)\\e, usually has very large components. If it is rescaled by its sum, the residual is scaled by the same factor and becomes very small.\n\nConsequently, the two vectors $x$ and $A*x$ equal each other to within roundoff error.\n\nIn this setting, solving the singular system with Gaussian elimination blows up, but it blows up in exactly the right direction.\n\nNote\n\nQuestions still not answered\n\nMain question\n\nMinor question number 2"
+    }
+}

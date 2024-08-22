@@ -1,0 +1,28 @@
+{
+    "id": "yago_31586_2",
+    "rank": 63,
+    "data": {
+        "url": "http://www.staroceans.org/e-book/binutils/gas/MMIX_002dOpts.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Using as: MMIX",
+        "top_image": "",
+        "meta_img": "",
+        "images": [],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "Using as: MMIX-Opts"
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "Using as: MMIX-Opts",
+        "meta_lang": "",
+        "meta_favicon": "",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "9.28.1 Command-line Options\n\nThe MMIX version of as has some machine-dependent options.\n\nWhen ‘--fixed-special-register-names’ is specified, only the register names specified in MMIX-Regs are recognized in the instructions PUT and GET.\n\nYou can use the ‘--globalize-symbols’ to make all symbols global. This option is useful when splitting up a mmixal program into several files.\n\nThe ‘--gnu-syntax’ turns off most syntax compatibility with mmixal. Its usability is currently doubtful.\n\nThe ‘--relax’ option is not fully supported, but will eventually make the object file prepared for linker relaxation.\n\nIf you want to avoid inadvertently calling a predefined symbol and would rather get an error, for example when using as with a compiler or other machine-generated code, specify ‘--no-predefined-syms’. This turns off built-in predefined definitions of all such symbols, including rounding-mode symbols, segment symbols, ‘BIT’ symbols, and TRAP symbols used in mmix “system calls”. It also turns off predefined special-register names, except when used in PUT and GET instructions.\n\nBy default, some instructions are expanded to fit the size of the operand or an external symbol (see MMIX-Expand). By passing ‘--no-expand’, no such expansion will be done, instead causing errors at link time if the operand does not fit.\n\nThe mmixal documentation (see mmixsite) specifies that global registers allocated with the ‘GREG’ directive (see MMIX-greg) and initialized to the same non-zero value, will refer to the same global register. This isn’t strictly enforceable in as since the final addresses aren’t known until link-time, but it will do an effort unless the ‘--no-merge-gregs’ option is specified. (Register merging isn’t yet implemented in ld.)\n\nas will warn every time it expands an instruction to fit an operand unless the option ‘-x’ is specified. It is believed that this behaviour is more useful than just mimicking mmixal’s behaviour, in which instructions are only expanded if the ‘-x’ option is specified, and assembly fails otherwise, when an instruction needs to be expanded. It needs to be kept in mind that mmixal is both an assembler and linker, while as will expand instructions that at link stage can be contracted. (Though linker relaxation isn’t yet implemented in ld.) The option ‘-x’ also imples ‘--linker-allocated-gregs’.\n\nIf instruction expansion is enabled, as can expand a ‘PUSHJ’ instruction into a series of instructions. The shortest expansion is to not expand it, but just mark the call as redirectable to a stub, which ld creates at link-time, but only if the original ‘PUSHJ’ instruction is found not to reach the target. The stub consists of the necessary instructions to form a jump to the target. This happens if as can assert that the ‘PUSHJ’ instruction can reach such a stub. The option ‘--no-pushj-stubs’ disables this shorter expansion, and the longer series of instructions is then created at assembly-time. The option ‘--no-stubs’ is a synonym, intended for compatibility with future releases, where generation of stubs for other instructions may be implemented."
+    }
+}
