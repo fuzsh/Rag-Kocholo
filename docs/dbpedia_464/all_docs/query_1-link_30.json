@@ -1,0 +1,35 @@
+{
+    "id": "dbpedia_464_1",
+    "rank": 30,
+    "data": {
+        "url": "https://stackoverflow.com/questions/26557711/the-c-language-and-mac-osx",
+        "read_more_link": "",
+        "language": "en",
+        "title": "The C language and Mac OSX",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://i.sstatic.net/YGcat.jpg?s=64",
+            "https://www.gravatar.com/avatar/be9a29feff8e4dfde8930cab7567b2b8?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/NfQmo.png?s=64",
+            "https://i.sstatic.net/EYCk7.png?s=64",
+            "https://stackoverflow.com/posts/26557711/ivc/c2c8?prg=49cc6a19-e4eb-4162-9c30-f86283c39503",
+            "https://stackoverflow.com/js-false.gif"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2014-10-24T23:29:19",
+        "summary": "",
+        "meta_description": "I was wondering whether anybody here could help me better understand the relationship between OSX and C. There's some developer information related to C++ in xcode but nothing for C.  \n\nI believe one",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/26557711/the-c-language-and-mac-osx",
+        "text": "It seems that you're asking whether the functionality that OSX provides to you as a programmer is partially different from other *nix systems; focusing on the functionality that OSX's implementation of the C Standard Library provides you with.\n\nNow keep in mind that while the C Standard Library is a very common way to take advantage of the functionality the operating system kernel exposes, it's not the only way. You can use other low-level libraries, or write low-level functions yourself.\n\nHaving said that, consider the following:\n\nOSX, like many other *nix systems, is \"mostly POSIX-compliant\". Meaning that its particular C Standard Library implementation will likely expose headers defined by the POSIX standard. This is the stuff you can rely on regardless of whether you use libc, glibc, or some other implementation of the C Standard Library.\n\nDepending on the particular C Standard Library you're using, it might come with additional functionality, like BSD libc - we say \"superset of the POSIX Standard Library\" to that. While it can contain implementations of things specific to BSD (and therefore OSX), it mostly seems to contain things that can be implemented regardless of the operating system flavour. For example, the sys/tree.h header that you mention is \"an implementation of Red-black tree and Splay tree\" - by no means something that couldn't have been implemented on a Linux system!\n\nTo sum up:\n\nOSX comes with an implementation of the C Standard Library called BSD libc that provides some additional headers on top of what the POSIX Standard defines.\n\nThe difference in functionality between the XNU kernel used by OSX and other *nix kernels will not necessarily be captured in the difference between the C Standard Library implementations. If you want to know what the XNU kernel can do for you that the Linux kernel can't, the place to start is with the kernels themselves.\n\nSo your question can be split into:\n\nWhat is the difference between glibc and BSD libc?\n\nand\n\nWhat is the difference between the XNU kernel and the Linux kernel?\n\nIt's a bit unclear what you're asking.\n\nOS X is based on top of FreeBSD, a POSIX-compliant UNIX operating system. The relationship between OS X and C is that C is one of many programming languages that you can code in to develop for the platform (C is the core of Objective-C, an otherwise unused language that Apple champions).\n\nOS X doesn't use libc. clang, the compiler that ships as part of Apple's developer tools package for OS X, uses libc. There's a difference. If you want to use glib, grab GCC from Homebrew or Macports and use it to compile your programs instead of clang.\n\nLastly, you can't find documentation for libc, as all C libraries, like libc, glibc, etc, all provide the same set of functions if they are standards-compliant. There tend to be few differences end-user-wise between the different C libraries; so, if you want to find out about a header file, use man, like this: man clang to read clang documentation, for example.\n\nHope this helps."
+    }
+}
