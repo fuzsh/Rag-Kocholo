@@ -1,0 +1,34 @@
+{
+    "id": "dbpedia_465_0",
+    "rank": 27,
+    "data": {
+        "url": "https://blog.quarkslab.com/an-overview-of-macos-kernel-debugging.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "An overview of macOS kernel debugging",
+        "top_image": "https://blog.quarkslab.com/extras/favicon.png",
+        "meta_img": "https://blog.quarkslab.com/extras/favicon.png",
+        "images": [],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "macOS",
+            "XNU",
+            "kernel",
+            "debugging",
+            "2019"
+        ],
+        "tags": null,
+        "authors": [
+            "Francesco Cagnin"
+        ],
+        "publish_date": "2019-05-07T00:00:00",
+        "summary": "",
+        "meta_description": "This is the first of two blog posts about macOS kernel debugging. Here, we introduce what kernel debugging is, explain how it is implemented for the macOS kernel and discuss the limitations that come with it; in the second post, we will present our solution for a better macOS debugging experience.",
+        "meta_lang": "en",
+        "meta_favicon": "./extras/favicon.png",
+        "meta_site_name": "Quarkslab's blog",
+        "canonical_link": "https://blog.quarkslab.com/./an-overview-of-macos-kernel-debugging.html",
+        "text": "Detailed account of kernel-debugger interactions over KDP\n\nFor the even more curious, this section documents thoroughly what happens when LLDB attaches to XNU via KDP; reading is not required to follow the rest of the post. References are provided for LLDB 8.0.0 [LLDB800]. To improve readability, in this section hyperlinks display only the name of the source code file referenced.\n\nAssuming that the kernel has been properly set up for debugging and the debug boot-arg has been set to DB_HALT, at some point during the XNU startup an IOKernelDebugger object will call kdp_register_send_receive() at kdp_udp.c#L410. This routine, after parsing the debug boot-arg, executes kdp_call() (kdp_udp.c#L472, kdp_machdep.c#L328) to generate an EXC_BREAKPOINT trap at kdp_machdep.c#L330, which in turn triggers the execution of trap_from_kernel() (idt64.s#L1282), kernel_trap() (trap.c#L491) and kdp_i386_trap() (trap.c#L686/#L776, kdp_machdep.c#L363). This last function calls handle_debugger_trap() (kdp_machdep.c#L456, debug.c#L994) and eventually kdp_raise_exception() (debug.c#L1064, kdp_udp.c#L2275) to start kdp_debugger_loop() (kdp_udp.c#L2289/#L1323). Since no debugger is connected (yet), the kernel stops at kdp_connection_wait() (kdp_udp.c#L1381/#L1156), printing the string âWaiting for remote debugger connection.â at kdp_udp.c#L1201 and then waiting to receive a KDP_REATTACH request followed by a KDP_CONNECT (kdp_udp.c#L1221).\n\nIn LLDB, the kdp-remote plug-in (MacOSX-Kernel/) handles the logic for connecting to a remote KDP server. When the kdp-remote command is executed by the user, LLDB initiates the connection to the specified target by executing ProcessKDP::DoConnectRemote() at ProcessKDP.cpp#L221, which sends in sequence the two initial requests KDP_REATTACH (ProcessKDP.cpp#L256, CommunicationKDP.cpp#L374) and KDP_CONNECT (ProcessKDP.cpp#L257, CommunicationKDP.cpp#L342).\n\nUpon receiving the two requests, kdp_connection_wait() terminates (kdp.c#L233, kdp_udp.c#L1152) and kdp_handler() is entered (kdp_udp.c#L1393/#L1068). Here, requests from the client are received (kdp_udp.c#L1079), processed using a dispatch table (kdp_udp.c#L1127, kdp.c#L176) and responded (kdp_udp.c#L1147) in a loop until either a KDP_RESUMECPUS or a KDP_DISCONNECT request is received (kdp.c#L415/#L274).\n\nCompleted the initial handshake, LLDB then sends three more requests (KDP_VERSION at ProcessKDP.cpp#L259 and CommunicationKDP.cpp#L408, KDP_HOSTINFO at ProcessKDP.cpp#L264 and CommunicationKDP.cpp#L494, KDP_KERNELVERSION at ProcessKDP.cpp#L275 and CommunicationKDP.cpp#L524) to extract information about the debuggee. If the kernel version string (an example is âDarwin Kernel Version 16.0.0: Mon Aug 29 17:56:21 PDT 2016; root:xnu-3789.1.32~3/DEVELOPMENT_X86_64; UUID=3EC0A137-B163-3D46-A23B-BCC07B747D72; stext=0xffffff800e000000â) is recognised as coming from a Darwin kernel (ProcessKDP.cpp#L322, CommunicationKDP.cpp#L469), then the darwin-kernel dynamic loader plug-in (Darwin-Kernel/) is loaded. At this point, the connection to the remote target is established and the attach phase is completed (Process.cpp#L3242/#L3106) by eventually instantiating the said plug-in (Process.cpp#L3166, DynamicLoaderDarwinKernel.cpp#L125), which tries to locate the kernel load address (DynamicLoaderDarwinKernel.cpp#L169/#L178) and the kernel image (DynamicLoaderDarwinKernel.cpp#L170/#L428). Finally, the Darwin kernel module is loaded (Process.cpp#L3168, DynamicLoaderDarwinKernel.cpp#L531/#L520/#L989), which first searches the local file system for an on-disk file copy of the kernel using its UUID (DynamicLoaderDarwinKernel.cpp#L1036/#L792) and then eventually loads all kernel extensions (DynamicLoaderDarwinKernel.cpp#L1055/#L1391).\n\nAfter attaching, LLDB waits for commands from the user, which will be translated into KDP requests and sent to the kernel:\n\ncommands register read and register write generate KDP_READREGS (CommunicationKDP.cpp#L1175) and KDP_WRITEREGS (CommunicationKDP.cpp#L1217) requests;\n\ncommands memory read and memory write generate KDP_READMEM (CommunicationKDP.cpp#L554) and KDP_WRITEMEM (CommunicationKDP.cpp#L592) requests (respectively KDP_READMEM64 and KDP_WRITEMEM64 for 64-bit targets);\n\ncommands breakpoint set and breakpoint delete generate KDP_BREAKPOINT_SET and KDP_BREAKPOINT_REMOVE (CommunicationKDP.cpp#L1258) requests (respectively KDP_BREAKPOINT_SET64 and KDP_BREAKPOINT_REMOVE64 for 64-bit targets);\n\ncommands continue and step both generate KDP_RESUMECPUS (CommunicationKDP.cpp#L1246) requests; in case of single-stepping, the TRACE bit of the RFLAGS register is set (ProcessKDP.cpp#L447, RegisterContextDarwin_i386.cpp#L953, RegisterContextDarwin_x86_64.cpp#L1061) with a KDP_WRITEREGS request before resuming, which later causes a type-1 interrupt to be raised by the CPU after the next instruction is executed."
+    }
+}

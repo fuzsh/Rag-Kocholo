@@ -1,0 +1,48 @@
+{
+    "id": "dbpedia_465_3",
+    "rank": 84,
+    "data": {
+        "url": "https://tip.golang.org/src/cmd/dist/main.go",
+        "read_more_link": "",
+        "language": "en",
+        "title": "The Go Programming Language",
+        "top_image": "https://go.dev/doc/gopher/gopher5logo.jpg",
+        "meta_img": "https://go.dev/doc/gopher/gopher5logo.jpg",
+        "images": [
+            "https://tip.golang.org/images/go-logo-white.svg",
+            "https://tip.golang.org/images/logos/social/google-groups.svg",
+            "https://tip.golang.org/images/logos/social/github.svg",
+            "https://tip.golang.org/images/logos/social/twitter.svg",
+            "https://tip.golang.org/images/logos/social/reddit.svg",
+            "https://tip.golang.org/images/logos/social/slack.svg",
+            "https://tip.golang.org/images/logos/social/stack-overflow.svg",
+            "https://tip.golang.org/images/go-logo-blue.svg",
+            "https://tip.golang.org/images/logos/social/google-groups.svg",
+            "https://tip.golang.org/images/logos/social/github.svg",
+            "https://tip.golang.org/images/logos/social/twitter.svg",
+            "https://tip.golang.org/images/logos/social/reddit.svg",
+            "https://tip.golang.org/images/logos/social/slack.svg",
+            "https://tip.golang.org/images/logos/social/stack-overflow.svg",
+            "https://tip.golang.org/images/gophers/pilot-bust.svg",
+            "https://tip.golang.org/images/icons/brightness_6_gm_grey_24dp.svg",
+            "https://tip.golang.org/images/icons/brightness_2_gm_grey_24dp.svg",
+            "https://tip.golang.org/images/icons/light_mode_gm_grey_24dp.svg",
+            "https://tip.golang.org/images/google-white.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "/images/favicon-gopher.png",
+        "meta_site_name": "",
+        "canonical_link": "https://go.dev/src/cmd/dist/main.go",
+        "text": "Source file src/cmd/dist/main.go\n\n1 2 3 4 5 package main 6 7 import ( 8 \"flag\" 9 \"fmt\" 10 \"os\" 11 \"runtime\" 12 \"strings\" 13 ) 14 15 func usage() { 16 xprintf(`usage: go tool dist [command] 17 Commands are: 18 19 banner print installation banner 20 bootstrap rebuild everything 21 clean deletes all built files 22 env [-p] print environment (-p: include $PATH) 23 install [dir] install individual directory 24 list [-json] [-broken] list all supported platforms 25 test [-h] run Go test(s) 26 version print Go version 27 28 All commands take -v flags to emit extra information. 29 `) 30 xexit(2) 31 } 32 33 34 var commands = map[string]func(){ 35 \"banner\": cmdbanner, 36 \"bootstrap\": cmdbootstrap, 37 \"clean\": cmdclean, 38 \"env\": cmdenv, 39 \"install\": cmdinstall, 40 \"list\": cmdlist, 41 \"test\": cmdtest, 42 \"version\": cmdversion, 43 } 44 45 46 func main() { 47 os.Setenv(\"TERM\", \"dumb\") 48 49 50 51 if len(os.Args) > 1 && os.Args[1] == \"-check-armv6k\" { 52 useARMv6K() 53 println(\"ARMv6K supported.\") 54 os.Exit(0) 55 } 56 57 gohostos = runtime.GOOS 58 switch gohostos { 59 case \"aix\": 60 61 gohostarch = \"ppc64\" 62 case \"plan9\": 63 gohostarch = os.Getenv(\"objtype\") 64 if gohostarch == \"\" { 65 fatalf(\"$objtype is unset\") 66 } 67 case \"solaris\", \"illumos\": 68 69 70 71 72 out := run(\"\", CheckExit, \"isainfo\", \"-n\") 73 if strings.Contains(out, \"amd64\") { 74 gohostarch = \"amd64\" 75 } 76 if strings.Contains(out, \"i386\") { 77 gohostarch = \"386\" 78 } 79 case \"windows\": 80 exe = \".exe\" 81 } 82 83 sysinit() 84 85 if gohostarch == \"\" { 86 87 out := run(\"\", CheckExit, \"uname\", \"-m\") 88 outAll := run(\"\", CheckExit, \"uname\", \"-a\") 89 switch { 90 case strings.Contains(outAll, \"RELEASE_ARM64\"): 91 92 93 94 95 96 gohostarch = \"arm64\" 97 case strings.Contains(out, \"x86_64\"), strings.Contains(out, \"amd64\"): 98 gohostarch = \"amd64\" 99 case strings.Contains(out, \"86\"): 100 gohostarch = \"386\" 101 if gohostos == \"darwin\" { 102 103 104 gohostarch = \"amd64\" 105 } 106 case strings.Contains(out, \"aarch64\"), strings.Contains(out, \"arm64\"): 107 gohostarch = \"arm64\" 108 case strings.Contains(out, \"arm\"): 109 gohostarch = \"arm\" 110 if gohostos == \"netbsd\" && strings.Contains(run(\"\", CheckExit, \"uname\", \"-p\"), \"aarch64\") { 111 gohostarch = \"arm64\" 112 } 113 case strings.Contains(out, \"ppc64le\"): 114 gohostarch = \"ppc64le\" 115 case strings.Contains(out, \"ppc64\"): 116 gohostarch = \"ppc64\" 117 case strings.Contains(out, \"mips64\"): 118 gohostarch = \"mips64\" 119 if elfIsLittleEndian(os.Args[0]) { 120 gohostarch = \"mips64le\" 121 } 122 case strings.Contains(out, \"mips\"): 123 gohostarch = \"mips\" 124 if elfIsLittleEndian(os.Args[0]) { 125 gohostarch = \"mipsle\" 126 } 127 case strings.Contains(out, \"loongarch64\"): 128 gohostarch = \"loong64\" 129 case strings.Contains(out, \"riscv64\"): 130 gohostarch = \"riscv64\" 131 case strings.Contains(out, \"s390x\"): 132 gohostarch = \"s390x\" 133 case gohostos == \"darwin\", gohostos == \"ios\": 134 if strings.Contains(run(\"\", CheckExit, \"uname\", \"-v\"), \"RELEASE_ARM64_\") { 135 gohostarch = \"arm64\" 136 } 137 case gohostos == \"freebsd\": 138 if strings.Contains(run(\"\", CheckExit, \"uname\", \"-p\"), \"riscv64\") { 139 gohostarch = \"riscv64\" 140 } 141 case gohostos == \"openbsd\" && strings.Contains(out, \"powerpc64\"): 142 gohostarch = \"ppc64\" 143 case gohostos == \"openbsd\": 144 if strings.Contains(run(\"\", CheckExit, \"uname\", \"-p\"), \"mips64\") { 145 gohostarch = \"mips64\" 146 } 147 default: 148 fatalf(\"unknown architecture: %s\", out) 149 } 150 } 151 152 if gohostarch == \"arm\" || gohostarch == \"mips64\" || gohostarch == \"mips64le\" { 153 maxbg = min(maxbg, runtime.NumCPU()) 154 } 155 156 157 158 if runtime.GOMAXPROCS(0) == 1 { 159 maxbg = 1 160 } 161 bginit() 162 163 if len(os.Args) > 1 && os.Args[1] == \"-check-goarm\" { 164 useVFPv1() 165 println(\"VFPv1 OK.\") 166 useVFPv3() 167 println(\"VFPv3 OK.\") 168 os.Exit(0) 169 } 170 171 xinit() 172 xmain() 173 xexit(0) 174 } 175 176 177 func xmain() { 178 if len(os.Args) < 2 { 179 usage() 180 } 181 cmd := os.Args[1] 182 os.Args = os.Args[1:] 183 flag.Usage = func() { 184 fmt.Fprintf(os.Stderr, \"usage: go tool dist %s [options]\\n\", cmd) 185 flag.PrintDefaults() 186 os.Exit(2) 187 } 188 if f, ok := commands[cmd]; ok { 189 f() 190 } else { 191 xprintf(\"unknown command %s\\n\", cmd) 192 usage() 193 } 194 } 195"
+    }
+}
