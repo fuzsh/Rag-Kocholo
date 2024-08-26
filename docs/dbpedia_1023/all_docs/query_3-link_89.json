@@ -1,0 +1,43 @@
+{
+    "id": "dbpedia_1023_3",
+    "rank": 89,
+    "data": {
+        "url": "https://stackoverflow.com/questions/7569553/working-with-tiffs-import-export-in-python-using-numpy",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Working with TIFFs (import, export) in Python using numpy",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://i.sstatic.net/YW5uB.jpg?s=64",
+            "https://www.gravatar.com/avatar/431f47422bcedb2ba153cdb8992d7170?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/dd56da509c21eebb967777a9dbcce437?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/Haz6W.jpg?s=64",
+            "https://www.gravatar.com/avatar/e29d1f71d86b4fb3e5c328eff132c980?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/d42a330ae5c6154521c60fdcaeaa6967?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/3db66752362a1ec771fd9ce087d3a324?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/19635ef1758ba9fa67c6a9f30f6651f4?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/a6a368b3d41a40a4aa3ccb69ea0f8a32?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/hSZnX.jpg?s=64",
+            "https://i.sstatic.net/QNbEP.png?s=64",
+            "https://lh6.googleusercontent.com/-72Mw3zJSkkY/AAAAAAAAAAI/AAAAAAAATPE/8QAaEpx20Wo/photo.jpg?sz=64",
+            "https://www.gravatar.com/avatar/13ffd330b0f2361f37fe24bc46461e4e?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://stackoverflow.com/posts/7569553/ivc/a5bc?prg=29da9fa8-6425-4bb3-83d9-985f60f0dda3"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2011-09-27T13:01:27",
+        "summary": "",
+        "meta_description": "I need a python method to open and import TIFF images into numpy arrays so I can analyze and modify the pixel data and then save them as TIFFs again. (They are basically light intensity maps in gre...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/7569553/working-with-tiffs-import-export-in-python-using-numpy",
+        "text": "First, I downloaded a test TIFF image from this page called a_image.tif. Then I opened with PIL like this:\n\n>>> from PIL import Image >>> im = Image.open('a_image.tif') >>> im.show()\n\nThis showed the rainbow image. To convert to a numpy array, it's as simple as:\n\n>>> import numpy >>> imarray = numpy.array(im)\n\nWe can see that the size of the image and the shape of the array match up:\n\n>>> imarray.shape (44, 330) >>> im.size (330, 44)\n\nAnd the array contains uint8 values:\n\n>>> imarray array([[ 0, 1, 2, ..., 244, 245, 246], [ 0, 1, 2, ..., 244, 245, 246], [ 0, 1, 2, ..., 244, 245, 246], ..., [ 0, 1, 2, ..., 244, 245, 246], [ 0, 1, 2, ..., 244, 245, 246], [ 0, 1, 2, ..., 244, 245, 246]], dtype=uint8)\n\nOnce you're done modifying the array, you can turn it back into a PIL image like this:\n\n>>> Image.fromarray(imarray) <Image.Image image mode=L size=330x44 at 0x2786518>\n\nI use matplotlib for reading TIFF files:\n\nimport matplotlib.pyplot as plt I = plt.imread(tiff_file)\n\nand I will be of type ndarray.\n\nAccording to the documentation though it is actually PIL that works behind the scenes when handling TIFFs as matplotlib only reads PNGs natively, but this has been working fine for me.\n\nThere's also a plt.imsave function for saving.\n\nPyLibTiff worked better for me than PIL, which as of April 2023 still doesn't support color images with more than 8 bits per color.\n\nfrom libtiff import TIFF tif = TIFF.open('filename.tif') # open tiff file in read mode # read an image in the current TIFF directory as a numpy array image = tif.read_image() # read all images in a TIFF file: for image in tif.iter_images(): pass tif = TIFF.open('filename.tif', mode='w') tif.write_image(image)\n\nYou can install PyLibTiff with\n\npip3 install numpy pylibtiff\n\nThe readme of PyLibTiff also mentions the tifffile library but I haven't tried it.\n\nYou can also use pytiff of which I am the author.\n\nimport pytiff with pytiff.Tiff(\"filename.tif\") as handle: part = handle[100:200, 200:400] # multipage tif with pytiff.Tiff(\"multipage.tif\") as handle: for page in handle: part = page[100:200, 200:400]\n\nIt's a fairly small module and may not have as many features as other modules, but it supports tiled TIFFs and BigTIFF, so you can read parts of large images.\n\nAnother method of reading tiff files is using tensorflow api\n\nimport tensorflow_io as tfio image = tf.io.read_file(image_path) tf_image = tfio.experimental.image.decode_tiff(image) print(tf_image.shape)\n\nOutput:\n\n(512, 512, 4)\n\ntensorflow documentation can be found here\n\nFor this module to work, a python package called tensorflow-io has to installed.\n\nAthough I couldn't find a way to look at the output tensor (after converting to nd.array), as the output image had 4 channels. I tried to convert using cv2.cvtcolor() with the flag cv2.COLOR_BGRA2BGR after looking at this post but still wasn't able to view the image."
+    }
+}
