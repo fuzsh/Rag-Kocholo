@@ -1,0 +1,38 @@
+{
+    "id": "dbpedia_1252_1",
+    "rank": 81,
+    "data": {
+        "url": "https://stackoverflow.com/questions/13458289/encoding-h-264-from-camera-with-android-mediacodec",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Encoding H.264 from camera with Android MediaCodec",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://cdn.sstatic.net/Img/teams/teams-promo.svg?v=e507948b81bf",
+            "https://www.gravatar.com/avatar/a007be5a61f6aa8f3e85ae2fc18dd66e?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/758ee7433f2bac63d396f6d545ae96d0?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/05b65693cd4f43be2bcc67ada1df2400?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/593c353b12e85a5d034c7d012306a47b?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/95c3e41e0b342bf11cfc8fd34efb8a5a?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/3e533885016585f8589423aadce297c2?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/83a45711c4c32eeeb3826d279e50f8ab?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/13458289/ivc/9578?prg=8647a080-c75a-4a4f-b074-fc4f7671e8f1"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2012-11-19T16:42:24",
+        "summary": "",
+        "meta_description": "I'm trying to get this to work on Android 4.1 (using an  upgraded Asus Transformer tablet). Thanks to Alex's response to my previous question, I already was able to write some raw H.264 data to a f...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/13458289/encoding-h-264-from-camera-with-android-mediacodec",
+        "text": "For your fast playback - frame rate issue, there is nothing you have to do here. Since it is a streaming solution the other side has to be told the frame rate in advance or timestamps with each frame. Both of these are not part of elementary stream. Either pre-determined framerate is chosen or you pass on some sdp or something like that or you use existing protocols like rtsp. In the second case the timestamps are part of the stream sent in form of something like rtp. Then the client has to depay the rtp stream and play it bacl. This is how elementary streaming works. [either fix your frame rate if you have a fixed rate encoder or give timestamps]\n\nLocal PC playback will be fast because it will not know the fps. By giving the fps parameter before the input e.g\n\nffplay -fps 30 in.264\n\nyou can control the playback on the PC.\n\nAs for the file not being playable: Does it have a SPS and PPS. Also you should have NAL headers enabled - annex b format. I don't know much about android, but this is requirement for any h.264 elementary stream to be playable when they are not in any containers and need to be dumped and played later. If android default is mp4, but default annexb headers will be switched off, so perhaps there is a switch to enable it. Or if you are getting data frame by frame, just add it yourself.\n\nAs for color format: I would guess the default should work. So try not setting it. If not try 422 Planar or UVYV / VYUY interleaved formats. usually cameras are one of those. (but not necessary, these may be the ones I have encountered more often).\n\nIf you did not explicitly request another pixel format, the camera preview buffers will arrive in a YUV 420 format known as NV21, for which COLOR_FormatYCrYCb is the MediaCodec equivalent.\n\nUnfortunately, as other answers on this page mention, there is no guarantee that on your device, the AVC encoder supports this format. Note that there exist some strange devices that do not support NV21, but I don't know any that can be upgraded to API 16 (hence, have MediaCodec).\n\nGoogle documentation also claims that YV12 planar YUV must be supported as camera preview format for all devices with API >= 12. Therefore, it may be useful to try it (the MediaCodec equivalent is COLOR_FormatYUV420Planar which you use in your code snippet).\n\nUpdate: as Andrew Cottrell reminded me, YV12 still needs chroma swapping to become COLOR_FormatYUV420Planar."
+    }
+}

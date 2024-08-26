@@ -1,0 +1,39 @@
+{
+    "id": "dbpedia_1254_2",
+    "rank": 81,
+    "data": {
+        "url": "https://forums.opensuse.org/t/looking-for-a-video-converter/68626",
+        "read_more_link": "",
+        "language": "en",
+        "title": "looking for a video converter",
+        "top_image": "https://forums.opensuse.org/uploads/default/original/2X/4/4c03e012b15abba8f7e7e9fd663073b06047b9fd.png",
+        "meta_img": "https://forums.opensuse.org/uploads/default/original/2X/4/4c03e012b15abba8f7e7e9fd663073b06047b9fd.png",
+        "images": [
+            "https://forums.opensuse.org/user_avatar/forums.opensuse.org/caf4926/48/67_2.png",
+            "https://forums.opensuse.org/user_avatar/forums.opensuse.org/vike4/48/2094_2.png",
+            "https://forums.opensuse.org/images/emoji/twitter/slight_smile.png?v=12",
+            "https://forums.opensuse.org/user_avatar/forums.opensuse.org/vike4/48/2094_2.png",
+            "https://forums.opensuse.org/user_avatar/forums.opensuse.org/oldcpu/48/17_2.png",
+            "https://forums.opensuse.org/user_avatar/forums.opensuse.org/vike4/48/2094_2.png",
+            "https://forums.opensuse.org/user_avatar/forums.opensuse.org/oldcpu/48/17_2.png",
+            "https://forums.opensuse.org/user_avatar/forums.opensuse.org/4m/48/2214_2.png",
+            "https://forums.opensuse.org/user_avatar/forums.opensuse.org/4m/48/2214_2.png",
+            "https://forums.opensuse.org/images/emoji/twitter/slight_smile.png?v=12"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2011-06-20T18:25:05+00:00",
+        "summary": "",
+        "meta_description": "Guys please suggest me a good video converter software for openSUSE to covert videos into multiple formats.it will be easy if it ask me to covert videos for a specific device like i-pod,Nokia,Samsung mobiles.thanks in ad&hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://forums.opensuse.org/uploads/default/optimized/2X/9/9892a3ccc03e4fd9181fc692f05104e34c846a29_2_32x32.png",
+        "meta_site_name": "openSUSE Forums",
+        "canonical_link": "https://forums.opensuse.org/t/looking-for-a-video-converter/68626",
+        "text": "Sorry for coming late.i installed both(handbrake and avidemux).i used to total video converter and any video converter(these two videoconverters are for windows).i have trouble with both(handbrake,avidemux).because i don’t know how to use both.in windows converters I’ll add videos and select formats(mp4,avi,flv) or devices(ipod,Nokia or Samsung)then I’ll click covert button.it will covert my videos and put them in my desired path.it is quite difficult to me covert videos in handbrake or avidemux.\n\nBut …\n\nhandbrake does exactly what you just described.\n\nhandbrake is also available for MS-Windows and MacIntosh and I have a MacIntosh friend whose uses it (for his iPad) and thinks it great. In fact he was the one who recommended I use it to create videos for my wife’s iPod Touch 3G.\n\nI recently used it to create a number of videos for my wife to test on her iPod Touch 3G. The videos played great on that device !\n\nvike4, there is more to this than ‘just’ resolution. There is the video codec. There is the audio codec. And there is the respective bit rates.\n\nvike4 I think if you want help here, you need to point to your specific mobile model number, else this thread could go on for a LONG time before the necessary details are flushed out.\n\nOk, thats a start. What does your information on the Samsung s5620(Monte)'s specs tell you ?\n\nI note this:\n\nSamsung Monte S5620 full specs - Phone Arena\n\nDisplay resolution: Resolution: 240 x 400 pixels\n\nVideo capture resolution: 320x240 (QVGA) (15 fps)\n\nMultimedia:\n\nMusic Player: Supports: MP3, AAC, AAC+, WMA\n\nVideo Playback: Supports: MPEG4, H.263, H.264\n\nI also read that one can not play back at the 240x400 resolution unless one has hacked their phone.\n\nThere is a handbrake guide here for a Galaxy Tab … just change the resolution to your 240x320 How to convert videos and transfer them to the Samsung Galaxy Tab - Know Your Mobile India (you may need to reverse numbers to 320x240, … and try different bit rates).\n\nIn Handbrake you could try the “Apple” “ipod” presetting as it should be close to 320x240.\n\nGetting this to work for You in openSUSE may require compiling FFMPEG with FAAC support on Your own. (because of legal issues)\n\n“Compiling” sounds worse than it really is, but will require some careful research and reading.\n\ni haven’t done so myself, yet, because of the following:\n\nThere are distributions that make it easier:\n\nIn Sabayon Linux the version of FFMPEG had everything i needed. (example: http://amoebios.wikispaces.com/Convert+videos+for+W995+with+FFMPEG+on+Linux)\n\nUbuntu required adding repositories (because of the legal issues), but that’s easier than compiling, and Ubuntu also provides lots of software, especially frontends, like\n\nArista Transcoder,\n\nIriverter,\n\nTransmageddon Video Transcoder,\n\nand\n\nWinFF, which is my favorite.\n\nFurther to this thread, I did encounter a case with winff that it assumed for creation of an aac codec that libfaac was installed and it failed. But correct me if I am wrong, but libfaac creates an aac codec (via proprietary means) and instead one can use the ‘aac’ codec in packman.\n\nOn this subject, last night I ended up playing with wiff. I found a packaged version by searching here: software.opensuse.org: Search Results\n\nThis provides winff-1.3.1-2.7.x86_64.rpm which is not quite the most recent version (as 1.3.2 is most current according to WinFF - Free Video Converter ). This packaged winff comes with a number of presets for different hardware (ipod, blackberry … ).\n\nI gave it a try to convert a .flv downloaded from youtube, but immediately had a failure. Checking the conversion code (it uses ffmpeg) I noted it was use ’ -ab 128kb ’ where in fact the code should be ’ -ab 128k ’ with current ffmpeg versions. So I removed the ‘b’ from that and tried again.\n\nI then had another failure in that it could not find the audio codec ‘libfaac’. I recall that libfaac codec support was removed from ffmpeg due to proprietary versions, but it appears the presets assume ffmpeg is built with ‘libffaac’ support. So I changed the ‘libfaac’ entry to ‘aac’ and tried again.\n\nI then had another failure noting that ‘aac’ was an experimental codec, and to use it I had to also use the code ‘-strict experimental’. So I tried again, replacing ‘libfaac’ with ‘aac -strict experimental’ and the conversion worked.\n\nI then went into /home/oldcpu/.winff/presets.xml and with a text editor replaced ALL occurences of ‘libfaac’ with ‘aac -strict experimental’ and also searched for all ‘-ab’ occurences and ensured the following number had no ‘b’ beside it. That took a bit of time, although I did find a way to optimise that had had that conversion completed in ~ 5 minutes of effort.\n\nwinff is now running nicely."
+    }
+}

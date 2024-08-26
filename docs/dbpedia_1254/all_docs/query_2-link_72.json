@@ -1,0 +1,38 @@
+{
+    "id": "dbpedia_1254_2",
+    "rank": 72,
+    "data": {
+        "url": "https://helgeklein.com/blog/how-to-convert-quicktime-mov-video-files-to-mpeg-2/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How to Convert Quicktime MOV Video Files to MPEG",
+        "top_image": "https://helgeklein.com/wp-content/uploads/2022/09/Helge-Klein-OG-social-image-1200w.png",
+        "meta_img": "https://helgeklein.com/wp-content/uploads/2022/09/Helge-Klein-OG-social-image-1200w.png",
+        "images": [
+            "https://helgeklein.com/wp-content/themes/html5blank-helgeklein/img/helge_klein-logo.svg",
+            "https://helgeklein.com/wp-content/uploads/2017/10/MP4-H.264-browser-support-400x195.png",
+            "https://helgeklein.com/wp-content/uploads/2021/07/ShareX-4K-high-DPI-mouse-pointer-offset-fix-ffmpeg.exe_-205x300.png",
+            "https://helgeklein.com/wp-content/uploads/2024/07/pexels-hendrikcornelissen-2862070-400x267.jpg",
+            "https://helgeklein.com/wp-content/uploads/2024/07/pexels-quang-nguyen-vinh-222549-14776486-400x243.jpg",
+            "https://helgeklein.com/wp-content/uploads/2024/06/pexels-michelle-ventura-292724-913138-400x267.jpg",
+            "https://helgeklein.com/wp-content/uploads/2024/06/library-1400313-400x267.jpg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Helge Klein"
+        ],
+        "publish_date": "2008-11-05T20:15:00+00:00",
+        "summary": "",
+        "meta_description": "Tools & knowledge for IT pros",
+        "meta_lang": "en",
+        "meta_favicon": "https://helgeklein.com/wp-content/themes/html5blank-helgeklein/favicons/apple-touch-icon.png?v=2019",
+        "meta_site_name": "Helge Klein",
+        "canonical_link": "https://helgeklein.com/blog/how-to-convert-quicktime-mov-video-files-to-mpeg-2/",
+        "text": "[Update 1: Fixed bugs in the batch file and made it available for download]\n\n[Update 2: Wildcards are now supported]\n\n[Update 3: Timestamps are now copied from source to destination files. For this, touch.exe is needed.]\n\n[Update 4: File names with spaces in them are now handled correctly]\n\nI recently bought a new compact digital photo camera, Panasonic’s Lumix LX3. Although I acquired it solely for its still image capabilities, I quickly discovered that it records video in very high quality, especially when compared to my digital video camera, a JVC model equipped with a hard disk on which video files are stored in MPEG-2 format in DVD resolution.\n\nThe major downside to the new LX3: the format in which video files are stored. For some reason Panasonic chose Apple’s Quicktime format. This essentially means that only Apple’s Quicktime software can play those files. That is far too inflexible for me. I need a video file format that can be played and edited with different applications, both today and in 20 years. I do not want to be caught in a format trap, like, for example, owners of Video 2000 equiment (remember that?).\n\nI decided some time ago to store video footage in MPEG-2 format only. MPEG-2 is the format used on DVDs. Although these are soon to be replaced by Blue Ray Discs which employ a different codec, I am confident enough to be able to play and edit MPEG-2 even in 10 or 20 years time.\n\nThat left me with the question of how to convert Quicktime MOV files to MPEG-2.\n\nRequirements\n\nMy camera creates .MOV files. The video stream is encoded as MJPEG, a simple codec that creates large files since compression is low. Here is some technical data on the format:\n\nVideo resolution: 1280×720\n\nAspect ratio: 16/9\n\nFrame rate: 24 fps\n\nVideo codec: Quicktime MJPEG\n\nSound: 1 channel (mono), 16 kHz\n\nAudio codec: uncompressed (PCM)\n\nSince I only want to convert the video format, downscaling the resolution was out of the question. The resulting MPEG-2 file must retain the original resolution of 1280×720 pixels.\n\nResearch\n\nI downloaded and tried out evaluation or free versions of the following programs. All are capable of reading MOV files and converting them to MPEG-2.\n\nMP4Cam2AVI, free\n\nAVS Video Tools, commercial\n\nMagix Video Deluxe 15, commercial\n\nSUPER, free, but dubious website\n\nMainConcept Reference, commercial\n\nUnfortunately none met my requirements. At first, the free MP4Cam2AVI looked perfect. But then it refused to read one of my video files which Quicktime played without complaint. The commercial AVS and Magix are limited to DVD resolution (720×576), which also applies to SUPER. MainConcept worked flawlessly in my tests and I was nearly convinced I would have to hand over € 290 to the manufacturer when I discovered a free alternative.\n\nSolution\n\nThe MPlayer/MEncoder combo is a powerful toolkit for playing and encoding digital video. It has all codecs built it and does not rely on DirectShow, Video for Windows or any other framework. The best thing of all is that it is free and open source. Not even installation is needed. Just download and unpack it to any folder you like.\n\nThe downside of both MPlayer and MEncoder is that they are command line tools. This is especially true for MEncoder since it offers literally hundreds of settings which are controlled by equally numerous command line switches. That makes MEncoder extraordinarily difficult to use. Add to that the sparse documentation and you know why only few people use MEncoder directly. For that reason I was not able to find sample scripts for what I needed to do.\n\nIt took me some time to figure out which parameters to feed to MEncoder to make it do what I wanted. In oder to simplify the process in the future I wrote a batch script that takes the path to a MOV file, invokes MEncoder with the correct switches to make it convert the file to MPEG-2 and place it in the original file’s folder with the extension MPG.\n\nExplanation\n\nThe first half of the script consists of comments. Please read those before putting it to use.\n\nAt the real start of the script various variables are set. You can adapt them to your needs, for example if you have input files with a differing resolution. However, you should leave LAVC_OPTIONS and MPEG_OPTIONS alone, unless you know what you are doing.\n\nThe script loops through all input files matching the input specification (a file system path that may contain wildcards). For each matching file, the script then checks for existence of the output file. This is a safety, since MEncoder will overwrite its output file without asking for confirmation. After that, MEncoder is invoked to create the MPEG-2 output file. Finally, touch.exe copies the timestamps from the source to the destination.\n\nHow to Use it"
+    }
+}
