@@ -1,0 +1,42 @@
+{
+    "id": "dbpedia_993_0",
+    "rank": 21,
+    "data": {
+        "url": "https://blender.stackexchange.com/questions/5054/how-to-stretch-120-seconds-of-animation-over-270-seconds",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How to stretch 120 seconds of animation over 270 seconds?",
+        "top_image": "https://cdn.sstatic.net/Sites/blender/Img/apple-touch-icon@2.png?v=68358e232572",
+        "meta_img": "https://cdn.sstatic.net/Sites/blender/Img/apple-touch-icon@2.png?v=68358e232572",
+        "images": [
+            "https://cdn.sstatic.net/Sites/blender/Img/logo.svg?v=35fa7fd2f0cb",
+            "https://i.sstatic.net/P4M8V.png?s=64",
+            "https://www.gravatar.com/avatar/01f37af999f8998878d42dcde048459c?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/NWaZd.gif",
+            "https://i.sstatic.net/P4M8V.png?s=64",
+            "https://i.sstatic.net/eSYc9.png",
+            "https://i.sstatic.net/BWRu9.png?s=64",
+            "https://www.gravatar.com/avatar/4623cbeb8c4522e734c2d1968ee894c0?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/d1167c6a21372e97b07491ce1aa9eda8?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/p4XAOl.png",
+            "https://i.sstatic.net/xLsuWl.png",
+            "https://i.sstatic.net/9m92r.jpg?s=64",
+            "https://blender.stackexchange.com/posts/5054/ivc/613d?prg=62f72808-20dc-4ee9-9f68-1104301ca215"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2013-11-23T00:21:23",
+        "summary": "",
+        "meta_description": "I have an object with some animation (120 seconds) and I want to make this animation now play over the duration of 270 seconds. How can I stretch the animation to this new duration?",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/blender/Img/favicon.ico?v=478a7a353f21",
+        "meta_site_name": "Blender Stack Exchange",
+        "canonical_link": "https://blender.stackexchange.com/questions/5054/how-to-stretch-120-seconds-of-animation-over-270-seconds",
+        "text": "Select the object and open the Dope Sheet. Set the frame scrubber (the green line) to the starting frame, press A to select all and then press S to scale the keyframes apart up to the required frame. This should stretch the animation to whatever length you want. If you have multiple keyframes, Blender will even these out for you. You can also hold Shift when scaling to snap in small increments.\n\nNote of course that since you are making a short animation longer, it will most likely playback slower.\n\nOne of the tricky things about time remapping or scaling keyframes is that any value such as an influence on a child of bone constraint that was formerly used as a switch between 2 keyframes (frame 1 influence=1, frame 2 influence=0) will now be gradual and most likely inaccurate. Say if you scale or remap by 2, then you'll have a frame in between where the influence is .5 and your object's location is wrong.\n\nI've not found a solution, especially when using time remapping. However, using keyframe scaling you can least manually add more keyframes and adjust the influence/location.\n\nAdding to the Time Remapping answer, since this feature was replaced by Time Stretching in Blender 3.0 and later:\n\nAccess Time Stretching from the Output Properties panel. Set a larger New parameter to stretch, smaller to shrink. Old defaults to 100, so New is essentially a percentage.\n\nAs before, this does not change the number of frames in the animation, so adjust the End field for Frame Range as needed.\n\nA caveat: If you need to edit keyframes, there is an unexpected behavior. I'm using Blender 4.0.2. In the animation pane, the playback wiper (blue vertical line) normally has a blue bulb at the top that displays the current frame number. However, when using Time Stretching, the wiper and the frame indicator become disconnected. This is as designed—the wiper indicates which keyframes are being hit, while the bulb displays the output frame. The problem with this is that if you need to make minor edits to keyframes, you need to position the playback so that the wiper is over the keyframe that you want to edit. So, if your stretch factor is 150, then to edit the keyframes at 100, you need to position the bulb at 150. Make the change, then save the keyframe (press I, for instance). But a new keyframe will be created at frame 150, and the keyframe at 100 is unchanged. The workaround is that you can grab and slide the new keyframe back down to 100. If not, you'll have unplanned results.\n\nBecause of this—particularly if you intend to edit the animation further, scaling in the timeline is the better solution for final changed. But Time Stretching is the better solution for temporary stretching to try out different timing values, because it's so easy to change the timing by editing a single value. You can always set it back to 100:100 and scale in the timeline once you've made your final decisions."
+    }
+}
