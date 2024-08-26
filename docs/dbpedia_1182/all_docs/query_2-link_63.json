@@ -1,0 +1,31 @@
+{
+    "id": "dbpedia_1182_2",
+    "rank": 63,
+    "data": {
+        "url": "https://svn.pydro.noaa.gov/Docs/html/Charlene_Docs/index.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Automated Data Processor — Pydro documentation",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://svn.pydro.noaa.gov/Docs/html/_images/index1.png",
+            "https://svn.pydro.noaa.gov/Docs/html/_static/pydro_sidebar.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "",
+        "meta_favicon": "../_static/pydro.ico",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "Brief Overview¶\n\nCharlene is a HSTB developed software utility that automates hydrographic ‘night processing’. Night processing includes all of those tasks in between raw data collection and a final daily product that occur each night on our hydrographic vessels. Our goal with Charlene is to make night processing something that requires little to no user interaction.\n\nWhile we have long been able to read and write certain proprietary data formats, the latest Caris and Applanix versions (10.2 and 8.1 respectively) open machine access to the processes in these packages; we now have the ability to run these software packages outside of the graphical interface. Charlene leverages this to become a one-stop shop for night processing. Just plug in your data drive, sit back, and wait for your processed data to arrive. Key to all this is that Charlene works across software platforms; it can transfer your raw data to the appropriate submission folders, process your SBET, convert survey lines into Caris, apply sound velocity profiles, water levels, and SBETs, run in-house QC reports, and generate logs.\n\nHow can we do this?¶\n\nCharlene relies on individual modules to process. These are all callable within Python, allowing for robust and intelligent operation.\n\nCaris Batch¶\n\nCharlene utilizes the new Caris Batch, which is a command line driven tool new in Caris 10 for automating Caris processing. Charlene takes these commands and wraps them in Python, so they can be used from the Charlene GUI. This makes Caris Batch user friendly, as the native commands are often long and complicated, unsuitable for the average user. Below is an example for just the data conversion step for nine lines using Caris Batch.\n\n“C:\\Program Files\\CARIS\\HIPS and SIPS\\10.3\\bin\\carisbatch.exe” –run ImportToHIPS –input-format KONGSBERG –input-crs EPSG:26910\n\n–convert-navigation –gps-height-device GGK “E:\\BatchHydroData\\Test_&_Calibration\\HSRR_2017\\Data\\MBES\\FA_2805_EM2040\\2017-142\\0000_20170522_220650_FA2805.all”\n\n“E:\\BatchHydroData\\Test_&_Calibration\\HSRR_2017\\Data\\MBES\\FA_2805_EM2040\\2017-142\\0001_20170522_221613_FA2805.all”\n\n“E:\\BatchHydroData\\Test_&_Calibration\\HSRR_2017\\Data\\MBES\\FA_2805_EM2040\\2017-142\\0002_20170522_222027_FA2805.all”\n\n“E:\\BatchHydroData\\Test_&_Calibration\\HSRR_2017\\Data\\MBES\\FA_2805_EM2040\\2017-142\\0003_20170522_224815_FA2805.all”\n\n“E:\\BatchHydroData\\Test_&_Calibration\\HSRR_2017\\Data\\MBES\\FA_2805_EM2040\\2017-142\\0004_20170522_225233_FA2805.all”\n\n“E:\\BatchHydroData\\Test_&_Calibration\\HSRR_2017\\Data\\MBES\\FA_2805_EM2040\\2017-142\\0005_20170522_225620_FA2805.all”\n\n“E:\\BatchHydroData\\Test_&_Calibration\\HSRR_2017\\Data\\MBES\\FA_2805_EM2040\\2017-142\\0006_20170522_230220_FA2805.all”\n\n“E:\\BatchHydroData\\Test_&_Calibration\\HSRR_2017\\Data\\MBES\\FA_2805_EM2040\\2017-142\\0007_20170522_230553_FA2805.all”\n\n“E:\\BatchHydroData\\Test_&_Calibration\\HSRR_2017\\Data\\MBES\\FA_2805_EM2040\\2017-142\\0008_20170522_231007_FA2805.all”\n\nfile:///E:\\BatchHydroData\\TO\\Test_&_Calibration\\HSRR_2017\\Data\\Processed\\Sonar_Data\\HDCS_Data\\HSRR_2017\\HSRR_2017.hips?Vessel=FA_2805_EM2040;Day=2017-142\n\nAnd this is a simplified example. You can see that the command itself would be obnoxious to run directly. By wrapping it in Python, we can determine many of these options programmatically without direct input from the user.\n\nPOSPac Batch¶\n\nWith POSPac 8, we now have the use of the POSPac command line toolset, which allows the user to run POSBat files and a template file to create SBET files. Charlene uses specific POSBat files for each processing type (Smartbase, Marinestar, and RTX) and different export options for coordinate systems (NAD83 vs WGS84). Charlene is able to create an SBET in the middle of Caris processing and load the generated SBET during night processing, if the satellite data is available."
+    }
+}
