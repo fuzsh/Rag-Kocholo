@@ -1,0 +1,56 @@
+{
+    "id": "dbpedia_465_1",
+    "rank": 59,
+    "data": {
+        "url": "https://hackaday.com/tag/xnu/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Hackaday",
+        "top_image": "https://hackaday.com/wp-content/uploads/2020/07/hackaday-logo-with-text-opengraph-default-image.jpg",
+        "meta_img": "https://hackaday.com/wp-content/uploads/2020/07/hackaday-logo-with-text-opengraph-default-image.jpg",
+        "images": [
+            "https://hackaday.com/wp-content/themes/hackaday-2/img/logo.png",
+            "https://hackaday.com/wp-content/uploads/2016/06/xss_main.jpg?w=600&h=450",
+            "https://hackaday.com/wp-content/uploads/2024/08/WifiAustralia_thumbnail.png?w=600&h=600",
+            "https://hackaday.com/wp-content/uploads/2024/08/CrowView-Note-Square.jpg?w=600&h=600",
+            "https://hackaday.com/wp-content/uploads/2024/08/bqagw8jbta751_thumbnail.png?w=600&h=600",
+            "https://hackaday.com/wp-content/uploads/2021/05/Hornsdale_thumbnail.png?w=600&h=600",
+            "https://hackaday.com/wp-content/uploads/2024/08/laser1_thumbnail_bright.png?w=600&h=600",
+            "https://hackaday.com/wp-content/uploads/2016/05/microphone-thumb.jpg?w=600&h=600",
+            "https://hackaday.com/wp-content/uploads/2016/01/darkarts-thumb.jpg?w=600&h=600",
+            "https://hackaday.com/wp-content/uploads/2021/06/Pipewire_thumbnail.png?w=600&h=600",
+            "https://hackaday.com/wp-content/uploads/2024/08/hadimg_router_cpu_thumb.jpg?w=600&h=600",
+            "https://hackaday.com/wp-content/uploads/2015/09/links-thumb.jpg?w=600&h=600",
+            "https://hackaday.com/wp-content/uploads/2024/08/WifiAustralia_thumbnail.png?w=600&h=600",
+            "https://hackaday.com/wp-content/uploads/2024/08/CrowView-Note-Square.jpg?w=600&h=600",
+            "https://hackaday.com/wp-content/uploads/2024/08/bqagw8jbta751_thumbnail.png?w=600&h=600",
+            "https://hackaday.com/wp-content/uploads/2021/05/Hornsdale_thumbnail.png?w=600&h=600",
+            "https://hackaday.com/wp-content/uploads/2024/08/laser1_thumbnail_bright.png?w=600&h=600",
+            "https://hackaday.com/wp-content/uploads/2016/05/microphone-thumb.jpg?w=600&h=600",
+            "https://hackaday.com/wp-content/uploads/2016/01/darkarts-thumb.jpg?w=600&h=600",
+            "https://hackaday.com/wp-content/uploads/2021/06/Pipewire_thumbnail.png?w=600&h=600",
+            "https://hackaday.com/wp-content/uploads/2024/08/hadimg_router_cpu_thumb.jpg?w=600&h=600",
+            "https://hackaday.com/wp-content/uploads/2015/09/links-thumb.jpg?w=600&h=600",
+            "https://hackaday.com/wp-content/themes/hackaday-2/img/logo.png",
+            "https://analytics.supplyframe.com/trackingservlet/impression?action=pageImpression&zone=HDay_tag&extra=tag%3DXNU",
+            "https://hackaday.com/wp-content/uploads/2018/04/close.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Jonathan Bennett"
+        ],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "https://hackaday.com/wp-content/themes/hackaday-2/favicon.ico?v=3",
+        "meta_site_name": "Hackaday",
+        "canonical_link": "https://hackaday.com/tag/xnu/",
+        "text": "Another day, another vulnerability. Discovered by [Kevin Backhouse], CVE-2018-4407 is a particularly serious problem because it is present all throughout Apple’s product line, from the Macbook to the Apple Watch. The flaw is in the XNU kernel shared by all of these products.\n\nThis is a buffer overflow issue in the error handling for network packets. The kernel is expecting a fixed length of those packets but doesn’t check to prevent writing past the end of the buffer. The fact Apple’s XNU kernel powers all their products is remarkable, but issues like this are a reminder of the potential downside to that approach. Thanks to responsible disclosure, a patch was pushed out in September.\n\nAnatomy of a Buffer Overflow\n\nBuffer overflows aren’t new, but a reminder on what exactly is going on might be in order. In low level languages like C, the software designer is responsible for managing computer memory manually. They allocate memory, tagging a certain number of bytes for a given use. A buffer overflow is when the program writes more bytes into the memory location than are allocated, writing past the intended limit into parts of memory that are likely being used for a different purpose. In short, this overflow is written into memory that can contain other data or even executable code.\n\nWith a buffer overflow vulnerability, an attacker can write whatever code they wish to that out-of-bounds memory space, then manipulate the program to jump into that newly written code. This is referred to as arbitrary code execution. [Computerphile] has a great walk-through on buffer overflows and how they lead to code execution.\n\nThis Overflow Vulnerabilty Strikes Apple’s XNU Kernel\n\n[Kevin] took the time to explain the issue he found in further depth. The vulnerability stems from the kernel code making an assumption about incoming packets. ICMP error messages are sent automatically in response to various network events. We’re probably most familiar with the “connection refused’ message, indicating a port closed by the firewall. These ICMP packets include the IP header of the packet that triggered the error. The XNU implementation of this process makes the assumption that the incoming packet will always have a header of the correct length, and copies that header into a buffer without first checking the length. A specially crafted packet can have a longer header, and this is the data that overflows the buffer.\n\nBecause of the role ICMP plays in communicating network status, a closed firewall isn’t enough to mitigate the attack. Even when sent to a closed port, the vulnerability can still trigger. Aside from updating to a patched OS release, the only mitigation is to run the macOS firewall in what it calls “stealth mode”. This mode doesn’t respond to pings, and more importantly, silently drops packets rather than sending ICMP error responses. This mitigation isn’t possible for watchOS and iOS devices.\n\nThe good news about the vulnerability is that a packet, malformed in this way, has little chance of being passed through a router at all. An attacker must be on the same physical network in order to send the malicious packet. The most likely attack vector, then, is the public WiFi at the local coffee shop.\n\nCome back after the break for a demonstration of this attack in action."
+    }
+}

@@ -1,0 +1,34 @@
+{
+    "id": "dbpedia_465_1",
+    "rank": 55,
+    "data": {
+        "url": "https://hownot2code.wordpress.com/2018/03/29/xnu-kernel/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "XNU Kernel",
+        "top_image": "https://hownot2code.wordpress.com/wp-content/uploads/2018/05/noyau_xnu_simplific3a9-svg.png",
+        "meta_img": "https://hownot2code.wordpress.com/wp-content/uploads/2018/05/noyau_xnu_simplific3a9-svg.png",
+        "images": [
+            "https://hownot2code.wordpress.com/wp-content/uploads/2018/05/noyau_xnu_simplific3a9-svg.png?w=676",
+            "https://hownot2code.files.wordpress.com/2021/08/microsoftteams-image.png?w=290",
+            "https://hownot2code.wordpress.com/wp-content/uploads/2021/08/hn2c_favicon-2.jpg?w=50",
+            "https://hownot2code.wordpress.com/wp-content/uploads/2021/08/hn2c_favicon-2.jpg?w=50",
+            "https://pixel.wp.com/b.gif?v=noscript"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2018-03-29T00:00:00",
+        "summary": "",
+        "meta_description": "BUG OF THE MONTH | Null pointer dereference V512 CWE-119 A call of the '__builtin___memcpy_chk' function will lead to a buffer overflow. - ADDITIONAL IN CURRENT necp_client.c 1459 V557 CWE-787 Array overrun is possible. The value of 'length - 1' index could reach 23. - ADDITIONAL IN CURRENT necp_client.c 1460 #define IFNAMSIZ 16 #define IFXNAMSIZ (IFNAMSIZ…",
+        "meta_lang": "en",
+        "meta_favicon": "https://hownot2code.wordpress.com/wp-content/uploads/2021/08/hn2c_favicon-2.jpg?w=32",
+        "meta_site_name": "How Not To Code",
+        "canonical_link": "https://hownot2code.wordpress.com/2018/03/29/xnu-kernel/",
+        "text": "BUG OF THE MONTH | Null pointer dereference\n\nV512 CWE-119 A call of the ‘__builtin___memcpy_chk’ function will lead to a buffer overflow. – ADDITIONAL IN CURRENT necp_client.c 1459\n\nV557 CWE-787 Array overrun is possible. The value of ‘length – 1’ index could reach 23. – ADDITIONAL IN CURRENT necp_client.c 1460\n\n#define IFNAMSIZ 16 #define IFXNAMSIZ (IFNAMSIZ + 8) #define MAX_ROUTE_RULE_INTERFACES 10 static inline const char * necp_get_result_description(....) { .... char interface_names[IFXNAMSIZ][MAX_ROUTE_RULE_INTERFACES]; .... for (index = 0; index < MAX_ROUTE_RULE_INTERFACES; index++) { if (route_rule->exception_if_indices[index] != 0) { ifnet_t interface = ifindex2ifnet[....]; snprintf(interface_names[index], IFXNAMSIZ, \"%s%d\", ifnet_name(interface), ifnet_unit(interface)); } else { memset(interface_names[index], 0, IFXNAMSIZ); } } .... }\n\nThe elements of the array interface_names[10..23][….] are not used, because the variable index in the loop takes values [0..9]. But the elements of interface_names[0..9][….] begin to overlap each other. I.e. some data overwrites the other.\n\nThe result is just nonsense. A part of the array remains uninitialized, and the other part contains a “mush”, when data was written over the already written data."
+    }
+}

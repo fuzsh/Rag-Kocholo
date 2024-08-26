@@ -1,0 +1,44 @@
+{
+    "id": "dbpedia_721_3",
+    "rank": 12,
+    "data": {
+        "url": "https://forum.unity.com/threads/collider-or-ray-cast-for-melee-weapons.252362/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Collider or ray cast for melee weapons",
+        "top_image": "https://europe1.discourse-cdn.com/unity/original/3X/a/a/aaeab82727497b6f37f4312dcd57be21e6cd25e8.png",
+        "meta_img": "https://europe1.discourse-cdn.com/unity/original/3X/a/a/aaeab82727497b6f37f4312dcd57be21e6cd25e8.png",
+        "images": [
+            "https://dub2.discourse-cdn.com/unity/user_avatar/discussions.unity.com/meltdown/48/82936_2.png",
+            "https://dub2.discourse-cdn.com/unity/user_avatar/discussions.unity.com/randomperson42/48/121275_2.png",
+            "https://avatars.discourse-cdn.com/v4/letter/i/e47774/48.png",
+            "https://dub2.discourse-cdn.com/unity/user_avatar/discussions.unity.com/meltdown/48/82936_2.png",
+            "https://dub2.discourse-cdn.com/unity/user_avatar/discussions.unity.com/meltdown/48/82936_2.png",
+            "https://emoji.discourse-cdn.com/google/slight_smile.png?v=12",
+            "https://avatars.discourse-cdn.com/v4/letter/i/e47774/48.png",
+            "https://dub2.discourse-cdn.com/unity/user_avatar/discussions.unity.com/not_sure/48/386690_2.png",
+            "https://dub2.discourse-cdn.com/unity/user_avatar/discussions.unity.com/randomperson42/48/121275_2.png",
+            "https://emoji.discourse-cdn.com/google/slight_smile.png?v=12",
+            "https://avatars.discourse-cdn.com/v4/letter/a/aca169/48.png",
+            "https://dub2.discourse-cdn.com/unity/user_avatar/discussions.unity.com/jamesleenz/48/233694_2.png",
+            "https://emoji.discourse-cdn.com/google/wink.png?v=12"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Damien-Delmarle"
+        ],
+        "publish_date": "2014-06-18T02:27:53+00:00",
+        "summary": "",
+        "meta_description": "So what do you guys think? Which is more efficient/accurate?",
+        "meta_lang": "en",
+        "meta_favicon": "https://europe1.discourse-cdn.com/unity/optimized/3X/5/d/5d3b1bfc21f0dea8ce3730e22d85cbf4072b7c02_2_32x32.png",
+        "meta_site_name": "Unity Discussions",
+        "canonical_link": "https://discussions.unity.com/t/collider-or-ray-cast-for-melee-weapons/541256",
+        "text": "It depends entirely on what you want to do with your game. Physics-based combat may require more skill on the part of the player, and might be more difficult to implement. As far as efficiency is concerned, it depends once again on what you want for your specific game. Different styles of games use different combat systems. Either method could potentially be more/less efficient and accurate than the other, it just depends on how far you take it. Your question is very vague.\n\nIn the end it just depends on what you want for your game.\n\nWell, solving it can be pretty “101”, but it’s a compromise you might intentionally make for performance. Unity’s physics system does indeed let you pick, thats what the “continuous” collision detection is meant for (though I’m not sure how effective it is).\n\nAs for what to do with melee weapons, triggers and colliders are the typical way to go, but they’re not the only way to go. I would not start with the assumption that movement will be slow enough to hit things reliably within frame deltas unless that kind of slow movement is a deliberate part of your design. There are plenty of games (e.g.: Ninja Gaiden springs to mind) where animations are so fast that the character is nearly snapping from pose to pose - how fast do you think the tip of those swords are moving?\n\nI also wouldn’t assume that you necessarily even want to apply hits based on contacts alone. That makes physical sense, but does it make game design sense? Plenty of games use the concept of a “hit frame”, which is some kind of time marker in an attack animation which tells the game at which time of the attack to apply damage.\n\nLast time I implemented melee attacks I did a “hit frame” accompanied by a trigger. Anything in the trigger during the hit frame had damage applied. The trigger didn’t move because it didn’t have to, all it did was keep a list of what’s currently touching it for the damage part of the script to use when applying damage in the hit frame.\n\nAnother approach you could use is a hit frame and either a bunch of test points in the weapon or a physics sweep test between the previous and current positions of the weapon, or along a spline which defines the sweep. Or, you could do sweep tests each frame and keep a list of things you’ve already applied damage to in the current attack to avoid repeating it… unless you want to repeat it, which you might. (If accuracy was important, I’d probably use splines or something for the sweep test, since point-to-point tests would get less accurate at longer ranges.) Or, you could use continuous collision detection and just use the various collision callbacks.\n\nPlenty of ways to skin this cat. Knowing which one to use really depends on how you want your combat to actually work.\n\nHow fast will it be?\n\nHow do you want to apply damage?\n\nWhat approach will you take to balancing your game?\n\nWhat kinds of weapons will you have?\n\nWhat type of animation do you want to have?\n\nHow do you want the player to control it?\n\nDo you want it to be deterministic?\n\nSo on and so forth…\n\nIt could also be useful for occlusion checks - so that if you’re attacking a group of enemies only those in the front row get damaged.\n\nBut in general, yes, this kind of simple approach (check distance → angle → occlusion) can work wonders.\n\nWhile I use more complicated systems now (as you can probably tell), in my early days of writing games I used to use spheres for collision detection, for everything. Spaceship? Sphere. Zombie? Sphere. UFO? Sphere. Sometimes I’d text that sphere against a box, if I was getting advanced. I’d roll my own collision detection systems inn an hour or less, and use that for the entire length of a game project.\n\nWhy? Because I’d decide early on to fix it when players told me it was a problem… and they never told me it was a problem! As long as you make it feel good players typically won’t get upset about the fine-grained details of things they can’t actually see. Draw a big trail on your sword swipes or whatever you’ve got, and make sure that enemies look like they’re responding appropriately. Between those two things you won’t usually actually need accurate collision detection - players aren’t watching your game in slow-motion to see if the damage triggers when and where the sword actually connects to each enemy."
+    }
+}

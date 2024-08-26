@@ -1,0 +1,32 @@
+{
+    "id": "dbpedia_465_2",
+    "rank": 23,
+    "data": {
+        "url": "https://shadowfile.inode.link/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "The Shadow File",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://i.creativecommons.org/l/by-sa/4.0/80x15.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Zach Cutlip"
+        ],
+        "publish_date": "2022-07-02T13:50:48-07:00",
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "",
+        "meta_site_name": "The Shadow File",
+        "canonical_link": "https://shadowfile.inode.link/",
+        "text": "Revisiting Pegasus on iOS9\n\nWhat follows is a writeup of the kernel bugs NSO Group’s Pegasus spyware exploited in iOS 9, specifically versions 9.3.4 and earlier. The spyware was discovered and the vulnerabilities patched roughly six years ago. Why now? Well, “now” isn’t exactly the right word; I wrote this up just over four years ago. At the time, my intent wasn’t to publish. Rather it was to better understand the practical aspects of exploiting kernel bugs in XNU, iOS’s and macOS’s kernel.\n\nRead more\n\nSource Level Debugging the XNU Kernel\n\nWhether you’re developing a kernel extension, doing vulnerability research, or you have some other need to spelunk into the macOS/iOS kernel, XNU, sometimes you need to attach a debugger. And when you do that, doing it with source code is really nice when possible. Damien DeVille, Snare and probably others have written about this process. Here are some of their articles: Debugging the Mac OS X kernel with VMware and GDB VMware debugging II: “Hardware” debugging Using the VMware Fusion GDB stub for kernel debugging with LLDB Things have evolved a bit.\n\nRead more\n\nAutogenerating defaults(1) Commands\n\nIn previous posts, I described some advanced uses of the macOS defaults(1) command, including adding arbitrarily complex data structures to defaults dictionaries. I also described less than obvious locations where system and applicaton preferences get recorded. Those were all background for this article. It can be difficult know what plist file on disk stores a given setting, or exactly what the key (and corresponding value in that dictionary) are for a setting.\n\nRead more\n\nDefaults Non-obvious Locations\n\nI wrote a tool that sniffs changes to macOS defaults as they change and autogenerates the defaults incantation to set those preferences. I have a post in the wings about this. For that to be useful, though, I need to establish a bit more groundwork about defaults. In particular, the various locations where the backing plist files can exist. Most are intuitive, but many are not. Here’s a rundown of places where defaults plist files can exist if they’re not in ~/Library/Preferences or /Library/Preferences.\n\nRead more\n\nAdvanced defaults(1) Usage\n\nWant to change Finder’s preferred view to column view from the command line? There’s a defaults command for that. Want to alter trackpad behavior from a shell script? Yep, defaults can do it. Lots of (most?) macOS and iOS settings manifest in the defaults subsystem (see Apple’s Preferences Programming Topics for Core Foundation and UserDefaults). What this means for you, the macOS user, is many of these settings exist somewhere on disk in the form of .\n\nRead more\n\nBroken, Abandoned, and Forgotten Code, Part 14\n\nIn the previous post, we walked through building a stage 1 firmware image that can be flashed to the Netgear R6200 by exploiting the hidden SetFirmware SOAP action in upnpd. Due to an undersized memory allocation, we aren’t able to flash a full sized image using this exploit. Whereas a stock firmware is nearly 9MB, the buffer upnpd base64 decodes into is 4MB, leading to a crash. As a result we have to load our trojanized firmware in two stages.\n\nRead more\n\nBroken, Abandoned, and Forgotten Code, Part 13\n\nIn the first twelve parts of this series, we identified an unauthenticated firmware update feature in the Netgear R6200 wireless router. Unfortunately, this feature was broken and only partially implemented, making exploitation less that straightforward. We reverse engineered the timing requirements and structure of the SOAP request required to exploit this vulnerability. We also reverse engineered the firmware image format, including its undocumented firmware header. As of the previous part, the exploitation phase is complete, which is to say we are able to have the Netgear UPnP daemon overwrite the firmware on flash storage with arbitrary data of our choosing.\n\nRead more\n\nBroken, Abandoned, and Forgotten Code, Part 12\n\nIn the previous part, I described how to strip out all but the most essential services and libraries in the stock firmware in order to get the firmware image down to under 4MB. This avoids crashing upnpd, which allocates less than half enough memory to base64 decode a stock-sized firmware image. In this part, we’ll walk through a crasher you might encounter (or might not, depending how you formatted your ambit header) and how to sidestep it.\n\nRead more\n\nBroken, Abandoned, and Forgotten Code, Part 11\n\nIn the previous part, we moved away from emulation to working with physical hardware. We identified a UART header inside the Netgear R6200 that can be used for console access. I demonstrated how to access the CFE bootloader’s recovery mode to reflash a working firmware over TFTP. This makes it possible to iteratively modify and test firmware images that will be used in the SetFirmware UPnP exploit. In this part, I’ll talk about regenerating the filesystem portion of the firmware image.\n\nRead more"
+    }
+}
