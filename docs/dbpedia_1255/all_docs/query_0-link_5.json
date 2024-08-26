@@ -1,0 +1,33 @@
+{
+    "id": "dbpedia_1255_0",
+    "rank": 5,
+    "data": {
+        "url": "https://blog.mediacoderhq.com/page/3/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Find out more about the universal media transcoder",
+        "top_image": "http://blog.mediacoderhq.com/wp-content/uploads/2014/02/hevc-1024x393.jpg",
+        "meta_img": "",
+        "images": [
+            "http://blog.mediacoderhq.com/wp-content/uploads/2014/02/hevc-1024x393.jpg",
+            "http://blog.mediacoderhq.com/wp-content/uploads/2014/02/h265_720p_screenshot-1024x656.jpg",
+            "http://blog.mediacoderhq.com/wp-content/uploads/2013/08/mc_5550_splitting-300x293.png",
+            "http://blog.mediacoderhq.com/wp-content/uploads/2013/05/mc_segmental.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "MediaCoder 0.8.28 is just released. This version added support for VP9 encoding. Though the vpxenc is slow encoding VP9 with almost no multi-threading implementation (unlike VP8 encoding), MediaCoder’s Segmental Video Encoding backs it up. With SVE enabled, the VP9 encoding speed boosts by times, though still low comparing to x264.\n\nSeveral other tools have been updated. An x64 build of MP4Box is included in 64-bit distribution. Several minor bugs got fixed. For GPU encoding, I fine tuned the pre-processing filtering parameters to eliminate some side effect I witnessed myself.\n\nFor more info about the new release, just head for the changelog.\n\nFinally, I wish a happy holiday to all of my users! It’s been almost 9 years since the very first spark and I have never stopped working on it. MediaCoder has served millions of people I believe. Thinking about all these, I feel my time and efforts spent throughout the years all worth it.\n\nThe splitting function finally comes back. There is no more “Split” mode. To enable splitting, simply go to Time tab for the splitting options (by time and by number of segments). The splitting operation is performed on-the-fly while transcoding is proceeding, so it’s fast.\n\nThere are still some limitations though. Splitting currently does not work with multi-pass encoding and segmental encoding (SVE). The file relocation options are not working when splitting is enabled. These will be improved soon later.\n\nI am so excited to release this new version as a new exciting technology named Segmental Video Encoding (SVE) was introduced in after a long time of thinking and implementation.\n\nThe idea of SVE is straight-forward. On systems with a lot of processor cores or processors, a single instance of video encoding cannot utilize all the computation power of the systems, though modern encoders like x264 already has good support for multi-threading. This also happens when doing GPU-based encoding, whereas the GPU is quite often under-loaded. SVE is basically the mechansim of encoding of a video in temporal segmentations, by loading 1~2 minutes video frames into memory and dispatch the frames to multiple encoder instances. A series of encoded video segments will be generated and they are concatenated seamlessly in the muxing stage together with the audio. This improves paralellization regardless of the encoder’s support for multi-threading, so those encoders without good multi-threading implementation (Xvidcore, MPEG 1/2 encoder etc.) will benefit. Please be noted that SVE is still experimental.\n\nIf you experience problem with it, please report to me in the forum. I also need some more testings on cutting-edge computer systems which I don’t have a chance to test on.\n\nMediaCoder working with Segmental Video Encoding technology\n\nRead the rest of this entry >>\n\nCan’t take out all the computation power of your multi-processor system when doing transcoding? A new technology being developed in MediaCoder will be the solution. I name it SVE (Segmental Video Encoding). It is like multi-segments downloading, but the difference is the segmentation is temporal instead of spatial. Multiple instances of the same encoder are used to encode the different part of one video concurrently. The result bitstreams are merged by muxer together with audio. My practice has proved that this is completely feasible, without almost no compromise. This will increase overall transcoding speed on all under-loaded systems (a system with many CPUs or processor cores) reglardless of the encoder’s multi-threading capability, as well as GPU encoding (in most cases GPU is under-loaded when encoding a single stream). My test has shown a 20% speed boost of Intel MSDK GPU encoding on the same Intel i7-2600 system. Distributive encoding will also benefit from this technology. So stay tuned!"
+    }
+}

@@ -1,0 +1,32 @@
+{
+    "id": "dbpedia_1255_0",
+    "rank": 10,
+    "data": {
+        "url": "https://blog.mediacoderhq.com/category/news/page/3/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Inside & Outside MediaCoder",
+        "top_image": "http://blog.mediacoderhq.com/wp-content/uploads/2012/12/mc_cuda-1024x591.png",
+        "meta_img": "",
+        "images": [
+            "http://blog.mediacoderhq.com/wp-content/uploads/2012/12/mc_cuda-1024x591.png",
+            "http://blog.mediacoderhq.com/wp-content/uploads/2012/09/vs2012.png",
+            "http://blog.mediacoderhq.com/wp-content/uploads/2012/09/audiocoder.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "Can’t take out all the computation power of your multi-processor system when doing transcoding? A new technology being developed in MediaCoder will be the solution. I name it SVE (Segmental Video Encoding). It is like multi-segments downloading, but the difference is the segmentation is temporal instead of spatial. Multiple instances of the same encoder are used to encode the different part of one video concurrently. The result bitstreams are merged by muxer together with audio. My practice has proved that this is completely feasible, without almost no compromise. This will increase overall transcoding speed on all under-loaded systems (a system with many CPUs or processor cores) reglardless of the encoder’s multi-threading capability, as well as GPU encoding (in most cases GPU is under-loaded when encoding a single stream). My test has shown a 20% speed boost of Intel MSDK GPU encoding on the same Intel i7-2600 system. Distributive encoding will also benefit from this technology. So stay tuned!\n\nI think this is going to happen as H.264/HEVC seems getting high these days, especially after a Chinese online video giant xunlei.com annoucing their adoption of H.265 in their kankan video streaming service. After some lookups, I found following implementations of HEVC encoder.\n\nMnHEVC\n\nOpenHEVC\n\nx265 (not written by x264 devs)\n\nHEVC reference SW\n\nI will start evaluating all of these and see what can be done to add H.265 encoding in MediaCoder.\n\nAn approach for improving GPU encoding quality has been done in 0.8.18.5450. A high quality and high performance temporal denoiser is implemented and automatically activated when encoding with GPU. This will not improve SSIM but the pre-processing will make up for the shortage of all GPU encoders (Intel MSDK and CUDA) and improve perceptual visual quality of the encoded content. As the denoiser is working fully parallel to decoding and encoding, there is very little performance overhead.\n\nWith this improvement, GPU encoding quality is now generally acceptable, especially for playback on mobile screens, and more specifically, 1.5Mbps video encoded by CUDA encoder looks quite good on iPhone screen.\n\nCUDA encoder has been updated and optimized. Compiled against CUDA 5.0, frames pre-processed in NV12 colorspace, process loop refined, better GPU utilization and better performance can be achieved with CUDA encoding. More options are available on MediaCoder’s CUDA tab, including the one specifying the GPU device to be used for encoding when there are multiple ones.\n\nBenchmarking shows that the GPU utilization can reach 82% on a GTX480 whhen Offload option (newly added) set to Full. The speed of a typical 720p transcoding reaches 8.6x.\n\nSo, stop watching, grab the update, try on your GeForce, see the difference and let me know if there is!\n\nFor nearly 4 years, MediaCoder has been built with Visual Studio 2008. Now it’s time for a change. Switching to Visual Studio Express 2012 will drop the built application’s compatibility with Windows 2000, which now has already become no big deal. Some slight performance boost is expected with the new compiler, which will benefits most users, while an important benefit for myself is the more sleek programming environment.\n\nFinally AudioCoder is getting updated after a whole year time. AudioCoder is a audio transcoder software based on MediaCoder, with a simplified user interface and optimized setup for audio only transcoding. During the year, MediaCoder has been improved consistently. All the improvements related with audio transcoding have been built into the latest AudioCoder release. By supporting up to 8 parallel tasks, AudioCoder is able to fully utilize the 8 or 16 cores of your cutting edge processor to convert a bunch of music files in a flash. The new version has also added support for Opus audio encoding.\n\nAudioCoder is totally free and there is no limit on batch tasks. So just get it and experience it.\n\nClick here to get AudioCoder now!"
+    }
+}
