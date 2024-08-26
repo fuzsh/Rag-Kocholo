@@ -1,0 +1,7 @@
+That is not a bug. If you have a reference to the a Sprite object somewhere else than in a Group, then the object stays still a live (of course), even if you kill it. kill does not destroy the object, it just removes the object fora all Groups.
+
+That causes the object is not updated through the pygame.sprite.Group.update() mechanism and all its attributes stay untouched.
+
+If a Sprite is not part of a Group then you have to update the object yourself. No one will change the attributes magically and of course the "hitbox stays"
+
+A solution would be to override the kill method and to reset some attributes (like the hit box) in the derived class:

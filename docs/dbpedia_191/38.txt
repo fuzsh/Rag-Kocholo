@@ -1,0 +1,45 @@
+Hi,
+
+I am working on ITS sequences. I have done classify.seqs with my samples and subsequently used remove.lineage to remove the taxon which are not classified at any kingdom level. I used that file to do classify.seqs. But i found that again there is unclassifed sequences (They are classified up to order level earlier). Knidly let me know what to do! Please find following classification for the same sequence after and before removal of unclassified lineage.
+
+Before removal of unclassified lineage
+
+OZA2F_00241_00762 k__Fungi(100);p__Ascomycota(85);c__Dothideomycetes(83);o__Pleosporales(81);unclassified;unclassified;unclassified;
+
+After removal of unclassified lineage
+
+OZA2F_00241_00762 k__Fungi(100);unclassified;unclassified;unclassified;unclassified;unclassified;unclassified;
+
+Your help would appreciated to figure out this problem!
+
+Thanks!
+
+Please find following commands which i have used,
+
+mothur > classify.seqs(fasta=current, group=current, name=current, template=UNITE_public_mothur_30.12.2014.fasta, taxonomy=UNITE_public_mothur_30.12.2014_taxonomy.txt, cutoff=80, processors=1)
+
+mothur > remove.lineage(fasta=current, name=current, group=current, taxonomy=current, taxon=k__Fungi;unclassified;unclassified;unclassified;unclassified;unclassified;unclassified;)
+
+mothur > summary.seqs(fasta=current)
+
+mothur > count.groups(group=current)
+
+mothur > split.abund(fasta=current, list=current, group=current, name=current, cutoff=5)
+
+mothur > summary.seqs(fasta=ITS.unique.pick.pick.pick.0.03.abund.fasta)
+
+mothur > count.groups(group=ITS.pick.pick.pick.pick.0.03.abund.groups)
+
+mothur > sub.sample(fasta=ITS.unique.pick.pick.pick.0.03.abund.fasta, group=ITS.pick.pick.pick.pick.0.03.abund.pick.groups, size=403, persample=T)
+
+mothur > summary.seqs(fasta=ITS.unique.pick.pick.pick.0.03.abund.subsample403.fasta)
+
+mothur > list.seqs(fasta=ITS.unique.pick.pick.pick.0.03.abund.subsample403.fasta)
+
+mothur > get.seqs(accnos=current, name=current)
+
+mothur > classify.seqs(fasta=ITS.unique.pick.pick.pick.0.03.abund.subsample403.fasta, group=ITS.pick.pick.pick.pick.0.03.abund.pick.subsample403.groups, name=ITS.pick.pick.pick.pick.subsample403.names, template=UNITE_public_mothur_30.12.2014.fasta, taxonomy=UNITE_public_mothur_30.12.2014_taxonomy.txt, cutoff=80, processors=1)
+
+So that explains why it wasn’t removed. What is likely going on is the bootstrapping results in the second run are just below your cutoff of 80. Bootstrapping results can vary, because mothur is choosing a subset of the kmers, and then classifying those to see how many iterations match the original classification. If the bootstrap falls below the cutoff, mothur will report it as unclassified. You can confirm this by running the second classify.seqs command without a cutoff, and then running:
+
+get.lineage(fasta=current, name=current, group=current, taxonomy=current, taxon=k__Fungi;unclassified;unclassified;unclassified;unclassified;unclassified;unclassified;)

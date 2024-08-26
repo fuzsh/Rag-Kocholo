@@ -1,0 +1,95 @@
+Other Versions
+
+Cannot access other versions offline!
+
+Sprites
+
+Sprites are 2D Graphic objects. If you are used to working in 3D, Sprites are essentially just standard textures but there are special techniques for combining and managing sprite textures for efficiency and convenience during development.
+
+Unity provides a placeholder Sprite Creator, a built-in Sprite Editor, a Sprite Renderer and a Sprite Packer
+
+See Importing and Setting up Sprites below for information on setting up assets as Sprites in your Unity project.
+
+Sprite Tools
+
+Sprite Creator
+
+Use the Sprite Creator to create placeholder sprites in your project, so you can carry on with development without having to source or wait for graphics.
+
+Sprite Editor
+
+The Sprite Editor lets you extract sprite graphics from a larger image and edit a number of component images within a single texture in your image editor. You could use this, for example, to keep the arms, legs and body of a character as separate elements within one image.
+
+Sprite Renderer
+
+Sprites are rendered with a Sprite Renderer component rather than the Mesh Renderer used with 3D objects. Use it to display images as Sprites for use in both 2D and 3D scenes.
+
+Sprite Packer
+
+Use Sprite Packer to opimize the use and performance of video memory by your project.
+
+Importing and Setting Up Sprites
+
+Sprites are a type of Asset in Unity projects. You can see them, ready to use, via the Project View.
+
+There are two ways to bring Sprites into your project:
+
+In your computer’s Finder (Mac OS X) or File Explorer (Windows), place your image directly into your Unity project’s Assets folder.
+
+Unity detects this and displays it in your project’s Project View.
+
+In Unity, go to Assets>Import New Asset… to bring up your computer’s Finder (Mac OS X) or File Explorer (Windows).
+
+From there, select the image you want, and Unity puts it in the Project View.
+
+See Importing Assets for more details on this and important information about organising your Assets folder.
+
+Setting your Image as a Sprite
+
+If your project mode is set to 2D, the image you import is automatically set as a Sprite.
+
+However, if your project mode is set to 3D, your image is set as a Texture, so you need to change the asset’s Texture Type:
+
+Click on the asset to see its Import Inspector.
+
+Set the Texture Type to Sprite (2D and UI).
+
+(See Fig 1: Set Texture Type….)
+
+See 2D or 3D Projects for details on setting your project mode to 2D.
+
+Sorting Sprites
+
+Renderers in Unity are sorted by several criteria, such as their Layer order or their distance from the Camera. Unity’s GraphicsSettings (menu: Edit > Project Settings > Graphics) provide a setting called Transparency Sort Mode, which allows you to control how Sprites are sorted depending on where they are in relation to the Camera. More specifically, it uses the Sprite’s position on an axis to determine which ones are transparent against others, and which are not.
+
+There are four Transparency Sort Mode options available:
+
+Default - Sorts based on whether the Camera’s Projection mode is set to Perspective or Orthographic
+
+Perspective - Sorts based on perspective view. Perspective view sorts Sprites based on the distance from the Camera’s position to the Sprite’s center.
+
+Orthographic - Sorts based on orthographic view. Orthographic view sorts Sprites based on the distance along the view direction.
+
+Custom Axis - Sorts based on the given axis set in Transparency Sort Axis
+
+If you have set the Transparency Sort Mode to Custom, you then need to set the Transparency Sort Axis:
+
+If the Transparency Sort Mode is set to Custom Axis, renderers in the Scene view are sorted based on the distance of this axis from the camera. Use a value between –1 and 1 to define the axis. For example: X=0, Y=1, Z=0 sets the axis direction to up. X=1, Y=1, Z=0 sets the axis to a diagonal direction between X and Y.
+
+Sorting Sprites using script
+
+You can also sort Sprites per camera through scripts, by modifying the following properties in Camera:
+
+TransparencySortMode (corresponds with Transparency Sort Mode)
+
+TransparencySortAxis (corresponds with Transparency Sort Axis)
+
+Example:
+
+var camera = GetComponent<Camera>(); camera.transparencySortMode = TransparencySortMode.CustomAxis; camera.transparencySortAxis = new Vector3(0.0f, 1.0f, 0.0f);
+
+Example
+
+An example of when you might use this setting is to sort Sprites along the Y axis. This is quite common in 2D games, where Sprites that are higher up are sorted behind Sprites that are lower, to make them appear further away.
+
+To have Unity manage this automatically, set the Transparency Sort Mode to Custom Axis, and set the Y value for the Transparency Sort Axis to a value higher than 0.

@@ -1,0 +1,55 @@
+Hardware sprites as they exist in a lot of arcade games and consoles are just graphical rectangular objects with a given number of colors.
+
+One of this color is special and is transparent, which allows the sprite to draw onto the background without drawing a big rectangle around it. It just draws the non-transparent pixel.
+
+Then when moved, it's just displayed somewhere else.
+
+But PC graphical cards didn't have any. So how did they draw those "sprites" ?
+
+Well, by using the image data, and a mask.
+
+By using software logic operations (AND, OR, XOR) on data, background and mask, it is possible to emulate hardware sprites. It's just slower and more tedious. Let me use an example:
+
+Image data: Mask data:
+
+To draw (applies to planar or chunky displays):
+
+erase previous position if any by copying the original background at the previous location
+
+take the address of the background rectangle where the "sprite" must be displayed
+
+apply AND with a negative mask on it to "cut" data behind the mask. Now you have a hole in the background where the mask is.
+
+apply OR with the real data to insert the data in the background. OR will only draw inside the cut mask.
+
+On planar displays, this is the only efficient way. On chunky (one byte per pixel) displays, one could also read the input and draw only if not "black". This can be done too, but you deprive yourself of the genericity and must choose a transparent color that is not in any object.
+
+For instance inside the character above, the hair and the belt of the karateka MUST be black, not transparent. The mask removes the background below the hair & belt so the black color is materialized.
+
+There is no one true way to do it, and since you receive no help for sprites in hardware, sprites are nothing special really, the pixels of a sprite are drawn on screen like any other pixels are.
+
+If you have to draw a ball and move it around the screen, you just keep track of the ball coordinates yourself, and draw pixels of the ball to the new coordinates, perhaps drawing black or background image pixels back to the old ball coordinates first, before drawing it to new coordinates. And for a ball, if you store it as a bitmap of 16x16 rectangle, you might only want to draw the pixels of the ball, and not the whole rectangle, if the ball is moving on top of a background bitmap. The ball bitmap could have a color that is defined to be transparent so those pixels are not drawn on screen, or it could define separate mask or list of pixels which should be skipped or drawn. And when removing the ball, you can only redraw the ball pixels with background pixels, or for simplicity, you can just repaint the whole dirty rectangle of 16x16 pixels where the ball was.
+
+And when moving the ball, increase the coordinates by the value how much you want to move the ball, in the time you want to move the ball, so that will be the speed of the ball. For example CGA, EGA and VGA all have video modes that output 60 frames per second, it might give you a timebase of moving one pixel per frame, or two pixels per frame for twice as fast movement, or one pixel per two frames for half as fast movement.
+
+There are also other ways of keeping time, as a PC has a timer chip (Intel 8253 or 8254) which can be used to set to tick at some specific rate you want and for example update coordinates 100 times per second and draw 1000 different balls on screen as slowly as the PC is capable of.
+
+You can find tutorials for this in lots of places. For example one source with source code examples might be the graphics programming book by Michael Abrash that can be found online here:[https://www.drdobbs.com/parallel/graphics-programming-black-book/184404919]
+
+Another source might be the VGA Trainer series of tutorials made by Grant Smith a.k.a Denthor of Asphyxia. The first tutorials are included in the PC Game Programmer's Encyclopedia, PCGPE.
+
+Original hardware back then had very little capability. You could store multiple screens of pixels in video memory, which allowed for double-buffering, but that's about it. If you're interested in reading all about it, you can check out one of the EGA/CGA/VGA programming books, many of which are readily available online for free (e.g. see this book EGA/VGA: A Programmer's Reference Guide).
+
+There were no sprite capabilities written into the hardware, so the software was responsible for drawing the sprites. Most games were written with a double buffer scheme, either in main memory or video memory. For main memory, an area of memory was dedicated for storing the next frame's pixels, and then blitted using something like REPZ MOVS, which was a relatively fast string copy command (about 3 + pixel count clock cycles). For video memory, the next frame is drawn in the video buffer, then the page offset was changed to flip pages; this method was the ideal method for maximum performance, since you saved tens of thousands of clock cycles by not having to blit every frame.
+
+So, during startup, the game would load the sprite data into memory, and each frame, it would draw the background, then each sprite, using either an image mask or a "transparent" color (typically 0, but it was programmer's choice, since it's all in software), then halt for a vsync signal before using an efficient string copy command to avoid screen tearing (where you'd see parts from two different frames), or a page flip, whichever was appropriate, then go back to the start of the loop to handle the next frame.
+
+The graphics memory is laid out in a straight line as far as memory addresses are concerned, so it was necessary to figure out the coordinate for where each pixel was via x times screen width plus y. On really old processors, this was too slow to perform millions of times per second, as multiplication was hideously expensive in clock cycles, so programmers often had to resort to something like:
+
+pixel = (x << 6) + (x << 8) + y
+
+Where << is the shift-bit-left operator. Three adds and two shifts could be done in 10 clock cycles, while a single IMUL took at least 80 clock cycles. This is the difference between 60 frames per second and about 10, just optimizing pixel placement code. A lot of games were written in assembler back then, or at least the video graphics parts, simply because there were only so many clock cycles to go around, and compilers back then were quite literal (today's compilers can optimize nearly as well, or better than, most human programmers).
+
+At any rate, if you're interested in seeing what CGA programming looked like, you could check out some open-source software, such as this repository that includes a ton of CGA code. GitHub has topics for CGA, EGA and VGA, which contains at least a few interesting source codes you might want to check out.
+
+Most commercial games never released their source code, so it can be hard to track down specific examples. That said, you can also try your hand at disassembly/decompilation. Modern tools of this nature produce at least somewhat legible code, especially for binaries that are that old, assuming you can get your hands on the original executable somehow. There are abandonware sites you can look for that host games from companies that no longer exist as well. Using disassembly tools on those would likely be enlightening, most of the software back then was relatively small in size and pretty easy to read with some practice.

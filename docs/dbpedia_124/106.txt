@@ -1,0 +1,107 @@
+Overview
+
+The strength of an encryption largely depends on two components: 1) the cipher and 2) the length of the key. We already discussed key lengths in an older post. So today, let's talk about the other component.
+
+What is a cipher? A cipher is simply a method for encrypting (and decrypting) messages. To understand what I mean, let me give you an example.
+
+Note:Ciphers are also known as encryption algorithms, so we'll be using the terms "cipher" and "encryption algorithm" interchangeably throughout the article.
+
+Encryption algorithm example #1: The Substitution Cipher
+
+The substitution cipher is a very simple example of an encryption algorithm. Here's how it works.
+
+Let's say you have a message that says: "Call me tonight"
+
+In encryption parlance, the original message, i.e., the message which people can understand, is called plaintext. The garbled message resulting from an encryption, on the other hand, is known as ciphertext. To get the ciphertext of the message "Call me tonight", we substitute each letter in the message with the letter positioned n places after it in the alphabet.
+
+The 'n' value, i.e., the number of positions to be counted after each plaintext letter, is known as the key. If the key is 3, then we can obtain the ciphertext by using the guide below. Notice how A will be repleced by D, B by E, T by W, and so on. If you need to go beyond Z, then just wrap around to the beginning of the alphabet.
+
+Thus, when operated on by a substitution cipher with key = 3,
+
+the plaintext: "Call me tonight"
+
+becomes the ciphertext: "Fdoo ph wrqljkw"
+
+If we use a different key, say 4 or 6, we would naturally get a different ciphertext.
+
+An attempt to create our own encryption algorithm
+
+Note: This example shows why you shouldn't try to create your own cipher or encryption algorithm! :-)
+
+What if we don't like the cipher used earlier because we find it too simple? We could always create our own, right? Here's one.
+
+Instead of just counting n number of steps in the alphabet based on the key, let's run the key first through the mathematical expression:
+
+p x n = c,
+
+where p is the position of the plaintext letter in the alphabet, n is the key, and c is the position of the ciphertext letter in the alphabet. If the resulting c value exceeds 26 (the number of letters in the alphabet), we just wrap around the beginning of the alphabet.
+
+So, to obtain the corresponding ciphertext of the letter C, which is the 3rd letter in the alphabet, we just multiply 3 with the key. If the key is 2, then 3 x 2 results in the number 6. Thus, the corresponding ciphertext would be F. For A, that would be 1 x 2 = 2 or B. And for L, that would be 12 x 2 = 24. The 24th letter is X.
+
+Plaintext character Ciphertext character C F A B L X L X
+
+Thus, the plaintext "CALL" would correspond to the ciphertext "FBXX". You can obtain the rest if you want.
+
+Did you encounter any problem?
+
+If you calculated the ciphertext of N using our algorithm, you would have obtained 14 x 2 = 28. Wrapping around the alphabet, that would correspond to B. But that's also the ciphertext of plaintext A, remember? Big problem.
+
+While we were lucky to spot that flaw early, not all flaws are easy to spot. Those are the flaws that could lead to data breaches. Cryptography is a difficult science best suited for brilliant mathematicians. Before widely accepted encryption algorithms become widely accepted and released for public consumption, they undergo several stringent tests/reviews by various experts in the field. In fact, in spite of those tests, it's still possible (it has happened more than once) to discover vulnerabilties in a cipher after release.
+
+And so for us mere mortals, it would be best to just stick to the algorithms that have already gone through those tests. They won't be 100% unbreakable, but they'd certainly be way better than anything we'd develop on our own.
+
+Want to test these features in your own environment? Request a free trial.
+
+Where are ciphers used?
+
+Ciphers are used to provide encryption, authentication, and data integrity checks in file transfer protocols like FTPS, SFTP, and WEBDAVS as well as in data-at-rest systems like OpenPGP. The articles How To Set Up A HTTPS File Transfer and Setting SFTP Algorithms On Your SFTP Server can give you more information on the subject, especially from a practical standpoint.
+
+Encryption algorithms are usually classified into three groups: those used in symmetric encryption, those used in asymmetric encryption, and those used in cryptographic hash functions. Here are some of the popular ones.
+
+Symmetric encryption uses a single key for both encryption and decryption, while asymmetric uses two keys: a private key and a public key. For more information about these two, just read Symmetric vs Asymmetric Encryption.
+
+Symmetric encryption algorithms
+
+AES
+
+Blowfish
+
+DES
+
+3DES
+
+IDEA
+
+Serpent
+
+Twofish
+
+RC6
+
+Asymmetric encryption algorithms
+
+Diffie-Hellman (DH)
+
+RSA
+
+ElGamal
+
+Elliptic Curve Cryptography
+
+Hash functions
+
+For more information about hash functions and hashing, read Understanding Hashing
+
+SHA-2
+
+MD5
+
+That would be all for now. I hope you gained some useful information from this.
+
+If you want to be updated on posts like this, do connect with us on social media.
+
+Get Started
+
+Start transferring files securely. Use JSCAPE MFT Server - a managed file transfer server that supports encrypted file transfer protocols like FTPS, SFTP, HTTPS, WebDAVS and others. Get started with a free, fully-functional evaluation edition now.
+
+Request a free JSCAPE MFT Server Trial

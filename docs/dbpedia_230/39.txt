@@ -1,0 +1,21 @@
+Warzone RAT (AKA Ave Maria) is a remote access trojan (RAT) sold as a malware-as-a-service (MaaS) first discovered in January 2019 and quickly gained popularity to become a top malware strain by 2020. Warzone’s payload includes a wide array of functionality, but its primary use is as an information stealer. It has advanced stealth and anti-analysis capabilities and has been deployed using a broad set of dropper techniques.
+
+Warzone masquerades as a legitimate commercial IT administration tool sold and maintained by an online persona named Solmyr. Its official website is where basic plans are sold for $37.95 per month—far cheaper than other apex MaaS strains. Warzone is available as 1-month, 3-month, and 12-month licenses with optional Dynamic Domain Name System (DDNS) service and has a “Poison” version that includes a rootkit installation module. DDNS is used in cyberattacks to hide the location of command-and-control (C2) servers used by malware operators. Cracked versions of Warzone can also be found on darknet forums, and the strain has instructional YouTube videos for learning basic deployment and command-and-control (C2) administration.
+
+Some of Warzone’s most impactful campaigns have included geopolitical targets such as compromising government employees and military personnel of India’s National Informatics Centre (NIC) and its use by the Confucius APT group against the mainland Chinese government and other South Asian countries. Warzone was also used in a well-crafted phishing campaign that spoofed official government communication to distribute the malware in Hungary.
+
+Warzone has been distributed in a virtually endless number of initial infection vectors but is officially sold in two distinct first-stage configurations; as an embedded Microsoft Office macro dropper or packed as a compressed and encrypted dropper payload designed to bypass anti-virus detection. However, outside of its official modes, Warzone is deployed via both malspam and targeted phishing campaigns that leverage:
+
+Hacked WordPress websites and popular file hosting services such as archive.org and discord.com to host the payload
+
+Self-extracting archives (SFX) formatted as .rar and .zip files, and .iso with fake file icons designed to look like popular software applications
+
+Microsoft Office macros using a VBA-stomping technique that compiles the embedded macro script into P-code to avoid detection by antivirus products
+
+A .net loader written in C# that uses RunPE.dll to hijack, hollow, and inject Warzone into the InstallUtil.exe process
+
+Using the Windows scripting language AutoIt to deliver the Warzone payload
+
+Known vulnerabilities such as CVE-2017-11882 and CVE-2018-0802
+
+Warzone gains persistence on the target host by creating a Windows registry key—usually named HKLM\SOFTWARE Wow6432Node\Microsoft Windows\CurrentVersion\Run—and setting its value to the location of Warzone’s executable binary. Finally, Warzone can exploit privilege escalation using an older DLL hijacking technique for UAC bypass.
