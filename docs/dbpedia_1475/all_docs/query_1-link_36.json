@@ -1,0 +1,32 @@
+{
+    "id": "dbpedia_1475_1",
+    "rank": 36,
+    "data": {
+        "url": "https://community.openai.com/t/how-is-gpt-4-getting-this-information-from-a-url/529074",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How is GPT-4 getting this information from a URL?",
+        "top_image": "https://global.discourse-cdn.com/openai1/original/3X/b/3/b32f604c592f9a403d89909a2ac630d941304c08.png",
+        "meta_img": "https://global.discourse-cdn.com/openai1/original/3X/b/3/b32f604c592f9a403d89909a2ac630d941304c08.png",
+        "images": [
+            "https://sea2.discourse-cdn.com/openai1/user_avatar/community.openai.com/ajay4/48/147216_2.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "gpt-4"
+        ],
+        "tags": null,
+        "authors": [
+            "peter.marise"
+        ],
+        "publish_date": "2023-11-27T11:18:40+00:00",
+        "summary": "",
+        "meta_description": "I have a python function that sends a URL for a news article to GPT-4 along with prompts to get information from it. \n[\n            {\n                &quot;role&quot;: &quot;system&quot;,\n                &quot;content&quot;: &#39;You help people get info&hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://global.discourse-cdn.com/openai1/optimized/1X/4659b509fa5c4fa41b0a8e82ed87a7412c5a46a7_2_32x32.png",
+        "meta_site_name": "OpenAI Developer Forum",
+        "canonical_link": "https://community.openai.com/t/how-is-gpt-4-getting-this-information-from-a-url/529074",
+        "text": "I have a python function that sends a URL for a news article to GPT-4 along with prompts to get information from it.\n\n[ { \"role\": \"system\", \"content\": 'You help people get information from articles' }, { \"role\": \"user\", \"content\": f'Here is a URL: {url}' }, { \"role\": \"user\", \"content\": 'Using JSON format, tell what \"country\" is the article about, what is the \"article date\" and provide a 100 word \"summary\" of it.' }, ]\n\nI understand that GPT-4 through the API doesn’t have internet access per this response to some URLs:\n\nResponse: I'm sorry, but as an AI, I'm currently unable to directly access or retrieve information from external URLs or websites. However, I can help you understand how to extract information from an article. If you provide the text or key details from the article, I'd be more than happy to help summarize or analyze it.\n\nHowever, I also get the response I want from some URLs and looks like it is able to go to the URL and get the information from that rather than just scanning the URL string.\n\nFor example, this URL: www.leadership.ng/4000mw-electricity-generation-shameful-unacceptable-adelabu gives me this response:\n\nResponse: { \"country\": \"Nigeria\", \"article_date\": \"2021-10-13\", \"summary\": \"The governorship candidate of the All Progressives Congress (APC) in Oyo State, Chief Adebayo Adelabu, has described Nigeria's 4000MW electricity generation as shameful and unacceptable. He stated this during a lecture at the University of Ibadan, where he emphasized the need for Nigeria to improve its power sector. Adelabu also highlighted the importance of electricity in driving economic growth and development. He further suggested that Nigeria should explore alternative sources of energy, such as solar, wind, and nuclear, to boost its electricity generation.\" }\n\nWhich is exactly what I wanted, although the article_date is wrong but the summary has more information than what is in the URL string, so appears it has gone to the URL.\n\nCan anyone shed some light on what is happening here?\n\nThe API models cannot access the Internet.\n\nIt appears that the JSON output request is a bypass for anti-hallucination that has been trained to prevent generation of such links.\n\nThe country is in the top-level domain name and also a person’s name. The rest is spelled out in the URL So enough information is there for a creative writing assignment.\n\nThe AI will fabricate an article just from the text within a URL, naturally writing the most likely text to appear - the most likely text to appear after the request:\n\nSummarize the article: www.leadership.ng/american-ai-scams-grandmother-Kano\n\nAn American grandmother has been scammed out of thousands of dollars by a man posing as a US soldier serving in Syria. The man contacted the grandmother on a dating website, claiming to be in love, and began asking for money for various reasons, including a sick child and a visa to enter the US. The grandmother, who lives in Kano, Nigeria, sent over $200,000 to the man before realizing she had been scammed. Police in Kano have arrested a woman suspected of being an accomplice to the scammer, and are continuing to investigate."
+    }
+}
