@@ -1,0 +1,33 @@
+{
+    "id": "dbpedia_963_0",
+    "rank": 76,
+    "data": {
+        "url": "https://stackoverflow.com/questions/52259328/bad-column-name-message-from-bokeh-plot",
+        "read_more_link": "",
+        "language": "en",
+        "title": "\"BAD_COLUMN_NAME\" message from Bokeh plot",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://i.sstatic.net/gwfWQ.png?s=64",
+            "https://lh5.googleusercontent.com/-3_Y4AQOk6Qo/AAAAAAAAAAI/AAAAAAAAAO8/P9bf4Em3S9Y/photo.jpg?sz=64",
+            "https://i.sstatic.net/gwfWQ.png?s=64",
+            "https://stackoverflow.com/posts/52259328/ivc/607d?prg=43026ff7-76a4-465b-9d16-bb5f8e276c07"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2018-09-10T13:52:31",
+        "summary": "",
+        "meta_description": "I am trying to create a simple bokeh chart (vert or hor) from a csv file and seem to be having issues.  I am able to create the chart utilizing ColumnDataSource by listing items manually, but when ...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/52259328/bad-column-name-message-from-bokeh-plot",
+        "text": "I am trying to create a simple bokeh chart (vert or hor) from a csv file and seem to be having issues. I am able to create the chart utilizing ColumnDataSource by listing items manually, but when I try to create the same chart from a simple csv file, it seems to give me trouble. Now I am trying to just create the figure by reading a pandas df. I am getting the dreaded Bad Column Name error message. Any help is appreciated. First time posting so let me know if I have posted incorrectly and I will fix. Thanks in advance.\n\nfrom bokeh.io import output_notebook, show output_notebook() from bokeh.core.properties import value from bokeh.io import show, output_file from bokeh.models import ColumnDataSource, HoverTool, FactorRange, Range1d from bokeh.plotting import figure from bokeh.transform import dodge output_file(\"test.html\") import pandas as pd df = pd.read_csv(r'C:\\test.csv') print(df) Mains Total Length Length Surveyed\n\n0 1.0 88.4 87.6 1 2.0 313.8 316.8 2 3.0 271.0 265.6 3 4.0 155.0 153.1 4 5.0 301.8 299.0 5 6.0 293.9 132.3 6 7.0 148.1 147.2 7 8.0 292.9 290.1 8 9.0 307.6 306.0 9 10.0 559.0 236.0 10 11.0 448.8 441.5 11 12.0 297.9 13.0 12 13.0 172.2 67.5\n\nsource = ColumnDataSource(data=dict(df)) Mains = data=dict(df) data = {'Mains': df} p = figure(x_range=(0,20), y_range=(0, 500), plot_height=250, title=\"CCTV Survey August 6- 9th, 2018\", toolbar_location=None, tools=\"\") p.vbar(x=dodge('Mains', -0.25, range=p.x_range), top='2015', width=0.2, source=source, color=\"#c9d9d3\", legend=value(\"Total Length\")) p.vbar(x=dodge('Mains', 0.0, range=p.x_range), top='2016', width=0.2, source=source, color=\"#718dbf\", legend=value(\"Length Surveyed\")) p.add_tools(HoverTool(tooltips=[(\"Total Length\", \"@2015 ft\"),(\"Length Surveyed\", \"@2016 ft\")])) p.xaxis.major_label_orientation = 1.4 ##p.x_range.factors=data_dict['x'] ##p.x_range.range_padding = 0.0 p.xgrid.grid_line_color = None p.legend.location = \"top_left\" p.legend.orientation = \"horizontal\" show(p)\n\nERROR:bokeh.core.validation.check:E-1001 (BAD_COLUMN_NAME): Glyph refers to nonexistent column name: 2015 [renderer: GlyphRenderer(id='107d32b5-2700-4608-b1d8-9d0602f82a5b', ...)] ERROR:bokeh.core.validation.check:E-1001 (BAD_COLUMN_NAME): Glyph refers to nonexistent column name: 2016 [renderer: GlyphRenderer(id='4dcb960b-b29e-4998-972a-046311d037f8', ...)]"
+    }
+}
