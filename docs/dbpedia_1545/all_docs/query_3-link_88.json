@@ -1,0 +1,33 @@
+{
+    "id": "dbpedia_1545_3",
+    "rank": 88,
+    "data": {
+        "url": "https://stackoverflow.com/questions/60815745/can-i-copy-a-directory-from-some-location-outside-the-docker-area-to-my-dockerfi",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Can I copy a directory from some location outside the docker area to my dockerfile?",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/dc105cdd75395154274f9da3d7612a9f?s=64&d=identicon&r=PG",
+            "https://lh5.googleusercontent.com/-UC-Gm4M0pNQ/AAAAAAAAAAI/AAAAAAAAAC4/6ORWhYFOGTI/photo.jpg?sz=64",
+            "https://i.sstatic.net/sZBFW.jpg?s=64",
+            "https://stackoverflow.com/posts/60815745/ivc/51af?prg=8f53356e-9fe2-4b85-b493-a1d71c0be890"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2020-03-23T14:40:42",
+        "summary": "",
+        "meta_description": "I have installed a library called fastai==1.0.59 via requirements.txt file inside my Dockerfile. \n\nBut the purpose of running the Django app is not achieved because of one error. To solve that erro...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/60815745/can-i-copy-a-directory-from-some-location-outside-the-docker-area-to-my-dockerfi",
+        "text": "Short Answer\n\nNo\n\nLong Answer\n\nWhen you run docker build the current directory and all of its contents (subdirectories and all) are copied into a staging area called the 'build context'. When you issue a COPY instruction in the Dockerfile, docker will copy from the staging area into a layer in the image's filesystem.\n\nAs you can see, this procludes copying files from directories outside the build context.\n\nWorkaround\n\nEither download the files you want from their golden-source directly into the image during the build process (this is why you often see a lot of curl statements in Dockerfiles), or you can copy the files (dirs) you need into the build-tree and check them into source control as part of your project. Which method you choose is entirely dependent on the nature of your project and the files you need.\n\nNotes\n\nThere are other workarounds documented for this, all of them without exception break the intent of 'portability' of your build. The only quality solutions are those documented here (though I'm happy to add to this list if I've missed any that preserve portability)."
+    }
+}
