@@ -1,0 +1,51 @@
+{
+    "id": "dbpedia_1428_2",
+    "rank": 16,
+    "data": {
+        "url": "https://expressionengine.com/forums/topic/202525/fatal-error-using-this-when-not-in-object-context",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Fatal error: Using $this when not in object context",
+        "top_image": "https://expressionengine.com//assets/images/website-social-card.png",
+        "meta_img": "https://expressionengine.com//assets/images/website-social-card.png",
+        "images": [
+            "https://expressionengine.com/assets/images/ee-logo-white.svg",
+            "https://expressionengine.com/assets/images/grav-fallback.png",
+            "https://expressionengine.com/assets/images/ee-logo-white.svg",
+            "https://expressionengine.com/asset/images/avatars/avatar_61106.jpg",
+            "https://expressionengine.com/asset/images/avatars/avatar_61106.jpg",
+            "https://expressionengine.com/asset/images/avatars/avatar_173496.jpg",
+            "https://expressionengine.com/asset/images/avatars/avatar_173496.jpg",
+            "https://secure.gravatar.com/avatar/bb19368dfd3b1aed35c339ca9ace98ff.png?s=80&d=retro&r=pg",
+            "https://secure.gravatar.com/avatar/bb19368dfd3b1aed35c339ca9ace98ff.png?s=80&d=retro&r=pg",
+            "https://expressionengine.com/asset/images/avatars/avatar_61106.jpg",
+            "https://expressionengine.com/asset/images/avatars/avatar_61106.jpg",
+            "https://expressionengine.com/asset/images/avatars/avatar_173496.jpg",
+            "https://expressionengine.com/asset/images/avatars/avatar_173496.jpg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "ExpressionEngine",
+            "CMS",
+            "content",
+            "management",
+            "system",
+            "EECMS",
+            "EE"
+        ],
+        "tags": null,
+        "authors": [
+            "Packet Tide",
+            "packettide.com"
+        ],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "Not sure what is going on here….not exactly a developer just trying to learn. For now the idea is that code snip…",
+        "meta_lang": "en",
+        "meta_favicon": "/assets/images/favicon/apple-touch-icon.png?v=YAmLW3PeY0",
+        "meta_site_name": "ExpressionEngine",
+        "canonical_link": "https://expressionengine.com/forums/topic/202525/fatal-error-using-this-when-not-in-object-context",
+        "text": "Not sure what is going on here….not exactly a developer just trying to learn. For now the idea is that code snip can be pasted into template but eventually would want to learn how to make a simple extension out of it.\n\nThank you.\n\nEDIT NOTE: it seems that if I remove the use of functions it gets processed right…what gives? Can we not put queries inside functions?\n\nFatal error: Using $this when not in object context in /sandbox/ee2/system/expressionengine/libraries/Functions.php(656) : eval()’d code on line 15\n\n<?php // ============================================================= // Delete all comments that are made by guests - nonmembers // and update comment counter // ============================================================= // --- 'Show Comments' function find_comments() { // connect to database global $db; // SHOW comments that will be deleted $show_comments = $this->EE->db->query (\"SELECT * FROM exp_comments WHERE NOT EXISTS (SELECT * FROM exp_members WHERE exp_members.member_id = exp_comments.author_id)\"); if ($show_comments->num_rows > 0) { echo \"Name » Comment <hr >\\n\"; foreach($show_comments->result as $row) { echo $row['name'].' » '.$row['comment'].\" <hr >\\n\"; } } else { echo \"All of the comments are made by members.\"; } } // --- END 'Show Comments' // execute find_comments(); // --- 'Delete Comments' function delete_comments () { // connect to database global $db; // DELETE the comments shown above $delete_comments = $this->EE->db->query(\"DELETE FROM exp_comments WHERE NOT EXISTS (SELECT * FROM exp_members WHERE exp_members.member_id = exp_comments.author_id)\"); echo $this->EE->db->affected_rows.\" comments were deleted.\"; } // execute delete_comments(); // --- END 'Delete Comments' // build form here ?>\n\n$this is a special variable that can only be used inside of a method/function that is bound to an instance of a class.\n\nEx.\n\nclass Person { function get_name() { return $this->name; } }\n\nFor your code you do not need to use $this. Try something like this (pardon the pun):\n\n<?php // ============================================================= // Delete all comments that are made by guests - nonmembers // and update comment counter // ============================================================= // --- 'Show Comments' function find_comments() { // connect to database $EE = get_instance(); // SHOW comments that will be deleted $show_comments = $EE->db->query (\"SELECT * FROM exp_comments WHERE NOT EXISTS (SELECT * FROM exp_members WHERE exp_members.member_id = exp_comments.author_id)\"); if ($show_comments->num_rows > 0) { echo \"Name » Comment <hr >\\n\"; foreach($show_comments->result as $row) { echo $row['name'].' » '.$row['comment'].\" <hr >\\n\"; } } else { echo \"All of the comments are made by members.\"; } } // --- END 'Show Comments' // execute find_comments(); // --- 'Delete Comments' function delete_comments () { // connect to database $EE = get_instance(); // DELETE the comments shown above $delete_comments = $EE->db->query(\"DELETE FROM exp_comments WHERE NOT EXISTS (SELECT * FROM exp_members WHERE exp_members.member_id = exp_comments.author_id)\"); echo $EE->db->affected_rows.\" comments were deleted.\"; } // execute delete_comments(); // --- END 'Delete Comments' // build form here ?>\n\n(edit: damn… not quite quick enough)\n\nafaik, because the code in a template is eval()’d, it isn’t an object and therefore doesn’t have a $this variable. In addition to that, the EE object isn’t referenced and so not available either.\n\nYou could try to get access to the EE object with the same function call as a module would use, just without reference to the $this object:\n\n$EE =& get_instance();\n\n(the variable “$EE” is flexible of course)\n\nYou would then reference this for a query with:\n\n$EE->db->query"
+    }
+}
