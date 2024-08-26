@@ -1,0 +1,35 @@
+{
+    "id": "dbpedia_1311_0",
+    "rank": 84,
+    "data": {
+        "url": "https://stackoverflow.com/questions/77779808/checking-if-a-variable-contains-a-floating-point-value",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Checking if a variable contains a floating-point value",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://cdn.sstatic.net/Img/teams/teams-promo.svg?v=e507948b81bf",
+            "https://www.gravatar.com/avatar/e76d53bb1eaa6d6e60f09c3b20f655fc?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/G8aQW.jpg?s=64",
+            "https://stackoverflow.com/posts/77779808/ivc/c238?prg=05774992-8c9c-46c9-814a-ee603f23bec6"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Gabriel Saul"
+        ],
+        "publish_date": "2024-01-08T12:03:18",
+        "summary": "",
+        "meta_description": "In the R language, is there any reliable method of checking if a variable is floating-point or integer-valued?\nI have looked at several proposed solutions. The R helpfile for is.integer(x) suggests...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/77779808/checking-if-a-variable-contains-a-floating-point-value",
+        "text": "In the R language, is there any reliable method of checking if a variable is floating-point or integer-valued?\n\nI have looked at several proposed solutions. The R helpfile for is.integer(x) suggests using the round(x) function, as such:\n\nis.wholenumber <- function(x, tol = .Machine$double.eps^0.5) abs(x - round(x)) < tol\n\nHowever, this is checking for whole number, not a number with a floating point. This function would return TRUE for the cases of 1.0, 2.0, 3.0, ... where there is no fractional part of the value, but still a floating-point in its notation.\n\nIt boggles me that I haven't found a simple solution for checking this in R as it is designed to deal with manipulating large tables of (often heterogeneous) data. I need this particular solution as I am applying manipulations to data that are conditional on their type due to the potential data ranges across the whole dataset. So, if my algorithm comes across a value of the nature 1.0, 2.0, 3.0, ..., it should know that a particular manipulation is applicable.\n\nI have tried converting the value to a string using sprintf() and then checking if the string contains a period. This has the obvious issue of formatting the number based on the specifier, hence:\n\nx = 5.0 y = 5 sprintf(\"%f\", x) # \"5.000000\" sprintf(\"%f\", y) # \"5.000000\" sprintf(\"%d\", x) # \"5\" sprintf(\"%d\", y) # \"5\"\n\nAs shown, there is no way to differentiate them.\n\nEDIT: For more detail on my application and why this solution is needed.\n\nI am working with large tables of data and therefore I am not defining the data myself. Part of my algorithm involves taking a row of data, incremementing/decrementing its values and passing it through a classifier to look for changes in the outcome. For simplicity, I am only considering numeric values. In terms of how the data is formatted, different numerical types can undergo different manipulations. A real-valued feature can be incrememented/decremented in fractional steps, e.g. 5.0, 4.8, 4.6, 4.4, ... whereas an integer-valued feature must be manipulated in whole steps, e.g. 5, 4, 3, 2, ...\n\nI want to calculate the increment when I identify the data type of the feature. Thus, if the feature value is 32, the algorithm will increment/decrement in whole steps. If the feature value is 5.9, the algorithm will increment/decrement in fractional steps.\n\nThe problem is when the algorithm encounters a floating-point value of 5.0. This signifies that it is in the real-valued domain, but it is judged as a whole number according to R's functionality.\n\nIf I cannot find a solution for this, I will have to predefine the data type of each column in each table."
+    }
+}
