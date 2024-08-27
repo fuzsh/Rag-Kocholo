@@ -1,0 +1,31 @@
+{
+    "id": "dbpedia_1734_1",
+    "rank": 31,
+    "data": {
+        "url": "https://stackoverflow.com/questions/40659992/postgresql-simple-query-very-slow-response-time",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Postgresql simple query very slow response time",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/fdb1040cbc167fe242c38f628b1b3bfe?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/40659992/ivc/016f?prg=36ba9207-7aed-4480-a53d-77818c70f0fd"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2016-11-17T16:22:24",
+        "summary": "",
+        "meta_description": "I have a really simple database that I am using to build out some JSON for Elasticsearch. I'm the only person connected to the database, and only using it for this specific task. Anyway, hitting some",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/40659992/postgresql-simple-query-very-slow-response-time",
+        "text": "I have a really simple database that I am using to build out some JSON for Elasticsearch. I'm the only person connected to the database, and only using it for this specific task. Anyway, hitting some tables on the database is incredibly slow, so slow that it will take months to build out the Elasticsearch index I am working on. I've looked at all the articles regarding Postgresql tuning, etc, and nothing I'm changing is fixing the issue. The query that I am doing, as you can see below in the EXPLAIN ANALYZE portion, is a very simple query, with no joins or anything else, and it's still very slow. I'm just trying to figure out what I can do to speed this up, because I see no reason for this to be so slow.\n\nHere's all the relevant information I can think of, if anything more is needed, I can add.\n\nSystem Specs\n\n[root@pgdb ~]# free -m total used free shared buffers cached Mem: 61444 39416 22027 458 8 38531 -/+ buffers/cache: 876 60568 Swap: 0 0 0 [root@pgdb ~]# cat /proc/cpuinfo processor : 0 vendor_id : GenuineIntel cpu family : 6 model : 62 model name : Intel(R) Xeon(R) CPU E5-2670 v2 @ 2.50GHz\n\nAll Tables\n\ncotitsk=# \\d+ List of relations Schema | Name | Type | Owner | Size | Description --------+------------------+-------+----------+---------+------------- public | company | table | postgres | 1838 MB | public | company_industry | table | postgres | 1621 MB | public | company_title | table | postgres | 3837 MB | public | industry | table | postgres | 224 kB | public | industry_skill | table | postgres | 446 MB | public | industry_title | table | postgres | 1229 MB | public | interest | table | postgres | 344 MB | public | skill | table | postgres | 438 MB | public | skill_skill | table | postgres | 21 GB | public | title | table | postgres | 1841 MB | public | title_interest | table | postgres | 2799 MB | public | title_skill | table | postgres | 27 GB | public | title_title | table | postgres | 11 GB | (13 rows)\n\nSchema of Table Being Queried\n\ncotitsk=# \\d+ skill_skill Table \"public.skill_skill\" Column | Type | Modifiers | Storage | Stats target | Description -----------+--------+-----------+---------+--------------+------------- skill1_id | bigint | not null | plain | | skill2_id | bigint | not null | plain | | count | bigint | not null | plain | | Foreign-key constraints: \"skill_skill_skill1_fk\" FOREIGN KEY (skill1_id) REFERENCES skill(skill_id) \"skill_skill_skill2_fk\" FOREIGN KEY (skill2_id) REFERENCES skill(skill_id)\n\nApproximate Row Count of Table Being Queried\n\ncotitsk=# SELECT reltuples::bigint AS estimate FROM pg_class where relname='skill_skill'; estimate ----------- 435104320 (1 row)\n\nExplain Analyze\n\ncotitsk=# explain analyze select * from skill_skill where skill1_id = '2701941' order by count desc limit 1000; QUERY PLAN ------------------------------------------------------------------------------------------------------------------------------------------ Limit (cost=8228458.83..8228461.33 rows=1000 width=24) (actual time=37163.205..37163.600 rows=1000 loops=1) -> Sort (cost=8228458.83..8229292.78 rows=333580 width=24) (actual time=37163.203..37163.394 rows=1000 loops=1) Sort Key: count DESC Sort Method: top-N heapsort Memory: 127kB -> Seq Scan on skill_skill (cost=0.00..8210169.00 rows=333580 width=24) (actual time=14021.081..37128.913 rows=210902 loops=1) Filter: (skill1_id = '2701941'::bigint) Rows Removed by Filter: 434893298 Planning time: 0.062 ms Execution time: 37163.747 ms (9 rows)\n\nPostgresql.conf"
+    }
+}

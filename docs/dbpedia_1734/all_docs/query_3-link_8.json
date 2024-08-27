@@ -1,0 +1,47 @@
+{
+    "id": "dbpedia_1734_3",
+    "rank": 8,
+    "data": {
+        "url": "https://docs-snaplogic.atlassian.net/wiki/spaces/SD/pages/1438761/Kafka%2BConsumer",
+        "read_more_link": "",
+        "language": "en",
+        "title": "SnapLogic Documentation",
+        "top_image": "https://docs-snaplogic.atlassian.net/wiki/s/-52506674/6452/cd144b5a79d5cc63d0a20c4c163e20cf27a1a40c/26/_/favicon-update.ico",
+        "meta_img": "https://docs-snaplogic.atlassian.net/wiki/s/-52506674/6452/cd144b5a79d5cc63d0a20c4c163e20cf27a1a40c/26/_/favicon-update.ico",
+        "images": [
+            "https://docs-snaplogic.atlassian.net/wiki/download/attachments/32770/atl.site.logo?version=6&modificationDate=1597725906155&cacheVersion=1&api=v2",
+            "https://docs-snaplogic.atlassian.net/wiki/download/attachments/32770/atl.site.logo?version=6&modificationDate=1597725906155&cacheVersion=1&api=v2",
+            "https://docs-snaplogic.atlassian.net/wiki/download/attachments/34540/SD?version=5&modificationDate=1500313042033&cacheVersion=1&api=v2",
+            "https://w7sauampoc.execute-api.us-east-1.amazonaws.com/comment-search.svg",
+            "https://docs-snaplogic.atlassian.net/wiki/aa-avatar/5fd93102692b7901103f8b0d",
+            "https://docs-snaplogic.atlassian.net/wiki/aa-avatar/557058:529f1c0b-36ed-49ba-a145-af8df879ae5c",
+            "https://docs-snaplogic.atlassian.net/wiki/aa-avatar/6266c6ed593e80006f14b9cb",
+            "https://docs-snaplogic.atlassian.net/wiki/download/thumbnails/1438761/kafka-consumer-overview.png?version=1&modificationDate=1670561560574&cacheVersion=1&api=v2&width=650&height=857",
+            "https://docs-snaplogic.atlassian.net/wiki/download/thumbnails/1438761/Add_Icon.png?version=1&modificationDate=1612770844688&cacheVersion=1&api=v2&width=12&height=12",
+            "https://docs-snaplogic.atlassian.net/wiki/download/thumbnails/1438761/Kafka_Consumer_Key_Consumer.png?version=1&modificationDate=1612771001813&cacheVersion=1&api=v2&width=975&height=910",
+            "https://docs-snaplogic.atlassian.net/wiki/download/thumbnails/1438761/KafkaConsumer_Partitions.png?version=1&modificationDate=1612771041203&cacheVersion=1&api=v2&width=607&height=780",
+            "https://docs-snaplogic.atlassian.net/wiki/download/thumbnails/1438761/Pipeline.png?version=1&modificationDate=1612771244845&cacheVersion=1&api=v2&width=300&height=128",
+            "https://docs-snaplogic.atlassian.net/wiki/download/thumbnails/1438761/Consumer_Settings.png?version=1&modificationDate=1612771285529&cacheVersion=1&api=v2&width=578&height=916",
+            "https://docs-snaplogic.atlassian.net/wiki/download/thumbnails/1438761/Consumer_Output.png?version=1&modificationDate=1612771392276&cacheVersion=1&api=v2&width=500&height=420",
+            "https://docs-snaplogic.atlassian.net/wiki/download/thumbnails/1438761/Consumer_output_JSON.png?version=1&modificationDate=1612771409180&cacheVersion=1&api=v2&width=447&height=440",
+            "https://docs-snaplogic.atlassian.net/wiki/download/thumbnails/1438761/Mapper_Snap.png?version=1&modificationDate=1612771467193&cacheVersion=1&api=v2&width=850&height=497",
+            "https://docs-snaplogic.atlassian.net/wiki/download/thumbnails/1438761/Mapper_Output_JSON.png?version=1&modificationDate=1612771522917&cacheVersion=1&api=v2&width=740&height=520",
+            "https://docs-snaplogic.atlassian.net/wiki/download/thumbnails/1438051/Expression.png?version=1&modificationDate=1612815630214&cacheVersion=1&api=v2&width=16&height=16"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2024-08-21T00:00:00",
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "",
+        "meta_favicon": "/wiki/s/-52506674/6452/cd144b5a79d5cc63d0a20c4c163e20cf27a1a40c/26/_/favicon-update.ico",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "In this article\n\nOverview\n\nYou can use the Kafka Consumer Snap to read or consume documents from a Kafka topic.\n\nPrerequisites\n\nA valid account with the required permissions.\n\nA Kafka topic with parameters that are valid for consumption (reading).\n\nIn order for the notifications to work properly, all the Consumer and Acknowledge Snaps that belong to one consumer group should execute in the same node of the Snaplex. You can either use Pipeline Execute Snap to execute different Pipelines in the same node, or place all the Consumer and Acknowledge Snaps into one Pipeline.\n\nSupport for Ultra Pipelines\n\nWorks in Ultra Pipelines.\n\nLimitations and Known Issues\n\nNone.\n\nSnap Input and Output\n\nSnap Settings\n\nKey Concepts\n\nConsumers and Consumer Groups\n\nTo help scale the consumption of messages from a topic, you can split the data that is being read among multiple consumers, which allows a number of consumers to read from a topic. When you use multiple Kafka Consumer instances configured with the same consumer group, each instance is assigned a different subset of partitions in the topic.\n\nFor example, if a single Kafka Consumer Snap (c1) subscribes to a topic t1 with four partitions, and c1 is the only consumer in consumer group g1, then c1 gets all the messages from all the four partitions.\n\nIf you add a second Kafka Consumer Snap (c2), to the Pipeline within the the same consumer group (g1), the Snap assigns two partitions (for example, 0 and 2) to consumer c1 and two other partitions (for example, 1 and 3) to consumer c2.\n\nIf you add more consumers to a single group, and the number of consumers is more than the number of existing partitions, then some of the consumers remain idle and do not receive messages.\n\nIf you add additional consumers to a different consumer group (for example, g2), then those consumers behave independently of those within the consumer group g1.\n\nConsider the following example. For topic t1 with four partitions, four of the five consumers in g1 receive messages, and c5 remains in idle state (because there is no available partition to assign to this consumer). For consumer group g2, consumer c1 receives messages from partitions 0 and 2, and consumer c2 receives messages from partitions 1 and 3.\n\nTherefore, it is important to know how many partitions exist within a topic while adding consumers to consume the messages.\n\nExample\n\nConsuming Messages from a Kafka Topic\n\nThis example demonstrates how messages are read from a Kafka topic, and how the selected output documents are sent to the downstream Mapper view.\n\nFirst, we configure the Kafka Consumer Snap to read the messages from the Topic, Sample_Topic, under the Group ID, consumergroup. We select the Output Mode as One output document per batch, because we want to view the output records in batches.\n\nAfter validation, we can view the output preview of the Kafka Consumer Snap as follows:\n\nWe use the Mapper Snap to display only those fields that we require in the output view. Note that we set theMapping root to $batch[*] to map the fields of each record in the batch. Hence, we configure the Mapper Snap as shown below:\n\nUpon successful execution, we see the output preview of the Mapper Snap as follows:\n\nDownload this Pipeline.\n\nDownloads"
+    }
+}

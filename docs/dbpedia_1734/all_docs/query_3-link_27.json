@@ -1,0 +1,31 @@
+{
+    "id": "dbpedia_1734_3",
+    "rank": 27,
+    "data": {
+        "url": "https://docs.ksqldb.io/en/latest/how-to-guides/use-a-custom-timestamp-column/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How to use a custom timestamp column ¶",
+        "top_image": "https://docs.ksqldb.io/en/latest/img/favicon.ico",
+        "meta_img": "https://docs.ksqldb.io/en/latest/img/favicon.ico",
+        "images": [
+            "https://docs.ksqldb.io/en/latest/img/logo.png",
+            "https://docs.ksqldb.io/en/latest/img/logo.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "Use the timestamp attribute within events to do time-related processing with ksqlDB",
+        "meta_lang": "en",
+        "meta_favicon": "../../img/favicon.ico",
+        "meta_site_name": "",
+        "canonical_link": "https://docs.ksqldb.io/en/latest/how-to-guides/use-a-custom-timestamp-column/",
+        "text": "Context¶\n\nYou have events that have a timestamp attribute. You want to do time-related processing over them and want ksqlDB to use those timestamps during processing. Because ksqlDB defaults to using the timestamp metadata of the underlying Kafka records, you need to tell ksqlDB where to find the timestamp attribute within the events. This is called using event-time.\n\nIn action¶\n\nUsing event-time¶\n\nUsing event-time allows ksqlDB to handle out-of-order events during time-related processing. Set the timestamp property when creating a stream or table to denote which column to use as the timestamp. If the timestamp column is a string, also set the timestamp_format property to tell ksqlDB how to parse it.\n\nBegin by telling ksqlDB to start all queries from the earliest point in each topic.\n\nCreate a stream s1 that has a timestamp column, ts. Notice that the timestamp property hasn't been set yet. This will make it easier to see how the functionality behaves later in this guide.\n\nInsert some rows into s1, setting the ts column to dates that are not \"now\".\n\nQuery the stream for its columns, including ROWTIME. ROWTIME is a system-column that ksqlDB reserves to track the timestamp of the event.\n\nYour results should look similar to what is below with the exception of ROWTIME and ROWTIME_FORMATTED, which will mirror your wall clock. Because you didn't yet instruct ksqlDB to use event-time, ROWTIME is inherited from the underlying Kafka record. Kafka's default is to set the timestamp at which the record was produced to the topic.\n\nDerive a new stream, s2, from s1 and tell ksqlDB to use event-time. Set the timestamp property to the ts column.\n\nNow compare the timestamps again. This time, notice that ROWTIME has been set to the same value as ts. s2 is now using event-time.\n\nThe query should return the following results.\n\nAny new streams or tables derived from s2 will continue to have their timestamp set to ts unless an operation instructs otherwise.\n\nNot only can you change the timestamp to use as you derive new streams and tables, you can also set it on base ones, too. Simply set the timestamp and timestamp_format properties on the WITH clause.\n\nNote that the underlying timestamp metadata for the Kafka records in topic s3 are not modified. ksqlDB has merely marked that any derived streams or tables from s3 should use the value of ts for ROWTIME.\n\nYou can use timestamps that are represented as milliseconds since the Unix epoch, too.\n\nCreate a stream s4 with a timestamp column of type BIGINT. Because the timestamp is a number, ksqlDB doesn't need to know how to parse its timestamp format — it can interpret it directly as milliseconds since the Unix epoch. This means you can omit the timestamp_format property.\n\nInsert some rows with millisecond timestamps.\n\nAnd run a similar query as above. Remember to set auto.offset.reset to earliest if you haven't yet.\n\nThe query should return the following results.\n\nSimilar to the previous section, you can also use columns of type TIMESTAMP. These columns require data to be in yyyy-mm-ddThh:mm:ss[.S] format, so there is no need to provide the timestamp_format property.\n\nCreate a stream s5 with a column ts of type TIMESTAMP.\n\nInsert some rows with timestamps.\n\nAnd run the following query. Remember to set auto.offset.reset to earliest if you haven't yet.\n\nThe query should return the following results."
+    }
+}

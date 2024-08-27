@@ -1,0 +1,35 @@
+{
+    "id": "dbpedia_1734_3",
+    "rank": 43,
+    "data": {
+        "url": "https://docs.spring.io/spring-modulith/reference/events.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Working with Application Events :: Spring Modulith",
+        "top_image": "https://docs.spring.io/spring-modulith/reference/_/img/favicon.ico",
+        "meta_img": "https://docs.spring.io/spring-modulith/reference/_/img/favicon.ico",
+        "images": [
+            "https://docs.spring.io/spring-modulith/reference/_/img/spring-logo.svg",
+            "https://docs.spring.io/spring-modulith/reference/_images/event-publication-registry-start.png",
+            "https://docs.spring.io/spring-modulith/reference/_images/event-publication-registry-end.png",
+            "https://docs.spring.io/spring-modulith/reference/_/img/spring-logo.svg",
+            "https://docs.spring.io/spring-modulith/reference/_/img/algolia-light.svg",
+            "https://docs.spring.io/spring-modulith/reference/_/img/algolia-dark.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "./_/img/favicon.ico",
+        "meta_site_name": "",
+        "canonical_link": "https://docs.spring.io/spring-modulith/reference/events.html",
+        "text": "To keep application modules as decoupled as possible from each other, their primary means of interaction should be event publication and consumption. This avoids the originating module to know about all potentially interested parties, which is a key aspect to enable application module integration testing (see Integration Testing Application Modules).\n\nOften we will find application components defined like this:\n\nJava\n\nKotlin\n\n@Service @RequiredArgsConstructor public class OrderManagement { private final InventoryManagement inventory; @Transactional public void complete(Order order) { // State transition on the order aggregate go here // Invoke related functionality inventory.updateStockFor(order); } }\n\n@Service class OrderManagement(val inventory: InventoryManagement) { @Transactional fun complete(order: Order) { inventory.updateStockFor(order) } }\n\nThe complete(…) method creates functional gravity in the sense that it attracts related functionality and thus interaction with Spring beans defined in other application modules. This especially makes the component harder to test as we need to have instances available of those depended on beans just to create an instance of OrderManagement (see Dealing with Efferent Dependencies). It also means that we will have to touch the class whenever we would like to integrate further functionality with the business event order completion.\n\nWe can change the application module interaction as follows:\n\nPublishing an application event via Spring’s ApplicationEventPublisher\n\nJava\n\nKotlin\n\n@Service @RequiredArgsConstructor public class OrderManagement { private final ApplicationEventPublisher events; private final OrderInternal dependency; @Transactional public void complete(Order order) { // State transition on the order aggregate go here events.publishEvent(new OrderCompleted(order.getId())); } }\n\n@Service class OrderManagement(val events: ApplicationEventPublisher, val dependency: OrderInternal) { @Transactional fun complete(order: Order) { events.publishEvent(OrderCompleted(order.id)) } }\n\nNote how, instead of depending on the other application module’s Spring bean, we use Spring’s ApplicationEventPublisher to publish a domain event once we have completed the state transitions on the primary aggregate. For a more aggregate-driven approach to event publication, see Spring Data’s application event publication mechanism for details. As event publication happens synchronously by default, the transactional semantics of the overall arrangement stay the same as in the example above. Both for the good, as we get to a very simple consistency model (either both the status change of the order and the inventory update succeed or none of them does), but also for the bad as more triggered related functionality will widen the transaction boundary and potentially cause the entire transaction to fail, even if the functionality that is causing the error is not crucial.\n\nA different way of approaching this is by moving the event consumption to asynchronous handling at transaction commit and treat secondary functionality exactly as that:\n\nAn async, transactional event listener\n\nJava\n\nKotlin\n\n@Component class InventoryManagement { @Async @TransactionalEventListener void on(OrderCompleted event) { /* … */ } }\n\n@Component class InventoryManagement { @Async @TransactionalEventListener fun on(event: OrderCompleted) { /* … */ } }\n\nThis now effectively decouples the original transaction from the execution of the listener. While this avoids the expansion of the original business transaction, it also creates a risk: if the listener fails for whatever reason, the event publication is lost, unless each listener actually implements its own safety net. Even worse, that doesn’t even fully work, as the system might fail before the method is even invoked."
+    }
+}
