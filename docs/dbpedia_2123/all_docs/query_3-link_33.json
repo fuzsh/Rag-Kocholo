@@ -1,0 +1,44 @@
+{
+    "id": "dbpedia_2123_3",
+    "rank": 33,
+    "data": {
+        "url": "https://community.jamf.com/t5/jamf-pro/macos-updates-scheduleosupdate-command/m-p/288340",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Jamf Nation Community",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://community.jamf.com/t5/image/serverpage/avatar-name/xylophone/avatar-theme/candy/avatar-collection/music/avatar-display-size/profile/version/2?xdesc=1.0",
+            "https://community.jamf.com/legacyfs/online/avatars/611b210002184e07be457161e6ae82d4.png",
+            "https://community.jamf.com/legacyfs/online/avatars/611b210002184e07be457161e6ae82d4.png",
+            "https://community.jamf.com/t5/image/serverpage/avatar-name/xylophone/avatar-theme/candy/avatar-collection/music/avatar-display-size/profile/version/2?xdesc=1.0",
+            "https://community.jamf.com/t5/image/serverpage/avatar-name/tower/avatar-theme/candy/avatar-collection/architecture/avatar-display-size/profile/version/2?xdesc=1.0",
+            "https://community.jamf.com/t5/image/serverpage/avatar-name/seafood/avatar-theme/candy/avatar-collection/food/avatar-display-size/profile/version/2?xdesc=1.0",
+            "https://community.jamf.com/t5/image/serverpage/avatar-name/avatar-2/avatar-theme/candy/avatar-collection/Hermes_Default/avatar-display-size/profile/version/2?xdesc=1.0",
+            "https://community.jamf.com/t5/image/serverpage/image-id/23808iD787892118597E76/image-dimensions/150x150/image-coordinates/0%2C0%2C3840%2C3840/constrain-image/false?v=v2",
+            "https://community.jamf.com/t5/image/serverpage/avatar-name/hominid/avatar-theme/candy/avatar-collection/monsters/avatar-display-size/profile/version/2?xdesc=1.0",
+            "https://community.jamf.com/skins/images/840F6D9D31602532754A8DC24BCB37AB/responsive_peak/images/icon_anonymous_message.png",
+            "https://community.jamf.com/skins/images/840F6D9D31602532754A8DC24BCB37AB/responsive_peak/images/icon_anonymous_message.png",
+            "https://community.jamf.com/html/@DB007B9D4B38359F399423E43927D581/assets/logo-jamf-blk.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "community.jamf.com",
+            "user-id"
+        ],
+        "publish_date": "2023-04-07T19:44:05.050000+00:00",
+        "summary": "",
+        "meta_description": "Thank you so much . I really appreciate your response and shared workflow. I will give those ideas a try. - 288329",
+        "meta_lang": "en",
+        "meta_favicon": "https://community.jamf.com/html/@341C36E148083396DBCB6E6A9C18E572/assets/favicon.ico",
+        "meta_site_name": "Jamf Nation",
+        "canonical_link": "https://community.jamf.com/t5/jamf-pro/macos-updates-scheduleosupdate-command/m-p/288340#M257809",
+        "text": "Softwareupdates cannot be deployed with a configuration profile. You would use a configuration profile to set softwareupdate deferrals or configure automatic updates.\n\nJAMF Splits the MDM Commands for Software Updates. Some like installASAP are available in the inventory record, others like MaxUserDeferrals (InstallForceRestart) and come only from mass action's.\n\nSoftwareupdate Scan, Softwareupdate status and some of the others happen automatically without you needing to do anything when you issue the other MDM commands.\n\nUnfortunately you cant, JAMF does not have any method to see issued and completed MDM commands other chan checking each device individually.\n\nI exclusively use the MDM commands to issue software updates now. Other use superman or nudge, but since those tools actually cannot do anything other than pester the user to do the thing I dont bother with them.\n\nMy work flow\n\nA policy runs a script on my devices every day. If there are OS updates available it prompts the user with JAMF Helper and opens System Settings > Software Update. If there are no updates it just exits, we have a 7 day defer. This usually gets about 50% of my users to update\n\n21 days after the OS updates release I push a MaxUserDeferrals mass action with 2 deferrals. Unfortunately MDM commands have about a 30% fail rate, and there is no logging or reporting you can really use. We will usually be around 90% at this point which is compliant for my organization, they want above 95% but 90% will keep you off reports.\n\nAt 30 days I will send notifications to the stragglers advising if their device is not updated it will start to receive software restrictions due to being out of compliance.\n\nat 35 days I target all devices not running the OS we want with software restrictions and force quit all the core apps with notifications to run OS updates. This is usually online devices, and maybe less than 10 devices with actual issues. Make the users come to me.\n\nYour last question. Software Update Servers are depreciated as of 4 years ago or so. The best you can to is configure content caching which is where Macs will cache the OS updates for other Macs, this is literally just a check box and you have no control beyond that. All OS updates must come directly from Apple, you cannot house them on an internal OS update server anymore.\n\nsome literature if you are interested.\n\nmacOS Upgrades and Updates Using a Mass Action Command - Technical Paper: Deploying macOS Upgrades a...\n\nScheduleOSUpdateCommand.Command.UpdatesItem | Apple Developer Documentation\n\nGet the OS Update Status | Apple Developer Documentation\n\nWould it be possible to obtain a copy of this script and to see more of this workflow? I think this is a great idea. I'm very interested in the 1st (would love to create this or utilize this) and 3rd and 4th bullet points.\n\nNot an exact status summary of the mass action command, but I roughly track the progress by creating a smart group with the criteria being below my desired IOS version. I pin that smart group to the Jamf dashboard and can see at a glance the progress as the membership number declines."
+    }
+}

@@ -1,0 +1,32 @@
+{
+    "id": "dbpedia_2123_3",
+    "rank": 42,
+    "data": {
+        "url": "https://community.auth0.com/t/can-we-delete-a-spefici-fields-from-user-profile-at-auth0/37348",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Can we delete a spefici fields from user profile at auth0?",
+        "top_image": "https://global.discourse-cdn.com/auth0/original/3X/3/f/3fd656787590f7b189cf4a56ddd4f3a33a591bb2.svg",
+        "meta_img": "https://global.discourse-cdn.com/auth0/original/3X/3/f/3fd656787590f7b189cf4a56ddd4f3a33a591bb2.svg",
+        "images": [
+            "https://global.discourse-cdn.com/auth0/original/3X/d/4/d4aa2454d2c3b6fda2b9fa83e40f2a3800691350.gif"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "konrad.sopala"
+        ],
+        "publish_date": "2020-02-04T09:33:14+00:00",
+        "summary": "",
+        "meta_description": "Is it possible to delete a specific fields from auth0 profile. I have done updating new fields but unable to fine how to delete/remove a fields from profile.",
+        "meta_lang": "en",
+        "meta_favicon": "https://global.discourse-cdn.com/auth0/optimized/3X/6/8/683858070b3a99e38278121cb791a29de61bf854_2_32x32.png",
+        "meta_site_name": "Auth0 Community",
+        "canonical_link": "https://community.auth0.com/t/can-we-delete-a-spefici-fields-from-user-profile-at-auth0/37348",
+        "text": "Sorry, by “patch” I just meaning calling the users endpoint to update their profile data. As you noted, passing an empty object for a given attribute does not remove the attribute itself, it just sets the attribute to the empty object. To “remove” the attribute completely you’ll need to pass the empty object ({}) to the attribute one level higher in the profile structure, but you want to save the data first so you can write the correct data back.\n\nSave user_metadata locally,\n\nModify your local copy of user_metadata,\n\nClear user_metadata by passing { \"user_metadata\": {} } to the users endpoint,\n\nWrite you local copy of user_metadata back to the user profile via the users endpoint.\n\nUnderstood. As far as I know there’s no way at this time to apply a bulk change in a way that would be convenient. I’d suggest leaving a feature request at Auth0: Secure access for everyone. But not just anyone..\n\nIf you user community is very active (high MUA to total user ratio) you could put the above logic into a rule and let the change take place over time, then clean up the stragglers which limits the bulk changes you need to make.\n\nIf you user community is less active (low MUA : total user ratio) then the only option is leveraging the API and some scripting to work through you user base. Obviously not ideal but not impossible: with ~3 million users that’s a script running for about 60 hours (/users endpoint rate limit is 15rps in production)."
+    }
+}
