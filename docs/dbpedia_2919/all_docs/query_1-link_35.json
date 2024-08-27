@@ -1,0 +1,35 @@
+{
+    "id": "dbpedia_2919_1",
+    "rank": 35,
+    "data": {
+        "url": "https://electronics.stackexchange.com/questions/210822/lightweight-point-to-point-communication-protocols",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Lightweight point to point communication protocols",
+        "top_image": "https://cdn.sstatic.net/Sites/electronics/Img/apple-touch-icon@2.png?v=7b89fddaa66b",
+        "meta_img": "https://cdn.sstatic.net/Sites/electronics/Img/apple-touch-icon@2.png?v=7b89fddaa66b",
+        "images": [
+            "https://cdn.sstatic.net/Sites/electronics/Img/logo.svg?v=d40286c6a4eb",
+            "https://www.gravatar.com/avatar/6d9bf22f041fc1c62afce63acf41d089?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/a007be5a61f6aa8f3e85ae2fc18dd66e?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/cfa80d65597d3e43664c762cbb715e38?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/5809a135057c41d116f6106d7fba67ac?s=64&d=identicon&r=PG",
+            "https://electronics.stackexchange.com/posts/210822/ivc/a02c?prg=8ed1d0a9-e37b-4e65-a349-447b2a0120e9"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2016-01-12T00:47:56",
+        "summary": "",
+        "meta_description": "I'm working on designing a point to point communications link for a cubesat.  I just want to confirm some of my understanding.\n\nIn my opinion it is only necessary to have physical layer and data link",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/electronics/Img/favicon.ico?v=a17b31b3918d",
+        "meta_site_name": "Electrical Engineering Stack Exchange",
+        "canonical_link": "https://electronics.stackexchange.com/questions/210822/lightweight-point-to-point-communication-protocols",
+        "text": "Why do you not intend to use an existing protocol?\n\nAFAICT, there are a bunch of protocols already in use, developed over many years, that have solved many of the problems, based on research and experience. So I'd use something that works and has been debugged unless you are doing research. If it is research, you need to describe the complete use-case, and not just some specific features of the use-case.\n\nOld protocols may survive simply because the technology in satellites not only has to work, but also needs to be tested, characterised and 'certified' to work in space. That is an expensive, specialised and slow process. So saving cost and time by using something that is already known to work reliably makes even more sense than the usual Earth-bound engineering projects.\n\nIs this for an commercial, research, or amateur project?\n\nI know the amateurs have built the equivalent of a global network of ground stations, which hand-off to the next station as the satellite orbits (a bit like the ground-station network NASA or other space agencies have, but using equipment made available for parts of a day [the owners of the equipment use it too, themselves, for their own purposes] by enthusiastic amateurs). Are you trying to solve that problem?\n\nIn which case it might not be a single point-to-point communication. It may be multiple Earth-based stations each trying to talk to the same satellite. Or it may be multiple Earth-based stations trying to talk to multiple satellites.\n\nIf it is an amateur project, contact groups directly. The UK Amateur Satellite group is friendly, and members collaborated with colleagues in AMSAT-NL, in the creation of the software and network for the amateur-radio-based international network of ground-stations. They also built the low-cost radio hardware used to track their FUNCube CubeSat.\n\nOne of the earliest packet wireless networks ALOHnet went on to influence Ethernet and Inmarsat. So, for example, some of the successful ideas may be retained from that work. As long as it works, has no significant disadvantages, has been proven to work in space, and has hardware available, which is tested and space 'certified', what motivation is there to change?\n\nEdit:\n\nThere are some papers on high-latency, and even a stackoverflow question Networking with extremely high latency which might give some inspiration.\n\nThere are old protocols with debugged implementations. These have the benefit that they are so old the machines they ran on had few resources, and so may be well suited to your application.\n\nFor example, the Kermit Protocol. That wikipedia article says \"Kermit software has been used for tasks ranging from simple student assignments to solving compatibility problems aboard the International Space Station.\" So it has some useful pedigree :-)\n\nIt supports a 'sliding window protocol' which supports selective retransmission. That should help recover from errors and do re-assembly of damaged streams of data.\n\nIt is Open Source, and had C implementations. So you might be able to get the source and port it. Kermit ran on machines with less than 64k address space. So it might fit onto your hardware.\n\nEven if Kermit is not a good fit, I would recommend looking at old (circa 1980's) protocols and implementations because the machine constraints may be comparable to the constraints of your in-flight hardware; even if your hardware is less constrained than the 1980's, your power budget might be helped by a low-resource protocol implementation."
+    }
+}

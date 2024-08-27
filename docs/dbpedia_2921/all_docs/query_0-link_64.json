@@ -1,0 +1,30 @@
+{
+    "id": "dbpedia_2921_0",
+    "rank": 64,
+    "data": {
+        "url": "https://community.libre.space/t/lora-protocol-in-space/7275",
+        "read_more_link": "",
+        "language": "en",
+        "title": "LoRa protocol in space",
+        "top_image": "https://community.libre.space/uploads/default/original/2X/1/1ff2602fc9c0a2ed3825df04d595d22029d966a4.png",
+        "meta_img": "https://community.libre.space/uploads/default/original/2X/1/1ff2602fc9c0a2ed3825df04d595d22029d966a4.png",
+        "images": [
+            "https://community.libre.space/images/emoji/twitter/wink.png?v=12"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2021-01-28T08:47:44+00:00",
+        "summary": "",
+        "meta_description": "I know this question may have raised here and there in the past but I thought I would be nice to have it all in the same topic. Can someone expand on what’s the deal with using LoRa for satellites and in SatNOGS? Is it o&hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://community.libre.space/uploads/default/optimized/2X/4/4bddea765c6fb46416a678fe6b703b80e9cd29c9_2_32x32.png",
+        "meta_site_name": "Libre Space Community",
+        "canonical_link": "https://community.libre.space/t/lora-protocol-in-space/7275",
+        "text": "I know this question may have raised here and there in the past but I thought I would be nice to have it all in the same topic. Can someone expand on what’s the deal with using LoRa for satellites and in SatNOGS? Is it only legal or also technical? How do well-known cubesats like those from Lacuna or FossaSat overcome those issues?\n\nThanks in advance!\n\nI will attempt a take on in:\n\nFirst: LoRa is essentially two layers. LoRa PHY and LoRaWAN. I will not be bothered with LoRaWAN since this is a layer that to my knowledge has not been used by satellites yet. Let’s talk now about the physical layer LoRa PHY:\n\nLoRa uses a proprietary spread spectrum modulation that is similar to and a derivative of chirp spread spectrum (CSS) modulation.\n\nSemtech has made sure that you need to buy their chipset in order to TX or RX LoRa signals. The problem with that is:\n\nTo support it in SatNOGS we need a demodulator that can run using a SDR. There are some attempts (like gr-lora) to do so, but the legality of reverse engineering a proprietary project is sketchy at best (unless Samtech is explicitly OK with it).\n\nUsage of LoRa in space implies choosing an ISM frequency to beacon on, and because there is no harmonized ISM global allocation, you either make your satellite beacon in specific parts of the world, or you are illegal in many places\n\nIf you are not using an ISM frequency and you are trying to use LoRa as an Radio Amateur Satellite Service, we (LSF/SatNOGS) believe that due to its nature (proprietary modulation) this is not in line with the Radio Amateur Service, and we will not be supporting such usage.\n\nSo realistically speaking, the only way I can see SatNOGS supporting LoRa PHY is if all following are true:\n\ngr-lora or other reversing gets OK from samtech\n\nusage is outside radio-amateur service\n\nusage is not violating regional ITU allocations\n\nps. or Samtech releases LoRa as an open standard, ha!\n\nAs a bit of an addendum do this, LoRa is incredibly bandwidth inefficient. This is due to the use of the wide bandwidth chirp modulation (spreading).\n\nAs an example Fossasat-1 uses 125 kHz bandwidth, a ‘spreading factor’ of 11, and r=1/2 FEC to achieve a user data rate of… 335 bits per second. In doing so, any other station trying to operate within that 125 kHz bandwidth has the potential to be interfered with.\n\nThis approach works fine within an ISM band, and is probably a good (though ‘selfish’ - it only benefits the LoRa user) approach for dealing with co-channel interference.\n\nHowever, in the amateur satellite band, we have a lot of satellites ‘competing’ for spectrum, and it sure would be nice if they interfered with each other as little as possible. Coordination is a part of this, but responsible use of spectrum is another important aspect.\n\nThe same data rate could be achieved with similar (probably better!) decode performance in a much narrower bandwidth just by using a narrow-band BPSK modulation. This could probably be achieved using something like a AX5043 chipset.\n\nExamples of this working practice are sats like the Funcube series (Funcube-1, UKube-1, JYSAT), running 1k2 BPSK, and even the AO-40 BPSK beacon format (which has been around for a long time now)."
+    }
+}
