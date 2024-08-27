@@ -1,0 +1,30 @@
+{
+    "id": "dbpedia_2236_3",
+    "rank": 95,
+    "data": {
+        "url": "https://projects.h-its.org/bcb/software/Ulla/SimWiz/copasi.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Using Copasi files",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "http://piwik.h-its.org/piwik.php?idsite=5&rec=1&bots=1"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "",
+        "meta_favicon": "",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "Using Copasi files\n\nIn the near future it will be possible to start the SimWiz animator tool by Copasi, visualizing the results that this software produces. Furthermore, Copasi will be able to write files containing the output data of a simulation performed by it which will be understood by SimWiz. Of course, this file format can also be used by anyone else who wants to use SimWiz. In the following I will describe the file format in greater detail and show how to call SimWiz.\n\nFile format\n\nThe results of a simulation process have to be split into two files: a header file containing some meta data and a data file containing the numbers which describe the concentration or the number of molecules for each compound at a sequence of points in time.\n\nHeader file format\n\nThe header file consists of a list of tags specifying different types of information: each tag starts with a \"#\". In the first line the overall time covered by the simulation process has to be given. The second line specifies the number of reactants that have been simulated. Finally, there has to be the list of compound names together with the maximum value reached for this compound during the simulation.\n\nExample:\n\n#TotalTime 0.2 #NumberOfReactants 21 #MaximumValueOf GLCi 1.4654e-001 #MaximumValueOf G6P 1.3900e+000 #MaximumValueOf F6P 2.8000e-001 #MaximumValueOf F16P 1.9728e+000 #MaximumValueOf TRIO 5.1700e+000 #MaximumValueOf BPG 4.3602e-004 #MaximumValueOf P3G 3.9517e-001 #MaximumValueOf P2G 1.0000e-001 #MaximumValueOf PEP 1.0000e-001 #MaximumValueOf PYR 7.9870e+000 #MaximumValueOf ACE 1.3240e-001 #MaximumValueOf Pi 6.6235e+000 #MaximumValueOf NAD 1.5335e+000 #MaximumValueOf NADH 5.4616e-001 #MaximumValueOf Glyc 1.000 #MaximumValueOf Trh 1.000 #MaximumValueOf CO2 1.000 #MaximumValueOf SUCC 1.000 #MaximumValueOf GLCo 50.000 #MaximumValueOf ETOH 50.000 #MaximumValueOf GLY 0.15000\n\nData file format\n\nThe data file consists of a number of rows with each specifying a time point (in the first column) and the values for the concentration or the number of molecules. The order of the compounds is implicitly defined by the order of compound names given in the header file.\n\nExample:\n\n0.0000e+000 6.0000e-003 9.0000e-002 1.3900e+000 2.8000e-001 1.0000e-001 5.1700e+000 0.0000e+000 1.0000e-001 1.0000e-001 1.0000e-001 3.3600e+000 4.0000e-002 5.0000e+000 1.2000e+000 3.9000e-001 0.0000e+000 0.0000e+000 1.0000e+000 0.0000e+000 5.0000e+001 5.0000e+001 1.5000e-001 2.0000e-003 4.8500e-001 1.1777e-001 1.3838e+000 1.6577e-001 1.7167e+000 1.9086e+000 1.8804e-004 3.1576e-001 3.8006e-002 4.5828e-002 3.5365e+000 1.2607e-002 5.1798e+000 1.0549e+000 5.3514e-001 0.0000e+000 0.0000e+000 1.0000e+000 0.0000e+000 5.0000e+001 5.0000e+001 1.5000e-001 4.0000e-003 5.8900e-001 1.3051e-001 1.3503e+000 1.4522e-001 1.8909e+000 1.5923e+000 1.6757e-004 2.9578e-001 3.5911e-002 4.5124e-002 3.6681e+000 1.2567e-002 5.1985e+000 1.0438e+000 5.4616e-001 0.0000e+000 0.0000e+000 1.0000e+000 0.0000e+000 5.0000e+001 5.0000e+001 1.5000e-001 6.0000e-003 6.0300e-001 1.3720e-001 1.3181e+000 1.4090e-001 1.9412e+000 1.5183e+000 1.5676e-004 2.7243e-001 3.3029e-002 4.2549e-002 3.7826e+000 1.2970e-002 5.1953e+000 1.0532e+000 5.3684e-001 0.0000e+000 0.0000e+000 1.0000e+000 0.0000e+000 5.0000e+001 5.0000e+001 1.5000e-001 ... 2.0000e-001 1.0040e+000 9.3983e-002 1.1771e+000 1.3538e-001 6.8546e-001 8.3203e-001 3.8542e-004 3.7906e-001 4.7905e-002 7.9929e-002 7.9870e+000 1.3240e-001 6.4860e+000 1.5335e+000 5.6508e-002 0.0000e+000 0.0000e+000 1.0000e+000 0.0000e+000 5.0000e+001 5.0000e+001 1.5000e-001\n\nCall of SimWiz\n\nWhen using Copasi files, the call of SimWiz has to look like this:\n\njava -mx256m org.eml.simulation.SimController graphfile headerfile datafile continuousUpdateP\n\nThe first argument describes the network graph (in either SimWiz binary format or SBML). The second and third argument specify the Copasi header and data file (as described above). The fourth argument is an optional boolean value which has to be set to either true or false. If this value is set to true, SimWiz assumes that the maximum values as specified in the header files are not the correct maxima (i.e. for each compound the maximum of all values in the corresponding column in the data file), but just the values given in the first row of the data file. In this case, a continuous update is performed. That means, that every row in the data file is checked whether it contains a value for any compound that is higher then the currently given maximum value for this compound. Every time this is the case, the corresponding maximum value is updated and SimWiz performs a rescale process for the shapes representing the compounds in the graphical view of the network.\n\nThe -mx256m option handed to the Java virtual machine specifies the amount of memory Java is allowed to use. If your networks are rather small (and thus, the images showing the networks consume little memory) you can decrease this value. If you have very big networks or if you experience an \"out of memory\" exception by Java, try to increase the number (assuming your computer has enough memory).\n\n[BCB Software] -[SimWiz Home] - [Screenshots] - [[Installation and Usage]] - [Documentation]] - [Download] - [News]\n\nUrsula Rost\n\nLast modified: Thu Jul 22 11:05:29 CEST 2004 Privacy Imprint"
+    }
+}
