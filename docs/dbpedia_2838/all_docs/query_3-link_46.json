@@ -1,0 +1,33 @@
+{
+    "id": "dbpedia_2838_3",
+    "rank": 46,
+    "data": {
+        "url": "https://discuss.logseq.com/t/default-images-and-videos-to-a-thumbnail-size/15273",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Default images and videos to a thumbnail size",
+        "top_image": "https://discuss.logseq.com/uploads/default/optimized/2X/a/a71c546252da2116c59b827de7ee65e9c3bd0cd6_2_1024x785.png",
+        "meta_img": "https://discuss.logseq.com/uploads/default/optimized/2X/a/a71c546252da2116c59b827de7ee65e9c3bd0cd6_2_1024x785.png",
+        "images": [
+            "https://discuss.logseq.com/uploads/default/optimized/2X/a/a71c546252da2116c59b827de7ee65e9c3bd0cd6_2_651x500.png",
+            "https://discuss.logseq.com/letter_avatar_proxy/v4/letter/w/5e9695/40.png",
+            "https://discuss.logseq.com/user_avatar/discuss.logseq.com/maurelian/40/8626_2.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "css",
+            "howto"
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2023-02-17T03:56:41+00:00",
+        "summary": "",
+        "meta_description": "First, the “why”:\n\nTo save precious screen estate when browsing.\nTo avoid big embeds disrupting the flow of text / your rhythm of reading.\n\nWe can always click on the “enlarge” button to view the original image, or go i&hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://discuss.logseq.com/uploads/default/optimized/1X/79a31d9d1a7522df3b141b6ce001a73a328dcfe8_2_32x32.png",
+        "meta_site_name": "Logseq",
+        "canonical_link": "https://discuss.logseq.com/t/default-images-and-videos-to-a-thumbnail-size/15273",
+        "text": "First, the “why”:\n\nTo save precious screen estate when browsing.\n\nTo avoid big embeds disrupting the flow of text / your rhythm of reading.\n\nWe can always click on the “enlarge” button to view the original image, or go into Wide Mode by pressing t w to watch videos in a bigger size.\n\nHOW-TO\n\nThis is built upon ideas from other users such as all the amazing tips in this thread: Set default embedded media (video and image ) size - #6 by theBenForce\n\nThis post is noob-oriented — from one noob to fellow noobs😀 — and aims to cover as many use cases as possible.\n\n( This is a tedious solution that separate CSS has to be added for every single case. It wouldn’t be as troublesome if a video-embed class would be added to the iframe element when the {{video }} macro is used, so if someone could volunteer… )\n\nHow does this work?\n\nEverything below is supposed to be added in the custom.css file under /logseq in your graph’s folder.\n\n1. Image thumbnails\n\n.asset-container > img { max-height: 128px; width: auto; }\n\nNote: max-height is preferred over height because the latter will stretch out originally short images (for example a screenshot of two lines of text).\n\n2. Small videos in default mode\n\nFirst the two most common use cases — YouTube and local videos\n\n2.1 YouTube\n\niframe[id^='youtube-player'] { /* Add iframe[src*='youtube-nocookie.com'] if you use that */ height: 135px; width: auto; }\n\nExplanation:\n\n^= is “starts with”\n\nin logseq currently only YouTube embeds have the id attribute and they all start with youtube-player followed by random numbers\n\n*= is “contains”\n\ni.e. iframe[src*='youtube-nocookie.com'] selects iframe elements (meaning HTML embeds) that contain “youtube-nocookie.com” in the src attribute\n\n2.2 Local Videos (updated: I took into consideration that there are 2 ways of embeds!)\n\nFor local videos embedded using the macro {{video <local path>}}, the video will be in an iframe. So, using MP4 and MKV as an example, the CSS will be:\n\niframe[src$='.mp4'], iframe[src$='.mkv'] { height: 135px; width: auto; }\n\nExplanation: $= is “ends with” — should be obvious!\n\nFor videos added via the native syntax (for org-mode it’s something like [[../assets/video.mp4][label]], for markdown I’m not sure but maybe something like ![](video.mp4) ), you can just use the video element:\n\nvideo { height: 135px; width: auto; }\n\n2.3 With the above knowledge, especially the bit about how *= works, you can work out the CSS for other streaming sites\n\nUsing Vimeo as an example:\n\niframe[src*='player.vimeo'] { height: 135px; width: auto; }\n\n2.4 Bilibili\n\n(Skip this section if you have no use of it.)\n\nYou can use the same pattern for bilibili — iframe[src*='player.bilibili'] — But for the default embed, the timeline controls won’t appear unless it is more than 320p tall and more than 480p wide.\n\nI still use the same size for bilibili because it’s still possible to scrub the timeline in Wide Mode, as screen space is more important to me. But if you find this annoying, say goodbye to the 320px on your monitor.\n\niframe[src*='player.bilibili'] { height: 135px; /* >=320 for timeline to appear */ width: auto; /* >= 480 for timeline to appear */ }\n\n2.5 Important tips\n\nYou can avoid repetition by stacking selectors, like so\n\nvideo, iframe[id^='youtube-player'], iframe[src*='youtube-nocookie.com'], iframe[src*='player.vimeo'], iframe[src$='.mp4'], iframe[src$='.mkv'] { height: 135px; width: auto; }\n\n2.6 Common slip-ups\n\nEvery key-value pair in a {} needs to end with a ; (well except the last pair). If you’re having problems, you might be missing a ; .\n\nWhen you’re stacking selectors, remember to put a comma after each selector!\n\n3. Big videos in Wide Mode\n\nThis will give you bigger videos in Wide Mode:\n\n.ls-wide-mode video, .ls-wide-mode iframe[id^='youtube-player'], .ls-wide-mode iframe[src*='youtube-nocookie.com'], .ls-wide-mode iframe[src*='player.vimeo'], .ls-wide-mode iframe[src$='.mp4'], .ls-wide-mode iframe[src$='.mkv'] { height: 540px; /* half of 1080p */ width: 100%; }\n\nExplanation (assuming you already know about the stacking mentioned above):\n\nAs with all the other numbers, 540px is just what I use. Use whatever you like!\n\n100% is recommended for width because if you set a fixed number, the video will not adjust accordingly even if your side bar is open and covers the content!\n\nThis is the end, guys!\n\nif you don’t need bilibili\n\nThe highest resolution for the bilibili embeds is 360p. So instead of a bigger blurry video I chose to save more space —"
+    }
+}
