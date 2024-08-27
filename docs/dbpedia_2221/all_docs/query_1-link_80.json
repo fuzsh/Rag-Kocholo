@@ -1,0 +1,33 @@
+{
+    "id": "dbpedia_2221_1",
+    "rank": 80,
+    "data": {
+        "url": "https://www.rfc-editor.org/rfc/rfc9109",
+        "read_more_link": "",
+        "language": "en",
+        "title": "RFC 9109: Network Time Protocol Version 4: Port Randomization",
+        "top_image": "",
+        "meta_img": "",
+        "images": [],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "M. Lichvar Red Hat",
+            "Fernando Gont",
+            "Guillermo Gont",
+            "Miroslav Lichvar"
+        ],
+        "publish_date": "2021-08-27T00:00:00",
+        "summary": "",
+        "meta_description": "The Network Time Protocol (NTP) can operate in several modes.  Some of these\n   modes are based on the receipt of unsolicited packets and therefore\n   require the use of a well-known port as the local port.  However, in\n   the case of NTP modes where the use of a well-known port is not required,\n   employing such a well-known port unnecessarily facilitates the ability of\n   attackers to perform blind/off-path attacks. This document formally\n   updates RFC 5905, recommending the use of transport-protocol ephemeral port\n   randomization for those modes where use of the NTP well-known port is not\n   required.",
+        "meta_lang": "en",
+        "meta_favicon": "",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "Status of This Memo\n\nThis is an Internet Standards Track document.¶\n\nThis document is a product of the Internet Engineering Task Force (IETF). It represents the consensus of the IETF community. It has received public review and has been approved for publication by the Internet Engineering Steering Group (IESG). Further information on Internet Standards is available in Section 2 of RFC 7841.¶\n\nInformation about the current status of this document, any errata, and how to provide feedback on it may be obtained at https://www.rfc-editor.org/info/rfc9109.¶\n\nCopyright Notice\n\nCopyright (c) 2021 IETF Trust and the persons identified as the document authors. All rights reserved.¶\n\nThis document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document. Please review these documents carefully, as they describe your rights and restrictions with respect to this document. Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.¶\n\n1. Introduction\n\nThe Network Time Protocol (NTP) is one of the oldest Internet protocols and is currently specified in [RFC5905]. Since its original implementation, standardization, and deployment, a number of vulnerabilities have been found both in the NTP specification and in some of its implementations [NTP-VULN]. Some of these vulnerabilities allow for blind/off-path attacks, where an attacker can send forged packets to one or both NTP peers to achieve Denial of Service (DoS), time shifts, or other undesirable outcomes. Many of these attacks require the attacker to guess or know at least a target NTP association, typically identified by the tuple {srcaddr, srcport, dstaddr, dstport, keyid} (see Section 9.1 of [RFC5905]). Some of these parameters may be known or easily guessed.¶\n\nNTP can operate in several modes. Some of these modes rely on the ability of nodes to receive unsolicited packets and therefore require the use of the NTP well-known port (123). However, for modes where the use of a well-known port is not required, employing the NTP well-known port unnecessarily facilitates the ability of attackers to perform blind/off-path attacks (since knowledge of the port numbers is typically required for such attacks). A recent study [NIST-NTP] that analyzes the port numbers employed by NTP clients suggests that numerous NTP clients employ the NTP well-known port as their local port, or select predictable ephemeral port numbers, thus unnecessarily facilitating the ability of attackers to perform blind/off-path attacks against NTP.¶\n\nBCP 156 [RFC6056] already recommends the randomization of transport-protocol ephemeral ports. This document aligns NTP with the recommendation in BCP 156 [RFC6056] by formally updating [RFC5905] such that port randomization is employed for those NTP modes for which the use of the NTP well-known port is not needed.¶\n\n6. Security Considerations\n\nThe security implications of predictable numeric identifiers [PEARG-NUMERIC-IDS] (and of predictable transport-protocol port numbers [RFC6056] in particular) have been known for a long time now. However, the NTP specification has traditionally followed a pattern of employing common settings even when not strictly necessary, which at times has resulted in negative security and privacy implications (see, e.g., [NTP-DATA-MINIMIZATION]). The use of the NTP well-known port (123) for the srcport and dstport variables is not required for all operating modes. Such unnecessary usage comes at the expense of reducing the amount of work required for an attacker to successfully perform blind/off-path attacks against NTP. Therefore, this document formally updates [RFC5905], recommending the use of transport-protocol port randomization when use of the NTP well-known port is not required.¶\n\nThis issue has been assigned CVE-2019-11331 [VULN-REPORT] in the U.S. National Vulnerability Database (NVD).¶"
+    }
+}
