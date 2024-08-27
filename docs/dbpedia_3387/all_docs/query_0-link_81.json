@@ -1,0 +1,34 @@
+{
+    "id": "dbpedia_3387_0",
+    "rank": 81,
+    "data": {
+        "url": "https://stackoverflow.com/questions/16131531/how-make-faker-gem-create-english-sentences-and-paragraphs",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How make faker gem create english sentences and paragraphs",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/4f37cf1ee2797a7c17de8d196a4817ea?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/JqN0u.png?s=64",
+            "https://i.sstatic.net/qUmGl.jpg?s=64",
+            "https://www.gravatar.com/avatar/93f3bba48b2683a41e9a2625934e6148?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/16131531/ivc/c028?prg=bdc21cc9-d3a8-4ff1-b7f4-b9c8b9c0128a"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2013-04-21T13:18:51",
+        "summary": "",
+        "meta_description": "I use following code in lib/tasks/sample_data.rake file to generate fake data to fill development database.\n\nnamespace :db do\n  desc \"Fill database with sample data\"\n  task populate: :environment d...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/16131531/how-make-faker-gem-create-english-sentences-and-paragraphs",
+        "text": "I don't think Faker methods accept range as arguments. In doc it only accepts numbers. Thus I can't even reproduce your problem in console by copying your code.\n\nMaybe you want to generate words or paragraphs in random length? You can use rand to generate it. Like this:\n\ntitle = Faker::Lorem.words(number: rand(2..10)) body = Faker::Lorem.paragraphs(sentence_count: rand(2..8))\n\nUpdate\n\nFaker will create HASH instead of plain string.\n\nSo, for your title, you'd better use sentence instead of words and then chomp the last .\n\ntitle = Faker::Lorem.sentence(word_count: rand(2..10)).chomp('.') # or title = Faker::Lorem.words(number: rand(2..10)).join(' ')\n\nFor body, join the paragraphs with \\n or whatever you like\n\nbody = Faker::Lorem.paragraphs(sentence_count: rand(2..8)).join('\\n')\n\nUpdate 2\n\nPositional keywords deprecated in favour of keyword arguments in Faker 2.0 in 2019"
+    }
+}
