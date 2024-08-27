@@ -1,0 +1,34 @@
+{
+    "id": "dbpedia_3062_3",
+    "rank": 18,
+    "data": {
+        "url": "https://softwareengineering.stackexchange.com/questions/405917/how-specific-is-hardware-optimization-when-building-from-source-how-do-i-know",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How specific is hardware optimization when building from source/how do I know?",
+        "top_image": "https://cdn.sstatic.net/Sites/softwareengineering/Img/apple-touch-icon@2.png?v=1ef7363febba",
+        "meta_img": "https://cdn.sstatic.net/Sites/softwareengineering/Img/apple-touch-icon@2.png?v=1ef7363febba",
+        "images": [
+            "https://cdn.sstatic.net/Sites/softwareengineering/Img/logo.svg?v=e86f7d5306ae",
+            "https://www.gravatar.com/avatar/3793a5e6b30922a21a956b8d199292ff?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/df163b8a55fa3258785cca0bfe5f224c?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/45e0d85240328fed74b45b92d94dc881?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://softwareengineering.stackexchange.com/posts/405917/ivc/9328?prg=e5b18209-bc20-43f4-80d1-8209dbdc2103"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2020-02-29T11:16:16",
+        "summary": "",
+        "meta_description": "How specific is hardware optimization when building from source and what should I look for in the documentation to decide if building for my hardware might be worth it? \n\nFrom threads like this one I",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/softwareengineering/Img/favicon.ico?v=c4f35a1e3900",
+        "meta_site_name": "Software Engineering Stack Exchange",
+        "canonical_link": "https://softwareengineering.stackexchange.com/questions/405917/how-specific-is-hardware-optimization-when-building-from-source-how-do-i-know",
+        "text": "You should tell the compiler what is the minimum CPU that your code is running on, so it knows what CPU features are definitely available and can use them (and avoids CPU features that are not available and would crash if you try to run the code).\n\nYou can also tell the compiler which CPU it should optimise for. The compiler may then try to generate code that is as fast as possible on that CPU. Some people will optimise for the slowest CPU that is available, because some speed up is most important for the slow CPU. Some people will optimise for the most common CPU for obvious reasons. For some software you want the fastest CPU you can afford, so you would optimise for the fastest CPU available. If you build for yourself, you optimise for your CPU.\n\nUsually it makes very little difference and people don’t worry about it.\n\nOptimising for number of cores, or for cache sizes, is usually done in your code.\n\nThe answer to the question How specific is hardware optimization when building from source is: TL;DR:As specific as the compiler's knowledge about your cpu architecture.\n\nFor example, from wikipedia:\n\nThe ARM Cortex-A57 is a microarchitecture implementing the ARMv8-A 64-bit instruction set designed by ARM Holdings.\n\nThe CPU ARM Cortex-A57 implements the instruction set. Your compiler knows about your instruction set, # of registers you have, size of your cache and so on. Based on this knowledge tries to optimize your program's non optimized, -O0, code to an optimized version. Let's say there was an update to gcc and It learned a new trick to optimize. Recent compiler is more likely to produce better code.\n\nOptimization for Multi-core would not happen I would guess directly, because in a general purpose OS running multiple binaries, the resource allocation and scheduling would be unpredictable from your code's optimization point of view. My guess is that your code could be optimized in a way that when you have the possibility to use multi threads, It is able to utilize it.\n\nBut, in the case of SoC optimization for example even in Heterogeneous CPU's, as long as the tool you're using knows all about the system and knows the entirety of code it is going to run in its lifetime, it is possible. Though requires different tools, because then it's not about single compiler's ability to optimize, but there are a multitude of things as optimization constraints (e.g., inter-cpu communication).\n\nThere are companies trying to provide solutions for this, it is not a trivial thing and but you can try looking into their websites for white papers etc."
+    }
+}
