@@ -1,0 +1,58 @@
+{
+    "id": "dbpedia_2180_2",
+    "rank": 82,
+    "data": {
+        "url": "https://www.dbvis.com/thetable/a-guide-to-acid-in-mysql/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "ACID In MySQL",
+        "top_image": "https://www.dbvis.com/wp-content/uploads/2023/03/og.png",
+        "meta_img": "https://www.dbvis.com/wp-content/uploads/2023/03/og.png",
+        "images": [
+            "https://www.dbvis.com/wp-content/uploads/2023/08/dbvisualizer_logo_squircle.svg",
+            "https://www.dbvis.com/wp-content/uploads/2023/08/dbvisualizer_logo_squircle.svg",
+            "https://www.dbvis.com/wp-content/uploads/2023/09/dbvis_logo_nopadding-42x42.png",
+            "https://www.dbvis.com/wp-content/uploads/2023/09/dbvis_logo_nopadding-42x42.png",
+            "https://www.dbvis.com/wp-content/uploads/2023/08/mysql_logo-42x42.png",
+            "https://www.dbvis.com/wp-content/uploads/2023/08/mysql_logo-42x42.png",
+            "https://www.dbvis.com/wp-content/uploads/2023/08/my.cnf_-1024x399.png",
+            "https://www.dbvis.com/wp-content/uploads/2023/08/my.cnf_-1024x399.png",
+            "https://www.dbvis.com/wp-content/uploads/2023/08/my.cnf-settings-1024x530.png",
+            "https://www.dbvis.com/wp-content/uploads/2023/08/my.cnf-settings-1024x530.png",
+            "https://www.dbvis.com/wp-content/uploads/2023/08/innodb-settings.png",
+            "https://www.dbvis.com/wp-content/uploads/2023/08/innodb-settings.png",
+            "https://www.dbvis.com/wp-content/uploads/2023/08/DbVis-Icon.png 1024w, https://www.dbvis.com/wp-content/uploads/2023/08/DbVis-Icon-42x42.png 42w, https://www.dbvis.com/wp-content/uploads/2023/08/DbVis-Icon-150x150.png 150w, https://www.dbvis.com/wp-content/uploads/2023/08/DbVis-Icon-300x300.png 300w, https://www.dbvis.com/wp-content/uploads/2023/08/DbVis-Icon-768x768.png 768w",
+            "https://www.dbvis.com/wp-content/uploads/2023/08/DbVis-Icon.png 1024w, https://www.dbvis.com/wp-content/uploads/2023/08/DbVis-Icon-42x42.png 42w, https://www.dbvis.com/wp-content/uploads/2023/08/DbVis-Icon-150x150.png 150w, https://www.dbvis.com/wp-content/uploads/2023/08/DbVis-Icon-300x300.png 300w, https://www.dbvis.com/wp-content/uploads/2023/08/DbVis-Icon-768x768.png 768w",
+            "https://www.dbvis.com/wp-content/uploads/2023/08/show-engines-1024x551.png",
+            "https://www.dbvis.com/wp-content/uploads/2023/08/show-engines-1024x551.png",
+            "https://www.dbvis.com/wp-content/uploads/2023/09/LukasVileikisPhoto-300x300.png",
+            "https://www.dbvis.com/wp-content/uploads/2023/09/LukasVileikisPhoto-300x300.png",
+            "https://www.dbvis.com/wp-content/uploads/2023/09/thetable-blog.png",
+            "https://www.dbvis.com/wp-content/uploads/2023/09/thetable-blog.png",
+            "https://www.dbvis.com/wp-content/uploads/2023/08/logo.svg",
+            "https://www.dbvis.com/wp-content/uploads/2023/08/logo.svg",
+            "https://www.dbvis.com/wp-content/uploads/2023/08/flag.svg",
+            "https://www.dbvis.com/wp-content/uploads/2023/08/flag.svg",
+            "https://www.dbvis.com/wp-content/uploads/2023/08/flag.svg",
+            "https://www.dbvis.com/wp-content/uploads/2023/08/flag.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "DbVis Software AB",
+            "Lukas Vileikis"
+        ],
+        "publish_date": "2023-03-17T14:41:00+00:00",
+        "summary": "",
+        "meta_description": "ACID is a set of crucial database properties that ensures data integrity and consistency even in case of server failure. Learn how ACID in MySQL works here.",
+        "meta_lang": "en",
+        "meta_favicon": "/favicon/apple-touch-icon.png",
+        "meta_site_name": "DbVisualizer",
+        "canonical_link": "https://www.dbvis.com/thetable/a-guide-to-acid-in-mysql/",
+        "text": "ACID principles are a known cornerstone of database functionality, yet they‘re not set in stone at all – some of them can be exchanged for speed if we modify certain parameters within my.cnf (we‘ll get into that a little later.)\n\nAll settings in MySQL can be set and / or modified by modifying the contents of the main file relevant to the functionality of MySQL – my.cnf (the file will be called my.ini if we‘re using a Windows infrastructure.) The file can be found in various locations depending on your operating system – the most likely location of the file in Linux infrastructure will be the /var/lib/mysql/ folder, however, you can also find the file hiding in the /etc/mysql/ folder. For Windows users, everything is simpler: my.ini will most likely be found in the /bin/mysql/mysql*.*.** folder – *.*.** refers to your MySQL version (and yes, you can have a copy of the file in the same directory as well – only the original my.ini file will be scanned through.)\n\nOnce you open the file up, you will see a lot of settings related to the inner workings of MySQL – Windows users got it lucky because the file also comes with a lot of comments within itself to help users understand how everything works, while those of you using Linux will have to read through the docs (or this blog) to understand how everything works.\n\nAs you can see, there are rather a lot of settings and in Windows MySQL really does its best to walk us through them and even provides links to the documentation – my.cnf isn‘t so generous, so the only settings you will see when using the Windows counterpart of my.cnf are these:\n\nSome of them are relevant to optimizing MySQL for high performance, some of them (the file-per-table parameter) are best to leave at default values, some increase the log file size, and some – the innodb-flush-log-at-trx-commit parameter – deal with ACID within MySQL and its friends like Percona Server and MariaDB.\n\nACID within MySQL is primarily controlled by this parameter. The purpose of this parameter is to control the balance between ACID and speed within MySQL – since InnoDB (the primary storage engine in MySQL) by default has this parameter set to 1, ACID is always being maintained. However, this parameter can also be set to different values, such as 0 or 2. The bottom line is this – if you aren‘t necessarily dealing with millions of rows and don‘t necessarily need more speed to complete insertion operations (INSERT or LOAD DATA INFILE queries), leave the value at default. If you do, however, keep the following in mind:\n\nFor most, leaving the setting at its default value – 1 – will be enough, however, for those who are into data analysis or perhaps just experimenting with the capabilities of the RDBMS, changing this setting can be beneficial. Choose wisely!\n\nSome might say that ACID is a competitor to BASE – the ACID equivalent in non-relational database management systems. And that‘s not exactly false – BASE stands for Basically Available and Eventually Consistent data. For most non-relational (NoSQL) databases, the ACID model is overkill and that‘s why most of them go into a different direction. The BASE model is a softer model offering the flexibility for data, but at the same time sacrificing integrity.\n\nBoth ACID and BASE solve distinct problems – ACID ensures data integrity in the event of a server failure, while BASE offers more flexibility for those working with data. However, both of those approaches come with their distinct problems – BASE doesn‘t ensure data integrity, while ACID is only available in some aspects of relational database management systems (SQL Server, PostgreSQL and TimescaleDB, also in MySQL and all of its flavors like Percona Server and MariaDB.)\n\nThe primary requirement for those working with ACID in MySQL is InnoDB or its counterpart Percona XtraDB – no other MySQL storage engines support such a model: MyISAM is obsolete (the only real reason to use it is if we want faster COUNT(*) query performance because MyISAM stores the number inside of its metadata and other storage engines don‘t), MEMORY stores all of the data in the memory of the database, the BLACKHOLE storage engines acts as a blackhole where everything that we write to it dissapears, etc. – if you‘re curious about what other storage engines can offer, just ask MySQL:\n\nIf you‘re curious how to solve other problems related to your relational or non-relational database infrastructure, grab a free trial and ask DbVisualizer (seriously – the tool is used by NASA, AMD, Netflix, Twitter, Tesla, Uber, and a whole lot of other companies), come back to our blog after a while to learn more news in the database space, and until next time!"
+    }
+}
