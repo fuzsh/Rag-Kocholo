@@ -1,0 +1,38 @@
+{
+    "id": "dbpedia_3210_2",
+    "rank": 73,
+    "data": {
+        "url": "https://community.flexera.com/t5/InstallShield-Forum/Time-Stamp-changes-Windows-Server-2003/m-p/87189",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Time Stamp changes Windows Server 2003",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://resources.flexera.com/web/images/community-dory/logos/logo-revenera-community-rev.svg",
+            "https://community.flexera.com/t5/image/serverpage/avatar-name/avatar_guy_1/avatar-theme/candy/avatar-collection/People/avatar-display-size/profile/version/2?xdesc=1.0",
+            "https://community.flexera.com/t5/image/serverpage/avatar-name/avatar_guy_1/avatar-theme/candy/avatar-collection/People/avatar-display-size/profile/version/2?xdesc=1.0",
+            "https://community.flexera.com/skins/images/A5EADE085F77DE82FB3B14D6B307AE6A/responsive_peak/images/icon_anonymous_message.png",
+            "https://resources.flexera.com/web/images/logo-revenera-rev.svg",
+            "https://community.flexera.com/skins/images/605FEBF59A6C57C106A49FBD5BF3751F/responsive_peak/images/powered_by_khoros.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "community.flexera.com",
+            "user-id"
+        ],
+        "publish_date": "2010-12-01T12:05:13+00:00",
+        "summary": "",
+        "meta_description": "ISSUE : When I create an Admin install point for my application on a Windows Server 2003 SP2 machine, the Timestamp of all non-versioned files",
+        "meta_lang": "en",
+        "meta_favicon": "https://resources.flexera.com/web/images/favicon-revenera.ico",
+        "meta_site_name": "Flexera Community",
+        "canonical_link": "https://community.flexera.com/t5/InstallShield-Forum/Time-Stamp-changes-Windows-Server-2003/m-p/87189#M59105",
+        "text": "I'm working from a QA-side of this. You are correct in the behavior. In our case, I found this behavior isolated to the following conditions:\n\n1. The shared folder exists on the physical server's local disk (that the network drive is mapped to).\n\n2. The administrator has performed a (network or standalone) installation directly at the server.\n\n3. The installation, regardless the installation type (standalone or network), was done to the mapped drive (i.e. the shared local folder).\n\nThis issue has plagued our application for years and finding information on tech threads have been fruitless. Thank you for the link you provided, because it's given me the first solid lead on this issue in a while.\n\nTry installing the standalone version of your application to a network drive (following my above conditions) on a 2003 Server. I would like to know if you are yielding the same results.\n\nQUERIES:\n\nIs this a known issue?\n\nI believe so, but is sorely under-reported. Interestingly, I found an MS article of a hotfix that's suppose to fix a similar issue: http://support.microsoft.com/kb/909423. This was included in the 2003 SP2 rollout. Oddly, I don't think the behavior occurred until after I did the SP2 update. I'll have to retest this clean 2003 machine again to confirm.\n\nIf yes, why other OSs with NTFS do not behave the Windows Server 2003 way?\n\nI'd like to know the answer to that myself. I'm not sure who to take this fight to... Microsoft, Installshield or both. Other installation packages I've tested don't exhibit this behavior under the same conditions BUT this is OS-specific, so it can go other way."
+    }
+}

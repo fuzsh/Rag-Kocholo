@@ -1,0 +1,49 @@
+{
+    "id": "dbpedia_3208_0",
+    "rank": 22,
+    "data": {
+        "url": "http://www.itninja.com/blog/view/identify-all-live-windows-2003-servers-on-domain",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Article: Identify all live windows 2003 servers on domain",
+        "top_image": "http://www.itninja.com/build/static/layout/favicon-32x32.png",
+        "meta_img": "http://www.itninja.com/build/static/layout/favicon-32x32.png",
+        "images": [
+            "http://www.itninja.com/build/static/layout/ITN_logo_white.svg",
+            "http://www.itninja.com/build/static/layout/Search_Icon_White.svg",
+            "http://www.itninja.com/build/static/layout/ITN_logo_white.svg",
+            "http://www.itninja.com/build/static/layout/Search_Icon_White.svg",
+            "http://www.itninja.com/build/static/layout/Breadcrumb_cap.svg",
+            "https://static.itninja.com/public/uploads/images/86406/OX7BAE.jpg?1375457581508",
+            "http://www.itninja.com/build/static/belts/green.png",
+            "http://www.itninja.com/build/static/layout/facebook.png",
+            "http://www.itninja.com/build/static/layout/twitter.png",
+            "http://www.itninja.com/build/static/layout/KACE_White-grey.png",
+            "http://www.itninja.com/build/static/layout/dsg.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "Systems Management",
+            "Supporting Windows",
+            "Server Management",
+            "PowerShell",
+            "Microsoft Windows",
+            "Microsoft Windows Server 2003 SP1 Admin Pack",
+            "Microsoft Windows Server 2003 SP1 Admin Pack 5",
+            "PowerShell  Windows",
+            "Windows Server 2003 SP1 Admin Pack",
+            "Windows Server 2003 SP1 Admin Pack 5"
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "Windows Server 2003 will reach its end-of-life by July 2015, here's a simple way to identity live windows 2003 servers in your domain:##needs import-module ActiveDirectory$ErrorActionPreference = \"Sto",
+        "meta_lang": "",
+        "meta_favicon": "/build/static/layout/apple-touch-icon.png",
+        "meta_site_name": "",
+        "canonical_link": "http://www.itninja.com/blog/view/identify-all-live-windows-2003-servers-on-domain",
+        "text": "Windows Server 2003 will reach its end-of-life by July 2015, here's a simple way to identity live windows 2003 servers in your domain:\n\n##needs import-module ActiveDirectory\n\n$ErrorActionPreference = \"Stop\"\n\nGet-ADComputer -Filter * -Property OperatingSystemVersion,Name | where {$_.OperatingSystemVersion -like \"*5.2*\"} | select-object Name | export-csv -delimiter \"`t\" -path c:\\scripts\\2003sq.txt\n\nget-content c:\\scripts\\2003sq.txt |\n\nselect-string -pattern 'Name' -notmatch |\n\nselect-string -pattern '----' -notmatch |\n\nselect-string -pattern '#TYPE Selected.Microsoft.ActiveDirectory.Management.ADComputer' -notmatch |\n\n% {$_ -replace '\"', \"\"} |\n\nout-file c:\\scripts\\2003s.txt\n\n$2003 = get-content c:\\scripts\\2003s.txt\n\nforeach ($comp in $2003)\n\n{\n\ntry\n\n{\n\ntest-connection -ComputerName $comp -count 1\n\n}\n\ncatch\n\n{\n\n\"$comp appears inactive\"\n\n}\n\n}"
+    }
+}

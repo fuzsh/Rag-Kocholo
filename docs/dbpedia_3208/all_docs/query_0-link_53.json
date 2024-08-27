@@ -1,0 +1,36 @@
+{
+    "id": "dbpedia_3208_0",
+    "rank": 53,
+    "data": {
+        "url": "https://community.letsencrypt.org/t/windows-server-2003/68035",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Windows Server 2003",
+        "top_image": "https://global.discourse-cdn.com/letsencrypt/original/3X/4/c/4c5760509a18adfc3bc657ba8bd49b301faaa66b.png",
+        "meta_img": "https://global.discourse-cdn.com/letsencrypt/original/3X/4/c/4c5760509a18adfc3bc657ba8bd49b301faaa66b.png",
+        "images": [
+            "https://emoji.discourse-cdn.com/twitter/slight_smile.png?v=5",
+            "https://avatars.discourse-cdn.com/v4/letter/k/c68b51/48.png",
+            "https://avatars.discourse-cdn.com/v4/letter/k/c68b51/48.png",
+            "https://emoji.discourse-cdn.com/twitter/slight_smile.png?v=5",
+            "https://avatars.discourse-cdn.com/v4/letter/k/c68b51/48.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "system Closed"
+        ],
+        "publish_date": "2018-07-30T14:59:20+00:00",
+        "summary": "",
+        "meta_description": "Hello, everyone, \nI have an annoying problem and I just don’t know how to proceed. \nWe still have an old Windows 2003 R2 server, which we are not allowed to replace for stupid reasons. \nOn this one I would need an SSL ce&hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://global.discourse-cdn.com/letsencrypt/optimized/3X/c/a/ca6c06ea1ea201324bba7048c6841ce60236468d_2_32x32.png",
+        "meta_site_name": "Let's Encrypt Community Support",
+        "canonical_link": "https://community.letsencrypt.org/t/windows-server-2003/68035",
+        "text": "Hello, everyone,\n\nI have an annoying problem and I just don’t know how to proceed.\n\nWe still have an old Windows 2003 R2 server, which we are not allowed to replace for stupid reasons.\n\nOn this one I would need an SSL certificate. However, all tools known to me require Windows Server 2008 or newer (.NET Framework 4.5+).\n\nIs there a possibility to provide this 2003 server with a certificate?\n\nMany thanks and cheers!\n\nHi,\n\nIt’s possible, however i’m not sure if you could install it manually to the server… (since i’m not familiar with win 2003)\n\nYou could always use an online tool to request & issue the certificate… (However this will need to renew manually, without automatic renewals it would be painful…)\n\nTry zerossl.com / sslforfree.com (sslforfree.com also provide you the option to use dns validations)\n\nThank you\n\nHa-ha-ha, now I really had to laugh.\n\nFirst of all, I got it right. The path is C:\\Inetpub\\wwwroot.well-known\n\nThen I had problems on Zero-SSL. Attempt to verify the file came an error with “DNS problem: NXDOMAIN looking up A…”.\n\nThen I noticed the following constellation:\n\nThe server is called with FQDN: server1.example.net\n\nBut example.net is a completely different company and of course we have nothing to do with their DNS. Our domain is example.com\n\nI was so shocked that I need a cold beer for now. Does anyone have any further suggestions during this time?\n\nHi @Kathaki\n\nbefore you try the next step: Create the directory C:\\Inetpub\\wwwroot.well-known\\acme-challenge and put there a file named 123456789 without file-extension.\n\nThen try to fetch this file with your browser:\n\nhttp://yourdomain/.well-known/acme-challenge/123456789\n\nThere may be a problem with such files without extension. Perhaps you have to add a mime type. Later versions can use a configuration file, but I don't know how to do that with Win2003."
+    }
+}
