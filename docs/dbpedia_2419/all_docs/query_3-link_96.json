@@ -1,0 +1,33 @@
+{
+    "id": "dbpedia_2419_3",
+    "rank": 96,
+    "data": {
+        "url": "https://docs.nvidia.com/deeplearning/dali/main-user-guide/docs/examples/frameworks/jax/flax-basic_example.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Training neural network with DALI and Flax — NVIDIA DALI",
+        "top_image": "https://docs.nvidia.com/deeplearning/dali/main-user-guide/docs/_static/nvidia.ico",
+        "meta_img": "https://docs.nvidia.com/deeplearning/dali/main-user-guide/docs/_static/nvidia.ico",
+        "images": [
+            "https://docs.nvidia.com/deeplearning/dali/main-user-guide/docs/_static/nvidia-logo-horiz-rgb-blk-for-screen.svg",
+            "https://docs.nvidia.com/deeplearning/dali/main-user-guide/docs/_static/nvidia-logo-horiz-rgb-blk-for-screen.svg",
+            "https://docs.nvidia.com/deeplearning/dali/main-user-guide/docs/_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg",
+            "https://docs.nvidia.com/deeplearning/dali/main-user-guide/docs/_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "../../../_static/nvidia.ico",
+        "meta_site_name": "",
+        "canonical_link": "https://docs.nvidia.com/deeplearning/dali/main-user-guide/docs/examples/frameworks/jax/flax-basic_example.html",
+        "text": "Training neural network with DALI and Flax#\n\nThis simple example shows how to train a neural network implemented in Flax with DALI pipelines. If you want to learn more about training neural networks with Flax, look into Flax Getting Started example.\n\nDALI setup is very similar to the training example with pure JAX. The only difference is the addition of a trailing dimension to the returned image to make it compatible with Flax convolutions. If you are not familiar with how to use DALI with JAX you can learn more in the DALI and JAX Getting Started example.\n\nWe use MNIST in Caffe2 format from DALI_extra.\n\nFirst step is to create an iterator definition function that will later be used to create instances of DALI iterators. It defines all steps of the preprocessing. In this simple example we have fn.readers.caffe2 for reading data in Caffe2 format, fn.decoders.image for image decoding, fn.crop_mirror_normalize used to normalize the images and fn.reshape to adjust the shape of the output tensors. We also move the labels from the CPU to the GPU memory with labels.gpu() and apply one hot encoding to them for training with fn.one_hot.\n\nThis example focuses on how to use DALI pipeline with JAX. For more information on DALI iterator look into DALI and JAX getting started and pipeline documentation\n\nWith the iterator definition function we can now create DALI iterators.\n\nWith the setup above, DALI iterators are ready for the training.\n\nNow we need to setup model and training utilities. The goal of this notebook is not to explain Flax concepts. We want to show how to train models implemented in Flax with DALI as a data loading and preprocessing library. We used standard Flax tools do define simple neural network. We have functions to create an instance of this network, run one training step on it and calculate accuracy of the model at the end of each epoch.\n\nIf you want to learn more about Flax and get better understanding of the code below, look into Flax Documentation.\n\nWith utilities defined above, we can create an instance of the model we want to train.\n\nAt this point, everything is ready to run the training."
+    }
+}
