@@ -1,0 +1,33 @@
+{
+    "id": "dbpedia_1906_3",
+    "rank": 29,
+    "data": {
+        "url": "https://stackoverflow.com/questions/71492417/how-to-get-a-specific-columns-from-a-wiki-table",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How to get a specific columns from a wiki table",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://i.sstatic.net/peh8Z.png?s=64",
+            "https://lh3.googleusercontent.com/a-/AOh14GjjLjTSJBBL904YgiiC1rl_OV9-ZDIZXJ4nuqc0=k-s64",
+            "https://i.sstatic.net/peh8Z.png?s=64",
+            "https://stackoverflow.com/posts/71492417/ivc/f02f?prg=f6d1a501-830b-40c8-8a49-faef29ec13e4"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2022-03-16T06:03:45",
+        "summary": "",
+        "meta_description": "Basically I have the table on this page: https://en.wikipedia.org/wiki/List_of_cakes\nand I want to grab the text from the first, third and forth columns and format them to look as such:\nAmandine -",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/71492417/how-to-get-a-specific-columns-from-a-wiki-table",
+        "text": "You are near to your goal, just find_all('td') in your row and pick by index from ResulSet:\n\nfor items in soup.find(class_=\"wikitable\").find_all(\"tr\")[1:]: e = items.find_all('td') data = f'{e[0].text.strip()} - {e[2].text.strip()} - {e[3].text.strip()}' print(data)\n\nor use list comprehension:\n\nfor items in soup.find(class_=\"wikitable\").find_all(\"tr\")[1:]: print(' - '.join([items.find_all('td')[i].get_text(strip=True) for i in [0,2,3]]))\n\nExample\n\nfrom bs4 import BeautifulSoup url = \"https://en.wikipedia.org/wiki/List_of_cakes\" res = requests.get(url) soup = BeautifulSoup(res.text,\"lxml\") for items in soup.find(class_=\"wikitable\").find_all(\"tr\")[1:]: e = items.find_all('td') data = f'{e[0].text.strip()} - {e[2].text.strip()} - {e[3].text.strip()}' print(data)\n\nOutput"
+    }
+}
