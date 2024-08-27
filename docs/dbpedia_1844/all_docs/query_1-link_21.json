@@ -1,0 +1,33 @@
+{
+    "id": "dbpedia_1844_1",
+    "rank": 21,
+    "data": {
+        "url": "https://andrewmarsh.com/apps/staging/sunpath3d.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "PD: 3D Sun",
+        "top_image": "https://andrewmarsh.com/apps/staging/icons/favicon.png",
+        "meta_img": "https://andrewmarsh.com/apps/staging/icons/favicon.png",
+        "images": [
+            "https://andrewmarsh.com/apps/staging/imgs/loader.gif",
+            "https://andrewmarsh.com/apps/staging/imgs/browsers.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Dr.A.J.Marsh"
+        ],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "A dynamic 3D Sun-path experiment.",
+        "meta_lang": "en",
+        "meta_favicon": "icons/favicon.png",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "Overview\n\nThe aim of this app is to demonstrate the relationship between geographic location and solar position throughout the year. You can use the map to drag the location around and interactively see how the Sun-path diagram and shadow projections change. You can also directly relate the 3D Sun-path and day-length, as well as a range of different 2D Sun-path projections.\n\nBackground\n\nThis started out as an experiment to see just how responsive I could make the generation and display of 3D Sun-path diagrams and shadow projections using JavaScript and WebGL. I'm actually quite stunned as, even before any optimisation whatsoever, I found that I could build and rebuild the entire Sun-path mesh on every change in pretty well real time. Sure this was on an i7 processor, but it meant that the core technologies were not going to be the kind of bottleneck that I thought they'd be.\n\nAs it turned out, there was scope for some pretty fundamental optimisations, so now it's even quick enough on an iPad as well as most of my old Android tablets.\n\nSVG and WebGL\n\nThe marriage of WebGL for 3D visualisation and SVG for 2D data presentation also turns out to be a pretty happy one. The core ideas when working in both are actually pretty similar - building up a set of visual components that are cached and rendered separately (OpenGL vertex buffer objects and SVG elements respectively). Any complex calculations in Javascript need only be done once to build up each visual component, or to rebuild if it physically changes. The actual rendering of that cached element is then done by a much faster lower-level process (OpenGL/GPU and the SVG engine respectively).\n\nOptimsation Potential\n\nThus, for the kinds of animated 2D charts I need, SVG seems to have much more optimisation potential than using a HTML5 canvas element. As the canvas element is pixel-based, any content change usually requires a full redraw of all chart components, each being re-described and/or re-generated in your own Javascript code. If any components require complex calculation or involve detailed curves, you have to devise your own caching system as this all has to be redone for every redraw.\n\nWith SVG charts, you only need to re-describe and/or re-generate those components that actually change on each redraw. All other previously defined components are automatically re-rendered by the SVG engine, which is a core part of the browser itself (running as native code) so is significantly faster than working in Javascript.\n\nThus, the key to fast animations is to offload as much work as possible onto the SVG engine, or even the browser rendering engine. This can be done by, for example, transforming components instead of regenerating them, using CSS3 animations and transitions, interpolating between pre-built elements instead of regenerating new elements each time, etc. For me, this is the really fun bit as you often have to completely rethink how to do things before you finally get that vital Eureka moment."
+    }
+}
