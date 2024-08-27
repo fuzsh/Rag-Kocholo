@@ -1,0 +1,42 @@
+{
+    "id": "dbpedia_2370_2",
+    "rank": 50,
+    "data": {
+        "url": "https://forum.posit.co/t/problem-knitting-rmarkdown-file/110361",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Problem knitting rmarkdown file",
+        "top_image": "https://forum.posit.co/uploads/default/original/3X/f/e/feea878fb39ee9bfad8316c605a7b6824ab3f5dc.jpeg",
+        "meta_img": "https://forum.posit.co/uploads/default/original/3X/f/e/feea878fb39ee9bfad8316c605a7b6824ab3f5dc.jpeg",
+        "images": [
+            "https://forum.posit.co/uploads/default/original/3X/f/e/feea878fb39ee9bfad8316c605a7b6824ab3f5dc.jpeg",
+            "https://forum.posit.co/uploads/default/original/3X/5/3/538bee1bf57602181508427d0b7a2bf6b3892052.png",
+            "https://forum.posit.co/uploads/default/original/3X/b/e/bea3b0c15fadd00928cfbaf7c93c341eecc2b74b.png",
+            "https://forum.posit.co/letter_avatar_proxy/v4/letter/c/7ea924/48.png",
+            "https://forum.posit.co/uploads/default/original/3X/0/b/0be79aa19341a83a98d5bf6538b3702a4b6d1c4b.png",
+            "https://forum.posit.co/uploads/default/original/3X/5/5/554b44a6b687fa28ae857a5e325ff93ef2f9a881.png",
+            "https://forum.posit.co/uploads/default/original/3X/7/8/782f2f283c512fbd41dc27830bc5ac5409acf995.png",
+            "https://forum.posit.co/uploads/default/original/3X/1/9/199c98d59b6dc1c1a9fad3c349876acf95c97a60.png",
+            "https://forum.posit.co/uploads/default/original/3X/1/1/11d230a178a89107075e55c8ff05ef80cc799b50.png",
+            "https://forum.posit.co/letter_avatar_proxy/v4/letter/c/7ea924/48.png",
+            "https://forum.posit.co/uploads/default/optimized/3X/1/8/18d095e4d67f996bfb43ea86bc6963ffd0d3bf15_2_328x500.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "system Closed"
+        ],
+        "publish_date": "2021-07-19T01:11:11+00:00",
+        "summary": "",
+        "meta_description": "Thank you. At least now it seems to be running. I have a new error: \n \n@andresrcs Can you help? (Grateful newbie)",
+        "meta_lang": "en",
+        "meta_favicon": "https://forum.posit.co/uploads/default/optimized/3X/a/2/a2088ce9db90a2a99109603641bde473e3237a6c_2_32x32.png",
+        "meta_site_name": "Posit Community",
+        "canonical_link": "https://forum.posit.co/t/problem-knitting-rmarkdown-file/110361",
+        "text": "Thank you. At least now it seems to be running. I have a new error:\n\n@andresrcs Can you help? (Grateful newbie)\n\nThis error typically occurs with read.csv() if the file you are attempting to load is not in the same working directory as the RMarkdown file. Or similarly if the path is not set correctly. Or if the file name isn't quite right.\n\nWhat is the specific line of code at (and around) line 145?\n\nWeird. Are you sure the error is still occurring on line 145? And, maybe you could upload all of the file because I'm still not seeing where you originally load data?\n\nIf you put the data within an R chunk within the response, people on this site can see, copy and then test your code.\n\nYour problem seems to be that you are skipping the part where you load \"data\" into memory. Have in mind that when you knit a file, the code gets executed in a clean environment so it is not going to have access to the data you already have in your current working environment, you have to explicitly include all the code needed to load the data from scratch.\n\nActually, the better way to go about this is not to share your actual code but to make a minimal REPRoducible EXample (reprex) representative of your issue.\n\nBTW, I splited this thread into a new topic just for the sake of keeping things tidy. Topics should contained only a single reasonably well defined question or issue.\n\nUnderstood. Somewhere above that code is a line that says something like data <- read.csv(\"foobar.csv\") or similar. My guess is that the error you're seeing indicates R can't find \"foobar.csv\". If that's right, you could either:\n\nAdd an R chunk of\n\ngetwd()\n\nand run just that chunk to confirm that R is looking in correct directory. If not, you could use setwd() to change it. Make sure you do this in the RMarkdown file, not from the console.\n\nIn lieu of knitting, does the code chunk run correctly when using the \"Run Current Chunk\" (green play button)? If so, it may be what @andresrcs is saying about the clean environment.\n\nThat can be a tough error to debug. It generally means you're attempting to access a function like a vector or data frame (using the []), but in your case, I wonder if it's not related to the previous data loading issue.\n\nR doesn't seem to like the expression: raw_fusion$Sample ID. First, what is stored in Sample ID? Make sure that's what you expect. Then you might make sure raw_fusion$Sample ID is extracting the column you intend.\n\nCan you create a small version of this code the reproduces the error, with the data included, with possibly just a few 'dummy' rows of data since I know it's proprietary? This is the reprex mentioned earlier. Otherwise it will be difficult to help you debug this.\n\nUnfortunately I don't. I usually knit to html, not pdf. Seems like it's a Latex error. Possibly something related to the figure labels. But it's hard to tell without the code.\n\nFollowing R's error message, what does the log file show? You might comment out that specific figure to verify that's where the issue lies."
+    }
+}

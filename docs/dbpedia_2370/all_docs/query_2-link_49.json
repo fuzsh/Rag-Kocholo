@@ -1,0 +1,48 @@
+{
+    "id": "dbpedia_2370_2",
+    "rank": 49,
+    "data": {
+        "url": "https://superuser.com/questions/103071/quick-way-to-tell-if-an-installed-application-is-64-bit-or-32-bit",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Quick way to tell if an installed application is 64-bit or 32-bit",
+        "top_image": "https://cdn.sstatic.net/Sites/superuser/Img/apple-touch-icon@2.png?v=e869e4459439",
+        "meta_img": "https://cdn.sstatic.net/Sites/superuser/Img/apple-touch-icon@2.png?v=e869e4459439",
+        "images": [
+            "https://cdn.sstatic.net/Sites/superuser/Img/logo.svg?v=4bc8a703ebac",
+            "https://i.sstatic.net/XDVKc.gif?s=64",
+            "https://www.gravatar.com/avatar/22daa66fbac8321bb4462a6d6befb38d?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/8bbc94977312d285045b2412257b6cb8?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/564a585b4b1a8211022c8f06535020ab?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/d54ed51c0f03cb461741c3ec77a837b2?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/2c0e1f2461eb765b205f1f19ca80c6a4?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/IDMU4.gif",
+            "https://www.gravatar.com/avatar/a007be5a61f6aa8f3e85ae2fc18dd66e?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/DdGHY.jpg?s=64",
+            "https://www.gravatar.com/avatar/8bbc94977312d285045b2412257b6cb8?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/5fd4af10c59ab3ea2cee94a838439d33?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/5fd4af10c59ab3ea2cee94a838439d33?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/4f0d3005d28e9443ba52ee46e03c06ef?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/8bbc94977312d285045b2412257b6cb8?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/df6890ef3ddf568132a0cdb5c05de0bc?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/8bbc94977312d285045b2412257b6cb8?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/81Vs3.png?s=64",
+            "https://superuser.com/posts/103071/ivc/95ed?prg=5c3fcbfb-9715-4f80-a72b-82b95bf059bf"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2010-01-31T21:34:22",
+        "summary": "",
+        "meta_description": "I've got a third-party application (in this case Cognos Data Manager) installed on 64-bit Windows Server 2003.\n\nIs there a quick way to determine if an application has been built/compiled as a 64-bit",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/superuser/Img/favicon.ico?v=4852d6fb3f5d",
+        "meta_site_name": "Super User",
+        "canonical_link": "https://superuser.com/questions/103071/quick-way-to-tell-if-an-installed-application-is-64-bit-or-32-bit",
+        "text": "If you run the application, in Task Manager it should have a *32 beside it to indicate it's 32-bit. I'm pretty sure they had this implemented in Server 2003, not positive though, hopefully someone can clarify.\n\nYou could also run it through PEiD. PEiD does not support 64-bit PEs, so it will choke if it's 64-bit.\n\nThere is also the famous GNU file for Windows. It will tell you all sorts of information about an executable.\n\nExample:\n\n$ file winrar-x64-392b1.exe winrar-x64-392b1.exe: PE32+ executable for MS Windows (GUI) $ file display.exe display.exe: PE32 executable for MS Windows (GUI) Intel 80386 32-bit</pre>\n\nAs you can see, the 64-bit WinRAR installer is classified as PE32+, which signifies a 64-bit executable. The 32-bit application is simply PE32, a 32-bit executable.\n\nThe easiest way, without installing another program or running the file, is just to right click on the file, choose Properties, and then go the the Compatibility tab. If there are no greyed out options and Windows XP and 9x modes are offered, it's 32-bit. If there are greyed out options and Vista is the earliest mode offered, it's 64-bit. No need to start the application at all.\n\nIf the application is already started, you can of course still use the *32 idea mentioned in other answers. However, this is not available in Windows 8.x and its new task manager. Fortunately, you can enable a Platform column by right-clicking on the column headers in the Details tab and choosing Select columns. The column will contain either \"32-bit\" or \"64-bit\" as appropriate.\n\nIf you got Visual Studio or the Platform SDK installed you can use dumpbin /headers to look at the PE header values.\n\nExample for a 64-bit executable:\n\nPE signature found File Type: EXECUTABLE IMAGE FILE HEADER VALUES 8664 machine (x64) 5 number of sections 4987EDCA time date stamp Tue Feb 03 08:10:02 2009 0 file pointer to symbol table 0 number of symbols F0 size of optional header 23 characteristics Relocations stripped Executable Application can handle large (>2GB) addresses OPTIONAL HEADER VALUES 20B magic # (PE32+) 8.00 linker version 2A600 size of code 18A00 size of initialized data 0 size of uninitialized data 2AE90 entry point (000000000042AE90) 1000 base of code ...\n\nAnd for 32 bit:\n\nPE signature found File Type: EXECUTABLE IMAGE FILE HEADER VALUES 14C machine (x86) 3 number of sections 4B0C786D time date stamp Wed Nov 25 01:21:01 2009 0 file pointer to symbol table 0 number of symbols E0 size of optional header 103 characteristics Relocations stripped Executable 32 bit word machine OPTIONAL HEADER VALUES 10B magic # (PE32) 9.00 linker version 42000 size of code 4000 size of initialized data 6F000 size of uninitialized data B0EE0 entry point (004B0EE0) 70000 base of code ...\n\nThe first value in the file header tells you the architecture: either 0x14C for x86 or 0x8664 for x64.\n\nEXE Explorer\n\nExecutable File Explorer for OS/2, NE, PE32, PE32+ and VxD file types.\n\nThis application is based on MiTeC Portable Executable Reader. It reads and displays executable file properties and structure. It is compatible with PE32 (Portable Executable), PE32+ (64bit), NE (Windows 3.x New Executable) and VxD (Windows 9x Virtual Device Driver) file types. .NET executables are supported too.\n\nIt enumerates introduced classes, used units and forms for files compiled by Borland compilers.\n\nNote: It comes with a GUI and lets you 'explore' the Windows binary file structure.\n\nSadly, it does not seem to even accept a target binary to open from the command line. But the detail it gives might be useful in some cases."
+    }
+}
