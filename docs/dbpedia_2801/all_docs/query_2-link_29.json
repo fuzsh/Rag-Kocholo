@@ -1,0 +1,30 @@
+{
+    "id": "dbpedia_2801_2",
+    "rank": 29,
+    "data": {
+        "url": "https://spaces.at.internet2.edu/x/-4DYAg",
+        "read_more_link": "",
+        "language": "en",
+        "title": "The Heartbleed Bug",
+        "top_image": "https://spaces.at.internet2.edu/s/153h27/8804/1naq7q0/16/_/favicon.ico",
+        "meta_img": "https://spaces.at.internet2.edu/s/153h27/8804/1naq7q0/16/_/favicon.ico",
+        "images": [
+            "https://spaces.at.internet2.edu/download/attachments/30966220/InCFederation?version=2&modificationDate=1422543315249&api=v2"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "/s/153h27/8804/1naq7q0/16/_/favicon.ico",
+        "meta_site_name": "",
+        "canonical_link": "https://spaces.at.internet2.edu/display/InCFederation/The+Heartbleed+Bug",
+        "text": "This wiki page is a work in progress and will be updated as new information is received and processed.\n\nThe following InCommon servers were not running a vulnerable version of OpenSSL and therefore were not affected by this bug:\n\nFederation Manager (service1.internet2.edu)\n\nMetadata Services (wayf.incommonfederation.org, md.incommon.org)\n\nDiscovery Service (wayf.incommonfederation.org)\n\nError Handling Service (ds.incommon.org)\n\nThe following InCommon server, which serves a single HTML resource, was found to be running a vulnerable version of OpenSSL:\n\nops.incommon.org\n\nThe above server was patched, its TLS certificate was revoked, and a new TLS key and certificate were installed. The content on that server was reviewed and found to be intact. These steps restored the integrity of the HTML resource.\n\nRecommendations for Deployers\n\nIf your SAML deployment relies on an affected version of OpenSSL, you should take the following actions to mitigate that vulnerability:\n\nPatch the affected version of OpenSSL\n\nFollow the OS vendor's instructions to upgrade OpenSSL to the latest version\n\nRevoke your browser-facing TLS certificate\n\nConfigure the system with a new trusted TLS key and certificate\n\nRevoke your SAML certificate in metadata\n\nMigrate a new certificate into metadata\n\nWhen all but step 3 above have been completed, follow these additional steps to migrate a new certificate into metadata:\n\nRead the X.509 Certificates in Metadata wiki page\n\nUse a long-lived, self-signed certificate\n\nIdP operators: Read the IdP Key Handling wiki page (SP owners might also benefit from reading this page)\n\nHandle the private IdP signing key securely!\n\nRead the Certificate Migration wiki page and its child pages\n\nUnless there is evidence that your IdP signing key has been compromised, migrate a new certificate into metadata, do not simply replace the old certificate (which will adversely affect interoperability).\n\nAssuming your SP partners follow InCommon recommendations with respect to Metadata Consumption, wait at least 24 hours for newly updated metadata to propagate throughout the Federation.\n\nTo ensure that you are receiving metadata updates from partners in a timely manner, review the metadata refresh process of each of your SAML deployments regardless of whether or not it is vulnerable:\n\nIs your software pointing to the correct metadata aggregate? See: Metadata Aggregates\n\nHave you installed the new metadata signing certificate? See: Metadata Signing Certificate\n\nIs your metadata refresh process optimally configured? See: Metadata Client Software\n\nIf you recently completed the widely publicized Metadata Migration Process, the above issues will have been already addressed.\n\nImplementation-specific Information\n\nIf you deploy the Shibboleth SP on Windows, versions 2.5.0 (or later), consult the Shibboleth Security Advisory issued on 9 April 2014.\n\nIf you are using simpleSAMLphp, we recommend reading the entire thread entitled \"heartbleed and SimpleSAMLphp (https://groups.google.com/forum/#\\!topic/simplesamlphp/XphXXmVhMVI)\" on the simpleSAMLphp mailing list.\n\nLessons Learned\n\nFor further discussion:\n\nThe benefits of federated login at the SP (no shared secrets)\n\nThe security and convenience of multilateral federation\n\nThe agility of a metadata-based trust model\n\nThe importance of secure, automated metadata refresh\n\nThe advantages and disadvantages of deploying a web server (e.g., Apache) in front of the IdP\n\nThe advantages and disadvantages of enabling \"forward secrecy\" on a web server\n\nIs there value in defining separate keys for back-channel TLS?\n\nThe Internet is unfortunately not as safe and reliable as many people, even among IT experts, tend to believe, and only a joint effort can fix it. (Lessons learned from the Heartbleed incident by Alexei Balaganski)\n\nResources\n\n#trackbackRdf ($trackbackUtils.getContentIdentifier($page) $page.title $trackbackUtils.getPingUrl($page))"
+    }
+}
