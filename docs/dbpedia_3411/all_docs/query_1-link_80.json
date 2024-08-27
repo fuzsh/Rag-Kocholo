@@ -1,0 +1,35 @@
+{
+    "id": "dbpedia_3411_1",
+    "rank": 80,
+    "data": {
+        "url": "https://stackoverflow.com/questions/12270654/is-it-possible-in-any-language-to-implement-rules-that-will-affect-every-insta%3Frq%3D1",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Is it possible, in any language, to implement rules that will affect every instance of an object?",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/fb710534fda446d2286074bb7692e65a?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/595dbd783411ba79e5df47afe24349d2?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/492a3c5c13fb44d27229364e0993fa11?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/QouOz.jpg?s=64",
+            "https://www.gravatar.com/avatar/b8dc4b76792ff3c8cd993aa4c9c467f6?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/12270654/ivc/01a9?prg=8fd7d1a9-6952-4a3a-b0ff-36d9ed40337f"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2012-09-04T20:08:16",
+        "summary": "",
+        "meta_description": "For example, could I implement a rule that would change every string that followed the pattern '1..4' into the array [1,2,3,4]? In JavaScript:\n\n//here you create a rule that changes every string that",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/12270654/is-it-possible-in-any-language-to-implement-rules-that-will-affect-every-insta",
+        "text": "Modifying the language from whithin itself falls under the umbrell of reflection and metaprogramming. It is referred as behavioral reflection. It differs from structural reflection that opperates at the level of the application (e.g. classes, methods) and not the language level. Support for behavioral reflection varies greatly across languages.\n\nWe can broadly categorize language changes in two categories:\n\nchanges that modify the semantics (i.e. the rules) of the language itself (e.g. redefine the method lookup algorithm),\n\nchanges that modify the syntax (e.g. your syntax '1..4' to create arrays).\n\nFor case 1, certain languages expose the structure of the application (structural reflection) and the inner working of their implementation (behavioral reflection) to the application itself via special object, called meta-objects. Meta-objects are reifications of otherwise implicit aspects, that become then explicitely manipulable: the application can modify the meta-objects to redefine part of its structure, or part of the language. When it comes to langauge changes, the focus is usually on modifiying message sending / method invocation since it is the core mechanism of object-oriented language. But the same idea could be applied to expose other aspects of the language, e.g. field accesses, synchronization primitives, foreach enumeration, etc. depending on the language.\n\nFor case 2, the program must be representated in a suitable data structure to be modified. For languages of the lisp family, the program manipulates lists, and the program can be itself represented as lists. This is called homoiconicity and is handy for metaprogramming, hence the flexibility of lisp-like languages. For other languages, their representation is usually an AST. Transforming the representation of the program, or rewriting it, is possible with macro, preprocessors, or hooks during compilation or class loading.\n\nThe line between 1 and 2 is however blurry. Syntactical changes can appear to modify the semantics of the language. For instance, I can rewrite all fields accesses with proper getter and setter and perform additional logic there, say to implement transactional memory. Did I perform a semantical change of what a field access is, or merely a syntax change? Also, there are other constructs the fall bewten the lines. For instance, proxies and #doesNotUnderstand trap are popular techniques to simulate the reification of message sends to some extent.\n\nLisp and Smalltalk have been very influencial in the field of metaprogramming, and I think the two following projects/platform are interesting to look at for a representative of each of these:\n\nRacket, a lisp-like language focused on growing languages from within the langauge\n\nHelvetia, a Smalltalk extension to embed new languages into the host language by leveraging the AST of the host environment.\n\nI hope you enjoyed this even if I did not really address your question ;)"
+    }
+}
