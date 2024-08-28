@@ -1,0 +1,47 @@
+{
+    "id": "dbpedia_4417_3",
+    "rank": 92,
+    "data": {
+        "url": "https://wiki.teltonika-networks.com/view/Ignition_detection_solution",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Ignition detection solution",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://wiki.teltonika-networks.com/images/c/c8/Networking_rutos_manual_input_output_power_socket_pinout_configurableio_0.png",
+            "https://wiki.teltonika-networks.com/images/thumb/0/07/Ignitionstateschematic.jpg/700px-Ignitionstateschematic.jpg.png",
+            "https://wiki.teltonika-networks.com/images/thumb/3/32/Schematicdelayoff.jpg/700px-Schematicdelayoff.jpg.png",
+            "https://wiki.teltonika-networks.com/images/thumb/8/8a/Outputstate_ignitiondetectionsolution.png/950px-Outputstate_ignitiondetectionsolution.png",
+            "https://wiki.teltonika-networks.com/images/thumb/9/90/Startupscriptoutput.png/500px-Startupscriptoutput.png",
+            "https://wiki.teltonika-networks.com/images/thumb/2/28/Enableiojuggler.png/500px-Enableiojuggler.png",
+            "https://wiki.teltonika-networks.com/images/thumb/3/39/Typeoutputnamedelayoff.png/1100px-Typeoutputnamedelayoff.png",
+            "https://wiki.teltonika-networks.com/images/e/ee/Actionsettingsrelay.png",
+            "https://wiki.teltonika-networks.com/images/thumb/4/4b/Generaladdnewinstanceinput.png/1100px-Generaladdnewinstanceinput.png",
+            "https://wiki.teltonika-networks.com/images/1/14/Jugglerinstance.png",
+            "https://wiki.teltonika-networks.com/skins/teltonika-only-logo.svg",
+            "https://wiki.teltonika-networks.com/skins/slug.svg",
+            "https://wiki.teltonika-networks.com/skins/login.svg",
+            "https://wiki.teltonika-networks.com/skins/facebook.svg",
+            "https://wiki.teltonika-networks.com/skins/linkedin.svg",
+            "https://wiki.teltonika-networks.com/skins/twitter.svg",
+            "https://wiki.teltonika-networks.com/skins/youtube.svg",
+            "https://wiki.teltonika-networks.com/skins/instagram.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "/skins/favicon.png",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "The information in this page is updated in accordance with firmware version 00.07.02.7.\n\nIntroduction\n\nIgnition detection is a useful feature that we can implement into our connectivity solutions with some additional electrical components. In this article, we will show you two options on how to run the device depending on the state of Ignition:\n\n1st option - the device turns on with the ignition and turns off when the ignition goes off.\n\n2nd option - the device turns on with the ignition and stays on for some time, even if the ignition is turned off.\n\nThis example will use the 4-pin connector, available on most of the Teltonika networking devices:\n\nTo access the I/O pins and power the device at the same time you would likely need one of these adaptors from our Accessories list:\n\nPOWER CABLE WITH 4-WAY SCREW TERMINAL\n\nPOWER CABLE WITH 4-WAY OPEN WIRE\n\n4-PIN POWER ADAPTER WITH I/O ACCESS\n\nSchematics\n\nThe first schematic diagram provided gives you the ability to turn the device on and off depending on ignition state.\n\nTo build this schematic, you would need two electrical components:\n\nDiode\n\n1N4001 diode or similar could be used. It is used to protect the control circuit from the sudden voltage spike. If the relay that you are using has a flyback diode built in, this diode is not needed. NOTE: if you are using this schematic without the diode, you risk damaging the device.\n\nElectromagnetic Relay\n\nRelay choice depends on vehicle's electrical system voltage. If this setup is installed into a Vehicle with 12 V system, then a relay with 12 V Coil Voltage should be used. Otherwise, if the electrical system is 24 V, a relay with 24 V Coil Voltage should be used.\n\nWhen building this schematic, you can ground the device and the relay on the same spot, for example, chassis of the vehicle.\n\nThe second schematic diagram provided gives you the ability to turn the device on with the ignition and turn off only when certain preset time expires after the ignition is turned off.\n\nTo build this schematic, you would need to use the same electrical components as mentioned above, only in this case we will use 2 Relays and 2 Diodes. As mentioned earlier, using this schematic without the diode, raises risk damaging the device.\n\nWhen building this schematic, make sure to ground only one relay and the device (these can be grounded at the same spot), notice that the secondary relay (on the right) gets ground from the device's output - this allows controlling the relay and delay the turning off time. Also, notice that ignition is connected both to the device input and to the first relay - this can be done from the same ignition source - there is no need to search for separate wires.\n\nDevice configuration\n\nIf you chose the first option, no additional device configuration is needed. If you would like a set up based on the second schematic, you would need to do additional configuring in the device.\n\nSetting Output pin state\n\nFirst of all, we need to set the second relay to ON position by setting the Output pin to High state. Follow these steps to configure default Output pin state:\n\nNavigate to Services -> Input/Output -> Status.\n\nPress on the Output pin state to turn on.\n\nOtherwise, the output pin can be set to high using startup script:\n\nNavigate to System -> Custom scripts -> Startup script.\n\nAbove the exit 0 text, input command to turn on the output Pin: ubus call ioman.gpio.dout1 update '{\"value\":\"1\"}'\n\nPress Save & Apply.\n\nInput/Output Juggler configuration\n\nInput/Output configuration also needs some changes for this functionality to work as intended.\n\nNavigate to Services -> Input/Output -> IO Juggler.\n\nIn the general tab, press enable to turn on I/O Juggler functionality.\n\nAction configuration\n\nNavigate to Actions tab.\n\nIn the Add new instance section, input name (delayoff in this example) for action and in Type select Output, press Add.\n\nIn the new window, configure the settings according to the explanations below. Here we are not using Maintain option in order for the relay to be set to ON position once the ignition is on again.\n\nType: Output.\n\nExecution delay (how long you would like to keep the router on after the ignition turns off): your preferred time in seconds.\n\nControl: Output (4) (Output pin on which the relay control is connected).\n\nMaintain: Off\n\nState copying: On\n\nSource: Input (3)\n\nLeave everything else as default, press Save & Apply.\n\nInstance configuration\n\nSwitch back to the General tab. In the Add new instance section, select Role: Input(3) and press Add to add new instance.\n\nIn the new window, configure the settings according to the explanations below.\n\nPress Enable to enable the instance.\n\nTrigger interval – 1 (you could input a higher value, for example, if you are connecting to ACC and input signal goes off for a second when starting the vehicle - it would allow the Output Pin state remain static in the starting moment).\n\nTrigger – Falling (reacts when Ignition state goes from On to Off).\n\nAdd actions – select the action which you‘ve created previously (delayoff in this example).\n\nPress Save & Apply.\n\nWith that, the configuration is finished. The device will stay on for as long as Execution delay value is set. If this example is not working as intended, please review the steps once again."
+    }
+}
