@@ -1,0 +1,33 @@
+{
+    "id": "dbpedia_4624_1",
+    "rank": 74,
+    "data": {
+        "url": "https://stackoverflow.com/questions/71744148/graphviz-dot-output-what-are-the-4-6-pos-coordinates-for-an-edge",
+        "read_more_link": "",
+        "language": "en",
+        "title": "GraphViz DOT output: What are the 4-6 \"pos\" coordinates for an \"edge\"",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/5e48330b231bdc49660dc54187089c16?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/14lQT.png",
+            "https://www.gravatar.com/avatar/aa7eb0c101d4d3c66cdb525b5e3b02a4?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://stackoverflow.com/posts/71744148/ivc/c01d?prg=7e15a103-4189-4d6e-ba55-32004d00a5b4"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2022-04-04T21:52:38",
+        "summary": "",
+        "meta_description": "I just started to experiment with GraphViz's &quot;neato&quot; command for\nKamada-Kawai graph visualization (solved using stress majorization).\nI am particularly interested in extracting the laid out",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/71744148/graphviz-dot-output-what-are-the-4-6-pos-coordinates-for-an-edge",
+        "text": "I just started to experiment with GraphViz's \"neato\" command for Kamada-Kawai graph visualization (solved using stress majorization). I am particularly interested in extracting the laid out node coordinates for external processing.\n\nI was looking at this question to figure out the \"pos\" attribute for graph edges in the output DOT file. The attribute consists of 4 coordinate points. One helpful answer says that the series of coordinats (not necessarily 4) are the control points of a spline, likely a Bezier spline. The answerer is \"compound eye\", who I'll refer to as \"CE\". Here is the example given:\n\n// digrfG.dot //----------- digraph G { A [label = \"A\" xlabel=\"a\" pos=\"0,100\" ] B [label = \"B\" xlabel=\"b\" pos=\"100,0\"] A -> B [label = \"A->B www\" xlabel=\"a->b\"] [pos=\"0,100 0,0 0,0 100,0\"] }\n\nIn Bash, it is processed by GraphViz using:\n\n# Make image: #------------ dot -Kneato -n2 -Tpng digrfG.dot >| digrfG.png # Make output DOT file: #---------------------- dot -Kneato -n2 digrfG.dot >| digrfG_out.dot\n\nThe output is:\n\n# digrfG_out.dot #--------------- digraph G { graph [bb=\"-7,0,154,151\"]; node [label=\"\\N\"]; A [height=0.5, label=A, pos=\"27,118\", width=0.75, xlabel=a, xlp=\"-3.5,143.5\"]; B [height=0.5, label=B, pos=\"127,18\", width=0.75, xlabel=b, xlp=\"96,43.5\"]; A -> B [label=\"A->B www\", lp=\"42.5,75.5\", pos=\"27,118 27,18 27,18 127,18\", xlabel=\"a->b\", xlp=\"63.5,60.5\"]; }\n\nMy edge coordinates do not match CE's, neither in the numerical quantities nor in the number of coordinates. While I have 4 coordinates, CE has 6, including 2 coordinates at the start of the series prefixed by \"s,\" and \"e,\". The Bezier curve page cited by CE gives the impression that typical Bezier splines have 4 control points, including start and end points, though the math allows for more. This Micrsoft page reinforces this impression of a 4-point default.\n\nThis GraphViz page shows that an edge's \"pos\" attribute contains a spline, starting with start and end points, prefixed with \"s,\" and \"e,\" as per CE's output, but the syntax is puzzling. If it is regular expression syntax, then there are 4 or more coordinates following optional start and end points. That might explain why I have no coordinates prefixed with \"s,\" or \"e,\", but I have 4 coordinates.\n\nIn digrfG_out.dot above, if I compare the 4 coordinates with the node coordinates, it is clear that the first and last of the 4 coordinates match the node coordinates. It seems that CE's GraphViz defaults to 6 control points and explicitly designates start and end points at the head of the list of coordinates, whereas my GraphViz defaults to 4, without special treatment of the start and end points. Since GraphViz's spline page is so ambiguous, I was wondering if this interpretation can be confirmed.\n\nThanks."
+    }
+}
