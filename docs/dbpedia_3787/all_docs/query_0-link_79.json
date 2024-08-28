@@ -1,0 +1,30 @@
+{
+    "id": "dbpedia_3787_0",
+    "rank": 79,
+    "data": {
+        "url": "https://community.rti.com/forum-topic/tool-gathering-statistics-dds-traffic",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Tool for gathering statistics on DDS traffic?",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://d2vkrkwbbxbylk.cloudfront.net/sites/default/files/community05_0_transparent.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "I'm interested in gathering statistics on our DDS traffic so I can determine if a change to our QoS has any demonstrable result. In examining the current Connext toolset, I don't find anything that is an exact match for our needs.",
+        "meta_lang": "",
+        "meta_favicon": "",
+        "meta_site_name": "",
+        "canonical_link": "https://community.rti.com/forum-topic/tool-gathering-statistics-dds-traffic",
+        "text": "Hey Jason,\n\n1. This topic is (in part) covered in a post I made ( https://community.rti.com/forum-topic/how-obtain-full-view-system ).\n\n2) I'm unsure what \"sample timing jitter over time\" means.\n\n3) Among other things, RTI has an api for checking the amount of samples lost and samples that arrived.\n\n4) RTI Monitoring Library (which I do not recommend, I'll explain later) allows you to publish abovementioned data (and much more) periodically.\n\nIf you choose to use RTI monitoring library (by enabling it in qos / programmatically), you can either utilize RTI Monitoring Service (and to some extent, other RTI tools) or write your own monitoring tool to view this monitoring data.\n\nOne issue I've encountered with RTI Monitoring is that it seems to create STW (stop-the-world) pauses for all RTI entities (so, if you have a lot of different rti entities, when ever data is to be sent periodically, all of them will be stalled). Personally this introduced (in one application that has a lot of entities) a 500 ms stall happening periodically.\n\n5) For monitoring the data you described I would recommend doing the following:\n\n5.1) Attach listeners to all of your readers (if you are currently using them for other purposes, let all your listeners extend a shared listener implementation) and use the listener to capture: on_data_available (triggered when new samples are received) and on_sample_lost (triggered when rti identifies that a sample was lost).\n\nDepending on your programming language there are different libraries I would recommend for capturing the data (I don't recommend implementing this infrastructure on your own).\n\nFor java, I use dropwizard metrics to capture metrics (for example, counters) and publish them to a remote db periodically.\n\n5.2) If you can, I would recommend wrapping every read (or take) operation with some code that will capture the amount of samples read.\n\n5.3) If you use dropwizard metrics (or similar libraries) you will have a selection to make of where to report the data to, personally I went with influx db, a time-based data base which has good support for tags (useful for separation per topic / per writer) and is well supported by my visualization solution, grafana.\n\n5.3) You can separate the data per writer per topic using a naming format, if you use dropwizard metrics, there are a few workarounds that allow you to use tags on a per-metric basis.\n\nTL;DR:\n\nOther than the metric I'm unsure about (jitter), the rest can be covered by wrapping read/take code and utilizing listeners.\n\nCapturing (optionally, with tag separation) and reporting metrics can be done using libraries, for java I would recommend dropwizard metrics\n\nI would recommend reporting to influx db but there are other good options, as well.\n\nOnce you've reported the samples lost and samples read per reporting period you can use a visualization tool such as grafana (or kibana) to present this data in various forms (including rate).\n\np.s.\n\nIf you only interested in the rate at which events happened, you may find the Meter metric to be a better fit than the Counter metric (as the Meter will spare you the data manipulation in the visualization tool).\n\np.s. 2\n\nI would recommend steering clear of averages and standard deviation when examining networking performance. You can look it up but extensive research shows that normal distribution has little to do with latency and networking performance.\n\nInstead I would recommend looking at histograms.\n\nI hope this helps,\n\nRoy."
+    }
+}

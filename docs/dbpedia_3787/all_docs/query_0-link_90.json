@@ -1,0 +1,31 @@
+{
+    "id": "dbpedia_3787_0",
+    "rank": 90,
+    "data": {
+        "url": "https://docs.netscaler.com/en-us/citrix-adc/current-release/clustering/cluster-overview/cluster-traffic-distribution-concepts.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Traffic distribution in a cluster setup",
+        "top_image": "https://docs.netscaler.com/assets/images/favicon.ico",
+        "meta_img": "https://docs.netscaler.com/assets/images/favicon.ico",
+        "images": [
+            "https://docs.netscaler.com/en-us/citrix-adc/media/ns-citrix-cluster-flow.png",
+            "https://docs.netscaler.com/assets/images/privacy-option.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "In a cluster setup, external networks view the collection of NetScaler appliances as a single entity. So, the cluster must select a single node that must receive the traffic.",
+        "meta_lang": "en",
+        "meta_favicon": "/assets/images/favicon.ico",
+        "meta_site_name": "",
+        "canonical_link": "https://docs.netscaler.com/en-us/citrix-adc/current-release/clustering/cluster-overview/cluster-traffic-distribution-concepts.html",
+        "text": "March 26, 2024\n\nContributed by:\n\nC S\n\nIn a cluster setup, external networks view the collection of NetScaler appliances as a single entity. So, the cluster must select a single node that must receive the traffic. The cluster does this selection by using the Equal Cost Multiple Path (ECMP) or cluster link aggregation traffic distribution mechanism. The selected node is called the flow receiver.\n\nNote\n\nFor an L3 cluster (nodes across different networks), only the ECMP traffic distribution can be used.\n\nThe flow receiver gets the traffic and then, using internal cluster logic determines the node that must process the traffic. This node is called the flow processor. The flow receiver steers the traffic to the flow processor over the backplane if the flow receiver and the flow processor are on the same network. The traffic is steered through the tunnel if the flow receiver and the flow processor are on different networks.\n\nNote\n\nThe flow receiver and flow processor must be nodes capable of serving traffic.\n\nFrom NetScaler 11 onwards, you can disable steering on the cluster backplane. For more information, see Disabling Steering on the Cluster Backplane.\n\nFigure 1. Traffic distribution in a cluster\n\nThe preceding figure shows a client request flowing through the cluster. The client sends a request to a virtual IP (VIP) address. A traffic distribution mechanism configured on the client data plane selects one of the cluster nodes as the flow receiver. The flow receiver receives the traffic, determines the node that must process the traffic, and steers the request to that node (unless the flow receiver selects itself as the flow processor).\n\nThe flow processor establishes a connection with the server. The server processes the request and sends the response to the subnet IP (SNIP) address that sent the request to the server.\n\nIf the SNIP address is a striped or partially striped IP address, the traffic distribution mechanism configured on the server data plane selects one of the cluster nodes as the flow receiver. The flow receiver receives the traffic, determines the flow processor, and steers the request to the flow processor through the cluster backplane.\n\nIf the SNIP address is a spotted IP address, the node that owns the SNIP address receives the response from the server.\n\nNetScaler Preview Documentation\n\nThis Preview product documentation is Cloud Software Group Confidential.\n\nYou agree to hold this documentation confidential pursuant to the terms of your Cloud Software Group Beta/Tech Preview Agreement.\n\nThe development, release and timing of any features or functionality described in the Preview documentation remains at our sole discretion and are subject to change without notice or consultation.\n\nThe documentation is for informational purposes only and is not a commitment, promise or legal obligation to deliver any material, code or functionality and should not be relied upon in making Cloud Software Group product purchase decisions.\n\nIf you do not agree, select I DO NOT AGREE to exit."
+    }
+}
