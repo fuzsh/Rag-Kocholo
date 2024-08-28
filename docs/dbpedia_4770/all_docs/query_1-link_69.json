@@ -1,0 +1,28 @@
+{
+    "id": "dbpedia_4770_1",
+    "rank": 69,
+    "data": {
+        "url": "https://try-mts.com/algol-w-language-features/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Language features · Try MTS",
+        "top_image": "",
+        "meta_img": "",
+        "images": [],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2015-02-22T03:44:17+00:00",
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "/apple-touch-icon-144-precomposed.png",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "ALGOL W - Language features\n\nLet’s look at ALGOL W in more detail, focusing how it differs from ALGOL 60.\n\nRepresentation\n\nALGOL W is free format and case insensitive, though the convention was to have keywords in lower case and identifiers Like_This. Identifiers can be up to 255 characters long.\n\nKeywords are reserved words so no stropping is required. A standard EBCDIC character set is used so there is no need for a different reference and hardware representation.\n\nAs well as the comment syntax from ALGOL 60, comments can be started with % and then terminated with either % or ;.\n\nThe final statement in a program or separately compiled unit (ie the last end) should end with a period.\n\n% This is an ALGOL W program % begin integer Population_Count; end.\n\nNew data types\n\nAs well as the existing types from ALGOL 60 such as real and integer, ALGOL W provides long real, complex, bit and proper string types:\n\nbegin complex C; bits B; string(50) S; c := 1 + 2I; b := #0000010F; s := \"Hello, world\"; end.\n\nBit values are padded to 32 bits. String variables have to be declared with their length, such as 50 above; if the length is not provided the default is 16.\n\nNew operators\n\ndiv does integer division and rem yields the remainder after division. As well as the logical operators like and, there are also shl and shr for bitwise left and right shifts.\n\nbegin write(#1 shl 2); write(42 rem 20); end.\n\nThe above will print #00000004 and 2.\n\nRecords and references\n\nRecords group together simple variables like a struct in C. References can point to records but not fundamental types. A reference can be initialised, at which point memory for the record is allocated. After initialisation, fields can be accessed by field(variable).\n\nbegin record Person(integer Age; real Height; string(40) Name); reference(Person) P, Q; P := Person(30,, \"N Wirth\"); Q := Person; Age(Q) := 42; write(Name(P)); write(Age(Q)); end.\n\nNote for the initialisation of P we leave Height uninitialised, and although memory for Q is allocated it is not initialised at all. This example will print “N Wirth” and 42.\n\nReferences can be used to point at records but not fundamental types. null can be used to refer to an non-existent record. So a simple linked list could be defined as below, which will print 20.\n\nbegin record List(integer Data; reference(List) Next); reference(List) L; L := List(10, null); Next(L) := List(20, null); write(Data(Next(L))); end.\n\nA reference can point to more than one type of record; which one can be determined at run time with the is operator.\n\nbegin record A(real Aa); record B(integer Bb); reference(A, B) R, S; R := A(3.0); S := B(4); S := R; if S is A then write(\"Got an A\") else write(\"Got a B\"); end.\n\nThe above will print “Got an A”. I think there is no garbage collector, so the memory allocated for the B is leaked.\n\nwhile and case\n\nAs well as the three types of for statements from ALGOL 60, ALGOL W has a while statement. The below will print 256.0\n\nbegin real X; X := 2.0; while X < 100 do begin X := X * X; end; write(X); end.\n\ncase allows switching by integer value; the below will print “Two”. Note there is no default case, so if J < 1 or > 4 there will be a runtime error.\n\nbegin integer J; string(10) Word; J := 2; Word := case J of (\"One\", \"Two\", \"Three\", \"Four\"); write(Word); end.\n\nProcedures\n\nThe syntax for procedures differs from ALGOL 60 as types and calling conventions are specified in the function header:\n\nbegin real procedure Fn(real X; integer value Y); begin X * Y end; write(Fn(3.0, 2)); end.\n\nThe default calling convention, as used in the above, is by name, but *ALGOLW will give you a warning suggesting you use another convention instead.\n\nPutting value after the type means pass by value. There is a new calling convention, result, which is for pass-out variables. value results allows both pass-in and pass-out without the side effects of pass by name.\n\nbegin procedure P1(integer value A; integer result B; real value result C); begin A := 10; B := A; C := C + A end; integer A, B; real C; A := 1; B := 2; C := 3.0; P1(A, B, C); write(A, B, C); end.\n\nThe above will display 1, 10, 13.\n\nInput/Output and library\n\nThere’s an extensive input/output library that has been customised for MTS.\n\nBasic input/output allows reading and writing each from a single channel. The below program will expect input formatted like this:\n\n1001 \"Niklaus\" \"Wirth\" Inventor of ALGOL W\n\nbegin integer ID; string(20) First, Last; string(80) Description; read(ID); readon(First, Last); readcard(Description); end.\n\nMore complex formatting and carriage control can be specified. There is also support for reading/writing to more than one channel, and indexed access.\n\nThe standard library contains mathematical functions and access to operating system information like time and date.\n\nFurther information\n\nMTS volume 16 describes the language and the MTS extensions in detail."
+    }
+}

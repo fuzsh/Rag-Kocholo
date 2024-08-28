@@ -1,0 +1,34 @@
+{
+    "id": "dbpedia_4769_0",
+    "rank": 87,
+    "data": {
+        "url": "https://retrocomputing.stackexchange.com/questions/20381/which-extant-algol-60-compilers-fully-support-numeric-labels",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Which extant ALGOL-60 compilers fully support numeric labels?",
+        "top_image": "https://cdn.sstatic.net/Sites/retrocomputing/Img/apple-touch-icon@2.png?v=6b27f39a6023",
+        "meta_img": "https://cdn.sstatic.net/Sites/retrocomputing/Img/apple-touch-icon@2.png?v=6b27f39a6023",
+        "images": [
+            "https://www.gravatar.com/avatar/16bed4b4665c4e1579baccbb4db187ac?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/88eb66969205f724cf5a9662e005effc?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://retrocomputing.stackexchange.com/posts/20381/ivc/315d?prg=b1b717f8-f2f1-44bf-9fd3-3ac451c89bf7"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Leo B"
+        ],
+        "publish_date": "2021-07-12T23:45:38",
+        "summary": "",
+        "meta_description": "This question is prompted by a related one by texdr.aft. It turns out that the Revised report on Algol-60 allowed numeric labels (3.5.1, page 15),\n\n&lt;label&gt; ::= &lt;identifier&gt; | &lt;unsigned",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/retrocomputing/Img/favicon.ico?v=9b6f1e4fd156",
+        "meta_site_name": "Retrocomputing Stack Exchange",
+        "canonical_link": "https://retrocomputing.stackexchange.com/questions/20381/which-extant-algol-60-compilers-fully-support-numeric-labels",
+        "text": "This question is prompted by a related one by texdr.aft. It turns out that the Revised report on Algol-60 allowed numeric labels (3.5.1, page 15),\n\n<label> ::= <identifier> | <unsigned integer>\n\nas opposed to the later Modified Report (3.5.1, page 17),\n\n<label> ::= <identifier>\n\nThe rationale for the eventual restriction is quoted from the question referred above:\n\nHere is what Dahlstrand, Goteborg, and Naur have to say about this in Algol Bulletin AB10.3.\n\nThe admission of integers as labels will produce some peculiar possibilities, like the following:\n\nprocedure Pop(Q); procedure Q; begin … Q(3); … end;\n\nprocedure Pip(A); label A; begin … go to A; … end;\n\nprocedure Pap(B); real B; begin … q ≔ B; end;\n\nPop(Pap);\n\nPop(Pip);\n\nEvidently the number 3 appearing within the body of procedure Pop will in the first of these two procedure statements be used as a number, while in the second it will be used as a label.\n\nWe do not want to suggest any formal change of the language, since in spite of the peculiarity the above example is well defined. On the other hand we do want to disrecommend the use of integers in labels in actual programs. We would like to see them die from disuse. That we do not accept them in our translators goes without saying.\n\nThere is a retro-compiler which accepts the code demonstrating the possibility (Algol-BESM-6):\n\n1. _BEGIN 2. _PROCEDURE POP(Q); _PROCEDURE Q; 3. _BEGIN Q(3); _END; 4. 5. _PROCEDURE PIP(A); _LABEL A; 6. _BEGIN _GOTO A; _END; 7. 8. _PROCEDURE PAP(B); _INTEGER B; 9. _BEGIN OUTPUT(‘T’, ‘INTEGER ’, ‘ZD’, B) _END; 10. 11. POP(PAP); 12. _IF _FALSE _THEN 3: OUTPUT(‘T’, ‘ LABEL 3’) _ELSE POP(PIP); 13. _END\n\nprints INTEGER 3 LABEL 3.\n\nA recent implementation of Algol-60, MARST specifically mentions that the supported language revision is according to the Modified Report, and errors out with invalid use unsigned integer `3' as a label\n\nAnother example, from a Donald Knuth's paper is compiled successfully by the Algol-BESM-6 compiler, but some error checks are missing:\n\n1. _BEGIN _PROCEDURE P(Q); _IF B(Q) _THEN G(Q); 2. _PROCEDURE G(Q); _GOTO Q; 3. _BOOLEAN _PROCEDURE B(Q); B := Q < 5; 4. P(3); 5. OUTPUT(‘T’, ‘--- ’); 6. 1: OUTPUT(‘T’, ‘ONE ’); 7. 2: OUTPUT(‘T’, ‘TWO ’); 8. 3: OUTPUT(‘T’, ‘THREE ’); 9. 4: OUTPUT(‘T’, ‘FOUR’); 10. OUTPUT(‘/’); 11. _END\n\nworks and prints THREE FOUR, P(2) would print TWO THREE FOUR, etc. (P(5) or greater would print --- ONE TWO THREE FOUR). However, P(0) would compile but crash at runtime, as well as P(1+1), etc.\n\nIs there another surviving Algol-60 compiler for any of the Western computers which is a) based on the Revised Report, thus allows numeric labels, and b) is able to compile the peculiar construct correctly?"
+    }
+}

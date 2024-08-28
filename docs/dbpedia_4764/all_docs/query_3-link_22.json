@@ -1,0 +1,32 @@
+{
+    "id": "dbpedia_4764_3",
+    "rank": 22,
+    "data": {
+        "url": "https://www.postgresql.org/docs/current/isn.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "PostgreSQL: Documentation: 16: F.21. isn — data types for international standard numbers (ISBN, EAN, UPC, etc.)",
+        "top_image": "https://www.postgresql.org/media/img/about/press/elephant.png",
+        "meta_img": "https://www.postgresql.org/media/img/about/press/elephant.png",
+        "images": [
+            "https://www.postgresql.org/media/img/about/press/elephant.png",
+            "https://www.postgresql.org/media/img/atpostgresql.png",
+            "https://www.postgresql.org/media/img/git.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2024-08-08T12:46:17",
+        "summary": "",
+        "meta_description": "F.21.&nbsp;isn — data types for international standard numbers (ISBN, EAN, UPC, etc.) # F.21.1. Data Types F.21.2. Casts F.21.3. Functions …",
+        "meta_lang": "en",
+        "meta_favicon": "/favicon.ico",
+        "meta_site_name": "PostgreSQL Documentation",
+        "canonical_link": "https://www.postgresql.org/docs/current/isn.html",
+        "text": "F.21.1. Data Types #\n\nTable F.11 shows the data types provided by the isn module.\n\nTable F.11. isn Data Types\n\nData Type Description EAN13 European Article Numbers, always displayed in the EAN13 display format ISBN13 International Standard Book Numbers to be displayed in the new EAN13 display format ISMN13 International Standard Music Numbers to be displayed in the new EAN13 display format ISSN13 International Standard Serial Numbers to be displayed in the new EAN13 display format ISBN International Standard Book Numbers to be displayed in the old short display format ISMN International Standard Music Numbers to be displayed in the old short display format ISSN International Standard Serial Numbers to be displayed in the old short display format UPC Universal Product Codes\n\nSome notes:\n\nISBN13, ISMN13, ISSN13 numbers are all EAN13 numbers.\n\nEAN13 numbers aren't always ISBN13, ISMN13 or ISSN13 (some are).\n\nSome ISBN13 numbers can be displayed as ISBN.\n\nSome ISMN13 numbers can be displayed as ISMN.\n\nSome ISSN13 numbers can be displayed as ISSN.\n\nUPC numbers are a subset of the EAN13 numbers (they are basically EAN13 without the first 0 digit).\n\nAll UPC, ISBN, ISMN and ISSN numbers can be represented as EAN13 numbers.\n\nInternally, all these types use the same representation (a 64-bit integer), and all are interchangeable. Multiple types are provided to control display formatting and to permit tighter validity checking of input that is supposed to denote one particular type of number.\n\nThe ISBN, ISMN, and ISSN types will display the short version of the number (ISxN 10) whenever it's possible, and will show ISxN 13 format for numbers that do not fit in the short version. The EAN13, ISBN13, ISMN13 and ISSN13 types will always display the long version of the ISxN (EAN13).\n\nF.21.3. Functions and Operators #\n\nThe isn module provides the standard comparison operators, plus B-tree and hash indexing support for all these data types. In addition there are several specialized functions; shown in Table F.12. In this table, isn means any one of the module's data types.\n\nTable F.12. isn Functions\n\nFunction\n\nDescription\n\nWeak mode is used to be able to insert invalid data into a table. Invalid means the check digit is wrong, not that there are missing numbers.\n\nWhy would you want to use the weak mode? Well, it could be that you have a huge collection of ISBN numbers, and that there are so many of them that for weird reasons some have the wrong check digit (perhaps the numbers were scanned from a printed list and the OCR got the numbers wrong, perhaps the numbers were manually captured... who knows). Anyway, the point is you might want to clean the mess up, but you still want to be able to have all the numbers in your database and maybe use an external tool to locate the invalid numbers in the database so you can verify the information and validate it more easily; so for example you'd want to select all the invalid numbers in the table.\n\nWhen you insert invalid numbers in a table using the weak mode, the number will be inserted with the corrected check digit, but it will be displayed with an exclamation mark (!) at the end, for example 0-11-000322-5!. This invalid marker can be checked with the is_valid function and cleared with the make_valid function.\n\nYou can also force the insertion of invalid numbers even when not in the weak mode, by appending the ! character at the end of the number.\n\nAnother special feature is that during input, you can write ? in place of the check digit, and the correct check digit will be inserted automatically."
+    }
+}
