@@ -1,0 +1,32 @@
+{
+    "id": "dbpedia_3760_1",
+    "rank": 57,
+    "data": {
+        "url": "https://stackoverflow.com/questions/17358558/how-to-select-value-by-default-in-dropdown-list-when-use-viewdatacountry-and",
+        "read_more_link": "",
+        "language": "en",
+        "title": "how to select value by default in dropdown list when use viewdata[\"Country\"] and get get list from database",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://i.sstatic.net/EuzIX.jpg?s=64",
+            "https://www.gravatar.com/avatar/e3a181e9cdd4757a8b416d93878770c5?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/17358558/ivc/015f?prg=8d97e029-23c9-40c4-a2d9-92ed1f83ac21"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2013-06-28T06:29:03",
+        "summary": "",
+        "meta_description": "i have country list stored in database and using viewdata to store all list now when i edit my task then i want to set my value in dropdown list. my code is\n\n public ActionResult Edit(long EventId)...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/17358558/how-to-select-value-by-default-in-dropdown-list-when-use-viewdatacountry-and",
+        "text": "You seem to be binding the dropdown to a complex property on your model (Country) which obviously is not supported. Dropdowns should be bound only to simple scalar type properties. So you should define a property that will hold the selected value on your EventObject view model:\n\npublic string SelectedCountry { get; set; }\n\nThen in your controller action you should set this property to the value of the country you want to be preselected:\n\nusing (Country objContry = new Country()) { ViewData[\"Countries\"] = new SelectList(objContry.GetAllCountry(), \"Country\", \"Country\"); } lst[0].SelectedCountry = \"Argentina\"; return View(lst[0]);\n\nand in your view:\n\n@Html.DropDownListFor( model => model.SelectedCountry, (SelectList)ViewData[\"Country\"], new { id = \"ddlCountry\" } )\n\nIn case your Country property is a scalar type you could directly assign a value to it:"
+    }
+}
