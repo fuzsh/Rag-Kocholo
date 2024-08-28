@@ -1,0 +1,41 @@
+{
+    "id": "dbpedia_4100_2",
+    "rank": 94,
+    "data": {
+        "url": "https://stackoverflow.com/questions/42273853/in-typescript-what-is-the-exclamation-mark-bang-operator-when-dereferenci",
+        "read_more_link": "",
+        "language": "en",
+        "title": "In TypeScript, what is the ! (exclamation mark / bang) operator when dereferencing a member?",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://i.sstatic.net/z5AzI.png?s=64",
+            "https://www.gravatar.com/avatar/262a612ed5ce1a36570253150d27839b?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/z5AzI.png?s=64",
+            "https://i.sstatic.net/kRxnP.jpg?s=64",
+            "https://www.gravatar.com/avatar/262a612ed5ce1a36570253150d27839b?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/1c39fae3d3160b1cf06618f4a6dac33d?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/7a02411ebd47ea5e79243941d722057f?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/XEvKe.jpg?s=64",
+            "https://i.sstatic.net/aJFgt.jpg?s=64",
+            "https://lh3.googleusercontent.com/a-/AOh14GgMNaVs1BNGSSgmyJUsUAPrqsiBngepGdDFI2bp0A=k-s64",
+            "https://lh3.googleusercontent.com/a-/AOh14GgapQrvXhSo2ssY0xtAmW1WV0tSX52-C8VFNrC9=k-s64",
+            "https://stackoverflow.com/posts/42273853/ivc/a25f?prg=c806b5fc-b093-4f2d-9a0c-626882327d92"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2017-02-16T12:22:26",
+        "summary": "",
+        "meta_description": "When looking at the source code for a tslint rule, I came across the following statement:\nif (node.parent!.kind === ts.SyntaxKind.ObjectLiteralExpression) {\n    return;\n}\n\nNotice the ! operator after",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/42273853/in-typescript-what-is-the-exclamation-mark-bang-operator-when-dereferenci",
+        "text": "That's the non-null assertion operator. It is a way to tell the compiler \"this expression cannot be null or undefined here, so don't complain about the possibility of it being null or undefined.\" Sometimes the type checker is unable to make that determination itself.\n\nIt is explained in the TypeScript release notes:\n\nA new ! post-fix expression operator may be used to assert that its operand is non-null and non-undefined in contexts where the type checker is unable to conclude that fact. Specifically, the operation x! produces a value of the type of x with null and undefined excluded. Similar to type assertions of the forms <T>x and x as T, the ! non-null assertion operator is simply removed in the emitted JavaScript code.\n\nI find the use of the term \"assert\" a bit misleading in that explanation. It is \"assert\" in the sense that the developer is asserting it, not in the sense that a test is going to be performed. The last line indeed indicates that it results in no JavaScript code being emitted.\n\nLouis' answer is great, but I thought I would try to sum it up succinctly:\n\nThe bang operator tells the compiler to temporarily relax the \"not null\" constraint that it might otherwise demand. It says to the compiler: \"As the developer, I know better than you that this variable cannot be null right now\".\n\nNon-null assertion operator\n\nWith the non-null assertion operator we can tell the compiler explicitly that an expression has value other than null or undefined. This is can be useful when the compiler cannot infer the type with certainty but we have more information than the compiler.\n\nExample\n\nTS code\n\nfunction simpleExample(nullableArg: number | undefined | null) { const normal: number = nullableArg; // Compile err: // Type 'number | null | undefined' is not assignable to type 'number'. // Type 'undefined' is not assignable to type 'number'.(2322) const operatorApplied: number = nullableArg!; // compiles fine because we tell compiler that null | undefined are excluded }\n\nCompiled JS code\n\nNote that the JS does not know the concept of the Non-null assertion operator since this is a TS feature\n\n\"use strict\"; function simpleExample(nullableArg) { const normal = nullableArg; const operatorApplied = nullableArg; }\n\nTS's exclamation mark operator: It's used to set the not-nullable references. It tells the typescript compiler that the variable can't be Null or undefined. Please check the following example.\n\nlet referenceA: string | null = null const n = 1 if (n) { referenceA= \"Hello My World!\" } console.log(referenceA.toLowerCase()) // Error: Object is possibly 'null'.ts(2531)\n\nTo avoid that error we need to tell the compiler that the variable can't be Null using the \"!\" operator, which's called non-null assertion operator.\n\nlet referenceA: string | null = null const n = 1 if (n) { referenceA= \"Hello My World!\" } console.log(referenceA!.toLowerCase())"
+    }
+}
