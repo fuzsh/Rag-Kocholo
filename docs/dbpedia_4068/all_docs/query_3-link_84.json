@@ -1,0 +1,28 @@
+{
+    "id": "dbpedia_4068_3",
+    "rank": 84,
+    "data": {
+        "url": "https://www.sitepoint.com/community/t/quick-question-what-does-do/84032",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Quick Question: What does \"=&\" do?",
+        "top_image": "https://global.discourse-cdn.com/sitepoint/original/3X/6/d/6dbd48feb20de08c7fcc132892f7914911911350.png",
+        "meta_img": "https://global.discourse-cdn.com/sitepoint/original/3X/6/d/6dbd48feb20de08c7fcc132892f7914911911350.png",
+        "images": [],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2011-05-15T20:19:06+00:00",
+        "summary": "",
+        "meta_description": "Simply question but I can’t google it, google just ignores the entry and thinks I’m asking about ampersands.",
+        "meta_lang": "en",
+        "meta_favicon": "https://global.discourse-cdn.com/sitepoint/optimized/3X/d/6/d6ddf8bfb2cd5f4a4efe0206746b732b28abc92e_2_32x32.png",
+        "meta_site_name": "SitePoint Forums | Web Development & Design Community",
+        "canonical_link": "https://www.sitepoint.com/community/t/quick-question-what-does-do/84032",
+        "text": "I could be wrong but I dont think it does anything in PHP\n\nthey arent listed with php operators either\n\nare you sure your not getting those symbols from the url?\n\nWell I’m just looking at the Wordpress code to try and get an understanding of how CMS work and the trail I’ve followed led me to a function that contains this.\n\nif (is_object( $args)) //Check if $args is an object $object = get_object_vars($args); //Assign the accessible objects of $args to $object. Objects with no value return NULL elseif (is_array($args)) //Check if $args is an array $object =& $args;\n\nThe bottom line containing the offending item.\n\nI also looked on assignment operators but couldn’t find this operator.\n\nAh ok, I think I understand. So it is performing an alteration if it is an object, otherwise it just assigns $object to mean the exact same thing so it can use $object later?\n\nMight be a stupid question but why not just have:\n\n$object = $args (without the &)?\n\nOh…\n\nOk well thank you for the input, I’ll change this title to solved.\n\nAs an aside, is there a better system to observe then for developing a CMS?\n\nEDIT: Nevermind I can’t change it to Solved.\n\nThink of variables as postal addresses.\n\nAn address references a real world location. A variable references a space in your computer’s memory (also called a memory “address”).\n\nA reference is like a forwarding address - it’s not a real location in memory, but just redirects to another address.\n\nAny use of the reference address is actually forwarded to the address it’s referencing.\n\nSome things about references.\n\nFirst is the related (and far more useful) ability to iterate by reference.\n\nforeach ($array as $key => &$value) { $value['newProperty'] = 'something'; $value['changed'] = true; }\n\nIt allows you to traverse an array or object and modify the members, then have those changes retained after the foreach loop is concluded.\n\nYou can also receive arguments by reference\n\nfunction inc(&$myArgument) { $myArgument++; } $a = 1; inc($a); echo $a; // 2\n\nBe careful with this. It can lead to nighmarishly difficult to maintain code and is rarely (if ever) worth doing.\n\nFinally, Keep in mind that all variables to objects are references.\n\n$a = new myClass(); $b = $a; // Is functionally identical in all ways to... $b = &$a; // or $b =& $a;\n\nThis can (and has) thrown off many an intermediate programmer and caused hours of headaches. In Javascript every variable is a reference.\n\nFinally, if you are coming to PHP from C++ then don’t confuse references for pointers. They are similar and used in many of the same situations, but there are fundemental differences that can cause trouble.\n\nAlso keep in mind that PHP’s garbage collection will not delete a value or object until all reference to it are deleted. Recursive references between objects are notoriously hard for garbage collectors in all languages to deal with and can cause memory leaks, so keep that in mind as well."
+    }
+}
