@@ -1,0 +1,28 @@
+{
+    "id": "dbpedia_5009_0",
+    "rank": 30,
+    "data": {
+        "url": "https://interest.qt-project.narkive.com/zrVl9ApY/display-nicely-truncated-text-in-a-qlabel",
+        "read_more_link": "",
+        "language": "en",
+        "title": "[Interest] Display nicely truncated text in a QLabel",
+        "top_image": "https://narkive.net/favicon.ico",
+        "meta_img": "https://narkive.net/favicon.ico",
+        "images": [],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "",
+        "meta_favicon": "https://narkive.net/favicon.ico",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "Adam Light\n\nPost by L***@crypto.ch\n\nHi\n\nI would derive from QLabel, get the length of it (in pixel) with\n\nframeWidth() use QFontMetrics QWidget::fontMetrics () with int\n\nQFontMetrics::width ( const QString & text, int len = -1 ) to get the\n\nlength of the text in pixels, check if it fits, and if no cut some chars\n\nand replace it with until it fits. You would have to check every time\n\nagain when the user changes the windows size..\n\nMaybe someone else knows a nicer way.\n\nThere are potential complications with this approach depending on what\n\ntextInteractionFlags are set on the label. For example, in my application\n\nwe sometimes display paths to a file on disk, and we use\n\nthe Qt::TextSelectableByMouse flag so that the user can select that text\n\nand copy it into another application, if they wish. Though I haven't tried\n\nthis, I suspect that if you used Lucas's approach of eliding the text then\n\nyou would only be able to select the elided text, not the original text. I\n\nthink you'd have similar problems if the label's text contained a link.\n\nIn my application, we work around this by using a QLineEdit set to be read\n\nonly with no frame and a transparent background. The user can then use the\n\nmouse or keyboard cursors to move the cursor position in the line edit so\n\nthat they can see the beginning or end of the text that would otherwise be\n\nhidden.\n\nThis work around isn't great, but it at least makes it possible for the\n\nuser to see the full value of the string in cases where it wouldn't\n\notherwise be possible.\n\nAdam"
+    }
+}

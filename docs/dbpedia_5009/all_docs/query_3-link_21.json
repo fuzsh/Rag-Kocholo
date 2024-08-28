@@ -1,0 +1,28 @@
+{
+    "id": "dbpedia_5009_3",
+    "rank": 21,
+    "data": {
+        "url": "https://kubyshkin.name/posts/app-version-from-git-tag-in-qt-qml/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "App Version From Git in Qt/QML",
+        "top_image": "https://kubyshkin.name/favicon-32x32.png",
+        "meta_img": "https://kubyshkin.name/favicon-32x32.png",
+        "images": [],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "",
+        "meta_favicon": "/favicon-32x32.png",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "While making an app it is really important to keep accurate track of the versions. Usually such a tracking is implemented via tags in version control system like git. Itâs also a good idea to keep in mind semantic versioning when assigning version to your code.\n\nBut tagging your code with the right version number is only the first step. You also need to show version to the user and in some cases the system.\n\nGetting Version to C++\n\nThe easiest way to get git to display most recent tag is to run:\n\ngit describe --always --tags\n\nIf you have a tag in your repository and it is on current commit then you will get itâs name, otherwise something like this will be returned:\n\nyourtag-6-g1234567\n\nFirst part is the most recent tag name (yourtag), then number of commits since that tag (6) and then g(which stands for git) followed but current commitâs hash.\n\nOne thing to note is that from this point onward I assume that tags used for commits conform to semantic versioning and look something like 2.5.3.\n\nNow that we understand the structure itâs time to get cracking. Qt .pro files allow you to call command line scripts and save itâs contents using $$system() function. Hereâs how we can use it to get git tag:\n\nGIT_VERSION = $$system(git --git-dir $$PWD/.git --work-tree $$PWD describe --always --tags)\n\nThe only tricky thing here is that we have to specify path for our repository manually using PWD variable .\n\nTo use it in C++ we can add compile-time #DEFINE statement by adding following line:\n\nDEFINES += GIT_VERSION=\\\\\"$$GIT_VERSION\\\\\"\n\nOnce that is done, GIT_VERSION becomes usable just like any macro inside your code:\n\nQString version(GIT_VERSION);\n\nPassing version to QML\n\nThe easiest way to use version you got from git in QML is to create a singleton. Basically you just define a function that will return a QJSValue you want and then you import a module in QML. Hereâs how you main.c might look:\n\n#include <QtQml> #include \"qtquick2controlsapplicationviewer.h\" static QJSValue appVersionSingletonProvider(QQmlEngine *engine, QJSEngine *scriptEngine) { Q_UNUSED(engine) QJSValue appInfo = scriptEngine->newObject(); appInfo.setProperty(\"version\", GIT_VERSION); return appInfo; } int main(int argc, char *argv[]) { Application app(argc, argv); qmlRegisterSingletonType(\"Native\", 1, 0, \"AppInfo\", appVersionSingletonProvider); QtQuick2ControlsApplicationViewer viewer; viewer.setMainQmlFile(QStringLiteral(\"qml/main.qml\")); viewer.show(); return app.exec(); }\n\nOnce that is done, you can use the value inside your QML like this:\n\nimport QtQuick 2.2 import Native 1.0 Text { text: AppInfo.version }\n\nAdding Windows Executable Version\n\nOn Windows version of the executable file as well as some other meta information (like icon) is specified via special resource file. Qt generates this file for you and even fills in the version from VERSION variable in .pro file.\n\nThis sounds easy enough, unfortunately if you try to put something that is non-numeric inside, like a hash, the application wonât compile. Luckily there is support for regular expression inside qmake so we can clean it like this:\n\nVERSION = $$GIT_VERSION win32 { VERSION ~= s/-\\d+-g[a-f0-9]{6,} }\n\nThatâs it, now you should be able to see correct version number when inspecting properties of your executable using Windows Explorer.\n\nAdding Mac OS X App Version\n\nIf you used Mac OS X you might have noticed that application version is displayed in Finder Inspector, itâs also used when showcasing your app on Mac App Store. The value is taken from Info.plist that is included into the package of every application.\n\nQt generates one for you automatically same as with RC file on Windows and it will also automatically fill in version from VERSION variable that we populated above when dealing with Windows, but it will only use major and minor version numbers. This might be ok for some application, but if you want to use full version â it can be done too by overwriting it after the main build like this:\n\nmacx { INFO_PLIST_PATH = $$shell_quote($${OUT_PWD}/$${TARGET}.app/Contents/Info.plist) QMAKE_POST_LINK += /usr/libexec/PlistBuddy -c \\\"Set :CFBundleShortVersionString $${VERSION}\\\" $${INFO_PLIST_PATH} }\n\nPutting All Together\n\nTo be able to easily reuse this Iâve separated all the logic into a Qt project include file (.pri) and saved it as a gist. It also takes care of few more edge cases than discussed above. To use it simply save gist to the same folder as the main .pro file and include before the end like this:\n\ninclude(gitversion.pri)\n\nCredits and Resources"
+    }
+}

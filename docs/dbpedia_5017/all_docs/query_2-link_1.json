@@ -1,0 +1,39 @@
+{
+    "id": "dbpedia_5017_2",
+    "rank": 1,
+    "data": {
+        "url": "https://en.wikipedia.org/wiki/Silicon_Graphics_Image",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Silicon Graphics Image",
+        "top_image": "https://en.wikipedia.org/static/favicon/wikipedia.ico",
+        "meta_img": "https://en.wikipedia.org/static/favicon/wikipedia.ico",
+        "images": [
+            "https://en.wikipedia.org/static/images/icons/wikipedia.png",
+            "https://en.wikipedia.org/static/images/mobile/copyright/wikipedia-wordmark-en.svg",
+            "https://en.wikipedia.org/static/images/mobile/copyright/wikipedia-tagline-en.svg",
+            "https://upload.wikimedia.org/wikipedia/en/thumb/9/96/Symbol_category_class.svg/16px-Symbol_category_class.svg.png",
+            "https://upload.wikimedia.org/wikipedia/en/thumb/6/6a/Symbol_na_class.svg/16px-Symbol_na_class.svg.png",
+            "https://login.wikimedia.org/wiki/Special:CentralAutoLogin/start?type=1x1",
+            "https://en.wikipedia.org/static/images/footer/wikimedia-button.svg",
+            "https://en.wikipedia.org/static/images/footer/poweredby_mediawiki.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Contributors to Wikimedia projects"
+        ],
+        "publish_date": "2006-04-21T01:07:57+00:00",
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "/static/apple-touch/wikipedia.png",
+        "meta_site_name": "",
+        "canonical_link": "https://en.wikipedia.org/wiki/Silicon_Graphics_Image",
+        "text": "Raster graphics file format\n\nSilicon Graphics ImageFilename extension\n\n.sgi, .rbg (among others)\n\nInternet media type\n\nimage/sgi[1]\n\nType code'.SGI'Uniform Type Identifier (UTI)com.sgi.sgi-image[2]Magic number01 DADeveloped byPaul HaeberliInitial release0.95 / 1995; 29 years ago ( )[3][4]Latest release\n\n1.00\n\n1996; 28 years ago ( )\n\nType of formatimage fileStandardSGI Image File Format[5]\n\nSilicon Graphics Image (SGI) or the RGB file format is the native raster graphics file format for Silicon Graphics workstations.[4] The format was invented by Paul Haeberli.[4] It can be run-length encoded (RLE). FFmpeg and ImageMagick, among others, support this format.\n\nCommon file extensions are:\n\n.sgi or .rgb\n\n3 colour channels\n\n.rgba\n\n3 colour channels and alpha\n\n.bw or .int\n\nblack and white\n\n.inta\n\nblack and white and alpha\n\nThis format was originally developed for IRIX. The master files of the SVT High Definition Multi Format Test Set are SGIs.[6][7][8] Frame 200 of the ParkJoy sequence in this set (15722.sgi, 3840×2160, 47.4 MB) was used in WebP comparisons.\n\nSGI image format use big endian order. Image data scan from left to right from bottom to top.\n\nField number Hex offset Length Field name Description 1 0x00 2 byte File signature/magic number SGI Signature 2 0x02 1 byte Compression 0 = Uncompressed, 1 = RLE compressed 3 0x03 1 byte Bytes per pixel 1 = 8 bit, 2 = 16 bit 4 0x04 2 bytes Dimension Image dimension, 3 for RGBA image 5 0x06 2 bytes X size Image width 6 0x08 2 bytes Y size Image height 7 0x0A 2 bytes Number of channels Number channels in the image file, 4 for RGBA image 8 0x0C 4 bytes Minimum pixel value Smallest pixel value in image 9 0x10 4 bytes Maximum pixel value Largest pixel value in image 10 0x14 4 bytes Reserved Unused, ignore 11 0x18 80 bytes Image name NOTE: C strings end with last byte 0x00 12 0x68 4 bytes Color map ID Only for color map image 13 0x6C 404 bytes Dummy Buffer to scale the header to 512 bytes. Ignore\n\nFile Signature/Magic Number\n\nShould equal 0x01 0xda for SGI file.\n\nCompression\n\n0 if the file is uncompressed; 1 for RLE compression.\n\nBytes Per Pixel Channel\n\nValue is 1 for 8 bits per channel ; 2 for 16 bits per channel.\n\nDimension\n\nValue is 1 for 1 channel, 1 scanline image ; 2 for 1 channel, multiple scanlines image; 3 for multiple channels, multiple scanlines image (most common).\n\nX Size\n\nScanline width in pixels.\n\nY Size\n\nNumber of scanlines in the image.\n\nNumber Of Channels\n\nNumber of channels in the image. Value is 1 for greyscale images; 3 for RGB; 4 for RGBA. SGI supports more than 4 channels.\n\nMinimum Pixel Value\n\nSmallest pixel value in all channels. Since SGI uses unsigned char or short types for channels, the smallest possible value is typically 0.\n\nMaximum pixel value\n\nLargest pixel value in all channels. Since SGI uses unsigned char or short types for channels, the largest possible value is typically 0xff for 8 bit/channel and 0xffff for 16 bit/channel.\n\nDummy\n\n4 bytes, unused.\n\nImage name\n\nImage name, 80-byte (maximum 79 characters ≠ 0x00) C string. If the name is shorter than 79 characters, all subsequent bytes are to be 0x00 in order to fill the 80-byte space.\n\nColor Map ID\n\nSGI supports 4 types of color mapping:\n\n0x00 normal: image has 1 channel (greyscale), 3 channels (RGB) or 4 channels (RGBA).\n\n0x01 dithered: image has packed RGB. First 3 bits are for R channel, next 3 bits are G channel, and last 2 bits are for B channel.\n\n0x02 screen: image uses colormap. Pixel data is index in color map and image only have 1 channel.\n\n0x03 colormap: file only have data for one color map (can use for different image file). This file no have image data.\n\nDummy\n\n404 bytes. Typically unused, scales the header to 512 bytes long.\n\nNo Compression\n\nImage data starts at byte 512 in file. Data length can be calculated using the following:\n\n(X size) × (Y size) × (Num. of channels) × (Bytes per channel)\n\nThe data is separated for each channel. For example, if an image uses RGBA, the first set of scanlines represent the R channel, the next set of scanlines are for the G channel, then B channel and, lastly, A channel. Therefore, each set of scanlines can be accessed directly via the following formula (where C = channel index):\n\n(X size) × (Y size) × (C ÷ Num. of channels) × (Bytes per channel)\n\nRLE Compression\n\nOffset tables start at byte 512. Their length can be calculated with the following:\n\n(Y size) × (Num. of channels) × 4 bytes long\n\nEach unsigned int in a table represent an offset (from file start) to the start of the compressed data of each scanline in each channel. The data is separated for each channel's scanline. If an image has RGBA channels, the order stays R, G, B and A.\n\nNext is the data length table which can also be calculated with the formula:\n\n(Y size) × (Num. of channels) × 4 bytes long\n\nThis table holds the size of the compressed data (unsigned int) of each scanline. This size should equal the difference of numbers in the offset table.\n\nThe last data block holds RLE compressed image data. If the number of bytes per channel is 1, the compressed data is of unsigned char type. Otherwise, if the number of bytes per channel is 2, the compressed data is of unsigned short type. The last byte of compressed scanline data has a value of 0.\n\n(NOTE: The following paragraph could not be translated by the previous english editor)\n\nFor both case have unsigned char or unsigned short data, lowest 7 bits tell count. If bit 8 is zero, count is number times copy value after count. If bit 8 is one, count is number times copy series of values after count byte. For 2 bytes/channel image, count and value is unsigned short and top byte of count always equal zero.\n\n(NOTE from english editor: what?)"
+    }
+}

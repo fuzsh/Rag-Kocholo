@@ -1,0 +1,38 @@
+{
+    "id": "dbpedia_5009_3",
+    "rank": 22,
+    "data": {
+        "url": "https://community.esri.com/t5/arcgis-maps-sdks-native-blog/testing-large-projects-with-the-qt-test-framework/ba-p/1256151",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Testing Large Projects with the Qt Test Framework",
+        "top_image": "https://community.esri.com/t5/image/serverpage/image-id/62361iEF74E28EA3B12AB7?v=v2",
+        "meta_img": "https://community.esri.com/t5/image/serverpage/image-id/62361iEF74E28EA3B12AB7?v=v2",
+        "images": [
+            "https://community.esri.com/html/assets/langTrFlag.PNG",
+            "https://community.esri.com/t5/image/serverpage/image-id/104747iEA1D0BA800FCC38C/image-dimensions/50x50/image-coordinates/0%2C386%2C2316%2C2702/constrain-image/false?v=v2",
+            "https://communitystg.esri.com/html/@09C70CF6BB92070325EF7BBC54D73CCB/rank_icons/esri-logo-40.png?version=preview",
+            "https://community.esri.com/t5/image/serverpage/image-id/62361iEF74E28EA3B12AB7/image-size/large?v=v2&px=999",
+            "https://community.esri.com/t5/image/serverpage/image-id/62360i948C0F86BA0EAEDA/image-size/large?v=v2&px=999",
+            "https://community.esri.com/t5/image/serverpage/image-id/62433i5FD36F50E1FF5F07/image-size/small?v=v2&px=200"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "community.esri.com",
+            "user-id"
+        ],
+        "publish_date": "2023-02-09T10:01:14.232000+00:00",
+        "summary": "",
+        "meta_description": "Tips and tricks on testing large projects with the Qt Test Framework, from the ArcGIS Maps SDK for Qt team at Esri.",
+        "meta_lang": "en",
+        "meta_favicon": "https://www.esri.com/content/dam/esrisites/en-us/common/favicon/esri-favicon-180.png",
+        "meta_site_name": "Esri Community",
+        "canonical_link": "https://community.esri.com/t5/arcgis-maps-sdks-native-blog/testing-large-projects-with-the-qt-test-framework/ba-p/1256151",
+        "text": "Back in November 2022, our resident Qt developers @LucasDanzinger and @JamesBallard1 took to the Qt World Summit virtual stage, where they shared tips and tricks for testing large projects with the Qt Test Framework.\n\nThe ArcGIS Maps SDK for Qt (formerly known as the Runtime SDK for Qt) team have had to overcome many product testing challenges over the years. With 25,000+ tests to handle, they’ve seen it all, from dealing with slow, flakey tests to seamlessly fitting testing workflows into organisation wide systems, such as Jenkins.\n\nIf you’d like to learn more about how the team got over these challenges, and how they implement the Qt Test framework within the development of the Qt Maps SDK product, this blog is for you!\n\nIn this blog we share some of Lucas and James’s Qt World Summit talk highlights, along with helpful tips, resources and links to help you test your large projects using Qt.\n\nQt Test functions\n\nQt Test can be used to efficiently manage a range of complex code. For example, when dealing with tests that use a lot of async code, James recommends using QTRY_COMPARE and QTRY_VERIFY test functions to allow more forgiving checks. QSignalSpy is another means that can be used to simplify your async tests. He also recommends ensuring test messages are good when using QVERIFY2 and QCOMPARE to remove ambiguity about failed tests.\n\nTest dependencies can be another sticking point for failing tests. If a test requires a lot of set up, something could fail beyond the team's control before it even tests production code. For example, if a map test is checking it can load maps from local map packages successfully, the test will fail if the map package is missing from the system. In that case, the test failed to meet the test prerequisites, and should skip the test with QSKIP rather than fail it.\n\nIt’s an important distinction when reviewing test results: “Test failed” means something is wrong with the software. “Test skipped” means we did not run the test for some reason.\n\nTune in to the recording at 5:26 for a demo of an example of bad test code and how to fix it!\n\nMocking tests\n\nOne of the big wins for the Qt Maps SDK team was implementing mocked tests in order to mitigate a frequent cause of random test failures: services being offline unexpectedly . For example, in some cases tests are run against internal dev or QA services which are frequently updated and can be offline temporarily during such updates; offline enough to cause random test failures.\n\nThe team make use of dependency injection to simulate such services, and find it reduces their dependency on online services completely. An additional benefit is faster running tests since they don’t have to call out to an actual network.\n\nHowever, one pitfall with the above approach is that online services do move on, whilst mocked services do not. So in the case where tests switch back to a live network, there might be some test failures.\n\nIt is recommended to check the live network occasionally rather than assuming mocked services can be run until problems come up.\n\nTune in to the recording at 9:15 for a demo of data-driven test code using different types of maps data, e.g. map with a basemap, map from a URL and an empty map!\n\nJenkins\n\nIn the talk, Lucas walks us through how the Qt Maps SDK teams use Jenkins as a continuous integration system. It allows test results that have been integrated with Jenkins to be visualised in the browser via an interactive dashboard, and the test results are transparent for the whole team can see it. The traffic light system dashboard display shows the daily heartbeat of the product, and allows extensive history logs to track passive fail durations and verify bug fixes.\n\nJenkins also has Slack and Teams plugins, so that all results can be pushed directly to the team at a central communications platform.\n\nSeparate Tests\n\nLucas’s final tip of the talk is to separate tests into different suites, e.g. separate out:\n\nUnit tests (simple and fast),\n\nFunctional tests (where you test user workflows, integrate with other classes, systems and data)\n\nGUI tests\n\nQt Test can be used for simple GUI cases like mouse clicks interacting on a map, and Squish is also recommended for more advanced application tests. Sometime manual tests are necessary but as these can be difficult to maintain and are time costly, should be avoided where possible.\n\nSummary\n\nWe hope you’ve enjoyed learning how the Qt team leverages Qt Test when building the Qt Maps SDK product!\n\nDon’t forget to check out their Tips and Tricks for Testing Large Projects with the Qt Test Framework recording for more details, and you can also find the test code that James demoed on GitHub."
+    }
+}
