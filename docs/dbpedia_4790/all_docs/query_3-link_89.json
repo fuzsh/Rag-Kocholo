@@ -1,0 +1,31 @@
+{
+    "id": "dbpedia_4790_3",
+    "rank": 89,
+    "data": {
+        "url": "https://archive.linuxvirtualserver.org/html/lvs-users/2001-08/msg00222.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Re: multiplexing multiple internet connections",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "http://www.linuxvirtualserver.org/logo/lvs-60.png",
+            "http://www.google.com/logos/Logo_25wht.gif"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "",
+        "meta_favicon": "",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": ">>only if the box on the other side can do it. Been there. The hardware solutions below don't seem to care if the link is cable, xdsl, modem etc. The appliances seems to just loadbalance, firewall, and imux. No working solution yet, but I'm still betting on the linux box ;-) ----- Original Message ----- From: \"Florent\" <florent@xxxxxxxxxxx> To: <lvs-users@xxxxxxxxxxxxxxxxxxxxxx> Sent: Friday, August 24, 2001 9:50 AM Subject: Re: multiplexing multiple internet connections > Hi, > > I have read that the tulip ethernet cards could do that type of aggregation but only if the box on the other side can do it. > > See the kernel docs. > > Florent > > #->> The max speed you optain is not the bandwidth > #->> sum a download transfer from the internal will have the max speed of one > #->> link not a fully link aggregation. > #->I am looking for linux aggregation solution. I hate purchasing hardware when > #->linux is available. I'd hope to think that there's a linux solution as > #->hardware solutions exist and they look very very linux based. > #-> > #->[$9000] > #->http://www.fatpipeinc.com/fatpipeT1.htm > #->http://www.business2.com/webguide/0,1660,41925|39582|0|0|1|a,00.html > #-> > #->[$399] > #->Nexland ISB Pro800turbo > #->http://www.nexland.com/products.htm#pro > #-> > #->I've been looking for this type of aggregate for some time now. Or at least > #->specific specifics. Any ideas? > #-> > #->Cheers > #-> > #-> > #-> > #-> > #-> > #->----- Original Message ----- > #->From: \"Alexandre Cassen\" <Alexandre.Cassen@xxxxxxxxxx> > #->To: <lvs-users@xxxxxxxxxxxxxxxxxxxxxx> > #->Sent: Friday, August 24, 2001 4:43 AM > #->Subject: multiplexing multiple internet connections > #-> > #-> > #->> Hi, > #->> > #->> we have discuss a while about how we can multiplex multiple Internet > #->> connections. The ref to the discuss in the HOWTO is : > #->> > #->http://www.linuxvirtualserver.org/Joseph.Mack/HOWTO/LVS-HOWTO-9.html#ss9. 18 > #->> > #->> While browsing zebra mailing list I have found a nice setup using linux > #->> advanced routing sch_teql. > #->> > #->> The teql is an internal routing scheduling equalizer. It is the same a eql > #->> loadbalancing on serial link. The max speed you optain is not the > #->bandwidth > #->> sum a download transfer from the internal will have the max speed of one > #->> link not a fully link aggregation. This method is similar to CISCO one > #->> using multiple default route on the network router with the same weight. > #->> > #->> The only problems with it is the setup in WAN env because we do not have > #->> end to end verification (for link loose). > #->> > #->> In fact the stability of the line cluster will depend on the ISP quality > #->of > #->> service. > #->> > #->> Hope it will help, > #->> > #->> regards, > #->> Alexandre > #->> > #->> > #->> ----------[ On Thu, 16 Aug 2001, mike harrison ]----------- > #->> > #->> > #->> 100+ machines with 172.18.x.x private IPs > #->> | > #->> |eth0 > #->> ====================== > #->> | Linux 2.4.8 | > #->> ====================== > #->> |eth1 |eth2 |eth3 > #->> | | | > #->> pppoe1 pppoe2 pppoe3 > #->> | | | > #->> =============== > #->> | > #->> | > #->> ADSL ISP > #->> > #->> > #->> You create a 'combined' virtual interface using module sch_teql > #->> > #->> > #->> Nearly bogus IP's used for example: > #->> > #->> > #->> # configures interfaces with proper netmask and broadcast address > #->> /sbin/ifconfig eth1 11.22.33.17 netmask 255.255.255.252 broadcast > #->11.22.33.19 > #->> /sbin/ifconfig eth2 11.22.33.21 netmask 255.255.255.252 broadcast > #->11.22.33.24 > #->> /sbin/ifconfig eth3 11.22.33.25 netmask 255.255.255.252 broadcast > #->11.22.33.28 > #->> > #->> > #->> # Loads module for eql scheduler > #->> modprobe sch_teql > #->> > #->> > #->> # Adds eth1-3 to teql0 (equalized interface) > #->> tc qdisc add dev eth1 root teql0 > #->> tc qdisc add dev eth2 root teql0 > #->> tc qdisc add dev eth3 root teql0 > #->> > #->> > #->> # turns on/sets the teql0 device > #->> ip link set dev teql0 up > #->> ip addr add dev teql0 11.22.33.33/28 > #->> > #->> > #->> # then add the default route upstream > #->> ip route add 0.0.0.0/0 via 11.22.33.34 dev teql0 table main > #->> > #->> > #->> # and then the START of NAT.. (more should be done, but this works) > #->> /sbin/iptables -t nat -A POSTROUTING -s 172.18.0.0/24 -o teql0 -j > #->SNAT --to > #->> 11.22.33.34 > #->> > #->> > #->> > #->> _______________________________________________ > #->> LinuxVirtualServer.org mailing list - lvs-users@xxxxxxxxxxxxxxxxxxxxxx > #->> Send requests to lvs-users-request@xxxxxxxxxxxxxxxxxxxxxx > #->> or go to http://www.in-addr.de/mailman/listinfo/lvs-users > #->> > #-> > #-> > #->_______________________________________________ > #->LinuxVirtualServer.org mailing list - lvs-users@xxxxxxxxxxxxxxxxxxxxxx > #->Send requests to lvs-users-request@xxxxxxxxxxxxxxxxxxxxxx > #->or go to http://www.in-addr.de/mailman/listinfo/lvs-users > #-> > > _______________________________________________ > LinuxVirtualServer.org mailing list - lvs-users@xxxxxxxxxxxxxxxxxxxxxx > Send requests to lvs-users-request@xxxxxxxxxxxxxxxxxxxxxx > or go to http://www.in-addr.de/mailman/listinfo/lvs-users >"
+    }
+}
