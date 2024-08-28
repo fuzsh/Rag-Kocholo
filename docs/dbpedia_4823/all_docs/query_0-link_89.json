@@ -1,0 +1,39 @@
+{
+    "id": "dbpedia_4823_0",
+    "rank": 89,
+    "data": {
+        "url": "https://www.ionos.com/digitalguide/server/configuration/understanding-and-configuring-dns-ttl/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "DNS TTL best practices: Understanding and configuring DNS TTL",
+        "top_image": "https://www.ionos.com/digitalguide/fileadmin/DigitalGuide/Teaser/dns-ttl-verstehen-und-anwenden.jpg",
+        "meta_img": "https://www.ionos.com/digitalguide/fileadmin/DigitalGuide/Teaser/dns-ttl-verstehen-und-anwenden.jpg",
+        "images": [
+            "https://www.ionos.com/digitalguide/_assets/b76f27cb02ebc538ac6fbabcf1a88e7f/Icons/logo-icon-nlement-48px-and-smaller.svg",
+            "https://www.ionos.com/digitalguide/fileadmin/DigitalGuide/IAS/CTAs/SEO_Digital_Guide_Mobile_nur-Nlement_900x750.png",
+            "https://www.ionos.com/digitalguide/fileadmin/DigitalGuide/Teaser/ssl-zertifikat.jpg",
+            "https://www.ionos.com/digitalguide/fileadmin/DigitalGuide/Teaser/netzwerkadressuebersetzung-t.jpg",
+            "https://www.ionos.com/digitalguide/fileadmin/DigitalGuide/Teaser/data-packages-t.jpg",
+            "https://www.ionos.com/digitalguide/fileadmin/DigitalGuide/Teaser/dns-record-t.jpg",
+            "https://www.ionos.com/digitalguide/fileadmin/DigitalGuide/exit_intent_visuals/20240725_US-SEO_DG_Exit-Intent-Pop-Up_CloudPriceCamp-Desktop_750x750-v1.png",
+            "https://www.ionos.com/digitalguide/fileadmin/DigitalGuide/exit_intent_visuals/20240725_US-SEO_DG_Exit-Intent-Pop-Up_CloudPriceCamp-Mobile_900x750-v1.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "IONOS editorial team"
+        ],
+        "publish_date": "2023-03-24T00:00:00",
+        "summary": "",
+        "meta_description": "Sometimes it makes sense to check a website’s DNS TTL values. Learn about the best practices for DNS TTL settings, and how to set DNS TTL values for your domain names.",
+        "meta_lang": "en",
+        "meta_favicon": "https://www.ionos.com/digitalguide/_assets/b76f27cb02ebc538ac6fbabcf1a88e7f/Icons/logo-icon-nlement-48px-and-smaller.svg",
+        "meta_site_name": "IONOS Digital Guide",
+        "canonical_link": "https://www.ionos.com/digitalguide/server/configuration/understanding-and-configuring-dns-ttl/",
+        "text": "TTL is a DNS record and stands for “Time to Live”. It refers to how long your DNS settings are cached for before they are automatically refreshed.\n\nWhen a DNS change is made, it takes time for the rest of the Internet to notice. Some examples of these kinds of changes are updating the IP address of a server, updating your MX record to host your email at a new location, or adding a new website. The TTL setting tells the Internet how long to wait before returning to check your DNS record for new information.\n\nIf your DNS TTL setting is 12 hours, your DNS records will be cached for 12 hours before they expire, and the new information takes effect.\n\nFor the most part, there is no need to change your DNS TTL. However, if you know that you will be making a big DNS change soon and you want the changes to take effect quickly, you may want to change your TTL ahead of time.\n\nUpdate your TTL to a shorter value at least 24 hours ahead of time. You can change it to 3600 (1 hour), for example.\n\nAfter you’ve made your DNS change, be sure to go back and return your DNS TTL settings to their original values. DNS caching is an important way to reduce load on the servers, and it is best to keep this traffic low.\n\nPlease note that even if you change the TTL for your domain name, this does not automatically mean that every network on the Internet will accept this value. Many Internet Service Providers (ISPs) ignore TTL settings and check external DNS records according to their own schedule.\n\nIf you are planning on making DNS changes soon, you will want set a low TTL. This helps ensure your changes will propagate and be recognized on the Internet more quickly.\n\nSet your DNS TTL minimum value to a number larger than 0. Never set your DNS TTL to 0. The number 0 is not defined in the standard, and it may cause your DNS information to be ignored or rejected.\n\nDynamic DNS (DynDNS) is an excellent way to refer domain names to a non-static IP address.\n\nFor example, let’s say you own the domain name example.com. You want to refer home.example.com to a server on your home network; however, you do not have a static IP address from your ISP. This means the external IP address for your home server will change periodically.\n\nDynamic DNS services are able to point a domain name (like home.example.com) to a variable IP. Whenever the IP address changes, your DNS automatically updates so the change quickly takes effect.\n\nIf you set up the dynamic DNS for a domain name, you may be asked to provide a TTL for the records. There is no single answer to which TTL value you should use for a dynamic DNS record. It will partly depend on how long the lease on the IP address is. The more often the IP address changes, the lower the TTL you should use.\n\nIf you are running your own DNS server, changing your TTL is simply a matter of editing your DNS zone file and ensuring that your DNS service accepts the changes. The specifics will vary based on which DNS service you are running, and in some cases which version of Linux or Unix you are running.\n\nOnce you have made your changes, you can verify that the changes took effect by querying your server for the new DNS information with the command:\n\nThere are two lines you will need to edit in the zone file: the TTL and the serial number. Update the TTL to the value you wish to use, and then update the serial number so that BIND registers the change.\n\nUpdate the TTL\n\nThe TTL will be the first line of the file, and will look something like this:\n\nSimply change the number to the TTL value you want to set, in seconds.\n\nUpdate the Serial Number\n\nIn a typical configuration, the serial number will simply need to be incremented. For example, a serial number of 1234 would be updated to 1235.\n\nSome system administrators may use a timestamp, a version number, or have systems in place to automatically increment the serial number. Check with your server’s administrator if you are unsure which system is being used for your BIND serial numbers.\n\nSave and exit the file.\n\nCheck the file\n\nBefore you reload the changes, check the syntax of the main BIND configuration with the command:\n\nUnbound recently replaced BIND as the default DNS server on many BSD systems, including FreeBSD 10 and above and OpenBSD 5.6 and above.\n\nBy default on most systems, the configuration file is located at:\n\nOpenBSD: /var/unbound/etc/unbound.conf\n\nFreeBSD 10.0 and earlier: /usr/local/etc/unbound/unbound.conf\n\nFreeBSD 10.1 and above: /etc/unbound/unbound.conf\n\nRed Hat and CentOS 7: /etc/unbound/unbound.conf\n\nThe default Unbound configuration file does not have TTL values specified. You can add TTL to your Unbound zone file with the following attributes:\n\ncache-max-ttl is the maximum length of time to cache TTL. The default is 86400 seconds (1 day).\n\ncache-min-ttl is the minimum length of time to cache TTL. The default is 0 seconds. Note: The official documentation recommends that this value be left at 0.\n\nTo change or set the TTL, edit your unbound.conf file:"
+    }
+}

@@ -1,0 +1,42 @@
+{
+    "id": "dbpedia_4809_2",
+    "rank": 42,
+    "data": {
+        "url": "https://askubuntu.com/questions/204400/ssh-public-key-no-supported-authentication-methods-available-server-sent-publ",
+        "read_more_link": "",
+        "language": "en",
+        "title": "SSH Public Key - No supported authentication methods available (server sent public key)",
+        "top_image": "https://cdn.sstatic.net/Sites/askubuntu/Img/apple-touch-icon@2.png?v=c492c9229955",
+        "meta_img": "https://cdn.sstatic.net/Sites/askubuntu/Img/apple-touch-icon@2.png?v=c492c9229955",
+        "images": [
+            "https://cdn.sstatic.net/Sites/askubuntu/Img/logo.svg?v=472cf2768bba",
+            "https://i.sstatic.net/UNXE2.png?s=64",
+            "https://www.gravatar.com/avatar/650b55bb9e17d9546c839101553e2bce?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/650b55bb9e17d9546c839101553e2bce?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/7ab20e25e86f7e6bc08fbb15738267f0?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/1b79d309b9dbc9b056e06816a97b1dda?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/b55aa4490c77600d74a79eef7cf20ec4?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/f68b3040f1b515c2e9d3c3a719ac1183?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/b07e3168f2c7789645ab80a209c2931a?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/a007be5a61f6aa8f3e85ae2fc18dd66e?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/e5c52845f85b2e4b443f30ceaac9d27f?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/a3db7297915293b1efe18f8fe1f4acaf?s=64&d=identicon&r=PG",
+            "https://askubuntu.com/posts/204400/ivc/f0dc?prg=88b7379a-4305-44fd-a46e-128c167d0185"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2012-10-22T01:10:02",
+        "summary": "",
+        "meta_description": "I have a 12.10 server setup in a virtual machine with its network set to bridged (essentially will be seen as a computer connected to my switch).\n\nI installed opensshd via apt-get and was able to c...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/askubuntu/Img/favicon.ico?v=928dfb7c1990",
+        "meta_site_name": "Ask Ubuntu",
+        "canonical_link": "https://askubuntu.com/questions/204400/ssh-public-key-no-supported-authentication-methods-available-server-sent-publ",
+        "text": "Problem solved:\n\nLooks like there was a problem with my public key file. PuttyGen will create a public key file that looks like:\n\n---- BEGIN SSH2 PUBLIC KEY ---- Comment: \"rsa-key-20121022\" AAAAB3NzaC1yc2EAAAABJQAAAIEAhGF6GIuMY8FJ1+CNApnSY1N2YSlkYz72Yvwu a6N1nFpBklz1+dsIMg4rcTLcF34M/tW5Yz+NUDAw2AEbxQ32FPgw7sAOIXktkYOH tr7mmimiTjkoSCrJh1kqalPSpi8rglT/Bp67Ql2SZwvUFfMzHISryR0EZC4rXP/u vObrJe8= ---- END SSH2 PUBLIC KEY ----\n\nHowever, this will not work, so what you need to do is to open the key in PuttyGen, and then copy it from there (this results in the key being in the right format and in 1 line):\n\nssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAIEAhGF6GIuMY8FJ1+CNApnSY1N2YSlkYz72Yvwua6N1nFpBklz1+dsIMg4rcTLcF34M/tW5Yz+NUDAw2AEbxQ32FPgw7sAOIXktkYOHtr7mmimiTjkoSCrJh1kqalPSpi8rglT/Bp67Ql2SZwvUFfMzHISryR0EZC4rXP/uvObrJe8= rsa-key-20121022\n\nPaste this into authorized_keys then it should work.\n\nJust a tip I hope may help someone else with the headaches I had. F21 is right that you need to copy the key out of the PuTTYGen window instead of saving the file, but after copying, the way you paste may have significant impact on whether your key will work or not. Some editors will alter the text as you paste, or do something with newlines or something that makes the authorized_keys file invalid.\n\nWhat I have found to be the least likely to break is to echo the full string and redirect the output to the file. Right-clicking in PuTTY to paste the key string to the commandline, it works out like this (with the example given above):\n\necho [right-click-to-paste-here] > /etc/ssh/username/authorized_keys\n\nYou'll end up with this:\n\necho ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAIEAhGF6GIuMY8FJ1+CNApnSY1N2YSlkYz72Yvwua6N1nFpBklz1+dsIMg4rcTLcF34M/tW5Yz+NUDAw2AEbxQ32FPgw7sAOIXktkYOHtr7mmimiTjkoSCrJh1kqalPSpi8rglT/Bp67Ql2SZwvUFfMzHISryR0EZC4rXP/uvObrJe8= rsa-key-20121022 > /etc/ssh/username/authorized_keys\n\nAnother advantage of this method is that you can add multiple keys this way by using >> to append instead of > to overwrite, eg:\n\necho ssh-rsa AAAAB3<...snip...>rJe8= rsa-key-20121022 >> /etc/ssh/username\n\nHope that helps someone.\n\nWe were already using the right type of key (ppk instead of pem).\n\nIn our case, it was a problem with the file permissions for authorized_keys on the server user folder. It has to be -rw-r--r-- ... It was -rw-rw-r--.\n\nSSH is very finicky about file perms.\n\nCheck file permissions using:\n\nls -l authorized_keys\n\nYou can fix them if necessary with:\n\nchmod 644 authorized_keys"
+    }
+}

@@ -1,0 +1,38 @@
+{
+    "id": "dbpedia_4810_1",
+    "rank": 17,
+    "data": {
+        "url": "https://forums.opentext.com/forums/developer/discussion/37539/ampersand-in-file-name",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Ampersand in file name",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://secure.gravatar.com/avatar/0a6e741b230cc925df29861ad257f234/?default=https%3A%2F%2Fvanillicon.com%2F7ef6078eadc032f804f3e069914c392f_200.png&rating=g&size=200",
+            "https://secure.gravatar.com/avatar/f7b3fd7312e9a2eda070129de9e5b2a9/?default=https%3A%2F%2Fvanillicon.com%2F5a17a52a07393c71bc717acdc0b0e16a_200.png&rating=g&size=200",
+            "https://secure.gravatar.com/avatar/0a6e741b230cc925df29861ad257f234/?default=https%3A%2F%2Fvanillicon.com%2F7ef6078eadc032f804f3e069914c392f_200.png&rating=g&size=200",
+            "https://us.v-cdn.net/6030023/uploads/userpics/813/nNIGYUBQNOLL8.jpg",
+            "https://secure.gravatar.com/avatar/0a6e741b230cc925df29861ad257f234/?default=https%3A%2F%2Fvanillicon.com%2F7ef6078eadc032f804f3e069914c392f_200.png&rating=g&size=200",
+            "https://us.v-cdn.net/6030023/uploads/CZIO88JHUXLH/ce-products-png.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Auli2",
+            "Adam Stoller"
+        ],
+        "publish_date": "2012-02-16T10:43:12+00:00",
+        "summary": "",
+        "meta_description": "Hi, We are facing an issue where if there is an ampersand in filename followed by a space, then it throws a Hopi Error (file or Directory not found) while submitting the file.",
+        "meta_lang": "en",
+        "meta_favicon": "https://us.v-cdn.net/6030023/uploads/09WD7GWZAQHQ/ot-icon-black.png",
+        "meta_site_name": "OpenText - Forums",
+        "canonical_link": "https://forums.opentext.com/forums/developer/discussion/37539/ampersand-in-file-name",
+        "text": "Hi,\n\nWe are facing an issue where if there is an ampersand in filename followed by a space, then it throws a Hopi Error (file or Directory not found) while submitting the file.\n\nFor ex. - If the file name is ABC & DEF then TeamSite throws an error while submitting this file. We are submitting this file using a custom workflow created using workflow modeler. We found the following error in trace.log -\n\nFile not found - ABC &DEF. Note the space after the ampersand is removed. We are also not able to rename or delete this file.\n\nI have tested for ABC &DEF and ABC&DEF and they all worked.\n\nHas anyone else faced this issue earlier? Is there any solution or patch to fix this?\n\nThanks in advance.\n\n0\n\nHi,\n\nWe are facing an issue where if there is an ampersand in filename followed by a space, then it throws a Hopi Error (file or Directory not found) while submitting the file.\n\nFor ex. - If the file name is ABC & DEF then TeamSite throws an error while submitting this file. We are submitting this file using a custom workflow created using workflow modeler. We found the following error in trace.log -\n\nFile not found - ABC &DEF. Note the space after the ampersand is removed. We are also not able to rename or delete this file.\n\nI have tested for ABC &DEF and ABC&DEF and they all worked.\n\nHas anyone else faced this issue earlier? Is there any solution or patch to fix this?\n\nThanks in advance.\n\nYou need to verify that the filename is getting properly escaped before being acted on, which may be difficult to tell.\n\nThe OS will let you create a file with such characters in the name - but that doesn't make it a good practice - characters such as '&', '<', and '>' are especially tricky because that have significant meanings in XML and/or HTML and if they aren't properly escaped or translated into entities, then the code that parses the XML and/or HTML will likely choke on them. Other characters like space and tab characters also cause issues because, unless properly quoted such that the white space is seen as embedded characters, they appear more like separators and so instead of programs seeing one file named \"this and that\" they see three files:\n\nYou, as a developer are then tasked with trying to facilitate ease of creation of files and directories with automated fixing of file and directory names to avoid problems. This is most often done in DCTs with FormAPI code, but it can be done in other locations using similar code that performs fairly basic regex processing (at least for Latin / Roman alphabets, other alphabets may require a bit more code to handle correctly)\n\n0"
+    }
+}

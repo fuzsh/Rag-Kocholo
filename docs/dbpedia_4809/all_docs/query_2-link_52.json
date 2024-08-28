@@ -1,0 +1,38 @@
+{
+    "id": "dbpedia_4809_2",
+    "rank": 52,
+    "data": {
+        "url": "https://javorszky.co.uk/2018/06/04/godaddy-ssl-sadness/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "SSL sadness with GoDaddy",
+        "top_image": "https://javorszky.co.uk/content/images/size/w1200/2018/06/casey-allen-49535-unsplash--1-.jpg",
+        "meta_img": "https://javorszky.co.uk/content/images/size/w1200/2018/06/casey-allen-49535-unsplash--1-.jpg",
+        "images": [
+            "https://javorszky.co.uk/content/images/size/w100/2018/06/gj-600-600.jpg",
+            "https://javorszky.co.uk/content/images/size/w300/2018/06/casey-allen-49535-unsplash--1-.jpg 300w,                            /content/images/size/w600/2018/06/casey-allen-49535-unsplash--1-.jpg 600w,                            /content/images/size/w1000/2018/06/casey-allen-49535-unsplash--1-.jpg 1000w,                            /content/images/size/w2000/2018/06/casey-allen-49535-unsplash--1-.jpg 2000w",
+            "https://javorszky.co.uk/content/images/2018/06/Screen-Shot-2018-06-04-at-08.44.27--1-.png",
+            "https://javorszky.co.uk/content/images/2018/06/Screen-Shot-2018-06-04-at-09.34.07.png",
+            "https://javorszky.co.uk/content/images/size/w300/2024/08/birmingham-museums-trust-dq_qismPehQ-unsplash.webp 300w,                    /content/images/size/w600/2024/08/birmingham-museums-trust-dq_qismPehQ-unsplash.webp 600w,                    /content/images/size/w1000/2024/08/birmingham-museums-trust-dq_qismPehQ-unsplash.webp 1000w,                    /content/images/size/w2000/2024/08/birmingham-museums-trust-dq_qismPehQ-unsplash.webp 2000w",
+            "https://javorszky.co.uk/content/images/size/w300/2024/07/mihai-surdu-8H9ph_Jp3hA-unsplash.webp 300w,                    /content/images/size/w600/2024/07/mihai-surdu-8H9ph_Jp3hA-unsplash.webp 600w,                    /content/images/size/w1000/2024/07/mihai-surdu-8H9ph_Jp3hA-unsplash.webp 1000w,                    /content/images/size/w2000/2024/07/mihai-surdu-8H9ph_Jp3hA-unsplash.webp 2000w",
+            "https://javorszky.co.uk/content/images/size/w300/2024/08/rob-wilson-1cpiF66YKZU-unsplash.webp 300w,                    /content/images/size/w600/2024/08/rob-wilson-1cpiF66YKZU-unsplash.webp 600w,                    /content/images/size/w1000/2024/08/rob-wilson-1cpiF66YKZU-unsplash.webp 1000w,                    /content/images/size/w2000/2024/08/rob-wilson-1cpiF66YKZU-unsplash.webp 2000w"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Gabor Javorszky"
+        ],
+        "publish_date": "2018-06-04T00:00:00",
+        "summary": "",
+        "meta_description": "GoDaddy's SSL certificates are ridiculously overpriced. Other hosting providers will give you free SSL because it's easy, and Let's Encrypt exists.",
+        "meta_lang": "en",
+        "meta_favicon": "",
+        "meta_site_name": "Gabor Javorszky",
+        "canonical_link": "https://javorszky.co.uk/2018/06/04/godaddy-ssl-sadness/",
+        "text": "Short version\n\nGoDaddy uses their SSL certificates as a cash cow, and hopes you won’t know any better to not pay $$$ for something others give you for free as part of their basic package\n\nseriously, SiteGround has free SSL on ALL of their plans\n\nCloudflare’s flexible SSL is a godsend if you can’t be bothered to move from GoDaddy\n\nSSL Insecure Content fixer plugin for WordPress will help you a lot\n\nLong version\n\nI think GoDaddy is unreasonable when it comes to charging for their SSL certs.\n\nThe story began a few days ago when a friend of mine wanted to showcase her skills on a purpose built website, as part of her application to different companies. My response was along the lines of “This is awesome, though it’s http only — not secure.”\n\nThat got her thinking. Yes, Chrome was showing Not Secure in the URL bar too, which is a tad jarring. “Don’t worry, all we need to do is get you an SSL certificate, and your site is going to be served over https.”\n\n:-)\n\nYeah, turns out it’s not straightforward on GoDaddy without paying through the nose.\n\nSSL on GoDaddy is a rip-off\n\nShe’s on Managed Hosting. GoDaddy’s offering was $74.99 (as of 4th June, 2018, 09:41am GMT+1, currently discounted at $59.99/yr for the first year) at a time where everyone else pretty much just gives you the SSL for free.\n\nOkay, so let’s not buy GoDaddy’s SSL. There’s Cloudflare, and I can get a free one.\n\nCloudflare and free SSL\n\nSign up for Cloudflare, change nameservers, turn on flexible SSL, turn on https redirect, and only https traffic, and that should be it, right?\n\nSort of. For whatever reason some of the enqueued scripts and images in the content wouldn’t update to using https, despite the rewrite.\n\nSo let’s change the configured home and site url to use https.\n\nWhich we can’t. The fields are disabled, most probably because the values are declared as constants in the wp-config.php file, but there’s also a notice to call support, because they’ll do it for you.\n\nWhich they’ll start with upselling the $74.99 SSL cert.\n\nNope.\n\nEnter SSL Insecure Content Fixer plugin\n\nThis one: https://wordpress.org/plugins/ssl-insecure-content-fixer/.\n\nIt has varying levels of functionality. For a well built site, the “content” level is going to be enough. That does the following:\n\nit filters the URL with which scripts and styles are enqueued, and replaces http:// with https://\n\nfilters media include URLs and turns them to https\n\nfilters the_content, and swaps included images to use https\n\nAnd bam, just like that, the site is now on https.\n\nAlternatives\n\nGoDaddy should not be pricing the SSL certs so high. For comparison, this is SiteGround (as of 4th June, 2018, 09:41am GMT+1), where even their most basic offering has free SSL included.\n\nClosing thoughts\n\nI tried pinging folks from GoDaddy for a while on PostStatus Slack team, because I know there are a few of them there, but no one responded.\n\nI get that GoDaddy is publicly traded, and as such, their first and foremost concern is to make money, but they’re also big enough to be able to influence a large part of the internet. Advocating for security and safety should absolutely be part of that responsibility — which, ironically, they’re doing with the blue call-out to Google’s Not-Secure initiative —, but with predatory pricing like that, it paints a very different picture.\n\nMost consumers who end up using GoDaddy aren’t knowledgeable about the internet, and they’d believe what their host tells them, because the host knows best, right? It’s taking advantage of people who don’t know any better, and it makes me sad :(.\n\nIf you’re a consumer on GoDaddy, migrate to SiteGround.\n\nI don’t get paid for this, it’s merely based on two things:\n\nSiteGround is big enough as well\n\nthey also have very affordable plans for hosting, and\n\nthey give you free SSL\n\nand I want your site to be on https\n\nNow go forth and put the locks on your sites!"
+    }
+}
