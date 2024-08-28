@@ -1,0 +1,42 @@
+{
+    "id": "dbpedia_3581_2",
+    "rank": 69,
+    "data": {
+        "url": "https://huderlem.github.io/porymap/manual/scripting-capabilities.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Scripting Capabilities — porymap documentation",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://huderlem.github.io/porymap/_images/custom-scripts-editor.png",
+            "https://huderlem.github.io/porymap/_images/button-create.png",
+            "https://huderlem.github.io/porymap/_images/button-load.png",
+            "https://huderlem.github.io/porymap/_images/button-refresh.png",
+            "https://huderlem.github.io/porymap/_images/folder.png",
+            "https://huderlem.github.io/porymap/_images/file_edit.png",
+            "https://huderlem.github.io/porymap/_images/delete.png",
+            "https://huderlem.github.io/porymap/_images/button-create.png",
+            "https://huderlem.github.io/porymap/_images/new-script.png",
+            "https://huderlem.github.io/porymap/_images/file_edit.png",
+            "https://huderlem.github.io/porymap/_images/button-refresh.png",
+            "https://huderlem.github.io/porymap/_images/refresh-prompt.png",
+            "https://huderlem.github.io/porymap/_images/porymap-scripting-grass.gif"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "../_static/porymap-icon-2.ico",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "Custom Scripts Editor¶\n\nYour custom scripts can be managed with the Custom Scripts Editor accessible under Options -> Custom Scripts....\n\nAt the top there are three basic buttons for managing your scripts:\n\nOpens a prompt to create a new script file, which will be populated with a basic template.\n\nLets you add an existing script file to Porymap that you’ve already created or downloaded from elsewhere.\n\nAny edits made to your scripts while Porymap is already open will not be reflected until you select this button.\n\nBelow these buttons is a list of all the custom scripts you have loaded for your project. Each entry will have a text box showing the path of the script file. This path can be freely updated, or you can choose a new path with the button next to it. The button will open the script file in your default text editor, and the button will remove it from the list. The check box to the left of the filepath indicates whether your script should be running. If you’d like to temporarily disable a script you can uncheck this box.\n\nWriting a Custom Script¶\n\nLet’s write a custom script that will randomize grass patterns when the user is editing the map. This is useful, since it’s cumbersome to manually add randomness to grass patches. With the custom script, it will happen automatically. Whenever the user paints a grass tile onto the map, the script will overwrite the tile with a random grass tile instead.\n\nFirst, open the Options -> Custom Scripts... window and select the button. This will open a file save prompt; let’s name our new script file my_script.js and save it. We’ve successfully added a new script! We can now see it listed in the editor.\n\nAt the moment our script doesn’t do anything. Let’s select the button to open it and write the actual code that will power the grass-randomizer. Once the script file is open you will notice that there are several empty functions already inside. These are special “callback” functions that will be called automatically for certain events that occur while Porymap is running. We’re interested in the onBlockChanged() callback, since we want our script to take action whenever a user paints a block on the map.\n\n// Porymap callback when a block is painted. export function onBlockChanged(x, y, prevBlock, newBlock) { // Grass-randomizing logic goes here. }\n\nWe can leave the rest of the callback functions in here alone, or we can delete them because we’re not using them. Every callback function does not need to be defined in your script. Note: For Porymap to be able to execute these callback functions they need to have the export keyword. The rest of the functions in your script do not need this keyword.\n\nIn addition to the callbacks, Porymap also supports a scripting API so that the script can interact with Porymap in interesting ways. For example, a script can change a block or add overlay text on the map. Since we want to paint random grass tiles, we’ll be using the map.setMetatileId() function. Let’s fill in the rest of the grass-randomizing code.\n\nNote\n\nFor pokeemerald/pokeruby users: We only have 1 regular grass metatile, but if you want to try this script you could replace const grassTiles = [0x8, 0x9, 0x10, 0x11]; in the code below with const grassTiles = [0x1, 0x4, 0xD]; to randomize using tall grass and flowers instead!\n\nfunction randInt(min, max) { min = Math.ceil(min); max = Math.floor(max); return Math.floor(Math.random() * (max - min)) + min; } // These are the grass metatiles in pokefirered. const grassTiles = [0x8, 0x9, 0x10, 0x11]; // Porymap callback when a block is painted. export function onBlockChanged(x, y, prevBlock, newBlock) { // Check if the user is painting a grass tile. if (grassTiles.indexOf(newBlock.metatileId) != -1) { // Choose a random grass tile and paint it on the map. const i = randInt(0, grassTiles.length); map.setMetatileId(x, y, grassTiles[i]); } }\n\nLet’s apply our changes by selecting the button. Because we’ve added a new script we’ll be met with this confirmation prompt. Accept this prompt by selecting YES.\n\nNow let’s test our script! If we try to paint grass on the map, we should see our script inserting a nice randomized grass pattern.\n\nRegistering Script Actions¶\n\nThe grass-randomizer script above happens implicitly when the user paints on the map. However, other times we probably want to call the custom script on demand. One of the API functions Porymap provides is the ability to trigger scripting functions from the Tools menu, or a keyboard shortcut. To do this, we will usually want to register the action when the project loads. Here is an example script where some custom actions are registered.\n\nexport function applyNightTint() { // Apply night palette tinting... } // Porymap callback when project is opened. export function onProjectOpened(projectPath) { utility.registerAction(\"applyNightTint\", \"View Night Tint\", \"T\") }\n\nThen, to trigger the applyNightTint() function, we could either click Tools -> View Night Tint or use the T keyboard shortcut. Note: Like callbacks, functions registered using utility.registerAction() also need the export keyword for Porymap to call them.\n\nNow that we have an overview of how to utilize Porymap’s scripting capabilities, the entire scripting API is documented below."
+    }
+}
