@@ -1,0 +1,37 @@
+{
+    "id": "dbpedia_3950_0",
+    "rank": 39,
+    "data": {
+        "url": "https://www.prestashop.com/forums/topic/1088188-%25D1%2581%25D0%25BA%25D0%25BB%25D0%25B0%25D0%25B4%25D1%2581%25D0%25BA%25D0%25B8%25D0%25B5-%25D1%2586%25D0%25B5%25D0%25BD%25D1%258B-%25D0%25BD%25D0%25B0-%25D1%2582%25D0%25BE%25D0%25B2%25D0%25B0%25D1%2580-%25D0%25B2-%25D0%25BA%25D0%25B0%25D1%2580%25D1%2582%25D0%25BE%25D1%2587%25D0%25BA%25D0%25B5-%25D1%2582%25D0%25BE%25D0%25B2%25D0%25B0%25D1%2580%25D0%25B0/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Складские цены на товар в карточке товара",
+        "top_image": "https://www.prestashop.com/forums/uploads/monthly_2023_05/logo_NIV_213x35px.png.7df5fa7503d87d97918978a84dd1b2cc.png",
+        "meta_img": "https://www.prestashop.com/forums/uploads/monthly_2023_05/logo_NIV_213x35px.png.7df5fa7503d87d97918978a84dd1b2cc.png",
+        "images": [
+            "https://www.prestashop.com/forums/uploads/monthly_2023_05/image.png.a3fa7ad1e60e9cc5c1d30d52c2aa4776.png",
+            "https://www.prestashop.com/forums/uploads/monthly_2024_08/PRESTASHOPACADEMY-BECOMEAPRO.png.1eb77c0b005d914ad70f949836873a40.png",
+            "https://www.prestashop.com/forums/uploads/monthly_2024_08/PRESTASHOPACADEMY-BECOMEAPRO.png.1eb77c0b005d914ad70f949836873a40.png",
+            "https://www.prestashop.com/forums/uploads/monthly_2024_08/PRESTASHOPACADEMY-BECOMEAPRO.png.1eb77c0b005d914ad70f949836873a40.png",
+            "https://www.prestashop.com/forums/uploads/monthly_2021_06/2_Rookie.svg",
+            "https://www.prestashop.com/forums/uploads/monthly_2021_06/2_Rookie.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Tapi"
+        ],
+        "publish_date": "2024-06-19T08:34:00+00:00",
+        "summary": "",
+        "meta_description": "Добрый день, на форуме нашла статью как вывести в карточке товара список складов и остатками. Собственно само решение - Find and copy ProductController.php from \"controllers/front/\" - Paste it to \"override/controllers/front\" - Open the new file FIND public function initContent() { parent::initCon...",
+        "meta_lang": "en",
+        "meta_favicon": "https://www.prestashop.com/forums/uploads/monthly_2023_05/472733117_Plandetravail1copie2.jpg",
+        "meta_site_name": "PrestaShop Forums",
+        "canonical_link": "https://www.prestashop.com/forums/topic/1088188-%D1%81%D0%BA%D0%BB%D0%B0%D0%B4%D1%81%D0%BA%D0%B8%D0%B5-%D1%86%D0%B5%D0%BD%D1%8B-%D0%BD%D0%B0-%D1%82%D0%BE%D0%B2%D0%B0%D1%80-%D0%B2-%D0%BA%D0%B0%D1%80%D1%82%D0%BE%D1%87%D0%BA%D0%B5-%D1%82%D0%BE%D0%B2%D0%B0%D1%80%D0%B0/",
+        "text": "Добрый день, на форуме нашла статью как вывести в карточке товара список складов и остатками.\n\nСобственно само решение\n\n- Find and copy ProductController.php from \"controllers/front/\"\n\n- Paste it to \"override/controllers/front\"\n\n- Open the new file\n\nFIND\n\npublic function initContent() { parent::initContent(); if (!$this->errors) {\n\nAFTER, INSERT\n\n$id_product = (int)Tools::getValue('id_product'); $sql = 'SELECT name,physical_quantity FROM ps_warehouse,ps_stock WHERE id_product ='.$id_product.' AND ps_warehouse.id_warehouse = ps_stock.id_warehouse'; if ($results = Db::getInstance()->ExecuteS($sql)) foreach ($results as $row) $warehouses[] = array($row['name'],$row['physical_quantity']); $this->context->smarty->assign(array( 'warehouse' => $warehouses));\n\n- Open product.tpl from \"themes/default-bootstrap\" (or whatever your theme is)\n\n- Where you want to display the warehouses names and available stocks :\n\nPASTE\n\n<p>Warehouse(s) :</p> {foreach from=$warehouse item=w} {if $w[1]>0} <p>{$w[0]} ({$w[1]})</p> {/if} {/foreach}\n\nЭто решение на моей версии 1.6.1.24 заработало. Подскажите пожалуйста как вывести рядом с остатком цену с каждого склада, так как в зависимости от закупок у товаров бывают разные цены по скаладам"
+    }
+}
