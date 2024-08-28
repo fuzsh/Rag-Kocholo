@@ -1,0 +1,38 @@
+{
+    "id": "dbpedia_5041_0",
+    "rank": 77,
+    "data": {
+        "url": "https://medium.com/12-developer-labors/css-all-the-ways-to-align-elements-left-and-right-52ecce4a4af9",
+        "read_more_link": "",
+        "language": "en",
+        "title": "CSS. All the ways to align elements left and right.",
+        "top_image": "https://miro.medium.com/v2/resize:fit:1200/0*pZF9Wu0hoXi8DJ7z.jpg",
+        "meta_img": "https://miro.medium.com/v2/resize:fit:1200/0*pZF9Wu0hoXi8DJ7z.jpg",
+        "images": [
+            "https://miro.medium.com/v2/resize:fill:64:64/1*dmbNkD5D-u45r44go_cf0g.png",
+            "https://miro.medium.com/v2/resize:fill:88:88/1*BXOA3IYv65thkcoWn1HOPg.png",
+            "https://miro.medium.com/v2/resize:fill:48:48/1*Bh2EegKEEeSHDtNLY2-Pyg.jpeg",
+            "https://miro.medium.com/v2/resize:fill:144:144/1*BXOA3IYv65thkcoWn1HOPg.png",
+            "https://miro.medium.com/v2/resize:fill:64:64/1*Bh2EegKEEeSHDtNLY2-Pyg.jpeg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "piotr szybicki",
+            "medium.com",
+            "@piotr.szybicki"
+        ],
+        "publish_date": "2019-11-22T18:51:51.314000+00:00",
+        "summary": "",
+        "meta_description": "A short history lesson that probably most front-end devs know. But I didn’t so I decided to share. Plus there is a little trick at the end that might be surprising for some of you. Hope my PAINT…",
+        "meta_lang": "en",
+        "meta_favicon": "https://miro.medium.com/v2/5d8de952517e8160e40ef9841c781cdc14a5db313057fa3c3de41c6f5b494b19",
+        "meta_site_name": "Medium",
+        "canonical_link": "https://medium.com/12-developer-labors/css-all-the-ways-to-align-elements-left-and-right-52ecce4a4af9",
+        "text": "A short history lesson that probably most front-end devs know. But I didn’t so I decided to share. Plus there is a little trick at the end that might be surprising for some of you.\n\nProblem description\n\nLet’s say that we have the following elements to style.\n\nAnd the desired end effect will be:\n\nHope my PAINT skills are enough to illustrate the problem. Two items on the left and one item on the right. Let’s take a look at our options. :) HTML code is at the bottom of this article.\n\nCSS 1.0\n\nHistorically how it was done (and you still have that option). You can use floats. In order to achieve what you want you can wrap the div 1 and 2 in a parent div and this is what you get:\n\nThis will work however, there 2 problems with this approach.\n\nOne if one of the elements turns out to be bigger then the container it will go beyond its border (after all the element is floated so removed from the normal rendering of the DOM). So we have to apply a clearfix.\n\nTwo without appropriate media queries the elements will start to overlap one another. If the user shrinks the browser too much.\n\nAs I mentioned both problems have a solution but still it is something that you have to think about. But if you have to support some ancient browser you got to do what you got to do :(.\n\nCSS 2.1:\n\nAnd extension to the previous version of the spec. It brought the property: positioning. It can take a couple of values. But the one that interests us is: absolute and relative. How it works it described well all over the internet. So I will not try to reinvent a wheel.\n\nAll I have to do is set the relative positioning on the container and absolute on the right wrapper (left wrapper will be aligned to the left automatically) and then set right property to 0. Meaning zero pixels from the right. The effect will be basically the same as above but no need for a clearfix. The browser will automatically adjust parent dimensions to fit all the children.\n\nThe elements, however, will still overlap if we shrink the browser. This is a good solution. It will work in all browsers. But still, let’s explore other options.\n\nCSS 3: Flex+ justify-content: space-between\n\nSo in CSS3, we got the new way of positioning elements aka: flexbox. It is a powerful and intuitive tool. That again volumes have been written about. The article I like the most about can be found under that link. All I have to do is put the display: flex on the container element and add justify-content: space-between. All it means is will put even space between child elements along the main axis (default is the horizontal line). And since we have just two elements (left-wrapper and right-wrapper) it works. As even space in case of just two elements means max available space.\n\nAgain this is a good solution. If you don’t have to support IE6. As the elements will not overlap. The scroll bar will appear. Again modern responsive design should take that into account but mistakes happened and at least this way the content is still usable.\n\nFlex grow 1\n\nThere is more than one way to skin a cat. Especially with flexbox. Let’s assume that for some bazar reason you can’t use the wrapping div. Tha the tree div`s that contain the number is all you got (This is a good interview question :) ).\n\nAgain we can use flex:1 on the second element. This is a shorthand notation for the flex: 1 0 auto; or you can just write flex-grow: 1. All it means that we want element 2 to grow as much as possible without breaking line. This, however, has a problem if you want to add hover effect on the second element it will be placed on the entire large element and it may or may not look desirable. The workaround would be of course to add a 4'th element between 2 and 3 and grow it. As I said there is more than one way to skin a cat.\n\nFinal the most clever solution:\n\nIf for some reason you don't want to add an extra element. All you have is a container and 3 divs you can do something very clever. Place the display: flex on the container and then margin-right: auto on the second element.\n\nIt will get you this:\n\nAnd that’s it I obviously didn’t cover some other ways to do this most notably CSS grid or using display: table or fiddling with the flex-basis property. But that is because I believe those solutions are overkill. And way too complicated for something this simple. And as I like to quote the master: simplicity is a prerequisite for reliability.\n\nHTML Code\n\nWith the wrappers:\n\nWithout the wrappers:"
+    }
+}

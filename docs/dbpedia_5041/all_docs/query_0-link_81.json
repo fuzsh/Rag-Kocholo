@@ -1,0 +1,30 @@
+{
+    "id": "dbpedia_5041_0",
+    "rank": 81,
+    "data": {
+        "url": "https://forum.lvgl.io/t/how-to-right-align-text-on-a-label/2428",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How to right align text on a label",
+        "top_image": "https://forum.lvgl.io/uploads/default/original/2X/4/46699bf0b0fba78635b86a9d314c010575b4d60b.jpeg",
+        "meta_img": "https://forum.lvgl.io/uploads/default/original/2X/4/46699bf0b0fba78635b86a9d314c010575b4d60b.jpeg",
+        "images": [
+            "https://forum.lvgl.io/uploads/default/original/2X/4/46699bf0b0fba78635b86a9d314c010575b4d60b.jpeg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2020-06-06T14:48:05+00:00",
+        "summary": "",
+        "meta_description": "I’m trying to write software for a digital dashboard with a digital mph readout. \nAt 0 I need the digit to be align right and at 10 move to one place left. \nI’ve tried lv_label_set_align(label_mph, LV_LABEL_ALIGN_RIGHT) &hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://forum.lvgl.io/uploads/default/optimized/2X/b/bb53a405ad873fca26f50bec6c696b44ea83a240_2_32x32.png",
+        "meta_site_name": "LVGL Forum",
+        "canonical_link": "https://forum.lvgl.io/t/how-to-right-align-text-on-a-label/2428",
+        "text": "I’m trying to write software for a digital dashboard with a digital mph readout.\n\nAt 0 I need the digit to be align right and at 10 move to one place left.\n\nI’ve tried lv_label_set_align(label_mph, LV_LABEL_ALIGN_RIGHT) but it has no effect.\n\nMy code is:\n\nvoid draw_mph(void)\n\n{\n\nstatic lv_style_t style_mph;\n\nlv_style_init(&style_mph);\n\nlv_style_set_text_color(&style_mph, LV_STATE_DEFAULT, LV_COLOR_WHITE); lv_style_set_text_font(&style_mph, LV_STATE_DEFAULT, &arial_100); label_mph = lv_label_create(lv_disp_get_scr_act(NULL), NULL); lv_obj_set_width(label_mph, 150); lv_label_set_align(label_mph, LV_LABEL_ALIGN_RIGHT); lv_obj_add_style(label_mph, LV_OBJ_PART_MAIN,&style_mph); lv_obj_set_pos(label_mph, 305, 15); lv_label_set_text(label_mph, \"0\"); static lv_style_t style_mph_text; lv_style_init(&style_mph_text); lv_style_set_text_color(&style_mph_text, LV_STATE_DEFAULT, LV_COLOR_WHITE); lv_style_set_text_font(&style_mph_text, LV_STATE_DEFAULT, &lv_font_montserrat_16); lv_obj_t * label_mph_lb = lv_label_create(lv_disp_get_scr_act(NULL), NULL); lv_obj_set_pos(label_mph_lb, 420, 100); lv_obj_add_style(label_mph_lb, LV_OBJ_PART_MAIN,&style_mph_text); lv_label_set_text(label_mph_lb, \"mph\"); }\n\nI want the 0 to be above the text “mph” and at 10 move to the left.\n\nSo how do I right align the text ?\n\nThe problem is that by default labels size themselves automatically and thus your lv_obj_set_width call isn’t working the way you’d expect. You have to change the long mode of the label to fix this.\n\nlv_label_set_long_mode(label_mph, LV_LABEL_LONG_BREAK); lv_obj_set_width(label_mph, 150); lv_obj_align(label_mph, NULL, LV_ALIGN_IN_TOP_RIGHT, 0, 0);\n\nThe above code should do what you want."
+    }
+}

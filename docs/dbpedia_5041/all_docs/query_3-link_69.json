@@ -1,0 +1,44 @@
+{
+    "id": "dbpedia_5041_3",
+    "rank": 69,
+    "data": {
+        "url": "https://forum.image.sc/t/electtron-microscopy-alignment-layers/64835",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Electtron Microscopy alignment layers",
+        "top_image": "https://global.discourse-cdn.com/business4/uploads/imagej/original/2X/4/4904e8fe196486eabdbe0d9d185e94dfcab74e10.png",
+        "meta_img": "https://global.discourse-cdn.com/business4/uploads/imagej/original/2X/4/4904e8fe196486eabdbe0d9d185e94dfcab74e10.png",
+        "images": [
+            "https://global.discourse-cdn.com/business4/uploads/imagej/original/3X/b/a/bad3e5f9ad67c1ddf145107ce7032ac1d7b22563.svg",
+            "https://global.discourse-cdn.com/business4/uploads/imagej/optimized/3X/7/e/7ed31a83ed84fc67e7995abe6d8cf0cb4f9725c4_2_690x345.png",
+            "https://sea1.discourse-cdn.com/business4/user_avatar/forum.image.sc/ilya_belevich/48/16556_2.png",
+            "https://sea1.discourse-cdn.com/business4/user_avatar/forum.image.sc/emartini/48/292_2.png",
+            "https://global.discourse-cdn.com/business4/uploads/imagej/optimized/3X/3/4/34e105014fd969cea81298c93d2974efe45821d2_2_690x172.png",
+            "https://sea1.discourse-cdn.com/business4/user_avatar/forum.image.sc/ilya_belevich/48/16556_2.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "electron-microscopy",
+            "trakem2",
+            "alignment",
+            "elastix"
+        ],
+        "tags": null,
+        "authors": [
+            "Ilya_Belevich (Ilya Belevich (MIB))",
+            "emartini (Emanuele Martini)",
+            "schorb (Martin Schorb)",
+            "albertcardona (Albert Cardona)",
+            "Christian_Tischer (Christian Tischer)"
+        ],
+        "publish_date": "2022-03-23T07:55:06+00:00",
+        "summary": "",
+        "meta_description": "Dear Forum, \nand moreover @albertcardona, @bogovicj and @Christian_Tischer \nI am dealing with an EM stack that I would like to align. \nYou can find the stack here: \nhttps://drive.google.com/drive/folders/1hAL2ykU6oDxoOfL&hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://global.discourse-cdn.com/business4/uploads/imagej/optimized/2X/4/4b3d366e9bd1c4abfb68ca23f7596edd29cb2f4a_2_32x32.png",
+        "meta_site_name": "Image.sc Forum",
+        "canonical_link": "https://forum.image.sc/t/electtron-microscopy-alignment-layers/64835",
+        "text": "Dear Forum,\n\nand moreover @albertcardona, @bogovicj and @Christian_Tischer\n\nI am dealing with an EM stack that I would like to align.\n\nYou can find the stack here:\n\nhttps://drive.google.com/drive/folders/1hAL2ykU6oDxoOfL-5Oy1AM-AozUROJ0I?usp=sharing\n\nI have little experience in EM field, so I am writing to ask for suggestions.\n\nFirst of all, at a first sight do you think the alignment is doable with these images?\n\nDo you have some tools to suggest to me? I am using TraKEM2 but maybe there is also something better (elasix?bunwarpJ?), or maybe not better for automatic alignment but with the possibility to align the slices by hand.\n\nHow do you suggest proceeding?\n\nThanking you\n\nkind regards\n\nEmanuele Martini\n\nHi @emartini,\n\nI also ping @schorb.\n\nDid you already align them?\n\nI tried in Fiji [ Plugins › Registration › Linear Stack Alignment with SIFT ], which did not change the current alignment too much, thus potentially agreeing with what you tried already.\n\nTo me it looks tricky, because it’s not so clear what to align. For example I think [ Plugins › Registration › Linear Stack Alignment with SIFT ] finds an alignment such that all internal structures are “optimally aligned”, but it is not clear whether this is correct. I think an example is a mitochondrion that is physically tilted to your optical axis. If you run an alignment algorithm on this it may straighten it, which is wrong…\n\nCurious to hear the opinions of the real experts!\n\nnot necessary, the thing that such runaway may be an effect of particular cutting angle when the sections were made, so it is a real situation for each particular dataset. Depending on a situation, you may benefit for its correction.\n\nFor example, I do a lot of work with 3D EM imaging of roots, these roots are frequently tilted (it is almost impossible to mount them vertically) and thus the area of interest is drifting away from the center of the view, pretty much as in your case. While imaging, I can correct it by shifting the imaging window, however in post-processing this drift stays as it follows the natural tilt of the root. On the other hand, I am expecting the root to be straight and to do that I am doing a linear correction of the dataset in MIB as shown here:\n\nHowever, if you have strong tilts and/or heavily anisotropic voxels, these can potentially deform shapes of individual organelles, which is probably the case for your dataset.\n\nHere is the result, where I used edge of the nuclear envelope as a marker. As you can see, after correction, the organelles are drifting from top to bottom:\n\nAssuming that the dataset z is 20 times (or probably it is up to x60) larger than x/y this correction heavily affects shape of particular organelles: green mitochondria before and red - after correction.\n\nOn the other hand, it might be the the spherical shape is actually artefact of the alignment procedure that you already applied and the elongated shape is real.\n\nIn some alignment procedures you can compensate for bias to make sure that banana won’t become something like this after alignment:\n\nAbout the alignment, maybe I am missing what is the alignment in EM field.\n\nIn my terms alignment in 3D EM is used to make sure that the structures are continuing as smooth as possible between slices and in this sense your stack is fairly nicely aligned (can’t though comment whether it got affected by banana problem)\n\nIlya\n\nHi @emartini,\n\nFirst approach could be the “Register Virtual Stack Slices” plugin, and choose to register with a few adjacent slices, so that e.g., the nth slice is register with nth+1, nth+2, nth+3, … up to as many as you can afford, computationally. A good number is 6 for anisotropic serial TEM with e.g., 4x4x50 nm resolution. To get a view of this approach, see the first figure of Saalfeld et al. 2012 Nature Methods. Aligning with several adjacent sections will do away with the drift problem. The same can be done within TrakEM2, but if you only have one image per section, the former will do just fine (uses the same image registration library).\n\nBest,\n\nAlbert"
+    }
+}

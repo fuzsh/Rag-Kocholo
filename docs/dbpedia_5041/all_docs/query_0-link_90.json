@@ -1,0 +1,41 @@
+{
+    "id": "dbpedia_5041_0",
+    "rank": 90,
+    "data": {
+        "url": "https://www.mrexcel.com/board/threads/vba-to-set-cell-format-alignment-based-on-cell-value.726477/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "VBA to set cell format alignment based on cell value",
+        "top_image": "https://www.mrexcel.com/board/styles/mrexcel/mrexcel-logo-og.png",
+        "meta_img": "https://www.mrexcel.com/board/styles/mrexcel/mrexcel-logo-og.png",
+        "images": [
+            "https://www.mrexcel.com/board/styles/mrexcel/mrexcel-logo.png",
+            "https://www.mrexcel.com/board/styles/mrexcel/mrexcel-logo.png",
+            "https://www.mrexcel.com/board/data/avatars/s/44/44226.jpg?1574158952",
+            "https://www.mrexcel.com/img/sgw/logo.jpg",
+            "https://www.mrexcel.com/img/sgw/ab_icon.png",
+            "https://www.mrexcel.com/img/sgw/abp_icon.png",
+            "https://www.mrexcel.com/img/sgw/ubo_icon.png",
+            "https://www.mrexcel.com/img/sgw/ub_icon.png",
+            "https://www.mrexcel.com/img/sgw/ab_instructions.jpg",
+            "https://www.mrexcel.com/img/sgw/abp_instructions.jpg",
+            "https://www.mrexcel.com/img/sgw/ubo_instructions.jpg",
+            "https://www.mrexcel.com/img/sgw/ub_instructions.jpg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2013-09-13T20:49:02-04:00",
+        "summary": "",
+        "meta_description": "Since I can't do this with Conditional Formatting, I think I need to turn to VBA to set the alignment of each cell in a selected range based on the value...",
+        "meta_lang": "en",
+        "meta_favicon": "/board/styles/mrexcel/mrexcel-logo-192x192.png",
+        "meta_site_name": "MrExcel Message Board",
+        "canonical_link": "https://www.mrexcel.com/board/threads/vba-to-set-cell-format-alignment-based-on-cell-value.726477/",
+        "text": "Since I can't do this with Conditional Formatting, I think I need to turn to VBA to set the alignment of each cell in a selected range based on the value stored in each of those cells. I don't know much about VBA, so consider me a noob.\n\nI'd like to have a control button on the worksheet that, when clicked on, causes the code to run (so, this is an \"event\" module, right?). I don't think I'll need any help getting the button control added and tying it's on-click event to the VBA module. So... just getting someone to provide the VBA code will suffice.\n\nPrior to clicking the button, I can manually select the range of cells that needs to be aligned by the VBA code. Or, if it's not too tricky, maybe the VBA code could automatically detect/select the range of cells, which will vary in length but be limited to one column, directly beneath the button. The fixed top-most cell in that range is F8 (and the last cell will be somewhere around F108 max, but it could be a shorter range).\n\nFor each cell in the range, I'd like to left justify if the cell's value is less than or equal to -1.001, right justify if the value is greater than or equal to 1.001, and center justify if the value is between.\n\nSince I'm determined to eventually learn VBA, any comments you embed to explain what the code is doing will be much appreciated (but not necessary if you don't have time to explain).\n\nThanks in advance!\n\nSDL\n\nGot no responses, so I took a whack at it myself.\n\nThis is surely quite ugly and inefficient since I've never tried VBA before and could only cobble some things together I gleaned from other posts and John Walkenbach's Excel 2010 Power Programming with VBA book. Nonetheless, my VBA code below seems to work (note: the cells in the range start as center-aligned, so I didn't bother with a third sub-routine to select/center-align the cells whose values are between -0.01 and 0.01). I'm sure this approach could be condensed down to a loop, with the cell test values (>1, between -0.01 and 0.01, and <1) defined/called as variables, but I have no idea how to do that!\n\nCode:\n\nPrivate Sub Button_AlignSymbols_Click() SelectOverallRange SelectSubRange1 SelectOverallRange SelectSubRange2 End Sub Sub SelectOverallRange() Range(Range(\"F8\"), Range(\"F8\").End(xlDown)).Select End Sub Sub SelectSubRange1() Dim Cell As Object Dim FoundCells As Range Dim WorkRange As Range If TypeName(Selection) <> \"Range\" Then Exit Sub Set WorkRange = Application.Intersect(Selection, ActiveSheet.UsedRange) ' Loop thru each cell in range & add to FoundCells range if it has a value greater than 1 For Each Cell In WorkRange If Cell.Value > 1 Then If FoundCells Is Nothing Then Set FoundCells = Cell Else Set FoundCells = Union(FoundCells, Cell) End If End If Next Cell 'Select the FoundCells range and right-align FoundCells.Select With Selection .HorizontalAlignment = xlRight End With End Sub Sub SelectSubRange2() Dim Cell As Object Dim FoundCells As Range Dim WorkRange As Range If TypeName(Selection) <> \"Range\" Then Exit Sub Set WorkRange = Application.Intersect(Selection, ActiveSheet.UsedRange) ' Loop thru each cell in range & add to FoundCells range if it has a value less than -1 For Each Cell In WorkRange If Cell.Value < -1 Then If FoundCells Is Nothing Then Set FoundCells = Cell Else Set FoundCells = Union(FoundCells, Cell) End If End If Next Cell 'Select the FoundCells range and left-align FoundCells.Select With Selection .HorizontalAlignment = xlLeft End With End Sub\n\nIf anyone has a more elegant solution or some advice if I've done something particularly badly, I'd love the feedback. Otherwise, I'll call this (ugly but) resolved.\n\nThanks!\n\nSDL"
+    }
+}

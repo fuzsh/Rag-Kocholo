@@ -1,0 +1,40 @@
+{
+    "id": "dbpedia_5041_0",
+    "rank": 76,
+    "data": {
+        "url": "https://forums.unrealengine.com/t/text-wrapping-works-wierd-with-right-aligned-text/405392",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Text wrapping works wierd with right-aligned text",
+        "top_image": "https://d3kjluh73b9h9o.cloudfront.net/original/4X/6/d/8/6d8aff901a6bbb713ad9e821d2e66b2a22b91b7f.png",
+        "meta_img": "https://d3kjluh73b9h9o.cloudfront.net/original/4X/6/d/8/6d8aff901a6bbb713ad9e821d2e66b2a22b91b7f.png",
+        "images": [
+            "https://d3kjluh73b9h9o.cloudfront.net/original/4X/6/d/8/6d8aff901a6bbb713ad9e821d2e66b2a22b91b7f.png",
+            "https://d3kjluh73b9h9o.cloudfront.net/optimized/4X/a/9/a/a9aee377b0939957284c6ccd9b3954499c171d3e_2_394x500.png",
+            "https://d3kjluh73b9h9o.cloudfront.net/optimized/4X/a/7/c/a7cd8cee6cba51beb87ca1bf0feb44b68afe449f_2_690x188.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "text",
+            "align",
+            "UMG",
+            "question",
+            "unreal-engine"
+        ],
+        "tags": null,
+        "authors": [
+            "GameRaccoon (Pavel)",
+            "Everynone (Everynone)",
+            "Jamie_Dale (Jamie Dale)"
+        ],
+        "publish_date": "2017-09-25T08:15:09+00:00",
+        "summary": "",
+        "meta_description": "What I did \nUsed Text widget in UMG with right-aligned Justification and “Auto Wrap Text” set to true (see screenshot2 below). Then put a text with spaces that should be automatically wrapped. \nWhat I got \nOn the lines t&hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://d3kjluh73b9h9o.cloudfront.net/optimized/4X/4/f/c/4fc78ce65be09c7e97b60a65447c99c078aca16b_2_32x32.png",
+        "meta_site_name": "Epic Developer Community Forums",
+        "canonical_link": "https://forums.unrealengine.com/t/text-wrapping-works-wierd-with-right-aligned-text/405392",
+        "text": "What I did\n\nUsed Text widget in UMG with right-aligned Justification and “Auto Wrap Text” set to true (see screenshot2 below). Then put a text with spaces that should be automatically wrapped.\n\nWhat I got\n\nOn the lines that are wrapped automatically spaces are saved at the end of the line, so the final text is looking aligned wrong (see screenshot1 below).\n\nWhat I expected to get\n\nText wrapped aligned to right side without different indent from the right border (without unexpected spaces at the end).\n\nReproduction frequency\n\nReproduced every time with different texts and widget sizes and fonts if text is automatically wrapped (see “What I did” above).\n\nScreenshots\n\nscreenshot1 (Look at the right indent of the first line)\n\nscreenshot2\n\nIt’s not possible when Text widget width is variable (e.g. from screen size).\n\nEven if that was possible, we get some of that texts from server, so gamedesigners needed to do additional work to make sure that every text have right manual wraps.\n\nAlso we have different localizations that would make it even more painful.\n\nAnd also we reuse that texts in different screens (e.g. reward names) so we would need to create, store and receive from the server the same texts multiple times because of different manual wraps.\n\nYou can format the text with format text node, add linebreak tags and so on. That’s pretty standard when working with a loc database. You then create a base widget with formatting routines, extend from it and place it in named slot. You go through all that trouble proving you have a text heavy game, that is. Not sure what is the scope you’re working with. If you need something even more advanced, you will very quickly find out that blueprints do have limitations.\n\nNot sure if I follow the rest; could you provide an example of a scenario that’s awkward/impossible to work with?\n\nI admit the system could be more flexible and if I understood you’re right, you’re requesting a tick box for automatic white space removal?\n\n“Format text” does not know anything about layouts where the text will be placed. So I’m not sure how I can use it for fix this problem.\n\nPossible scenario:\n\nFor example, we have to design a screen with fluid width layout for mobile phones. E.g. inventory screen. One of the texts that represent the name of an inventory item should be aligned to the right side and can have multiple lines.\n\nAnd then have a situation described in the topic. If then we try to use your solution we would have these problems:\n\nIf the text change width from screen size, this approach can’t be used or we need to make a text for every screen width variant.\n\nWe could have plenty of different inventory items (their names also can be generated) so even we had a Text widget with a fixed width we got big problems here.\n\nAs I said if we have different localizations we would need to review every text variant in every language to make sure everything is alright (sure it can be thousands of texts that are edited from time to time).\n\nIf we use item names not only in this screen (of course we do) then we need to have two variants of the name of each inventory item (one for this screen and one for other screens).\n\nEvery point above makes the solution that you proposed not suitable for this case.\n\nyou’re requesting a tick box for automatic white space removal?\n\nI don’t know why Text needs to store additional whitespace after each auto-wrapped line. If there is some reason then yes, the checkbox will be a good solution. If there is no reason then I’d prefer removing that spaces by default as a more general solution."
+    }
+}

@@ -1,0 +1,35 @@
+{
+    "id": "dbpedia_5041_0",
+    "rank": 23,
+    "data": {
+        "url": "https://datatables.net/forums/discussion/76574/auto-right-alignment-for-numbers-possible",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Auto right alignment for numbers possible?",
+        "top_image": "https://datatables.net/forums/resources/emoji/smile.png",
+        "meta_img": "https://datatables.net/forums/resources/emoji/smile.png",
+        "images": [
+            "https://secure.gravatar.com/avatar/aed251b96fb9f33edfaeaa7a3fa2b1f2/?default=https%3A%2F%2Fvanillicon.com%2Faed251b96fb9f33edfaeaa7a3fa2b1f2_200.png&rating=g&size=120",
+            "https://datatables.net/forums/resources/emoji/smile.png",
+            "https://secure.gravatar.com/avatar/f771e206ad0af801714b8375bc50eeb7/?default=https%3A%2F%2Fvanillicon.com%2Ff771e206ad0af801714b8375bc50eeb7_200.png&rating=g&size=120",
+            "https://secure.gravatar.com/avatar/5e2528412f84f2db0280e04c7ed120a5/?default=https%3A%2F%2Fvanillicon.com%2F5e2528412f84f2db0280e04c7ed120a5_200.png&rating=g&size=120",
+            "https://secure.gravatar.com/avatar/aed251b96fb9f33edfaeaa7a3fa2b1f2/?default=https%3A%2F%2Fvanillicon.com%2Faed251b96fb9f33edfaeaa7a3fa2b1f2_200.png&rating=g&size=120",
+            "https://secure.gravatar.com/avatar/5e2528412f84f2db0280e04c7ed120a5/?default=https%3A%2F%2Fvanillicon.com%2F5e2528412f84f2db0280e04c7ed120a5_200.png&rating=g&size=120"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2023-06-21T20:14:56+00:00",
+        "summary": "",
+        "meta_description": "Is it possible to have for example right alignment for numbers if detected in a column? Like: xxxx12.345 xxx999.344 xx1234.786",
+        "meta_lang": "",
+        "meta_favicon": "/media/images/favicon.png",
+        "meta_site_name": "DataTables forums",
+        "canonical_link": "https://datatables.net/forums/discussion/76574/auto-right-alignment-for-numbers-possible",
+        "text": "In the Datatable you can align right using standard CSS, for example:\n\nhttps://live.datatables.net/hojugeye/1/edit\n\nMy understanding is there is not a built in way to align the decimal points with CSS. You may need to find a JS solution, such as the options in this SO thread, that work for you. Use columns.render to facilitate the JS solution and return the generated HTML. Do this for the display operation as described in the Orthogonal data docs.\n\nAllan may have other options for you.\n\nKevin\n\nYou've got me thinking with this one, and it might actually made a good feature. DataTables does have a collection of classes for text alignment, but they are not automatically applied.\n\nSo what I've done is to create a little example that uses draw listening at the top level of the document, so it will see all tables. When the draw event happens it uses the internal API to get the type information that was detected for the column and then apply a class if needed.\n\nThis is the event listener in question:\n\n$(document).on('draw.dt', function (e, settings) { let api = new DataTable.Api(settings); settings.aoColumns.forEach((c, i) => { if (c.sType.includes('num')) { api .cells(null, i, { page: 'current' }) .nodes() .to$() .addClass('dt-body-right'); } }); });\n\nI'll have a think about how we might improve things in DataTables to offer that kind of feature automatically. Possibly an align: auto option for the columns.\n\nRegarding alignment to the decimal point - like Kevin, I'm not aware of any way of doing that. I think you'd need to split the number into two elements. Even right padding with 0s wouldn't be enough due to the unequal width of numeric characters.\n\nAllan"
+    }
+}

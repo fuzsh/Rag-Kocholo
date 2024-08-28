@@ -1,0 +1,43 @@
+{
+    "id": "dbpedia_5050_0",
+    "rank": 16,
+    "data": {
+        "url": "https://tex.stackexchange.com/questions/55472/how-to-make-text-aligned-left-center-right-in-the-same-line",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How to make text aligned left/center/right in the same line?",
+        "top_image": "https://cdn.sstatic.net/Sites/tex/Img/apple-touch-icon@2.png?v=eaf26b461720",
+        "meta_img": "https://cdn.sstatic.net/Sites/tex/Img/apple-touch-icon@2.png?v=eaf26b461720",
+        "images": [
+            "https://cdn.sstatic.net/Sites/tex/Img/logo.svg?v=43890f90cb01",
+            "https://i.sstatic.net/zb5Zo.png?s=64",
+            "https://www.gravatar.com/avatar/290bebb2fc427404fef608858ead3960?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/v2rSR.png",
+            "https://i.sstatic.net/6wMJ3.png",
+            "https://i.sstatic.net/882u7.jpg?s=64",
+            "https://i.sstatic.net/wJWMb.png?s=64",
+            "https://www.gravatar.com/avatar/c9cd3116e648f1ae0666d62f97a30209?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/506ce2375f0559ebe63486235c03e73d?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/bIZfV.png",
+            "https://i.sstatic.net/cGtNd.png",
+            "https://i.sstatic.net/PRpZp.png",
+            "https://lh3.googleusercontent.com/a-/AOh14Gg0taQ3GUDTHrN7R1mz8YnD0KherIK_Nvh05twwJw=k-s64",
+            "https://tex.stackexchange.com/posts/55472/ivc/a01c?prg=cf36a982-99c9-4908-9271-5355b8f4e16d"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2012-05-12T03:21:14",
+        "summary": "",
+        "meta_description": "I am trying to align some text to left/center/right in the same line. For example, I want to put my phone number on the left, my name in the center, and my email on the right, how do I do that?",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/tex/Img/favicon.ico?v=91427af8e60a",
+        "meta_site_name": "TeX - LaTeX Stack Exchange",
+        "canonical_link": "https://tex.stackexchange.com/questions/55472/how-to-make-text-aligned-left-center-right-in-the-same-line",
+        "text": "Using \\hfill won't necessarily result in the middle text being centered, as the example below demonstrates. If you want to place the text in such a way that the middle text is really centered, I would suggest using \\parboxes, as the example shows (I used the \\lipsum[2] command to generate text to be used only as a reference):\n\n\\documentclass{article} \\usepackage{lipsum} \\newcommand\\textbox[1]{% \\parbox{.333\\textwidth}{#1}% } \\begin{document} \\noindent Left longer sample simple text\\hfill Center?\\hfill Right \\noindent\\textbox{Left longer sample text\\hfill}\\textbox{\\hfil Center\\hfil}\\textbox{\\hfill Right} \\noindent\\lipsum[2] \\end{document}\n\nIf this construct will be used many times, it would be better to have a command; something along the lines of the \\textline command whose definition and use are illustrated in the following example (in which I also incorporated egreg's suggestion about \\raggedleft, \\centering and \\raggedright):\n\n\\documentclass{article} \\usepackage{lipsum} \\newcommand\\textline[4][t]{% \\par\\smallskip\\noindent\\parbox[#1]{.333\\textwidth}{\\raggedright\\texttt{+}#2}% \\parbox[#1]{.333\\textwidth}{\\centering#3}% \\parbox[#1]{.333\\textwidth}{\\raggedleft\\texttt{#4}}\\par\\smallskip% } \\begin{document} \\lipsum[2] \\textline[t]{555\\,555\\,555}{Some Name}{[email protected]} \\lipsum[2] \\end{document}\n\nThe task is accomplished easily with boxes:\n\n\\noindent \\makebox[0pt][l]{+999\\,555\\,999\\,555}% \\makebox[\\textwidth][c]{Ben Lee User}% \\makebox[0pt][r]{\\texttt{[email protected]}}\n\nThis doesn't check for overlaps, but the chance to getting overlaps is very small.\n\nOne macro for it might be\n\n\\newcommand{\\headerline}[3]{% \\par\\medskip\\noindent \\makebox[0pt][l]{#1}% \\makebox[\\textwidth][c]{#2}% \\makebox[0pt][r]{\\texttt{#3}}\\par\\medskip}\n\nto be used as\n\n\\headerline{+999\\,555\\,999\\,555}{Ben Lee User}{[email protected]}\n\nA more efficient (and more obscure) solution\n\n\\newcommand{\\headerline}[3]{% \\par\\medskip\\noindent \\makebox[\\textwidth][s]{\\rlap{#1}\\hfill#2\\hfill\\llap{\\texttt{#3}}}% \\par\\medskip}\n\nYour question sounds to me like you are doing your CV in LaTeX, or something similar. Yet another solution to achieve neat alignment would be to use a table. Using the tabularxpackage, for example, you can stretch a table to the size \\textwidth and place each item into its own respective cell.\n\n\\documentclass{article} \\usepackage{float,tabularx} \\newcolumntype{Y}{>{\\raggedleft\\arraybackslash}X} \\newcolumntype{Z}{>{\\centering\\arraybackslash}X} \\begin{document} \\begin{tabularx}{\\textwidth}{X Z Y} +123 456 789 & Your Name & [email protected] \\end{tabularx} \\end{document}\n\nThis produces a table with three identically-spaced columns, stretching in sum to the size of \\textwidth. As Z is specified, the content of the cells is also centered. Alternatively, X would left-align and Y right-align. You can use p{1.5cm} or so to have a specific column stretch to a predefined size. As long as you use any of X, Y, Z together with it, the table will stretch to the width of your text margin."
+    }
+}
