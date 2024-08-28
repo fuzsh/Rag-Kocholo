@@ -1,0 +1,33 @@
+{
+    "id": "dbpedia_4483_3",
+    "rank": 22,
+    "data": {
+        "url": "https://stackoverflow.com/questions/51433310/in-netsuite-how-can-i-include-a-list-of-tracking-numbers-in-an-email-generated-f",
+        "read_more_link": "",
+        "language": "en",
+        "title": "In Netsuite how can I include a list of tracking numbers in an email generated from an Item Fulfillment?",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://i.sstatic.net/YPjTv.jpg?s=64",
+            "https://www.gravatar.com/avatar/d4cb121a63e27fef957968d014ef82e0?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/YPjTv.jpg?s=64",
+            "https://stackoverflow.com/posts/51433310/ivc/c29d?prg=7432eae4-7521-41ae-900b-fd3eae3685cc"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2018-07-20T00:01:26",
+        "summary": "",
+        "meta_description": "I need to send a custom \"Order Shipped\" email from an Item Fulfillment record in Netsuite. I am making the email template using freemarker. I would like to include the tracking numbers for packages",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/51433310/in-netsuite-how-can-i-include-a-list-of-tracking-numbers-in-an-email-generated-f",
+        "text": "I need to send a custom \"Order Shipped\" email from an Item Fulfillment record in Netsuite. I am making the email template using freemarker. I would like to include the tracking numbers for packages associated with the Item Fulfillment in the email.\n\nI have tried using:\n\n<#list transaction.package as pkg>${pkg.packagetrackingnumber} </#list>\n\nHowever when I send the email template from the communication tab of an item fulfillment (that has multiple packages with tracking numbers) I see nothing in the email.\n\nI then tried:\n\n<#list transaction.package as pkg>TEST</#list>\n\nand still saw nothing (I would have expected to see \"TEST\" as many times as there are packages), so it seems like the list of packages is empty, even though I can see many packages in the UI for this Item Fulfillment.\n\nHow can I get the tracking numbers onto the email template sent from an Item Fulfillment?\n\nTo get all tracking numbers on an Item Fulfillment, you should account for all the possible tracking numbers. There are three that NetSuite uses:\n\ntransaction.package\n\ntransaction.packageups\n\ntransaction.packagefedex\n\nThe actual tracking link is referenced in with FreeMarker like this:\n\n<#list transaction.package as pkg>${pkg.packagetrackingnumber}</#list>\n\n<#list transaction.packageups as pkg>${pkg.packagetrackingnumberups}</#list>\n\n<#list transaction.packagefedex as pkg>${pkg.packagetrackingnumberfedex}</#list>\n\nAnd some sample code that could prove helpful to list all the tracking numbers is below. Note a couple of things in the example:\n\nI list each package tracking number and use the FreeMarker ?is_last tag to determine if this is the last tracking number (so put a period) or if there are more (so put a comma and space). This logic isn't perfect, since you might list UPS packages and come to the end and not put a space and then list Fedex packages and you'd have the first Fedex link right next to the last UPS link. I guess you could say this assumes only one carrier is used per fulfillment :)\n\nFor the non-UPS, non-Fedex links, I use an if statement and reference the shipmethod field to determine what the link should be.\n\nI've auto-formatted the code for readability, but you can obviously remove newlines/whitespace to get the paragraph to show properly.\n\nWe have made a shipment against your PO ${transaction.createdfrom.otherrefnum}, with tracking number(s) <#list transaction.packagefedex as pkg> <a href=\"https://www.fedex.com/fedextrack/?trknbr=${pkg.packagetrackingnumberfedex}\">${pkg.packagetrackingnumberfedex}</a> <#if pkg?is_last> <#else>, </#if> </#list> <#list transaction.packageups as pkg><a href=\"https://www.ups.com/track?tracknum=${pkg.packagetrackingnumberups}\">${pkg.packagetrackingnumberups}</a> <#if pkg?is_last> <#else>, </#if> </#list> <#list transaction.package as pkg> <#if transaction.shipmethod?contains(\"DHL\")><a href=\"https://www.dhl.com/en/express/tracking.html?AWB=${pkg.packagetrackingnumber}&amp;brand=DHL\">${pkg.packagetrackingnumber}</a> <#else>${pkg.packagetrackingnumber} </#if> <#if pkg?is_last> <#else>, </#if> </#list>\n\nanswered May 1, 2021 at 0:28\n\nsplempsplemp\n\n8711 silver badge1111 bronze badges"
+    }
+}

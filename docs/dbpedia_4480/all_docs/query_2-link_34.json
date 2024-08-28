@@ -1,0 +1,48 @@
+{
+    "id": "dbpedia_4480_2",
+    "rank": 34,
+    "data": {
+        "url": "https://saml-doc.okta.com/Provisioning_Docs/NetSuite_Provisioning.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "NetSuite Provisioning",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://saml-doc.okta.com/resources/img/okta-logo-white.png",
+            "https://saml-doc.okta.com/Provisioning_Docs/images/apps/netsuite-1.png",
+            "https://saml-doc.okta.com/Provisioning_Docs/images/apps/netsuite1.png",
+            "https://saml-doc.okta.com/Provisioning_Docs/images/apps/netsuite_new_roles.png",
+            "https://saml-doc.okta.com/Provisioning_Docs/images/apps/netsuite-2.png",
+            "https://saml-doc.okta.com/Provisioning_Docs/images/apps/netsuite_prov_new4.png",
+            "https://saml-doc.okta.com/Provisioning_Docs/images/apps/netsuite_prov_new5.png",
+            "https://saml-doc.okta.com/Provisioning_Docs/images/apps/netsuiteprovisioning1.png",
+            "https://saml-doc.okta.com/Provisioning_Docs/images/apps/netsuite_newz.png",
+            "https://saml-doc.okta.com/Provisioning_Docs/images/apps/netsuite_new_3.png",
+            "https://saml-doc.okta.com/Provisioning_Docs/images/apps/netsuite3.png",
+            "https://saml-doc.okta.com/Provisioning_Docs/images/apps/netsuite_newx.png",
+            "https://saml-doc.okta.com/Provisioning_Docs/images/apps/netsuite_newy.png",
+            "https://saml-doc.okta.com/Provisioning_Docs/images/apps/netsuite_prov1.png",
+            "https://saml-doc.okta.com/Provisioning_Docs/images/apps/netsuite_new_4.png",
+            "https://saml-doc.okta.com/Provisioning_Docs/images/apps/netsuite_new_a.png",
+            "https://saml-doc.okta.com/Provisioning_Docs/images/apps/netsuite4.png",
+            "https://saml-doc.okta.com/Provisioning_Docs/images/apps/netsuite6.png",
+            "https://saml-doc.okta.com/Provisioning_Docs/images/apps/netsuite_prov_new6.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "",
+        "meta_favicon": "",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "Configuring Provisioning for NetSuite\n\nThis guide provides the steps required to configure Provisioning for NetSuite and includes the following topics:\n\nFeatures\n\nRequirements\n\nConfiguration Steps\n\nSchema Discovery\n\nMigration Flow (Legacy to UD)\n\nLimitations\n\nTroubleshooting Tips\n\nFeatures\n\nThe following provisioning features are supported:\n\nProfile Source\n\nImport New Users\n\nImport Profile Updates\n\nPush New Users\n\nPush Password Updates\n\nPush Profile Updates\n\nPush User Deactivation\n\nReactivate Users\n\nNetsuite-specific features:\n\nWorks with Token-Based Authentication\n\nSupports custom fields for Employees\n\nPush, update and download employee groups\n\nRequirements\n\nNote: If you already have set up the NetSuite application with Admin Username and Admin password authentication, your existing settings will continue to work. However if you need to change any provisioning settings, you need to switch to Token Based authentication.\n\nComplete the following before you configure provisioning for NetSuite:\n\nConfigure NetSuite\n\nConfiguration Steps\n\nConfigure your Provisioning settings for NetSuite as follows:\n\nCheck Enable API Integration.\n\nEnter your NetSuite API Credentials:\n\nAdmin Account ID.\n\nConsumer Key.\n\nConsumer Secret.\n\nToken ID.\n\nToken Secret.\n\nIf you have configured Netsuite with Admin username and Password authentication, your API integration will look slightly different, as shown here:\n\nIn this case in order to switch to token based-authentication authentication, enter the following NetSuite credentials:\n\nConsumer Key\n\nConsumer Secret\n\nToken ID\n\nToken Secret\n\nOnce set, you can proceed. It's up to you to leave or clean admin credentials fields. Okta will use token based authentication whenever tokens are provided.\n\nSelect To App in the left panel, then select the Provisioning Features you want to enable, then click Save.\n\nYou can now assign people to the app (if needed) and finish the application setup.\n\nUser Provisioning Notes:\n\nOkta only supports managing Employees.\n\nIf you have the UD features enabled, Okta offers the added functionality to set the Employee's Supervisor attribute. This attribute can only be set for users who are imported into Okta from Active Directory. The Employee's Supervisor attribute maps to the supervisor's User ID in NetSuite.\n\nIf you are setting up NetSuite as source, inactive users and users with insufficient access levels in NetSuite will be deactivated in Okta if you have the following provisioning options enabled in Okta:\n\nDo not import inactive users\n\nDo not import users without access\n\nIf you already have set up NetSuite application with Admin Username and Admin password authentication, your existing settings will still work. However if you need to change any provisioning settings, you will have to switch to Token-Based authentication.\n\nSchema Discovery\n\nNetSuite supports User's Schema Discovery, so you can add some extra attributes to User's Profile, to do that, follow the instructions below:\n\nSupported Custom Entity Fields\n\nBefore you begin, note that the following Custom Entity fields are supported:\n\nEmail Address\n\nPhone Number\n\nText Area\n\nLong Text\n\nRich Text\n\nFree-Form Text\n\nHyperlink\n\nInteger Number\n\nDate\n\nDate/Time\n\nPercent\n\nCurrency\n\nDecimal Number\n\nCheck Box\n\nTo add extra attributes to a User’s Profile:\n\nEnsure you have selected EMPLOYEE in the Applies To section on the NetSuite side for the Custom Entity field you want to use.\n\nIn Okta, from the Admin dashboard, select Directory > Profile Editor.\n\nSelect the APPS section in the left navigation bar, then find your app in the list.\n\nCheck the list of attributes, and if you decide you need more, click Add Attribute. A list of extended attributes will appear:\n\nSelect the attributes you want to add, then click Save.\n\nYou can now import and push these user attribute values to/from NetSuite.\n\nMigration Flow (Legacy to UD Version)\n\nDisable the Update User Attributes provisioning feature in Provisioning options. This must be done in order to prevent mass de-provisioning from NetSuite once your instance is upgraded to the latest user profile.\n\nContact OKTA Support to migrate your AppUser profile to the latest version.\n\nNote: Keep a screenshot of your current mappings before the migrating the AppUser profile. This helps ensure that any existing mappings have not been tampered with.\n\nRe-authenticate your NetSuite application instance using Token Based Authentication (see instructions earlier in this document).\n\nPerform a user import by clicking the Import Now button from the import tab of NetSuite application. Once completed this import overwrites Give access values for all assigned users with the correct value.\n\nEnsure users were populated with correct data and that the given access value is set to true for all users who should remain provisioned in Netsuite.\n\nEnable the Update User Attributes provisioning feature in Provisioning options that you disabled in step 1. Note that in case of many users, it is possible you may experience rate limit errors and may need to retry failed updates.\n\nLimitations\n\nAssigning roles to an employee with no assigned roles:\n\nSet giveAccess to true and assigning roles to users who have no access and no roles is available but SWA authentication will be broken as Okta has to reset the employee password according to NetSuite limitations.\n\nDrop externalID employee property:\n\nUsing the UD version of NetSuite application allows you to set the externalId property for a user, but it can be dropped or set to blank.\n\nGroup type:\n\nCurrently we only support the Employee's group of type STATIC:"
+    }
+}

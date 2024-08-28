@@ -1,0 +1,49 @@
+{
+    "id": "dbpedia_4484_2",
+    "rank": 29,
+    "data": {
+        "url": "https://stackoverflow.com/questions/52497252/puppeteer-wait-until-page-is-completely-loaded",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Puppeteer wait until page is completely loaded",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://i.sstatic.net/75A4R.jpg?s=64",
+            "https://www.gravatar.com/avatar/b7216fbcf05e8423bb8fc6e131dba4b1?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/a6JjK.jpg?s=64",
+            "https://www.gravatar.com/avatar/263cde71709be665db6ce1d2c0d8e532?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/oRj1a.jpg?s=64",
+            "https://i.sstatic.net/XqV2Y.jpg?s=64",
+            "https://i.sstatic.net/yAEOv.png?s=64",
+            "https://i.sstatic.net/0MdnE.jpg?s=64",
+            "https://i.sstatic.net/sv6zK.jpg?s=64",
+            "https://www.gravatar.com/avatar/193965abcb7230d85c6264e55e2f0bda?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/agMKZ.png?s=64",
+            "https://i.sstatic.net/OVZPE.png?s=64",
+            "https://www.gravatar.com/avatar/193965abcb7230d85c6264e55e2f0bda?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/8fc78865d6b6e0fe5bab639ccab6f21f?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/Pmb7m.jpg?s=64",
+            "https://lh4.googleusercontent.com/-xaj_xox6NYc/AAAAAAAAAAI/AAAAAAAAAN0/m0wvKatlx9c/photo.jpg?sz=64",
+            "https://lh3.googleusercontent.com/a-/AOh14GgI4aZz1O2pwQIVqQyC6cIZmr1JA7Z4vqYDugiU-g=k-s64",
+            "https://www.gravatar.com/avatar/917fcb4327159076f752c0c3c3fddfbb?s=64&d=identicon&r=PG",
+            "https://lh5.googleusercontent.com/-fAwO3Rn7e9c/AAAAAAAAAAI/AAAAAAAAABE/1MNauP4g3ME/photo.jpg?sz=64",
+            "https://stackoverflow.com/posts/52497252/ivc/c29d?prg=ee362abb-f068-4a06-a0db-06a8760b96c6"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2018-09-25T11:35:29",
+        "summary": "",
+        "meta_description": "I am working on creating PDF from web page.\n\nThe application on which I am working is single page application.\n\nI tried many options and suggestion on https://github.com/GoogleChrome/puppeteer/issues/",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/52497252/puppeteer-wait-until-page-is-completely-loaded",
+        "text": "Answers so far haven't mentioned a critical fact: it's impossible to write a one-size-fits-all waitUntilPageLoaded function that works on every page. If it were possible, Puppeteer would surely provide it.\n\nSuch a function can't rely on a timeout, because there's always some page that takes longer to load than that timeout. As you extend the timeout to reduce the failure rate, you introduce unnecessary delays when working with fast pages. Timeouts are generally a poor solution, opting out of Puppeteer's event-driven model.\n\nWaiting for idle network requests might not always work if the responses involve long-running DOM updates that take longer than 500ms to trigger a render.\n\nWaiting for the DOM to stop changing might miss slow network requests, long-delayed JS triggers, or ongoing DOM manipulation that might cause the listener never to settle, unless specially handled.\n\nAnd, of course, there's user interaction: captchas, prompts and cookie/subscription modals that need to be clicked through and dismissed before the page is in a sensible state for a full-page screenshot (for example).\n\nSince every page has different, arbitrary JS behavior, the typical approach is to write event-driven logic that works for a specific page. Making precise, directed assumptions is much better than cobbling together a boatload of hacks that tries to solve every edge case.\n\nIf your use case is to write a load event that works on every page, my suggestion is to use some combination of the tools described here that is most balanced to meet your needs (speed vs. accuracy, development time/code complexity vs accuracy, etc). Use fail-safes for everything rather than blindly assuming all pages will cooperate with your assumptions. Think hard about what extent you really need to try to handle every web page. Prepare to compromise and accept some degree of failures you can live with.\n\nHere's a quick rundown of the strategies you can mix and match to wait for loads to fit your needs:\n\npage.goto() and page.waitForNavigation() default to the load event, which \"is fired when the whole page has loaded, including all dependent resources such as stylesheets and images\" (MDN), but this is often too pessimistic; there's no need to wait for a ton of data you don't care about. Often the data is available without waiting for all external resources, so domcontentloaded should be faster. See my post Avoiding Puppeteer Antipatterns for further discussion.\n\nOn the other hand, if there are JS-triggered networks requests after load, you'll miss that data. Hence networkidle2 and networkidle0, which wait 500 ms after the number of active network requests are 2 or 0. The motivation for the 2 version is that some sites keep ongoing requests open, which would cause networkidle0 to time out.\n\nIf you're waitng for a specific network response that might have a payload (or, for the general case, implementing your own network idle monitor), use page.waitForResponse(). page.waitForRequest(), page.waitForNetworkIdle() and page.on(\"request\", ...) are also useful here.\n\nIf you're waiting for a particular selector to be visible, use page.waitForSelector(). If you're waiting for a load on a specific page, identify a selector that indicates the state you want to wait for. Generally speaking, for scripts specific to one page, this is the main tool to wait for the state you want, whether you're extracting data or clicking something. Frames and shadow roots thwart this function.\n\npage.waitForFunction() lets you wait for an arbitrary predicate, for example, checking that the page's HTML or a specific list is a certain length. It's also useful for quickly dipping into frames and shadow roots to wait for predicates that depend on nested state. This function is also handy for detecting DOM mutations.\n\nThe most general tool is page.evaluate(), which plugs code into the browser. You can put just about any conditions you want here; most other Puppeteer functions are convenience wrappers for common cases you could implement by hand with evaluate.\n\nHere's a real-world example of using a variety of precise predicates to double page load detection speed before capturing a screenshot.\n\nSee also When is the page loaded? in the Playwright docs (yes, it's not Puppeteer, but the tool is very similar, and this part of the docs pertains to both libraries):\n\nModern pages perform numerous activities after the load event was fired. They fetch data lazily, populate UI, load expensive resources, scripts and styles after the load event was fired. There is no way to tell that the page is loaded, it depends on the page, framework, etc."
+    }
+}
