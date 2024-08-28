@@ -1,0 +1,30 @@
+{
+    "id": "dbpedia_3934_1",
+    "rank": 22,
+    "data": {
+        "url": "https://ogris.de/howtos/freebsd-cde-macmini.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Running CDE on FreeBSD on a Mac Mini",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://ogris.de/pics/cde_small.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "",
+        "meta_favicon": "",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "Intro\n\nJust for fun I installed FreeBSD on a Mac Mini 3.1 (early 2009), and installed compiled CDE as desktop environment.\n\nHere's a screenshot of my desktop:\n\nInstallation\n\nThese are the key steps to do so:\n\nDownload the memstick image of FreeBSD 11.0 Release for amd64\n\nWrite the uncompressed image to an USB thumb drive of at least 1 GB by using dd\n\nBoot the Mac Mini from that USB drive by holding either CMD and u during boot, or by holding ALT and then selecting the USB drive in the upcoming menu\n\nInstall FreeBSD as usual, i.e. I let the installer choose the ZFS partitioning scheme, and activated sshd, ntpd, and a local unbound (caching nameserver) during system boot\n\nLog in as root\n\nEdit /etc/ssh/sshd_config, set PermitRootLogin to without-password, and add your public key to /root/.ssh/authorized_keys\n\nUpdate FreeBSD to the latest patch level:\n\n# freebsd-update fetch install # shutdown -r now\n\nInstall bash and tmux:\n\n# pkg install bash tmux\n\nChange root's shell to bash (not strictly needed, but I prefer bash):\n\n# pw usermod root -s /usr/local/bin/bash\n\nStart a new tmux session:\n\n# tmux\n\nIn order to compile CDE, you'll need these packages:\n\n# pkg install xorg git bdftopcf open-motif ksh93\n\nOf course we'll need an appropriate graphics driver:\n\n# pkg install nvidia-driver-340 nvidia-settings\n\nFinally, some useful tools:\n\n# pkg install vim chromium gimp qmmp vlc pstree xmmix\n\nNow, while still in a tmux session, clone the CDE repository:\n\n# git clone git://git.code.sf.net/p/cdesktopenv/code cdesktopenv-code\n\nNow you might follow loosely the CDE wiki for FreeBSD. I did steps #4 (just edit /etc/rc.conf, no need to reboot yet), #7 (make symlinks), #9 (attempt to build), #10 (install cde), and #11 (create directory for ToolTalk). There was no need to install gcc47 nor libXp, and I had not to edit the Xm/Xm.h include file\n\nCreate /usr/local/etc/X11/xorg.conf:\n\nSection \"ServerLayout\" Identifier \"X.org Configured\" Screen 0 \"Screen0\" 0 0 InputDevice \"Mouse0\" \"CorePointer\" InputDevice \"Keyboard0\" \"CoreKeyboard\" EndSection Section \"Files\" ModulePath \"/usr/local/lib/xorg/modules\" FontPath \"/usr/local/share/fonts/misc/\" FontPath \"/usr/local/share/fonts/TTF/\" FontPath \"/usr/local/share/fonts/OTF/\" FontPath \"/usr/local/share/fonts/Type1/\" FontPath \"/usr/local/share/fonts/100dpi/\" FontPath \"/usr/local/share/fonts/75dpi/\" EndSection Section \"Module\" Load \"dbe\" Load \"dri\" Load \"dri2\" Load \"extmod\" Load \"record\" Load \"glx\" EndSection Section \"InputDevice\" Identifier \"Keyboard0\" Driver \"kbd\" EndSection Section \"InputClass\" Identifier \"KeyboardDefaults\" MatchIsKeyboard \"on\" Driver \"keyboard\" Option \"XkbLayout\" \"de\" EndSection Section \"InputDevice\" Identifier \"Mouse0\" Driver \"mouse\" Option \"Protocol\" \"auto\" Option \"Device\" \"/dev/sysmouse\" Option \"ZAxisMapping\" \"4 5 6 7\" EndSection Section \"Monitor\" Identifier \"Monitor0\" VendorName \"Monitor Vendor\" ModelName \"Monitor Model\" EndSection Section \"Device\" Identifier \"Card0\" Driver \"nvidia\" BusID \"PCI:2:0:0\" EndSection Section \"Screen\" Identifier \"Screen0\" Device \"Card0\" Monitor \"Monitor0\" SubSection \"Display\" Depth 24 Modes \"1600x1200\" EndSubSection EndSection\n\nAs the nvidia kernel module seems not to be loaded during system when added to /boot/loader.conf, I added this to /etc/rc.conf:\n\nkld_list=\"nvidia\"\n\nTo make the rear audio jack work I had to add this to /etc/sysctl.conf:\n\ndev.hdaa.0.gpio_config=\"0=set 1=set\" hw.snd.default_auto=2 hw.snd.default_unit=2\n\nAdd this to /etc/rc.conf to save and restore audio mixer levels during system reboot:\n\nmixer_enable=\"YES\"\n\nEvery host needs to have the correct time. Thus set it with ntpdate and ntpd in /etc/rc.conf when the system boots:\n\nntpdate_enable=\"YES\" ntpd_sync_on_start=\"YES\" ntpd_enable=\"YES\"\n\nDon't forget to set your preferred NTP server(s) in /etc/ntp.conf.\n\nIf you prefer a graphical login, create (or add the following line to) /etc/rc.local:\n\n#!/bin/sh /usr/dt/bin/dtlogin -daemon\n\nMake it executable by running chmod 0755 /etc/rc.local\n\nReboot the Mac Mini\n\nIf you did not add dtlogin to /etc/rc.local, then login as normal user, and either start /usr/dt/bin/Xsession manually. Or add /usr/dt/bin/Xsession to your ~/.xinitrc, and simply start X by calling startx\n\nYou might want to consider setting up a simple local firewall, e.g. add this to /etc/rc.conf:\n\nfirewall_enable=\"YES\" firewall_type=\"workstation\" firewall_myservices=\"22/tcp\" firewall_allowservices=\"192.168.0.0/24\" # or whatever your trusted net is!\n\nNotes\n\nBluetooth worked out of the box. Thus I could simply follow the Bluetooth section of the FreeBSD handbook:\n\nVerify that the kernel detected the bluetooth hardware and loaded the appropriate driver:\n\n# dmesg | grep ubt\n\nScan for nearby bluetooth devices:\n\n# hccontrol -n ubt0hci inquiry\n\nQuery a remote device for its name, e.g. your mobile phone:\n\n# hccontrol -n ubt0hci remote_name_request XX:XX:XX:XX:XX:XX\n\nTodo"
+    }
+}

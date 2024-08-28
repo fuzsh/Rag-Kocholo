@@ -1,0 +1,39 @@
+{
+    "id": "dbpedia_3934_0",
+    "rank": 95,
+    "data": {
+        "url": "https://colonos.wordpress.com/2009/04/27/xmms-in-jaunty-jackalope-904-how-to-install-with-codecs/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "XMMS in Jaunty Jackalope 9.04: How to install with codecs.",
+        "top_image": "https://colonos.wordpress.com/files/2008/11/xmms2.png",
+        "meta_img": "https://colonos.wordpress.com/files/2008/11/xmms2.png",
+        "images": [
+            "https://colonos.wordpress.com/wp-content/uploads/2008/11/xmms2.png?w=705",
+            "https://i0.wp.com/img88.imageshack.us/img88/7376/screenshotdb.png",
+            "https://0.gravatar.com/avatar/fdcf94d92e1530bb282cfb20c5abdc28c557fc7b4fcf1b5d9b01d5359942138e?s=48&d=monsterid",
+            "https://1.gravatar.com/avatar/143ff19430ff077cb8c320e1cb5078b50991a4dad086591c067e498540a7505b?s=48&d=monsterid",
+            "https://1.gravatar.com/avatar/143ff19430ff077cb8c320e1cb5078b50991a4dad086591c067e498540a7505b?s=48&d=monsterid",
+            "https://2.gravatar.com/avatar/ea39423372f65a8f4dfbbd1f13aa532ae36be84363ada6eefd5600f81c4cf28c?s=48&d=monsterid",
+            "https://2.gravatar.com/avatar/ea39423372f65a8f4dfbbd1f13aa532ae36be84363ada6eefd5600f81c4cf28c?s=48&d=monsterid",
+            "https://secure.gravatar.com/blavatar/2e4829fd7cf432bbe5afcc0d15bc12ea3b3596c42b435a70c8ce8a90cbc8da12?s=50&d=https%3A%2F%2Fs2.wp.com%2Fi%2Flogo%2Fwpcom-gray-white.png",
+            "https://secure.gravatar.com/blavatar/2e4829fd7cf432bbe5afcc0d15bc12ea3b3596c42b435a70c8ce8a90cbc8da12?s=50&d=https%3A%2F%2Fs2.wp.com%2Fi%2Flogo%2Fwpcom-gray-white.png",
+            "https://pixel.wp.com/b.gif?v=noscript"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2009-04-27T00:00:00",
+        "summary": "",
+        "meta_description": "Many have decried the removal of XMMS from the Ubuntu repositories - it has been absent since Gutsy - despite it being the preferred music player for a lot of people and remains the only media player that - to my knowledge - can handle 30-40k+ collections. Not only is it the only player capable…",
+        "meta_lang": "en",
+        "meta_favicon": "https://secure.gravatar.com/blavatar/2e4829fd7cf432bbe5afcc0d15bc12ea3b3596c42b435a70c8ce8a90cbc8da12?s=32",
+        "meta_site_name": "colonos",
+        "canonical_link": "https://colonos.wordpress.com/2009/04/27/xmms-in-jaunty-jackalope-904-how-to-install-with-codecs/",
+        "text": "Many have decried the removal of XMMS from the Ubuntu repositories – it has been absent since Gutsy – despite it being the preferred music player for a lot of people and remains the only media player that – to my knowledge – can handle 30-40k+ collections. Not only is it the only player capable of very large collections, it also handles such collections with very little resource use. It’s the canine’s testicles, mate!\n\nThe colonos blog has provided some detailed explanations for installing XMMS in Intrepid (see this entry for an overview) and now the time has come for installing XMMS in Jaunty Jackalope, also known as Ubuntu 9.04.\n\nThe most appropriate way would be to follow the explanations linked to above, but here I would like to show a very easy way to get XMMS up and running in Jaunty – which works well for me, no crashes, no problems, just tunes playing as they should!\n\nHOWEVER – do this at your own risk, it might break your system, fuck something up – who knows? I thought it was worth a try and it worked a treat and took less than 5 minutes to get XMMS up and running. If you want to make sure all is textbook perfect, then follow the instructions already mentioned twice and compile the whole thing from scratch.\n\nGo to KnutA’s repo: http://www.pvv.ntnu.no/~knuta/xmms/\n\n(Assuming that you are using Ubuntu 32- and 64-bit x86), and add this line to your Software Sources (either via “System” – “Administration” – “Software Sources”, or via “System” – “Administration” – “Synaptic Package Manager” – “Settings” – “Repositories” – “Third Party Software”):\n\ndeb http://www.pvv.ntnu.no/~knuta/xmms/jaunty ./\n\nThen install XMMS in whichever way you prefer. If you added the repository via Synaptic, then click “Reload” and then search for XMMS and choose “install”. That will pull in the dependencies, which for me were:\n\nlibglib1.2ldbl (1.2.10-19build1)\n\nlibgtk1.2 (1.2.10-18.1build2)\n\nlibgtk1.2-common (1.2.10-18.1build2)\n\nlibmikmod2 (3.1.11-a-6ubuntu3)\n\nand of course: xmms (1.2.11-1)\n\nAfter that is done – to avoid any problems in the future – go back to to Software Sources and uncheck KnutA’s repository (since it won’t be updated anyway).\n\nNow you have XMMS with the mp3 codec installed. I also wanted mp4, which you can find a binary for here that works fine in my Jaunty installation (even though it is compiled for Hardy):\n\nhttps://launchpad.net/ubuntu/hardy/i386/xmms-mp4/2.6-1\n\nMoreover, I also need Flac and .wma, so at this stage I simply copied the codec libraries from my old (Intrepid) config files (in /home/me/.xmms/Plugins).\n\nThere is a file called libxmms-flac.so (which adds Flac playback capability) and a folder called “Input” in which the .wma library is located: libwma.so\n\nI didn’t really expect it to work – rather a crash or at best no playback of Flac and .wma files, but it just worked! You are of course better off compiling it all yourself if you want to make sure – or at least try out this experiment with your own Intrepid libraries, but if you are daring and/or lazy or just know what you are doing!!, feel welcome to try these:\n\nlibxmms-flac.so (to be pasted into /home/you/.xmms/Plugins/ – while XMMS is SHUT DOWN!)\n\nlibwma.so (to be pasted into /home/you/.xmms/Plugins/Input/ – while XMMS is SHUT DOWN!)\n\nNow start up XMMS (choose ALSA as output plugin) and enjoy your tunes! If it doesn’t work for you, then go to the detailed explanations linked to and referred to several times."
+    }
+}

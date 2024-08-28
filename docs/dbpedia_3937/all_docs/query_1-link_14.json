@@ -1,0 +1,34 @@
+{
+    "id": "dbpedia_3937_1",
+    "rank": 14,
+    "data": {
+        "url": "https://stackoverflow.com/questions/62938110/does-google-scholar-have-an-api-available-that-we-can-use-in-our-research-applic",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Does Google Scholar have an API available that we can use in our research applications?",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://i.sstatic.net/UwE9U.png?s=64",
+            "https://www.gravatar.com/avatar/e1063099b1bb8c6b638c9df6639fcec1?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/WMA6F.jpg?s=64",
+            "https://www.gravatar.com/avatar/2de76b0a45b1c27f08ec1c8e23153588?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/62938110/ivc/f29f?prg=d937a5da-7f7a-479b-9568-05c5e2e731a3"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2020-07-16T15:27:54",
+        "summary": "",
+        "meta_description": "I am working on a research publication and collaboration project that has a literature search feature in it.\nGoogle Scholar seems like it will work since it is an open source tool, but when I resea...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/62938110/does-google-scholar-have-an-api-available-that-we-can-use-in-our-research-applic",
+        "text": "There's no official Google Scholar API.\n\nThere are third-party solutions like free scholarly Python package which supports profile, author, cite and organic results (search_pubs seems to be the method to get organic results, although method name confuses me).\n\nNote that by using scholarly constantly without a requests rate limit, Google may block your IP (mentioned by @RadioControlled). Use it wisely.\n\nAdditionally, there's a scrape-google-scholar-py module that lets you extract pretty much any Google Scholar page.\n\nAlternatively, there's a Google Scholar API from SerpApi which is a paid API with a free plan that supports organic, cite, profile, author results and bypasses all the blocks on SerpApi backend so it won't block your IP, and it handle legal part of scraping.\n\nExample code to parse profile results using scholarly using search_by_keyword method:\n\nimport json from scholarly import scholarly # will paginate to the next page by default authors = scholarly.search_keyword(\"biology\") for author in authors: print(json.dumps(author, indent=2)) # part of the output: ''' { \"container_type\": \"Author\", \"filled\": [], \"source\": \"SEARCH_AUTHOR_SNIPPETS\", \"scholar_id\": \"LXVfPc8AAAAJ\", \"url_picture\": \"https://scholar.google.com/citations?view_op=medium_photo&user=LXVfPc8AAAAJ\", \"name\": \"Eric Lander\", \"affiliation\": \"Broad Institute\", \"email_domain\": \"\", \"interests\": [ \"Biology\", \"Genomics\", \"Genetics\", \"Bioinformatics\", \"Mathematics\" ], \"citedby\": 552013 } ... other author results '''\n\nExample using scrape-google-scholar-py:\n\nfrom google_scholar_py import CustomGoogleScholarProfiles import json parser = CustomGoogleScholarProfiles() data = parser.scrape_google_scholar_profiles( query='blizzard', pagination=False, save_to_csv=False, save_to_json=False ) print(json.dumps(data, indent=2))\n\nOutputs:\n\n[ { \"name\": \"Adam Lobel\", \"link\": \"https://scholar.google.com/citations?hl=en&user=_xwYD2sAAAAJ\", \"affiliations\": \"Blizzard Entertainment\", \"interests\": [ \"Gaming\", \"Emotion regulation\" ], \"email\": \"Verified email at AdamLobel.com\", \"cited_by_count\": 3593 }, # other results... ]\n\nExample code to parse organic results using Google Scholar Profile Results API from SerpApi:\n\nimport json from serpapi import GoogleScholarSearch # search parameters params = { \"api_key\": \"Your SerpApi API key\", \"engine\": \"google_scholar_profiles\", \"hl\": \"en\", # language \"mauthors\": \"biology\" # search query } search = GoogleScholarSearch(params) results = search.get_dict() # only first page results for result in results[\"profiles\"]: print(json.dumps(result, indent=2)) # part of the output: ''' { \"name\": \"Masatoshi Nei\", \"link\": \"https://scholar.google.com/citations?hl=en&user=VxOmZDgAAAAJ\", \"serpapi_link\": \"https://serpapi.com/search.json?author_id=VxOmZDgAAAAJ&engine=google_scholar_author&hl=en\", \"author_id\": \"VxOmZDgAAAAJ\", \"affiliations\": \"Laura Carnell Professor of Biology, Temple University\", \"email\": \"Verified email at temple.edu\", \"cited_by\": 384074, \"interests\": [ { \"title\": \"Evolution\", \"serpapi_link\": \"https://serpapi.com/search.json?engine=google_scholar_profiles&hl=en&mauthors=label%3Aevolution\", \"link\": \"https://scholar.google.com/citations?hl=en&view_op=search_authors&mauthors=label:evolution\" }, { \"title\": \"Evolutionary biology\", \"serpapi_link\": \"https://serpapi.com/search.json?engine=google_scholar_profiles&hl=en&mauthors=label%3Aevolutionary_biology\", \"link\": \"https://scholar.google.com/citations?hl=en&view_op=search_authors&mauthors=label:evolutionary_biology\" }, { \"title\": \"Molecular evolution\", \"serpapi_link\": \"https://serpapi.com/search.json?engine=google_scholar_profiles&hl=en&mauthors=label%3Amolecular_evolution\", \"link\": \"https://scholar.google.com/citations?hl=en&view_op=search_authors&mauthors=label:molecular_evolution\" }, { \"title\": \"Population genetics\", \"serpapi_link\": \"https://serpapi.com/search.json?engine=google_scholar_profiles&hl=en&mauthors=label%3Apopulation_genetics\", \"link\": \"https://scholar.google.com/citations?hl=en&view_op=search_authors&mauthors=label:population_genetics\" }, { \"title\": \"Phylogenetics\", \"serpapi_link\": \"https://serpapi.com/search.json?engine=google_scholar_profiles&hl=en&mauthors=label%3Aphylogenetics\", \"link\": \"https://scholar.google.com/citations?hl=en&view_op=search_authors&mauthors=label:phylogenetics\" } ], \"thumbnail\": \"https://scholar.googleusercontent.com/citations?view_op=small_photo&user=VxOmZDgAAAAJ&citpid=3\" } ... other results '''\n\nThere is a dedicated Scrape historic Google Scholar results using Python blog post of mine at SerpApi which shows how to scrape historic 2017-2021 Organic, Cite Google Scholar results to CSV, SQLite.\n\nThere's also a blog post about scraping Google Scholar in R, if you are not a Python guy."
+    }
+}
