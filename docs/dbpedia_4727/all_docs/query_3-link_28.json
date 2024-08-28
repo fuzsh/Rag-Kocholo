@@ -1,0 +1,38 @@
+{
+    "id": "dbpedia_4727_3",
+    "rank": 28,
+    "data": {
+        "url": "https://askubuntu.com/questions/602035/how-do-i-use-ubuntu-device-flash-with-the-bq-aquaris-e4-5-and-aquaris-e5",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How do I use ubuntu-device-flash with the BQ Aquaris E4.5 and Aquaris E5",
+        "top_image": "https://cdn.sstatic.net/Sites/askubuntu/Img/apple-touch-icon@2.png?v=c492c9229955",
+        "meta_img": "https://cdn.sstatic.net/Sites/askubuntu/Img/apple-touch-icon@2.png?v=c492c9229955",
+        "images": [
+            "https://cdn.sstatic.net/Sites/askubuntu/Img/logo.svg?v=472cf2768bba",
+            "https://www.gravatar.com/avatar/6e93f773b54b25ff5038c244f19773a1?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/e2aa4c87237f089bb740baf95c6c7c02?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/6e93f773b54b25ff5038c244f19773a1?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/c93b901bba5510020f24a4fea2140d5e?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/d7a6227885ea586a0709c557288cbb17?s=64&d=identicon&r=PG",
+            "https://askubuntu.com/posts/602035/ivc/329d?prg=cc279ce9-ae89-4ffd-ad03-5c74b5715a7d"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "John McAleely"
+        ],
+        "publish_date": "2015-03-27T14:00:49",
+        "summary": "",
+        "meta_description": "The tool 'ubuntu-device-flash' can be used to update the software on an ubuntu phone manually. It can be used to change the device to a different 'channel' of updates and also perform a reset of the",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/askubuntu/Img/favicon.ico?v=928dfb7c1990",
+        "meta_site_name": "Ask Ubuntu",
+        "canonical_link": "https://askubuntu.com/questions/602035/how-do-i-use-ubuntu-device-flash-with-the-bq-aquaris-e4-5-and-aquaris-e5",
+        "text": "For production Ubuntu Phone devices, adb has been disabled in recovery, and this affects ubuntu-device-flash operation.\n\nYou must supply a recovery image with adb enabled, which ubuntu-device-flash will use temporarily while doing its work:\n\nFor BQ Aquaris E4.5 Ubuntu Edition (aka krillin), use recovery-krillin.img\n\nFor BQ Aquaris E5 Ubuntu Edition (aka vegetahd), use recovery-vegetahd.img\n\nubuntu-device-flash can then be supplied with the --recovery-image argument, eg:\n\nubuntu-device-flash touch --channel ubuntu-touch/stable/bq-aquaris.en --bootstrap --recovery-image path/to/downloaded/recovery.img\n\nNote that when the command prompts you with:\n\nExpecting the device to be in the bootloader... waiting\n\nYou can put a Aquaris E4.5 and Aquaris E5 in the 'bootloader' by holding down Power + Volume Up for a few seconds, releasing the Power button when the red LED lights as the machine reboots, and then selecting 'fastboot' from the device's boot menu.\n\nunknown flag `recovery-image'\n\nIf you get this error, that means you are still using an older version of ubuntu-device-flash. Please install the latest version using the ppa\n\nsudo add-apt-repository ppa:phablet-team/tools sudo apt-get update; sudo apt-get upgrade\n\nAnother reason for failure to enter recovery might be unsufficient privileges for the usb device of the ubuntu computer.\n\nI tried John's flash command but still got a \"Failed to enter Recovery\" error. The solution came to me when I booted the device into fastboot mode, flashed the recovery image with the fastboot command and booted this image. Unless I had a file \"/etc/udev/rules.d/80-persistent-usb.rules\" with the contents:\n\nSUBSYSTEM==\"usb\", ACTION==\"add\", SYSFS{idVendor}==\"2a47\", MODE=\"0666\", SYSFS{idProduct}==\"*\"\n\non my ubunutu computer I was not able to access the device running the recovery kernel.\n\nAfter I added this file, I could \"adb shell\" and enter the recovery system. And also after that change, John's command worked as expected. My ubuntu computer runs a somewhat modified Linux but based on ubuntu 14.04."
+    }
+}
