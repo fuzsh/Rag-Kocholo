@@ -1,0 +1,43 @@
+{
+    "id": "dbpedia_6941_2",
+    "rank": 27,
+    "data": {
+        "url": "https://help.nextcloud.com/t/preview-generation-mp4-ffmpeg/95937",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Preview Generation - MP4 - FFMPEG",
+        "top_image": "https://help.nextcloud.com/uploads/default/original/2X/a/ac4bed144350975da430e98e1b9561230119318f.png",
+        "meta_img": "https://help.nextcloud.com/uploads/default/original/2X/a/ac4bed144350975da430e98e1b9561230119318f.png",
+        "images": [
+            "https://help.nextcloud.com/images/emoji/twitter/slight_smile.png?v=9",
+            "https://help.nextcloud.com/user_avatar/help.nextcloud.com/meiros/48/8211_2.png",
+            "https://help.nextcloud.com/letter_avatar/dekrabor/48/5_f40856482fe1e45ac8f1605885140a2d.png",
+            "https://help.nextcloud.com/images/emoji/twitter/slight_smile.png?v=9",
+            "https://help.nextcloud.com/images/emoji/twitter/confused.png?v=9",
+            "https://help.nextcloud.com/images/emoji/twitter/frowning.png?v=9",
+            "https://help.nextcloud.com/uploads/default/original/3X/6/a/6a85691833a89cab65e47ddc07183d9e86f205bf.png",
+            "https://help.nextcloud.com/letter_avatar/dekrabor/48/5_f40856482fe1e45ac8f1605885140a2d.png",
+            "https://help.nextcloud.com/images/emoji/twitter/slight_smile.png?v=9",
+            "https://help.nextcloud.com/uploads/default/original/3X/a/6/a6f6bdfdf1d86fa89bb886c131ba2e40ff535df4.png",
+            "https://help.nextcloud.com/letter_avatar/dekrabor/48/5_f40856482fe1e45ac8f1605885140a2d.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "preview",
+            "synology"
+        ],
+        "tags": null,
+        "authors": [
+            "j-ed"
+        ],
+        "publish_date": "2020-10-22T15:54:27+00:00",
+        "summary": "",
+        "meta_description": "Hi Folks, \nI am currently trying to get video previews to work on my Nextcloud. \nThere are quite a few topics on this here, but none of them could solve my problem, so I’m hoping one of you can help me debugging this. \nI&hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://help.nextcloud.com/uploads/default/optimized/2X/7/7f1bb3df7f98844a936be6de4c78ce2ce47c9845_2_32x32.png",
+        "meta_site_name": "Nextcloud community",
+        "canonical_link": "https://help.nextcloud.com/t/preview-generation-mp4-ffmpeg/95937",
+        "text": "Hi Folks,\n\nI am currently trying to get video previews to work on my Nextcloud.\n\nThere are quite a few topics on this here, but none of them could solve my problem, so I’m hoping one of you can help me debugging this.\n\nI am running my Nextclound on a Synology NAS.\n\nInstalled “ffmpeg”, added video previews to the config and ran “occ preview:generate-all”.\n\nThe preview generation is running over the files without throwing any errors. However no previews are beeing shown.\n\nDuring the debugging I tried to convert some of the videos by hand using ffmpeg, which worked without problems.\n\nNow I ran out of ideas what could be the issue here.\n\nIs there a way of debugging the logs of the previewgenerator app or the nextclouds preview generation to see what is failing?\n\nHas one of you occurred this problem or is able to help me with this\n\nHi j-ed,\n\nthanks for the super quick response!\n\nI have to admit that I am a bit lost here… I’m not quite an Linux expert and the whole Synology setup is a bit “different from normal” as well.\n\nWhen I login via SSH to the NAS I can find with my admin/root user “ffmpeg” directly without an absolute path (I assume that is using the search path?).\n\nHowever I can not login with the web servers http user to verify. Is there a way to check on the command line using the root user if the http user has access to those binaries?\n\nOr maybe log whats happening on the PHP end, to see what is missing?\n\nThanks for the feeback!\n\nIn fact I had already added Movies to my config.php (see below).\n\nBut I still ran the command and tried to generate the previews again, unfortunately with the same result, no previews showing\n\nIs there any way to debug the preview generation and see possible errors?\n\n‘enable_previews’ => true,\n\n‘enabledPreviewProviders’ =>\n\narray (\n\n0 => ‘OC\\Preview\\Image’,\n\n1 => ‘OC\\Preview\\Movie’,\n\n2 => ‘OC\\Preview\\TXT’,\n\n3 => ‘OC\\Preview\\MP3’,\n\n4 => ‘OC\\Preview\\MKV’,\n\n5 => ‘OC\\Preview\\MP4’,\n\n6 => ‘OC\\Preview\\AVI’,\n\n),\n\nMay be a bit necro-posting here, but I have managed to enable it (Debian system).\n\nI was running the command to update the previews and it was not pulling in any of the movie files:\n\nsu - www-data -s /bin/bash -c “/path/to/nextcloud/occ preview:generate-all -vvv”\n\nI ended up trawling through here looking for inspiration, and I saw that Movie providers are disabled due to performance concerns. Going by and checking my config.php more closely, I saw that the OC\\Preview\\Movie line was actually incorrectly parsed and looked like “OCPreviewMovie”. Updating config and re-running the following commands enabled previews\n\nsu - www-data -s /bin/bash -c \"/path/to/nextcloud/occ maintenance:mimetype:update-js\" su - www-data -s /bin/bash -c \"/path/to/nextcloud/occ maintenance:mimetype:update-db\" su - www-data -s /bin/bash -c \"/path/to/nextcloud/occ preview:generate-all -vvv\"\n\nYou may have to keep an eye out for any errors on the console and re-run the last command if it errors for any reason. I hope this helps future person."
+    }
+}
