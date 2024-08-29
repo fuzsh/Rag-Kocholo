@@ -1,0 +1,41 @@
+{
+    "id": "dbpedia_5395_3",
+    "rank": 54,
+    "data": {
+        "url": "https://stackoverflow.com/questions/28540224/retrofit-gson-serialize-date-from-json-string-into-long-or-java-lang-long",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Retrofit GSON serialize Date from json string into long or java.lang.Long",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://cdn.sstatic.net/Img/teams/teams-promo.svg?v=e507948b81bf",
+            "https://www.gravatar.com/avatar/d189324d867a400bef16cd36625a04bb?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/77d26eb2865a71d6b904150c48942f2a?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/2145962377da9419f2446cd565f614ee?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/b91872051ba756c031fbb5fe1cf6d21e?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/D6z7e.jpg?s=64",
+            "https://www.gravatar.com/avatar/d189324d867a400bef16cd36625a04bb?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/11561ca748b973fb4971cc3cd292ca9d?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/9a8bfba543bef7fc4fcf42ce7112e4e4?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/5e821ce2f9a62685e76e30a88d2d56e3?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/036ae0249a5ae0c61e7e25d46309c1fb?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/28540224/ivc/0319?prg=e0343933-1dd1-4333-917c-d28c9abf330b"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2015-02-16T11:17:39",
+        "summary": "",
+        "meta_description": "I am using the Retrofit library for my REST calls.\nThe JSON that is coming in looks like this.\n\n{\n    \"created_at\": \"2013-07-16T22:52:36Z\",\n} \r\nHow can I tell Retrofit or Gson to convert this into ...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/28540224/retrofit-gson-serialize-date-from-json-string-into-long-or-java-lang-long",
+        "text": "You can easily do this by setting a custom GsonConverter with your own Gson object on the retrofit instance. In your POJO you can Date created_at; instead of a long or a String. From the date object you can use created_at.getTime() to get the long when necessary.\n\nGson gson = new GsonBuilder() .setDateFormat(\"yyyy-MM-dd'T'HH:mm:ssz\") .create(); RestAdapter.Builder builder = new RestAdapter.Builder(); // Use a custom GSON converter builder.setConverter(new GsonConverter(gson)); ..... create retrofit service.\n\nYou can also support multiple Date string formats by registering a custom JsonDeserializer on the gson instance used by retrofit\n\nGsonBuilder gsonBuilder = new GsonBuilder(); gsonBuilder.registerTypeAdapter(Date.class, new DateTypeDeserializer()); public class DateTypeDeserializer implements JsonDeserializer<Date> { private static final String[] DATE_FORMATS = new String[]{ \"yyyy-MM-dd'T'HH:mm:ssZ\", \"yyyy-MM-dd'T'HH:mm:ss\", \"yyyy-MM-dd\", \"EEE MMM dd HH:mm:ss z yyyy\", \"HH:mm:ss\", \"MM/dd/yyyy HH:mm:ss aaa\", \"yyyy-MM-dd'T'HH:mm:ss.SSSSSS\", \"yyyy-MM-dd'T'HH:mm:ss.SSSSSSS\", \"yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'\", \"MMM d',' yyyy H:mm:ss a\" }; @Override public Date deserialize(JsonElement jsonElement, Type typeOF, JsonDeserializationContext context) throws JsonParseException { for (String format : DATE_FORMATS) { try { return new SimpleDateFormat(format, Locale.US).parse(jsonElement.getAsString()); } catch (ParseException e) { } } throw new JsonParseException(\"Unparseable date: \\\"\" + jsonElement.getAsString() + \"\\\". Supported formats: \\n\" + Arrays.toString(DATE_FORMATS)); } }\n\nRead it in as a string in your POJO then use your getter to return it as a long:\n\nString created_at; public long getCreatedAt(){ SimpleDateFormat formatter = new SimpleDateFormat(\"yyyy-MM-dd'T'HH:mm:ss'Z'\"); Date createDate = formatter.parse(created_at); return createDate.getTime(); }\n\nthe SimpleDateFormat string can be referenced here\n\nAfter reading the docs, I tried this. It works but i dont know if it will have any effect on other types.\n\nI needed to have a long in my POJO, coz i dont wanna convert when saving into db.\n\nI used a custom deserializer\n\nJsonDeserializer<Long> deserializer = new JsonDeserializer<Long>() { @Override public Long deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException { try{ if(json==null){ return new Long(0); } else{ String dateString = json.getAsString(); long dateLong = DateFormatUtil.getLongServerTime(dateString); return new Long(dateLong); } } catch(ParseException e){ return new Long(0); } } };\n\nand using it\n\nGson gson = new GsonBuilder() .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES) .setDateFormat(patternFromServer) .registerTypeAdapter(Long.class, deserializer) .create();\n\nYou should be using a type adapter in your Gson instance through\n\nnew GsonBuilder() .registerTypeAdapter(Date.class, [date deserializer class here]) .create\n\nBut can I suggest that instead of using a SimpleDateFormatter you take a look at this implementation from FasterXML/jackson-databind implementations for ISO8601 date handling in this class and this one. It very much depends on whether you are parsing a lot of dates or not.\n\nAlso note that we ran into issues with using SimpleDateFormatter inside an Android application (we use a combination of Java and Android libraries) where there were different results between parsing in Java and Android. Using the above implementations helped to solve this issue.\n\nThis is the Java implementation and this is the Android implementation, not the definition for Z and X in the Java implementation and the missing X implementation in Android"
+    }
+}
