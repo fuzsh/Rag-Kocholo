@@ -1,0 +1,39 @@
+{
+    "id": "dbpedia_6759_1",
+    "rank": 97,
+    "data": {
+        "url": "https://gis.stackexchange.com/questions/367425/crs-problems-in-qgis",
+        "read_more_link": "",
+        "language": "en",
+        "title": "CRS problems in QGIS",
+        "top_image": "https://cdn.sstatic.net/Sites/gis/Img/apple-touch-icon@2.png?v=54e3ab1edcf3",
+        "meta_img": "https://cdn.sstatic.net/Sites/gis/Img/apple-touch-icon@2.png?v=54e3ab1edcf3",
+        "images": [
+            "https://cdn.sstatic.net/Sites/gis/Img/logo.svg?v=524ba4e921b1",
+            "https://i.sstatic.net/WNMNf.jpg",
+            "https://i.sstatic.net/VD35Q.jpg",
+            "https://i.sstatic.net/QIQ0H.png",
+            "https://i.sstatic.net/7FbNy.png",
+            "https://i.sstatic.net/kUjZm.jpg",
+            "https://www.gravatar.com/avatar/c9692a87ff28ae39265ad86c8a77b0e9?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/4EUMG.jpg",
+            "https://i.sstatic.net/YfYSK.png?s=64",
+            "https://gis.stackexchange.com/posts/367425/ivc/010c?prg=ea6b3552-5f68-41c7-a959-ff08aa61c098"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2020-07-10T18:07:48",
+        "summary": "",
+        "meta_description": "The last weeks I ran into many problems with CRS in QGIS. The behaviour seems completely weird to me and it is hard to reproduce the problems / bugs. There is a chance of getting completely different",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/gis/Img/favicon.ico?v=6e585ede6bca",
+        "meta_site_name": "Geographic Information Systems Stack Exchange",
+        "canonical_link": "https://gis.stackexchange.com/questions/367425/crs-problems-in-qgis",
+        "text": "I could reproduce your problem. You did not reproject your layer, you just assigned a new CRS to it. When you saved the temporary layer in EPSG 4326 from Quick-OSM to a geopackage, you did not set the CRS there, in the epxort dialogue. You thus saved (exported) the layer in 4326 and afterwards, you imported the layer and than set the CRS to 25833 - din't you?\n\nThis can not work, the points will be located near Libreville, Gabon (Africa). You have to set the CRS-definition in the export-dialogue, than QGIS reprojects your layer. Setting the layer-CRS manually does not reproject the layer, it just defines the saved coordiantes referring to an other CRS. 4326 is a geographic (unprojected) CRS definition with values in degrees - thus covering a range of just -180 to +180 E/W and -90 to +90 N/S. If QGIS interprets these coordinates in a CRS that is in meters (as EPSG 25833) it will put the points on the map accordingly.\n\nA place like 51° N, 13° E (between Dresden, Leipzig and Chemnitz) thus will be interpreted as 51 meters north and 13 meters east of the point zero (origin) of the coordinate system - and for EPSG 25833, this point zero is east of Libreville in Gabon - that's why your points appear there.\n\nSetting layer CRS by hand normally should not be necessary - only in the case that a correct CRS definition is missing or is incorrectly set. In any other case, changing the CRS manually will lead to miss-projections as in your case. What you are always free to do is changing your project-(NOT: layer-)CRS on the bottom right of your QGIS window. QGIS will then automatically take care in the background that every layer is shown correctly on the canvas, indiffferently in what CRS it is defined (on-the-fly reprojection).\n\nHere are the steps I did:\n\nCreate a new project in EPSG 25832 and load an OSM basemap\n\nQuick-OSM query: generator:source=wind in Sachsen: generates layers in EPSG 4326\n\nExport this temporary layer from Quick-OSM to a Geopackage; in the export-dialogue, set EPSG to 25833 (see screenshot)\n\nAdd the saved gpkg to your project (which can be set to EPSG 25832 or any other EPSG suitable for your region of interest)"
+    }
+}

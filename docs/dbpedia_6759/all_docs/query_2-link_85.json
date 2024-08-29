@@ -1,0 +1,46 @@
+{
+    "id": "dbpedia_6759_2",
+    "rank": 85,
+    "data": {
+        "url": "https://stackoverflow.com/questions/12504208/what-mysql-data-type-should-be-used-for-latitude-longitude-with-8-decimal-places",
+        "read_more_link": "",
+        "language": "en",
+        "title": "What MySQL data type should be used for Latitude/Longitude with 8 decimal places?",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/f49dbeced705687b92e851736d48f208?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/dae2eb3a6e03ce5d0e3c2dfde62f03f4?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/4e6ea6eda1ac602bde5b282216ae331f?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/e32c9e417e96b6371c06d97133bd77f7?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/0Aa0S.jpg?s=64",
+            "https://www.gravatar.com/avatar/409a49fa0db5264eb1475609db179bf3?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/361e6a284e192d3f81e84fc95bc2ef0f?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/6cWIx.jpg?s=64",
+            "https://www.gravatar.com/avatar/915f14fc7aa403ca9b89f9f67a0973c1?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/73fcf968fb6d60e2818d84f2735b40df?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/HsH5K.jpg?s=64",
+            "https://www.gravatar.com/avatar/95ec74c941e5a819f61c02e1d7a2b0a7?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/MFxsY.jpg?s=64",
+            "https://www.gravatar.com/avatar/9fab4ea48cd1c48b924e111cd83f3078?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/5sLgY.png?s=64",
+            "https://lh3.googleusercontent.com/a/AATXAJwl4sDWiY_ManrEJpzerex3-9CDS9otvWerviaI=k-s64",
+            "https://stackoverflow.com/posts/12504208/ivc/c1cd?prg=6c167a91-660d-4fef-9c8e-8665d367fada"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2012-09-19T23:21:32",
+        "summary": "",
+        "meta_description": "I'm working with map data, and the Latitude/Longitude extends to 8 decimal places. For example:\n\nLatitude 40.71727401\nLongitude -74.00898606\r\nI saw in the Google document\nwhich uses:  \n\nlat FLOAT( ...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/12504208/what-mysql-data-type-should-be-used-for-latitude-longitude-with-8-decimal-places",
+        "text": "Accuracy of 6 decimal places is about 16cm, which means 2 object have the same lat and lng if they are less than 16cm far from each other.\n\nAlso, in mariadb/mysql, using float/double is not ideal if we have huge data for indexing, and Point datatype is overhead for data size. It'd better to use decimal or convert lat long to INT.\n\nIt's good option to use decimal with 6 decimal places as we can ignore convert, and we have only 16cm inaccuracy, longitude is between -180 to 180, thus require 1 digit more than latitude, which is between -90 to 90 degree:\n\nLat DECIMAL(8,6) Lng DECIMAL(9,6)\n\nWe can extend to 8 decimal places:\n\nLat DECIMAL(10,8) Lng DECIMAL(11,8)\n\nMySQL reference"
+    }
+}
