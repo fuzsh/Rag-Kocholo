@@ -1,0 +1,36 @@
+{
+    "id": "dbpedia_6181_2",
+    "rank": 36,
+    "data": {
+        "url": "https://askubuntu.com/questions/19540/default-location-of-web-site-content",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Default location of web site content",
+        "top_image": "https://cdn.sstatic.net/Sites/askubuntu/Img/apple-touch-icon@2.png?v=c492c9229955",
+        "meta_img": "https://cdn.sstatic.net/Sites/askubuntu/Img/apple-touch-icon@2.png?v=c492c9229955",
+        "images": [
+            "https://cdn.sstatic.net/Sites/askubuntu/Img/logo.svg?v=472cf2768bba",
+            "https://www.gravatar.com/avatar/78a0a4bb106d07b6c6f33a51988155e3?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/a007be5a61f6aa8f3e85ae2fc18dd66e?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/5c049595372be0a1a22f4192b490f032?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/78a0a4bb106d07b6c6f33a51988155e3?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/f1f01d294fa8c0dcac31a90755241431?s=64&d=identicon&r=PG",
+            "https://askubuntu.com/posts/19540/ivc/f08f?prg=96fa8339-6916-471e-ac78-50e4fcafc863"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2010-12-31T14:08:03",
+        "summary": "",
+        "meta_description": "I am looking to install MediaWiki on a production server (after doing a test on a development one). I could not really understand why the default location for the MediaWiki files is /var/lib/mediaw...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/askubuntu/Img/favicon.ico?v=928dfb7c1990",
+        "meta_site_name": "Ask Ubuntu",
+        "canonical_link": "https://askubuntu.com/questions/19540/default-location-of-web-site-content",
+        "text": "It appears that we inherit this policy from Debian. The closest discussion I can seem to find on this policy is from this discussion in 2003.\n\nHowever I did find a new draft policy (Check out section 3.1) that appears to have more detail which might help solve your question. It specifically mentions the Filesystem Hierarchy Standard. According to that /usr/share/doc includes \"Architecture-independent (shared) data.\", which includes web pages that user's can't modify.\n\nSince Mediawiki is user editable /var/lib/mediawiki would be the place for it to go since the FHS says that /var/lib is the place for \"State information. Persistent data modified by programs as they run, e.g., databases, packaging system metadata, etc. \" and the manual says:\n\nUser uploaded content\n\nA unique subdirectory of /var/lib/PACKAGE\n\nThe rest of the section in the manual explains architecture dependent things (like PHP and Perl).\n\nThis information is marked Draft however so I am not sure if it's enforced or pending in Debian. I would expect that if this were the final policy that we would likely inherit it from Debian.\n\nSo I guess the partial answer is \"The FHS says so and Debian follows it so we do.\" I (unfortunately) cannot find any information on the justification/reasons why the FHS is the way it is in this regard, maybe someone else will have better luck finding this information and adding an answer."
+    }
+}

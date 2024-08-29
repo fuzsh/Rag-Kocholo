@@ -1,0 +1,35 @@
+{
+    "id": "dbpedia_6181_2",
+    "rank": 50,
+    "data": {
+        "url": "https://askubuntu.com/questions/877261/why-is-var-www-a-recommended-location-to-host-your-web-app",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Why is /var/www a recommended location to host your web app?",
+        "top_image": "https://cdn.sstatic.net/Sites/askubuntu/Img/apple-touch-icon@2.png?v=c492c9229955",
+        "meta_img": "https://cdn.sstatic.net/Sites/askubuntu/Img/apple-touch-icon@2.png?v=c492c9229955",
+        "images": [
+            "https://cdn.sstatic.net/Sites/askubuntu/Img/logo.svg?v=472cf2768bba",
+            "https://www.gravatar.com/avatar/a007be5a61f6aa8f3e85ae2fc18dd66e?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/ZzB5A.png?s=64",
+            "https://www.gravatar.com/avatar/a007be5a61f6aa8f3e85ae2fc18dd66e?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/7ad5ec231a4c0818abde7684ba28754e?s=64&d=identicon&r=PG",
+            "https://askubuntu.com/posts/877261/ivc/f08f?prg=9826e1e9-8459-4e1e-8c3e-450f98a17e3c"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2017-01-28T16:10:59",
+        "summary": "",
+        "meta_description": "I'm now trying to host my web app which is based on Ghost on Google Compute Engine, which uses Ubuntu 16.04, but I found the following suggestion to host a Ghost app:\n\nUnzip Ghost into the folder /...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/askubuntu/Img/favicon.ico?v=928dfb7c1990",
+        "meta_site_name": "Ask Ubuntu",
+        "canonical_link": "https://askubuntu.com/questions/877261/why-is-var-www-a-recommended-location-to-host-your-web-app",
+        "text": "However, I'm not sure why /var/www is the \"recommended location\" in Ubuntu.\n\nIt is the recommended location for all Linux and webserver things; not just Ubuntu. There is this thing called the Linux Filesystem Hierarchy where the layout of Linux systems is described. From the link:\n\n1.18. /var\n\nContains variable data like system logging files, mail and printer spool directories, and transient and temporary files. Some portions of /var are not shareable between different systems. For instance, /var/log, /var/lock, and /var/run. Other portions may be shared, notably /var/mail, /var/cache/man, /var/cache/fonts, and /var/spool/news. Why not put it into /usr? Because there might be circumstances when you may want to mount /usr as read-only, e.g. if it is on a CD or on another computer. '/var' contains variable data, i.e. files and directories the system must be able to write to during operation, whereas /usr should only contain static data. Some directories can be put onto separate partitions or systems, e.g. for easier backups, due to network topology or security concerns. Other directories have to be on the root partition, because they are vital for the boot process. 'Mountable' directories are: '/home', '/mnt', '/tmp', '/usr' and '/var'. Essential for booting are: '/bin', '/boot', '/dev', '/etc', '/lib', '/proc' and '/sbin'.\n\nBack in the day servers tended to have a separate /var/ partition so you could back that partition up (and have all your data; so all your logs, all your mails, website and databases saved (mysql uses /var/ too)).\n\nThough it does not specifically have /var/www/ the 1st bit of this (\"Contains variable data\") was enough for the creators of apache to add a \"www\" directory and all the others followed that (though there are systems and softwares that follow their own rules).\n\n/ should never be an option. For anything you do except directories that point to partitions. And even then I would advice to use /mnt/.\n\n/home/ would be weird too. A website is not intended as software for your own user but for outsiders visiting your website. Permissions wise it would be odd to do this in your home.\n\nIt is just a recommendation so nobody is stopping you from doing it in any other directory. When other people have to maintain your server they can expect the software to be in that location. The same goes for documentation, faqs, or when other people need to help your remotely (for instance from askubuntu.com). Even if you do not want to use /var/www/ it is probably better to symlink it to another location. (From the same site from the 1st link: \"This directory is reserved for all the software and add-on packages that are not part of the default installation.\")\n\nOn cloud servers it is normal to have a personal partition that you mount into your cloud server. So if that cloud server gets deleted (what can happen at any moment) you create a new instance and add your backup disk containing your stuff. Recreate a few symlinks (from a script you made and you are up and running quickly)."
+    }
+}
