@@ -1,0 +1,48 @@
+{
+    "id": "dbpedia_5483_3",
+    "rank": 31,
+    "data": {
+        "url": "https://www.ibmmainframeforum.com/vsam-sms/topic7542.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How to recover data from Scratch Volume",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://www.ibmmainframeforum.com/styles/prosilver/imageset/site_logo.gif",
+            "https://www.ibmmainframeforum.com/styles/prosilver/imageset/icon_post_target.gif",
+            "https://www.ibmmainframeforum.com/styles/prosilver/imageset/icon_post_target.gif",
+            "https://www.ibmmainframeforum.com/images/smilies/icon_e_smile.gif",
+            "https://www.ibmmainframeforum.com/styles/prosilver/imageset/icon_post_target.gif",
+            "https://www.ibmmainframeforum.com/styles/prosilver/imageset/icon_post_target.gif",
+            "https://www.ibmmainframeforum.com/vsam-sms/download/file.php?avatar=60_1184978832.gif",
+            "https://www.ibmmainframeforum.com/styles/prosilver/imageset/icon_post_target.gif",
+            "https://www.ibmmainframeforum.com/styles/prosilver/imageset/icon_post_target.gif",
+            "https://www.ibmmainframeforum.com/styles/prosilver/imageset/icon_post_target.gif",
+            "https://www.ibmmainframeforum.com/vsam-sms/download/file.php?avatar=60_1184978832.gif",
+            "https://www.ibmmainframeforum.com/styles/prosilver/imageset/icon_post_target.gif",
+            "https://www.ibmmainframeforum.com/styles/prosilver/imageset/icon_post_target.gif",
+            "https://www.ibmmainframeforum.com/styles/prosilver/imageset/icon_post_target.gif",
+            "https://www.ibmmainframeforum.com/styles/prosilver/imageset/icon_topic_latest.gif",
+            "https://www.ibmmainframeforum.com/styles/prosilver/imageset/icon_topic_latest.gif",
+            "https://www.ibmmainframeforum.com/styles/prosilver/imageset/icon_topic_latest.gif",
+            "https://www.ibmmainframeforum.com/styles/prosilver/imageset/icon_topic_latest.gif",
+            "https://www.ibmmainframeforum.com/styles/prosilver/imageset/icon_topic_latest.gif"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "Hi,This question is to Storage Management people.Can any one please help me in the process to restore data from a Scratch Tape Volume.This tape is a p",
+        "meta_lang": "en",
+        "meta_favicon": "",
+        "meta_site_name": "",
+        "canonical_link": "https://www.ibmmainframeforum.com/vsam-sms/topic7542.html",
+        "text": "by prasad029 » Wed May 02, 2012 12:34 pm\n\nHi,\n\nThis question is to Storage Management people.\n\nCan any one please help me in the process to restore data from a Scratch Tape Volume.\n\nThis tape is a physical tape and currently in scratch status and never been re-written.\n\nRegards,\n\nPrasad\n\nRe: How to recover data from Scratch Volume\n\nby BillyBoyo » Wed May 02, 2012 1:07 pm\n\nWell, I'm not Storage Management. I'd just catalog it First, I'd get hold of it, and not let it out of my sight (or get it in the care of the Ops Supervisor or someone like that). unit=tape,vol=ser=blahbl,disp=(old,catlg) BLP if they are problematic.\n\nThe best is for you to talk to your Storage Management, however. They operate the software which does the tape management and will be aware of what do to and what not to do.\n\nRe: How to recover data from Scratch Volume\n\nby NicC » Wed May 02, 2012 2:24 pm\n\nAlso, if you know it is a storgae management question why not post in the section of the forum VSAM/SMS the decription of which includes the words 'Storage Management'?\n\nThe problem I have is that people can explain things quickly but I can only comprehend slowly.\n\nRegards\n\nNic\n\nRe: How to recover data from Scratch Volume\n\nby dick scherrer » Wed May 02, 2012 7:58 pm\n\nHello,\n\nYour topic has been relocated.\n\nIf you have the volume in hand, disable the \"write-ability\" of the volume. If you mount it on the system, it may be detected as a scratch and written on . . .\n\nTalk with your local storage management people and have them run a report of which file(s) are on the volume. When you see the dataset names, re-catalog them if they have been uncataloged.\n\nAlso, work with your storage management people to ensure this volume is no longer considered a scratch volume.\n\nHope this helps,\n\nd.sch.\n\nRe: How to recover data from Scratch Volume\n\nby steve-myers » Thu May 03, 2012 11:08 am\n\nYou really have to work with your storage management people.What I'm describing here is using my best memory for CA-1. I'm sure IBM's RMM can do the same general things, but they will no doubt use slightly different terminolgy.\n\nGet a list of the dataset names on the volume. I don't think cataloging the datasets is necessary, but do that if it makes you feel comfortable.\n\nUse the tape management software to mark the tape as out of area. This should remove the volume from scratch status. At this point it should be safe to mount the tape, but as has been suggested, fix the tape so it cannot be written on. For old style \"round\" tape volumes, remove the plastic read/write ring, though many shops remove the tab on the ring to make it difficult to remove this ring. For new style cartridge volumes there is a cylinder knob you rotate to change the volume to no write. The tape library should be able to help you with this.\n\nI don't know if this step is really necessary, but have the tape marked as in area. In CA-1 this will disable some of the cross checking it does because of the presumption the tape was altered while it was out of area.\n\nCopy the data on the tape using your preferred copy utility. If the data is a disk image copy prepared by ADRDSS or FDR you will have to use these utilities to make the copy.\n\nRe: How to recover data from Scratch Volume\n\nby expat » Thu May 03, 2012 2:31 pm\n\nAre you absolutely positive it is on \"real\" tape and not virtual tape, as a lot of sites have the VTS set up to erase header info on scratch, and if this is the case then there will probably be absolutely no easy way to do this without a restore of the TMS databases\n\nRe: How to recover data from Scratch Volume\n\nby dick scherrer » Fri May 04, 2012 12:02 am\n\nHello,\n\nI don't think cataloging the datasets is necessary, but do that if it makes you feel comfortable.\n\nSuggest you make sure the dataset(s) are not already cataloged again by some other process. . .\n\nfwiw.\n\nHope this helps,\n\nd.sch.\n\nRe: How to recover data from Scratch Volume\n\nby steve-myers » Fri May 04, 2012 12:52 am\n\ndick scherrer wrote:Hello,\n\nI don't think cataloging the datasets is necessary, but do that if it makes you feel comfortable.\n\nSuggest you make sure the dataset(s) are not already cataloged again by some other process. . .\n\nfwiw.\n\nActually, Mr. Scherrer raises valid points I didn't think about before.\n\nIf the datasets on the tape were cataloged before the tape was \"scratched\" by the tape manager, the tape manager may have uncataloged them. Some other process may have created and cataloged new datasets using the same dataset names as the datasets on the tape. You do not want to interfere with the new datasets if you want to recatalog the datasets on the tape. It may not be possible to catalog these datasets for other reasons.\n\nThe tape manager may have \"scratched\" the volume because some other process uncataloged the datasets on the tape. More often than not this is caused by a GDG generation being uncataloged because the generation limit was reached. Do not attempt to recatalog these datasets.\n\nThe tape manager may have \"scratched\" the volume because an external tape volume manager such as HSM told the primary tape manager it no longer needed the volume. The datasets on this volume may not be usable by any process other than the original process.\n\nIt can be painful to recatalog the datasets; the IDCAMS DEFINE NONVSAM(...) (or the IEHPROGM CATLG command) requires a device type that may be difficult to find, as well as other, infrequently used operands.\n\nRe: How to recover data from Scratch Volume\n\nby Peter_Mann » Fri May 04, 2012 2:36 am\n\nprasad029 wrote:Hi,\n\nThis question is to Storage Management people.\n\nCan any one please help me in the process to restore data from a Scratch Tape Volume.\n\nThis tape is a physical tape and currently in scratch status and never been re-written.\n\nRegards,\n\nPrasad\n\nI have to ask first, is this a backup copy of a DASD dataset?\n\nis this a ADRDSSU backup or FDR or CA-DISK back of a volume that contains the dataset?\n\nI've had some success restoring data from a backup that was in scratch status (CA-1 and CA-TLMS) and once an FDR backup.\n\nif the data you need is needed to retain on tape you can copy to another tape using the copy utility of your choice either way tape or dasd, you'll need to supply a VALID UNIT, VOLSER and LABEL for the scratch tape (INPUT) and for CA-1 or TLMS possibly EXPDT=98000.\n\nPeter\n\nPeter"
+    }
+}

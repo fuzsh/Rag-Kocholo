@@ -1,0 +1,33 @@
+{
+    "id": "dbpedia_5484_0",
+    "rank": 58,
+    "data": {
+        "url": "https://www.bacula.org/15.0.x-manuals/en/main/Supported_Tape_Drives.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Supported Tape Drives",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://www.bacula.org/15.0.x-manuals/images/blogo-header.png",
+            "https://www.bacula.org/15.0.x-manuals/images/btitle-header.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "BaculaSystems",
+            "Bacula Edition",
+            "Main Reference Manual"
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "Bacula Edition Main Reference Manual",
+        "meta_lang": "",
+        "meta_favicon": "",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "Bacula uses standard operating system calls (read, write, ioctl) to interface to tape drives. As a consequence, it relies on having a correctly written OS tape driver. Bacula is known to work perfectly well with SCSI tape drivers on FreeBSD, Linux, Solaris, and Windows machines, and it may work on other *nix machines.\n\nRecently there are many new drives that use IDE, ATAPI, or SATA interfaces rather than SCSI. On Linux the OnStream drive, which uses the OSST driver is one such example, and it is known to work with Bacula. In addition a number of such tape drives (i.e. OS drivers) seem to work on Windows systems. However, non-SCSI tape drives (other than the OnStream) that use ide-scsi, ide-tape, or other non-scsi drivers do not function correctly with Bacula (or any other demanding tape application) as of today (April 2007). If you have purchased a non-SCSI tape drive for use with Bacula on Linux, there is a good chance that it will not work. We are working with the kernel developers to rectify this situation, but it will not be resolved in the near future.\n\nGenerally any modern tape drive (i.e. after 2010) will work out of the box with Bacula using the standard Bacula Device specification in the bacula-sd.conf file.\n\nEven if your drive is on the list below, please check the Tape Testing section of the Bacula Enterprise Problems Resolution guide for procedures that you can use to verify if your tape drive will work with Bacula. If your drive is in fixed block mode, it may appear to work with Bacula until you attempt to do a restore and Bacula wants to position the tape. You can be sure only by following the procedures suggested above and testing.\n\nIt is very difficult to supply a list of supported tape drives, or drives that are known to work with Bacula because of limited feedback (so if you use Bacula on a different drive, please let us know). Based on user feedback, the following drives are known to work with Bacula. A dash in a column means unknown:\n\nThere is a list of supported autochangers in the Supported Autochangers chapter of this document, where you will find other tape drives that work with Bacula.\n\nUnsupported Tape Drives\n\nPreviously OnStream IDE-SCSI tape drives did not work with Bacula. As of Bacula version 1.33 and the osst kernel driver version 0.9.14 or later, they now work. Please see the testing chapter as you must set a fixed block size.\n\nQIC tapes are known to have a number of particularities (fixed block size, and one EOF rather than two to terminate the tape). As a consequence, you will need to take a lot of care in configuring them to make them work correctly with Bacula.\n\nFreeBSD Users Be Aware!!!\n\nUnless you have patched the pthreads library on FreeBSD 4.11 systems, you will lose data when Bacula spans tapes. This is because the unpatched pthreads library fails to return a warning status to Bacula that the end of the tape is near. This problem is fixed in FreeBSD systems released after 4.11. Please see the Tape testing section of Bacula Enterprise Problems Resolution guide for important information on how to configure your tape drive for compatibility with Bacula.\n\nSupported Autochangers\n\nFor information on supported autochangers, please see the Autochangers Known to Work with Bacula section of the Supported Autochangers chapter of this manual.\n\nTape Specifications\n\nIf you want to know what tape drive to buy that will work with Bacula, we really cannot tell you. However, we can say that if you are going to buy a drive, you should try to avoid DDS drives. The technology is rather old and DDS tape drives need frequent cleaning. DLT drives are generally much better (newer technology) and do not need frequent cleaning.\n\nBelow, you will find a table of DLT and LTO tape specifications that will give you some idea of the capacity and speed of modern tapes. The capacities that are listed are the native tape capacity without compression. All modern drives have hardware compression, and manufacturers often list compressed capacity using a compression ration of 2:1. The actual compression ratio will depend mostly on the data you have to backup, but I find that 1.5:1 is a much more reasonable number (i.e. multiply the value shown in the table by 1.5 to get a rough average of what you will probably see). The transfer rates are rounded to the nearest GB/h. All values are provided by various manufacturers.\n\nThe Media Type is what is designated by the manufacturers and you are not required to use (but you may) the same name in your Bacula conf resources."
+    }
+}

@@ -1,0 +1,30 @@
+{
+    "id": "dbpedia_5484_0",
+    "rank": 6,
+    "data": {
+        "url": "https://docs.rubrik.com/en-us/8.0/ug/cdm/archiving_qstar_tape_archive.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "QStar tape archive",
+        "top_image": "https://docs.rubrik.com/en-us/8.0/ug/favicon.ico",
+        "meta_img": "https://docs.rubrik.com/en-us/8.0/ug/favicon.ico",
+        "images": [
+            "https://docs.rubrik.com/en-us/8.0/ug/oxygen-webhelp/template/resources/images/rubrik_logo.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "The Rubrik cluster supports archiving to tape using the QStar Archive Manager software running on a Windows server.",
+        "meta_lang": "en",
+        "meta_favicon": "../favicon.ico",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "The Rubrik cluster supports archiving to tape using the QStar Archive Manager software running on a Windows server.\n\nThe QStar Archive Manager manages the tape library connected to the Windows server and is responsible for writing data to and reading data from tape media. QStar abstracts the requirements specific to tape media and exports them as an Integral Volume Set (referred to here as an Integral Volume). An Integral Volume is an exported file system to which a Rubrik cluster can mount, using the SMB protocol, for performing standard file system operations.\n\nAn Integral Volume has the following characteristics:\n\nTape Drive and Tape Media - One or more tapes assigned as storage media. When performing any read or write operation on a tape, an Integral Volume selects a tape drive from the tape library. Each tape is uniquely identified by its barcode. The same tape cannot be shared with other Integral Volumes.\n\nCache - Data written to a QStar Integral Volume first lands in the cache that is configured on the QStar server. The cache is scratch storage that holds data between the Rubrik cluster and the tape media. This provides higher performance than writing directly to tape.\n\nArchiving Policy - The QStar server manages archiving to tape from the cache based on the archiving policy configured. The archiving policy configures thresholds or schedules for sending cache to tape. If necessary, you can also manually trigger archiving to tape from the QStar UI. Note that the Rubrik cluster does not control when data is archived to tape from cache.\n\nOnce cache data is copied to tape, the cache copy is maintained for easy access but can be purged to free cache space for new incoming data.\n\nAn archival location on a Rubrik cluster is mapped to a folder (a directory) under an Integral Volume. This folder represents an archival target from a Rubrik cluster and is explicitly owned and locked by that cluster.\n\nA QStar server may host up to four Integral Volumes to provide data isolation and better concurrency in archiving and restore operations with multiple archival locations. The tape library and the server must follow the configuration recommendations in this section and the recommendations for a QStar Integral Volume.\n\nDue to the serial access nature of tape media, archives are stored only as full snapshots. Archiving incremental snapshots with tape archival locations is not supported. As a best practice, schedule tape archiving operations at least monthly.\n\nTape data archives support individual file search but not individual file restore. Restore operations from tape restore the entire requested snapshot from the tape archive to the Rubrik cluster."
+    }
+}
