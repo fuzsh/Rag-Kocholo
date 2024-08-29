@@ -1,6 +1,6 @@
 # Project Components
 <p align="center">
-    <img src="RAG-Kocholo.png" alt="Correct Radar Chart" width="100%">
+    <img src="Rag-Kocholo.png" alt="Correct Radar Chart" width="100%">
 </p>
 
 # Results
