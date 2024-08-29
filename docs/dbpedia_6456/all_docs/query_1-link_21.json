@@ -1,0 +1,35 @@
+{
+    "id": "dbpedia_6456_1",
+    "rank": 21,
+    "data": {
+        "url": "https://milvus.io/docs/integrate_with_sentencetransformers.md",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Movie Search Using Milvus and SentenceTransformers",
+        "top_image": "https://assets.zilliz.com/meta_image_milvus_d6510e10e0.png",
+        "meta_img": "https://assets.zilliz.com/meta_image_milvus_d6510e10e0.png",
+        "images": [
+            "https://milvus.io/images/milvus_logo.svg",
+            "https://milvus.io/images/lf_logo.png",
+            "https://milvus.io/images/milvus_logo.svg",
+            "https://milvus.io/images/lf_logo.png",
+            "https://milvus.io/images/milvus_logo.svg",
+            "https://milvus.io/images/blue-heart.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "This page discusses movie search using Milvus | v2.4.x",
+        "meta_lang": "en",
+        "meta_favicon": "/favicon-32x32.png",
+        "meta_site_name": "",
+        "canonical_link": "https://milvus.io/docs/integrate_with_sentencetransformers.md",
+        "text": "In this example, we are going to be going over a Wikipedia article search using Milvus and the SentenceTransformers library. The dataset we are searching through is the Wikipedia-Movie-Plots Dataset found on Kaggle. For this example, we have rehosted the data in a public google drive.\n\nLetâs get started.\n\nInstalling requirements\n\nFor this example, we are going to be using pymilvus to connect to use Milvus, sentencetransformers to generate vector embeddings, and gdown to download the example dataset.\n\npip install pymilvus sentence-transformers gdown\n\nGrabbing the data\n\nWe are going to use gdown to grab the zip from Google Drive and then decompress it with the built-in zipfile library.\n\nimport gdown url = 'https://drive.google.com/uc?id=11ISS45aO2ubNCGaC3Lvd3D7NT8Y7MeO8' output = './movies.zip' gdown.download(url, output) import zipfile with zipfile.ZipFile(\"./movies.zip\",\"r\") as zip_ref: zip_ref.extractall(\"./movies\")\n\nGlobal parameters\n\nHere we can find the main arguments that need to be modified for running with your own accounts. Beside each is a description of what it is.\n\nCOLLECTION_NAME = 'movies_db' DIMENSION = 384 COUNT = 1000 MILVUS_HOST = 'localhost' MILVUS_PORT = '19530' BATCH_SIZE = 128 TOP_K = 3\n\nSetting up Milvus\n\nAt this point, we are going to begin setting up Milvus. The steps are as follows:\n\nConnect to the Milvus instance using the provided URI.\n\nfrom pymilvus import connections connections.connect(host=MILVUS_HOST, port=MILVUS_PORT)\n\nIf the collection already exists, drop it.\n\nfrom pymilvus import utility if utility.has_collection(COLLECTION_NAME): utility.drop_collection(COLLECTION_NAME)\n\nCreate the collection that holds the id, title of the movie, and the embeddings of the plot text.\n\nfrom pymilvus import FieldSchema, CollectionSchema, DataType, Collection fields = [ FieldSchema(name='id', dtype=DataType.INT64, is_primary=True, auto_id=True), FieldSchema(name='title', dtype=DataType.VARCHAR, max_length=200), FieldSchema(name='embedding', dtype=DataType.FLOAT_VECTOR, dim=DIMENSION) ] schema = CollectionSchema(fields=fields) collection = Collection(name=COLLECTION_NAME, schema=schema)\n\nCreate an index on the newly created collection and load it into memory.\n\nindex_params = { 'metric_type':'L2', 'index_type':\"IVF_FLAT\", 'params':{'nlist': 1536} } collection.create_index(field_name=\"embedding\", index_params=index_params) collection.load()\n\nOnce these steps are done the collection is ready to be inserted into and searched. Any data added will be indexed automatically and be available to search immediately. If the data is very fresh, the search might be slower as brute force searching will be used on data that is still in process of getting indexed.\n\nInserting the data\n\nFor this example, we are going to use the SentenceTransformers miniLM model to create embeddings of the plot text. This model returns 384-dim embeddings.\n\nIn these next few steps we will be:\n\nLoading the data.\n\nEmbedding the plot text data using SentenceTransformers.\n\nInserting the data into Milvus.\n\nimport csv from sentence_transformers import SentenceTransformer transformer = SentenceTransformer('all-MiniLM-L6-v2') def csv_load(file): with open(file, newline='') as f: reader = csv.reader(f, delimiter=',') for row in reader: if '' in (row[1], row[7]): continue yield (row[1], row[7]) def embed_insert(data): embeds = transformer.encode(data[1]) ins = [ data[0], [x for x in embeds] ] collection.insert(ins) import time data_batch = [[],[]] count = 0 for title, plot in csv_load('./movies/plots.csv'): if count <= COUNT: data_batch[0].append(title) data_batch[1].append(plot) if len(data_batch[0]) % BATCH_SIZE == 0: embed_insert(data_batch) data_batch = [[],[]] count += 1 else: break if len(data_batch[0]) != 0: embed_insert(data_batch) collection.flush()\n\nPerforming the search\n\nWith all the data inserted into Milvus, we can start performing our searches. In this example, we are going to search for movies based on the plot. Because we are doing a batch search, the search time is shared across the movie searches.\n\nsearch_terms = ['A movie about cars', 'A movie about monsters'] def embed_search(data): embeds = transformer.encode(data) return [x for x in embeds] search_data = embed_search(search_terms) start = time.time() res = collection.search( data=search_data, anns_field=\"embedding\", param={}, limit = TOP_K, output_fields=['title'] ) end = time.time() for hits_i, hits in enumerate(res): print('Title:', search_terms[hits_i]) print('Search Time:', end-start) print('Results:') for hit in hits: print( hit.entity.get('title'), '----', hit.distance) print()\n\nThe output should be similar to the following:"
+    }
+}
