@@ -1,0 +1,45 @@
+{
+    "id": "dbpedia_5467_0",
+    "rank": 25,
+    "data": {
+        "url": "https://forums.ubports.com/topic/23/flashing-ubuntu-touch-to-zuk-z1",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Flashing Ubuntu Touch to ZUK Z1",
+        "top_image": "https://forums.ubports.com/assets/uploads/system/site-logo.png",
+        "meta_img": "https://forums.ubports.com/assets/uploads/system/site-logo.png",
+        "images": [
+            "https://forums.ubports.com/assets/uploads/system/site-logo.png?v=3fq69bf40qs",
+            "https://forums.ubports.com/assets/plugins/nodebb-plugin-emoji/emoji/emoji-one/1f61e.png?v=3fq69bf40qs",
+            "https://forums.ubports.com/assets/plugins/nodebb-plugin-emoji/emoji/emoji-one/1f642.png?v=3fq69bf40qs",
+            "https://forums.ubports.com/assets/plugins/nodebb-plugin-emoji/emoji/emoji-one/1f642.png?v=3fq69bf40qs"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "ubuntu",
+            "ubuntu touch",
+            "oneplus one",
+            "ubuntu touch for oneplus one",
+            "Ubuntu",
+            "ubports",
+            "Ubports",
+            "ubports forum",
+            "forum",
+            "ubuntu forum",
+            "ubuntu touch porting",
+            "port",
+            "porting"
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2015-12-30T13:05:40.480000+00:00",
+        "summary": "",
+        "meta_description": "Hi, I am now back at the state where I can successfully compile UT. All .img files are generated. Now i am using fastboot to flash boot and recovery and ever...",
+        "meta_lang": "en",
+        "meta_favicon": "/assets/uploads/system/favicon.ico?v=3fq69bf40qs",
+        "meta_site_name": "UBports Forum",
+        "canonical_link": "https://forums.ubports.com/topic/23/flashing-ubuntu-touch-to-zuk-z1",
+        "text": "Hi, I am now back at the state where I can successfully compile UT. All .img files are generated.\n\nNow i am using fastboot to flash boot and recovery and everything seems to be fine.\n\nRecovery boots without errors (The keys are weird, i have no button to 'select' an entry, only up/down are working, but thats another topic)\n\nOk, then i am trying to flash the system with:\n\n./rootstock-touch-install Downloads/debug/vivid-preinstalled-touch-armhf.tar.gz phablet/out/target/product/ham/system.img\n\nAfter that, i can't boot it because i am stuck at the vendor-logo.\n\nBack in recovery i have no last_kmsg file.\n\nI took a look at the directory structure using adb shell while the phone is in recovery and i noticed the following:\n\nI have the folder /data, but it is empty, besides a 'media' folder (which is empty).\n\nDo you have any idea what is wrong here?\n\nThanks for the hint.\n\nI assume i have to modify the content of the config files to match my productID and vendorID?\n\nBut where can i get the udev file for my device? I read the UT porting guide and it says:\n\nYou can create the udev rules file by invoking the following command while Ubuntu is booted:\n\nadb shell cat /var/lib/lxc/android/rootfs/ueventd*.rc|grep ^/dev|sed -e 's/^/dev///'|awk '{printf \"ACTION==\"add\", KERNEL==\"%s\", OWNER=\"%s\", GROUP=\"%s\", MODE=\"%s\"\\n\",$1,$3,$4,$2}' | sed -e 's/\\r//'\n\nBUT i cant boot ubuntu yet... So where to get the udev rules? do i have to create them manually?\n\nI tried to use mariogrip's udev rules for his oneplus one (same system on chip) but it still doesn't boot\n\n@frantisheq That looks like a nice phone to me, never heard about it before. You might have more luck than me with this one as it is running KitKat\n\nI got the Z1 booting into adb but that is all i achieved. Everything that relies on the vendor-blobs (like graphics, network ...) is not working. The reason for this is most likely the fact, that I only have vendor blobs for android 5.1.1 which don't match the Kitkat Android that is used in Ubuntu Touch.\n\nI will not upload my sources as i don't know how to do that in a clean way but i would love to help you in getting your port booting to adb.\n\nSince your phone is not supported by Cyanogenmod (that's where I got the kernel and device sources for mine) your best bet might be to use the device/kernel from the oneplus one. The SOC is the same, so booting (without graphics and so on) might work with those sources.\n\nOne problem you will have is, that you can't get the device tree sources for your device. One way to get around this is to dump your Android boot.img and extract the dt.img from there with the unpackbootimg tool.\n\nNote: There is a difference between the 'device' folder in your build directory and the device-tree i am talking about right now. That is something that confused me in the beginning.\n\nYou can get an introduction to device trees here.\n\nI am also a beginner at all of this but I would love to help, so let me know if you need help"
+    }
+}

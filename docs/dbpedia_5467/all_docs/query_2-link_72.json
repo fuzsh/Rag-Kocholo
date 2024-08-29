@@ -1,0 +1,34 @@
+{
+    "id": "dbpedia_5467_2",
+    "rank": 72,
+    "data": {
+        "url": "https://android.stackexchange.com/questions/132278/unbrick-lenovo-zuk-z1-after-every-partition-was-formatted",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Unbrick Lenovo ZUK Z1, after every partition was formatted",
+        "top_image": "https://cdn.sstatic.net/Sites/android/Img/apple-touch-icon@2.png?v=8f2d3ecfa663",
+        "meta_img": "https://cdn.sstatic.net/Sites/android/Img/apple-touch-icon@2.png?v=8f2d3ecfa663",
+        "images": [
+            "https://cdn.sstatic.net/Sites/android/Img/logo.svg?v=140a7af9fd10",
+            "https://www.gravatar.com/avatar/0b10fa70b9993a924db719528b826cfa?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/6BLyk.jpg?s=64",
+            "https://www.gravatar.com/avatar/02f07b7eea90f1e1eef44250d0393ecf?s=64&d=identicon&r=PG",
+            "https://android.stackexchange.com/posts/132278/ivc/00d9?prg=98048707-4376-4773-982f-5f4eb2ecd8fa"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2015-12-22T17:59:49",
+        "summary": "",
+        "meta_description": "Bricked my phone trying to install Cyanogenmod on it. Formatted every partition, including /boot and /recovery.\n\nThe phone can't:\r\nBoot into home screen.\nBe reached by ADB.\nHave it's bootloader reb...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/android/Img/favicon.ico?v=0d1aa2e1fae5",
+        "meta_site_name": "Android Enthusiasts Stack Exchange",
+        "canonical_link": "https://android.stackexchange.com/questions/132278/unbrick-lenovo-zuk-z1-after-every-partition-was-formatted",
+        "text": "Yesterday we ended up in the same state after trying to flash CyanogenMod 13 on the phone: loop trying to boot CyanogenMod 13 (cyan robot head with circle waves) and no way to get the phone to put itself into adb or fastboot mode.\n\nHere's how we solved the issue and got the phone working again, just if it's useful for somebody in the future:\n\nReboot to the (factory) Zuk recovery firmware: press VolumeUp+VolumeDown+Power continuously. The phone will reboot (keep pressing). Unplug the phone USB cable. Choose \"English\" and then \"Power off\". Let it power off.\n\nGet TWRP from twrp.me. Try to flash it using fastboot with the USB cable disconnected (it will wait until you connect the cable, don't do it yet, let it wait):\n\nfastboot -i 0x2b4c flash recovery twrp-3.0.2-0-Z1.img\n\nWith the phone switched off, press VolumeUp+VolumeDown (not Power) and plug the phone to the computer with the buttons pressed. This was the magic required to put the phone in fastboot mode. Fastboot will do its job and TWRP will be flashed. It worked for us, but this flashing step might fail for you. Only if it failed, what I would do would be to return to step 1 and try to boot directly from TWRP like this, and then go to step 5:\n\nfastboot -i 0x2b4c boot twrp-3.0.2-0-Z1.img\n\nTo boot the phone into TWRP, press VolumeUp+Power until the phone reboots (keep pressing until TWRP boots).\n\nTo get the phone to a working state, flash CyanoGen OS 12 (this archive) once TWRP is loaded:\n\nadb push cm-12.1-YOG4PAS7DF-ham-signed-c4eecafcd7.zip /sdcard/\n\nOn TWRP: \"update\", select the zip file you copied with the previous command.\n\nReboot, and you have a working phone again."
+    }
+}
