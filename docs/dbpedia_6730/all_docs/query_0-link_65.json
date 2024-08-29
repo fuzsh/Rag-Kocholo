@@ -1,0 +1,31 @@
+{
+    "id": "dbpedia_6730_0",
+    "rank": 65,
+    "data": {
+        "url": "http://weblog.jamisbuck.org/2006/2/11/tip-textdrive-and-lighttpd.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Buckblog: Tip: TextDrive and Lighttpd",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://imagery.pragprog.com/products/439/jbmaze_largecover.jpg?1421259509",
+            "https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2006-02-11T00:00:00",
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "",
+        "meta_favicon": "",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "Hereâs a tip if youâre running rails applications under lighttpd on TextDrive: donât use static fcgi processes.\n\nThe static FCGI processes are the ones you get when you specify a bin-path in your configuration, a la:\n\nThere are two problems with doing it this way:\n\nLighttpd doesnât always like the way the Railsâ reaper process plays with its processes, so you sometimes need to restart lighttpd when deploying a new version of your application.\n\nRestarting lighttpd becomes extremely expensive, because all of the fastcgi processes get started up. With a single application thatâs not a big deal, but if you start running more than one, you begin hating life when you have to restart lighttpd.\n\nSo, the solution?\n\nFirst, create a tmp directory in your rails project.\n\nThen, create a spawn script that looks something like this:\n\nGo ahead and run this script. (What this does is spawn your fcgi processes externally. In this case, it spawns two processes, each listening on a different unix domain socket.)\n\nFinally, tweak your lighttpd configuration so that it references the externally spawned fastcgi processes, instead of spawning directly:\n\n(Be sure to replace the paths with the correct paths that were specified in the spawn script.) Then, restart lighttpd. Lighttpd will balance requests between the sockets you specify, so you can specify as few or as many as you need. (The fewer you use, the happier the TextDrive staff will be.)\n\nNow, you can use the Rails reaper command with confidence to restart your application, and restarting lighttpd is a very light, very inexpensive affair because your fastcgi processes are managed independently. You can now tweak your lighttpd configuration without fear!\n\n(Note, however, that a reboot of the machine hosting your account will require you to run the spawn scripts for your applications againâ¦ Iâm sure thereâs a handy solution for that floating around somewhere, but I donât know it offhand.)"
+    }
+}

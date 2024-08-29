@@ -1,0 +1,34 @@
+{
+    "id": "dbpedia_6725_3",
+    "rank": 46,
+    "data": {
+        "url": "https://networkengineering.stackexchange.com/questions/39837/routing-to-another-local-network-with-sonicwall",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Routing to another local network with sonicwall",
+        "top_image": "https://cdn.sstatic.net/Sites/networkengineering/Img/apple-touch-icon@2.png?v=2ae76539f625",
+        "meta_img": "https://cdn.sstatic.net/Sites/networkengineering/Img/apple-touch-icon@2.png?v=2ae76539f625",
+        "images": [
+            "https://cdn.sstatic.net/Sites/networkengineering/Img/logo.svg?v=ecc4997c4794",
+            "https://i.sstatic.net/bJuLe.png?s=64",
+            "https://www.gravatar.com/avatar/3b3af57fc553f05ef0b0b85fc498a860?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/a5b5113d3106a3bf2b43761aa11df573?s=64&d=identicon&r=PG",
+            "https://networkengineering.stackexchange.com/posts/39837/ivc/c34d?prg=54fec577-23c1-4577-a4c7-7362e7c2c1a9"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2017-03-20T17:05:39",
+        "summary": "",
+        "meta_description": "I have two separate networks: a data network and a VoIP network. The data network has a sonicwall tz210 on it between our network and our ISP. We just installed a separate VoIP network connected vi...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/networkengineering/Img/favicon.ico?v=c898b778f3c6",
+        "meta_site_name": "Network Engineering Stack Exchange",
+        "canonical_link": "https://networkengineering.stackexchange.com/questions/39837/routing-to-another-local-network-with-sonicwall",
+        "text": "Your question doesn't list any specific IPs so I'm just going to make some assumptions, change them as needed. You can do what you want, DHCP is broadcast only within the local subnet (won't be passed by a router unless you configure specific options to do so).\n\nAssuming:\n\nSonicWALL:\n\nX0 = Data LAN (let's say 10.0.0.1/24) - connects to Data switch X1 = WAN X2 = VoIP (new)\n\nTelephone Vendor Router:\n\nport0 = Voice LAN (let's say 172.21.1.1/24) - connects to VoIP switch port1 = WAN\n\nOn the SonicWALL, configure:\n\nConfigure X2 on the SonicWALL with a free IP on the VoIP subnet, let's say: 172.21.1.2/24. If the vendor controls this subnet ask them for a free IP, otherwise do an IP Scan.\n\nUnder Network | PortShield Group, edit X2 and ensure it is Unassigned (not assigned to X1). Then under Network | Interfaces, edit X2. Assign it to the LAN zone (assuming you trust the VoIP traffic - if you don't then use DMZ and you will need to create Firewall rules; choose LAN if you're unsure, to start). Set it for a Static IP, configure the IP, and other settings as desired.\n\nNote: A route will automatically be created under Network | Routing (from Any to X2 Subnet, for Any Service).\n\nIf you selected X2 Zone = LAN the Firewall rules will already be created (assuming Interface Trust is enabled for the LAN zone, which it is by default). If you set X2 Zone = DMZ you will need to go to Firewall | Access Rules. Create or edit rule from LAN > DMZ, and DMZ > LAN for the X0 and X2 interface (I would suggest keeping things wide open, Any/Any/Any, during testing and then tighten up after if needed).\n\nConnect X2 to the VoIP switch.\n\nOn the Phone Router:\n\nNOW: you or the Phone Vendor will need to create a route on the other router. No IP or interface needs to be configured. The route will need to be:\n\nDestination: 10.0.0.0/24 Gateway: 172.21.1.2 (or whatever IP you assigned to X2) Metric: 10 (or as needed) [All services, if it asks. Interface is whatever interface is the \"lan\" interface on that device. Hopefully they know how to configure their own device]\n\nIf you were testing with a PC connected to the VoIP network (with a 172.21.1.x IP) the Windows route command would be:\n\nroute add 10.0.0.0 mask 255.255.255.0 172.21.1.2\n\nDepending on the config of the Voice Router there may be firewall polices that need to be created, but hard to say - I suspect not.\n\nResult:\n\nAnything on your Data LAN will have a default gateway of the SonicWALL - and the SonicWALL has an interface on the VoIP network so can pass packets along. Anything on the Void Network will have a default gateway of the Phone Router and that router now has a route pointing to the Data LAN via the IP you assigned to the X2 interface, so packets can travel back."
+    }
+}

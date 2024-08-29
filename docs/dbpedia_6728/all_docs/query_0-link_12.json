@@ -1,0 +1,31 @@
+{
+    "id": "dbpedia_6728_0",
+    "rank": 12,
+    "data": {
+        "url": "https://cloud.google.com/speech-to-text/docs/async-recognize",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Transcribe long audio files into text",
+        "top_image": "https://cloud.google.com/_static/cloud/images/social-icon-google-cloud-1200-630.png",
+        "meta_img": "https://cloud.google.com/_static/cloud/images/social-icon-google-cloud-1200-630.png",
+        "images": [
+            "https://www.gstatic.com/devrel-devsite/prod/v4513918f2560a1fecca3cf64c2df2e8b263c90b977664567b98ccb062542a623/cloud/images/cloud-logo.svg",
+            "https://www.gstatic.com/devrel-devsite/prod/v4513918f2560a1fecca3cf64c2df2e8b263c90b977664567b98ccb062542a623/cloud/images/cloud-logo.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "Learn how to transcribe long audio files to text using the moonrise-replacea8246a2ee6104e83a32c2d91890cf281moonrise-replace API and asynchronous speech recognition.",
+        "meta_lang": "en",
+        "meta_favicon": "https://www.gstatic.com/devrel-devsite/prod/v4513918f2560a1fecca3cf64c2df2e8b263c90b977664567b98ccb062542a623/cloud/images/favicons/onecloud/favicon.ico",
+        "meta_site_name": "Google Cloud",
+        "canonical_link": "https://cloud.google.com/speech-to-text/docs/async-recognize",
+        "text": "Protocol\n\nRefer to the speech:longrunningrecognize API endpoint for complete details.\n\nTo perform synchronous speech recognition, make a POST request and provide the appropriate request body. The following shows an example of a POST request using curl. The example uses the Google Cloud CLI to generate an access token. For instructions on installing the gcloud CLI, see the quickstart.\n\ncurl -X POST \\ -H \"Authorization: Bearer \"$(gcloud auth application-default print-access-token) \\ -H \"Content-Type: application/json; charset=utf-8\" \\ --data \"{ 'config': { 'language_code': 'en-US' }, 'audio':{ 'uri':'gs://cloud-samples-tests/speech/brooklyn.flac' } }\" \"https://speech.googleapis.com/v1/speech:longrunningrecognize\"\n\nSee the RecognitionConfig and RecognitionAudio reference documentation for more information on configuring the request body.\n\nIf the request is successful, the server returns a 200 OK HTTP status code and the response in JSON format:\n\n{ \"name\": \"7612202767953098924\" }\n\nwhere name is the name of the long running operation created for the request.\n\nWait for processing to complete. Processing time differs depending on your source audio. In most cases, you will get results in half the length of the source audio. You can get the status of your long-running operation by making a GET request to the https://speech.googleapis.com/v1/operations/ endpoint. Replace your-operation-name with the name returned from your longrunningrecognize request.\n\ncurl -H \"Authorization: Bearer \"$(gcloud auth application-default print-access-token) \\ -H \"Content-Type: application/json; charset=utf-8\" \\ \"https://speech.googleapis.com/v1/operations/your-operation-name\"\n\nIf the request is successful, the server returns a 200 OK HTTP status code and the response in JSON format:\n\n{ \"name\": \"7612202767953098924\", \"metadata\": { \"@type\": \"type.googleapis.com/google.cloud.speech.v1.LongRunningRecognizeMetadata\", \"progressPercent\": 100, \"startTime\": \"2017-07-20T16:36:55.033650Z\", \"lastUpdateTime\": \"2017-07-20T16:37:17.158630Z\" }, \"done\": true, \"response\": { \"@type\": \"type.googleapis.com/google.cloud.speech.v1.LongRunningRecognizeResponse\", \"results\": [ { \"alternatives\": [ { \"transcript\": \"how old is the Brooklyn Bridge\", \"confidence\": 0.96096134, } ] }, { \"alternatives\": [ { ... } ] } ] } }\n\nIf the operation has not completed, you can poll the endpoint by repeatedly making the GET request until the done property of the response is true.\n\ngcloud\n\nRefer to the recognize-long-running command for complete details.\n\nTo perform asynchronous speech recognition, use the Google Cloud CLI, providing the path of a local file or a Google Cloud Storage URL.\n\ngcloud ml speech recognize-long-running \\ 'gs://cloud-samples-tests/speech/brooklyn.flac' \\ --language-code='en-US' --async\n\nIf the request is successful, the server returns the ID of the long-running operation in JSON format.\n\n{ \"name\": OPERATION_ID }\n\nYou can then get information about the operation by running the following command.\n\ngcloud ml speech operations describe OPERATION_ID\n\nYou can also poll the operation until it completes by running the following command.\n\ngcloud ml speech operations wait OPERATION_ID\n\nAfter the operation completes, the operation returns a transcript of the audio in JSON format.\n\n{ \"@type\": \"type.googleapis.com/google.cloud.speech.v1.LongRunningRecognizeResponse\", \"results\": [ { \"alternatives\": [ { \"confidence\": 0.9840146, \"transcript\": \"how old is the Brooklyn Bridge\" } ] } ] }"
+    }
+}
