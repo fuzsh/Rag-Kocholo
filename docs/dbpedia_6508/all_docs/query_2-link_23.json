@@ -1,0 +1,35 @@
+{
+    "id": "dbpedia_6508_2",
+    "rank": 23,
+    "data": {
+        "url": "https://community.esri.com/t5/arcgis-pro-questions/inaccuracy-in-the-location-of-points-x-y/td-p/1269264",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Inaccuracy in the location of points x,y",
+        "top_image": "https://www.esri.com/content/dam/esrisites/en-us/common/favicon/esri-favicon-dark-32.png",
+        "meta_img": "https://www.esri.com/content/dam/esrisites/en-us/common/favicon/esri-favicon-dark-32.png",
+        "images": [
+            "https://community.esri.com/html/assets/langTrFlag.PNG",
+            "https://community.esri.com/skins/images/B69E466998821B9203424D2448E38A60/responsive_peak/images/icon_anonymous_message.png",
+            "https://community.esri.com/t5/image/serverpage/image-id/15590i58FD29F51DB31EBD/image-dimensions/50x50/image-coordinates/10%2C0%2C1192%2C1182/constrain-image/false?v=v2",
+            "https://communitystg.esri.com/html/@5DA42584A9E8D1F16B8D5629E0DAE152/rank_icons/mvp-40.png?version=preview",
+            "https://community.esri.com/t5/image/serverpage/image-id/65273iC7AFD6CB8AA6798C/image-dimensions/50x50/image-coordinates/0%2C0%2C400%2C400/constrain-image/false?v=v2",
+            "https://community.esri.com/skins/images/B69E466998821B9203424D2448E38A60/responsive_peak/images/icon_anonymous_message.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2023-03-19T17:29:57.884000+00:00",
+        "summary": "",
+        "meta_description": "hello . Can you help me? I have a problem when adding the coordinates file from Excel, as it moves away from the study area greatly, so that the points fly to a",
+        "meta_lang": "en",
+        "meta_favicon": "https://www.esri.com/content/dam/esrisites/en-us/common/favicon/esri-favicon-180.png",
+        "meta_site_name": "Esri Community",
+        "canonical_link": "https://community.esri.com/t5/arcgis-pro-questions/inaccuracy-in-the-location-of-points-x-y/td-p/1269264",
+        "text": "As @DanPatterson mentioned that is the coordinate system issue. If there is not a way to extract that info from the datasets you worked with, you can check your x,y (or lat,long) numbers and see if they match any known coordinate system or projections format. Northern vs southern hemisphere and east vs west might be presented differently based on the the location and system.\n\nAs an example Google map can take Decimal degrees (DD) and some other formats. DD looks like this:\n\n64.42840, -45.511249 for a place in Greenland. When using this format the first number is latitude coordinate and should be between -90 and 90 and the second number is longitude coordinate (between -180 and 180) if you have numbers that match this format but being projected by mistake you can use \"GCS_WGS_1984\" and see if that fixes it.\n\nIf the map is projected with an unknown projection, that would be harder and I would probably search for common local projection for that study area and give them a try. But remember if that is not exactly what it was projected on, your points might be shown with an offset. (Obviously not as bad as now, but still they are not in the right place) and you should be careful if you are going to do calculations based on that.\n\nAgain, those formats and numbers might be different for other systems. Check this file from ESRI for supported coordinate systems.\n\nhttps://pro.arcgis.com/en/pro-app/latest/help/mapping/properties/pdf/projected_coordinate_systems.pd...\n\nAlso, make sure when you are using \"Display XY data\" to bring the points, right columns (fields) in your data selected for X and Y and they are not flipped."
+    }
+}
