@@ -1,0 +1,33 @@
+{
+    "id": "dbpedia_5828_1",
+    "rank": 75,
+    "data": {
+        "url": "https://stackoverflow.com/questions/78850535/xamarin-forms-android-application-cannot-reach-the-backend-on-devices-running-an",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Xamarin Forms android application cannot reach the backend on devices running Android OS 13 or earlier after migrating backend to Cloudflare",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://i.sstatic.net/36KTZ.jpg?s=64",
+            "https://stackoverflow.com/posts/78850535/ivc/c2ce?prg=2081b94b-6db2-499e-b3aa-397f3b480941"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Elijah Romer"
+        ],
+        "publish_date": "2024-08-08T21:44:52",
+        "summary": "",
+        "meta_description": "I know, I know, dinosaur tech. But I have been tasked to figure this out. Any help would receive my eternal gratitude...\nOver the weekend, my company migrated our server security to Cloudflare. For...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/78850535/xamarin-forms-android-application-cannot-reach-the-backend-on-devices-running-an",
+        "text": "I know, I know, dinosaur tech. But I have been tasked to figure this out. Any help would receive my eternal gratitude...\n\nOver the weekend, my company migrated our server security to Cloudflare. Forgive my ignorance, I am not well versed in network stuff and I was not involved in this process. That said, when I came in on Monday, all hell broke loose when reports of devices running our app receiving \"Connection Errors\" started coming in en masse.\n\nUpon troubleshooting, I was able to determine the following:\n\nIssue only occurs on Android Devices, and only on Android devices running Android OS 13 or earlier.\n\nThe error occurs at the point in the code where the request is sent, and throws a System.Net.Http.HttpRequestException with message \"The SSL connection could not be established, see inner exception.\" (stack trace below)\n\nUpon speaking to network and server administrator, no requests from said IP to said backend are being rejected by cloudflare, nor are there any failed request logs in our IIS logs.\n\nUpdating the Device Android OS to Android 14 resolves the issue.\n\nIs there something about the TLS/SSL Registry on an app utilizing Xamarin Forms with an older Android OS that cloud flare is rejecting? Any idea on how this can be resolved without forcing the user to update their OS which clients are pushing back on hard?\n\nSTACK TRACE:\n\nSystem.Net.Http.HttpRequestException: The SSL connection could not be established, see inner exception. ---> System.Security.Authentication.AuthenticationException: Authentication failed, see inner exception. ---> Mono.Btls.MonoBtlsException: Ssl error:1000007d:SSL routines:OPENSSL_internal:CERTIFICATE_VERIFY_FAILED at /Users/builder/jenkins/workspace/archive-mono/2020-02/android/release/external/boringssl/ssl/handshake_client.c:1132 at Mono.Btls.MonoBtlsContext.ProcessHandshake () [0x00042] in /Users/builder/jenkins/workspace/archive-mono/2020-02/android/release/mcs/class/System/Mono.Btls/MonoBtlsContext.cs:220 at Mono.Net.Security.MobileAuthenticatedStream.ProcessHandshake (Mono.Net.Security.AsyncOperationStatus status, System.Boolean renegotiate) [0x000da] in /Users/builder/jenkins/workspace/archive-mono/2020-02/android/release/mcs/class/System/Mono.Net.Security/MobileAuthenticatedStream.cs:715 at (wrapper remoting-invoke-with-check) Mono.Net.Security.MobileAuthenticatedStream.ProcessHandshake(Mono.Net.Security.AsyncOperationStatus,bool) at Mono.Net.Security.AsyncHandshakeRequest.Run (Mono.Net.Security.AsyncOperationStatus status) [0x00000] in /Users/builder/jenkins/workspace/archive-mono/2020-02/android/release/mcs/class/System/Mono.Net.Security/AsyncProtocolRequest.cs:289 at Mono.Net.Security.AsyncProtocolRequest.ProcessOperation (System.Threading.CancellationToken cancellationToken) [0x000fc] in /Users/builder/jenkins/workspace/archive-mono/2020-02/android/release/mcs/class/System/Mono.Net.Security/AsyncProtocolRequest.cs:223 --- End of inner exception stack trace --- at Mono.Net.Security.MobileAuthenticatedStream.ProcessAuthentication (System.Boolean runSynchronously, Mono.Net.Security.MonoSslAuthenticationOptions options, System.Threading.CancellationToken cancellationToken) [0x0025c] in /Users/builder/jenkins/workspace/archive-mono/2020-02/android/release/mcs/class/System/Mono.Net.Security/MobileAuthenticatedStream.cs:310 at System.Net.Http.ConnectHelper.EstablishSslConnectionAsyncCore (System.IO.Stream stream, System.Net.Security.SslClientAuthenticationOptions sslOptions, System.Threading.CancellationToken cancellationToken) [0x0007b] in /Users/builder/jenkins/workspace/archive-mono/2020-02/android/release/external/corefx/src/System.Net.Http/src/System/Net/Http/SocketsHttpHandler/ConnectHelper.cs:165 --- End of inner exception stack trace ---\n\nUninstalling and reinstalling, restarting the device, and switching networks does not resolve the issue. The application is a dinosaur and was utilizing Xamarin.Forms and targets Android 11, but had no issues prior to the Cloudflare migration.\n\nI tried forcing the app to use TLS 1.2 by adding trying to add both of the following lines in the MainActivity.cs OnCreate method:\n\n`System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;`\n\nAnd\n\n`Java.Security.Security.SetProperty(\"jdk.tls.client.protocols\", \"TLSv1.2\");`\n\nbut it made no difference.\n\nThe only thing that resolves this is updating to Android 14 but I don't see anything in the Android 14 release notes that indicates that it might affect connections...\n\nUnfortunately I can't ask all clients to upgrade as many have devices that either cannot upgrade or will be quite upset at this ask :("
+    }
+}
