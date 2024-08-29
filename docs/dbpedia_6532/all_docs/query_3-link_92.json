@@ -1,0 +1,32 @@
+{
+    "id": "dbpedia_6532_3",
+    "rank": 92,
+    "data": {
+        "url": "https://stackoverflow.com/questions/78845781/in-swiftui-is-it-possible-to-use-both-ondrag-and-gesturedraggesture-simult",
+        "read_more_link": "",
+        "language": "en",
+        "title": "In SwiftUI is it possible to use both .onDrag and .gesture(DragGesture()) simultaneously?",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://cdn.sstatic.net/Img/teams/teams-promo.svg?v=e507948b81bf",
+            "https://lh3.googleusercontent.com/a/ACg8ocKZrZbq-krdlKPrcdKlPZs1QSVFiLA5KMVi6qdGTM_v=k-s64",
+            "https://stackoverflow.com/posts/78845781/ivc/51cc?prg=2c389bbc-0d42-474c-b9b7-935401a6caaa"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2024-08-07T21:41:32",
+        "summary": "",
+        "meta_description": "I have an item view that has a .simultaneousGesture(DragGesture()) modifier on it to handle dragging the item around a Canvas and updating its x and y position. I also want to add an .onDrag modifi...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/78845781/in-swiftui-is-it-possible-to-use-both-ondrag-and-gesturedraggesture-simult",
+        "text": "I have an item view that has a .simultaneousGesture(DragGesture()) modifier on it to handle dragging the item around a Canvas and updating its x and y position. I also want to add an .onDrag modifier to handle dragging and dropping the item between different views. But these two are interfering with each other.\n\nI've tried placing .onDrag both before and after the gesture, but neither position solved my problem. If .onDrag is placed before the .simultaneousGesture, the .onDrag event triggers as expected, and so does the .simultaneousGesture, but only for the first few updates. If it's placed after, only the .simultaneousGesture is recognized.\n\nBelow is the code for the View and further below I'm attaching a screenshot of the console output after I drag the FileView.\n\nimport Foundation import SwiftUI struct FileView: View { @ObservedObject var form: Forms.File @State private var firstClick: Bool = false @State private var mousedown: Bool = false @State private var initialDragOffset = CGSize.zero @State private var hovering: Bool = false @ObservedObject private var windowSize = WindowSize.shared var body: some View { HStack { Image(systemName: \"doc.fill\") .resizable() .scaledToFit() .frame(width: 17, height: 17) .aspectRatio(contentMode: .fit) .scaleEffect(x: 1, y: mousedown ? 0.8 : 1) .foregroundColor(form.isSelected ? Color.red : Color.black) .frame(width: 15, height: 15) Text(form.name) } .frame(height: 30) .onHover { hovering in self.hovering = hovering } .padding(.leading, 8) .padding(.trailing, 8) .overlay( RoundedRectangle(cornerRadius: 8) .stroke(form.isSelected ? Color.red : Color.clear, lineWidth: 1) ) .position( x: windowSize.width * form.canvasPosition.x, y: windowSize.height * form.canvasPosition.y ) .onDrag { print(\"DRAGGING\") return NSItemProvider(object: form.path as NSString) } .simultaneousGesture( DragGesture(minimumDistance: 0.10) .onChanged { gesture in if initialDragOffset == .zero { let initialX = windowSize.width * form.canvasPosition.x let initialY = windowSize.height * form.canvasPosition.y initialDragOffset = CGSize(width: gesture.location.x - initialX, height: gesture.location.y - initialY) } let newX = (gesture.location.x - initialDragOffset.width) / windowSize.width let newY = (gesture.location.y - initialDragOffset.height) / windowSize.height form.updatedAt = Int(Date().timeIntervalSince1970) form.canvasPosition.x = newX form.canvasPosition.y = newY print(newX, newY) } .onEnded { _ in initialDragOffset = .zero } ) .onLongPressGesture(minimumDuration: 0.01, pressing: { isPressing in if isPressing { withAnimation(.easeInOut(duration: 0.1)) { mousedown = true } } else { if firstClick { form.open() } else { firstClick = true DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { firstClick = false } } if(form.isSelected) { mousedown = false } else { withAnimation(Animation.interpolatingSpring(mass: 2.0, stiffness: 80, damping: 8, initialVelocity: 0).speed(6)) { mousedown = false form.isSelected.toggle() } } } }){} } }\n\nAs you can see in the output, onChanged prints once before the .onDrag event triggers and once after, but never again as I continue dragging. Is there any of way of having these two modifiers work in harmony?\n\nConsole output\n\nnote: I tried but I don't know how to embed the image instead of just showing the link :("
+    }
+}
