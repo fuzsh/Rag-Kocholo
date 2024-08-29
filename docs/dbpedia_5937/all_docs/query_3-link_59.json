@@ -1,0 +1,28 @@
+{
+    "id": "dbpedia_5937_3",
+    "rank": 59,
+    "data": {
+        "url": "https://forums.comodo.com/t/windows-operating-system-keeps-blocking-my-torrent-port/278893",
+        "read_more_link": "",
+        "language": "en",
+        "title": "\"Windows Operating System\" keeps blocking my torrent port",
+        "top_image": "https://forums.comodo.com/uploads/default/original/2X/6/64af5392ec6f64ae1f4634ef11a19c88abf910db.png",
+        "meta_img": "https://forums.comodo.com/uploads/default/original/2X/6/64af5392ec6f64ae1f4634ef11a19c88abf910db.png",
+        "images": [],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2012-04-14T14:31:01+00:00",
+        "summary": "",
+        "meta_description": "I keep getting firewall blocked logs for “Windows Operating System” for udp port 6600. I have this app added to allow this port in network policy , i even tried adding it in svchost, there is no app in my network policy &hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://forums.comodo.com/uploads/default/optimized/2X/6/64af5392ec6f64ae1f4634ef11a19c88abf910db_2_32x32.png",
+        "meta_site_name": "Comodo Forum",
+        "canonical_link": "https://forums.comodo.com/t/windows-operating-system-keeps-blocking-my-torrent-port/278893",
+        "text": "Did you also add it to the Global Rules to allow incoming traffic?\n\nIf you have a deny IP any any rule on the bottom of global rules you need to add a\n\nAllow\n\nIn\n\nUDP\n\nSource port Any\n\nDestination port 6600\n\nSource Any\n\nDestination Any\n\nTo allow this traffic globally.\n\nI deleted my torrent rules and created these based from a thread i found but my firewall kept logging that my torrent app is blocking attempts [at] udp dest address 192.168.1.xxx and dest port 6060, so i had to add an allow one for that and blocks on 6060 are now gone, but it seems as though my torrent client doesnt find even close to the right amount of leechers available, so ul speed is slow and when its faster its just because of one source. In peers i see a lot of times out connecting\n\nWhy is this 192.168.1.xxx(my ipv4address in ipconfig) address needed, if in rules below i used MAC address\n\nIm connected by cable from linksys router.\n\nIm wandering if i need to modify network zones , what should i have in there?\n\nAlso my svchost uses that 192.168.1.xxx\n\nOption 2 - Deny use of privileged ports (Recommended for additional security, but might cause problems due to some ports being blocked)\n\nGo to Firewall->Advanced->Network Security Policy->Global Rules and add the following rule above all blocking (red) rules:\n\nAction: Allow\n\nProtocol: TCP or UDP\n\nDirection: In\n\nDescription: Allow incoming traffic for uTorrent\n\nSource Address: Any\n\nDestination Address: Your IP/MAC or Any\n\nSource Port: 1025-65535\n\nDestination Port: uTorrent-port\n\nNow go to Firewall → Advanced → Network Security Policy → Application Rules, and add these for uTorrent.exe:\n\nRule 1\n\nAction: Allow\n\nProtocol: TCP or UDP\n\nDirection: In\n\nDescription: Allow incoming traffic\n\nSource Address: Any\n\nDestination Address: Your IP/MAC or Any\n\nSource Port: 1025-65535\n\nDestination Port: uTorrent port\n\nRule 2\n\nAction: Allow\n\nProtocol: TCP or UDP\n\nDirection: Out\n\nDescription: Allow outgoing traffic\n\nSource Address: Your IP/MAC or Any\n\nDestination Address: Any\n\nSource Port: 1025-65535\n\nDestination Port: 1025-65535\n\nRule 3\n\nAction: Allow\n\nProtocol: TCP\n\nDirection: Out\n\nDescription: Allow outgoing HTTP-traffic\n\nSource Address: Your IP/MAC or Any\n\nDestination Address: Any\n\nSource Port: 1025-65535\n\nDestination Port: 80\n\nRule 4\n\nAction: Allow\n\nProtocol: UDP\n\nDirection: Out\n\nDescription: Allow DNS-requests\n\nSource Address: Your IP/MAC or Any\n\nDestination Address: Any or your DNS server (can be found by launching cmd.exe and writing ‘ipconfig /all’.\n\nSource Port: 1025-65535\n\nDestination Port: 53\n\nIf you have more than one DNS-server, add a rule for each of them.\n\nRule 5\n\nAction: Block\n\nProtocol: TCP or UDP\n\nDirection: Out\n\nDescription: Block outgoing traffic on privileged ports\n\nSource Address: Your IP/MAC or Any\n\nDestination Address: Any\n\nSource Port: 1-1024\n\nDestination Port: 1-1024\n\nRule 6\n\nAction: Block\n\nProtocol: TCP or UDP\n\nDirection: In\n\nDescription: Block incoming traffic on privileged ports\n\nSource Address: Any\n\nDestination Address: Your IP/MAC or Any\n\nSource Port: 1-1024\n\nDestination Port: 1-1024\n\nRule 5 and 6 will prevent connections to privileged ports from getting logged, so that CFP 3 won’t log a lot of intrusion attempts.\n\nRule 7\n\nAction: Block (mark ‘Log as firewall event if this rule is fired’)\n\nProtocol: IP\n\nDirection: Out\n\nDescription: Block and log outgoing traffic\n\nSource Address: Your IP/MAC or Any\n\nDestination Address: Any\n\nRule 8\n\nAction: Block (mark ‘Log as firewall event if this rule is fired’)\n\nProtocol: IP\n\nDirection: In\n\nDescription: Block and log incoming traffic\n\nSource Address: Any\n\nDestination Address: Your IP/MAC or Any"
+    }
+}
