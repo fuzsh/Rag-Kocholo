@@ -60,9 +60,11 @@ total = 0
 fucked_files = 0
 double_fucked_files = 0
 
+db = 0
+
 for filename in os.listdir('./docs'):
-    if not filename.startswith("yago"):
-        continue
+    # if not filename.startswith("yago"):
+    #     continue
     if not os.path.exists(f"./docs/{filename}/all_docs"):
         continue
     count_files = len(os.listdir(f"./docs/{filename}/all_docs"))
@@ -76,8 +78,8 @@ for filename in os.listdir('./docs'):
                 data = json.load(f)
                 text = data["data"]['text']
                 if text == "" or len(text) < 50 or 'robot' in text or 'captcha' in text:
-                    if 'captcha' in text:
-                        print(data)
+                    # if 'captcha' in text:
+                    #     print(data)
                     local_double_fucked += 1
         except Exception as e:
             # print(e)
@@ -85,11 +87,16 @@ for filename in os.listdir('./docs'):
             continue
     # print(f"{filename},\t {count_files},\t {local_double_fucked}\t, {count_files - local_double_fucked}")
     if count_files - local_double_fucked < 30:
-        print(filename)
+        print(f"{filename},\t {count_files - local_double_fucked}")
         fucked_files += 1
+        if filename.startswith("dbpedia"):
+            db += 1
+
     double_fucked_files += local_double_fucked
     total += count_files
 
 print(f"DBpedia\t\t: {dbPedia} out of 9344, {total} documents fetched")
 print(fucked_files)
 print(double_fucked_files)
+print(total - double_fucked_files)
+print(db)
