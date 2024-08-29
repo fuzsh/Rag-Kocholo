@@ -1,0 +1,36 @@
+{
+    "id": "dbpedia_6118_2",
+    "rank": 42,
+    "data": {
+        "url": "https://retrocomputing.stackexchange.com/questions/8640/were-some-atari-2600-games-written-in-c",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Were some Atari 2600 games written in C?",
+        "top_image": "https://cdn.sstatic.net/Sites/retrocomputing/Img/apple-touch-icon@2.png?v=6b27f39a6023",
+        "meta_img": "https://cdn.sstatic.net/Sites/retrocomputing/Img/apple-touch-icon@2.png?v=6b27f39a6023",
+        "images": [
+            "https://i.sstatic.net/QlVWA.gif?s=64",
+            "https://lh3.googleusercontent.com/-yspgfz81fFw/AAAAAAAAAAI/AAAAAAAAD5o/7CFgAMaSHSE/photo.jpg?sz=64",
+            "https://www.gravatar.com/avatar/1ad3a3966580aff2ac91bd2a7660acd9?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/92f0c7fe372960ea92560487665a8720?s=64&d=identicon&r=PG",
+            "https://retrocomputing.stackexchange.com/posts/8640/ivc/f34f?prg=ff022966-0c10-40da-ba9d-91f7aca96a04"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Aaron Brick"
+        ],
+        "publish_date": "2019-01-02T18:13:47",
+        "summary": "",
+        "meta_description": "I thought all Atari 2600 games had been programmed in 6502/6507 assembly language (plus whatever activated the Stella sound system), but at a party recently, a friend indicated that some 2600 progr...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/retrocomputing/Img/favicon.ico?v=9b6f1e4fd156",
+        "meta_site_name": "Retrocomputing Stack Exchange",
+        "canonical_link": "https://retrocomputing.stackexchange.com/questions/8640/were-some-atari-2600-games-written-in-c",
+        "text": "Moste likely your friend was referring to modern time developments, not contemporary games. While today CC65 does deliver acceptable results for every day jobs, the 6502 isn't exactly C-friendly. C does require a certain memory handling - and quite some RAM as well. To program the 2600 with its bare bone 128 Bytes of RAM is already a tough job in Assembly and much less feasible in C.\n\nIf at all, I can only see some usage in the area of demo-programming, where next to no RAM data is needed, as such code is not driven by variable and interactive data, but runs straight and unmodified ahead.\n\nSo go ahead and call out your friend to give you evidence for his assumption - and what it was exactly about.\n\nBTW: Stella is the code name for the whole 2600 system. The (only) custom chip was called TIA and did not only sound but display as well - under direct CPU control that is.\n\nOnly people who worked for Atari or third-party game developers could say for sure.\n\nFor early development, the history of the 2600 and C don't align very well. Atari began design for the first prototypes of the 2600 began in late 1975, shortly after the 6502 was introduced. C made its first appearance anywhere in 1972 and Kernighan and Ritchie wouldn't publish The C Programming Language until 1978, the year after the 2600 was introduced. Compilers in those days were almost always written to be run on their target platforms, and cross-compilation was a rarity if it existed at all. The first known C compiler that isolated code generation enough to make porting it to other platforms was PCC, which didn't make it out of Bell Labs until 1979 as part of Unix V7.\n\nLater development in C would have been a very remote possibility. In 1983, Manx released Aztec C65, a compiler for the Apple II which produced object code that could, in theory be run on the 2600. Manx warns about the trade-offs of trying to run C on a 6502 in its mini-manual (see section 1.6). It's difficult to imagine that compiled C would be a good choice on a target with such limited memory and no frame buffer. The latter required that video be generated in real time by the processor, leaving fewer cycles available for game play and a hard, 33-millisecond deadline to start generating the next frame of video. If you ever saw black bars at the edges of the screen on a 2600, that was a symptom of the deadline being missed.\n\nRecommended reading: Racing the Beam by Montfort and Bogost.\n\nC didn't have anywhere near the popularity and ubiquity that it does today. As has been mentioned elsewhere, the 6502 is a crummy target for a C compiler, notably with it's sparse, 8 bit register set.\n\nRecall the sparse architecture of the machine: 128 bytes of RAM and 4K of ROM. A 4K assembly language program, with several 8-bit, and a few 16-bit counters or pointers, is not an arduous amount of code for an assembly language programmer. (Yes, there were banked cartridges later, but most of it was for data rather than actual code.)\n\nOne of the key values of a language like C is also portability, something that was simply not a concern here.\n\nFinally, games on systems like the Atari were notorious for their optimizations, and other shenanigans and contortions the developers went through to get their titles crammed in to these creaky, slow boxes. Leveraging the underlying CPU to their full potential required 100% access to it, something that C did not offer. C does not offer access to things like the status registers of the CPU. The coders needed exact cycle timings for certain tasks. Direct access to timers and interrupt handlers, some which may change from scene to scene or even frame to frame. The assembly language developer can write code that \"knew\" exactly what state it was in at all times, and was coded appropriately.\n\nAny high level value that C could have offered was lost not just in lack of access to the CPU, but also just in terms of longer turn arounds and development cycles. C is expensive to compile compared to assembly, and back then, yes, this mattered. A good macro assembler readily takes the sting of using assembly by letting the developer add in higher level constructs (working with structures, working with collections, looping, branching, etc.) or even small DSLs written in macros.\n\nSo, in the end, the cost of C wouldn't have brought enough value to the table for a professional game developer on such limited systems back then."
+    }
+}
