@@ -1,0 +1,35 @@
+{
+    "id": "dbpedia_6876_3",
+    "rank": 30,
+    "data": {
+        "url": "https://stackoverflow.com/questions/11406558/webcast-based-website-in-php",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Webcast based website in php",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://cdn.sstatic.net/Img/teams/teams-promo.svg?v=e507948b81bf",
+            "https://www.gravatar.com/avatar/e4bc727b52a87388397149f5aa25f796?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/qBTEp.jpg?s=64",
+            "https://i.sstatic.net/KgA0X.png?s=64",
+            "https://www.gravatar.com/avatar/e4bc727b52a87388397149f5aa25f796?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/11406558/ivc/c4cd?prg=a89ad4fb-ca95-4338-a17e-519eb13a89e1"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2012-07-10T04:20:54",
+        "summary": "",
+        "meta_description": "I have a client who's requirement is that he wants a website which would be able to stream through uploaded videos through search. And the most demanding requirement is that they have certain event...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/11406558/webcast-based-website-in-php",
+        "text": "As an alternative to Red5 that could be more suitable for what you are trying to do is the Nginx-RTMP module. https://github.com/arut/nginx-rtmp-module If you currently use, or can use Nginx, the module is easy to configure and work with. It can accept and feed live video over RTMP to flash-based players like JWplayer, and simultaneously create HTTP Live Streams for playing on Apple devices (and other devices like ROKU, etc.).\n\nI have it setup on a couple servers, and have been very pleased with the results. It accepts video over RTMP and just does a great job IMHO.\n\nWith Nginx-RTMP, I use scripts that run ffmpeg to stream pre-recorded files \"live\" to the server. And then when we actually want to have a real live video feed, just stop ffmpeg and stream from our live location either with a computer running ffmpeg (like from a studio with a video feed), or with OSBroadcaster on a phone or tablet, or really any software or app that can stream video over RTMP.\n\nYou can automate all this with some PHP back-end, so your pre-recorded material automatically gets stored on the server (Nginx-RTMP can record your stream too) and displayed on the proper page in an HTML5 video element or flash-based video player, or both. And when the live feed is actually live, you can have PHP show a player window on your page that is displaying the live stream.\n\nThis is over-simplified of course, but hopefully you can get a feel for how it works.\n\nSee also How to set up your own private RTMP server using nginx for more info on the Nginx-RTMP module.\n\nAs for camera, it totally depends on the situation, and that's kindof a whole other arena. You could use something like a webcam, or a tablet/smartphone that streams via RTMP, or a professional camera that feeds into a computer running an RTMP client streamer like ffmpeg (I think VLC works too). Or Teradek and some other companies make some little hardware boxes (Teradek Vidiu) that you can plug in a video input and they will encode and stream the video over RTMP to whatever server you specify.\n\nBandwidth depends on a lot of factors: how many viewers you will have, the video quality and resolution, and how many simultaneous streams you need to support (multiple live streams from different locations, etc.)\n\nYour upload bandwidth (camera to your streaming server) can range from 100kbps or so on up to a few Mbps, depending on the requirements for your video. To give you a typical example though, if you are streaming standard definition video at 24-30 frames per second, with a good codec like h.264, you can expect a decent quality stream to take up around 400-700kbps. It can vary a lot from that, but that's a good starting point. If you are sending 720p30, you may want to use about 1-1.5Mbps or so. 1080p30, maybe 1.5-3Mbps, UHD, 5-6Mbps. But like I said your choice of bitrate will vary based on your quality needs.\n\nThen what you stream out, you multiply that rate by the number of viewers that you want to support, add one more for your upload stream, and you have your total bandwidth needed. There are other things to take into consideration, but you have your starting point."
+    }
+}
