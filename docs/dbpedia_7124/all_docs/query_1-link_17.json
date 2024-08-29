@@ -1,0 +1,35 @@
+{
+    "id": "dbpedia_7124_1",
+    "rank": 17,
+    "data": {
+        "url": "https://drupalcommerce.org/questions/7518/how-do-i-change-quantity-widget-label-specific-product-type",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How do I change the quantity widget label for a specific product type?",
+        "top_image": "https://www.drupal.org/files/project-images/commerce-kickstart-robot.png",
+        "meta_img": "",
+        "images": [
+            "https://drupalcommerce.org/sites/default/themes/custom/dctheme/logo.png",
+            "https://drupalcommerce.org/sites/default/files/styles/profile_qa_thumb/public/pictures/picture-3-1635799072.jpg?itok=ba5BuCBP",
+            "https://www.drupal.org/files/project-images/commerce-kickstart-robot.png",
+            "https://commerceguys.com/sites/default/files/cg-twitter-icon.png",
+            "https://commerceguys.com/sites/default/files/cg-facebook-icon.png",
+            "https://commerceguys.com/sites/default/files/cg-linkedin-icon.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "I want to alter / change the label of the quantity widget for a specific product type from 'Enter Quantity' to some other text. Screenshot : http://postimg.org/image/t6s4xoh19/ How can I do it using a hook?",
+        "meta_lang": "en",
+        "meta_favicon": "https://drupalcommerce.org/sites/default/themes/custom/dctheme/favicon.ico",
+        "meta_site_name": "",
+        "canonical_link": "https://drupalcommerce.org/questions/7518/how-do-i-change-quantity-widget-label-specific-product-type",
+        "text": "You're going to need to use hook_form_alter() to change the Add to Cart form based on what product it currently represents. All Add to Cart forms use the same form callback even though they use separate IDs, so you can still use hook_form_FORM_ID_alter():\n\n<?php\n\nfunction example_form_commerce_cart_add_to_cart_form_alter(&$form, &$form_state) {\n\n// Alter code here...\n\n}\n\n?>\n\nWhen the Add to Cart form is built, it will determine the current product represented on the form and store it in the form state using $form_state['default_product'], so you can look at the product type and alter the quantity form element's label accordingly.\n\nI solved this problem by form alter.\n\nLets say form_alter an attribute $form['quantity']['#title'] is altered in another commerce module already. Depending on the weight of the modules your form_alter may get overwritten so the solution is to run it after the form has been built. At this point you want to make sure it runs the alterations in the contributed modules first before your change occurs, then it is best to use #after_build.\n\nSoln :\n\nfunction modulename_form_commerce_cart_add_to_cart_form_alter(&$form, &$form_state, $form_id) {\n\n$line_item = $form_state['line_item'];\n\n$product = commerce_product_load($line_item->commerce_product[LANGUAGE_NONE][0]['product_id']);\n\ndpm($product);\n\nif ($product->type == '') {\n\n// Change the submit button text to more appropriate \"Pay Now\"\n\n$form['submit']['#value'] = t('Pay Now');\n\n$form['#after_build'][] = 'modulename_after_build';\n\n}\n\n}\n\nfunction modulename_after_build($form, &$form_state) {\n\n// Change the quantity title text to more appropriate \"Enter your quantites\"\n\n$form['quantity']['#title'] = t('Enter your quantities');\n\nreturn $form;\n\n}\n\nSmall addition tip to make it work\n\nform_alter of $form['quantity']['#title'] is altered in another commerce module already. Depending on the weight of the modules your form_alter may get overwritten so the solution is to run it after the form has been built.\n\nThis is where the After Build function comes in handy. It allows you to modify the form after the form is built and all the form_alter's have been run. Here is a simple code snippet on how to change the text.\n\nfunction modulename_form_commerce_cart_add_to_cart_form_alter(&$form, &$form_state, $form_id) {\n\n$line_item = $form_state['line_item'];\n\n$product = commerce_product_load($line_item->commerce_product[LANGUAGE_NONE][0]['product_id']);\n\nif ($product->type == '') {\n\n// Change the submit button text to more appropriate \"Pay now\"\n\n$form['submit']['#value'] = t('Pay Now');\n\n$form['#after_build'][] = 'modulename_after_build';\n\n}\n\n}\n\nfunction modulename_after_build($form, &$form_state) {\n\n// Change the quantity title text to more appropriate \"Enter your quanties\"\n\n$form['quantity']['#title'] = t('Enter your quanties');\n\nreturn $form;\n\n}"
+    }
+}
