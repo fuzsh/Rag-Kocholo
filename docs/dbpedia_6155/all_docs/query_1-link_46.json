@@ -1,0 +1,40 @@
+{
+    "id": "dbpedia_6155_1",
+    "rank": 46,
+    "data": {
+        "url": "https://superuser.com/questions/254344/is-there-a-bsd-equivalent-to",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Is there a BSD equivalent to \"!!\"?",
+        "top_image": "https://cdn.sstatic.net/Sites/superuser/Img/apple-touch-icon@2.png?v=e869e4459439",
+        "meta_img": "https://cdn.sstatic.net/Sites/superuser/Img/apple-touch-icon@2.png?v=e869e4459439",
+        "images": [
+            "https://cdn.sstatic.net/Sites/superuser/Img/logo.svg?v=4bc8a703ebac",
+            "https://i.sstatic.net/25Dos.jpg?s=64",
+            "https://www.gravatar.com/avatar/a3736aac450ad59ded1acef8dd9b9d1c?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/731e7de87c241fce562d03b23770b5cf?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/7480425871cb25ff70a67bc43961e3b4?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/7cc8d2e34eab42ce11a15105b8a6e6d0?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/5c115726431faca9e8b9aad6db56c0d0?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/46f4b8ce6f110b2e0c576872884301f0?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/25Dos.jpg?s=64",
+            "https://www.gravatar.com/avatar/9299b6d4a6474723ed0e0e80bf986618?s=64&d=identicon&r=PG",
+            "https://superuser.com/posts/254344/ivc/f1cf?prg=1da67dad-066f-45c9-8c9c-5843dfe4cd62"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2011-03-07T13:57:26",
+        "summary": "",
+        "meta_description": "I often find myself issuing a command that I do not have the proper elevated privileges for. \n\nOn Ubuntu I could use\n\nsudo !!\n\nThis would issue the same command with sudo privileges.  Is there an",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/superuser/Img/favicon.ico?v=4852d6fb3f5d",
+        "meta_site_name": "Super User",
+        "canonical_link": "https://superuser.com/questions/254344/is-there-a-bsd-equivalent-to",
+        "text": "sudo is an independent software package that started development at least a decade before Ubuntu or OpenBSD.\n\nI would suggest that you use OpenBSD's pkg_add to get this onto your system, but OpenBSD's own FAQ for installing a new package has an example which uses sudo, so it should already be installed.\n\nDoes !! work alone (i.e. without sudo)? If not, you may be set up to use a different shell than you use on Ubuntu.\n\nJust to be clear with all the other answers, !! is part of the shell history mechanism. I think the issue isn't with sudo, but with your shell, or more specifically your shell when you are root.\n\nIt's been a long time since I played with any of the BSDs, but they tend to be more 'traditional' UNIXes, meaning they still use a real Bourne shell (read: not as featured as bash) as root's shell. 'Real' Bourne shell in this case meaning no history mechanism. This is for system recovery reasons.(*)\n\nWhen you log into root, you can execute a shell with history, either do exec /bin/bash or exec /bin/tcsh as you wish.\n\nThe old trick used to be to have a root equiv account, usually called 'toor' which had a tcsh or bash login shell, same home dir, and uid 0. You wouldn't sudo to root, you'd sudo toor, and then be in bash. I'm not sure what the new hotness is, maybe\n\n(*) The reason, root's shell is /sbin/sh, and statically linked. Meaning it has the minimum number of dependencies. If your shell is /bin/bash and has library dependencies on /usr, and now /usr is gorked, you have no shell. If your shell is /sbin/sh, then if at least /sbin is mountable, you can do some work.\n\nThis site should be of some help to you: http://linux-bsd-sharing.blogspot.com/2009/03/howto-using-sudo-on-freebsd.html\n\nAlso, on BSD admin tasks are generally taken care of directly from the root user account. On Ubuntu, the root admin account is disabled and all admin tasks are done through the user account and verified ok by the sudo program.\n\nWhen you installed BSD it should have asked you what you want your root password to be, you should be able to login to root using the password you specified. If local root login is disabled in Gnome (or whatever you are using as your desktop), then you can login as root with the command \"su -\" in a terminal and it should ask you for your root password. Once you are logged in as root, you can do anything you want because that account has all privileges.\n\nIt is generally discouraged to login as root and run everything in that manner due to security reasons. Any program you run as root has root privileges. This means if you run a program that was designed to delete everything on your hard drive, it has the permission to do so. That's why you should always be careful when logging into root, just login and do what you need to. When you're done, go back to your user account just to be safe.\n\nAs others have pointed out, the issue is not Linux vs. BSD but which shell you are using. But, as a side note to Rich Homolka's comment, there is a safe way to have a different shell as root when you log into a BSD system. Just add this to the end of your .profile.\n\nbash && exit 0\n\nIf bash fails for any reason you simply drop into sh (don't change it in the master password file of course) and if it succeeds then you are logged out when you exit (log out) from bash.\n\nOpenBSD has its own implementation built into the base system, so if your user is in the /etc/sudoers file, then the problem might be that your shell is probably the default Bourne sh, which does not provide the same functionality you might be used to from Ubuntu.\n\nI believe you can install bash using the command pkg_add -r bash, and then set it with chsh -s /usr/local/bin/bash (I believe that's the correct path, I'm more familiar with FreeBSD, but I think the ports/package system is similar on both)."
+    }
+}

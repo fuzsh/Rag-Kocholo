@@ -1,0 +1,47 @@
+{
+    "id": "dbpedia_6155_3",
+    "rank": 19,
+    "data": {
+        "url": "https://forums.freebsd.org/threads/pkg_bundle-a-proof-of-concept-to-make-relocatable-installs-from-binary-packages.89527/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "pkg_bundle - A proof of concept to make relocatable installs from binary packages",
+        "top_image": "https://forums.freebsd.org/styles/freebsd/xenforo/logo.og.png",
+        "meta_img": "https://forums.freebsd.org/styles/freebsd/xenforo/logo.og.png",
+        "images": [
+            "https://forums.freebsd.org/styles/freebsd/xenforo/freebsd_logo.png",
+            "https://forums.freebsd.org/styles/default/xenforo/xenforo-logo.png",
+            "https://forums.freebsd.org/styles/default/xenforo/add_to_home.gif",
+            "https://opengraph.githubassets.com/77271acd2713498e9b765aebbe97aeff2e5babafbec867431627aec19085e40c/osen/pkg_bundle",
+            "https://github.githubassets.com/favicons/favicon.svg",
+            "https://forums.freebsd.org/styles/default/xenforo/reactions/emojione/handshake.png",
+            "https://secure.gravatar.com/avatar/6b552550673a6a6df3b33364076f8ea8?s=96",
+            "https://forums.freebsd.org/data/avatars/m/42/42923.jpg?1723865058",
+            "https://forums.freebsd.org/data/avatars/m/42/42923.jpg?1723865058",
+            "https://forums.freebsd.org/data/avatars/m/72/72653.jpg?1666728637",
+            "https://forums.freebsd.org/styles/default/xenforo/reactions/emojione/handshake.png",
+            "https://forums.freebsd.org/styles/default/xenforo/reactions/emojione/like-1f44d.png",
+            "https://forums.freebsd.org/data/avatars/m/72/72653.jpg?1666728637",
+            "https://forums.freebsd.org/styles/default/xenforo/reactions/emojione/like-1f44d.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "kpedersen",
+            "OP K kpedersen",
+            "F free-and-bsd"
+        ],
+        "publish_date": "2023-06-28T20:01:57+00:00",
+        "summary": "",
+        "meta_description": "Hello all,\n\nI am often annoyed by all the dependencies pulled in by some large packages that I occasionally use. I basically want to install i.e chromium...",
+        "meta_lang": "en",
+        "meta_favicon": "/styles/freebsd/xenforo/logo.og.png",
+        "meta_site_name": "The FreeBSD Forums",
+        "canonical_link": "https://forums.FreeBSD.org/threads/pkg_bundle-a-proof-of-concept-to-make-relocatable-installs-from-binary-packages.89527/",
+        "text": "Hello all,\n\nI am often annoyed by all the dependencies pulled in by some large packages that I occasionally use. I basically want to install i.e chromium and all of its dependencies in i.e /opt/chromium and that way I can have different versions and can simply delete the directory when no longer needed.\n\nSo, on OpenBSD I put together a proof of concept (actually I have used it for a while now, I just recently cleaned up the scripts a little) to generate relocatable package bundles for pretty much anything with minor tweaks (few binary patches involving pledge or gtk plugins + environment variables). If you are interested, please have a look through the project page at how this works and can be used:\n\nGitHub - osen/pkg_bundle: Relocatable package bundles for OpenBSD\n\nRelocatable package bundles for OpenBSD. Contribute to osen/pkg_bundle development by creating an account on GitHub.\n\nIn short, the following would create a folder containing Chrome and all dependencies that you can move wherever you like and finally run it:\n\nCode:\n\n$ pkg_bundle chromium # cp -RP chromium /opt/chromium110 $ /opt/chromium/chromium\n\nDon't think of it like flatpak, snaps or any of that weird Linux service stuff; think of it more as the traditional Mac OS approach where you could just simply drag and drop it to the Applications folder and that would be it; ready to go. Or at the very least Solaris style prefixes such as /opt/csw, /usr/sfw, /usr/X11R6, etc allowing different versions of packages in separate prefixes.\n\nNow for the poll. How many people would find this useful on FreeBSD? I tend to use FreeBSD more for servers which has simpler packages compared to GUI stuff but I am actually very keen to see if the same process works on FreeBSD, including making a relocatable Xorg in i.e /opt/xorg.\n\nThanks (never run a poll before... exciting). If you specify \"No\", please do share your reasons. Or just everyone's general thoughts.\n\nBut it really sounds like one of those?\n\nFlatpak and snaps provide runtime layers (and even services) to deal with the application images. All pkg_bundle will do is the raw software + deps in a directory and nothing more (i.e no additional sandboxing). So issues with two snaps/flatpak software trying to communicate (i.e web browser and paint program) is not an issue with what I propose. The best thing is that FreeBSD has compat libraries for libc, so in theory the bundles should be portable across major FreeBSD versions!\n\nThis looks like bad example (that made me shiver) as those (ugly) things are completely different to what you are proposing (if I understand it correctly).\n\nAm I the only one on this planet who appreciated the Solaris approach!\n\nI have updated that section to prioritize the macOS idea because you are right, that is a closer comparison.\n\nAs for the poll, not sure if I really need this, but it would be interesting as part of pkg itself.\n\nIt will be tightly integrated with pkg's repose as a way of fetching the packages and dependencies (check how I do this on OpenBSD, it is gross!). I think this will work quite smoothly. As for part of pkg itself, heh, perhaps one day if people like the idea and it proves to be scalable."
+    }
+}

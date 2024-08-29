@@ -1,0 +1,44 @@
+{
+    "id": "dbpedia_6299_1",
+    "rank": 19,
+    "data": {
+        "url": "https://videogameperfection.com/forums/topic/higher-sampling-resolution-for-480i576i480p576p/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Higher sampling resolution for 480i/576i/480p/576p",
+        "top_image": "https://videogameperfection.com/wp-content/uploads/2017/11/cropped-vgp_logo_2.png",
+        "meta_img": "https://videogameperfection.com/wp-content/uploads/2017/11/cropped-vgp_logo_2.png",
+        "images": [
+            "https://videogameperfection.com/wp-content/uploads/2019/09/vgp_logo_1-small.png",
+            "https://videogameperfection.com/wp-content/uploads/2019/09/vgp_logo_1-small.png",
+            "https://www.gravatar.com/avatar/6b69d73fab8abfd193baedf44f190037?s=14&r=g&d=retro",
+            "https://secure.gravatar.com/avatar/?s=80&d=retro&r=g",
+            "https://www.gravatar.com/avatar/9f5ed96e0ad5a30da4e734185b7730ab?s=80&r=g&d=retro",
+            "https://secure.gravatar.com/avatar/?s=80&d=retro&r=g",
+            "https://www.gravatar.com/avatar/6b69d73fab8abfd193baedf44f190037?s=80&r=g&d=retro",
+            "https://secure.gravatar.com/avatar/?s=80&d=retro&r=g",
+            "https://www.gravatar.com/avatar/278f945385c49e82463d56d5e84b5e5a?s=80&r=g&d=retro",
+            "https://secure.gravatar.com/avatar/?s=80&d=retro&r=g",
+            "https://secure.gravatar.com/avatar/?s=80&d=retro&r=g",
+            "https://www.gravatar.com/avatar/278f945385c49e82463d56d5e84b5e5a?s=80&r=g&d=retro",
+            "https://www.gravatar.com/avatar/5af272d9176486154a42cb5cc89af777?s=80&r=g&d=retro",
+            "https://www.gravatar.com/avatar/6b69d73fab8abfd193baedf44f190037?s=80&r=g&d=retro",
+            "https://videogameperfection.com/wp-content/plugins/cookie-law-info/legacy/public/images/logo-cookieyes.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2017-03-02T17:46:48+00:00",
+        "summary": "",
+        "meta_description": "NewHome &rsaquo; Forums &rsaquo; OSSC, OSSC Pro and DExx-vd isl &rsaquo; OSSC &#8211; Feature Requests &rsaquo; Higher sampling resolution for &hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://videogameperfection.com/wp-content/uploads/2017/11/cropped-vgp_logo_2-32x32.png",
+        "meta_site_name": "VideoGamePerfection.com",
+        "canonical_link": "https://videogameperfection.com/forums/topic/higher-sampling-resolution-for-480i576i480p576p/",
+        "text": "As of now, 480i, 576i, 480p and 576p are limited to a horizontal sampling resolution of 720 pixels.\n\nUsing output modes that generate signals with 1440 horizontal pixels (e.g. 480p Line2x) doesn’t double the sampling resolution; instead the 720 pixels are simply dublicated.\n\nThis is fine for high quality signals that have a horizontal resolution of exactly 720 pixels; however, for low quality signals (the Wii’s 480p output comes to mind) and games that run with reduced horizontal resolutions (e.g. God of War, Final Fantasy XII), this is far from optimal.\n\nMeanwhile, 240p/288p Line5x sports horizontal sampling resolutions of up to 1920 pixels, thereby enabling perfect sampling of each and every signal.\n\nWhy isn’t that a thing for 480i, 576i, 480p and 576p?\n\nYou can change the horizontal resolution for every mode in the advanced timing tweaker so they are not limited to 720 pixels. I believe the pixel doubling with 480pX2 was done because the pixel clock needed for 1280/1440×960 was too high for the OSSC at that time.\n\nLineX4 for 480i/576i is already on the requested features list.\n\n“You can change the horizontal resolution for every mode in the advanced timing tweaker so they are not limited to 720 pixels.”\n\nYeah, one should assume that could help, and indeed I tried (before opening this thread). However, as soon as I cross certain thresholds (depending on output mode something around H. active = 726-750), the image on my monitor drops out. There seems to be nothing I can do to fight that (e.g. playing with H. samplerate, backporch and synclen).\n\nAlso, increasing H. active actually doesn’t seem increase the sampling resolution under these circumstances; instead of getting a higher resolution, the image just seems to shift.\n\nThat’s because H.Active doesn’t increase sampling resolution. That would be H.Samplerate only. If you want to double the sampling resolution and display it in your intended way, you double both H.Samplerate and H.Active (and obviously BackP and sync needs to be appropriately adjusted). But I don’t know if this really works for 480px2 mode, because I guess the pixeldoubling would need to be turned off then (I never used this mode so I’m not sure).\n\nAlso, it doesn’t mean you actually get higher resolution, because the standard DAC rate of 480p console output is 858 total (of which active area is 720/704/640 depending on other factors). But it might look better because of horizontal blurring (every other sample will be taken on the border between two pixels).\n\nEDIT: reading your original post again, I think I might have misunderstood what you actually want to do…\n\nAccording to your instructions, I doubled H. samplerate and H. active to get an output resolution / a sampling resolution of 1440 horizontal pixels for 576i. The result was the usual: No picture.\n\nLuckily I decided on a whim to switch 480i/576i proc from Line2x to Passthru and bam – I got a picture!!!! Yay!\n\nNow what I’d really like to see would be a slight bump to the upper limit of H. samplerate, as the current maximum of 2300 falls 4 points short of what would be needed to get a sampling resolution of 1920 pixels for 576i (864/720*1920=2304 I guess).\n\nNow off to the Wii – I’m really curious if increasing the sampling resolutions helps its image quality in 480p mode (provided I get a picture…).\n\nEDIT: Nah, not really, even though I bumped up res to a full 1920 pixels (works out for 480p, as H. samplerate only has to be 2288 there).\n\nAnd again, this only worked in Passthru mode.\n\nI doubt you get any real quality improvements from increasing sampling rate for Wii since it most likely uses 27MHz pclk and standard timings for all commercial games (homebrew/emulators may use special timings, though). By bumping up sampling rate from native (858 for 480i/p standard), the result will just intergrate more of the characteristics of the underlying analog signal. It might soften the image which could be subjectively positive, and some displays may apply less processing if horizontal width is higher, but it won’t recreate Wii framebuffer content as faithfully as native sampling.\n\nSamplerate adjustment has a limited range (typically from 0.5x to 2x from the default) in all but passthru mode since FPGA PLL’s lock range is not unlimited."
+    }
+}

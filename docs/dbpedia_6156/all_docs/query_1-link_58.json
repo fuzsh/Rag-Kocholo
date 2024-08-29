@@ -1,0 +1,35 @@
+{
+    "id": "dbpedia_6156_1",
+    "rank": 58,
+    "data": {
+        "url": "https://www.vincentdelft.be/post/post_20210102",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Vincent's blog",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://www.vincentdelft.be/static/img/linkedin-g.png",
+            "https://www.vincentdelft.be/static/img/sf.png",
+            "https://www.vincentdelft.be/static/img/rss.jpg",
+            "https://www.vincentdelft.be/static/post/post_20210102/color.png",
+            "https://www.vincentdelft.be/static/img/thumbs-up.png",
+            "https://www.vincentdelft.be/static/img/thumbs-down.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "",
+        "meta_favicon": "",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "Introduction\n\nI'll list some of my tips and tricks around OpenBSD.\n\nI'm using OpenBSD as daily machine since +10 years now and I'm still amazed how simple and powerful this system is.\n\nSo most of the elements listed here under will match KSH on OpenBSD. I'm using Openbox as window manager, xterm as terminal and neovim as editor.\n\nIf you want to re-use some of those ideas, you will have to adapt it to your own config.\n\nPath organization\n\nOn OpenBSD folder's organization is :\n\n- Base applications in / - Packages in /usr/local\n\nSo I push all my own application is ~/.local\n\nSo, one of my first line in ~/.profile is the following\n\nPATH=$HOME/.local/bin:$PATH\n\nAn other important element for Windows Manager and xdg's tool (pkg_add xdg-utils) is to find .desktop files in :\n\n~/.local/share/applications\n\nXterm window title\n\nI often have lot of xterm windows open. Generally they are split between the Openbox virtual desktops depending on the scope/activity.\n\nBut even that, I have lot of windows. So, I like to change their window title, in order to retrieve them more easily when doing a Alt-TAB or by checking the task bar.\n\nTo modify the window's title of xterm, here after a simple command I've added in my .profile:\n\nset_title() { echo -n \"\\033]0;$1\\007\" }\n\nWhen you want to change the window's title, you just have to type in the window where you want a new title:\n\nset_title \"dev branch xxx\"\n\nSome colors in ls\n\nTo avoid the monochrome of xterm, I'm using colorls (pkg_add colorls).\n\nThen in .profile, I put:\n\nexport LSCOLORS=gxfxcxdxbxegedabagacad alias ls='colorls -GF'\n\nThe first line defines the color to use in the different situation. With colorls we have 11 different situations (directory, link, socket, pipe, exe, ...). For each of those 11, you must provide the foreground color and the background color.\n\nThe second line is just to over-write the standard /bin/ls command. The -G is to use the defined colors, with -F colorls adds some visual characters to differentiate folders, executable, ...\n\nOther colors for the battery status\n\nAs daily machine, I have a laptops, which travel a lot. So I need to know the exact state of the battery. This information is displayed on my status bar. But I do not look it so frequently. So, I prefer to have this information in my preferred shell.\n\nI'm using the following script from my .profile file:\n\nbattery() { local bat=\"\" local level=\"\" local charg=\"\" bat=$(apm -b 2>/dev/null) if [ -n \"$bat\" -a \"$bat\" -lt \"4\" ]; then level=$(apm -l 2>/dev/null) charg=$(apm -a 2>/dev/null) if [ -n \"$charg\" -a \"$charg\" -eq \"1\" ]; then #charging print -- \"\\033[01;32m$level%\\033[00m\" else if [ \"$level\" -lt \"20\" ]; then #print red print -- \"\\033[01;31m$level%\\033[00m\" else #print blue print -- \"\\033[01;34m$level%\\033[00m\" fi fi else #no battery print -- \"\" fi }\n\nIt does report the battery status, if there is one, with 3 colors: green when the power cable is connected, blue when the battery is in good state, red when the battery is bellow 20%.\n\nTo have such information directly in my shell, I'm using it in PS1:\n\nexport PS1='$(battery)\\h:\\w\\$ '\n\nBy doing this, battery's usage is refreshed each time I press \"enter\".\n\nThe other parameters of PS1 does not provide colors, they display hostname \"\\h\", folder \"\\w\" and default prompt \"\\$\".\n\nHere after a print screen with colorls showing different type of files. Note that I've changed the window's title ;-)\n\nCompletions\n\nIt's frustrating to type keywords completely, so I'm a big fan of the completion feature of KSH.\n\nIt's really easy to configure: just create an array with the elements you have to select. Then you just have to type TAB to have the relevant choice displayed in front of you.\n\nI group them by command.\n\n# ssh, scp set -A SSH_KNOWN_HOSTS ~/.ssh/known_hosts if [ -f /etc/ssh/ssh_known_hosts ]; then SSH_KNOWN_HOSTS=\"${SSH_KNOWN_HOSTS[@]} /etc/ssh/ssh_known_hosts\" fi HOST_LIST=$(awk '{split($1,a,\",\"); gsub(\"].*\", \"\", a[1]); gsub(\"\\[\", \"\", a[1]); print a[1] \" root@\" a[1]}' $SSH_KNOWN_HOSTS | sort | uniq) set -A complete_ssh -- $HOST_LIST set -A complete_scp -- $HOST_LIST set -A complete_ifconfig_1 -- $(ifconfig | grep ^[a-z] | cut -d: -f1) set -A complete_signify_1 -- -C -G -S -V set -A complete_signify_2 -- -q -p -x -c -m -t -z set -A complete_signify_3 -- -p -x -c -m -t -z set -A complete_sndioctl_1 -- $(sndioctl | cut -d= -f 1) set -A complete_chown_1 -- $(users) alias drcctl=\"doas rcctl\" set -A complete_drcctl_1 -- get getdef set check reload restart stop start disable enable order ls set -A complete_drcctl_2 -- $(/bin/ls /etc/rc.d)\n\nThe first lines allow me to list all known hosts from known_hosts files.\n\nThe next group display possible interfaces on my machine for the ifconfig command.\n\nThe next group is to simplify the usage of signify, per type of command.\n\nFor sndioctl it display the possible parameters we can change.\n\nfor chwon's command, completion display the known users on my machine.\n\nThe last group of command concerns rcctl. Since I'm never using \"root\", I've created a drcctl command in order to have the usual commands as 1st parameter, then the list of possible daemon available on my machine.\n\nWith such completion, I'm no more forced to type the full list of parameters.\n\nFor example, if I type:\n\nifc \"TAB\" i \"TAB\" scan, I will execute the command ifconfig iwm0 scan drc \"TAB\" sta \"TAB\" pos \"TAB\", will become doas rcctl start postgresql\n\nConclusion\n\nVery simple tricks with facilitate the usage of a system like OpenBSD and KSH"
+    }
+}

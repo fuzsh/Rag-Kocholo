@@ -1,0 +1,46 @@
+{
+    "id": "dbpedia_6155_0",
+    "rank": 74,
+    "data": {
+        "url": "https://mcj.sourceforge.net/installation.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Getting and Installing Xfig",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://mcj.sourceforge.net/images/xfig-title.png",
+            "https://mcj.sourceforge.net/images/blueramp.png",
+            "https://mcj.sourceforge.net/images/blueramp.png",
+            "https://mcj.sourceforge.net/images/redball.png",
+            "https://mcj.sourceforge.net/images/redball.png",
+            "https://mcj.sourceforge.net/images/redball.png",
+            "https://mcj.sourceforge.net/images/redball.png",
+            "https://mcj.sourceforge.net/images/redball.png",
+            "https://mcj.sourceforge.net/images/redball.png",
+            "https://mcj.sourceforge.net/images/redball.png",
+            "https://mcj.sourceforge.net/images/redball.png",
+            "https://mcj.sourceforge.net/images/redball.png",
+            "https://mcj.sourceforge.net/images/redball.png",
+            "https://mcj.sourceforge.net/images/redball.png",
+            "https://mcj.sourceforge.net/images/redball.png",
+            "https://mcj.sourceforge.net/images/redball.png",
+            "https://mcj.sourceforge.net/images/redball.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "",
+        "meta_favicon": "",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "Getting and Installing Xfig and Fig2dev\n\nYou need the fig2dev program in addition to xfig to be complete. Xfig saves figures in its own, proprietary .fig format. The fig2dev program translates the .fig files to various languages and formats such as PostScript, png, jpeg, pstricks, tikz, etc. Fig2dev allows you to print and export figures.\n\nMost probably, xfig and fig2dev are available as pre-built (binary) packages using the package or software manager of your operating system. You will have to install both the xfig as well as the fig2dev or transfig package. Until about 2016, the fig2dev package was called transfig.\n\nBinary packages of xfig and fig2dev (or transfig) are available for a number of Linux operating systems (debian, ubuntu, fedora, centos, suse, arch, etc.), some BSD's (netbsd, openbsd, freebsd), and for Darwin (fink, macports, brew).\n\nFor Windows, xfig can run under cygwin. Xfig and fig2dev are available as cygwin packages. Fig2dev can probably be compiled with VisualStudio.\n\nInstalling Other Software\n\nIn addition to xfig and fig2dev, it is very useful to have\n\nghostscript (the gs command) and one out of the\n\nnetpbm, imagemagick or graphicsmagick packages installed.\n\nXfig will call ghostscript to display postscript or pdf files embedded as a picture.\n\nFig2dev will need ghostscript to be able to export to pdf and to the bitmap formats (gif, jpeg, tiff, png, etc.). For some bitmap formats, fig2dev will try to call programs from either the netpbm, imagemagick or graphicsmagick packages to produce smaller output files.\n\nGetting and Installing from Sources\n\nYou can get the sources for xfig and fig2dev from https://sourceforge.net/projects/mcj. Files such as xfig+fig2dev-3.2.Xx.tar.xz contain the sources for both programs, while xfig-3.2.Xx.tar.xz and fig2dev-3.2.Xx contain the sources for xfig and fig2dev, respectively.\n\nUncompress and untar the archives (tar xaf *.tar.xz or tar xJf *.tar.xz), navigate into the base directory, e.g.,\n\ncd fig2dev-3.2.??\n\nconfigure, build and install the program:\n\n./configure\n\nmake\n\nmake install\n\nSee the INSTALL files of xfig and fig2dev for further instructions. Especially xfig needs some further options to ./configure.\n\nTo build xfig, the minimum requirements are the runtime libraries and the header files for libx11, libxt, libxaw (or libxaw3d), libxi, and libxpm. For fig2dev, the zlib (zlib1g) runtime libraries and development (header) files are needed. Optionally, the png, jpeg and tiff libraries are recommended for reading and displaying image files in xfig. Fig2dev will need the png library to export .fig files containing a png image to postscript, pdf or any image format.\n\nInstalling Ghostscript's Type 1 fonts under X\n\nYou can use Ghostscript's high quality Type 1 fonts on your X server (and therefore in xfig). Copy the necessary files from Ghostscript's fonts directory to /usr/X11R6/lib/X11/fonts/Type1/ (or wherever your X server Type 1 fonts are).\n\n$ cp /usr/share/ghostscript/fonts/*l.pfb /usr/X11R6/lib/X11/fonts/Type1\n\nAppend the file /usr/share/ghostscript/fonts/fonts.scale to Type1/fonts.scale. The first line in the latter file contains is the number of fonts listed in that file. Change that number to include the additional fonts.\n\nNow run mkfontdir(1) to update the font database:\n\n$ mkfontdir\n\nIf your operating system has the chkfontpath command, alternative is to add the Ghostscript font directory to the X server font path:\n\nchkfontpath -a /usr/share/ghostscript/fonts/fonts/\n\nIn either case, if your X-server is running already you have to tell it to reread the font databases with xset(1):\n\n$ xset fp rehash\n\nRelated Software\n\nGhostScript\n\nxfig will invoke GhostScript (the gs command) when displaying an imported PostScript image or when exporting to pdf or any bitmap format.\n\nAutoTrace\n\nConverts bitmap to vector graphics - has a Fig file output driver. Available from http://autotrace.sourceforge.net. Written by Martin Weber.\n\nchemtool\n\nA chemical structure editor for X11 available from http://ruby.chemie.uni-freiburg.de/~martin/chemtool/chemtool.html that writes Fig output (and relies on fig2dev for anything more fancy than xbm).\n\nfigbuild\n\nfigbuild reads xfig files (Version 3.x, tested with 3.1, 3.2) plus its own config file for heights, and generates a Radiance input file. Written by Peter Apian-Bennewitz, then at Fraunhofer ISE, Germany. See http://www.pab-opto.de/progs/figbuild\n\nGIMP\n\nA comprehensive image manipulation program, GIMP (Gnu Image Manipulation Program) is freely available from http://www.gimp.org/.\n\ngnuplot\n\ngnuplot is a plotting package which can output in Fig and other formats. The official distribution site is http://www.gnuplot.info/.\n\nhp2xx\n\nhp2xx can convert HP-GL files into other formats such as PostScript, LaTeX or Fig. It is available from https://www.gnu.org/software/hp2xx.\n\nMsphinx\n\nA friendly package to handle satellite images. It can directly link to Xfig. Find it at: https://www-loa.univ-lille1.fr/informatique/logiciels/Msphinx.html.\n\nnetpbm\n\nfig2dev will invoke the appropriate command from the netpbm package when exporting figures to bitmap formats. netpbm is available from https://sourceforge.net/projects/netpbm/, see also http://netpbm.sourceforge.net.\n\nplotutils (GNU)\n\nincludes an application for XY plotting (graph), a plot filter (plot), a Tektronix translator (tek2plot), a program for displaying font character maps (plotfont), and a library for drawing 2-D vector graphics (libplot), and a translator to Fig format (plot2fig). By Robert S. Maier <rsm@math.arizona.edu>. See https://www.gnu.org/software/plotutils.\n\npstoedit\n\npstoedit can convert PostScript files into Fig format. It is available from https://pstoedit.sourceforge.io, see also http://pstoedit.net.\n\nxfigbar and xfigpie\n\nTwo C programs to produce bar and pie charts as Fig files. Written by John Conover <john@johncon.johncon.com>, these programs are available at: http://www.johncon.com/john/archive/xfigutilities.tar.gz\n\nxpaint\n\nxpaint is a painting program which runs under X11. It is available from https://sourceforge.net/projects/sf-xpaint/files/sf-xpaint, see http://sf-xpaint.sourceforge.net.\n\nxv\n\nxv can be used to display images in various formats and allows some editing of those images (cropping, color editing scaling/rotating etc). By default, xfig will invoke xv when the Edit Image button is pressed in the edit PICTURE object panel. xv is shareware and is available from http://www.trilon.com/xv.\n\n[ Contents | Introduction | Credits ]"
+    }
+}

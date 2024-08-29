@@ -1,0 +1,44 @@
+{
+    "id": "dbpedia_6147_3",
+    "rank": 27,
+    "data": {
+        "url": "https://oracle-base.com/blog/2008/01/14/sentrigo-hedgehog/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "The ORACLE-BASE Blog",
+        "top_image": "",
+        "meta_img": "",
+        "images": [
+            "https://secure.gravatar.com/avatar/1303fb82948d14e4cd09c2b15a0d4f6d?s=42&d=mm&r=g",
+            "https://secure.gravatar.com/avatar/1303fb82948d14e4cd09c2b15a0d4f6d?s=49&d=mm&r=g",
+            "https://secure.gravatar.com/avatar/?s=42&d=mm&r=g",
+            "https://secure.gravatar.com/avatar/?s=42&d=mm&r=g",
+            "https://secure.gravatar.com/avatar/1303fb82948d14e4cd09c2b15a0d4f6d?s=42&d=mm&r=g",
+            "https://secure.gravatar.com/avatar/?s=42&d=mm&r=g",
+            "https://secure.gravatar.com/avatar/1303fb82948d14e4cd09c2b15a0d4f6d?s=42&d=mm&r=g",
+            "https://secure.gravatar.com/avatar/?s=42&d=mm&r=g",
+            "https://secure.gravatar.com/avatar/?s=42&d=mm&r=g",
+            "https://oracle-base.com/blog/wp-content/uploads/2015/09/youtube-150.jpg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "hedgehog",
+            "oracle",
+            "sentrigo"
+        ],
+        "tags": null,
+        "authors": [
+            "Tim",
+            "Author Tim"
+        ],
+        "publish_date": "2008-01-14T00:00:00",
+        "summary": "",
+        "meta_description": "During OpenWorld this year I bumped into a guy called Slavik Markovich from Sentrigo. We chatted about a couple of things and he gave me his card. That's when I realized Sentrigo were the company who'd been advertising quite heavily through Google Ads on many Oracle sites, including my own. I'm not really into reviewing",
+        "meta_lang": "en",
+        "meta_favicon": "",
+        "meta_site_name": "",
+        "canonical_link": "https://oracle-base.com/blog/2008/01/14/sentrigo-hedgehog/",
+        "text": "During OpenWorld this year I bumped into a guy called Slavik Markovich from Sentrigo. We chatted about a couple of things and he gave me his card. That’s when I realized Sentrigo were the company who’d been advertising quite heavily through Google Ads on many Oracle sites, including my own.\n\nI’m not really into reviewing products unless they really jump out at me, but Slavik seemed like a nice guy so I thought I’d take a look at what Sentrigo were doing. After returning to the UK I downloaded their Hedgehog product, but never got round to using it. The website says,\n\n“Hedgehog: Real-time database monitoring, auditing and breach prevention”\n\nSince then I’ve had a number of phone calls from their marketing department asking how I got on with the product, to which I’ve been replying, “I haven’t installed it yet.” 🙂\n\nWell, today I finally got round to installing the Enterprise Product on an Oracle Enterprise Linux (OEL) 5 virtual machine running an 11g database. You have to install a server package, plus a sensor for each host you want to monitor. As this was only a test I installed the server and sensor packages on the same VM as my database. The installations went smoothly. All you have to do is execute a “.bin” file for each package.\n\nOnce the installation was complete I hit my first minor issue. How do you get into the product?\n\nThe installation didn’t give me any clue about the command or URL I should use to access the product. I did a search on the OS using “find / -name sentrigo” and found a directory called “/usr/local/sentrigo-server”, so I figured that was a place to start. A quick look in the “conf/server.xml” file told me port 8080 was used for non-SSL connections, so I pointed my browser at “http://oel5-11g.localdomain:8080” and I had a log in screen. Later I noticed the help text that comes with the product contained the default URL information, but as this is only available once you’ve logged in, including it in the installation output would have been a nice touch.\n\nThat’s when I hit my second minor issue. What do you log in as?\n\nI tried admin/admin and got in. 🙂 The help text (available after you’ve logged in 😉 ) suggests you use the username/password entered during the installation. I assume the Windows installation includes this, but the Linux one certainly doesn’t. Once again, a message in the installation output telling you the default login credentials would have been nice. Either that, or put a link the help from the login screen.\n\nSo, what does it do?\n\nThe product contains a whole bunch of predefined rules for situations that Sentrigo believe represent a risk to your database. It also allows you to define your own rules using a rules wizard. For example, you may create a simple rule that says if the terminal accessing the database doesn’t equal “X”, this constitutes a breach. The rules can be as simple or complicated as you wish. The server then monitors your databases via the sensors and logs alerts when any of the rules have been broken. You can view the alerts through the server application, or have them emailed to you.\n\nWhat do I think of it?\n\nThat’s a little difficult because I couldn’t get it to monitor my database (see update at bottom of post). The server was running fine. The sensor was running fine. The database connection information was fine. Even so, the database remained in the “Unmonitored” state. I tried the Standard Product also, but got the same result. Even so, I will make a few comments from my very limited use of the product:\n\nIt’s a neat idea.\n\nIt looks really nice.\n\nThe response to action buttons was not always clear. You hit the save button on some screens and nothing seems to happen. There is no alteration to the screen or message to say your changes have been saved. A few times I found myself clicking the Save button several times not knowing if the changes had taken effect. It may sound a little basic, but a “Your changes have been saved” message is sometimes quite useful, if a little ugly.\n\nI have no idea why my database wasn’t monitored. At the time of writing the Supported Configurations and FAQ pages on the website were not available and I could see nothing in the help file. It might be as simple as 11g is not supported or a problem with my VM, but I have no evidence for either of these (see update at bottom of post).\n\nIt would be nice if the installation listed the URLs to access the product and the default login credentials somewhere near the bottom of the output. Maybe the default URLs and login details are available on the website normally, but they weren’t today.\n\nIt would be good to see a review of this product by an expert in the security field, like Pete Finnigan. It would also be nice to see some comparison between this product and the notification rules of Oracle Enterprise Manager Grid Control, but I don’t think I’m really the guy to do this.\n\nI guess it would also be nice to see a working version of the product, but I don’t know if I’m going to spend any more time on this in the near future. I’m already in the weeds and this isn’t really top of my list. I might just look out for the Sentrigo stand at OpenWorld next year. 🙂\n\nCheers\n\nTim…"
+    }
+}
