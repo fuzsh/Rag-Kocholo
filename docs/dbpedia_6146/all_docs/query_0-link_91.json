@@ -1,0 +1,37 @@
+{
+    "id": "dbpedia_6146_0",
+    "rank": 91,
+    "data": {
+        "url": "https://securosis.com/blog/database-security-fundamentals-auditing-events/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Database Security Fundamentals: Auditing Events",
+        "top_image": "https://securosis.com/wp-content/uploads/2023/12/favicon-32x32-1.png",
+        "meta_img": "https://securosis.com/wp-content/uploads/2023/12/favicon-32x32-1.png",
+        "images": [
+            "https://securosis.com/wp-content/uploads/2023/12/logo-300x70.png",
+            "https://secure.gravatar.com/avatar/b353f43ae244a8b02ad5ca8d4169a332?s=75&d=mm&r=g",
+            "https://secure.gravatar.com/avatar/6706260e885493dd8bd67ad0482f5e44?s=75&d=mm&r=g",
+            "https://securosis.com/wp-content/uploads/elementor/thumbs/dinosaur-sidebar-qh1712cze86e8gyk942e4ye96stvtwwxoyds5y43jk.png",
+            "https://securosis.com/wp-content/uploads/2023/12/blogs.png",
+            "https://securosis.com/wp-content/uploads/2023/12/logo-csa.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Adrian Lane"
+        ],
+        "publish_date": "2010-04-22T00:33:30+00:00",
+        "summary": "",
+        "meta_description": "I realized from my last post that I made a mistake. In my previous post on Auditing Transactions, attempting to simplify database auditing, I instead made it more complicated. What I want to do is to differentiate between database auditing through the native database transactional audit trail, from other forms of logging and event collection. …",
+        "meta_lang": "en",
+        "meta_favicon": "https://securosis.com/wp-content/uploads/2023/12/favicon-32x32-1.png",
+        "meta_site_name": "Securosis",
+        "canonical_link": "https://securosis.com/blog/database-security-fundamentals-auditing-events/",
+        "text": "I realized from my last post that I made a mistake. In my previous post on Auditing Transactions, attempting to simplify database auditing, I instead made it more complicated. What I want to do is to differentiate between database auditing through the native database transactional audit trail, from other forms of logging and event collection. The reason is that the native database audit trail provides a sequence of associated events, and whether and when those events were committed to disk. Simple events do not provide the same degree of context and are not as capable of providing database state. If you need application context and state – perhaps for Sarbanes-Oxley – you need the audit log. Make no mistake: there are simpler and less invasive ways of collecting data. They also provide an alternative – and in some cases clearer – picture of events. For example, it’s a heck of a lot easier to get data from syslog that native audit. And if all you are interested in is when patches are installed, syslog is a better source of information. If you are only interested in failed login attempts, a login trigger is far more efficient.\n\nThe entire purpose of this Database Security Fundamentals series is to create a set of steps, which can each be performed in about an afternoon’s time, to secure your database. I believe the entire sequence can be completed in a week. My goal is to provide clarity and simplicity for database and IT administrators who do not have time to learn and deploy advanced security measures, and are instead interested in raising the security bar without spending weeks or months on the project.\n\nSo I want to step back and clarify that the last post is specifically for at those who must use native database audit, primarily to populate reports or fulfill regulatory controls, with security as a secondary goal. And yes, compliance of some sort has become a fundamental requirement for the majority of DBAs. For the rest of you, we’ll dig into simple event collection for security events. If you are interested in a few simple events, but not enough to justify the burden of audit, this phase will be more useful to you.\n\nDefine events: The goal here is to figure out what you need, or what others want from you. Installation of patches, alteration of specific permissions settings, granting of public roles, insertion of stored procedures, ad-hoc database access, use of management tools like Toad, adding views, 3 or more failed login attempts, and just about anything involving DBA capabilities are common concerns. These are all simple events with frequency rates low enough not to overwhelm you.\n\nDetermine collection methods: Based on which events you want, select a data collection method or two that gather the data you need. There are a lot of ways to gather event data. System tables, command line tools, triggers, syslog, trace options, etc.\n\nWrite scripts: To make this easier on yourself script your queries, or turn them into stored procedures, or both. Create the scripts to collect the events and, if needed, filter out what you don’t need. Use whatever scripting language you are comfortable with. Keep in mind that it is often useful to have the scripts make follow-up queries to reference other data sources, and being able to recursively gather additional information based upon simple if-then or where comparisons on data will save you a lot of work. User permission mapping is one such example, as the groups and roles a user belongs to could be a complex set of queries, depending on which platform you are using. You may want to send yourself an email for more critical events that need urgent attention.\n\nImplement: Deploy your scripts and test. Annoying though it may be, you will want to set up a specific user account with just enough privileges to perform the data collection. Secure these scripts so unprivileged users cannot use or modify them. You will want to set up a secure place to dump the results, and if necessary archive and remove files so they don’t take up too much disk space.\n\nSet review schedule: The data you collect is only valuable if you use it, so get in the habit of reviewing the results for anomalies. If security is your goal, plan on spending a few minutes every day on this, and setting alerts on the one or two events that absolutely, positively, look suspicious.\n\nArchive the scripts and document: Keep a copy of the scripts and notes on what you implemented for future reference.\n\nFor a single database I find that I can create and test the scripts in an afternoon. Another few hours to set up the user accounts, cron jobs, or archive scripts. After that the entire process is pretty much self-sustaining as long as you stay on top of event review. Some of you who are the lone DBA at your job will consider this step in the Fundamentals series silly. I have had DBAs ask me, “Why would you set up a script to track your own work? Why would I send myself a reminder that I just added a table view?” Remember that this is meant to catch stuff that should not be happening, or events you were not aware of, like someone else in IT making changes to be ‘helpful’. Or when an attacker tries to compromise a database. This afternoon’s effort will all seem worth it when you have your first ‘WTF?’ moment a few months from now, when some web programmer changes the database without telling you.\n\nMore advanced methods"
+    }
+}

@@ -1,0 +1,55 @@
+{
+    "id": "dbpedia_6153_3",
+    "rank": 10,
+    "data": {
+        "url": "https://opensource.com/article/21/1/gimp-scripting",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Write GIMP scripts to make image processing faster",
+        "top_image": "https://opensource.com/sites/default/files/lead-images/painting_computer_screen_art_design_creative.png",
+        "meta_img": "https://opensource.com/sites/default/files/lead-images/painting_computer_screen_art_design_creative.png",
+        "images": [
+            "https://opensource.com/themes/osdc/assets/img/l_supported-by-redhat-white.svg",
+            "https://opensource.com/themes/osdc/logo.svg",
+            "https://opensource.com/themes/osdc/assets/img/l_supported-by-redhat-white.svg",
+            "https://opensource.com/sites/default/files/lead-images/painting_computer_screen_art_design_creative.png",
+            "https://opensource.com/sites/default/files/uploads/fourier.png",
+            "https://opensource.com/sites/default/files/uploads/procedure_browser.png",
+            "https://opensource.com/sites/default/files/uploads/gui01_image.png",
+            "https://opensource.com/sites/default/files/uploads/console01_variables.png",
+            "https://opensource.com/sites/default/files/uploads/gui02_selected.png",
+            "https://opensource.com/sites/default/files/uploads/gui03_grow.png",
+            "https://opensource.com/sites/default/files/uploads/gui04_fill.png",
+            "https://opensource.com/sites/default/files/uploads/gui05_no_selection.png",
+            "https://opensource.com/sites/default/files/uploads/gui06_spread.png",
+            "https://opensource.com/sites/default/files/uploads/gui07_invert.png",
+            "https://opensource.com/sites/default/files/uploads/gui08_hurl.png",
+            "https://opensource.com/sites/default/files/uploads/modified_fourier.png",
+            "https://opensource.com/sites/default/files/styles/article_teaser/public/lead-images/osdc_khan_520x292_FINAL.png?itok=BcJtHK9z",
+            "https://opensource.com/sites/default/files/styles/article_teaser/public/lead-images/gaming_grid_penguin.png?itok=3SC7e9dc",
+            "https://opensource.com/sites/default/files/styles/150x150/public/pictures/cristiano_fontana.jpg?itok=BssdgmE1",
+            "https://opensource.com/sites/default/files/styles/222x125/public/lead-images/checklist_hands_team_collaboration.png?itok=IKtAn31O",
+            "https://opensource.com/sites/default/files/styles/222x125/public/lead-images/design_photo_art_polaroids.png?itok=d4QoBICO",
+            "https://opensource.com/sites/default/files/styles/222x125/public/lead-images/painting_computer_screen_art_design_creative.png?itok=QNbZrbH6",
+            "https://opensource.com/themes/osdc/assets/img/cc-by-sa-4.png",
+            "https://opensource.com/themes/osdc/logo.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Cristiano L. Fontana"
+        ],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "Some time ago, I wanted to give a blackboard-style look to a typeset equation.",
+        "meta_lang": "en",
+        "meta_favicon": "/themes/osdc/assets/img/favicons/favicon.ico",
+        "meta_site_name": "Opensource.com",
+        "canonical_link": "https://opensource.com/article/21/1/gimp-scripting",
+        "text": "Some time ago, I wanted to give a blackboard-style look to a typeset equation. I started playing around with the GNU Image Manipulation Program (GIMP) and was satisfied with the result. The problem was that I had to perform several actions on the image, I wanted to use this style again, and I did not want to repeat the steps for all the images. Besides, I was sure that I would forget them in no time.\n\nGIMP is a great open source image editor. Although I have been using it for years, I had never investigated its batch-processing abilities nor its Script-Fu menu. This was the perfect chance to explore them.\n\nWhat is Script-Fu?\n\nScript-Fu is the scripting language built into GIMP. It is an implementation of the Scheme programming language. If you have never used Scheme, give it a try, as it can be very useful. I think Script-Fu is a great way to start because it has an immediate effect on image processing, so you can feel productive very quickly. You can also write scripts in Python, but Script-Fu is the default option.\n\nTo help you get acquainted with Scheme, GIMP's documentation offers an in-depth tutorial. Scheme is a Lisp-like language, so a major characteristic is that it uses a prefix notation and a lot of parentheses. Functions and operators are applied to a list of operands by prefixing them:\n\n(function-name operand operand ...) (+ 2 3) ↳ Returns 5 (list 1 2 3 5) ↳ Returns a list containing 1, 2, 3, and 5\n\nIt took me a while to find the documentation for the full list of GIMP's functions, but it was actually straightforward. In the Help menu, there is a Procedure Browser with very extensive and detailed documentation about all the possible functions.\n\nAccessing GIMP's batch mode\n\nYou can run GIMP with batch mode enabled by using the -b option. The -b option's argument can be the script you want to run or a dash (-) that makes GIMP launch in an interactive mode instead of the command line. Normally when you start GIMP, it loads its graphical user interface (GUI), but you can disable that with the -i option.\n\nWriting your first script\n\nCreate a file called chalk.scm and save it to the scripts folder found in the Preferences window under Folders → Scripts. In my case, it is at $HOME/.config/GIMP/2.10/scripts.\n\nInside the chalk.scm file, write your first script with:\n\n(define (chalk filename grow-pixels spread-amount percentage) (let* ((image (car (gimp-file-load RUN-NONINTERACTIVE filename filename))) (drawable (car (gimp-image-get-active-layer image))) (new-filename (string-append \"modified_\" filename))) (gimp-image-select-color image CHANNEL-OP-REPLACE drawable '(0 0 0)) (gimp-selection-grow image grow-pixels) (gimp-context-set-foreground '(0 0 0)) (gimp-edit-bucket-fill drawable BUCKET-FILL-FG LAYER-MODE-NORMAL 100 255 TRUE 0 0) (gimp-selection-none image) (plug-in-spread RUN-NONINTERACTIVE image drawable spread-amount spread-amount) (gimp-drawable-invert drawable TRUE) (plug-in-randomize-hurl RUN-NONINTERACTIVE image drawable percentage 1 TRUE 0) (gimp-file-save RUN-NONINTERACTIVE image drawable new-filename new-filename) (gimp-image-delete image)))\n\nDefining the script variables\n\nIn the script, the (define (chalk filename grow-pixels spread-amound percentage) ...) function defines a new function called chalk that accepts the parameters: filename, grow-pixels, spread-amound, and percentage. Everything else inside the define function is the body of the chalk function. You might have noticed that variables with long names are spelled with dashes between the words; this is the idiomatic style of Lisp-like languages.\n\nThe (let* ...) function is a special procedure that allows you to define some temporary variables that are valid only inside the body. In this case, the variables are image, drawable, and new-filename. It loads the image with gimp-file-load, which returns a list that includes the image, then it selects the first entry with the car function. Then, it selects the first active layer and stores its reference in the drawable variable. Finally, it defines the string containing the new filename of the resulting image.\n\nTo help you better understand the procedure, I'll break it down. First, start GIMP with the GUI enabled and the Script-Fu console, which is found in Filters → Script-Fu → Console. In this case, you cannot use let* because the variables must be persistent. Define the image variable using the define function, and give it the proper path to find the image:\n\n(define image (car (gimp-file-load RUN-NONINTERACTIVE \"Fourier.png\" \"Fourier.png\")))\n\nIt appears that nothing has happened in the GUI, but the image is loaded. You need to enable the image display with:\n\n(gimp-display-new image)\n\nNow, get the active layer and store it in the drawable variable:\n\n(define drawable (car (gimp-image-get-active-layer image)))\n\nFinally, define the image's new filename:\n\n(define new-filename \"modified_Fourier.png\")\n\nHere is what you should see in the Script-Fu console after running these commands:\n\nBefore acting on the image, you need to define the variables that would be defined as the function arguments in the script:\n\n(define grow-pixels 2) (define spread-amount 4) (define percentage 3)\n\nActing on the image\n\nNow that all the relevant variables are defined, you can act on the image. The script's actions can be executed directly on the console. The first step is to select the color black on the active layer. The color is written as a list of three numbers—either as (list 0 0 0) or '(0 0 0):\n\n(gimp-image-select-color image CHANNEL-OP-REPLACE drawable '(0 0 0))\n\nGrow the selection by two pixels:\n\n(gimp-selection-grow image grow-pixels)\n\nSet the foreground color to black, and fill the selection with it:\n\n(gimp-context-set-foreground '(0 0 0)) (gimp-edit-bucket-fill drawable BUCKET-FILL-FG LAYER-MODE-NORMAL 100 255 TRUE 0 0)\n\nDelete the selection:\n\n(gimp-selection-none image)\n\nMove the pixels around randomly:\n\n(plug-in-spread RUN-NONINTERACTIVE image drawable spread-amount spread-amount)\n\nInvert the image colors:\n\n(gimp-drawable-invert drawable TRUE)\n\nRandomize the pixels:\n\n(plug-in-randomize-hurl RUN-NONINTERACTIVE image drawable percentage 1 TRUE 0)\n\nSave the image to a new file:\n\n(gimp-file-save RUN-NONINTERACTIVE image drawable new-filename new-filename)\n\nRunning the script in batch mode\n\nNow that you know what the script does, you can run it in batch mode:\n\ngimp -i -b '(chalk \"Fourier.png\" 2 4 3)' -b '(gimp-quit 0)'\n\nAfter the chalk function runs, it calls a second function with the -b option to tell GIMP to quit: gimp-quit.\n\nLearn more"
+    }
+}

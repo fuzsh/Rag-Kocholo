@@ -1,0 +1,42 @@
+{
+    "id": "dbpedia_6148_3",
+    "rank": 29,
+    "data": {
+        "url": "https://community.spiceworks.com/t/two-computers-same-name-on-same-domain/131130",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Two computers same name on same domain",
+        "top_image": "https://global.discourse-cdn.com/spiceworks/original/1X/7a73606d7df2f794c4789897e49693fb3c471b23.png",
+        "meta_img": "https://global.discourse-cdn.com/spiceworks/original/1X/7a73606d7df2f794c4789897e49693fb3c471b23.png",
+        "images": [
+            "https://secure.intelligence52.com/795141.png",
+            "https://sea1.discourse-cdn.com/spiceworks/user_avatar/community.spiceworks.com/zahidmaqsood5658/48/753175_2.png",
+            "https://avatars.discourse-cdn.com/v4/letter/j/c0e974/48.png",
+            "https://avatars.discourse-cdn.com/v4/letter/j/c0e974/48.png",
+            "https://zdbb.net/l/z0WVjCBSEeGLoxIxOQVEwQ/"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "question",
+            "active-directory-gpo"
+        ],
+        "tags": null,
+        "authors": [
+            "simonnangolo (simonnangolo)",
+            "roy (RoyL)",
+            "nedvis (NedVis)",
+            "alank (AlanK)",
+            "mccormick (Justin_Mc)",
+            "khanson (Kendall)"
+        ],
+        "publish_date": "2012-03-08T20:18:06+00:00",
+        "summary": "",
+        "meta_description": "Recently had headquarters send me a new desktop, replacing an old one. However, the new desktop’s computer name is exactly the same as another computer. Both computers have the same name, are on the same subnet, and are &hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://global.discourse-cdn.com/spiceworks/optimized/1X/a254df83358a951c43ed6ee756b5e0011a8d58bc_2_32x32.png",
+        "meta_site_name": "Spiceworks Community",
+        "canonical_link": "https://community.spiceworks.com/t/two-computers-same-name-on-same-domain/131130",
+        "text": "Recently had headquarters send me a new desktop, replacing an old one. However, the new desktop’s computer name is exactly the same as another computer. Both computers have the same name, are on the same subnet, and are on the same domain. Each computer has a unique IP address. Both are working fine. The problem is I can’t connect remotely. Withe one computer remote desktop does not work and the other computer comes use with an error message stating trust relationship between this workstation and the primary domain failed. Was able to change the name on one computer. Names are different now, but still having problems. Also have access to SCCM, but it still shows same name on two machines. How do I go about fixing this?\n\nYou will need to remove one of the computers from the domain, and then add it back with a different name. This should take of the remote desktop issue and the trust issue. Don’t forget to delete dns entries for both computers.\n\nI’ve got similar situation where one laptop and one printer had same name and I decided to disjoin computer from domain and re-join domain ( which takes 10 minutes) rather than renaming printer which would cause “chain reaction” of printer driver reinstalations on 20 + computers.\n\nRojL is right and I’d start with removing from domain computer which is getting “trust relationship” notification message. Just in case I’d rename the other PC too just to make sure everything is cleared.\n\nDouble check for “ghosts” in AD . Should you still see old computer names in your AD computers group it would be best to remove them manually by deleting those computer names.\n\nOne more thing to think about (not really knowing your environment). If you are going to remove one of the computers from the domain I would logon to the computer locally as admin with it not connected to the domain and then join it to a fictitious workgroup (removing it from the domain) and rename at the same time. This way you don’t run the risk of it removing the AD account for the computer you want to keep that name for . Then you can just rejoin it to the domain with a new name. The nice thing about all this is if you have existing profiles on the computer, they will continue to work once you rejoin to domain.\n\nI already have a domain server and I am trying to migrate the active directory to an other server both servers connected on the defrent subnet .\n\nthere is coming massage the domain controller has been rejected the replication.\n\nkindly guide me.\n\nthanks.\n\ngood afternoon i just wanted to find out if have two pc with same name one is on the domain and one is on workgroup will this be problem,and if its the problem what will be the problem,because my suggestion is yes they having same name but not both on the same domain,because what matter is the ip,ip are not the same i gues or maybe i’m wrong,please assist me on this can email me to my email nangolo.simon@ohorongo-cement.com or simon.nangolo806@gmail.com\n\ngood afternoon i just wanted to find out if have two pc with the same name on same domain butone is on workgroup will this be problem,and if its the problem what will be the problem,because my suggestion is yes they having same name but not both on the same domain,because what matter is the ip,ip are not the same i gues or maybe i’m wrong,please assist me on this can email me to my email nangolo.simon@ohorongo-cement.com or simon.nangolo806@gmail.com"
+    }
+}

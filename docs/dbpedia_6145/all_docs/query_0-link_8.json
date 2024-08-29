@@ -1,0 +1,38 @@
+{
+    "id": "dbpedia_6145_0",
+    "rank": 8,
+    "data": {
+        "url": "https://securosis.com/blog/litchfield-discloses-oracle-0-day-at-black-hat/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Litchfield Discloses Oracle 0",
+        "top_image": "https://securosis.com/wp-content/uploads/2023/12/favicon-32x32-1.png",
+        "meta_img": "https://securosis.com/wp-content/uploads/2023/12/favicon-32x32-1.png",
+        "images": [
+            "https://securosis.com/wp-content/uploads/2023/12/logo-300x70.png",
+            "https://secure.gravatar.com/avatar/dc6a2feddcf3fd19a354bfebc4fa68e9?s=75&d=mm&r=g",
+            "https://secure.gravatar.com/avatar/dc6a2feddcf3fd19a354bfebc4fa68e9?s=75&d=mm&r=g",
+            "https://secure.gravatar.com/avatar/dc6a2feddcf3fd19a354bfebc4fa68e9?s=75&d=mm&r=g",
+            "https://securosis.com/wp-content/uploads/elementor/thumbs/dinosaur-sidebar-qh1712cze86e8gyk942e4ye96stvtwwxoyds5y43jk.png",
+            "https://securosis.com/wp-content/uploads/2023/12/blogs.png",
+            "https://securosis.com/wp-content/uploads/2023/12/logo-csa.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Adrian Lane"
+        ],
+        "publish_date": "2010-02-08T06:33:50+00:00",
+        "summary": "",
+        "meta_description": "During Black Hat last week, David Litchfield disclosed that he had discovered an 0-day in Oracle 11G which allowed him to acquire administrative level credentials. Until today, I was unaware that the attack details were made available as well, meaning anyone can bounce the exploit off your database server to see if it is vulnerable. From the NetworkWorld article, …",
+        "meta_lang": "en",
+        "meta_favicon": "https://securosis.com/wp-content/uploads/2023/12/favicon-32x32-1.png",
+        "meta_site_name": "Securosis",
+        "canonical_link": "https://securosis.com/blog/litchfield-discloses-oracle-0-day-at-black-hat/",
+        "text": "During Black Hat last week, David Litchfield disclosed that he had discovered an 0-day in Oracle 11G which allowed him to acquire administrative level credentials. Until today, I was unaware that the attack details were made available as well, meaning anyone can bounce the exploit off your database server to see if it is vulnerable.\n\nFrom the NetworkWorld article, the vulnerability is …\n\n… the way Java has been implemented in Oracle 11g Release 2, there’s an overly permissive default grant that makes it possible for a low privileged user to grant himself arbitrary permissions. In a demo of Oracle 11g Enterprise Edition, he showed how to execute commands that led to the user granting himself system privileges to have “complete control over the database.” Litchfield also showed how it’s possible to bypass Oracle Label Security used for managing mandatory access to information at different security levels.\n\nAs this issue allows for arbitrary escalation of privileges in the database, it’s pretty much a complete compromise. At least Oracle 11G R2 is affected, and I have heard but not confirmed that 10G R2 is as well. This is serious and you will need to take action ASAP, especially for installations that support web applications. And if your web applications are leveraging Oracle’s Java implementation, you may want to take the servers offline until you have implemented the workaround.\n\nFrom what I understand, this is an issue with the Public user having access to the Java services packaged with Oracle. I am guessing that the appropriate workaround is to revoke the Public user permissions granted during the installation process, or lock that account out altogether. There is no patch available at this time, but that should serve as a temporary workaround. Actually, it should be a permanent workaround – after all, you didn’t really leave the ‘Public’ user account enabled on your production server, did you?\n\nI have been saying for several years that there is no such thing as public access to your database. Ever! You may have public content, but the public user should not just have its password changed, but should be fully locked out. Use a custom account with specific grant statements. Public execute permission to anything is ill advised, but in some cases can be done safely. Running default ‘Public’ permissions is flat-out irresponsible. You will want to review all other user accounts that have access to Java and ensure that no other accounts have public access – or access provided by default credentials – until a patch is available.\n\nUpdate"
+    }
+}

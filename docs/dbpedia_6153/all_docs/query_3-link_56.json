@@ -1,0 +1,51 @@
+{
+    "id": "dbpedia_6153_3",
+    "rank": 56,
+    "data": {
+        "url": "https://www.gtk.org/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "platform widget toolkit",
+        "top_image": "https://www.gtk.org/assets/img/logo-gtk.png",
+        "meta_img": "https://www.gtk.org/assets/img/logo-gtk.png",
+        "images": [
+            "https://www.gtk.org/assets/img/logo-gtk-sm.png",
+            "https://www.gtk.org/assets/img/wall-gtk4.svg",
+            "https://www.gtk.org/assets/img/apps/app-gimp.png",
+            "https://www.gtk.org/assets/img/apps/app-fonts.png",
+            "https://www.gtk.org/assets/img/apps/app-calculator.png",
+            "https://www.gtk.org/assets/img/apps/app-dictionary.png",
+            "https://www.gtk.org/assets/img/apps/app-games.png",
+            "https://www.gtk.org/assets/img/apps/app-evolution.png",
+            "https://www.gtk.org/assets/img/apps/app-image-viewer.png",
+            "https://www.gtk.org/assets/img/apps/app-polari.png",
+            "https://www.gtk.org/assets/img/apps/app-key-sign.png",
+            "https://www.gtk.org/assets/img/apps/app-maps.png",
+            "https://www.gtk.org/assets/img/apps/app-transmission.png",
+            "https://www.gtk.org/assets/img/apps/app-password-safe.png",
+            "https://www.gtk.org/assets/img/logo-gnome-horizontal.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "gtk",
+            "gtk",
+            "gimp",
+            "gnome",
+            "toolkit",
+            "user interface"
+        ],
+        "tags": null,
+        "authors": [
+            "The GTK Team"
+        ],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "GTK is a free and open-source cross-platform widget toolkit for creating graphical user interfaces.",
+        "meta_lang": "en",
+        "meta_favicon": "https://www.gtk.org/assets/img/icons/apple-touch-icon.png",
+        "meta_site_name": "The GTK Team",
+        "canonical_link": "https://www.gtk.org/",
+        "text": "// Include gtk #include <gtk/gtk.h> static void on_activate (GtkApplication *app) { // Create a new window GtkWidget *window = gtk_application_window_new (app); // Create a new button GtkWidget *button = gtk_button_new_with_label (\"Hello, World!\"); // When the button is clicked, close the window passed as an argument g_signal_connect_swapped (button, \"clicked\", G_CALLBACK (gtk_window_close), window); gtk_window_set_child (GTK_WINDOW (window), button); gtk_window_present (GTK_WINDOW (window)); } int main (int argc, char *argv[]) { // Create a new application GtkApplication *app = gtk_application_new (\"com.example.GtkApplication\", G_APPLICATION_FLAGS_NONE); g_signal_connect (app, \"activate\", G_CALLBACK (on_activate), NULL); return g_application_run (G_APPLICATION (app), argc, argv); }\n\nimports.gi.versions['Gtk'] = '4.0'; const Gtk = imports.gi.Gtk; // Create a new application let app = new Gtk.Application({ application_id: 'com.example.GtkApplication' }); // When the application is launched… app.connect('activate', () => { // … create a new window … let win = new Gtk.ApplicationWindow({ application: app }); // … with a button in it … let btn = new Gtk.Button({ label: 'Hello, World!' }); // … which closes the window when clicked btn.connect('clicked', () => { win.close(); }); win.set_child(btn); win.present(); }); // Run the application app.run([]);\n\n#!/usr/bin/env perl use strict; use warnings; use utf8; use Glib::IO; use Gtk4; # Create a new application my $app = Gtk3::Application->new('com.example.Gtk3Application', 'G_APPLICATION_FLAGS_NONE'); # When the application is launched… $app->signal_connect( activate => sub { my $app = shift; # … create a new window … my $win = Gtk3::ApplicationWindow->new($app); # … with a button in it … my $btn = Gtk3::Button->new('Hello World!'); # … which closes the window when clicked $btn->signal_connect(clicked => sub { $win->close(); }); $win->set_child($btn); $win->present(); } ); # Run the application $app->run(\\@ARGV);\n\n# Load Gtk import gi gi.require_version('Gtk', '4.0') from gi.repository import Gtk # When the application is launched… def on_activate(app): # … create a new window… win = Gtk.ApplicationWindow(application=app) # … with a button in it… btn = Gtk.Button(label='Hello, World!') # … which closes the window when clicked btn.connect('clicked', lambda x: win.close()) win.set_child(btn) win.present() # Create a new application app = Gtk.Application(application_id='com.example.GtkApplication') app.connect('activate', on_activate) # Run the application app.run(None)\n\nuse glib::clone; // glib and other dependencies are re-exported by the gtk crate use gtk::glib; use gtk::prelude::*; // When the application is launched… fn on_activate(application: &gtk::Application) { // … create a new window … let window = gtk::ApplicationWindow::new(application); // … with a button in it … let button = gtk::Button::with_label(\"Hello World!\"); // … which closes the window when clicked button.connect_clicked(clone!(@weak window => move |_| window.close())); window.set_child(Some(&button)); window.present(); } fn main() { // Create a new application with the builder pattern let app = gtk::Application::builder() .application_id(\"com.github.gtk-rs.examples.basic\") .build(); app.connect_activate(on_activate); // Run the application app.run(); }"
+    }
+}
