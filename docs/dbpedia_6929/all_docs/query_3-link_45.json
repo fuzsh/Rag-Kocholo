@@ -1,0 +1,41 @@
+{
+    "id": "dbpedia_6929_3",
+    "rank": 45,
+    "data": {
+        "url": "https://stackoverflow.com/questions/37221483/service-located-in-another-namespace",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Service located in another namespace",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/aa0ad47d1932a6e50a2704ecb3db8eec?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://www.gravatar.com/avatar/24447a4fcfb68c2faa2d2500786c756d?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/RfY0W.jpg?s=64",
+            "https://i.sstatic.net/JVnxp.jpg?s=64",
+            "https://i.sstatic.net/AClAF.jpg?s=64",
+            "https://i.sstatic.net/gcvze.jpg?s=64",
+            "https://graph.facebook.com/100000014578021/picture?type=large",
+            "https://i.sstatic.net/OmxV4.jpg?s=64",
+            "https://www.gravatar.com/avatar/38da6e07cf159549163a375f14dd654a?s=64&d=identicon&r=PG",
+            "https://lh6.googleusercontent.com/-5k4DhEqhqPU/AAAAAAAAAAI/AAAAAAAAAF0/6_hv0_g57tM/photo.jpg?sz=64",
+            "https://www.gravatar.com/avatar/2f77ee79e3e5a923a39ff926698d9cef?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://stackoverflow.com/posts/37221483/ivc/f2cc?prg=7ce763ab-e896-4e8a-b913-271125ac1245"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2016-05-14T01:22:28",
+        "summary": "",
+        "meta_description": "I have been trying to find a way to define a service in one namespace that links to a Pod running in another namespace.  I know that containers in a Pod running in namespaceA can access serviceX de...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/37221483/service-located-in-another-namespace",
+        "text": "I have been trying to find a way to define a service in one namespace that links to a Pod running in another namespace. I know that containers in a Pod running in namespaceA can access serviceX defined in namespaceB by referencing it in the cluster DNS as serviceX.namespaceB.svc.cluster.local, but I would rather not have the code inside the container need to know about the location of serviceX. That is, I want the code to just lookup serviceX and then be able to access it.\n\nThe Kubernetes documentation suggests that this is possible. It says that one of the reasons that you would define a service without a selector is that You want to point your service to a service in another Namespace or on another cluster.\n\nThat suggests to me that I should:\n\nDefine a serviceX service in namespaceA, without a selector (since the POD I want to select isn't in namespaceA).\n\nDefine a service (which I also called serviceX) in namespaceB, and then\n\nDefine an Endpoints object in namespaceA to point to serviceX in namespaceB.\n\nIt is this third step that I have not been able to accomplish.\n\nFirst, I tried defining the Endpoints object this way:\n\nkind: Endpoints apiVersion: v1 metadata: name: serviceX namespace: namespaceA subsets: - addresses: - targetRef: kind: Service namespace: namespaceB name: serviceX apiVersion: v1 ports: - name: http port: 3000\n\nThat seemed the logical approach, and obviously what the targetRef was for. But, this led to an error saying that the ip field in the addresses array was mandatory. So, my next try was to assign a fixed ClusterIP address to serviceX in namespaceB, and put that in the IP field (note that the service_cluster_ip_range is configured as 192.168.0.0/16, and 192.168.1.1 was assigned as the ClusterIP for serviceX in namespaceB; serviceX in namespaceA was auto assigned a different ClusterIP on the 192.168.0.0/16 subnet):\n\nkind: Endpoints apiVersion: v1 metadata: name: serviceX namespace: namespaceA subsets: - addresses: - ip: 192.168.1.1 targetRef: kind: Service namespace: namespaceB name: serviceX apiVersion: v1 ports: - name: http port: 3000\n\nThat was accepted, but accesses to serviceX in namespaceA did not get forwarded to the Pod in namespaceB - they timed out. Looking at the iptables setup, it looks like it would have had to do NAT pre-routing twice to accomplish that.\n\nThe only thing I did find that worked - but is not a satisfactory solution - is to lookup the actual IP address of the Pod providing serviceX in namespaceB and put that address in the Endpoints object in namespaceA. That isn't satisfactory, of course, because the Pod IP address may change over time. That's the problem service IPs are there to solve.\n\nSo, is there a way to meet what seems to be the promise of the documentation that I can point a service in one namespace to a service running in a different namespace?\n\nA commenter questioned why you would want to do this - here is a use case that makes sense to me, at least:\n\nSay you have a multi-tenant system, which also includes a common data-access function that can be shared between tenants. Now imagine that there are different flavors of this data-access function with common APIs, but different performance characteristics. Some tenants get access to one of them, other tenants have access to another one.\n\nEach tenant's pods run in their own namespaces, but each one needs to access one of these common data-access services, which will necessarily be in another namespace (since it is accessed by multiple tenants). But, you wouldn't want the tenant to have to change their code if their subscription changes to access the higher-performing service.\n\nA potential solution (the cleanest one I can think of, if only it worked) is to include a service definition in each tenant's namespace for the data-access service, with each one configured for the appropriate endpoint. This service definition would be configured to point to the proper data-access service each tenant is entitled to use."
+    }
+}
