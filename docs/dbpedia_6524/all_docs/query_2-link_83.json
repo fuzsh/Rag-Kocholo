@@ -1,0 +1,40 @@
+{
+    "id": "dbpedia_6524_2",
+    "rank": 83,
+    "data": {
+        "url": "https://juanitorduz.github.io/germany_plots/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Open Data: Germany Maps Viz",
+        "top_image": "https://juanitorduz.github.io/images/favicon.ico",
+        "meta_img": "https://juanitorduz.github.io/images/favicon.ico",
+        "images": [
+            "https://juanitorduz.github.io/images/tattoo_logo.jpg",
+            "https://juanitorduz.github.io/images/germany_plot_files/germany_plot_8_0.png",
+            "https://juanitorduz.github.io/images/germany_plot_files/germany_plot_12_0.png",
+            "https://juanitorduz.github.io/images/germany_plot_files/germany_plot_18_0.png",
+            "https://juanitorduz.github.io/images/germany_plot_files/germany_plot_23_0.png",
+            "https://juanitorduz.github.io/images/germany_plot_files/germany_plot_26_0.png",
+            "https://juanitorduz.github.io/images/germany_plot_files/germany_plot_28_0.png",
+            "https://juanitorduz.github.io/images/germany_plot_files/germany_plot_36_0.png",
+            "https://juanitorduz.github.io/images/germany_plot_files/germany_plot_44_0.png",
+            "https://juanitorduz.github.io/images/germany_plot_files/germany_plot_52_0.png",
+            "https://juanitorduz.github.io/images/hugo-logo.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "../images/favicon.ico",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "Selected Locations in Berlin\n\nSometimes it is useful to include well-known locations on the maps so that the user can identify them and understand the distances and scales. One way to do it is to manualy input the latitude and longitude of each point (as above). This of course can be time consuming and prone to errors. As expected, there is a library which can fetch this type of data automatically, namely geopy.\n\nHere is a simple example:\n\nfrom geopy import Nominatim locator = Nominatim(user_agent='myGeocoder') location = locator.geocode('Humboldt Universität zu Berlin') print(location)\n\nHumboldt-Universität zu Berlin, Dorotheenstraße, Spandauer Vorstadt, Mitte, Berlin, 10117, Deutschland\n\nLet us write a function to get the latitude and longitude coordinates:\n\ndef lat_lng_from_string_loc(x): locator = Nominatim(user_agent='myGeocoder') location = locator.geocode(x) if location is None: None else: return location.longitude, location.latitude\n\n# Define some well-known Berlin locations. berlin_locations = [ 'Alexander Platz', 'Zoo Berlin', 'Berlin Tegel', 'Berlin Schönefeld', 'Berlin Adlershof', 'Olympia Stadium Berlin', 'Berlin Südkreuz', 'Frei Universität Berlin', 'Mauerpark', 'Treptower Park', ] # Get geodata. berlin_locations_geo = { x: lat_lng_from_string_loc(x) for x in berlin_locations } # Remove None. berlin_locations_geo = { k: v for k, v in berlin_locations_geo.items() if v is not None }\n\nLet us see the resulting map:\n\nberlin_df = germany_df.query('ort == \"Berlin\"') fig, ax = plt.subplots() berlin_df.plot( ax=ax, color='orange', alpha=0.8 ) for c in berlin_locations_geo.keys(): ax.text( x=berlin_locations_geo[c][0], y=berlin_locations_geo[c][1] + 0.005, s=c, fontsize=12, ha='center', ) ax.plot( berlin_locations_geo[c][0], berlin_locations_geo[c][1], marker='o', c='black', alpha=0.5 ) ax.set( title='Berlin - Some Relevant Locations', aspect=1.3, facecolor='lightblue' );\n\nChristmas Markets\n\nLet us enrich the maps by including other type of information. There is a great resource for publicly available data for Berlin: Berlin Open Data. Among many interesting datasets, I found one on the Christmas markets around the city (which are really fun to visit!) here. You can acces the data via a public API. Let us use the requests module to do this:\n\nimport requests # GET request. response = requests.get( 'https://www.berlin.de/sen/web/service/maerkte-feste/weihnachtsmaerkte/index.php/index/all.json?q=' ) response_json = response.json()\n\nConvert to pandas dataframe.\n\nberlin_maerkte_raw_df = pd.DataFrame(response_json['index'])\n\nWe do not have a postal code feature, but we can create one by extracting it from the plz_ort column.\n\nberlin_maerkte_df = berlin_maerkte_raw_df[['name', 'bezirk', 'plz_ort', 'lat', 'lng']] berlin_maerkte_df = berlin_maerkte_df \\ .query('lat != \"\"') \\ .assign(plz = lambda x: x['plz_ort'].str.split(' ').apply(lambda x: x[0]).astype(str)) \\ .drop('plz_ort', axis=1) # Convert to float. berlin_maerkte_df['lat'] = berlin_maerkte_df['lat'].str.replace(',', '.').astype(float) berlin_maerkte_df['lng'] = berlin_maerkte_df['lng'].str.replace(',', '.').astype(float) berlin_maerkte_df.head()\n\nname bezirk lat lng plz 0 Weihnachtsmarkt vor dem Schloss Charlottenburg Charlottenburg-Wilmersdorf 52.519951 13.295946 14059 1\n\nWeihnachtsmarkt an der Gedächtniskirche\n\nCharlottenburg-Wilmersdorf 52.504886 13.335511 10789 2 Weihnachtsmarkt in der Fußgängerzone Wilmersdo… Charlottenburg-Wilmersdorf 52.509313 13.305994 10627 3 Weihnachten in Westend Charlottenburg-Wilmersdorf 52.512538 13.259213 14052 4 Weihnachtsmarkt Berlin-Grunewald des Johannisc… Charlottenburg-Wilmersdorf 52.488350 13.277250 14193\n\nLet us plot the Christmas markets locations:\n\nfig, ax = plt.subplots() berlin_df.plot(ax=ax, color= 'green', alpha=0.4) for c in berlin_locations_geo.keys(): ax.text( x=berlin_locations_geo[c][0], y=berlin_locations_geo[c][1] + 0.005, s=c, fontsize=12, ha='center', ) ax.plot( berlin_locations_geo[c][0], berlin_locations_geo[c][1], marker='o', c='black', alpha=0.5 ) berlin_maerkte_df.plot( kind='scatter', x='lng', y='lat', c='r', marker='*', s=50, label='Christmas Market', ax=ax ) ax.set( title='Berlin Christmas Markets (2019)', aspect=1.3, facecolor='white' );"
+    }
+}
