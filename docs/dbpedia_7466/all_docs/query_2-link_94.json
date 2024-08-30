@@ -1,0 +1,43 @@
+{
+    "id": "dbpedia_7466_2",
+    "rank": 94,
+    "data": {
+        "url": "https://community.st.com/t5/stm32-mcus-products/1ms-hal-delay/td-p/380064",
+        "read_more_link": "",
+        "language": "en",
+        "title": "1ms HAL delay",
+        "top_image": "https://community.st.com/html/@69F73FA73CBA8CB0B32F49AC59A3C841/assets/favicon-32.png",
+        "meta_img": "https://community.st.com/html/@69F73FA73CBA8CB0B32F49AC59A3C841/assets/favicon-32.png",
+        "images": [
+            "https://community.st.com/legacyfs/online/avatars/005",
+            "https://community.st.com/t5/image/serverpage/image-id/54932i03B48356AF3BAE53/image-dimensions/150x150/image-coordinates/0%2C0%2C158%2C158/constrain-image/false?v=v2",
+            "https://community.st.com/legacyfs/online/avatars/005",
+            "https://community.st.com/t5/image/serverpage/image-id/43847i347A118D19AADC09/image-size/large?v=v2&px=999",
+            "https://community.st.com/t5/image/serverpage/image-id/43845i0F0E0B08C4DEDC8B/image-size/large?v=v2&px=999",
+            "https://community.st.com/legacyfs/online/avatars/005",
+            "https://community.st.com/t5/image/serverpage/image-id/54932i03B48356AF3BAE53/image-dimensions/150x150/image-coordinates/0%2C0%2C158%2C158/constrain-image/false?v=v2",
+            "https://community.st.com/t5/image/serverpage/image-id/54932i03B48356AF3BAE53/image-dimensions/150x150/image-coordinates/0%2C0%2C158%2C158/constrain-image/false?v=v2",
+            "https://community.st.com/legacyfs/online/avatars/005",
+            "https://community.st.com/skins/images/77A62527CA2F60AC10EC6BDB7E950BF1/responsive_peak/images/icon_anonymous_message.png",
+            "https://community.st.com/html/@BD84A24F6C33B4216F5F2C3226885C95/assets/stmicro-logo.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "community.st.com",
+            "user-id"
+        ],
+        "publish_date": "2017-10-16T15:14:18+00:00",
+        "summary": "",
+        "meta_description": "Posted on October 16, 2017 at 17:14 Working with the STM32L052C8 using the HAL commands. I&#39;m using the &#39;HAL_Delay()&#39; command which is",
+        "meta_lang": "en",
+        "meta_favicon": "https://community.st.com/html/@69F73FA73CBA8CB0B32F49AC59A3C841/assets/favicon-32.png",
+        "meta_site_name": "",
+        "canonical_link": "https://community.st.com/t5/stm32-mcus-products/1ms-hal-delay/td-p/380064",
+        "text": "Posted on October 16, 2017 at 20:12\n\nif it's based on 1ms systick, the actual delay is anywhere between 0 and 1ms; with argument (5) it would be between 4 and 5ms etc.\n\nChecked with the data sheet and it says to have the Cortex System Timer at 4MHz\n\nDon't understand, give pointers.\n\nJW\n\nPosted on October 17, 2017 at 10:12\n\nIn the reference manual for the STM32L0 #12.2 it says about the Systick clock to be set to 4MHz, which is the Cortex System Timer in Cubemx. 2 images shown below.\n\nSo I set this to 4MHz and measured the HAL_Delay(1); but it measured as 15ms on a scope, instead of 1ms.\n\nThanks,\n\nRichard\n\nPosted on October 17, 2017 at 10:22\n\nI think there is a misunderstanding on your side.\n\nThe ref manual means here that this SysTick calibration value (4000) is calibrated for a system clock of 4MHz.\n\n4MHz / 4000 = 1kHz => 1ms\n\nSysTick itself is just a 24-bit counter that works on the core clock.\n\nIf the SysTick is not what you expect, the core clock is most probably not what you think.\n\nDon't know (or care) what Cube does here, sorry.\n\nPosted on October 17, 2017 at 10:30\n\nThe systick calibration value is content of a read-only register, STK_CALIB, and is just a hint (btw. if it's really 4000\n\nhttps://community.st.com/0D50X00009XkaB4SAJ\n\n, but I am not surprised and it is really of no importance). You can set the systick to any division rate in STK_RVR. Read chapter 4.4. of PM0\n\nCube surely has some mechanism to set this, but I don't Cube. Cube has some documentation so you can try to find it there. Cube is open source so you can look it up. And you can always look in the debugger at the actual STK_RVR setting.\n\nBut I repeat, with a 1ms granularity primary source, 1-tick loopdelay may last anywhere between 0 and 1ms. Try a longer one and divide the result for more precision.\n\nJW\n\nPosted on October 17, 2017 at 10:35\n\nThe ref manual means here that this SysTick calibration value (4000) is calibrated for a system clock of 4MHz.\n\n4MHz / 4000 = 1kHz => 1ms\n\nThat would be true, wouldn't systick count from (reload-value -1), but it does not.\n\nWhen enabled, the timer counts down from the reload value to zero, reloads (wraps to) the\n\nvalue in the SYST_RVR on the next clock cycle, then decrements on subsequent clock cycles.\n\nTo generate a multi-shot timer with a period of N processor clock cycles, use a RELOAD\n\nvalue of N-1. For example, if the SysTick interrupt is required every 100 clock pulses, set RELOAD to 99.\n\nI ranted already, see link in my previous post.\n\nJW"
+    }
+}
