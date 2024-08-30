@@ -1,0 +1,35 @@
+{
+    "id": "dbpedia_7395_3",
+    "rank": 14,
+    "data": {
+        "url": "https://stackoverflow.com/questions/72305055/casterror-type-xfile-is-not-a-subtype-of-type-file-in-type-cast",
+        "read_more_link": "",
+        "language": "en",
+        "title": "_CastError (type 'XFile' is not a subtype of type 'File' in type cast)",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://i.sstatic.net/JOohX.png",
+            "https://www.gravatar.com/avatar/04dc34f41fc856c01a5bd3005f9636d0?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/ROgYz.png?s=64",
+            "https://www.gravatar.com/avatar/f7c890e6f383bd4de13fb60a32a863af?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/j2GD1.jpg?s=64",
+            "https://stackoverflow.com/posts/72305055/ivc/92c8?prg=9e288377-f499-44b2-b5b2-e6877797e3ec"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2022-05-19T13:01:00",
+        "summary": "",
+        "meta_description": "how are you?\nI'm developing a store management app and, when registering a product, I need its photo. But, when taking the picture in the emulator camera, nothing happens, I just realized that I have",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/72305055/casterror-type-xfile-is-not-a-subtype-of-type-file-in-type-cast",
+        "text": "I'd put this as a response to G H Prakash's answer, but the formatting isn't there then, so you'd use it like this in your code. Basically, you get it as an XFile, then load it as a normal file and use it for further processing.\n\nElevatedButton( child: Text(\"Câmera\"), onPressed: () async { XFile ximage = await ImagePicker().pickImage(source: ImageSource.camera); // load the image as File File image = File(ximage.path); imageSelected(image); }, )\n\nThe reason ImagePicker uses XFiles is for compatibility with Flutter Web, so you could also look into integrating XFiles in your further processing workflow.\n\nThe reason for this is that the image picker was upgraded to use Xfile instead of File. To convert Xfile to File you can use:\n\nFile file = File( _imageFile.path );\n\nYou will need to add import 'dart:io' as well."
+    }
+}

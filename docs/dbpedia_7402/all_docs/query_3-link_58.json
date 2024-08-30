@@ -1,0 +1,31 @@
+{
+    "id": "dbpedia_7402_3",
+    "rank": 58,
+    "data": {
+        "url": "https://neo4j.com/docs/cypher-manual/current/clauses/merge/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Cypher Manual",
+        "top_image": "https://dist.neo4j.com/wp-content/uploads/20210423062553/neo4j-social-share-21.png",
+        "meta_img": "https://dist.neo4j.com/wp-content/uploads/20210423062553/neo4j-social-share-21.png",
+        "images": [
+            "https://dist.neo4j.com/wp-content/uploads/20230926084108/Logo_FullColor_RGB_TransBG.svg",
+            "https://neo4j.com/docs/cypher-manual/current/_images/graph_merge_clause.svg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "The `MERGE` clause ensures that a pattern exists in the graph.",
+        "meta_lang": "en",
+        "meta_favicon": "https://neo4j.com/wp-content/themes/neo4jweb/favicon.ico",
+        "meta_site_name": "Neo4j Graph Data Platform",
+        "canonical_link": "https://neo4j.com/docs/cypher-manual/5/clauses/merge/",
+        "text": "As of Neo4j 5.18, multiple labels can also be separated by an ampersand &, in the same manner as it is used in label expressions. Separation by colon : and ampersand & cannot be mixed in the same clause.\n\nIn the above query, three nodes labeled Location are created, each of which contains a name property with the value of New York, Ohio, and New Jersey respectively. Note that even though the MATCH clause results in three bound nodes having the value New York for the bornIn property, only a single New York node (i.e. a Location node with a name of New York) is created. As the New York node is not matched for the first bound node, it is created. However, the newly-created New York node is matched and bound for the second and third bound nodes.\n\nCharlie Sheen had already been marked as acting in Wall Street, so the existing relationship is found and returned. Note that in order to match or create a relationship when using MERGE, at least one bound node must be specified, which is done via the MATCH clause in the above example.\n\nIn the example graph, Oliver Stone and Rob Reiner have never worked together. When trying to MERGE a Movie node between them, Neo4j will not use any of the existing Movie nodes already connected to either person. Instead, a new Movie node is created.\n\nMERGE can also be used without specifying the direction of a relationship. Cypher® will first try to match the relationship in both directions. If the relationship does not exist in either direction, it will create one left to right.\n\nAs Charlie Sheen and Oliver Stone do not know each other in the example graph, this MERGE query will create a KNOWS relationship between them. The direction of the created relationship is left to right.\n\nMERGE can be used in conjunction with preceding MATCH and MERGE clauses to create a relationship between two bound nodes m and n, where m is returned by MATCH and n is created or matched by the earlier MERGE.\n\nThis builds on the example from Merge single node derived from an existing node property. The second MERGE creates a BORN_IN relationship between each person and a location corresponding to the value of the personâs bornIn property. Charlie Sheen, Rob Reiner, and Oliver Stone all have a BORN_IN relationship to the same Location node (New York).\n\nAs MERGE found no matches — in the example graph, there are no nodes labeled with Chauffeur and no HAS_CHAUFFEUR relationships — MERGE creates six nodes labeled with Chauffeur, each of which contains a name property whose value corresponds to each matched Person node’s chauffeurName property value. MERGE also creates a HAS_CHAUFFEUR relationship between each Person node and the newly-created corresponding Chauffeur node. As 'Charlie Sheen' and 'Michael Douglas' both have a chauffeur with the same name — 'John Brown' — a new node is created in each case, resulting in two Chauffeur nodes having a name of 'John Brown', correctly denoting the fact that even though the name property may be identical, these are two separate people. This is in contrast to the example shown above in Merge on a relationship between two existing nodes, where the first MERGE was used to bind the Location nodes and to prevent them from being recreated (and thus duplicated) on the second MERGE.\n\nGiven the node property uniqueness constraint on the name property for all Person nodes, the below query will create a new Person with the name property Laurence Fishburne. If a Laurence Fishburne node had already existed, MERGE would match the existing node instead.\n\nMERGE does not support map parameters the same way that CREATE does. To use map parameters with MERGE, it is necessary to explicitly use the expected properties, such as in the following example. For more information on parameters, see Parameters."
+    }
+}
