@@ -1,0 +1,31 @@
+{
+    "id": "dbpedia_1870_2",
+    "rank": 55,
+    "data": {
+        "url": "https://community.home-assistant.io/t/nest-problems-with-postal-and-weather-info/743",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Nest, problems with postal and weather info",
+        "top_image": "https://community-assets.home-assistant.io/original/4X/5/0/e/50e585faea85010ebb16d3d466f071ef90ec1393.png",
+        "meta_img": "https://community-assets.home-assistant.io/original/4X/5/0/e/50e585faea85010ebb16d3d466f071ef90ec1393.png",
+        "images": [],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "ViperRNMC (Viper Rnmc)",
+            "pdenhaan (Peter den Haan)"
+        ],
+        "publish_date": "2016-04-21T10:08:41+00:00",
+        "summary": "",
+        "meta_description": "Hi i have an error with the nest and the postal code/weather info, see log. Maybe it has something to do with the space between numbers and char. In the nest i give up ‘1963 AH’ \n16-04-21 12:05:41 homeassistant.component&hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://community-assets.home-assistant.io/optimized/4X/0/a/2/0a20e9d372791856e50ccb2ed7e95d7a33d515e6_2_32x32.png",
+        "meta_site_name": "Home Assistant Community",
+        "canonical_link": "https://community.home-assistant.io/t/nest-problems-with-postal-and-weather-info/743",
+        "text": "Hi i have an error with the nest and the postal code/weather info, see log. Maybe it has something to do with the space between numbers and char. In the nest i give up ‘1963 AH’\n\n16-04-21 12:05:41 homeassistant.components.sensor: Error while setting up platform nest Traceback (most recent call last): File \"/Volumes/Data_B/hass/lib/python3.5/site-packages/homeassistant/helpers/entity_component.py\", line 94, in _setup_platform discovery_info) File \"/Volumes/Data_B/hass/lib/python3.5/site-packages/homeassistant/components/sensor/nest.py\", line 58, in setup_platform add_devices(sensors) File \"/Volumes/Data_B/hass/lib/python3.5/site-packages/homeassistant/helpers/entity_component.py\", line 144, in add_entities if self.component.add_entity(entity): File \"/Volumes/Data_B/hass/lib/python3.5/site-packages/homeassistant/helpers/entity_component.py\", line 115, in add_entity entity.update_ha_state() File \"/Volumes/Data_B/hass/lib/python3.5/site-packages/homeassistant/helpers/entity.py\", line 147, in update_ha_state state = STATE_UNKNOWN if self.state is None else str(self.state) File \"/Volumes/Data_B/hass/lib/python3.5/site-packages/homeassistant/components/sensor/nest.py\", line 125, in state return getattr(self.structure.weather.current.wind, self.variable) File \"/Users/admin/.homeassistant/deps/nest/nest.py\", line 264, in weather return Weather(self._weather, self._local_time) File \"/Users/admin/.homeassistant/deps/nest/nest.py\", line 260, in _weather return self._nest_api._weather[self.postal_code] File \"/Users/admin/.homeassistant/deps/nest/nest.py\", line 667, in __getitem__ value = response.json()[postal_code] KeyError: '1963AH'\n\nNot very helpful, but I can confirm you’re not the only one. I’ve got exactly the same problem with an identical stack trace (root cause a KeyError: 'my postcode').\n\nLooking at the python-nest source, it looks like the postcode is expected as a key in the weather data that comes back from a GET to weather_url, and for some reason it isn’t there. I haven’t looked at the request and response data to check what’s going on. It could be a bug in the library rather than home-assistant itself.\n\nIf you avoid weather related conditions, the nest sensor works."
+    }
+}
