@@ -1,0 +1,42 @@
+{
+    "id": "dbpedia_7395_2",
+    "rank": 81,
+    "data": {
+        "url": "https://unix.stackexchange.com/questions/105040/how-to-move-the-first-x-files",
+        "read_more_link": "",
+        "language": "en",
+        "title": "How to move the first x files",
+        "top_image": "https://cdn.sstatic.net/Sites/unix/Img/apple-touch-icon@2.png?v=32fb07f7ce26",
+        "meta_img": "https://cdn.sstatic.net/Sites/unix/Img/apple-touch-icon@2.png?v=32fb07f7ce26",
+        "images": [
+            "https://cdn.sstatic.net/Sites/unix/Img/logo.svg?v=eb6eb2b9e73c",
+            "https://www.gravatar.com/avatar/a38a4f5f180194ac457cdc057f1be6e3?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/e45fd7ac29c74ef0c25965b08e5024a3?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/BkKfT.png?s=64",
+            "https://i.sstatic.net/1gEDH.gif?s=64",
+            "https://i.sstatic.net/BkKfT.png?s=64",
+            "https://lh3.googleusercontent.com/-6wODc1pK7iI/AAAAAAAAAAI/AAAAAAAAAkQ/lgBUzkR-cuY/photo.jpg?sz=64",
+            "https://www.gravatar.com/avatar/f34644378985962190b78d075d9a9ef5?s=64&d=identicon&r=PG",
+            "https://lh6.googleusercontent.com/-iPKgZIunZjA/AAAAAAAAAAI/AAAAAAAADcI/9kPNw9iiE7Q/photo.jpg?sz=64",
+            "https://www.gravatar.com/avatar/2abe153a3c476c54ebcf79aee4a25f83?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/kfuao.jpg?s=64",
+            "https://www.gravatar.com/avatar/750a282333ff2e17196612da7c3f3aad?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://unix.stackexchange.com/posts/105040/ivc/92c8?prg=9f44ebf8-8f7c-4eef-9365-193717511b0b"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2013-12-13T16:57:28",
+        "summary": "",
+        "meta_description": "I have this huge folder with thousands of unordered files. Is it feasible to move the first 5000s to a subfolder via the mv command? For now I move files with    \n\n mv *some_pattern* ./subfolder1/\r...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/unix/Img/favicon.ico?v=fb86ccabb921",
+        "meta_site_name": "Unix & Linux Stack Exchange",
+        "canonical_link": "https://unix.stackexchange.com/questions/105040/how-to-move-the-first-x-files",
+        "text": "With zsh and its glob qualifiers:\n\nmv -- *(D.oN[1,5000]) ./subfolder1\n\nTo move up to 5000 regular files in the order they are in the directory.\n\nFor the first 5000 in the lexicographically sorted list:\n\nmv -- *some_pattern*(D.[1,5000]) ./subfolder1\n\nIf you get an error about arg list too long. You can use zsh's buitin mv command by issuing:\n\nzmodload zsh/files\n\nfirst.\n\nPOSIXly:\n\nset -- for f in .*some_pattern* *some_pattern*; do [ \"$#\" -lt 5000 ] || break [ -f \"$f\" ] || continue [ -L \"$f\" ] && continue set -- \"$@\" \"$f\" done [ \"$#\" -eq 0 ] || mv -- \"$@\" subfolder1/\n\nOn a GNU system, you could also do:\n\nfind . ! -name . -prune -name '*some_pattern*' -type f -print0 | head -zn 5000 | xargs -r0 mv -t ./subfolder1 --\n\nA version that is simple and supports special chars, spaces, etc.\n\nls -Q dir1 | head -1000 | xargs -i mv dir1/{} dir2/\n\nFor this to work as-is dir2 must exist and you have to execute it from the parent directory of dir1 and dir2.\n\nThis will move 1000 files from dir1 to dir2.\n\nI was able to succesfully do a move of 50,000 without the mv bash error like this\n\nls | head -50000 | xargs -I{} sudo mv {} 01/\n\nFunny enough, this was on a samba share, so the 50k limit is because Windows Explorer GUI does not like more than 60k files in a dir in general."
+    }
+}

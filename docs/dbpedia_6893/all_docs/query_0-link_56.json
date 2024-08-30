@@ -1,0 +1,35 @@
+{
+    "id": "dbpedia_6893_0",
+    "rank": 56,
+    "data": {
+        "url": "https://groups.google.com/g/swi-prolog/c/aEYpPEt6p1w",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Read prompt bug?",
+        "top_image": "https://www.gstatic.com/images/branding/product/1x/groups_32dp.png",
+        "meta_img": "https://www.gstatic.com/images/branding/product/1x/groups_32dp.png",
+        "images": [
+            "https://fonts.gstatic.com/s/i/productlogos/groups/v9/web-48dp/logo_groups_color_1x_web_48dp.png",
+            "https://lh3.googleusercontent.com/a-/ALV-UjUrXiOJzPkxm2I2g_HCXoImaLctBHQ8mS9f5NdJLreM7bh5wPM=s40-c",
+            "https://lh3.googleusercontent.com/a-/ALV-UjUFv6C5X79AZs-8ygzFtfLUOPkY0iroh_aUoD-phT9RNDB21KL3=s40-c",
+            "https://lh3.googleusercontent.com/a-/ALV-UjUrXiOJzPkxm2I2g_HCXoImaLctBHQ8mS9f5NdJLreM7bh5wPM=s40-c",
+            "https://lh3.googleusercontent.com/a-/ALV-UjUFv6C5X79AZs-8ygzFtfLUOPkY0iroh_aUoD-phT9RNDB21KL3=s40-c",
+            "https://lh3.googleusercontent.com/a-/ALV-UjUrXiOJzPkxm2I2g_HCXoImaLctBHQ8mS9f5NdJLreM7bh5wPM=s40-c"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "//www.gstatic.com/images/branding/product/1x/groups_32dp.png",
+        "meta_site_name": "",
+        "canonical_link": "https://groups.google.com/g/swi-prolog/c/aEYpPEt6p1w",
+        "text": "On 1/18/19 1:14 PM, Paulo Moura wrote:\n\n> Hi,\n\n>\n\n> The documentation of the prompt/2 built-in predicate claims that \"A prompt is printed if one of the read predicates is called and the cursor is at the left margin.\" But:\n\n>\n\n> ?- prompt(P, P).\n\n> P = '|: '.\n\n>\n\n> ?- write('prompt: '), read(A), write('prompt: '), read(B), write('prompt: '), read(C).\n\n> prompt: a.\n\n> prompt: |: b.\n\n> prompt: |: c.\n\n>\n\n> For the three read/1 calls above, the cursor is never at the left margin. But we only get the default prompt omitted for the first read/1 call. Is this a bug or am I misinterpreting at \"left margin\" means?\n\nI did a little search. What happens is this:\n\n- write('prompt: ') --> linepos = 8\n\n- read(A) --> not at left margin: no prompt\n\n--> BUT, according to the ISO standard, the\n\nnewline following the term is NOT read\n\n--> linepos = 10 (assuming the user types \"a.\")\n\n- write('prompt: ') --> linepos = 18\n\n- read(B) --> first reads pending newline --> linepos = 0\n\nNow at left margin: prompt\n\nI think we had a discussion before on something related let to some hack\n\nto make the toplevel behave more sensible.\n\nI do not see a really good solution. One might be to ignore ISO and\n\nread the blank following a term if the input is a terminal?\n\nUsing line editing though, just writing the prompt does not work as\n\nthe line editor thinks the cursor is at the left margin.\n\nSWI-Prolog has a little bit oddly called predicate prompt1(+Text) that\n\navoids these problems.\n\nCheers --- Jan\n\nOn 18/01/2019 16:05, Paulo Moura wrote:\n\n> Thanks for the quick reply. Your explanation was also my guess.\n\n> Thanks for confirming. The issue occurs when using Logtalk's question\n\n> asking mechanism (which is the dual of the message printing\n\n> mechanism). This mechanism allows the user to define the prompt to be\n\n> used for a question. That's where the default prompt gets in the way.\n\n> It's mostly an annoying esthetic issue. But one that I have been\n\n> unable to solve in a portable way so far.\n\nI guess you have little choice but to abstract away and deal with it\n\nin the portability layer. Just writing a prompt has never been a\n\ngood idea. Both for readline and libedit you pass the prompt at\n\nan argument to the line reading function.\n\nI guess it is already hookable to deal with web or GUI applications?\n\nCheers --- Jan"
+    }
+}

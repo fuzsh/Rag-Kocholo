@@ -1,0 +1,34 @@
+{
+    "id": "dbpedia_7466_0",
+    "rank": 98,
+    "data": {
+        "url": "https://stackoverflow.com/questions/28165342/python-time-sleep-delays-previous-commands",
+        "read_more_link": "",
+        "language": "en",
+        "title": "python time.sleep() delays previous commands",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/a9e7418c777188bc311a50e20aff926c?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://i.sstatic.net/QdVoU.png?s=64",
+            "https://www.gravatar.com/avatar/e62f4b6f77a92fb607a5760654891592?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/28165342/ivc/51c9?prg=a479749e-7804-4bb3-a247-f87742ee3b2d",
+            "https://stackoverflow.com/js-false.gif"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2015-01-27T07:30:17",
+        "summary": "",
+        "meta_description": "When trying to interrupt a tkinter application, it seems that time.sleep() puts some previous command on the hold.  According to my understanding and previous experiences, label1's text should be s...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/28165342/python-time-sleep-delays-previous-commands",
+        "text": "time.sleep(...) does not give the same result as the after(...) call.\n\nThe time.sleep method runs, but does not show anything before the second has passed. You can see this by putting print('before') before your sleep call. You'll see the print statement is executed one second before the window is created. This is due to Tkinter not updating anything during a sleep. So nothing happens until the sleep is over, after which the label is immediately updated. Moreover, the mainloop isn't called before the sleep is over, so Tkinter isn't in its mainloop yet. You can force Tkinter to update by using self.parent.update() right before your sleep call. You will see that the window shows, having the label 'before', waits one second and the label changes to 'after'. However, during this second the window is unresponsive, which is why using sleep together with Tkinter is a bad idea.\n\nInstead of sleep, after is almost always the better option since it returns immediately, so it doesn't block further execution, and schedules the specified function to be executed after the specified amount of time. However, after expects a function name to be passed, but you pass a function call. This means that at the time that the after call is evaluated, the function is run and the return value (which is None) is passed as function name. Therefore, you see that the label is changed at the time the window opens, because the change is made at the time the after call is evaluated. What you should do is pass a function name to after:\n\ndef update_label: label1.config(text = \"after\") self.after(1000, update_label)\n\nOr shorter, by creating an anonymous function:\n\nself.after(1000, lambda: label1.config(text = \"after\"))\n\nThis will give you the expected result of showing a label with 'before', which changes to 'after' after a second, without blocking Tkinter's mainloop.\n\nIt's not surprising that doesn't work. Think about what the Tk framework is doing: it's creating your windows, display = Display(), and at that moment the thread stops. The object is not fully created. Do you expect Tk to render an object that's half way through its constructor?\n\nFirst, try moving any thread-related code out of the constructor. The constructor should be allowed to finish normally, and thread-code should be in another function.\n\nSecond, it's bad practice to use thread.sleep in the middle of your normal logic. Normally, you start a separate thread, and that thread can wait and sleep if it wants to. (Though I don't know whether Tk has a special way of doing things.)"
+    }
+}

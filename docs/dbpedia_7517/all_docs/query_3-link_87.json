@@ -1,0 +1,35 @@
+{
+    "id": "dbpedia_7517_3",
+    "rank": 87,
+    "data": {
+        "url": "https://news.slashdot.org/story/99/09/05/1251212/on-the-subject-of-trolls",
+        "read_more_link": "",
+        "language": "en",
+        "title": "On the Subject of Trolls",
+        "top_image": "https://a.fsdn.com/sd/topics/meta_64.png",
+        "meta_img": "https://a.fsdn.com/sd/topics/meta_64.png",
+        "images": [
+            "https://a.fsdn.com/sd/topics/meta_64.png",
+            "https://a.fsdn.com/sd/topics/news_64.png",
+            "https://a.fsdn.com/sd/topics/intel_64.png",
+            "https://a.fsdn.com/sd/topics/usa_64.png",
+            "https://a.fsdn.com/sd/ccpa-optout.png",
+            "https://slashdot.org/images/njs.gif?91"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "Occasionally comments get posted on Slashdot that hurt everyone.  It\ndoesn't happen very often, but sometimes someone with a bug up their\nbutt decides to make a nuisance of themselves by posting floods of\nmessages into a board.  These comments are almost immediately nailed as 'offtopic' or 'flamebai...",
+        "meta_lang": "en",
+        "meta_favicon": "/favicon.ico",
+        "meta_site_name": "",
+        "canonical_link": "https://news.slashdot.org/story/99/09/05/1251212/on-the-subject-of-trolls",
+        "text": "So it happened again recently. You guys who read a lot probably know where but this time it was much more hurtful then usual. So I've implemented 2 changes to help prevent this from happening again.\n\nFirst I added an additional scoring penalty to posts. Originally the default range of comment posting was 0 for ACs, and 1 for Registered Users. In addition, a +1 or -1 could be Registered users based on their posting history (I'm gonna use the word \"Karma\" to describe the sum of all moderation activity done to a given user: thanks nate). If a user has karma of +20, they get a +1 bonus to their comments. If their karm is -10, they get a -1. I've added an additional rank of -20 which ads one more -1 to the post, which will make it possible for a comment to be posted at -1.\n\nThere are only 2 accounts out of the 80,000 that are this low.\n\nSecond is a bit trickier. The code now checks for \"Trolls\" as part of comment validation. Essentially, when a comment is posted, a troll factor is computed for your Account and your IP. This is the sum of all moderator activity done to your account in the last 24 hours or so. If your IP or your User Account has a -5 or worse total, your comment will not be posted.\n\nRight now there are 5 accounts in the system that should show up as trolls. 3 of them are the 3 worst offenders from the story that caused me to have to write this code.\n\nIt was hard for me to do this. I'm feeling pretty wierd because this is the first time I've ever made it impossible for anyone to post. My guess is that in the end this won't help: There is no end to the number of IPs or User Accounts a determined troll can acquire to continue pestering people trying to have a real discussion. All I can say to those of you who are offended is to try to browse at Score:1 or Score:2 because the moderation system as a whole works quite well. And to those of you who are causing the problem (and I know who you are) please grow up.\n\nUpdate: 09/05 01:51 by CT : A lot of good points are being made in the comments, but let me try to justify something: I'm not trying to cause censorship, I'm trying to prevent a denial of service attack. Under this system it will be quite possible for a troll to post 5-10 comments before the system rejects him. This isn't a censorship thing: He's been given plenty of opportunity to speak, he's just screwed up. He's not trying to communicate, he's trying to drown out other speakers. This is precisely the kind of thing that we need to resolve to allow a rational discussion to continue at the scale we're dealing with here. There are most certainly loopholes here, but no system can stop all abuses. This will just make it a little trickier.\n\nOther Ideas:\n\nNo Anonymous Posts. You all know how I feel about this one.\n\nRestrict the # of comments any single IP/Account is allowed to make in a single article. This gets problematic: anyone have a good idea on how to make this fair, that will scale from 1 comment to a thousand?\n\nAssorted restrictions on AC posting (Allow only 1 AC per registered post? Allow only registered users to post top level comments? No AC posts after 100 comments in a story? There are dozens of ideas, but I think they all are bad)\n\nOh, and if enough people bitch, I'll remove the extra '-1' from new posts. I'm not convinced that its a good idea, but it *did* serve to solve the current problem.\n\nInteresting problems, thanks for the feedback (good and bad!) I'm glad that some folks are addressing the issues instead of just swearing and screaming at each other. I'm open to any suggestions, but anything angry will simply be ignored."
+    }
+}

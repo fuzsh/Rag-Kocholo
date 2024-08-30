@@ -1,0 +1,38 @@
+{
+    "id": "dbpedia_7395_2",
+    "rank": 70,
+    "data": {
+        "url": "https://serverfault.com/questions/772227/chmod-not-working-correctly-in-docker",
+        "read_more_link": "",
+        "language": "en",
+        "title": "chmod not working correctly in Docker",
+        "top_image": "https://cdn.sstatic.net/Sites/serverfault/Img/apple-touch-icon@2.png?v=9b1f48ae296b",
+        "meta_img": "https://cdn.sstatic.net/Sites/serverfault/Img/apple-touch-icon@2.png?v=9b1f48ae296b",
+        "images": [
+            "https://cdn.sstatic.net/Sites/serverfault/Img/logo.svg?v=43f5b6d5f65b",
+            "https://i.sstatic.net/BZgBm.jpg?s=64",
+            "https://www.gravatar.com/avatar/e5298acfce9a53921a374667104e3b95?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/7ZLDY.png?s=64",
+            "https://www.gravatar.com/avatar/3211190ed745851563c73617352d2c57?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/b6975c494d3d9c404dd3d7af2edf3133?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/a007be5a61f6aa8f3e85ae2fc18dd66e?s=64&d=identicon&r=PG",
+            "https://i.sstatic.net/w1sKg.jpg?s=64",
+            "https://serverfault.com/posts/772227/ivc/92c8?prg=f8369d0d-c729-4c98-9b8c-fa5193050ad0"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2016-04-22T13:09:26",
+        "summary": "",
+        "meta_description": "I'm building a Docker image for my Symfony app and I need to give permission to apache server to write into cache and log folders\n\n#Dockerfile\nFROM php:7-apache\n\nRUN apt-get update \\\n&amp;&amp; apt...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/serverfault/Img/favicon.ico?v=18e9cc4f2aea",
+        "meta_site_name": "Server Fault",
+        "canonical_link": "https://serverfault.com/questions/772227/chmod-not-working-correctly-in-docker",
+        "text": "I had the same issue and it seems that there is some bug in docker or overlay2 if directory content is created in one layer and its permissions are changed in other.\n\nAs a workaround you could copy sources to temporary directory:\n\nCOPY . /src\n\nAnd then move it to /var/www/html and setup permissions (in one RUN command):\n\nRUN rm -rf /var/www/html && mv /src /var/www/html &&\\ find /var/www/html/ -type d -exec chmod 755 {} \\; &&\\ find /var/www/html/ -type f -exec chmod 644 {} \\; &&\\ chmod -R 777 /var/www/html/app/cache /var/www/html/app/logs\n\nAlso I created GitHub issue.\n\nThe default shell of RUN in Docker is /bin/sh and this is where the permissions not being set correctly actually has a problem.\n\nBut you can change to just use /bin/bash instead to easily fix, notice before and after directory listing\n\nStep 7/9 : RUN /bin/bash -c 'ls -la; chmod +x gitlab-properties-builder.sh; ls -la' ---> Running in dc57ae77aa67 drwxr-xr-x. 3 root root 103 Mar 8 17:56 . drwxr-xr-x. 1 root root 46 Mar 8 17:57 .. drwxr-xr-x. 2 root root 6 Mar 7 20:47 config -rw-r--r--. 1 root root 2340 Mar 7 21:20 gitlab-properties-builder.sh -rw-r--r--. 5 root root 57325770 Mar 5 14:39 gitlab-scm-collector-2.0.5-SNAPSHOT.jar drwxr-xr-x. 1 root root 42 Mar 8 17:56 . drwxr-xr-x. 1 root root 61 Mar 8 17:57 .. drwxr-xr-x. 2 root root 6 Mar 7 20:47 config -rwxr-xr-x. 1 root root 2340 Mar 7 21:20 gitlab-properties-builder.sh -rw-r--r--. 5 root root 57325770 Mar 5 14:39 gitlab-scm-collector-2.0.5-SNAPSHOT.jar ---> 8b5de6e348d3\n\nThis issue is likely the result of a VOLUME definition inside the upstream Dockerfile. When a volume is defined in the Dockerfile, you can add files with a COPY or ADD command directly into the image. However, a RUN line will:\n\nCreate a temporary container using the image definition as of the current point of the dockerfile\n\nThat temporary container will have an anonymous volume mounted as you or a parent image specified inside the Dockerfile\n\nThe anonymous volume will be initialized from the contents of the image\n\nYour command will run inside the container\n\nIf you list the directory during this RUN command, you will see your changes applied, but those changes have been applied to the volume\n\nWhen your run command completes, docker will capture the changes to the container\n\nThese changes can be seen with a docker diff if you do not delete the temporary containers (you can run a build with --rm=false to have them remain)\n\nThese changes will not include the anonymous volume contents because they do not exist inside the temporary container filesystem, volumes are separate\n\nBecause of this behavior, you have the options to:\n\nyou can copy your files to a different directory and change the permissions there\n\nyou can fix the permissions on your host so they get copied in with those permissions directly\n\nyou can remove the volume from either your image, get the upstream image to remove their volume definition, or you can rebuild your own copy of the upstream image without the volume definition and base your images off of that\n\nNote that inside the current php images, it appears that the volume has been removed, which means we effectively have option 3.\n\nI just made an experiment with the following:\n\nFROM alpine LABEL MAINTAINER=\"YIMGA YIMGA Salathiel Genèse\" RUN apk add --no-cache inotify-tools CMD [ \"./script.sh\" ] WORKDIR /opt/app/ COPY src/ /opt/app/ RUN chmod a+x *.sh\n\nAnd it just works great.\n\nHowever\n\nWhen I override that executable file through docker-compose volumes, the execute permission is simply like rolled-back - technically overrode to original file permission.\n\nThe fix for dev mode is simply to chmod a+x yourfile from host, which will be inherited at compose volume mounting."
+    }
+}

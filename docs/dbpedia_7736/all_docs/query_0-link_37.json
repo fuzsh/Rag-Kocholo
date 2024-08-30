@@ -1,0 +1,41 @@
+{
+    "id": "dbpedia_7736_0",
+    "rank": 37,
+    "data": {
+        "url": "https://metacpan.org/pod/Fedora::RPM::Spec::License",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Fedora::RPM::Spec::License",
+        "top_image": "https://metacpan.org/static/images/dots.png",
+        "meta_img": "https://metacpan.org/static/images/dots.png",
+        "images": [
+            "https://metacpan.org/dist/Fedora-RPM-Spec-License/activity.svg?res=month",
+            "https://metacpan.org/static/images/metacpan-logo.svg",
+            "https://metacpan.org/static/images/sponsors/bytemark_logo.svg",
+            "https://metacpan.org/static/images/sponsors/liquidweb_logo.png",
+            "https://metacpan.org/static/images/sponsors/deriv.svg",
+            "https://metacpan.org/static/images/sponsors/geocodelogo.svg",
+            "https://metacpan.org/static/images/sponsors/fastly_logo.svg",
+            "https://metacpan.org/static/images/sponsors/open-cage.svg",
+            "https://metacpan.org/static/images/sponsors/elastic.svg",
+            "https://metacpan.org/static/images/sponsors/route4me.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Michal Josef Špaček"
+        ],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "Class for handle Fedora license string.",
+        "meta_lang": "en",
+        "meta_favicon": "/static/icons/favicon.ico",
+        "meta_site_name": "MetaCPAN",
+        "canonical_link": "https://metacpan.org/pod/Fedora::RPM::Spec::License",
+        "text": "NAME\n\nFedora::RPM::Spec::License - Class for handle Fedora license string.\n\nSYNOPSIS\n\nuse Fedora::RPM::Spec::License; my $obj = Fedora::RPM::Spec::License->new(%params); my @exceptions = $obj->exceptions; my $fedora_license_format = $obj->format; my @licenses = $obj->licenses; $obj->parse($fedora_license_string); $obj->reset;\n\nDESCRIPTION\n\nFedora license string is used in Fedora RPM spec files in License field. There are two versions of this string. One is old version and new one with SPDX identifiers.\n\nMETHODS\n\nnew\n\nmy $obj = Fedora::RPM::Spec::License->new(%params);\n\nConstructor.\n\nReturns instance of object.\n\nexceptions\n\nmy @exceptions = $obj->exceptions;\n\nGet exceptions used in the Fedora license string sorted alphabetically.\n\nReturns array of strings.\n\nformat\n\nmy $fedora_license_format = $obj->format;\n\nGet Fedora license string format. Possible values:\n\n1 - Old RPM Fedora format. 2 - New RPM Fedora format with SPDX license ids.\n\nReturns number.\n\nlicenses\n\nmy @licenses = $obj->licenses;\n\nGet licenses used in the Fedora license string sorted alphabetically.\n\nReturns array of strings.\n\nparse\n\n$obj->parse($fedora_license_string);\n\nParse Fedora license string and set object internal structures. If string is valid for format 1 and 2 as well, format 2 is preferred. Example is 'MIT' license string.\n\nReturns undef.\n\nreset\n\n$obj->reset;\n\nReset object.\n\nReturns undef.\n\nERRORS\n\nnew(): From Class::Utils::set_params(): Unknown parameter '%s'. format(): No Fedora license string processed. licenses(): No Fedora license string processed. parse(): License '%s' isn't SPDX license. License '%s' isn't SPDX license exception.\n\nEXAMPLE\n\nuse strict; use warnings; use Fedora::RPM::Spec::License; if (@ARGV < 1) { print STDERR \"Usage: $0 fedora_license_string\\n\"; exit 1; } my $fedora_license_string = $ARGV[0]; # Object. my $obj = Fedora::RPM::Spec::License->new; # Parse license. $obj->parse($fedora_license_string); # Print out. print \"Fedora license string: $fedora_license_string\\n\"; print 'Format: '.$obj->format.\"\\n\"; print \"Contain licenses:\\n\"; print join \"\\n\", map { '- '. $_ } $obj->licenses; print \"\\n\"; if ($obj->exceptions) { print \"Contain exceptions:\\n\"; print join \"\\n\", map { '- '. $_ } $obj->exceptions; print \"\\n\"; } # Output with 'MIT' input: # Fedora license string: MIT # Format: 2 # Contain licenses: # - MIT # Output with 'MIT AND FSFAP' input: # Fedora license string: MIT AND FSFAP # Format: 2 # Contain licenses: # - FSFAP # - MIT # Output with '(GPL+ or Artistic) and Artistic 2.0 and (MIT or GPLv2)' input: # Fedora license string: (GPL+ or Artistic) and Artistic 2.0 and (MIT or GPLv2) # Format: 1 # Contain licenses: # - Artistic # - Artistic 2.0 # - GPL+ # - GPLv2 # - MIT # Output with 'LGPL-3.0-only WITH LGPL-3.0-linking-exception' input: # Fedora license string: LGPL-3.0-only WITH LGPL-3.0-linking-exception # Format: 2 # Contain licenses: # - LGPL-3.0-only # Contain exceptions: # - LGPL-3.0-linking-exception\n\nDEPENDENCIES\n\nClass::Utils, English, Error::Pure, License::SPDX, List::Util, Parse::RecDescent, Readonly.\n\nSEE ALSO\n\nrpm-spec-license\n\nTool for working with RPM spec file licenses.\n\nREPOSITORY\n\nhttps://github.com/michal-josef-spacek/Fedora-RPM-Spec-License\n\nAUTHOR\n\nMichal Josef Špaček mailto:skim@cpan.org\n\nhttp://skim.cz\n\nLICENSE AND COPYRIGHT\n\n© 2023 Michal Josef Špaček\n\nBSD 2-Clause License\n\nVERSION\n\n0.03"
+    }
+}

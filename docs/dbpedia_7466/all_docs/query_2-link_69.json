@@ -1,0 +1,33 @@
+{
+    "id": "dbpedia_7466_2",
+    "rank": 69,
+    "data": {
+        "url": "https://stackoverflow.com/questions/27847428/c-sharp-winform-blink-label-backcolor-with-delay",
+        "read_more_link": "",
+        "language": "en",
+        "title": "C# winform blink label backcolor with delay",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://i.sstatic.net/bXgpD.png?s=64",
+            "https://i.sstatic.net/HxO2o.png?s=64",
+            "https://i.sstatic.net/DEnt9.png?s=64",
+            "https://stackoverflow.com/posts/27847428/ivc/51c9?prg=7c3798f2-d531-41b1-b55a-3ecb4b952d35"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2015-01-08T18:50:41",
+        "summary": "",
+        "meta_description": "I have a winform application and I need to make the label backcolor blinking.  I am trying to do that using a for loop and a Thread.Sleep, but does not work.  Thank you for any help and advise:\n\npr...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/27847428/c-sharp-winform-blink-label-backcolor-with-delay",
+        "text": "Use a UI timer, not sleep for this task. You're putting the main thread to sleep all the time and you're blocking user input with that. Using Thread.Sleep is almost always a sign that you're doing something wrong. There are very few situations when Thread.Sleep is correct. Specifically, putting the UI thread to sleep is never correct.\n\nPut a Timer component on your form and in the Tick event, keep changing the background color of your label.\n\nFor example:\n\n// Keeps track of the number of blinks private int m_nBlinkCount = 0; // ... // tmrTimer is a component added to the form. tmrTimer.Tick += new EventHandler(OnTimerTick); m_nBlinkCount = 0; tmrTimer.Interval = 1000; // 1 second interval tmrTimer.Start(); // ... private void OnTimerTick ( Object sender, EventArgs eventargs) { if (label1.BackColor == Color.Red) label1.BackColor = Color.Transparent; else label1.BackColor = Color.Red; m_nBlinkCount++; if ( m_nBlinkCount >= 10 ) tmrTimer.Stop (); }\n\nWhat's happening here is that you are sleeping the GUI thread, which causes the program to hang. The GUI thread is also the thread that would be responsible for changing the background color of the label.\n\nHere's a simple implementation that will solve this problem for you. Note that this isn't the best implementation possible, but it uses your preferred blink code implementation. For a better option than Thread.Sleep, see System.Timers.Timer or, as xxbbcc suggested, a System.Windows.Forms.Timer.\n\nBackgroundWorker blinker; public Form1() { InitializeComponent(); blinker = new BackgroundWorker(); blinker.DoWork += blinker_DoWork; } private void blinker_DoWork(object sender, DoWorkEventArgs e) { for (int i = 0; i < 10; i++) { System.Threading.Thread.Sleep(1000); // Set fast to slow. if (label1.InvokeRequired) { label1.Invoke((Action)blink); } else { blink(); } } } private void blink() { if (label1.BackColor == Color.Red) label1.BackColor = Color.Transparent; else label1.BackColor = Color.Red; } private void button1_Click(object sender, EventArgs e) { if (blinker.IsBusy == false) { blinker.RunWorkerAsync(); } }"
+    }
+}

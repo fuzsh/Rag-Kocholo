@@ -1,0 +1,30 @@
+{
+    "id": "dbpedia_6904_2",
+    "rank": 43,
+    "data": {
+        "url": "https://github.com/Danielhp95/gym-kuhn-poker",
+        "read_more_link": "",
+        "language": "en",
+        "title": "poker: Kuhn poker implemented in accordance to OpenAI gym interface",
+        "top_image": "https://opengraph.githubassets.com/5e3426354d4ce6faaed199b4a7d15cff0aa2a73052b484dadfb18f5e480a4c3c/Danielhp95/gym-kuhn-poker",
+        "meta_img": "https://opengraph.githubassets.com/5e3426354d4ce6faaed199b4a7d15cff0aa2a73052b484dadfb18f5e480a4c3c/Danielhp95/gym-kuhn-poker",
+        "images": [
+            "https://raw.githubusercontent.com/Danielhp95/gym-kuhn-poker/master/Kuhn_poker_tree.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "Kuhn poker implemented in accordance to OpenAI gym interface - Danielhp95/gym-kuhn-poker",
+        "meta_lang": "en",
+        "meta_favicon": "https://github.com/fluidicon.png",
+        "meta_site_name": "GitHub",
+        "canonical_link": "https://github.com/Danielhp95/gym-kuhn-poker",
+        "text": "Kuhn poker implemented in accordance to OpenAI gym interface.\n\nKuhn poker is an extremely simplified form of poker developed by Harold W. Kuhn as a simple model zero-sum, two-player, imperfect-information, sequential game, amenable to a complete game-theoretic analysis. In Kuhn poker, the deck includes only three playing cards, for example a King, Queen, and Jack. One card is dealt to each player, which may place bets similarly to a standard poker. If both players bet or both players pass, the player with the higher card wins, otherwise, the betting player wins.\n\nWikipedia Explanation of Kuhn's poker\n\nThe action space is discrete, containing two actions: [PASS, BET].\n\nNOTE: original Kuhn's game contains a third move CHECK. We argue that CHECK dominates PASS dominates PASS, and hence we eliminate it from the action space. This has the advantage of ensuring that on every time step there's only 2 possible actions.\n\nThe state space represents the internal environment state. It is the concatenation of the following vectors:\n\nCurrent player. One hot encoding for current player.\n\nPlayer hand. One hot encoding of which card each player has.\n\nBetting history. One hot encoding of whether each player PASSed or BETted.\n\nPot contributions. A vector p = [p_1, p_2], where p_1 corresponds to the contribution of player 1 to the pot. It includes player's antes.\n\nExample (spaces added for visual clarification):\n\nDescription:\n\nIt is player's 1 turn\n\nPlayer 1 has card 3 and player 2 has card 2.\n\nPlayer one has PASSed, followed by player 2's BET.\n\nPlayer 1 has contributed (1) to the pot and player 2 contributed (2).\n\nEach player recieves an observation which is a strict subset of the state space. The observation for player i contains:\n\nPlayer id: One hot encoding of the player's id.\n\nDealt card: One hot encoding of card dealt to player i.\n\nBetting history: Same as above.\n\nPot contributions: Same as above.\n\nExample observation for player 1 from the example state above (spaces added for visual clarification):\n\nThus, player's do not have access to other player's cards nor the cards which have not been dealt.\n\nEach state transition is associated with a reward vector r = [r_1, r_2], where r_1 is the scalar float reward associated to player 1. The reward function works as in standard poker.\n\ngym must be installed. An Kuhn's poker environment can be created via running inside a python interpreter:\n\nThe dict() in the expression above includes keyword arguments for the underlying environment:\n\nnumber_of_players: Number of players (Default 2).\n\ndeck_size: Size of the deck from which cards will be drawn, one for each player (Default 3).\n\nbetting_rounds: Number of times that (Default: 2).\n\nante: Amount of utility that all players must pay at the beginning of an episode (Default 1).\n\nNOTE: Environment has only been tested with default values, feel free to open an issue if they don't work for other values!\n\nThis package is available in PyPi as gym-kuhn-poker"
+    }
+}

@@ -1,0 +1,32 @@
+{
+    "id": "dbpedia_7480_3",
+    "rank": 63,
+    "data": {
+        "url": "https://stackoverflow.com/questions/30587930/wusa-catastrophic-failure-0x8000ffff-when-called-from-system-vc",
+        "read_more_link": "",
+        "language": "en",
+        "title": "WUSA catastrophic failure 0x8000ffff when called from system() VC++",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/36a87c4265746bb823f47b8afc2a77cc?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/36a87c4265746bb823f47b8afc2a77cc?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/30587930/ivc/5089?prg=998697e4-23b4-4243-9505-a314d82b85be"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2015-06-02T05:22:14",
+        "summary": "",
+        "meta_description": "I'm trying to make a Windows Update uninstall program in C++, but whenever I try to call wusa, it exits on a catastrophic failure 0x80000ffff. I call the same command in a Command Prompt and it works",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/30587930/wusa-catastrophic-failure-0x8000ffff-when-called-from-system-vc",
+        "text": "I'm trying to make a Windows Update uninstall program in C++, but whenever I try to call wusa, it exits on a catastrophic failure 0x80000ffff. I call the same command in a Command Prompt and it works perfectly. How do I fix this?\n\nHere is the function I use to call wusa:\n\nsystem(\"wusa /uninstall /kb:2511455\");\n\nI have figured out how to solve this issue and I will post my solution for anyone in the future that has the same issue. The system() command was running the 32-bit executable inside %windir%\\SysWoW64\\ instead of the native 64-bit version. To solve this issue I had to use the following:\n\nPVOID OldValue = NULL; if( Wow64DisableWow64FsRedirection(&OldValue) ) { // Anything in this block uses the system native files and not the WoW64 ones // put native WoW64 code here system(\"wusa /uninstall /kb:2511455\"); //system(\"wusa /?\"); // use this for testing // Immediately re-enable redirection. Note that any resources // associated with OldValue are cleaned up by this call. if ( FALSE == Wow64RevertWow64FsRedirection(OldValue) ) { // Failure to re-enable redirection should be considered // a criticial failure and execution aborted. return 0; } }\n\nanswered Jun 8, 2015 at 1:18\n\nrn10950rn10950\n\n9333 silver badges1111 bronze badges"
+    }
+}

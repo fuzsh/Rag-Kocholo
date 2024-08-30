@@ -1,0 +1,36 @@
+{
+    "id": "dbpedia_7070_3",
+    "rank": 95,
+    "data": {
+        "url": "https://stackoverflow.com/questions/53786654/runge-kutta-algorithm-using-while-loop",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Runge Kutta Algorithm using while loop",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://lh4.googleusercontent.com/-0Bji6z6g-0k/AAAAAAAAAAI/AAAAAAAAA2s/OLahj63F4rs/photo.jpg?sz=64",
+            "https://i.sstatic.net/j0WAv.png",
+            "https://i.sstatic.net/PJtRn.png",
+            "https://i.sstatic.net/Z5c6A.jpg?s=64",
+            "https://stackoverflow.com/posts/53786654/ivc/f40c?prg=7df8500e-9858-482f-b6ed-f65c8c3fd25e"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Ian Ronk"
+        ],
+        "publish_date": "2018-12-14T20:44:05",
+        "summary": "",
+        "meta_description": "I am currently trying to get the Runge Kutta 4 Integration to work, but it outputs the following:\n\nRunge Kutta value: inf\r\nWhile it is supposed to give a value in the range of:\n\nRunge Kutta value: 8.",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/53786654/runge-kutta-algorithm-using-while-loop",
+        "text": "I am currently trying to get the Runge Kutta 4 Integration to work, but it outputs the following:\n\nRunge Kutta value: inf\n\nWhile it is supposed to give a value in the range of:\n\nRunge Kutta value: 8.476271005220534e+16\n\nI used the following code, but can't seem to output the right approximation.\n\nendtime = 5 h = 0.01 def f(x, z): return x*x*z t = 0 y = 1 while t < endtime: k1 = f(t, y) k2 = f(t+(h/2), y+(k1/2)) k3 = f(t+(h/2), y+(k2/2)) k4 = f(t+h, y+k3) y = y + h*(k1 + 2*k2 + 2*k3 + k4)/6 t = t + h print(\"Runge Kutta value: \" + str(y))\n\nIs there anyone who knows where I made the mistake\n\nyour formulas are wrong because most of the time you're forgetting to multiply by h\n\nand coefficients too:\n\n(source: Wikipedia)\n\nso:\n\nendtime = 5 h = 0.01 def f(x, z): return x*x*z y = 1 count = 0 t = 0 for count in range(int(endtime/h)): t = h*count k1 = f(t, y) k2 = f(t+(h/2), y+h*(k1/2)) k3 = f(t+(h/2), y+h*(k2/2)) k4 = f(t+h, y+h*k3) y += h*(k1 + 2*k2 + 2*k3 + k4)/6 print(\"Runge Kutta value: \" + str(y))\n\nAlso avoid floating point accumulation by computing the value of t each time, instead of adding the fixed step, and trade the while loop for a for loop.\n\nnot sure it's perfect but I get a finite result now :)\n\nRunge Kutta value: 1.245858162131811e+18\n\nanswered Dec 14, 2018 at 21:03\n\nJean-François Fabre♦Jean-François Fabre\n\n139k2323 gold badges172172 silver badges233233 bronze badges"
+    }
+}
