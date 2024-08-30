@@ -1,0 +1,51 @@
+{
+    "id": "dbpedia_2234_2",
+    "rank": 49,
+    "data": {
+        "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6198863/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "PyCoTools: a Python toolbox for COPASI",
+        "top_image": "https://www.ncbi.nlm.nih.gov/corehtml/pmc/pmcgifs/pmc-card-share.jpg?_=0",
+        "meta_img": "https://www.ncbi.nlm.nih.gov/corehtml/pmc/pmcgifs/pmc-card-share.jpg?_=0",
+        "images": [
+            "https://www.ncbi.nlm.nih.gov/coreutils/uswds/img/favicons/favicon-57.png",
+            "https://www.ncbi.nlm.nih.gov/coreutils/uswds/img/icon-dot-gov.svg",
+            "https://www.ncbi.nlm.nih.gov/coreutils/uswds/img/icon-https.svg",
+            "https://www.ncbi.nlm.nih.gov/coreutils/nwds/img/logos/AgencyLogo.svg",
+            "https://www.ncbi.nlm.nih.gov/corehtml/pmc/pmcgifs/logo-bioinfo.png",
+            "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6198863/bin/bty409f1.jpg",
+            "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6198863/bin/bty409f2.jpg",
+            "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6198863/bin/bty409f3.jpg",
+            "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6198863/bin/bty409f4.jpg",
+            "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6198863/bin/bty409f5.jpg",
+            "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6198863/bin/bty409f6.jpg",
+            "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6198863/bin/bty409f7.jpg"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [
+            "Ciaran M Welsh",
+            "Nicola Fullard",
+            "Carole J Proctor",
+            "Alvaro Martinez-Guimera",
+            "Robert J Isfort",
+            "Charles C Bascom",
+            "Ryan Tasseff",
+            "Stefan A Przyborski",
+            "Daryl P Shanley"
+        ],
+        "publish_date": "2018-11-01T00:00:00",
+        "summary": "",
+        "meta_description": "COPASI is an open source software package for constructing, simulating and analyzing dynamic models of biochemical networks. COPASI is primarily intended to be used with a graphical user interface but often it is desirable to be able to access COPASI ...",
+        "meta_lang": "en",
+        "meta_favicon": "https://www.ncbi.nlm.nih.gov/coreutils/nwds/img/favicons/favicon.ico",
+        "meta_site_name": "PubMed Central (PMC)",
+        "canonical_link": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6198863/",
+        "text": "3.1.1. Tools for analysis of repeat parameter estimation data\n\nRepeat parameter estimation data can be visualized in multiple ways and this information can be used to diagnose problems and direct modelling efforts. The tools provided in PyCoTools collectively allow one to gauge uncertainty in model predictions or parameter estimates, assess the performance of algorithms used for optimization, visualize distributions of parameters and visualize putative relationships between parameters.\n\nUsually the first item of interest after a parameter estimation is to visualize simulated predictions against empirical data. PyCoTools extends the basic ‘simulated versus experimental time course plot’ to calculate and display confidence intervals for each profile. This is achieved by inserting parameter sets into the model in turn, simulating a time course and aggregating the results by bootstrapping an estimator (e.g. the mean) of the users choice. By visualizing predictions from several parameter sets, uncertainty is propagated from parameter estimates to model predictions. The ‘ensemble time course’ thus emphasizes model strengths and weaknesses, highlighting regions of confidence and those which require attention.\n\nWhile ensemble time courses are used to inform our confidence on model predictions, profile likelihoods are used to inform our confidence on parameter values. Briefly, a profile likelihood is a parameter scan of parameter estimations, starting from a best parameter set. Each parameter is fixed in turn and its value is systematically varied over the course of the scan. The remaining parameters are re-optimized at each point of the scan and the objective function value traces a path through parameter space. The shape of this profile is then compared to a confidence threshold based on the likelihood ratio statistic (Raue et al., 2009).\n\nA profile likelihood typically has one of three interpretations. If the profile does not exceed the threshold in one or both directions and is not flat, the parameter is practically non-identifiable. In this case, the trajectory of the other model components over the profile may be used to direct model reduction strategies (Maiwald et al., 2016). If a profile is completely flat the parameter is structurally non-identifiable, which means the parameter is algebraically related to another. To resolve structural non-identifiabilities, one can fix one of the parameters in a relationship to an arbitrary value. Of note, one must be cautious about using profile likelihoods to render a parameter structurally non-identifiable because the profile likelihood method only samples the parameter space. It is possible that the profile appears flat but only on the scale of the sampled profile. Therefore, structurally non-identifiable parameters should be further investigated to determine any relationships which might exist. Finally, if the profile exceeds this threshold in both directions the parameter is identifiable and the parameter values at which the profile exceeds the threshold are the upper and lower confidence boundaries for the parameter (Raue et al., 2009). Ideally, for precise model predictions, every estimated parameter in a defined parameter estimation problem should be identifiable. In reality, limited data and overly complex model structures often lead to identifiability issues.\n\nMaiwald et al. (2016) extended the usefulness of profile likelihood from assessing identifiability to model reduction. A practical non-identifiability exists because the optimization does not have enough data to inform model parameters, or put another way, the model is too complex for the data. Viewing the paths traced by other parameters in a profile likelihood analysis (e.g. putting the trajectory of another parameter on the y-axis rather than the objective function value) provides information about the relationship between the parameter of interest on the x-axis and the parameter on the y-axis. Identifying this relationship enables steps to be taken to resolve the problem by fixing parameters or replacing non-identifiable species or parameters with algebraic equations. Profile likelihoods are therefore useful in a data-driven approach to iteratively refine an optimization problem, fixing parameters where possible and modifying the topology as necessary until the model fits the experimental data.\n\nProfile likelihood calculations are a computationally intense task and to be useful, it is required that the starting parameter set is optimal, or at least very close to optimal, with respect to the data. It is therefore prudent to assess this condition before conducting a profile likelihood analysis. The performance of an optimization problem can be evaluated by plotting the sorted objective function value [i.e. residual sum of squares (RSS) or likelihood] for each parameter estimation iteration against its rank of best fit (herein referred to as a ‘likelihood-ranks’ plot). In these plots the best case scenario is either a flat line for when there is only a single global minimum or more commonly, a monotonically increasing step-like function where each step marks a different minimum (Raue et al., 2013). Horizontal lines in the likelihood-ranks plot indicate that many iterations of the same optimization problem have located the same minimum, which increases our confidence that the problem is well-posed. In contrast a smooth curve indicates that estimations have not converged to a minimum.\n\nIf the likelihood-ranks plot shows a smooth curve, it is a good idea to either rerun the parameter estimation using a different algorithm or different algorithm settings. Alternatively, while others (Raue et al., 2013) employ a multi-start Latin-hypercube strategy with a local optimizer to ensure strategic and uniform sampling of the parameter space, given the choice of algorithms in COPASI it is easy to first run a global and then switch to a local algorithm. This strategy, here referred to as a ‘chaser estimation’, can be performed on all or a subset parameter sets to drive them closer to their respective minima.\n\nIn addition to profile likelihoods and time course ensembles, viewing distributions of parameter estimation data and correlations between parameters can provide information about an optimization problem. Box plots provide immediate information about the range of parameter estimates and how they compare to other parameters. Often a box plot can provide clues to a parameter’s identifiability status. Histograms on the other hand provide a more detailed view of parameter distributions and can identify behaviour (e.g. bimodal parameters) that would not be identified with box plots. Moreover, a combination of Pearson’s correlation heat maps and scatter graphs can be used to locate linear or log-linear relationships between parameters.\n\nAn important aspect of visualizing parameter estimation data is that not all parameter sets fit the model equally well. Parameter sets with higher objective function values can distort the distribution of better performing parameter sets or the shape of a relationship. For this reason PyCoTools implements flexible means of subsetting parameter estimation data before plotting."
+    }
+}
