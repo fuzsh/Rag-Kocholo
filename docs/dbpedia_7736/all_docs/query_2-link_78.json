@@ -1,0 +1,28 @@
+{
+    "id": "dbpedia_7736_2",
+    "rank": 78,
+    "data": {
+        "url": "https://forums.buildingsmart.org/t/ifc-software-that-is-both-open-source-and-available-for-linux/828",
+        "read_more_link": "",
+        "language": "en",
+        "title": "IFC software that is both open-source and available for Linux?",
+        "top_image": "https://global.discourse-cdn.com/business6/uploads/buildingsmart1/original/1X/554d80e91c197fb4058cca0931e9d31b8b14f12a.png",
+        "meta_img": "https://global.discourse-cdn.com/business6/uploads/buildingsmart1/original/1X/554d80e91c197fb4058cca0931e9d31b8b14f12a.png",
+        "images": [],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2019-01-06T12:14:04+00:00",
+        "summary": "",
+        "meta_description": "I am curious if there is a list of IFC software that meets the following criteria: \n\nParses IFC4.\nOpen-source.\nAvailable on Linux\n\nAdditional features that I would enjoy are: \n\nWrites IFC4.\nVisualises geometry.\nSupports &hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://global.discourse-cdn.com/business6/uploads/buildingsmart1/optimized/2X/f/fcd6aff2ff8bd3c585dab28479f75a29153606f6_2_32x32.png",
+        "meta_site_name": "buildingSMART Forums",
+        "canonical_link": "https://forums.buildingsmart.org/t/ifc-software-that-is-both-open-source-and-available-for-linux/828",
+        "text": "I am curious if there is a list of IFC software that meets the following criteria:\n\nParses IFC4.\n\nOpen-source.\n\nAvailable on Linux\n\nAdditional features that I would enjoy are:\n\nWrites IFC4.\n\nVisualises geometry.\n\nSupports querying and filtering.\n\nI note that FreeCAD satisfies all the criteria. I have found that I am also able to compile IfcPlusPlus on Linux, although there is a bit of confusion over licensing (repo says MIT, website says “This application is free to use, but not open source.”, but perhaps it is only referring to the Windows-compiled IfcQuery tool, because the viewer I compiled seems to be a stunted version of IfcQuery.\n\nThe list of implementations leaves a lot to be desired, and some links are broken.\n\nI hope others can share if they know of any other tools? Open source tools and platform independent tools (especially for Linux, which is an absolutely great platform for data wrangling and software development) is vital to the success of an international open standard.\n\nHi @aothms, I see you are the main developer for IfcOpenShell. I have successfully compiled it, and I have used IfcConvert, the Blender plugin, and I have now experimented with the IfcOpenShell python module to parse IFC files successfully. (I have also compiled PythonOCC in the process)\n\nHowever, I did not find that viewer you have kindly linked to (of which I found the original screenshot here). Do you know where I can find this viewer? I’m ideally looking for a robust Linux IFC viewer that can show me a tree view just like that, but also show attributes (the IfcPlusPlus SimpleViewer does not show any attributes). I found this qtviewer in the IfcOpenShell codebase but it looks as though it was made for Qt4, and from a quick skim it looks as though it is pretty barebones. Where is the code for that viewer, or do you reckon it’d be easier to whip up a IfcOpenShell+PythonOCC combination to view IFC files?\n\nI see you are the main developer for IfcOpenShell\n\nCorrect, could have mentioned that I guess.\n\nHowever, I did not find that viewer you have kindly linked to\n\nThe source is here [0]. It’s a PyQt5-based viewer and also relies on PythonOCC for the graphical part. You can start it with:\n\nfrom ifcopenshell.geom.app import application application().start()\n\n[0] https://github.com/IfcOpenShell/IfcOpenShell/blob/master/src/ifcopenshell-python/ifcopenshell/geom/app.py#L179\n\nThe C++ qtviewer in the repo is a bit of a tease unfortunately. Several people have mentioned they would like to contribute to it, but so far nothing concrete. So for the time being I leave it there.\n\nThanks @aothms, I have got it running and it works well. I noticed there are various issues using deprecated functions, such as:\n\n/usr/lib64/python3.6/site-packages/OCC/gp.py:3: DeprecationWarning: OCC.gp is deprecated since pythonocc-0.18.2. Use OCC.Core.gp warnings.warn(\"OCC.gp is deprecated since pythonocc-0.18.2. Use OCC.Core.gp\", DeprecationWarning) /usr/lib64/python3.6/site-packages/OCC/Quantity.py:3: DeprecationWarning: OCC.Quantity is deprecated since pythonocc-0.18.2. Use OCC.Core.Quantity warnings.warn(\"OCC.Quantity is deprecated since pythonocc-0.18.2. Use OCC.Core.Quantity\", DeprecationWarning)\n\n… or:\n\n/usr/lib64/python3.6/site-packages/ifcopenshell/geom/app.py:434: DeprecationWarning: GetObject is a deprecated function. It is not required anymore. ais.GetObject().SetSelectionPriority(self.counter)\n\nI have modified the module to use OCC.Core.* instead, and that fixes most of them and fixes most of the crashes, but I haven’t looked too far into OCC’s docs to know the differences between that OCC version this was built for, and the OCC version I am currently using.\n\nDo you have any intention on updating it to the latest PythonOCC version?"
+    }
+}

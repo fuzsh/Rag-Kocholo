@@ -1,0 +1,30 @@
+{
+    "id": "dbpedia_7736_2",
+    "rank": 87,
+    "data": {
+        "url": "https://unconj.ca/blog/copyright-in-closed-source-r-packages-the-right-way.html",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Copyright in Closed-Source R Packages: The Right Way",
+        "top_image": "https://unconj.ca/blog/favicon.ico",
+        "meta_img": "https://unconj.ca/blog/favicon.ico",
+        "images": [],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "r"
+        ],
+        "tags": null,
+        "authors": [
+            "Aaron Jacobs"
+        ],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "A personal blog",
+        "meta_lang": "en",
+        "meta_favicon": "https://unconj.ca/blog/favicon.ico",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "There are a wealth of excellent resources for R users on creating and maintaining R packages, which remain the best way to share your code within your organisation or the larger community. However, almost all of these resources tend to focus on open-source packages, tools, and workflows. As a result of this, they tend to skim over more corporate issues like copyright assignment.\n\nYet many R users are working on their code in proprietary environments, creating packages for internal use by their company. That code is closed source, with the copyright belonging to their organisation. If you fall into this category, how should you communicate that in your R package? This post is intended to provide a very clear answer to that question.\n\nIt turns out that R has excellent support for embedding copyright information in the metadata of the package itself. This makes it easy to precisely communicate both open- and closed-source ownership in a few well-defined places: your DESCRIPTION and LICENSE files.\n\nThe DESCRIPTION File\n\nIt is very likely that if you are writing R packages for your employer, they are the ultimate copyright owner of the software. Fortunately it’s very easy to lay out this fact in your DESCRIPTION file – there is a special copyright holder role (cph) that can be used in the Authors fields. For example, suppose that I worked for Widgets Incorporated. In that case, my DESCRIPTION file would contain something like the following:\n\nThis is not quite the end of the story, because R also requires that you to lay out what open-source license your code is available under in the License field, or use the special value file LICENSE to point users to a file explaining it. Since your code is not open-source, your DESCRIPTION file must take this route and contain the following:\n\nBut this just punts on the issue – what do you put in that LICENSE file?\n\nThe LICENSE File\n\nHadley Wickham’s highly influential R Packages book makes the following suggestion for the contents of a proprietary LICENSE file:\n\nIn my view, this is a mistake. Why? Because this file says absolutely nothing about copyright. It bears no resemblance to a valid software license; notably, it does not detail any of the rights or permissions granted to those in possession of the source code.\n\nBut wait, you say, my company doesn’t want to grant any rights or permissions! If this is the case – and likely it is – your LICENSE file should contain a familiar legal phrase: “All rights reserved”. In full:\n\nThis is a true proprietary software license.\n\nRelicensing\n\nFor most closed source code, this is the end of the copyright story. But some initially-internal packages are later released under an open source license, and you might be curious as to how you should go about doing this.\n\nFortunately the answer is quite simple if you’ve got things set up as I outlined above: all you have to do is change the license. If you are using one of the open-source licenses understood by R itself, you can delete the LICENSE file and change the License field in your DESCRIPTION file. If you are using a more uncommon license, just replace the content of the LICENSE file in its entirety with the text of that license.\n\n(You can see examples of this on GitHub in the commit history of the internal projects an employer permitted me to open-source: here and here.)\n\nIt is important to note what you should not change here, namely the copyright role (cph) for your employer in the DESCRIPTION file. Open-sourcing a package does not transfer copyright to you or anyone else – that is a wholly separate process.\n\nTL;DR\n\nTo sum up, put this in your DESCRIPTION file:\n\nAnd this in a LICENSE file:\n\nAnd that’s it."
+    }
+}
