@@ -1,0 +1,35 @@
+{
+    "id": "dbpedia_989_3",
+    "rank": 61,
+    "data": {
+        "url": "https://devforum.roblox.com/t/putting-2d-character-sprites-in-a-game/2481297",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Putting 2D character sprites in a game",
+        "top_image": "https://devforum-uploads.s3.dualstack.us-east-2.amazonaws.com/uploads/original/5X/7/1/0/e/710ebeb5021c9798aaaf2a8a65dcea4b4c311caa.jpeg",
+        "meta_img": "https://devforum-uploads.s3.dualstack.us-east-2.amazonaws.com/uploads/original/5X/7/1/0/e/710ebeb5021c9798aaaf2a8a65dcea4b4c311caa.jpeg",
+        "images": [
+            "https://doy2mn9upadnk.cloudfront.net/user_avatar/devforum.roblox.com/yousefoyoy/40/3988108_2.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "help"
+        ],
+        "tags": null,
+        "authors": [
+            "Steamurs (Steamurs)",
+            "CZXPEK (czo)",
+            "Chark_Proto (Chark)",
+            "system (system) Closed"
+        ],
+        "publish_date": "2023-07-22T15:28:37+00:00",
+        "summary": "",
+        "meta_description": "I was wondering how I would be able to put 2d animated characters in a pokemon-like game I’m making. \nFor example, think about how Pokemon Brick Bronze had the pokemon’s pixel art in the game when fight scenes or any oth&hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://devforum-uploads.s3.dualstack.us-east-2.amazonaws.com/uploads/optimized/5X/b/3/d/0/b3d0a9f2fe866b16e020240b5703a04757781377_2_32x32.png",
+        "meta_site_name": "Developer Forum | Roblox",
+        "canonical_link": "https://devforum.roblox.com/t/putting-2d-character-sprites-in-a-game/2481297",
+        "text": "I was wondering how I would be able to put 2d animated characters in a pokemon-like game I’m making.\n\nFor example, think about how Pokemon Brick Bronze had the pokemon’s pixel art in the game when fight scenes or any other time an image of a pokemon showed up. Is there any tutorials or anything on how I would be able to make this work?\n\nMore examples:\n\nthey probably just use gifs, upload all/most of the frames of the gif as a image then quickly change them into the next frame inside a loop\n\nSprite sheets are a thing, and are probably the best thing to use since they only require 1 image to load instead of 40 or more.\n\nAs for how, you could have a small frame with the larger sprite sheet inside, enable clip descendants and then get the positions for each sprite, put them in a table and you’re done.\n\nThere’s probably a better way to do it, so maybe search both google and the dev forums for how to make a sprite sheet function on roblox.\n\nAnd then theres the gif method, which @CZXPEK already explained.\n\nOnly downside to that method is load times, and the very possible flashing image.\n\nI’ll try to check out both ways you guys told me\n\nI ended up putting the sprite sheet onto a part then putting a script I found from a tutorial under the texture.\n\nlocal Frames = 8 --Amount of frames in gif local currentFrame = 1 local rows = 1 local columns = 8 local currentRow,CurrentColumn = 0,0 local linear = false local fps = 6 -- Max 30 local full60fps = false local size = script.Parent.Parent.Size -- The gif should be on the front of the part script.Parent.StudsPerTileU = columns*size.X script.Parent.StudsPerTileV = rows*size.Y while true do if not full60fps then wait(1/fps) else game:GetService(\"RunService\").Stepped:Wait() end if linear then script.Parent.OffsetStudsU = script.Parent.OffsetStudsU + size.X if script.Parent.OffsetStudsU > script.Parent.StudsPerTileU then script.Parent.OffsetStudsU = 0 end else CurrentColumn = CurrentColumn + 1 if CurrentColumn > columns then CurrentColumn = 1 currentRow = currentRow + 1 end if currentFrame > Frames then currentRow,CurrentColumn,currentFrame = 1,1,1 end script.Parent.OffsetStudsU = size.X*(CurrentColumn-1) script.Parent.OffsetStudsV = size.Y*(currentRow-1) currentFrame = currentFrame+1 end end\n\nThis topic was automatically closed 14 days after the last reply. New replies are no longer allowed."
+    }
+}

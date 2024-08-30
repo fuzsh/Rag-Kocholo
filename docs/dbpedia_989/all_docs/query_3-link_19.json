@@ -1,0 +1,34 @@
+{
+    "id": "dbpedia_989_3",
+    "rank": 19,
+    "data": {
+        "url": "https://forum.unity.com/threads/cant-make-sense-of-sprites.427520/",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Can't make sense of sprites",
+        "top_image": "https://europe1.discourse-cdn.com/unity/original/3X/a/a/aaeab82727497b6f37f4312dcd57be21e6cd25e8.png",
+        "meta_img": "https://europe1.discourse-cdn.com/unity/original/3X/a/a/aaeab82727497b6f37f4312dcd57be21e6cd25e8.png",
+        "images": [
+            "https://dub2.discourse-cdn.com/unity/user_avatar/discussions.unity.com/imaginaryhuman_1/48/562497_2.png",
+            "https://europe1.discourse-cdn.com/unity/original/4X/6/a/e/6ae967fc8d2f3218e85a6870857ec5ed6f4fa78d.png",
+            "https://europe1.discourse-cdn.com/unity/original/4X/c/6/7/c67e1aa691b59652691d9336436417c94de5cd06.jpeg",
+            "https://emoji.discourse-cdn.com/google/slight_smile.png?v=12",
+            "https://europe1.discourse-cdn.com/unity/original/4X/b/6/5/b659b7a5a4830f268a1c63f1e9615da046db33dc.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            "2D"
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2016-08-24T12:54:30+00:00",
+        "summary": "",
+        "meta_description": "Hi all, \nI’m new to game design and currently following alot of tutorials, the answer to my questions are probably obvious but I can’t find a clear explanation anywhere. \n\n\nWhat exactly is a sprite, I’ve gathered from wh&hellip;",
+        "meta_lang": "en",
+        "meta_favicon": "https://europe1.discourse-cdn.com/unity/optimized/3X/5/d/5d3b1bfc21f0dea8ce3730e22d85cbf4072b7c02_2_32x32.png",
+        "meta_site_name": "Unity Discussions",
+        "canonical_link": "https://discussions.unity.com/t/cant-make-sense-of-sprites/637552",
+        "text": "In Unity each ‘object’ in your scene has to have a location, and this location is called a TRANSFORM, and a transform is hooked up to a GAMEOBJECT. (You refer to a transform as a pivot point). So really a gameobject is like ‘an object’ in the scene, with a transform. The transform includes XYZ position, XYZ rotation, and XYZ scale. This is needed to tell the system where to put the object in 3D space.IF you move the transform/gameobject it will move the object’s coordinates so the object will move to a new location. If you rotate the gameobject the object itself will rotate. etc.\n\nEvery object in the scene has a gameobject/transform and then the object will include other ‘components’ or other built-in features. The components will list beneath the gameobject/transform in the Inspector window.\n\nBefore sprites, there were just game objects with a) some kind of geometry mesh, and b) a renderer which may point to a material of some kind. The material would include a shader and probably one or more textures.\n\nUnity Added a dedicated ‘sprite’ object type to help make things easier for 2D. So a sprite is also a gameobject with a transform that also has some sprite components on it such as a built-in sprite mesh (which is editable but also somewhat set up in the sprite sheet/texture importer settings), and a sprite renderer component, which also points to a material/shader/spritesheet. A texture whose import settings have been set to ‘sprite’ will let you more easily pull multiple sprites from a single texture (better for performance) and also you can set up the geometry shape to use, like a quad or polygon or whatever, and also you can add colliders to the gameobject like a 2d box collider + 2d rigidbody.\n\nSo a sprite is just a fancy custom game object with some extra features supported by the import settings, plus usually a special shader/material that can handle better batching, and a renderer which adds vertex color data to help add a color tint to he sprite easily without breaking batching. Ultimately the texture is just another texture like any other, but because in the import settings for the texture you set it to ‘sprite’ it opens up additional options to provide a better 2d workflow.\n\nUltimately in the hardware, once Unity processes all this stuff and spits out a) geometry and b) a texture to map onto it, it’s really just a textured quad or textured polygon just like any other 3D piece of geometry that the hardware can render, made from triangles. You can accomplish the same thing with just a quad and a texture but then you’d have to deal with your own sprite sheet management and texture coordinates and all the rest of it. A sprite makes this less painful."
+    }
+}

@@ -1,0 +1,34 @@
+{
+    "id": "dbpedia_989_2",
+    "rank": 56,
+    "data": {
+        "url": "https://stackoverflow.com/questions/41986383/pygame-what-is-the-difference-between-an-image-and-a-sprite",
+        "read_more_link": "",
+        "language": "en",
+        "title": "pygame: What is the difference between an image and a sprite?",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/94b734ac6e85d9f279ee7286f28d6145?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/8be51e60bb37ce89b0a8723076b1bfb1?s=64&d=identicon&r=PG&f=y&so-version=2",
+            "https://lh4.googleusercontent.com/-0GCSsX1WQ04/AAAAAAAAAAI/AAAAAAAAABY/fLxnxtbonBs/photo.jpg?sz=64",
+            "https://www.gravatar.com/avatar/ef459127edc89cc575d80a73cd8c567a?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/41986383/ivc/013f?prg=bc519777-0d3d-4b08-8e04-f087a00112f9"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2017-02-01T17:50:55",
+        "summary": "",
+        "meta_description": "What is the difference between importing a rocket sprite (for example) and setting it as an image vs importing a rocket sprite and setting it as a sprite in pygame?",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/41986383/pygame-what-is-the-difference-between-an-image-and-a-sprite",
+        "text": "I think you're just getting confused about the terminology:\n\nImage\n\nAn image is just a collection of pixels. You're using \"sprite\" to refer to an image on the disk, but that's just an image file. To use your rocket example, you would load the image like this:\n\nrocket_img = pygame.image.load('rocket.png').convert_alpha()\n\nYou can then draw this image anywhere you want with:\n\nscreen.blit(rocket_img, (x, y))\n\nSprite\n\nA sprite in Pygame is an object, with a whole collection of built-in functionality. Sprites have an image as one of their properties, but there are a whole lot more. Plus you can put sprites together in groups to make them easier to update or draw. Sprites have collision functionality built into them. You can add your own properties to track location, velocity, animation, etc.\n\nA simple sprite:\n\nclass Rocket(pygame.sprite.Sprite): def __init__(self): pygame.sprite.Sprite.__init__(self) self.image = pygame.image.load('rocket.png').convert_alpha() self.rect = self.image.get_rect() def update(self): self.rect.x += 1\n\nThis would be a rocket sprite that you would instantiate by using\n\nrocket = Rocket()\n\nYou can draw by using\n\nscreen.blit(rocket.image, rocket.rect)\n\nand it moves slowly to the right (if you call update() in the game loop:\n\nrocket.update()\n\nI recommend looking at the Sprite docs - there's lots more you can do with groups to make working with lots of sprites very easy.\n\nhttp://www.pygame.org/docs/ref/sprite.html\n\nIn Pygame \"images\" generally refer only to image files: importing and exporting them to disk. There is the \"Surface\" object that is a Python object that holds pixels, and can be used to stamp other surfaces, be transformed (scaled/rotated) , yielding other surfaces and so on.\n\nThe main screen itself is a Surface subclass - so when you stamp a Surface with data read from a disk image, using the blit method the image shows up on the screen.\n\nSprites on the other hand are a base class for objects in your game, and they don't even depend of having attached pixels data with them. Some of the Pygame API expect Sprite objects to have a rect attribute, which denotes the position where it will be rendered on a Surface - and an image attribute. If it is to be used, the sprite.image attribute should hold a surface object - usually read from disk (but could have been programatically drawn).\n\nThe main call using the sprite image attribute is the Group.draw() method.\n\nBut it is possible to create an entirely different game than an interactive one - one that would be the server side for a MMO game, without anything on the screen, for example, using the Sprite and Group classes, without ever making use of the image attribute on sprites.\n\nWorth reading: https://www.pygame.org/docs/ref/sprite.html\n\nConversely, you can bypass all the helper logic provided by Sprites and Groups and create a game that will only ever have Surface objects - representing images read from disk. Them you are responsible to track were and when to draw them, without using the elpe rmethods in sprite Groups."
+    }
+}

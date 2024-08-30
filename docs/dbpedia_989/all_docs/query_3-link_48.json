@@ -1,0 +1,35 @@
+{
+    "id": "dbpedia_989_3",
+    "rank": 48,
+    "data": {
+        "url": "https://en.scratch-wiki.info/wiki/Making_Sprites_Detect_and_Sense_Other_Sprites",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Making Sprites Detect and Sense Other Sprites",
+        "top_image": "https://en.scratch-wiki.info/favicon.ico",
+        "meta_img": "https://en.scratch-wiki.info/favicon.ico",
+        "images": [
+            "https://en.scratch-wiki.info/w/skins/ScratchWikiSkin2/resources/Scratch-logo-sm.png",
+            "https://en.scratch-wiki.info/w/images/thumb/SandCastleIcon.png/60px-SandCastleIcon.png",
+            "https://en.scratch-wiki.info/w/images/thumb/Document_stub.png/26px-Document_stub.png",
+            "https://en.scratch-wiki.info/w/images/thumb/DocumentInQuestion.png/26px-DocumentInQuestion.png",
+            "https://en.scratch-wiki.info/w/images/thumb/Simple_sprite_detection_with_sensor_ring.png/200px-Simple_sprite_detection_with_sensor_ring.png",
+            "https://en.scratch-wiki.info/w/resources/assets/licenses/cc-by-sa.png"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": null,
+        "summary": "",
+        "meta_description": "",
+        "meta_lang": "en",
+        "meta_favicon": "/favicon.ico",
+        "meta_site_name": "",
+        "canonical_link": null,
+        "text": "This article has links to websites or programs outside of Scratch and Wikipedia. Remember to stay safe while using the internet, as we cannot guarantee the safety of other websites.\n\nThis article or section may not have content matching Scratch Wiki editing standards. Please improve it according to Scratch Wiki:Guidelines and Scratch Wiki:Editing Conventions. (May 2020)\n\nThis page or section is in question as to whether it is useful or not. You can discuss whether you think it should be deleted or not on its talk page. (October 2023)\n\nReason: This can be done in multiple ways, most of which are easier and more effective than \"raycasting\".\n\nThis tutorial will teach how to make sprites detect and sense other sprites.\n\nPrerequisites\n\nThe tutorial assumes users are comfortable with making projects that:\n\nUse keyboard input to move sprites\n\nSend and receive broadcasts\n\nInclude custom blocks\n\nUse Game Loops to control and sequence projects\n\nIf a refresher is needed, these tutorials can be followed.\n\nSetup\n\nMake three variables:\n\n(delta x) (delta y) (raycast result)\n\nMake one custom block:\n\nraycast () () () ()::custom\n\nMake one broadcast:\n\nbroadcast (sensed v)\n\nWhat Does Sprite Detection Mean?\n\nCreating realistic characters in games starts with giving them the ability to sense their surroundings.\n\nTo make games more realistic, the sensing sprite can be created with senses. By sensing other sprites before it touches them, behaviors can be programmed so that the sensing sprite runs towards a certain sprite and away from the other sprite.\n\nHow is it Applied in Projects?\n\nUsing Sensor Edges\n\nSome games draw invisible circles that are centered around a sprite, called sensor edges, to help implement character senses. They are as wide as the sprite can sense (hear, see or smell), and that is why it is called an edge.\n\nWhen the sensor edge is touched by another sprite, the sensing sprite can react. It can run away from one sprite, or towards another.\n\nOne complication is that the sensing sprite knows when a sprite is at the edge of its senses, but it does not know in which direction. For it to know in what direction the sprites are, a second step is needed.\n\nCasting Lines to Sense Direction and Location\n\nThis process is called raycasting.[citation needed] This raycasting is when a straight line (like a ray of light) is cast in a possible direction. If the sensing sprite casts a ray in the direction it is looking (called a line of sight) and that line touches a certain sprite, the sensing sprite can process what to do based off of that information.\n\nPutting It All Together\n\nUsing a sensor edge allows the sensing sprite to sense a sprite, then it can use raycasting to look around for a certain sprite.\n\nHow Can This be Done in Scratch?\n\nIn Scratch, the following two things need to be done.\n\nCollision Detection and Sensor Rings\n\nThe sensor ring is a separate sprite. This sensor ring sprite can send messages to the sensing sprite whenever another sprite touches it. It also makes sure to always stay at the same position as the sensing sprite, so whenever that sprite moves, so does the sensor edge sprite. It follows the sensing sprite, and it uses the ghost effect so it is not seen by players in the game, but it still runs its code. Here is the script:\n\nset [ghost v] effect to (100) forever if <touching (sprite v)?> then broadcast (sense v) end go to x: ([x position v] of (sensing sprite v)) y: ([y position v] of (sensing sprite v)) end\n\nCasting Lines With Raycasting\n\nWhen the sensing sprite receives a message (from the sensor ring sprite) telling it another sprite is close, the sensing sprite starts looking for the touching sprite. It uses trigonometry to work out the direction of the touching sprite, so it can turn away from it or, to be exact, turn 180 degrees away.\n\nwhen I receive [sensed v] raycast ([x position v] of (sprite v)) ([y position v] of (sprite v)) (0) (180) point in direction (raycast result) broadcast (sensed v) define raycast (target x) (target y) (offset a) (offset b) set [delta y v] to ((target x) - (y position)) set [delta x v] to ((target y) - (x position)) if <(delta y) = (0)> then if <(delta x) < (0)> then point in direction (-90) end else point in direction (90) if <(delta y) < (0)> then set [raycast result v] to ((offset a::custom) + ([atan v] of ((delta x) / (delta y))) else set [raycast result v] to ((offset b::custom) + ([atan v] of ((delta x) / (delta y))) end end"
+    }
+}

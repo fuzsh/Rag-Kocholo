@@ -1,0 +1,35 @@
+{
+    "id": "dbpedia_988_2",
+    "rank": 44,
+    "data": {
+        "url": "https://computergraphics.stackexchange.com/questions/10918/a-solution-to-sprite-visibility-in-a-raycasting-engine-with-variable-wall-height",
+        "read_more_link": "",
+        "language": "en",
+        "title": "A solution to sprite visibility in a raycasting engine with variable wall heights?",
+        "top_image": "https://cdn.sstatic.net/Sites/computergraphics/Img/apple-touch-icon@2.png?v=93ccd97a1ab3",
+        "meta_img": "https://cdn.sstatic.net/Sites/computergraphics/Img/apple-touch-icon@2.png?v=93ccd97a1ab3",
+        "images": [
+            "https://i.sstatic.net/6H5kA.jpg",
+            "https://i.sstatic.net/ZASqq.jpg",
+            "https://i.sstatic.net/sYGg5.jpg",
+            "https://lh3.googleusercontent.com/-EZcsrbuPOic/AAAAAAAAAAI/AAAAAAAACak/g4jjIgJ6bRI/photo.jpg?sz=64",
+            "https://www.gravatar.com/avatar/b42c9d1e39d977d7e8da90ba3d0ec4f8?s=64&d=identicon&r=PG",
+            "https://computergraphics.stackexchange.com/posts/10918/ivc/013f?prg=a87e2c6e-20b9-4eac-aba2-63e4791a9199"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2021-05-28T02:26:00",
+        "summary": "",
+        "meta_description": "I am writing a raycasting engine. At this point, I have added sprites, and I am using a z-buffer, with one stored length to a wall for the x coordinate of each ray. Below is an image of a sprite wh...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/computergraphics/Img/favicon.ico?v=844e86ff0b68",
+        "meta_site_name": "Computer Graphics Stack Exchange",
+        "canonical_link": "https://computergraphics.stackexchange.com/questions/10918/a-solution-to-sprite-visibility-in-a-raycasting-engine-with-variable-wall-height",
+        "text": "Congratulations for having progressed so far.\n\nContext, first analysis\n\nYour explanation:\n\nI am using a z-buffer, with one stored length to a wall for the x coordinate of each ray.\n\nMeans the z-buffer is currently one-dimension.\n\nOne dimension is enough in the first case (your first two images) but not in the second case. To see why, imagine that the red tomato sprite was closer to the player, such that the left half of it would be partially obscured by the first wall (bottom left). Since the top of that wall is projected to a diagonal line, it means that the property \"is pixel P of the sprite obscured?\" does not only depend on X but also on Y.\n\nSo, in the exact setup you have, a 1D Z-buffer is definitely not capable of performing the clipping you want.\n\nOptions\n\nFrom that on, here are a few options:\n\nswitch to a 2D z-buffer (slower)\n\nswitch to painter's algorithm (slower)\n\nswitch to a 2D-based occlusion algorithm\n\nstudy how Doom did it\n\nYour geometry seems similar to Doom. It is probably a very good investment for you to study how the Doom rendering engine works. It clips sprites (called \"things\") using a 1D criterion, then refines. One area has only one floor height and one ceiling height. This is very important and it looks like your geometry is similar.\n\nSolution\n\nThe solution, to summarize, is to keep not only a 1D z-buffer, but actually a structure keeping for each sector (in doom parlance) the lines that make the limit and their parameters (like the a and b in y=ax+b). Then, when you want to draw the sprite, clip X with 1D criterion but depending on the sector the sprite is in, and then limit the Y range of pixels drawn based on the y=ax+b of the sector just in front of it.\n\nI don't know what data structure you currently have in your program. If this seems totally unreachable, then you need to rethink the data structure you keep while drawing.\n\nIf you haven't yet, you should read (sorry if you did already) https://doomwiki.org/wiki/Doom_rendering_engine#Rendering and the pages behind the links there, perhaps run their code in slow motion or see a video where someone shows/explains how it works. This one lacks explanations but might help your intuition: https://www.youtube.com/watch?v=gfM6NpxmVGg .\n\nHope this helps. Keep up the good work!"
+    }
+}
