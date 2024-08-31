@@ -1,0 +1,36 @@
+{
+    "id": "dbpedia_2132_2",
+    "rank": 41,
+    "data": {
+        "url": "https://stackoverflow.com/questions/12683203/error-in-c-the-type-or-namespace-smptmailmessage-could-not-be-found",
+        "read_more_link": "",
+        "language": "en",
+        "title": "Error in C#: The type or namespace 'SmptMailMessage' could not be found",
+        "top_image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "meta_img": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded",
+        "images": [
+            "https://www.gravatar.com/avatar/1aa48f7606f5b08595b0a0356a61e8b6?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/c09c81ec7d313cf537fabcdeccc46888?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/026eee59a7e86ac799e55c29f845b40d?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/a007be5a61f6aa8f3e85ae2fc18dd66e?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/1595024881f1df4af9e2280926fb6272?s=64&d=identicon&r=PG",
+            "https://www.gravatar.com/avatar/6bf1f69b27e499f062c090a2d02a290a?s=64&d=identicon&r=PG",
+            "https://stackoverflow.com/posts/12683203/ivc/c3b8?prg=c44a3b73-c994-4df5-af2d-2a907decf75b"
+        ],
+        "movies": [],
+        "keywords": [],
+        "meta_keywords": [
+            ""
+        ],
+        "tags": null,
+        "authors": [],
+        "publish_date": "2012-10-02T01:02:08",
+        "summary": "",
+        "meta_description": "Well, I've done my homework, even looked at several examples on this very website, to no avail. My program is meant to send the data filled out on the Form, and send it to an email. The rest of my ...",
+        "meta_lang": "en",
+        "meta_favicon": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "meta_site_name": "Stack Overflow",
+        "canonical_link": "https://stackoverflow.com/questions/12683203/error-in-c-the-type-or-namespace-smptmailmessage-could-not-be-found",
+        "text": "There is no such Type as SmtpMailMessage (or SmptMailMessage for that matter) in the System.Net.Mail library. It looks like you are trying to create an instance of SmtpClient to send a message. Perhaps you mean to do something like;\n\nSmtpClient client = new SmtpClient(\"smtp.gmail.com\", 25); MailMessage mail = new MailMessage(); mail.To.Add(\"[email protected]\"); client.Send(mail);\n\nYou are using 2 objects here - an SmtpMailClient (to do the sending) and a MailMessage which describes the message.\n\nThere is no StmpMailMessage class in .NET. You want MailMessage. You also want to pass the server credentials to SmtpClient.\n\nThis question here explains how to do it with Gmail.\n\nSending email through Gmail SMTP server with C#\n\nThis should be a simple fix for you. Also, try to watch that your spelling everything correctly. :D\n\n$ using System; using System.Collections.Generic; using System.ComponentModel; using System.Data; using System.Drawing; using System.Linq; using System.Text; using System.Windows.Forms; using System.Net.Mail; using System.Net; namespace WindowsFormsApplication1 { public partial class Form1 : Form { MailAddress fromAddress = new MailAddress(\"[email protected]\", \"NameForIt\"); MailAddress toAddress = new MailAddress(\"DesinationEmailAddress\", \"NameForDestination\"); const string fromPassword = \"password\"; const string subject = \"Subject\"; const string body = \"First line of text \\n Second line of text.\"; public Form1() { InitializeComponent(); } private void button1_Click(object sender, EventArgs e) { SmtpClient client = new SmtpClient() { Host = \"smtp.gmail.com\", Port = 587, EnableSsl = true, DeliveryMethod = SmtpDeliveryMethod.Network, UseDefaultCredentials = false, Credentials = new NetworkCredential(fromAddress.Address, fromPassword) }; try { MailMessage message = new MailMessage(fromAddress, toAddress) { Subject = subject, Body = body }; client.Send(message); } catch (Exception ex) { MessageBox.Show(\"There was an error!\" + ex.Message); } } } }"
+    }
+}
