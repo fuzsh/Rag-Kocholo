@@ -17,7 +17,7 @@ config = {
 if __name__ == '__main__':
     # init_llm(response_schema=True)
 
-    dataset_name = "DBpedia"
+    dataset_name = "YAGO"
     kg, gt = load_dataset(dataset_name=dataset_name, dataset_file="kg_modified.json")
 
     # fix identifiers
