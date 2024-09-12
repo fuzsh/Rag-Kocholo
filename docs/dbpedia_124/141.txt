@@ -1,0 +1,25 @@
+What is a Caesar Cipher?
+
+Caesar Cipher is a classic encryption method that has been used for centuries to securely transmit messages. It is considered one of the simplest and most basic forms of cryptography and is named after Julius Caesar who is believed to have used this method to communicate with his officials.
+
+The method works by replacing each letter in the plaintext with a letter of the alphabet that is a fixed number of positions away. The number of steps to shift cycliacally each letter is referred to as the key and must be known by both the sender and the recipient. The key is used to encrypt the plaintext into ciphertext and also to decrypt the ciphertext back into the original plaintext.
+
+For example, if the key is 3, then the letter A would be replaced by the letter D, the letter B would be replaced by the letter E, and so on. This results in a completely different message that is unreadable without knowing the key.
+
+Another variant of the Caesar Cipher is the ROT13 (short for “rotate by 13 places”) encryption. ROT13 is a simple substitution cipher that replaces each letter in the alphabet with the letter that is half the alphabet places away from it. This means that A is replaced by N, B is replaced by O, and so on and a second run of ROT13 undos the encryption.
+
+ROT13 is often used for obscuring text for comedic or educational purposes, as the simple encryption method can easily be reversed. This makes it ideal for hiding jokes or spoilers on the internet, without making it impossible for the intended audience to understand the content.
+
+Cracking the Caesar Cipher
+
+To crack the encryption, we could iterate over all possible 26 keys and we would obtain the decrypted string in at most 25 tries, which is quite trivial.
+
+One idea to crack the encryption even faster is based on the frequency analysis of character occurrences. Since latin characters are not uniformally distributed, it is possible to align it to a known number of occurrences.
+
+An algorithm must therefore simply find the smallest distance beween the encrypted and every decrypted string. I've written a decrypter to crack any Caesar cipher and to obtain the used key by simply guessing the right answer:
+
+function caesar(str, n) { let ret = ""; for (let i = 0; i < str.length; i++) { let c = str.charCodeAt(i); if (97 <= c && c < 123) { ret += String.fromCharCode((c + n + 7) % 26 + 97); } else if (65 <= c && c < 91) { ret += String.fromCharCode((c + n + 13) % 26 + 65); } else { ret += str.charAt(i); } } return ret; }
+
+In our cracking algorithm we run over the encrypted string and produce an array with a simple frequency statistic. Then we compare the resulting table with a table of frequencies of every single letter of our alphabet. The last step is simply finding the smallest distance between every occurrences:
+
+function crack_caesar(str) { const weight = [ 6.51, 1.89, 3.06, 5.08, 17.4, 1.66, 3.01, 4.76, 7.55, 0.27, 1.21, 3.44, 2.53, 9.78, 2.51, 0.29, 0.02, 7.00, 7.27, 6.15, 4.35, 0.67, 1.89, 0.03, 0.04, 1.13]; const c = Array(26).fill(0); const s = Array(26).fill(0); for (let i = 0; i < str.length; ++i) { let x = (str.charCodeAt(i) | 32) - 97; if (0 <= x && x < 26) { ++c[x]; } } let max = 0; for (let off = 0; off < 26; ++off) { for (let i = 0; i < 26; ++i) { s[off] += 0.01 * c[i] * weight[(i + off) % 26]; if (max < s[off]) { max = s[off]; } } } return (26 - s.indexOf(max)) % 26; } const str = caesar("That's the never ending story of coding.", 16);

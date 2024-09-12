@@ -1,0 +1,387 @@
+Stay organized with collections Save and categorize content based on your preferences.
+
+Custom training jobs (CustomJob resources in the Vertex AI API) are the basic way to run your custom machine learning (ML) training code in Vertex AI.
+
+Before you submit a job
+
+Before you create a CustomJob in Vertex AI, you must create a Python training application or a custom container image to define the training code and dependencies you want to run on Vertex AI.
+
+We recommend that you use the Google Cloud CLI's autopackaging feature, described in a later section of this guide, to create a Docker container image from code on your local machine, push this container image to Artifact Registry, and create a CustomJob, all with a single command.
+
+Otherwise, you must manually create a Python training application or a custom container image.
+
+If you're not sure which of these options to choose, refer to the training code requirements to learn more.
+
+What a custom job includes
+
+When you create a custom job, you specify settings that Vertex AI needs to run your training code, including:
+
+One worker pool for single-node training (WorkerPoolSpec), or multiple worker pools for distributed training
+
+Optional settings for configuring job scheduling (Scheduling), setting certain environment variables for your training code, using a custom service account, and using VPC Network Peering
+
+Within the worker pool(s), you can specify the following settings:
+
+Machine types and accelerators
+
+Configuration of what type of training code the worker pool runs: either a Python training application (PythonPackageSpec) or a custom container (ContainerSpec)
+
+You can also configure custom jobs to run on a persistent resource instead of creating new compute resources during job startup. To learn more about persistent resource, see Overview of persistent resource.
+
+Configure distributed training
+
+You can configure a CustomJob for distributed training by specifying multiple worker pools.
+
+Most examples on this page show single-replica training jobs with one worker pool. To modify them for distributed training:
+
+Use your first worker pool to configure your primary replica, and set the replica count to 1.
+
+Add more worker pools to configure worker replicas, parameter server replicas, or evaluator replicas, if your machine learning framework supports these additional cluster tasks for distributed training.
+
+Learn more about using distributed training.
+
+Create a CustomJob
+
+To create a CustomJob, follow the instructions in one of the following tabs, depending on what tool you want to use. If you use the gcloud CLI, you can use a single command to autopackage training code on your local machine into a Docker container image, push the container image to Artifact Registry, and create a CustomJob. Other options assume you have already created a Python training application or custom container image.
+
+gcloud
+
+The following examples use the gcloud ai custom-jobs create command.
+
+If your training code is on your local computer, we recommend that you follow the With autopackaging section. Alternatively, if you have already created a Python training application or custom container image, then skip ahead to the Without autopackaging section.
+
+With autopackaging
+
+If you have training code on your local computer, you can use a single command to do the following:
+
+Build a custom Docker image based on your code.
+
+Push the image to Artifact Registry.
+
+Start a CustomJob based on the image.
+
+The result is similar to creating a CustomJob using any other custom container; you can use this version of the command if it is convenient for your workflow.
+
+Before you begin
+
+Since this version of the command builds and pushes a Docker image, you must perform the following configuration on your local computer:
+
+Install Docker Engine.
+
+If you are using Linux, configure Docker so you can run it without sudo.
+
+Enable the Container Registry API.
+
+Enable the API
+
+Configure authentication for Docker, so that you can push Docker images to Artifact Registry:
+
+gcloud auth configure-docker
+
+Build and push the Docker image, and create a CustomJob
+
+The following command builds a Docker image based on a prebuilt training container image and your local Python code, pushes the image to Artifact Registry, and creates a CustomJob.
+
+gcloud ai custom-jobs create \ --region=LOCATION \ --display-name=JOB_NAME \ --worker-pool-spec=machine-type=MACHINE_TYPE,replica-count=REPLICA_COUNT,executor-image-uri=EXECUTOR_IMAGE_URI,local-package-path=WORKING_DIRECTORY,script=SCRIPT_PATH
+
+Replace the following:
+
+LOCATION: The region where the container or Python package will be run.
+
+JOB_NAME: Required. A display name for the CustomJob.
+
+MACHINE_TYPE: The type of the machine. Refer to available machine types for training.
+
+REPLICA_COUNT: The number of worker replicas to use. In most cases, set this to 1 for your first worker pool.
+
+EXECUTOR_IMAGE_URI: The URI of the container image that runs the provided code. Refer to the available prebuilt containers for training.
+
+This image acts as the base image for the new Docker image that you are building with this command.
+
+WORKING_DIRECTORY: A directory in your local file system containing the entry point script that runs your training code (see the following list item).
+
+You can use the parent directory of the script, or a higher-level directory. You might want to use a higher-level directory in order to specify a fully-qualified Python module name (see the following list item). You might also want to use a higher-level directory if it contains a requirements.txt or setup.py file. To learn more, see Install dependencies.
+
+Note that even if you specify a higher-level directory, this command only copies the parent directory of your entry point script to the Docker image.
+
+SCRIPT_PATH: The path, relative to WORKING_DIRECTORY on your local file system, to the script that is the entry point for your training code. This can be a Python script (ending in .py) or a Bash script.
+
+For example, if you want to run /hello-world/trainer/task.py and WORKING_DIRECTORY is /hello-world, then use trainer/task.py for this value.
+
+Use python-module instead of script
+
+You can optionally replace script=SCRIPT_PATH with python-module=PYTHON_MODULE to specify the name of a Python module in WORKING_DIRECTORY to run as the entry point for training. For example, instead of script=trainer/task.py, you might specify python-module=trainer.task.
+
+In this case, the resulting Docker container loads your code as a module rather than as a script. You likely want to use this option if your entry point script imports other Python modules in WORKING_DIRECTORY.
+
+Install dependencies
+
+When using autopackaging, you can install Python dependencies in your container in the same ways that are available when you use the gcloud CLI's local-run command. To learn about the various ways to install Python dependencies, read the Install dependencies section of the guide to the local-run command.
+
+The syntax for specifying dependencies differs slightly when you use autopackaging compared to when you use the local-run command. Instead of using command-line flags to specify dependencies, you must use options in the value of the --worker-pool-spec flag. Additionally, values within these options must be separated by semicolons rather than commas. Specifically, the syntax:
+
+Instead of the local-run command's --local-package-path flag, use the local-package-path option in the value of the --worker-pool-spec flag. If the working directory that you specify with this option contains a requirements.txt or setup.py file, autopackaging installs dependencies based on this file.
+
+The preceding example demonstrates this syntax.
+
+(Optional) Instead of the --requirements flag, use the requirements option in the value of the --worker-pool-spec flag. Instead of separating PyPI dependencies with commas, use semicolons.
+
+(Optional) Instead of the --extra-packages flag, use the extra-packages option in the value of the --worker-pool-spec flag. Instead of separating local dependencies with commas, use semicolons.
+
+(Optional) Instead of the --extra-dirs flag, use the extra-dirs option in the value of the --worker-pool-spec flag. Instead of separating directory paths with commas, use semicolons.
+
+The following example shows how you might install dependencies using all the optional techniques. (You can specify any subset of them.) To demonstrate the semicolon syntax, the example specifies two values for each option. To reduce the length of the example, other --worker-pool-spec options are replaced with [...].
+
+gcloud ai custom-jobs create \ --region=LOCATION \ --display-name=JOB_NAME \ --worker-pool-spec=[...],requirements=PYPI_DEP_1;PYPI_DEP_2,extra-packages=LOCAL_DEP_1;LOCAL_DEP_2,extra-dirs=EXTRA_DIR_1;EXTRA_DIR_2
+
+To learn about appropriate values for these placeholders, see "Install dependencies" in the guide to the local-run command.
+
+Without autopackaging
+
+If you don't use autopackaging, you can create a CustomJob with a command similar to one of the following. Depending on whether you have created a Python training application or a custom container image, choose one of the following tabs:
+
+Python training app
+
+gcloud ai custom-jobs create \ --region=LOCATION \ --display-name=JOB_NAME \ --python-package-uris=PYTHON_PACKAGE_URIS \ --worker-pool-spec=machine-type=MACHINE_TYPE,replica-count=REPLICA_COUNT,executor-image-uri=EXECUTOR_IMAGE_URI,python-module=PYTHON_MODULE
+
+Replace the following:
+
+LOCATION: The region where the container or Python package will be run.
+
+JOB_NAME: Required. A display name for the CustomJob.
+
+PYTHON_PACKAGE_URIS: Comma-separated list of Cloud Storage URIs specifying the Python package files which are the training program and its dependent packages. The maximum number of package URIs is 100.
+
+MACHINE_TYPE: The type of the machine. Refer to available machine types for training.
+
+REPLICA_COUNT: The number of worker replicas to use. In most cases, set this to 1 for your first worker pool.
+
+EXECUTOR_IMAGE_URI: The URI of the container image that runs the provided code. Refer to the available prebuilt containers for training.
+
+PYTHON_MODULE: The Python module name to run after installing the packages.
+
+Custom container image
+
+gcloud ai custom-jobs create \ --region=LOCATION \ --display-name=JOB_NAME \ --worker-pool-spec=machine-type=MACHINE_TYPE,replica-count=REPLICA_COUNT,container-image-uri=CUSTOM_CONTAINER_IMAGE_URI
+
+Replace the following:
+
+LOCATION: The region where the container or Python package will be run.
+
+JOB_NAME: Required. A display name for the CustomJob.
+
+MACHINE_TYPE: The type of the machine. Refer to available machine types for training.
+
+REPLICA_COUNT: The number of worker replicas to use. In most cases, set this to 1 for your first worker pool.
+
+CUSTOM_CONTAINER_IMAGE_URI: The URI of a container image in Artifact Registry, Container Registry, or Docker Hub that is to be run on each worker replica.
+
+Distributed training
+
+To perform distributed training, specify the --worker-pool-spec flag multiple times, once for each worker pool.
+
+If you are using autopackaging, then you must only specify local-package-path, script, and other options related to autopackaging in the first worker pool. Omit fields related to your training code in subsequent worker pools, which will all use the same training container built by autopackaging.
+
+For example, the following command adapts an earlier autopackaging example to use a second worker pool:
+
+gcloud ai custom-jobs create \ --region=LOCATION \ --display-name=JOB_NAME \ --worker-pool-spec=machine-type=MACHINE_TYPE,replica-count=REPLICA_COUNT,executor-image-uri=EXECUTOR_IMAGE_URI,local-package-path=WORKING_DIRECTORY,script=SCRIPT_PATH \ --worker-pool-spec=machine-type=SECOND_POOL_MACHINE_TYPE,replica-count=SECOND_POOL_REPLICA_COUNT
+
+If you aren't using autopackaging, then specify each worker pool completely and independently; do not omit any fields.
+
+The following commands adapt earlier examples to use a second worker pool:
+
+Python training app
+
+gcloud ai custom-jobs create \ --region=LOCATION \ --display-name=JOB_NAME \ --python-package-uris=PYTHON_PACKAGE_URIS \ --worker-pool-spec=machine-type=MACHINE_TYPE,replica-count=REPLICA_COUNT,executor-image-uri=EXECUTOR_IMAGE_URI,python-module=PYTHON_MODULE \ --worker-pool-spec=machine-type=SECOND_POOL_MACHINE_TYPE,replica-count=SECOND_POOL_REPLICA_COUNT,executor-image-uri=SECOND_POOL_EXECUTOR_IMAGE_URI,python-module=SECOND_POOL_PYTHON_MODULE
+
+Custom container image
+
+gcloud ai custom-jobs create \ --region=LOCATION \ --display-name=JOB_NAME \ --worker-pool-spec=machine-type=MACHINE_TYPE,replica-count=REPLICA_COUNT,container-image-uri=CUSTOM_CONTAINER_IMAGE_URI \ --worker-pool-spec=machine-type=SECOND_POOL_MACHINE_TYPE,replica-count=SECOND_POOL_REPLICA_COUNT,container-image-uri=SECOND_POOL_CUSTOM_CONTAINER_IMAGE_URI
+
+Advanced configuration
+
+If you want to specify configuration options that are not available in the preceding examples, you can use the --config flag to specify the path to a config.yaml file in your local environment that contains the fields of CustomJobSpec. For example:
+
+gcloud ai custom-jobs create \ --region=LOCATION \ --display-name=JOB_NAME \ --config=config.yaml
+
+See an example of a config.yaml file.
+
+Console
+
+In the Google Cloud console, you can't create a CustomJob resource directly. However, you can create a TrainingPipeline resource that creates a CustomJob.
+
+The following instructions describe how to create a TrainingPipeline that creates a CustomJob and doesn't do anything else. If you want to use additional TrainingPipeline features, like training with a managed dataset or creating a Model resource at the end of training, read Creating training pipelines.
+
+In the Google Cloud console, in the Vertex AI section, go to the Training pipelines page.
+
+Go to Training pipelines
+
+Click add_box Create to open the Train new model pane.
+
+On the Training method step, specify the following settings:
+
+In the Dataset drop-down list, select No managed dataset.
+
+Select Custom training (advanced).
+
+Click Continue.
+
+On the Model details step, choose Train new model or Train new version. If you select train new model, enter a name of your choice, MODEL_NAME, for your model. Click Continue.
+
+On the Training container step, specify the following settings:
+
+Select whether to use a Prebuilt container or a Custom container for training.
+
+Depending on your choice, do one of the following:
+
+If you want to use a prebuilt container for training, then provide Vertex AI with information it needs to use the training package that you have uploaded to Cloud Storage:
+
+Use the Model framework and Model framework version drop-down lists to specify the prebuilt container that you want to use.
+
+In the Package location field, specify the Cloud Storage URI of the Python training application that you have created and uploaded. This file usually ends with .tar.gz.
+
+In the Python module field, enter the module name of your training application's entry point.
+
+If you want to use a custom container for training, then in the Container image field, specify the Artifact Registry or Docker Hub URI of your container image.
+
+In the Model output directory field, you may specify the Cloud Storage URI of a directory in a bucket that you have access to. The directory does not need to exist yet.
+
+This value gets passed to Vertex AI in the baseOutputDirectory API field, which sets several environment variables that your training application can access when it runs.
+
+Optional: In the Arguments field, you can specify arguments for Vertex AI to use when it starts running your training code. The maximum length for all arguments combined is 100,000 characters. The behavior of these arguments differs depending on what type of container you are using:
+
+If you are using a prebuilt container, then Vertex AI passes the arguments as command-line flags to your Python module.
+
+If you are using a custom container, then Vertex AI overrides your container's CMD instruction with the arguments.
+
+Click Continue.
+
+On the Hyperparameter tuning step, make sure that the Enable hyperparameter tuning checkbox is not selected. Click Continue.
+
+On the Compute and pricing step, specify the following settings:
+
+In the Region drop-down list, select a "region that supports custom training"
+
+In the Worker pool 0 section, specify compute resources to use for training.
+
+If you specify accelerators, make sure the type of accelerator that you choose is available in your selected region.
+
+If you want to perform distributed training, then click Add more worker pools and specify an additional set of compute resources for each additional worker pool that you want.
+
+Click Continue.
+
+On the Prediction container step, select No prediction container.
+
+Click Start training to start the custom training pipeline.
+
+REST
+
+Before using any of the request data, make the following replacements:
+
+LOCATION: The region where the container or Python package will be run.
+
+PROJECT_ID: Your project ID.
+
+JOB_NAME: Required. A display name for the CustomJob.
+
+Define the custom training job:
+
+MACHINE_TYPE: The type of the machine. Refer to available machine types for training.
+
+ACCELERATOR_TYPE: (Optional.) The type of accelerator to attach to the job.
+
+ACCELERATOR_COUNT: (Optional.) The number of accelerators to attach to the job.
+
+DISK_TYPE: (Optional.) The type of the boot disk to use for the job, either pd-standard (default) or pd-ssd. Learn more about disk types.
+
+DISK_SIZE: (Optional.) The size in GB of the boot disk to use for the job. The default value is 100.
+
+REPLICA_COUNT: The number of worker replicas to use. In most cases, set this to 1 for your first worker pool.
+
+If your training application runs in a custom container, specify the following:
+
+CUSTOM_CONTAINER_IMAGE_URI: The URI of a container image in Artifact Registry, Container Registry, or Docker Hub that is to be run on each worker replica.
+
+CUSTOM_CONTAINER_COMMAND: (Optional.) The command to be invoked when the container is started. This command overrides the container's default entrypoint.
+
+CUSTOM_CONTAINER_ARGS: (Optional.) The arguments to be passed when starting the container.
+
+If your training application is a Python package that runs in a prebuilt container, specify the following:
+
+EXECUTOR_IMAGE_URI: The URI of the container image that runs the provided code. Refer to the available prebuilt containers for training.
+
+PYTHON_PACKAGE_URIS: Comma-separated list of Cloud Storage URIs specifying the Python package files which are the training program and its dependent packages. The maximum number of package URIs is 100.
+
+PYTHON_MODULE: The Python module name to run after installing the packages.
+
+PYTHON_PACKAGE_ARGS: (Optional.) Command-line arguments to be passed to the Python module.
+
+Learn about job scheduling options.
+
+TIMEOUT: (Optional.) The maximum running time for the job.
+
+Specify the LABEL_NAME and LABEL_VALUE for any labels that you want to apply to this custom job.
+
+HTTP method and URL:
+
+POST https://LOCATION-aiplatform.googleapis.com/v1/projects/PROJECT_ID/locations/LOCATION/customJobs
+
+Request JSON body:
+
+{ "displayName": "JOB_NAME", "jobSpec": { "workerPoolSpecs": [ { "machineSpec": { "machineType": MACHINE_TYPE, "acceleratorType": ACCELERATOR_TYPE, "acceleratorCount": ACCELERATOR_COUNT }, "replicaCount": REPLICA_COUNT, "diskSpec": { "bootDiskType": DISK_TYPE, "bootDiskSizeGb": DISK_SIZE }, // Union field task can be only one of the following: "containerSpec": { "imageUri": CUSTOM_CONTAINER_IMAGE_URI, "command": [ CUSTOM_CONTAINER_COMMAND ], "args": [ CUSTOM_CONTAINER_ARGS ] }, "pythonPackageSpec": { "executorImageUri": EXECUTOR_IMAGE_URI, "packageUris": [ PYTHON_PACKAGE_URIS ], "pythonModule": PYTHON_MODULE, "args": [ PYTHON_PACKAGE_ARGS ] } // End of list of possible types for union field task. } // Specify one workerPoolSpec for single replica training, or multiple workerPoolSpecs // for distributed training. ], "scheduling": { "timeout": TIMEOUT } }, "labels": { LABEL_NAME_1": LABEL_VALUE_1, LABEL_NAME_2": LABEL_VALUE_2 } }
+
+To send your request, choose one of these options:
+
+curl
+
+Save the request body in a file named request.json, and execute the following command:
+
+curl -X POST \
+
+-H "Authorization: Bearer $(gcloud auth print-access-token)" \
+
+-H "Content-Type: application/json; charset=utf-8" \
+
+-d @request.json \
+
+"https://LOCATION-aiplatform.googleapis.com/v1/projects/PROJECT_ID/locations/LOCATION/customJobs"
+
+PowerShell
+
+Save the request body in a file named request.json, and execute the following command:
+
+$cred = gcloud auth print-access-token
+
+$headers = @{ "Authorization" = "Bearer $cred" }
+
+Invoke-WebRequest `
+
+-Method POST `
+
+-Headers $headers `
+
+-ContentType: "application/json; charset=utf-8" `
+
+-InFile request.json `
+
+-Uri "https://LOCATION-aiplatform.googleapis.com/v1/projects/PROJECT_ID/locations/LOCATION/customJobs" | Select-Object -Expand Content
+
+The response contains information about specifications as well as the TRAININGPIPELINE_ID.
+
+Response
+
+{ "name": "projects/PROJECT_ID/locations/LOCATION/customJobs/JOB_ID", "displayName": "JOB_NAME", "trainingTaskInputs": { "workerPoolSpecs": [ { "machineSpec": { "machineType": "n1-standard-4" }, "replicaCount": "1", "pythonPackageSpec": { "executorImageUri": "us-docker.pkg.dev/vertex-ai/training/training-tf-cpu.2-1:latest", "packageUris": [ "gs://BUCKET_NAME/training/hello-custom-training-1.0.tar.gz" ], "pythonModule": "trainer.task", "args": [ "--model-dir=gs://BUCKET_NAME/output/" ] } } ] }, "state": "JOB_STATE_PENDING", "createTime": "2020-09-15T19:09:54.342080Z", "startTime": "2020-09-15T19:13:42.991045Z", }
+
+Java
+
+Before trying this sample, follow the Java setup instructions in the Vertex AI quickstart using client libraries. For more information, see the Vertex AI Java API reference documentation.
+
+To authenticate to Vertex AI, set up Application Default Credentials. For more information, see Set up authentication for a local development environment.
+
+import com.google.cloud.aiplatform.v1.AcceleratorType; import com.google.cloud.aiplatform.v1.ContainerSpec; import com.google.cloud.aiplatform.v1.CustomJob; import com.google.cloud.aiplatform.v1.CustomJobSpec; import com.google.cloud.aiplatform.v1.JobServiceClient; import com.google.cloud.aiplatform.v1.JobServiceSettings; import com.google.cloud.aiplatform.v1.LocationName; import com.google.cloud.aiplatform.v1.MachineSpec; import com.google.cloud.aiplatform.v1.WorkerPoolSpec; import java.io.IOException; // Create a custom job to run machine learning training code in Vertex AI public class CreateCustomJobSample { public static void main(String[] args) throws IOException { // TODO(developer): Replace these variables before running the sample. String project = "PROJECT"; String displayName = "DISPLAY_NAME"; // Vertex AI runs your training application in a Docker container image. A Docker container // image is a self-contained software package that includes code and all dependencies. Learn // more about preparing your training application at // https://cloud.google.com/vertex-ai/docs/training/overview#prepare_your_training_application String containerImageUri = "CONTAINER_IMAGE_URI"; createCustomJobSample(project, displayName, containerImageUri); } static void createCustomJobSample(String project, String displayName, String containerImageUri) throws IOException { JobServiceSettings settings = JobServiceSettings.newBuilder() .setEndpoint("us-central1-aiplatform.googleapis.com:443") .build(); String location = "us-central1"; // Initialize client that will be used to send requests. This client only needs to be created // once, and can be reused for multiple requests. try (JobServiceClient client = JobServiceClient.create(settings)) { MachineSpec machineSpec = MachineSpec.newBuilder() .setMachineType("n1-standard-4") .setAcceleratorType(AcceleratorType.NVIDIA_TESLA_T4) .setAcceleratorCount(1) .build(); ContainerSpec containerSpec = ContainerSpec.newBuilder().setImageUri(containerImageUri).build(); WorkerPoolSpec workerPoolSpec = WorkerPoolSpec.newBuilder() .setMachineSpec(machineSpec) .setReplicaCount(1) .setContainerSpec(containerSpec) .build(); CustomJobSpec customJobSpecJobSpec = CustomJobSpec.newBuilder().addWorkerPoolSpecs(workerPoolSpec).build(); CustomJob customJob = CustomJob.newBuilder() .setDisplayName(displayName) .setJobSpec(customJobSpecJobSpec) .build(); LocationName parent = LocationName.of(project, location); CustomJob response = client.createCustomJob(parent, customJob); System.out.format("response: %s\n", response); System.out.format("Name: %s\n", response.getName()); } } }
+
+What's next
+
+Learn how to pinpoint training performance bottlenecks to train models faster and cheaper using Cloud Profiler.
+
+See Create training pipelines to learn how to create training pipelines to run custom training applications on Vertex AI.

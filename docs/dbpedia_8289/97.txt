@@ -1,0 +1,169 @@
+applet-magic.com
+
+Thayer Watkins
+
+Silicon Valley
+
+& Tornado Alley
+
+USA
+
+An Introduction to
+
+the Programming Language
+
+PROLOG:
+
+A Language for Logic Programming
+
+and Symbolic Computation
+
+There are primarily two computer languages used in artificial intelligence work, LISP and PROLOG. LISP, which is short for List Processing, was created by John McCarthy of Stanford University. It looks klutzy but it is based upon the lamba calculus and works quite well for computation associated with artificial intelligence. PROLOG has an elegant formulation but it does not have the range of application that LISP has. The Japanese when they formulated the Fifth Generation project chose PROLOG over LISP as the programming language. This was perhaps one of the factors that contributed to the failure of the Fifth Generation project. Nevertheless PROLOG is worth knowing for its power in solving questions about relationships.
+
+A PROLOG program consists of:
+
+Declaration of the facts of the relations involved.
+
+Declaration of rules concerning relations
+
+Formulation of questions to be answered.
+
+Specifying Relationships
+
+Relations can be defined in several different ways. In PROLOG they are defined in a functional form with the name of the relation first and the object or objects involved in the relation being enclosed within parentheses. For example,
+
+billionaire(bill_gates).
+
+aunt(jessica,liam).
+
+The first one means that bill_gates is a billionaire and the second that jessica is the aunt of liam. In the above the conventions of PROLOG have been adhered to; i.e.,
+
+1. all names of relations and objects are in lower case letters
+
+2. the objects are separated by commas
+
+3. the relationships end with a period (a full stop)
+
+The first relation can be interpreted as a statement that the billionarity of bill_gates is true. Likewise the second relation says that it is true that jessica is the aunt of liam.
+
+A more complex relation is
+
+play(joe,mike,tennis).
+
+which says that joe and mike play tennis together.
+
+A prolog program is run by typing in questions in the form
+
+?- aunt(jessica, liam).
+
+to which the computer would respond: Yes.
+
+If the PROLOG program responds No to a question it does not mean that the statement involved in the question is false. It only means that it cannot be proved true with the data shown.
+
+A more sophisticated question can be formulated by means of Variables. Variables are unspecified objects wose names start a with capital letter. For example, if the question is
+
+?- aunt(jessica, N).
+
+the computer would answer
+
+N=liam
+
+If at this point the questioner presses return, the question is ended. If the questioner types semicolon (;) and then return the computer will search for any more objects for which jessica is an aunt.
+
+Consider this example:
+
+reads(jane, shakespeare).
+
+reads(henry, hemingway).
+
+reads(frank, falkner).
+
+reads(jake, shakespeare).
+
+The question
+
+?- reads(Y,hemingway).
+
+would get the response Y=henry. A semicolon and then return would be the response: no. The question
+
+?-reads(Y, shakespeare).
+
+would get the response Y=jane. A semicolon plus return would get the response Y=jake. Another semicolon plus return would get the response no.
+
+The question
+
+?- reads(frank, X).
+
+would get the response X=falkner.
+
+Conjoining Questions
+
+If we want to know if the answers to two questions correspond all that needs to done is to conjoin two questions with a comma. Thus a coma in PROLOG is equivalent to a logical AND construction. For example, the conjoined questions
+
+?- reads(jane, X), reads(jake, X).
+
+brings the response X=shakespeare.
+
+Rules for Composing Relationships:
+
+Using the PROLOG if Operation
+
+Combinations of relations can be created by special PROLOG operations. Suppose the following relations are defined:
+
+parent(joe,jane).
+
+parent(harry,carl).
+
+parent(meg,jane).
+
+parent(jane,anne).
+
+parent(carl,ralph).
+
+parent(hazel,harry).
+
+The grandparent relation is defined using the if operation:
+
+grandparent(X,Z) :- parent(X,Y), parent(Y,Z).
+
+Thus a PROLOG program consists of the basic facts in terms of declarations and some rules for defining more complex relations from the basic relations.
+
+(To be continued.)
+
+Symbolic Computation
+
+A good example of symbolic computation and its problems is symbolic differentiation. Below is given a set of basic rules of differentiation in a PROLOG format.
+
+deriv(C,X,0) :- constant(C).
+
+deriv(X,X,1) :- !.
+
+deriv(-F,X,-G) :- deriv(F,X,G).
+
+deriv(F+G,X,H+I) :- deriv(F,X,H), deriv(G,X,I).
+
+deriv(F*G,X,H*G+F*I) :- deriv(F,X,H), deriv(G,X,I).
+
+deriv(F^C,X,c*F^(C-1)*G) :- const(C), deriv(F,X,G).
+
+deriv(F/G,X,H/G - (F/G^2)*I) :- deriv(F,X,H), deriv(G,X,I).
+
+deriv(log(F),X,H*(F^(-1)) :- deriv(F,X,H).
+
+The rule that deriv(X,X,1) is always true. This is the meaning of ":- !." It could be read as "if anything."
+
+The output of a program run on the basis of the above data is not simplified. For example, the question
+
+?- deriv(X*X,X,A).
+
+gets the response
+
+A = 1*X+X*1
+
+The derivative program needs to operate in conjunction with a simplification program. Some commands in such a simplification program would be:
+
+simpl(1*F,F) :- !. simpl(F*1,F) :- !. simpl(F-F,0) :- !. simpl(F/F,1) :- F /=0. simpl(F+F,2*F) :- !. simpl(C*F+F,(C+1)*F) :- !. simpl(C*F+D*F,(C+D)*F) : simpl(F^0,1) :- F /= 0. simpl(0^C,0) :- C/=0.
+
+There could of course be many more.
+
+When confronted with the expression (1*X+X*1) the system would convert it successively to (X+X*1), (X+X), (2*X).

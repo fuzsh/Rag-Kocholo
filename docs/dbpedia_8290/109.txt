@@ -1,0 +1,97 @@
+Xinetd is a replacement for inetd, which was the original Unix super-daemon used to start network services on demand. The reason for inetd goes back to days of low memory and poor memory management: you didn't want to keep a service running in memory if it was infrequently used. One process (inetd) would listen for connections on appropriate ports, and fire off the appropriate service when a request came in.
+
+In these days of cheap memory and much more intelligent memory management, you might think that inetd (and xinetd) had little use. After all, it takes time and resources to fire off a process, so why not just leave these things running all the time? Well, for some programs, we might do just that. It's not unusual to have mail or ftp running constantly. The ssh daemon probably is up and running always too. However, a program set to run all the time either has to be capable of forking off multiple copies of itself on demand or (obviously) it's going to be stuck with one connection at a time, so super daemons can assist less intelligently written programs in that area.
+
+Security
+
+The original inetd program provided nothing in the way of security other than accepting or refusing a particular service, , but it was often used in connection with tcpd (tcp-wrappers, see General Security) to provide security and logging. Nowadays we use iptables, ipfw or other sophisticated firewalls, but very often people still use tcpd just because they are accustomed to the syntax of /etc/hosts.allow and /etc/hosts.deny. Because of this lingering popularity, xinetd can also use tcpd's configuration files (it does need to be compiled with the "libwrap" option). This can get very confusing if you don't realize that this is happening. While researching this article, I was testing on various machines and on one I would not get any response from my tests and I'd see "libwrap" given as the reason in the logs. It took me way too long to realize that was coming because of entries in /etc/hosts.deny and had nothing to do with anything else I was doing wrong. Naturally, iptables or other firewall rules can trip you up the same way.
+
+Although xinetd has its own more powerful security capabilies, you might wonder why people use those features when (for example) iptables can provide all security in a centralized place? I suppose part of it is convenience: it's probably easier to maintain xinetd's configuration files than to figure out how to provide the same functionality in iptables. Then again, it never hurts to double up: your iptables rules may say that you'll only accept a service from xyz host, but it certainly doesn't hurt to duplicate that restriction in xinetd's configuration if it's really important.
+
+xinetd.conf
+
+While xinetd reads its configuration from /etc/xinetd.conf (unless some other file is given with the -f option when it is started), typically that file refers to /etc/xinetd.d:
+
+# typical xinetd.conf defaults { instances = 60 log_type = SYSLOG daemon log_on_success = HOST PID log_on_failure = HOST cps = 25 30 } includedir /etc/xinetd.d
+
+Within xinetd.d you'll find individual configuration files for each service:
+
+root# ls /etc/xinetd.d auth comsat echo-udp login tftp bootps daytime exec ntalk time chargen daytime-udp finger shell time-udp chargen-udp echo ftp telnet
+
+Each of these will look something like this:
+
+root# cat /etc/xinetd.d/telnet service telnet { disable = yes socket_type = stream wait = no user = root server = /usr/libexec/telnetd groups = yes flags = REUSE }
+
+Probably most of that makes immediate sense, but we'll run through it for the odd ones and just in case something that's obvious to me isn't to you.
+
+disable
+
+Simply whether or not to run this service. Set it to "no" if you want to activate the service. Note that "enable = yes" doesn't work.
+
+socket_type
+
+Stream, dgram, raw, or seqpacket.
+
+wait
+
+Determines whether or not the service can accept multiple connections. If "yes", xinetd won't accept new connections for this service until the active one exits.
+
+user
+
+The user id for the process. Of course xinetd.d would have to be running as root to start with if you wanted it to be able to run a process as someone else.
+
+server
+
+The actual executable to run. Note this is NOT used to look up port numbers in /etc/services: it's the name of the file itself that is used for that lookup. So if xinetd sees a connection coming in on tcp port 23, it looks in /etc/services, finds that is "telnet", and then looks in the file "telnet" here to determine what to do. Note that there is a "port" attribute (not used here) that can be used if the service doesn't exist in /etc/services, but if it DOES exist, "port" needs to match.
+
+groups
+
+Don't confuse this with "group" (not used here) that would take a group name or id. What this determines is whether or not the service will have access to the supplementary groups that it would otherwise have from its effective id (from "user" above).
+
+flags
+
+There are a number of possible flag settings. Usually you'll see REUSE as above, which is somewhat amusing because that one isn't documented in the man page of some distributions. More amusing is that the reason it isn't documented is that it's a deprecated flag: that is the default now. Reuse lets you accept multiple connections to the same port.
+
+Those are the boring basics, typical of what you'll see as the vendor provided files. There is, however, much more that you can do.
+
+More interesting settings
+
+Let's say your office hours are 8:00 AM to 6:00 PM and you have no reason to have certain services run outside of that time. The "access_times" attribute can do that:
+
+access_times = 8:00-18:00
+
+Unfortunately you can't specify day of the week or anything like that. And while some attributes can take multiple values, you can't say that it's OK from 8:00-12:00 and then again from 13:00 to 17:00. If you need to do that sort of thing, one way is to have a cron job that rewrites these files as needed and sends a kill -1 to the xinetd process.
+
+Other useful attributes are only_from and no_access. On every machine I checked, the man page warns:
+
+3. The address check is based on the IP address of the remote host and not on its domain address. We do this so that we can avoid remote name lookups which may take a long time (since xinetd is single-threaded, a name lookup will prevent the daemon from accepting any other requests until the lookup is resolved). The down side of this scheme is that if the IP address of a remote host changes, then access to that host may be denied until xinetd is reconfigured.
+
+Yet earlier on, you are told that this can be:
+
+a) a numeric address in the form of %d.%d.%d.%d. If the rightmost compo- nents are 0, they are treated as wildcards (for example, 128.138.12.0 matches all hosts on the 128.138.12 subnet). 0.0.0.0 matches all Inter- net addresses. b) a factorized address in the form of %d.%d.%d.{%d,%d,...}. There is no need for all 4 components (i.e. %d.%d.{%d,%d,...%d} is also ok). However, the factorized part must be at the end of the address. c) a network name (from /etc/networks) d) a host name. When a connection is made to xinetd, a reverse lookup is performed, and the canonical name returned is compared to the speci- fied host name. You may also use domain names in the form of .domain.com. If the reverse lookup of the client's IP is within .domain.com, a match occurs. e) an ip address/netmask range in the form of 1.2.3.4/32.
+
+I *think* that means that xinetd looks up the host or domain only when it reads its configuration files, though that's a pretty poor way to say it, and I'm not at all sure they actually mean that. It should be a fairly easy thing to test, but I'm writing this while on vacation and can't easily do so. I'll come back to this another day to find out just what they DO mean.
+
+How many?
+
+The "instances" attribute controls how many requests will be allowed. This is useful both for thwarting denial of service attacks and just in general for keeping server load down. Related to this is the "cps" attribute. You may have noticed that in the original inetd.conf above under "defaults".
+
+cps = 25 30
+
+The "25" is the maximum number of connections allowed per second (that's per service). If it exceeds that, it will be disabled for 30 seconds. If you don't specify this, the default is 50 connections per second and the disable time is 10 seconds.
+
+Other security related attributes include the ability to bind a service to a particular interface: for example, you want to provide ftp within your lan but not to the outside world. That requires two entries for ftp, and they need to have different "id" attributes. There's an example of this at Linux Focus.
+
+Though not strictly a security aspect, the redirect attribute effectively allows you to run a service on a different machine.
+
+SENSOR is perhaps the most interesting feature. It's a value you set for the flags attribute, and you do this for services you don't provide but are apt to be the target of people trying to attack your machine. If someone trips the SENSOR flag by accessing a service they have no business with, they get plonked into a global no_access list and stay there for the length of time you specified in the "deny_time" attribute.
+
+Logging
+
+Extensive logging is available. The first thing you do is say how you want to log with the "log_type", which is either SYSLOG or FILE, and then you use "log_on_success" and "log_on_failure" to say WHAT is logged.
+
+Other Features
+
+There are plenty of other features in xinetd, like specifying banners to connecting clients, setting resource limits, controlling environment variables and more. There's even a "per_source" attribute that specifies how many connections from one source you will allow. All in all, xinetd has a great deal of flexibility and power and is well worth learning.
+
+Got something to add? Send me email.

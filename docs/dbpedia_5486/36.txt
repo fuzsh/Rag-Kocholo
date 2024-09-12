@@ -1,0 +1,667 @@
+Managing a virtual tape library domain and providing ownership of scratch erased volumes to VTL nodes Download PDF
+
+Info
+
+Publication number
+
+US8595430B2
+
+US8595430B2 US12/894,613 US89461310A US8595430B2 US 8595430 B2 US8595430 B2 US 8595430B2 US 89461310 A US89461310 A US 89461310A US 8595430 B2 US8595430 B2 US 8595430B2
+
+Authority
+
+US
+
+United States
+
+Prior art keywords
+
+scratch
+
+vtl
+
+erased
+
+volume
+
+volumes
+
+Prior art date
+
+2010-09-30
+
+Legal status (The legal status is an assumption and is not a legal conclusion. Google has not performed a legal analysis and makes no representation as to the accuracy of the status listed.)
+
+Expired - Fee Related, expires 2032-07-18
+
+Application number
+
+US12/894,613
+
+Other languages
+
+English (en)
+
+Other versions
+
+US20120084499A1 (en
+
+Inventor
+
+Norie Iwasaki
+
+Katsuyoshi Katori
+
+Hiroyuki Miyoshi
+
+Takeshi Nohta
+
+Eiji Tosaka
+
+Current Assignee (The listed assignees may be inaccurate. Google has not performed a legal analysis and makes no representation or warranty as to the accuracy of the list.)
+
+International Business Machines Corp
+
+Original Assignee
+
+International Business Machines Corp
+
+Priority date (The priority date is an assumption and is not a legal conclusion. Google has not performed a legal analysis and makes no representation as to the accuracy of the date listed.)
+
+2010-09-30
+
+Filing date
+
+2010-09-30
+
+Publication date
+
+2013-11-26
+
+2010-09-30 Application filed by International Business Machines Corp filed Critical International Business Machines Corp
+
+2010-09-30 Priority to US12/894,613 priority Critical patent/US8595430B2/en
+
+2010-10-20 Assigned to INTERNATIONAL BUSINESS MACHINES CORPORATION reassignment INTERNATIONAL BUSINESS MACHINES CORPORATION ASSIGNMENT OF ASSIGNORS INTEREST (SEE DOCUMENT FOR DETAILS). Assignors: IWASAKI, NORIE, KATORI, KATSUYOSHI, MIYOSHI, HIROYUKI, NOHTA, TAKESHI, TOSAKA, EIJI
+
+2011-07-29 Priority to JP2013510426A priority patent/JP5414943B2/ja
+
+2011-07-29 Priority to PCT/JP2011/004347 priority patent/WO2012042724A1/en
+
+2011-07-29 Priority to CN201180045042.1A priority patent/CN103119567B/zh
+
+2011-07-29 Priority to DE112011103299T priority patent/DE112011103299T5/de
+
+2011-07-29 Priority to GB1304553.9A priority patent/GB2497465B/en
+
+2012-04-05 Publication of US20120084499A1 publication Critical patent/US20120084499A1/en
+
+2013-11-26 Publication of US8595430B2 publication Critical patent/US8595430B2/en
+
+2013-11-26 Application granted granted Critical
+
+Status Expired - Fee Related legal-status Critical Current
+
+2032-07-18 Adjusted expiration legal-status Critical
+
+Links
+
+USPTO
+
+USPTO PatentCenter
+
+USPTO Assignment
+
+Espacenet
+
+Global Dossier
+
+Discuss
+
+238000000034 method Methods 0.000 claims abstract description 37
+
+230000004044 response Effects 0.000 claims abstract description 15
+
+238000012546 transfer Methods 0.000 claims description 27
+
+238000004590 computer program Methods 0.000 claims description 10
+
+238000010586 diagram Methods 0.000 description 16
+
+230000006870 function Effects 0.000 description 9
+
+238000012545 processing Methods 0.000 description 4
+
+238000004891 communication Methods 0.000 description 3
+
+230000003287 optical effect Effects 0.000 description 3
+
+239000013307 optical fiber Substances 0.000 description 3
+
+230000008569 process Effects 0.000 description 2
+
+230000006978 adaptation Effects 0.000 description 1
+
+238000007796 conventional method Methods 0.000 description 1
+
+239000013078 crystal Substances 0.000 description 1
+
+230000008030 elimination Effects 0.000 description 1
+
+238000003379 elimination reaction Methods 0.000 description 1
+
+238000003780 insertion Methods 0.000 description 1
+
+230000037431 insertion Effects 0.000 description 1
+
+238000004519 manufacturing process Methods 0.000 description 1
+
+238000012986 modification Methods 0.000 description 1
+
+230000004048 modification Effects 0.000 description 1
+
+229920000642 polymer Polymers 0.000 description 1
+
+238000011084 recovery Methods 0.000 description 1
+
+230000010076 replication Effects 0.000 description 1
+
+239000004065 semiconductor Substances 0.000 description 1
+
+230000003068 static effect Effects 0.000 description 1
+
+Images
+
+Classifications
+
+G—PHYSICS
+
+G06—COMPUTING; CALCULATING OR COUNTING
+
+G06F—ELECTRIC DIGITAL DATA PROCESSING
+
+G06F3/00—Input arrangements for transferring data to be processed into a form capable of being handled by the computer; Output arrangements for transferring data from processing unit to output unit, e.g. interface arrangements
+
+G06F3/06—Digital input from, or digital output to, record carriers, e.g. RAID, emulated record carriers or networked record carriers
+
+G06F3/0601—Interfaces specially adapted for storage systems
+
+G06F3/0602—Interfaces specially adapted for storage systems specifically adapted to achieve a particular effect
+
+G06F3/0614—Improving the reliability of storage systems
+
+G06F3/0617—Improving the reliability of storage systems in relation to availability
+
+G—PHYSICS
+
+G06—COMPUTING; CALCULATING OR COUNTING
+
+G06F—ELECTRIC DIGITAL DATA PROCESSING
+
+G06F3/00—Input arrangements for transferring data to be processed into a form capable of being handled by the computer; Output arrangements for transferring data from processing unit to output unit, e.g. interface arrangements
+
+G06F3/06—Digital input from, or digital output to, record carriers, e.g. RAID, emulated record carriers or networked record carriers
+
+G06F3/0601—Interfaces specially adapted for storage systems
+
+G06F3/0628—Interfaces specially adapted for storage systems making use of a particular technique
+
+G06F3/0646—Horizontal data movement in storage systems, i.e. moving data in between storage devices or systems
+
+G06F3/065—Replication mechanisms
+
+G—PHYSICS
+
+G06—COMPUTING; CALCULATING OR COUNTING
+
+G06F—ELECTRIC DIGITAL DATA PROCESSING
+
+G06F3/00—Input arrangements for transferring data to be processed into a form capable of being handled by the computer; Output arrangements for transferring data from processing unit to output unit, e.g. interface arrangements
+
+G06F3/06—Digital input from, or digital output to, record carriers, e.g. RAID, emulated record carriers or networked record carriers
+
+G06F3/0601—Interfaces specially adapted for storage systems
+
+G06F3/0628—Interfaces specially adapted for storage systems making use of a particular technique
+
+G06F3/0646—Horizontal data movement in storage systems, i.e. moving data in between storage devices or systems
+
+G06F3/0652—Erasing, e.g. deleting, data cleaning, moving of data to a wastebasket
+
+G—PHYSICS
+
+G06—COMPUTING; CALCULATING OR COUNTING
+
+G06F—ELECTRIC DIGITAL DATA PROCESSING
+
+G06F3/00—Input arrangements for transferring data to be processed into a form capable of being handled by the computer; Output arrangements for transferring data from processing unit to output unit, e.g. interface arrangements
+
+G06F3/06—Digital input from, or digital output to, record carriers, e.g. RAID, emulated record carriers or networked record carriers
+
+G06F3/0601—Interfaces specially adapted for storage systems
+
+G06F3/0668—Interfaces specially adapted for storage systems adopting a particular infrastructure
+
+G06F3/0671—In-line storage system
+
+G06F3/0683—Plurality of storage devices
+
+G06F3/0686—Libraries, e.g. tape libraries, jukebox
+
+Definitions
+
+the present invention relates in general to storage systems, and particularly to, systems and methods for managing a virtual tape library domain.
+
+VTL virtual tape library
+
+VTL typically provides a host with a high-speed tape library by using, for example, disks.
+
+the host uses the tape library as follows:
+
+the host inserts a tape volume (hereinafter, referred to as a âvolumeâ) into the tape library.
+
+the volume is identified by a volume serial number (âVOLSERâ) and the inserted volume is categorized under a category named âinsertâ category.
+
+VOLSER volume serial number
+
+a category is one of the volume attributes and is necessarily defined for each volume to represent the state and usage of the volume at a particular time;
+
+the host transfers the volume in the insert category to a âscratchâ category.
+
+the scratch category is used to store blank and/or reusable tapes;
+
+the host requests the mount of a volume.
+
+the tape library mounts the requested volume and provides the host with the volume.
+
+the host requests the mount by specifying the VOLSER and requesting the mount of a specific volume (specific mount) or by specifying a category and requesting any volume in the category (category mount).
+
+specific mount the mount of a specific volume
+
+category mount any volume in the category
+
+the host transfers the mounted volume into a âprivateâ category and performs an input/output (I/O) operation;
+
+the host After the completion of the I/O operation, the host requests a âde-mountâ of the volume.
+
+the host transfers the volume to the scratch category.
+
+the data in the volume transferred to the scratch category is no longer guaranteed and may be erased at this point in time such that the volume is reusable.
+
+the volume in the scratch category is provided to the host when the host later requests the mount of the volume.
+
+the tape library recognizes that there is no available blank or reusable tape. If the host requests a scratch mount in such a situation, the mount request fails.
+
+the VTL performs the above functions utilizing storage disks. There are many advantages to utilizing storage disks compared to a physical tape library, particularly, in that the VTL is able to respond to a scratch mount request at high speed. The VTL is able to quickly respond to the host because a logical volume is prepared on the disks, instead of actually mounting a physical tape.
+
+the VTL does not typically immediately erase the data in the volume once the volume is transferred to the scratch category so that a user is able to restore the data of a volume that the user mistakenly transferred to the scratch category. Instead, the data is left in tact for a predetermined amount of time (e.g., 24 hours) before the data is erased.
+
+a volume which is in the scratch category and whose data is not erased yet is referred to as a âscratch unerasedâ volume and a volume whose data was completely erased after a lapse of the predetermined amount of time is referred to as a âscratch erasedâ volume.
+
+VTLs support clustering of multiple VTLs.
+
+An object of clustering VTLs is to increase the number of virtual tape drives and the disk capacity, and to implement higher availability and disaster recovery solutions by data replication.
+
+VTLs are connected to each other via an Internet Protocol (IP) network or the like, and appear as a single virtual tape library to the host.
+
+IP Internet Protocol
+
+VTL domain the entire clustering configuration
+
+VTL node each of the VTLs constituting the VTL domain
+
+a request command from the host is received by a VTL node to which the host is physically connected. Thereafter, the VTL nodes communicate with each other to have consistency within the VTL domain and to return a reply to the host.
+
+VTL clustering configuration it is also possible for two VTL nodes to be connected to one host, and the host operates such that the host individually issues mount requests to each of the VTL nodes.
+
+a scratch category common to the two VTL nodes is generally used.
+
+VTL nodes are expected to comply with a mount request from the host by operating as follows:
+
+the VTL nodes communicate with each other to check how many volumes in the scratch category (e.g., scratch unerased volumes and scratch erased volumes) exist in the VTL domain; and
+
+the VTL node selects a volume, which is erased at the earliest possible time, among the scratch erased volumes and provides the volume to the host. If there are no scratch erased volumes in the entire VTL domain, the VTL node selects a volume, which is transferred to the scratch category at the earliest possible time, among the scratch unerased volumes and provide the volume to the host.
+
+VTL nodes will need to communicate with each other to select a scratch volume each time the host requests the mount, which sacrifices mount performance, which is a primary goal of VTL nodes.
+
+One conventional technique to overcome the need for the VTL nodes to communicate with each other every time the host requests a mount provides a method that determines ahead of time which volumes are going to be managed by which VTL node. That is, for each volume, a VTL node is designated as the âownerâ of the volume, which ownership is transferrable between VTL nodes. The volume owner VTL node has the exclusive access to the user data and the metadata of the volume. When a VTL node needs to mount a volume and the node is not the current owner of the volume, the VTL node first acquires ownership of the volume in the VTL domain and becomes the new owner of the volume.
+
+VTL node 0 may own many scratch volumes and VTL node 1 may own only a few scratch volumes;
+
+the rate at which the host transfers a volume to the scratch category may be about the same as the rate at which the host issues a scratch mount request to the VTL nodes;
+
+VTL node 1 upon receiving a scratch mount request from the host to VTL node 1 , VTL node 1 will need to erase a scratch unerased volume whose owner is VTL node 1 at that moment and provide the erased volume to the host, even though there still remains a scratch erased volume whose owner is VTL node 0 ;
+
+VTL node 1 may possibly be prematurely erased immediately after the host transfers the volume to the scratch category.
+
+the data will be completely lost and cannot be restored.
+
+VTL virtual tape library
+
+One system comprises a plurality of VTL nodes configured to store a plurality of scratch erased volumes and capable of being coupled to the host.
+
+Each VTL node comprises a processor configured to be coupled to the host.
+
+each processor is configured to receive a request from the host to de-mount a volume in one of the plurality of VTL nodes and transfer the volume to a scratch category in response to receiving the request.
+
+Each processor is further configured to erase data stored in the volume and categorize the volume as a scratch erased volume and provide ownership of the scratch erased volume to a VTL node in the plurality of VTL nodes based on pre-determined criteria for the plurality of VTL nodes.
+
+VTL virtual tape library
+
+Various other embodiments provide methods for managing a virtual tape library (VTL) domain coupled to a host, the VTL domain comprising a plurality of VTL nodes, each VTL node comprising a processor and configured to store a plurality of scratch erased volumes.
+
+One method comprises receiving a request from the host to de-mount a volume in one of the plurality of VTL nodes and transferring the volume to a scratch category in response to receiving the request.
+
+the method further comprises erasing data stored in the volume and categorizing the volume as a scratch erased volume and providing ownership of the scratch erased volume to a VTL node in the plurality of VTL nodes based on pre-determined criteria for the plurality of VTL nodes.
+
+VTL virtual tape library
+
+One physical computer storage medium comprises computer code for receiving a request from the host to de-mount a volume in one of the plurality of VTL nodes and computer code for transferring the volume to a scratch category in response to receiving the request.
+
+the physical computer storage medium further comprises computer code for erasing data stored in the volume and categorizing the volume as a scratch erased volume and computer code for providing ownership of the scratch erased volume to a VTL node in the plurality of VTL nodes based on pre-determined criteria for the plurality of VTL nodes.
+
+FIG. 1 is a block diagram of one embodiment of a system for managing a virtual tape library (VTL) domain;
+
+VTL virtual tape library
+
+FIG. 2 is a flow diagram of one embodiment of a method for managing scratch erased volumes in a VTL domain
+
+FIG. 3 is a flow diagram of another embodiment of a method for managing scratch erased volumes in a VTL domain.
+
+VTL virtual tape library
+
+FIG. 1 is a block diagram of one embodiment of a system 100 for managing a VTL domain 110 capable of being coupled to a host computing device 50 .
+
+VTL domain 110 comprises a VTL node 120 and a VTL node 130 arranged in a cluster configuration via a bus 150 (e.g., a wired and/or wireless bus).
+
+bus 150 e.g., a wired and/or wireless bus
+
+VTL node 120 is configured to store or âownâ a plurality of tape volumes (hereinafter, referred to as a âvolumesâ) and comprises a processor 129 to manage the volumes.
+
+the volumes owned by VTL node 120 are configured to store data such that host 50 is capable of performing input/output (I/O) operations within system 100 .
+
+each volume is configured to include a category depending on the status of the volume at any given particular time.
+
+the volume When host 50 is utilizing a volume, the volume is transferred to a private category 122 in VTL node 120 . When host 50 is not utilizing the volume, the volume is transferred to a scratch category 124 . Within scratch category 124 , there are two sub-categories, namely, a scratch unerased sub-category 126 and a scratch erased sub-category 128 .
+
+a volume within scratch category 124 includes scratch unerased sub-category 126 after the volume has been de-mounted by host 50 , but the data stored in the volume has not been erased.
+
+a volume may remain in scratch unerased sub-category 126 for any predetermined amount of time after the volume has been de-mounted by host 50 .
+
+a volume remains in scratch unerased sub-category 126 for about twenty-four hours after the volume has been de-mounted by host 50 .
+
+a volume may remains in scratch unerased sub-category 126 for greater than or less than twenty-four hours after the volume has been de-mounted by host 50 .
+
+the data in the volume may be recovered in the event that a user or host 50 desires to utilize the data within the predetermined period of time in which the volume resides in scratch unerased sub-category 126 .
+
+the data in the volume is erased and the volume transferred to scratch erased sub-category 128 .
+
+VTL node 120 is configured to mount a volume residing in scratch erased sub-category 128 in response to receiving a request from host 50 to utilize the volume for an I/O operation. Furthermore, VTL node 120 is configured to transfer the volume from scratch category 122 , and specifically scratch erased sub-category 128 , to private category 122 in response to mounting the volume.
+
+Processor 129 is configured to manage the ownership of the various volumes within VTL node 120 and VTL domain 110 . That is, processor 129 is configured to at least partially determine the ownership of the volumes between VTL node 120 and VTL node 130 .
+
+processor 129 is configured to determine the ownership of various volumes within VTL domain 110 based on a global predetermined threshold amount of scratch erased volumes for each VTL node (e.g., VTL nodes 120 , 130 ) or a predetermined threshold amount of scratch erased volumes for each respective VTL node (e.g., VTL nodes 120 , 130 ). In this embodiment, processor 129 is configured to monitor the number of volumes in each of scratch erased sub-category 128 and scratch erased sub-category 138 .
+
+processor 129 is configured to receive a request from host 50 to de-mount a volume residing in private category 122 . In response thereto, processor 129 is configured to transfer the volume from private category 122 to scratch unerased sub-category 126 . Processor 129 is further configured to erase the data in the volume after the volume has resided in unerased sub-category 126 for the predetermined amount of time.
+
+processor 129 is configured to compare the number of volumes in scratch erased sub-category 128 to the global predetermined threshold number of scratch erased volumes and compare the number of volumes in scratch erased sub-category 138 to the global predetermined threshold number of scratch erased volumes or to the predetermined threshold number of scratch erased volumes for each respective VTL node.
+
+processor 129 is configured to provide ownership of the volume and transfer the volume to that scratch erased sub-category (i.e., scratch erased sub-category 128 or scratch erased sub-category 138 ).
+
+processor 129 is configured determine which of scratch erased sub-category 128 and scratch erased sub-category 138 includes the fewest relative number of volumes and provide ownership of the volume to and transfer the volume to that scratch erased sub-category (i.e., scratch erased sub-category 128 or scratch erased sub-category 138 ).
+
+processor 129 is configured determine which of scratch erased sub-category 128 and scratch erased sub-category 138 includes the fewest relative number of volumes and provide ownership of the volume to and transfer the volume to that scratch erased sub-category (i.e., scratch erased sub-category 128 or scratch erased sub-category 138 ).
+
+processor 129 is configured to determine the ownership of various volumes within VTL domain 110 based on the relative traffic with which VTL nodes 120 , 130 operate and the number of volumes within scratch erased sub-category 128 and scratch erased sub-category 138 .
+
+processor 129 is configured to generate a ratio of the number volumes in each scratch erased sub-category (i.e., scratch erased sub-category 128 or scratch erased sub-category 138 ) and the frequency with which host 50 utilizes VTL nodes 120 , 130 for performing I/O operations (i.e., the frequency in which host 50 utilizes volumes from VTL nodes 120 , 130 ) and provides ownership of scratch erased volumes based on the ratio.
+
+processor 129 is configured to receive a request from host 50 to de-mount a volume residing in private category 122 . In response thereto, processor 129 is configured to transfer the volume from private category 122 to scratch unerased sub-category 126 . Processor 129 is further configured to erase the data in the volume after the volume has resided in scratch unerased sub-category 126 for the predetermined amount of time. After the data has been erased, processor 129 is configured to generate a ratio of the number volumes in scratch erased sub-category 128 and the frequency with which host 50 utilizes VTL node 120 for performing I/O operations (i.e., the frequency in which host 50 utilizes volumes from VTL node 120 ).
+
+processor 129 is configured to generate a ratio of the number volumes in scratch erased sub-category 138 and the frequency with which host 50 utilizes VTL node 130 for performing I/O operations (i.e., the frequency in which host 50 utilizes volumes from VTL node 130 ).
+
+Processor 129 is configured to then compare the ratios and provide ownership of the volume and transfer the volume to the scratch erased sub-category (i.e., scratch erased sub-category 128 or scratch erased sub-category 138 ) with the lowest ratio. If the ratios are within a predetermined threshold amount, processor 129 is configured to provide ownership of the volume and transfer the volume to the scratch erased sub-category (i.e., scratch erased sub-category 128 or scratch erased sub-category 138 ) associated with the VTL node (i.e., VTL node 120 or VTL node 130 ) that is utilized by host 50 with the greatest frequency.
+
+VTL node i.e., VTL node 120 or VTL node 130
+
+VTL node 130 is also configured to store or own a plurality of volumes and comprises a processor 139 .
+
+the volumes owned by VTL node 130 are configured to store data such that host 50 is capable of performing input/output (I/O) operations within system 100 .
+
+each volume is configured to include a category depending on the status of the volume at any given particular time.
+
+the volume When host 50 is utilizing a volume, the volume is transferred to a private category 132 in VTL node 130 . When host 50 is not utilizing the volume, the volume is transferred to a scratch category 134 . Within scratch category 134 , there are two sub-categories, namely, a scratch unerased sub-category 136 and a scratch erased sub-category 138 .
+
+a volume within scratch category 134 includes scratch unerased sub-category 136 after the volume has been de-mounted by host 50 , but the data stored in the volume has not been erased.
+
+a volume may remain in scratch unerased sub-category 136 for any predetermined amount of time after the volume has been de-mounted by host 50 .
+
+a volume remains in scratch unerased sub-category 136 for about twenty-four hours after the volume has been de-mounted by host 50 .
+
+a volume may remains in scratch unerased sub-category 136 for greater than or less than twenty-four hours after the volume has been de-mounted by host 50 .
+
+the data in the volume may be recovered in the event that a user or host 50 desires to utilize the data within the predetermined period of time in which the volume resides in scratch unerased sub-category 136 .
+
+the data in the volume is erased and the volume transferred to scratch erased sub-category 138 .
+
+VTL node 130 is configured to mount a volume residing in scratch erased sub-category 138 in response to receiving a request from host 50 to utilize the volume for an I/O operation. Furthermore, VTL node 130 is configured to transfer the volume from scratch category 132 , and specifically scratch erased sub-category 138 , to private category 132 in response to mounting the volume.
+
+Processor 139 is configured to manage the ownership of various volumes within VTL node 130 and VTL domain 110 . That is, processor 139 is configured to at least partially determine the ownership of the volumes between VTL node 120 and VTL node 130 .
+
+processor 139 is configured to determine the ownership of various volumes within VTL domain 110 based on a global predetermined threshold amount of scratch erased volumes for each VTL node (e.g., VTL nodes 120 , 130 ) or a predetermined threshold amount of scratch erased volumes for each respective VTL node (e.g., VTL nodes 120 , 130 ). In this embodiment, processor 139 is configured to monitor the number of volumes in each of scratch erased sub-category 128 and scratch erased sub-category 138 .
+
+processor 139 is configured to receive a request from host 50 to de-mount a volume residing in private category 132 . In response thereto, processor 139 is configured to transfer the volume from private category 132 to scratch unerased sub-category 136 . Processor 139 is further configured to erase the data in the volume after the volume has resided in unerased sub-category 136 for the predetermined amount of time.
+
+processor 139 is configured to compare the number of volumes in scratch erased sub-category 138 to the global predetermined threshold number of scratch erased volumes and compare the number of volumes in scratch erased sub-category 128 to the global predetermined threshold number of scratch erased volumes or to the predetermined threshold number of scratch erased volumes for each respective VTL node.
+
+processor 139 is configured to provide ownership of the volume and transfer the volume to that scratch erased sub-category (i.e., scratch erased sub-category 128 or scratch erased sub-category 138 ).
+
+processor 139 is configured determine which of scratch erased sub-category 128 and scratch erased sub-category 138 includes the fewest relative number of volumes and provide ownership of the volume to and transfer the volume to that scratch erased sub-category (i.e., scratch erased sub-category 128 or scratch erased sub-category 138 ).
+
+processor 139 is configured determine which of scratch erased sub-category 128 and scratch erased sub-category 138 includes the fewest relative number of volumes and provide ownership of the volume to and transfer the volume to that scratch erased sub-category (i.e., scratch erased sub-category 128 or scratch erased sub-category 138 ).
+
+processor 139 is configured to determine the ownership of various volumes within VTL domain 110 based on the relative traffic with which VTL nodes 120 , 130 operate and the number of volumes within scratch erased sub-category 128 and scratch erased sub-category 138 .
+
+processor 139 is configured to generate a ratio of the number volumes in each scratch erased sub-category (i.e., scratch erased sub-category 128 or scratch erased sub-category 138 ) and the frequency with which host 50 utilizes VTL nodes 120 , 130 for performing I/O operations (i.e., the frequency in which host 50 utilizes volumes from VTL nodes 120 , 130 ) and provides ownership of scratch erased volumes based on the ratio.
+
+processor 139 is configured to receive a request from host 50 to de-mount a volume residing in private category 132 . In response thereto, processor 139 is configured to transfer the volume from private category 122 to scratch unerased sub-category 136 . Processor 139 is further configured to erase the data in the volume after the volume has resided in scratch unerased sub-category 136 for the predetermined amount of time. After the data has been erased, processor 139 is configured to generate a ratio of the number volumes in scratch erased sub-category 128 and the frequency with which host 50 utilizes VTL node 120 for performing I/O operations (i.e., the frequency in which host 50 utilizes volumes from VTL node 120 ).
+
+processor 139 is configured to generate a ratio of the number volumes in scratch erased sub-category 138 and the frequency with which host 50 utilizes VTL node 130 for performing I/O operations (i.e., the frequency in which host 50 utilizes volumes from VTL node 130 ).
+
+Processor 139 is configured to then compare the ratios and provide ownership of the volume and transfer the volume to the scratch erased sub-category (i.e., scratch erased sub-category 128 or scratch erased sub-category 138 ) with the lowest ratio. If the ratios are within a predetermined threshold amount, processor 139 is configured to provide ownership of the volume and transfer the volume to the scratch erased sub-category (i.e., scratch erased sub-category 128 or scratch erased sub-category 138 ) associated with the VTL node (i.e., VTL node 120 or VTL node 130 ) that is utilized by host 50 with the greatest frequency.
+
+VTL node i.e., VTL node 120 or VTL node 130
+
+VTL domain 110 is illustrated and described as comprising VTL node 120 and VTL node 130 , VTL domain may include additional VTL nodes. In other words, VTL domain 110 may include more than two VTL nodes depending on the desired configuration of system 100 and/or VTL domain 110 .
+
+FIG. 2 is a flow diagram of one embodiment of a method 200 for managing scratch erased volumes in a VTL domain (e.g., VTL domain 110 ) comprising a plurality of VTL nodes (e.g., VTL nodes 120 , 130 ). At least in the illustrated embodiment, method 200 begins by receiving a mount request to utilize a volume (block 205 ).
+
+VTL domain e.g., VTL domain 110
+
+VTL nodes e.g., VTL nodes 120 , 130
+
+method 200 begins by receiving a mount request to utilize a volume (block 205 ).
+
+Method 200 further comprises transferring the volume to a private category within a VTL node (block 210 ) and receiving, from a host (e.g., host 50 ), a request to perform an I/O operation utilizing the volume (block 215 ).
+
+a host e.g., host 50
+
+a request to de-mount the volume is received (block 220 ) and a request to transfer the volume to a scratch unerased sub-category within the scratch category of the VTL node is also received (block 225 ).
+
+the data within the volume is erased and the volume is designated as a scratch erased volume sub-after the volume has resided within the scratch unerased sub-category for a predetermined amount of time (block 230 ).
+
+the volume remains in scratch unerased sub-category for about twenty-four hours prior to erasing the data. In other embodiments, the volume may remain in the scratch unerased sub-category for greater than or less than twenty-four hours prior to erasing the data.
+
+method 200 comprises comparing the number of scratch erased volumes in each VTL node with a predetermined threshold amount of scratch erased volumes for the VTL nodes (block 235 ).
+
+each VTL node includes the same predetermined threshold amount of scratch erased volumes.
+
+at least two VTL nodes include different predetermined threshold amounts of scratch erased volumes.
+
+VTL nodes that include less than their respective predetermined threshold amount of scratch erased volumes
+
+ownership of the volume is provided to a VTL node or the VTL node with the least number of scratch erased volumes (block 245 ). If there is at least one VTL node that includes less than its respective predetermined threshold amount of scratch erased volumes, method 200 then determines if there are more than one VTL include less than threshold number of scratch erased volumes (block 250 ).
+
+method 200 includes receiving a mount request for another volume (block 205 ) or includes receiving a request to de-mount another volume that has been utilized in an I/O operation (block 220 ).
+
+FIG. 3 is a flow diagram of another embodiment of a method 300 for managing scratch erased volumes in a VTL domain (e.g., VTL domain 110 ) comprising a plurality of VTL nodes (e.g., VTL nodes 120 , 130 ). At least in the illustrated embodiment, method 300 begins by receiving a mount request to utilize a volume (block 305 ).
+
+VTL domain e.g., VTL domain 110
+
+VTL nodes e.g., VTL nodes 120 , 130
+
+method 300 begins by receiving a mount request to utilize a volume (block 305 ).
+
+Method 300 further comprises transferring the volume to a private category within a VTL node (block 310 ) and receiving, from a host (e.g., host 50 ), a request to perform an I/O operation utilizing the volume (block 315 ).
+
+a host e.g., host 50
+
+a request to de-mount the volume is received (block 320 ) and a request to transfer the volume to a scratch unerased sub-category within the scratch category of the VTL node is also received (block 325 ).
+
+the data within the volume is erased and the volume is designated as a scratch erased volume sub-after the volume has resided within the scratch unerased sub-category for a predetermined amount of time (block 330 ).
+
+the volume remains in scratch unerased sub-category for about twenty-four hours prior to erasing the data. In other embodiments, the volume may remain in the scratch unerased sub-category for greater than or less than twenty-four hours prior to erasing the data.
+
+method 300 comprises determining the frequency in which a host (e.g., host 50 ) requests use of volumes within each of the plurality of VTL nodes (block 335 ). Method 300 then compares the number of scratch erased volumes in each VTL node and the respective determined volume use frequency to determine a ratio of scratch erased volumes to volume use frequency for each VTL node (block 340 ).
+
+a host e.g., host 50
+
+Method 300 further comprises determining if two or more VTL nodes include the same lowest ratio or the lowest ratios that are within a predetermined amount of one another (block 345 ). If two or more VTL nodes do not include the same lowest ratio or the lowest ratios that are within a predetermined amount of one another, ownership of the volume is provided to the VTL node with the lowest ratio (block 350 ). If two or more VTL nodes include the same lowest ratio or the lowest ratios that are within a predetermined amount of one another, ownership of the volume is provided to the VTL node with the highest frequency of use by the host (block 355 ).
+
+method 300 includes receiving a mount request for another volume (block 305 ) or includes receiving a request to de-mount another volume that has been utilized in an I/O operation (block 320 ).
+
+aspects of the present invention may be embodied as a system, method, or computer program product. Accordingly, aspects of the present invention may take the form of an entirely hardware embodiment, an entirely software embodiment (including firmware, resident software, micro-code, etc.) or an embodiment combining software and hardware aspects that may all generally be referred to herein as a âcircuit,â âmodule,â or âsystem.â Furthermore, aspects of the present invention may take the form of a computer program product embodied in one or more computer-readable medium(s) having computer readable program code embodied thereon.
+
+the computer-readable medium may be a computer-readable signal medium or a physical computer-readable storage medium.
+
+a physical computer readable storage medium may be, for example, but not limited to, an electronic, magnetic, optical, crystal, polymer, electromagnetic, infrared, or semiconductor system, apparatus, or device, or any suitable combination of the foregoing.
+
+Examples of a physical computer-readable storage medium include, but are not limited to, an electrical connection having one or more wires, a portable computer diskette, a hard disk, RAM, ROM, an EPROM, a Flash memory, an optical fiber, a CD-ROM, an optical storage device, a magnetic storage device, or any suitable combination of the foregoing.
+
+a computer-readable storage medium may be any tangible medium that can contain, or store a program or data for use by or in connection with an instruction execution system, apparatus, or device.
+
+Computer code embodied on a computer-readable medium may be transmitted using any appropriate medium, including but not limited to wireless, wired, optical fiber cable, radio frequency (RF), etc., or any suitable combination of the foregoing.
+
+Computer code for carrying out operations for aspects of the present invention may be written in any static language, such as the âCâ programming language or other similar programming language.
+
+the computer code may execute entirely on the user's computer, partly on the user's computer, as a stand-alone software package, partly on the user's computer and partly on a remote computer or entirely on the remote computer or server.
+
+the remote computer may be connected to the user's computer through any type of network, or communication system, including, but not limited to, a local area network (LAN) or a wide area network (WAN), Converged Network, or the connection may be made to an external computer (for example, through the Internet using an Internet Service Provider).
+
+LAN local area network
+
+WAN wide area network
+
+Internet Service Provider an Internet Service Provider
+
+These computer program instructions may also be stored in a computer-readable medium that can direct a computer, other programmable data processing apparatus, or other devices to function in a particular manner, such that the instructions stored in the computer-readable medium produce an article of manufacture including instructions which implement the function/act specified in the flowchart and/or block diagram block or blocks.
+
+the computer program instructions may also be loaded onto a computer, other programmable data processing apparatus, or other devices to cause a series of operational steps to be performed on the computer, other programmable apparatus or other devices to produce a computer implemented process such that the instructions which execute on the computer or other programmable apparatus provide processes for implementing the functions/acts specified in the flowchart and/or block diagram block or blocks.
+
+each block in the flowchart or block diagrams may represent a module, segment, or portion of code, which comprises one or more executable instructions for implementing the specified logical function(s).
+
+the functions noted in the block may occur out of the order noted in the figures. For example, two blocks shown in succession may, in fact, be executed substantially concurrently, or the blocks may sometimes be executed in the reverse order, depending upon the functionality involved.
+
+Landscapes
+
+Engineering & Computer Science (AREA)
+
+Theoretical Computer Science (AREA)
+
+Human Computer Interaction (AREA)
+
+Physics & Mathematics (AREA)
+
+General Engineering & Computer Science (AREA)
+
+General Physics & Mathematics (AREA)
+
+Library & Information Science (AREA)
+
+Information Retrieval, Db Structures And Fs Structures Therefor (AREA)
+
+Studio Circuits (AREA)
+
+Storage Device Security (AREA)
+
+US12/894,613 2010-09-30 2010-09-30 Managing a virtual tape library domain and providing ownership of scratch erased volumes to VTL nodes Expired - Fee Related US8595430B2 (en)
+
+Priority Applications (6)
+
+Application Number Priority Date Filing Date Title US12/894,613 US8595430B2 (en) 2010-09-30 2010-09-30 Managing a virtual tape library domain and providing ownership of scratch erased volumes to VTL nodes DE112011103299T DE112011103299T5 (de) 2010-09-30 2011-07-29 Systeme und Verfahren zum Verwalten einer virtuellen Bandarchiv-DomÃ¤ne PCT/JP2011/004347 WO2012042724A1 (en) 2010-09-30 2011-07-29 Systems and methods for managing a virtual tape library domain CN201180045042.1A CN103119567B (zh) 2010-09-30 2011-07-29 ç¨äºç®¡çèæå¸¦åºåçç³»ç»åæ¹æ³ JP2013510426A JP5414943B2 (ja) 2010-09-30 2011-07-29 ä»®æ³ãã¼ãã»ã©ã¤ãã©ãªã»ãã¡ã¤ã³ãç®¡çããããã®ã·ã¹ãã ããã³æ¹æ³ GB1304553.9A GB2497465B (en) 2010-09-30 2011-07-29 Systems and methods for managing a virtual tape library domain
+
+Applications Claiming Priority (1)
+
+Application Number Priority Date Filing Date Title US12/894,613 US8595430B2 (en) 2010-09-30 2010-09-30 Managing a virtual tape library domain and providing ownership of scratch erased volumes to VTL nodes
+
+Publications (2)
+
+Publication Number Publication Date US20120084499A1 US20120084499A1 (en) 2012-04-05 US8595430B2 true US8595430B2 (en) 2013-11-26
+
+Family
+
+ID=45890813
+
+Family Applications (1)
+
+Application Number Title Priority Date Filing Date US12/894,613 Expired - Fee Related US8595430B2 (en) 2010-09-30 2010-09-30 Managing a virtual tape library domain and providing ownership of scratch erased volumes to VTL nodes
+
+Country Status (6)
+
+Country Link US (1) US8595430B2 (pt-PT) JP (1) JP5414943B2 (pt-PT) CN (1) CN103119567B (pt-PT) DE (1) DE112011103299T5 (pt-PT) GB (1) GB2497465B (pt-PT) WO (1) WO2012042724A1 (pt-PT)
+
+Cited By (5)
+
+* Cited by examiner, â Cited by third party Publication number Priority date Publication date Assignee Title US10007452B2 (en) * 2016-08-19 2018-06-26 International Business Machines Corporation Self-expiring data in a virtual tape server US10013193B2 (en) * 2016-08-19 2018-07-03 International Business Machines Corporation Self-expiring data in a virtual tape server US10521132B1 (en) 2018-06-17 2019-12-31 International Business Machines Corporation Dynamic scratch pool management on a virtual tape system US20220091944A1 (en) * 2020-09-24 2022-03-24 International Business Machines Corporation Data storage volume recovery management US11748006B1 (en) 2018-05-31 2023-09-05 Pure Storage, Inc. Mount path management for virtual storage volumes in a containerized storage environment
+
+Families Citing this family (1)
+
+* Cited by examiner, â Cited by third party Publication number Priority date Publication date Assignee Title US11188270B2 (en) * 2016-05-25 2021-11-30 International Business Machines Corporation Targeted secure data overwrite
+
+Citations (12)
+
+* Cited by examiner, â Cited by third party Publication number Priority date Publication date Assignee Title WO1998040810A2 (en) 1997-03-12 1998-09-17 Storage Technology Corporation Network attached virtual tape data storage subsystem US6304880B1 (en) * 1997-12-12 2001-10-16 International Business Machines Corporation Automated reclamation scheduling override in a virtual tape server US20020156968A1 (en) * 2001-03-01 2002-10-24 International Business Machines Corporation Storage reclamation on tape management systems JP2003043162A (ja) 2001-07-30 2003-02-13 Seiko Epson Corp æ è¨ JP2003058326A (ja) 2001-08-17 2003-02-28 Hitachi Ltd ããã¯ã¢ããåå¾æ¹æ³åã³è£ ç½® JP2003067248A (ja) 2001-06-27 2003-03-07 Internatl Business Mach Corp <Ibm> è¨æ¶è£ ç½®ã®ã­ã£ãã·ã³ã°æ¹æ³ããã³ã·ã¹ãã WO2004042961A1 (ja) 2002-11-07 2004-05-21 Sony Ericsson Mobile Communications Japan, Inc. ç¡ç·éåä¿¡è£ ç½® WO2004072961A2 (en) 2003-02-05 2004-08-26 Diligent Technologies Tape storage emulation for open systems environments JP2009043162A (ja) 2007-08-10 2009-02-26 Fujitsu Ltd ä»®æ³ã©ã¤ãã©ãªè£ ç½®ãä»®æ³ã©ã¤ãã©ãªã·ã¹ãã ãä»®æ³ã©ã¤ãã©ãªè£ ç½®ã®è«çããªã¥ã¼ã è¤åæ¹æ³ã US7620765B1 (en) * 2006-12-15 2009-11-17 Symantec Operating Corporation Method to delete partial virtual tape volumes US8082388B2 (en) * 2008-03-27 2011-12-20 International Business Machines Corporation Optimizing operational requests of logical volumes US8341346B2 (en) * 2010-06-25 2012-12-25 International Business Machines Corporation Offloading volume space reclamation operations to virtual tape systems
+
+Family Cites Families (2)
+
+* Cited by examiner, â Cited by third party Publication number Priority date Publication date Assignee Title JP4559046B2 (ja) * 2003-08-04 2010-10-06 æ ªå¼ä¼ç¤¾æ¥ç«è£½ä½æ ä»®æ³ãã¼ãã©ã¤ãã©ãªè£ ç½® US8738588B2 (en) * 2007-03-26 2014-05-27 International Business Machines Corporation Sequential media reclamation and replication
+
+2010
+
+2010-09-30 US US12/894,613 patent/US8595430B2/en not_active Expired - Fee Related
+
+2011
+
+2011-07-29 WO PCT/JP2011/004347 patent/WO2012042724A1/en active Application Filing
+
+2011-07-29 CN CN201180045042.1A patent/CN103119567B/zh not_active Expired - Fee Related
+
+2011-07-29 GB GB1304553.9A patent/GB2497465B/en active Active
+
+2011-07-29 JP JP2013510426A patent/JP5414943B2/ja not_active Expired - Fee Related
+
+2011-07-29 DE DE112011103299T patent/DE112011103299T5/de not_active Ceased
+
+Patent Citations (12)
+
+* Cited by examiner, â Cited by third party Publication number Priority date Publication date Assignee Title WO1998040810A2 (en) 1997-03-12 1998-09-17 Storage Technology Corporation Network attached virtual tape data storage subsystem US6304880B1 (en) * 1997-12-12 2001-10-16 International Business Machines Corporation Automated reclamation scheduling override in a virtual tape server US20020156968A1 (en) * 2001-03-01 2002-10-24 International Business Machines Corporation Storage reclamation on tape management systems JP2003067248A (ja) 2001-06-27 2003-03-07 Internatl Business Mach Corp <Ibm> è¨æ¶è£ ç½®ã®ã­ã£ãã·ã³ã°æ¹æ³ããã³ã·ã¹ãã JP2003043162A (ja) 2001-07-30 2003-02-13 Seiko Epson Corp æ è¨ JP2003058326A (ja) 2001-08-17 2003-02-28 Hitachi Ltd ããã¯ã¢ããåå¾æ¹æ³åã³è£ ç½® WO2004042961A1 (ja) 2002-11-07 2004-05-21 Sony Ericsson Mobile Communications Japan, Inc. ç¡ç·éåä¿¡è£ ç½® WO2004072961A2 (en) 2003-02-05 2004-08-26 Diligent Technologies Tape storage emulation for open systems environments US7620765B1 (en) * 2006-12-15 2009-11-17 Symantec Operating Corporation Method to delete partial virtual tape volumes JP2009043162A (ja) 2007-08-10 2009-02-26 Fujitsu Ltd ä»®æ³ã©ã¤ãã©ãªè£ ç½®ãä»®æ³ã©ã¤ãã©ãªã·ã¹ãã ãä»®æ³ã©ã¤ãã©ãªè£ ç½®ã®è«çããªã¥ã¼ã è¤åæ¹æ³ã US8082388B2 (en) * 2008-03-27 2011-12-20 International Business Machines Corporation Optimizing operational requests of logical volumes US8341346B2 (en) * 2010-06-25 2012-12-25 International Business Machines Corporation Offloading volume space reclamation operations to virtual tape systems
+
+Non-Patent Citations (1)
+
+* Cited by examiner, â Cited by third party Title International Search Report for counterpart application No. PCT/JP2011/004347, dated Oct. 18, 2011.
+
+Cited By (8)
+
+* Cited by examiner, â Cited by third party Publication number Priority date Publication date Assignee Title
+
+Also Published As
+
+Publication number Publication date GB2497465A (en) 2013-06-12 GB201304553D0 (en) 2013-04-24 JP5414943B2 (ja) 2014-02-12 CN103119567B (zh) 2016-01-20 WO2012042724A1 (en) 2012-04-05 GB2497465A8 (en) 2013-06-26 US20120084499A1 (en) 2012-04-05 CN103119567A (zh) 2013-05-22 DE112011103299T5 (de) 2013-07-11 JP2013539083A (ja) 2013-10-17 GB2497465B (en) 2014-07-09
+
+Similar Documents
+
+Publication Publication Date Title US9665485B2 (en) 2017-05-30 Logical and physical block addressing for efficiently storing data to improve access speed in a data deduplication system US20190294338A1 (en) 2019-09-26 Selecting pages implementing leaf nodes and internal nodes of a data set index for reuse US10140194B2 (en) 2018-11-27 Storage system transactions US8595430B2 (en) 2013-11-26 Managing a virtual tape library domain and providing ownership of scratch erased volumes to VTL nodes US20140115252A1 (en) 2014-04-24 Block storage-based data processing methods, apparatus, and systems US11086783B2 (en) 2021-08-10 Dynamic premigration throttling for tiered storage US9235348B2 (en) 2016-01-12 System, and methods for initializing a memory system US8271968B2 (en) 2012-09-18 System and method for transparent hard disk drive update US9135128B2 (en) 2015-09-15 Systems and methods for backing up storage volumes in a storage system US20160253107A1 (en) 2016-09-01 Management of destage tasks with large number of ranks US9164885B2 (en) 2015-10-20 Storage control device, storage control method, and recording medium US9858209B1 (en) 2018-01-02 Method and apparatus for restoring de-duplicated data US20140052947A1 (en) 2014-02-20 Data storage device and method of controlling data storage device KR102277731B1 (ko) 2021-07-14 ì¤í ë¦¬ì§ ìì¤í ì êµ¬ë ë°©ë² ë° ì¤í ë¦¬ì§ ì»¨í¸ë¡¤ë¬ US20130031320A1 (en) 2013-01-31 Control device, control method and storage apparatus US20180136847A1 (en) 2018-05-17 Control device and computer readable recording medium storing control program US8595433B2 (en) 2013-11-26 Systems and methods for managing destage conflicts US9690503B2 (en) 2017-06-27 Returning coherent data in response to a failure of a storage device when a single input/output request spans two storage devices
+
+Legal Events
+
+Date Code Title Description

@@ -1,0 +1,69 @@
+Abstract
+
+For this post I will be proposing a project structure in Qt Creator that allows you to have your unit tests project with your main project.
+
+Intro
+
+If you think this post looks familiar, you have probably gone through a similar post from Svenn-Arne Dragly. This project is actually a simpler fork of his, so credits to him.
+
+Why fork out from Dragly’s project structure? (you can skip to the next part if you want.)
+
+I had to build out a library file – this is a bit of a hassle to me. In addition the example in github ( https://github.com/FSund/qtcreator-project-structure) didn’t work either:
+
+LNK1104: cannot open file 'myapp.lib'.
+
+It’s because I’m using the MSVC2013 compiler and it only builds out a *.dll and forgot a *.lib. Turns out I have to add __declspec( dllexport ) as so:
+
+class MyClass { public: __declspec( dllexport ) double addition(double a, double b); };
+
+Even so it still asks for the *.lib file, despite it already being built. I had to explicitly add the path to the external library, and then place the compiled *.dll in the same directory as the executable. I guess, if I specify a common build directory and have it look for the lib file there it would work… but think about this: __declspec( dllexport ) is microsoft specific. If I run the same code in linux it spits out an error. I could use some macros to check for what compiler is being used, but it’s a hassle (to me, at least).
+
+So if you only intend to develop using a particular compiler that’s fine. I just figured I wanted something more straightforward.
+
+Project Structure
+
+The approach I came up with involves compiling some/most of your code twice, but it was what I stick to in the end for a test project I was working on (Click here to download an empty template) :
+
+Project Directory: │ DrawingApp.pro │ ├───app -> source code │ app.pro │ AbstractGroup.hpp │ ActiveSelection.cpp │ ActiveSelection.hpp │ Canvas.cpp | ... │ ├───build -> build directory │ DrawingApp.exe │ ├───lib -> libraries │ catch.hpp │ └───tests -> test project, which you only add files from the 'app' folder that you want to test tests.pro TestMain.cpp -> DO NOT call this main.cpp! It will clash with your main.cpp in the 'app' folder, even though they are in separate directories. CommandStackTest.cpp ...
+
+You can see a real life example in my github project: https://github.com/bruceoutdoors/DrawingApp – I will be referring to this project so do keep a tab open.
+
+It will look something like this in Qt creator:
+
+This might be a hassle for some, because you would have to add the source files into the unit test project every time you created a new class. Otherwise the unit test project will fail to build and you’d likely confuse it to your actual project not building.
+
+But that was just because I wasn’t really doing TDD. I created the source files before I write the unit tests. Well, it’s a drawing app; I can’t unit test drawing capabilities right?
+
+Loose Coupling, Tight Coupling
+
+After initial frustrations of using this structure, I realized doing it this way does disciplines a programmer to think about coupling. After a while it had me asked questions like “If I just want to test object A, should I need to also depend on object B and C? Can object A be isolated and used separately?”.
+
+Great software design meant loose coupling; only when necessary should objects be bundled together. Otherwise they should be able to be packaged, isolated, reused, and unit tested separately.
+
+This is why the tests.pro file contains significantly less files compared to app.pro.
+
+Calling headers in different directories
+
+Notice, that for example in the DrawingApp project, that a fileio/JsonFileReader.hpp is able to call interfaces/IFileReader.hpp by just
+
+#include "IFileReader.hpp"
+
+This isn’t default behaviour as in codeblocks, I had to manually configure this in the project file for both app.pro and tests.pro:
+
+INCLUDEPATH += \ $$PWD \ interfaces \ commands \ tools \ shapes \ fileio
+
+Tedious maybe, but a small inconvenience to me. I wasn’t sure if Qt Creator has a setting to make this default behaviour, but this is what I can come up with.
+
+A Note on Catch
+
+This single header unit test framework is too easy and convenient not to use. The TestMain.cpp simply needs to contain
+
+#define CATCH_CONFIG_MAIN #include "catch.hpp"
+
+and then you can start adding separate test *.cpp files for each class (or however you want to structure your tests).
+
+If you haven’t tried it out I highly recommend you do.
+
+Conclusion
+
+Think there can be a better way? I’m open to ideas.

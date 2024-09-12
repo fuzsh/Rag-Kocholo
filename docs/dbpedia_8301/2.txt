@@ -1,0 +1,217 @@
+Table of Contents
+
+What is Apache Mesos?
+
+Why is Mesos relevant?
+
+Data Locality
+
+How does Mesos work?
+
+Master Daemon
+
+Frameworks
+
+Scheduler
+
+Executor
+
+What do I need Mesos for?
+
+How to match resources to a task with Mesos?
+
+Where can I learn more about Mesos?
+
+Apache Spark
+
+What is Spark?
+
+Why is Spark relevant?
+
+How does Spark work?
+
+Show me a Spark Demo!
+
+Links & Resources:
+
+What is Apache Mesos?
+
+Ben Hindman, co-creator of Apache Mesos describes it like:
+
+Apache Mesos is a centralized, fault-tolerant cluster manager, designed for distributed computing environments. Mesos is an open source project and was developed at the University of California at Berkeley. It provides resource management and isolation,scheduling of CPU & memory across the cluster. Mesos joins multiple physical resources into a single virtual one. In some ways, it is the opposite of classic virtualisation, where a single physical resource is split into multiple virtual resources. With Apache Mesos you can build/schedule cluster frameworks such as Apache Spark.
+
+Why is Mesos relevant?
+
+The clusters of commodity hardware, where you use a large number of already-available computing components for parallel computing are trendy nowadays. To handle such clusters you need a suitable framework. Although many cloud computing frameworks exist today, you have to choose the right one for you, since every framework has its pros and cons. In larger organizations, multiple cluster-frameworks are required.
+
+Let us look at legacy strategies to run multiple cluster compute frameworks:
+
+Split your cluster and run one framework per sub-cluster.
+
+Virtualize and allocate a set of VMs to each framework.
+
+With these strategies you face the following problems:
+
+suboptimal server utilization
+
+inefficient data sharing
+
+Data Locality
+
+Data Locality simply answers the question : How expensive is it to access the needed data? An example of such access cost could be the elapsed time. You have probably already heard about that concept, because it is also used by routers to choose the best route in a network.
+
+Compute frameworks often divide workloads into jobs and tasks. Tasks usually are executed fastly, often multiple jobs per node can be run.
+
+Jobs should be run where the data is, so you have a better ratio between time used for data transport vs. computation. Short job execution times enable higher cluster utilization.
+
+What we need is a unified, generic approach of sharing cluster resources such as CPU time and data across compute frameworks. This is what Mesos provides!
+
+How does Mesos work?
+
+Mesos consists of the following components:
+
+ZooKeeper
+
+Mesos masters
+
+Mesos slaves
+
+Frameworks
+
+Chronos, Marathon,…
+
+Aurora, Hadoop, Jenkins, Spark, Torque
+
+Mesos has also a master daemon that manages slave daemons running on each cluster node.
+
+Master Daemon
+
+The master controls resources (cpu, ram, …) across applications by making resource offers to applications. They can either take them by specifying tasks that can run on those resources or reject them. The master decides about resource offering to frameworks based on organizational policy such as fair sharing or strict priorities. If the policies don’t fit, you can add new policy strategies via plug-ins.
+
+Frameworks
+
+A Framework running on top of Mesos,consists of two components:
+
+Scheduler
+
+Executor
+
+Scheduler
+
+The scheduler registers with the master and receives resource offerings from the master. The Scheduler decides what to do with resources offered by the master within the framework.
+
+Executor
+
+The Executor is launched on slave nodes and runs framework tasks.
+
+Example Resource Offer
+
+Step 1:
+
+Slave 1 tells the master that it has 4 free CPUs and 4GB memory. The Mesos master invokes the allocation module which tells that framework 1 should be offered all available resources.
+
+Step 2:
+
+The allocation module sends a resource offer to the framework describing what is available on slave 1 for it.
+
+Step 3:
+
+The framework scheduler of framework 1 responds to the Mesos master and sends information about two tasks which should run on slave 1.
+
+Step 4:
+
+The Mesos master sends the two tasks to Slave 1, which allocates appropriate resources to the executor, which launches the two tasks. As you can see, the tasks need only 3 CPUs and 3GB of memory. The 4th CPU and the other 1GB of RAM are now offered to Framework 2.
+
+What do I need Mesos for?
+
+Providing a “thin resource sharing layer that enables ﬁne-grained sharing across diverse cluster computing frameworks, by giving frameworks a common interface for accessing cluster resources.”
+
+Mesos: A platform for fine-grained resource sharing in the data center
+
+How to match resources to a task with Mesos?
+
+Be framework agnostic to adapt to different scheduling needs
+
+Be highly scalable
+
+Scheduling must be HA and fault-tolerant
+
+Addresses large data warehouse scenarios, such as Facebook’s Hadoop data warehouse ( ~1200 nodes in 2010)
+
+Median job length ~84s built of
+
+Map reduce tasks ~23s
+
+Where can I learn more about Mesos?
+
+On the Mesos website you can find a list of companies using Mesos:
+
+https://mesos.apache.org/documentation/latest/powered-by-mesos/
+
+And for projects built on Mesos you can visit:
+
+https://mesos.apache.org/documentation/latest/mesos-frameworks/
+
+Apache Spark
+
+What is Spark?
+
+When you look at the official documentation of Apache Spark it says:
+
+https://spark.apache.org/docs/latest/
+
+Spark provides APIs/SDKs for:
+
+Java
+
+Scala
+
+Python
+
+and supports these Tools:
+
+Spark SQL – SQL and structured data processing
+
+MLib – Machine learning library
+
+GraphX – Graph processing
+
+Spark Streaming – scalable, high-throughput, fault-tolerant stream processing of live data streams
+
+It supports a much wider class of applications than MapReduce while maintaining its automatic fault-tolerance.
+
+Why is Spark relevant?
+
+Spark is well designed for data analytics use cases:
+
+Iterative algorithms
+
+E.g. machine learning algorithms and graph algorithms such as PageRank.
+
+Interactive data mining
+
+User loads data into RAM across cluster and query it repeatedly.
+
+Streaming applications
+
+Maintain aggregate state over time.
+
+To support these applications efficiently, Spark offers an abstraction called Resilient Distributed Datasets (RDDs). RDDs can be stored in memory between queries without requiring replication. RDDs can rebuild lost data by lineage, therefore it remembers how it was built from other datasets.
+
+https://spark.apache.org/research.html
+
+How does Spark work?
+
+Spark runs as independent sets of processes on a cluster and is coordinated by the SparkContext in your main program (driver program). The SparkContext can connect to several types of cluster managers, which allocate resources across applications. The Cluster Manager can be a Spark standalone manager, Apache Mesos or Apache Hadoop YARN. Spark acquires executors on nodes in the cluster. The executor is a process, runs computations and stores data for your app. Then Spark sends your application code to the executors.
+
+Each application has its own executor, which lives as long as the app lives and runs tasks in multiple threads. This isolates one application from others. Each scheduler schedules its own tasks. When you have different apps, they have different executors and different JVMs.
+
+Show me a Spark Demo!
+
+Here you can find Spark examples:
+
+https://spark.apache.org/examples.html
+
+On the official Spark website you can find a list of companies using Spark:
+
+https://cwiki.apache.org/confluence/display/SPARK/Powered+By+Spark

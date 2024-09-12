@@ -1,0 +1,141 @@
+Elliptic Curves and Cryptography
+
+Dr. Dobb's Journal April 1997
+
+Strong digital signature algorithms
+
+By Aleksandar Jurisic and Alfred J. Menezes
+
+Aleksandar conducts cryptographic research for Certicom and can be contacted at ajurisic@certicom.ca. Alfred is a coauthor of Handbook of Applied Cryptography (CRC Press, 1997; http://www.dms.auburn.edu/hac/) and author of Elliptic Curve Public Key Cryptosystems (Kluwer Academic Publishers, 1993). He is a professor of mathematics at Auburn University and consults for Certicom. He can be reached at menezal@mail.auburn.edu.
+
+Originally pursued for purely aesthetic reasons, elliptic curves have recently been used in algorithms for factoring integers, primality proving, and public-key cryptography. In this article, we will examine elliptic curve cryptosystems, and demonstrate why they provide relatively small block sizes, high-speed software and hardware implementations, and offer the highest strength-per-key-bit of any known public-key scheme.
+
+Since the introduction of the concept of public-key cryptography by Whit Diffie and Martin Hellman in 1976, the cryptographic importance of the apparent intractability of the well-studied discrete logarithm problem has been recognized. Taher ElGamal first described how this problem could be utilized in public-key encryption and digital-signature schemes. ElGamal's methods have been refined and incorporated into various protocols, one of which forms the basis for the U.S. government's Digital Signature Algorithm (DSA).
+
+We'll begin by introducing some basic mathematical terminology. A "group," for instance, is an abstract mathematical object consisting of a set G together with an operation * defined on pairs of elements of G; the "order" of the group is the number of elements in G. The operation must have certain properties, similar to those with which we are familiar from ordinary integer arithmetic. For example, the integers modulo n, namely n = {0,1,2,...,n-1}, form a group under the operation of addition modulo n. If p is a prime number, then the nonzero elements of p, namely *p = {1,2,...,p-1}, form a group under the operation of multiplication modulo p. The order of a group element g G is the least positive integer n such that gn = 1. For example, in the group *11, the element g = 3 has order 5, since
+
+31 3 (mod 11)
+
+32 9 (mod 11)
+
+33 5 (mod 11)
+
+34 4 (mod 11)
+
+35 1 (mod 11)
+
+The discrete logarithm problem, as first employed by Diffie and Hellman in their key agreement protocol, was defined explicitly as the problem of finding logarithms in the group *p: given an element g *p of order n, and given h *p, find an integer x, 0 x n-1, such that gx h (mod p), provided that such an integer exists. The integer x is called the "discrete logarithm" of h to the base g. For example, consider p =17. Then g =10 is an element of order n =16 in *17. If h = 11, then the discrete logarithm of h to the base g is 13 because 1013 11 (mod 17).
+
+These concepts can be extended to arbitrary groups. Let G be a group of order n, and let be an element of G. The "discrete logarithm problem" for G is: Given elements and G, find an integer x, 0 x n -1, such that x = , provided that such an integer exists.
+
+For two primary reasons, a variety of groups have been proposed for cryptographic use. First, the operation in some groups may be easier to implement in software or hardware than the operation in other groups. Second, the discrete logarithm problem in a group may be harder than the discrete logarithm problem in *p. Consequently, you could use a group G that is smaller than *p while maintaining the same level of security. This results in smaller key sizes, bandwidth savings, and faster implementations. These features are especially attractive for security applications, where computational power and integrated circuit space is limited (smart cards, PC cards, wireless devices, and the like). Such is the case with elliptic curve groups, which were independently proposed for cryptographic use by Neal Koblitz and Victor Miller in 1985.
+
+The Digital Signature Algorithm
+
+The Digital Signature Algorithm (DSA) was proposed in August of 1991 by the U.S. National Institute of Standards and Technology (NIST) and became a U.S. Federal Information Processing Standard (FIPS 186) in 1993. It was the first digital signature scheme to be accepted as legally binding by a government. The algorithm is a variant of the ElGamal signature scheme. It exploits small subgroups in *p in order to decrease the size of signatures. Figure 1 shows the key-generation, signature-generation, and signature-verification procedures for DSA.
+
+Since r and s are each integers less than q, DSA signatures are 320 bits in length. The security of the DSA relies on two distinct (but related) discrete logarithm problems. One is the discrete logarithm problem in *p where the number field sieve algorithm applies. Since p is a 1024-bit prime, the DSA is currently not vulnerable to this attack. The second discrete logarithm problem works to the base g: given p, q, g, and y, find x such that y gx (mod p). For large p (1024 bits, for example), the best-known algorithm for this problem is the Pollard rho-method, which takes about steps. Since q 2160, the DSA is not vulnerable to this attack.
+
+Background in Elliptic Curves
+
+We'll now turn to the fascinating theory of elliptic curves. For simplicity, we'll restrict our discussion to elliptic curves over p, where p is a prime greater than 3. Keep in mind, though, that elliptic curves can more generally be defined over any finite field. In particular, the "characteristic two finite fields" 2m are of special interest since they lead to the most efficient implementation of the elliptic curve arithmetic.
+
+An elliptic curve E over p is defined by an equation of the form
+
+y2= x3+ ax + b,
+
+in Figure 2, where a,b p, and 4a3+27b2 0 (mod p), together with a special point , called the "point at infinity." The set E(p) consists of all points (x,y), x p, y p, which satisfy the equation in Figure 2, together with .
+
+For example, let p =23 and consider the elliptic curve E: y2=x3+x+1 defined over 23. (In the notation of Figure 2, we have a =1 and b =1.) Note that 4a3+27b2 =4+4=8 0, so E is indeed an elliptic curve. The points in E(23) are and those listed in Figure 3.
+
+There is a rule for adding two points on an elliptic curve E(p) to give a third elliptic curve point. Together with this addition operation, the set of points E(p) forms a group with serving as its identity. It is this group that is used in the construction of elliptic curve cryptosystems. The addition rule, which can be explained geometrically, is presented in Figure 4 as a sequence of algebraic formulae.
+
+Examples of the addition rule are given in Figure 5. For historical reasons, the group operation for an elliptic curve E(p) has been called "addition." By contrast, the group operation in *p is "multiplication." The differences in the resulting additive notation and multiplicative notation can sometimes be confusing. Table 1 shows the correspondence between notation used for the two groups *p and E(p).
+
+The Elliptic Curve Digital Signature Algorithm (ECDSA)
+
+ECDSA is the elliptic curve analogue of the DSA. That is, instead of working in a subgroup of order q in *p, you work in an elliptic curve group E(p). The ECDSA is currently being standardized by the ANSI X9F1 and IEEE P1363 standards committees. Table 2 shows the correspondence between some math notation used in DSA and ECDSA. Tables 1 and 2 should make the analogies between the DSA and ECDSA more apparent (see Figure 6).
+
+The key-generation, signature-generation, and signature-verification procedures for ECDSA are given in Figure 6. The only significant difference between ECDSA and DSA is in the generation of r. The DSA does this by taking the random element (gk mod p) and reducing it modulo q, thus obtaining an integer in the interval [1,q -1]. The ECDSA generates the integer r in the interval [1,n -1] by taking the x-coordinate of the random point kP and reducing it modulo n.
+
+To obtain a security level similar to that of the DSA (with 160-bit q and 1024-bit p), the parameter n should have about 160 bits. If this is the case, then DSA and ECDSA signatures have the same bit length (320 bits).
+
+Instead of each entity generating its own elliptic curve, the entities may elect to use the same curve E and point P of order n. In this case, an entity's public key consists only of the point Q. This results in public keys of smaller sizes. Additionally, there are point compression techniques whereby the point Q = (xQ, yQ) can be efficiently constructed from its x-coordinate xQ and a specific bit of the y-coordinate yQ. Thus, for example, if p 2160 (so elements in p are 160-bit strings), then public keys can be represented as 161-bit strings.
+
+Security Issues
+
+The basis for the security of elliptic curve cryptosystems such as the ECDSA is the apparent intractability of this elliptic curve discrete logarithm problem (ECDLP): given an elliptic curve E defined over p, a point P E(p) of order n, and a point Q E(p), determine the integer l, 0l n -1, such that Q=lP, provided that such an integer exists.
+
+Over the past 12 years, the ECDLP has received considerable attention from leading mathematicians, and no significant weaknesses have been reported. An algorithm by Pohlig and Hellman reduces the determination of l to the determination of l modulo each of the prime factors of n. Hence, to achieve the maximum possible security level, n should be prime. The best-known algorithm to date for the ECDLP in general is the Pollard rho-method, which takes about steps, where a step is an elliptic curve addition. In 1993, Paul van Oorschot and Michael Wiener showed how the Pollard rho-method can be parallelized so that if r processors are used, the expected number of steps by each processor before a single discrete logarithm is obtained is .
+
+In considering software attacks on ECDLP, we assume that a million instructions per second (MIPS) machine can perform 43104 elliptic curve additions per second. (This estimate is indeed conservative -- an application-specific integrated circuit for performing elliptic curve operations over the field 2155 described in "An Implementation of Elliptic Curve Cryptosystems over 2155," by G. Agnew, R. Mullin, and S. Vanstone [IEEE Journal on Selected Areas in Communications, 11, 1993] has a 40-MHz clock rate and can perform roughly 40,000 elliptic additions per second.) Then the number of elliptic curve additions that can be performed by a 1 MIPS machine in one year is
+
+(4 104) (60 60 24 365) 240
+
+Table 3 shows, for various values of n, the computing power required to compute a single discrete logarithm using the Pollard rho-method. A MIPS year is equivalent ot the computational power of a computer that is rated at 1 MIPS and utilized for one year.
+
+For instance, if 10,000 computers each rated at 1000 MIPS are available, and n 2150, then an elliptic curve discrete logarithm can be computed in 3800 years. Andrew Odlyzko has estimated that if 0.1 percent of the world's computing power were available for one year to work on a collaborative effort to break some challenge cipher, then the computing power available would be 108 MIPS years in 2004 and 1010 -1011 MIPS years in 2014.
+
+To put the numbers in Table 3 in some perspective, Table 4 (see A. Odlyzko's "The Future of Integer Factorization," CryptoBytes: The Technical Newsletter of RSA Laboratories, Summer 1995; also available at http://www.rsa.com/) shows the estimated computing power required to factor integers with current versions of the general number field sieve.
+
+A more promising attack (for well-funded attackers) on elliptic curve systems would be to build special-purpose hardware for a parallel search using the Pollard rho-method. In "Parallel Collision Search with Cryptanalytic Applications" (to appear in Journal of Cryptology), P. van Oorschot and M. Wiener provide a detailed study of such a possibility. They estimated that if n 1036 2120, then a machine with m =325,000 processors that could be built for about $10 million would compute a single discrete logarithm in about 35 days.
+
+It should be pointed out that in the software and hardware attacks just described, computation of a single elliptic curve discrete logarithm has the effect of revealing a single user's private key. The same effort must be repeated to determine another user's private key.
+
+In "Minimal Key Lengths for Symmetric Ciphers to Provide Adequate Commercial Security" (January 1996, available from http://theory.lcs.mit.edu/~rivest/publications.html), M. Blaze, W. Diffie, R. Rivest, B. Schneier, T. Shimomura, E. Thompson, and M. Wiener reported on the minimum key lengths required for secure symmetric-key encryption schemes (such as DES and IDEA). Their report comes to the following conclusion:
+
+To provide adequate protection against the most serious threats -- well-funded commercial enterprises or government intelligence agencies -- keys used to protect data today should be at least 75 bits long. To protect information adequately for the next 20 years in the face of expected advances in computing power, keys in newly-deployed systems should be at least 90 bits long.
+
+Extrapolating these conclusions to the case of elliptic curves, you see that n should be at least 150 bits for short-term security and 180 bits for medium-term security. This extrapolation is justified by the following considerations:
+
+Exhaustive search through a k-bit symmetric-key cipher takes about the same time as the Pollard rho algorithm applied to an elliptic curve having a 2k-bit parameter n.
+
+Exhaustive searches with a symmetric-key cipher and the Pollard rho algorithm can be parallelized with a linear speedup.
+
+A basic operation with elliptic curves (addition of two points) is computationally more expensive than a basic operation in a symmetric-key cipher (encryption of one block).
+
+In both symmetric-key ciphers and elliptic curve systems, a "break" has the same effect: It will recover a single private key.
+
+Implementation Issues
+
+Since the elliptic curve discrete logarithm problem appears to be harder than the discrete logarithm problem in *p (or the problem of factoring a composite integer n), you can use an elliptic curve group that is significantly smaller than *p (respectively, n). For example, an elliptic curve E(p) with a point P E(p) whose order is a 160-bit prime offers approximately the same level of security as DSA with a 1024-bit modulus p and RSA with a 1024-bit modulus n.
+
+To get a rough idea of the computational efficiency of elliptic curve systems, compare the times to compute Figure 7(a) with 7(b).
+
+Assume that a field multiplication in p, where log2 p =l, takes l2 bit operations; then a modular multiplication in Figure 7(b) takes (1024/160)2 41 times longer than a field multiplication in Figure 7(a). Computing kP by repeated doubling and adding requires on average 80 elliptic curve additions and 160 elliptic curve doublings. From the addition formula, you see that an elliptic curve addition or doubling requires one field inversion and two field multiplications. (The cost of field addition is negligible, as is the cost of a field squaring if the field 2m is used instead of p.) Assume also that the time to perform a field inversion is roughly equivalent to that of three field multiplications (this is what has been reported in practice for the case of 2m). Then, computing kP requires the equivalent of 1200 field multiplications, or 1200/41 29 1024-bit modular multiplications. On the other hand, computing gk mod p by repeated squaring and multiplying requires on average 240 1024-bit modular multiplications. Thus, the operation in Figure 7(a) can be expected to be about 8 times faster than the operation in Figure 7(b). It must be emphasized that such a comparison is indeed very rough, not taking into account the various enhancements that are possible for each system. Since multiplication in 2m is in fact substantially faster than modular multiplication in *p, even more impressive speedups can be realized in practice.
+
+Another important consequence of using a smaller group in elliptic curve systems is that low-cost implementations are feasible in restricted computing environments, such as smart cards and wireless devices. For example, an ASIC built for performing elliptic curve operations over the field 2155 has only 12,000 gates and would occupy less that 5 percent of the area typically designated for a smart-card processor (see "An implementation of elliptic curve cryptosystems over 2155," by G. Agnew, R. Mullin, and S. Vanstone, IEEE Journal on Selected Areas in Communications, 11, 1993). By comparison, a chip designed to do modular multiplication of 512-bit numbers (see "An Ultra-high Speed Public Key Encryption Processor," by P. Ivey, S. Walker, J. Stern, and S. Davidson. Proceedings of IEEE Custom Integrated Circuits Conference, Boston, 1992) has about 50,000 gates, while the chip designed to do field multiplications in 2593 has about 90,000 gates (see "An Implementation for a Fast Public-Key Cryptosystem," by G. Agnew, R. Mullin, I. Onyszchuk, and S. Vanstone. Journal of Cryptology, 3, 1991).
+
+Another advantage of elliptic curve systems is that the underlying field (p or 2m) and a representation for its elements can be selected so that the field arithmetic (addition, multiplication, and inversion) can be optimized. This is not the case for systems based on discrete log (respectively, integer factorization), where the prime modulus p (respectively, the composite modulus n) should not be chosen to have a special form because this might render the underlying problem easy.
+
+Standards Activities
+
+The primary objectives of industry standards are to promote interoperability and facilitate widespread use of well-accepted techniques. Standards for elliptic curve systems are being drafted by various accredited standards bodies around the world.
+
+Elliptic curve systems are being drafted in two work items by the American National Standards Institute (ANSI) ASC X9 (Financial Services): ANSI X9.62, The Elliptic Curve Digital Signature Algorithm (ECDSA); and ANSI X9.63, Elliptic Curve Key Agreement and Transport Protocols.
+
+Elliptic curves are in the draft IEEE P1363 standard (Standard for Public Key Cryptography), which includes encryption, signature, and key agreement mechanisms. Elliptic curves over p and over 2m are both supported. For the case of 2m, polynomial bases and normal bases of 2m over an arbitrary subfield 2l are supported. P1363 also specifies discrete log systems (in subgroups of the multiplicative group of the integers modulo a prime) and RSA encryption and signatures. The latest drafts are available at http://stdsbbs.ieee.org/.
+
+The OAKLEY Key Determination Protocol of the Internet Engineering Task Force (IETF) describes a key agreement protocol that is a variant of the Diffie-Hellman protocol. It allows for a variety of groups to be used, including elliptic curves over p and 2m. The document makes specific mention of elliptic curve groups over the fields 2155 and 2210. A draft is available at http://www.ietf .cnri.reston.va.us/.
+
+The draft document ISO/IEC 14888: Digital signature with appendix -- Part 3: Certificate-based mechanisms specifies elliptic curve analogues of some ElGamal-like signature algorithms.
+
+The ATM Forum Technical Committee's Phase I ATM Security Specification draft document aims to provide security mechanisms for ATM (Asynchronous Transfer Mode) networks. Security services provided include confidentiality, authentication, data integrity, and access control. A variety of systems are supported, including RSA, DSA, and elliptic curve systems.
+
+As these drafts become officially adopted by the appropriate standards bodies, you can expect elliptic curve systems to be widely used by providers of information security.
+
+Conclusion
+
+Elliptic curve cryptosystems offer the highest strength-per-key-bit of any known public-key system. With a 160-bit modulus, an elliptic curve system offers the same level of cryptographic security as DSA or RSA with 1024-bit moduli. The smaller key sizes result in smaller system parameters, smaller public-key certificates, bandwidth savings, faster implementations, lower power requirements, and smaller hardware processors.
+
+Further Reading
+
+For an accessible introduction to all aspects of cryptography, refer to Bruce Schneier's Applied Cryptography: Protocols, Algorithms, and Source Code in C, second edition (John Wiley & Sons, 1996). Douglas Stinson's Cryptography: Theory and Practice, (CRC Press, 1995) is an excellent textbook. Handbook of Applied Cryptography (CRC Press, 1997), by A. Menezes, P. van Oorschot, and S. Vanstone, is an extensive source book on cryptography for practitioners.
+
+Elliptic curve cryptosystems were introduced in "Elliptic Curve Cryptosystems," Mathematics of Computation, 48 (1987), by N. Koblitz, and "Uses of Elliptic Curves in Cryptography," Advances in Cryptology: CRYPTO '85, Lecture Notes in Computer Science 218 (Springer-Verlag, 1986), by V. Miller. Chapter six of N. Koblitz's A Course in Number Theory and Cryptography, second edition (Springer-Verlag, 1994), provides an introduction to elliptic curves and elliptic curve systems. Koblitz's book also covers the relevant number theory algorithms including the Pollard rho-method, and gives an overview of the number field sieve for integer factorization. The parallelization of the Pollard rho-method is described by P. van Oorschot and M. Wiener in "Parallel Collision Search with Cryptanalytic Applications," to appear in Journal of Cryptology. For a more detailed account on various implementation and security issues, see Elliptic Curve Public Key Cryptosystems (Kluwer Academic Publishers, 1993) by A. Menezes.
+
+Finally, the Information Security Classroom at Certicom's web site (http:// www.certicom.ca) is designed to instruct people of various mathematical backgrounds, and includes some nifty Java applets that illustrate the theory of elliptic curves. If you do not have access to the Web, you can request this information by sending e-mail to info@certicom.ca.
+
+DDJ
+
+Copyright © 1997, Dr. Dobb's Journal

@@ -1,0 +1,201 @@
+ortiga8888
+
+New Member
+
+May 4, 2022
+
+6
+
+1
+
+3
+
+May 4, 2022
+
+#1
+
+I am mounting a windows server 2003 image but it does not pick up the disk, esc as if it did not pick up the boot image does anyone know what happened ??
+
+Last edited: May 4, 2022
+
+oguz
+
+Proxmox Retired Staff
+
+Nov 19, 2018
+
+5,207
+
+782
+
+118
+
+May 4, 2022
+
+#2
+
+hi,
+
+* is the image exported from another hypervisor?
+
+* what does the configuration file for the VM look like? qm config VMID
+
+* and why do you need windows server 2003?
+
+ortiga8888
+
+New Member
+
+May 4, 2022
+
+6
+
+1
+
+3
+
+May 4, 2022
+
+#3
+
+* no
+
+*
+
+boot: order=scsi0;ide2;net0
+
+cores: 1
+
+ide2: local:iso/windows-server-2003.iso,media=cdrom
+
+machine: q35
+
+memory: 2048
+
+name: server-2003
+
+net0: virtio=06:68:3A:A7:F8:6E,bridge=vmbr0,firewall=1
+
+numa: 0
+
+ostype: l26
+
+scsi0: local-lvm:vm-111-disk-0,size=32G
+
+scsihw: virtio-scsi-pci
+
+smbios1: uuid=50d4a540-cc21-4646-8bf9-680a80aae21f
+
+sockets: 1
+
+vmgenid: 0340a251-e3db-4d2a-861f-06771e5660b9
+
+*
+
+I have to do a security test
+
+oguz
+
+Proxmox Retired Staff
+
+Nov 19, 2018
+
+5,207
+
+782
+
+118
+
+May 4, 2022
+
+#4
+
+okay
+
+have you tried changing the boot order to have the CD-ROM on top? (you can do this in the GUI in the "Options" menu for that VM).
+
+also might make sense to set the OS type to Windows Server 2003 instead of Linux
+
+hope this helps.
+
+ortiga8888
+
+New Member
+
+May 4, 2022
+
+6
+
+1
+
+3
+
+May 4, 2022
+
+#5
+
+ya hice todo eso y nada
+
+Last edited: May 4, 2022
+
+oguz
+
+Proxmox Retired Staff
+
+Nov 19, 2018
+
+5,207
+
+782
+
+118
+
+ortiga8888
+
+New Member
+
+May 4, 2022
+
+6
+
+1
+
+3
+
+May 4, 2022
+
+#8
+
+He probado con otros y tampoco
+
+oguz
+
+Proxmox Retired Staff
+
+Nov 19, 2018
+
+5,207
+
+782
+
+118
+
+May 4, 2022
+
+#9
+
+He probado con otros y tampoco
+
+try looking for the installation ISO on archive.org
+
+ortiga8888
+
+New Member
+
+May 4, 2022
+
+6
+
+1
+
+3

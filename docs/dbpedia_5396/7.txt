@@ -1,0 +1,71 @@
+A portfolio project showcasing data modeling, database creation, and visualization skills
+
+Pula Panamgama
+
+·
+
+Follow
+
+5 min read
+
+·
+
+Jun 17, 2023
+
+--
+
+Project Summary
+
+Business objective: Create a dashboard for a pizzeria containing key operating information of daily activities.
+
+Outcome: Built a data model, SQL Server database, and Power BI dashboard to track and display key operating metrics of the Pizzeria. Processors such as orders undertaken, inventory usage and staff rotations were captured in the system design.
+
+Objective
+
+Demonstrate data modeling, SQL, and Power BI skillset through developing an operational data pipeline.
+
+Creating the data model
+
+Normalization is breaking data into sub-tables and maintaining relationships between them to minimize the risk of data redundancy.
+
+The operational procedures of the pizzeria such as tracking order creation, ingredient usage, staff working hours, and product purchases have been considered in the normalized data model.
+
+For example, the orders created by the cashier are logged in the ‘order_customers’ table. This table captures
+
+The date and time of the order
+
+The person making the order and their contact details
+
+If the order is to be picked up or delivered
+
+But the order includes items as well, such as pizzas, appetizers, and drinks. These are separately logged in another table called ‘order_items’, where the following information is captured,
+
+Order to be referenced to
+
+All the items ordered
+
+The quantity of each item ordered
+
+A similar process was followed for storing the information of all entities (both people and other companies), ingredients and their use in the recipes, keeping track of staff attendance, purchase of products, and stock availability in the inventory.
+
+Creating the database in SQL Server
+
+After confirming that the model emulated all work procedures and provides all metrics necessary for the visualization, the corresponding database was created using SQL Server Management Studio.
+
+Clustered primary keys were designated and set to auto-increment with the input of data. Foreign keys were added to create the relationships among the tables. The complete SQL script is included in this GitHub repo.
+
+While most views were directly created from tables, the inventory posed a problem since it has to be derived from two separate processes; ingredients coming in from purchases and going out through orders.
+
+Two separate views were created for incoming and outgoing material quantities. Through the use of subqueries, they were combined to calculate the net value of ingredients left in the inventory.
+
+Since these views are automatically updated each time they are queried, it ensured that the dashboard will stay updated in a production scenario.
+
+Connecting the Views to Power BI
+
+Power BI makes it possible to connect to numerous data sources and both being Microsoft products, it swiftly connected with the SQL Server database.
+
+The selected views were imported and connected to form the data model within Power BI.
+
+A date table had to be newly created within Power BI to connect the dates between the tables. This enabled the mapping of sales orders and purchases together, even though the data was in two separate tables.
+
+To make certain calculations, such as the cost of ingredients, new measures were created using the DAX formula. Iterator functions such as SUMX() and RELATED() functions were used for this purpose.

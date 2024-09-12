@@ -1,0 +1,13 @@
+Ran into a quick problem that I thought I’d quickly blog about.
+
+AutoPKG’s data folders are all sitting on an external drive. First off, “Ignore ownership on this volume” was checked off, and AutoPKG doesn’t like that. That was a first for me, I’ve always had AutoPKG running on the internal drive. I turned that on, gave myself ownership and read & write and then propagated permissions down.
+
+On the next run I got:
+
+Error in local.munki.Zoom: Processor: PkgCreator: Error: Coudln't copy pkgroot from /Volumes/path/to/Cache/local.munki.Zoom/Zoom to /tmp/pathto/Zoom: ditto /Volumes/path/to/Cache/local.munki.Zoom/Zoom/.: Operation not permitted
+
+Got some quick help from MacAdmins #AutoPKG channel. Suggested I give python full disk access.
+
+That solved the problem.
+
+Python was already in the PPPC panel for Full Disk Access, so I checked it off, but if someone needs to find AutoPKG’s python, at time of writing, it lives at /Library/AutoPkg/Python3/Python.framework/Versions/3.7/bin/python3.7

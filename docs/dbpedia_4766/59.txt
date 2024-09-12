@@ -1,0 +1,11 @@
+Identifiers can't include such characters. It is defined that way in the language syntax, identifiers are letters, digits or underline (and mustn't begin with a digit to avoid ambiguity with literal numbers).
+
+If it was possible this would conflict with the C compiler (that uses [ for arrays) and C preprocessor syntax (that uses #). Extended identifiers extension only allow using characters non forbidden by the language syntax inside identifiers (basically Unicode foreign letters, etc.).
+
+But if you really, really want to do this, nothing forbids you to preprocess your source files with your own "extended macro preprocessor", practically creating a new "C like" language. That looks like a terrible idea, but it's not really hard to do. Then you'll see soon enough by yourself why it's not a good idea...
+
+Even if the extended identifier characters support was fully enabled, it wouldn't help you get characters such as:
+
+[ ' " #
+
+enabled for identifiers. The standard allows 'universal character names' or 'other implementation-defined characters' to be part of an identifier, but they cannot be part of the basic character set. Out of the basic character set, only _, letters and digits can be part of an identifier name (6.4.2.1 Identifiers/General).

@@ -1,0 +1,43 @@
+I was pretty much sure that asking such a question on a forum would be useless because I don’t know ANYTHING about scripting but after seeing Waldo’s detailed post , I have hope…
+
+I have never scripted for Clonezilla before but I have been told by a Clonezilla admin that I need to use a script, considering my exact needs…
+
+I need to clone my internal disk to my external disk excluding one partition.
+
+The cloning requirements are for sda1, sda2, sda3, sda4, sda5, sda6 and sda8. (thus not including sda7)
+
+Help me out with scripting please, I have read this at Clonezilla.
+
+These are the instructions that I got:
+
+OK, so you are working on partition to partition cloning, not image restoring.
+
+There is no way to exclude some partitions whey you do disk to disk cloning.
+
+However, you can use command line to finish that, i.e.
+
+1. Create the partition table on the destination disk manually by fdisk or some partition table edtor, in your case yoiu have mentioned, it’s /dev/sda
+
+(//NOTE// Please make sure /dev/sda is the destination, and /dev/sdb is the source one.)
+
+2. Clone the partition one by one. You can make this as a script file to make it:
+
+ocs-onthefly -g auto -e1 auto -e2 -r -j2 -f sdb1 -t sda1
+
+ocs-onthefly -g auto -e1 auto -e2 -r -j2 -f sdb2 -t sda2
+
+ocs-onthefly -g auto -e1 auto -e2 -r -j2 -f sdb3 -t sda3
+
+…
+
+//NOTE// Backup important data before you use Clonezilla. Just in case.
+
+I am using Clonezilla live on USB.
+
+The source disk is an internal HDD and the target disk is an external HDD connected via USB as well, with the partition table on the target disk already matching source disk’s exactly.
+
+I really don’t understand what do you mean by “create the parition you didin’t mention is their primary.”
+
+Furthermore, I need help with the whole script not just what to begin with…
+
+Regarding whether or not I need to mount the source partition, no idea… All I know is that I wanna clone 7 of the 8 partitions…

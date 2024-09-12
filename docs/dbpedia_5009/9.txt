@@ -1,0 +1,55 @@
+Hello,
+
+I am trying to come up with a good way to organize a Qt project that consists of multiple parts. My scenario is as follows:
+
+I have the main application code which contains the main.c file and a class which represents my main application logic. This class makes use of "manager" classes in charge of handling the various plugins and such.
+
+I have a GUI which interacts with the main application class and the abstract plugin classes
+
+I have various "plugins" (right now implemented as static libraries) used by the main application class and its helper classes
+
+I have an interface which the plugins inherit from
+
+Up to this point, I have implemented my project as a Qt SUBDIRS project consisting of the following sub-projects/folders (simplified):
+
+app - Contains main.cpp which creates an instance of the main application object and an instance of the GUI which uses the app object
+
+interface - Contains abstract/interface classes used by plugins and app (implemented as a static lib)
+
+plugin1 - Inherits from class in interface, used by classes in app (implemented as a static lib)
+
+plugin2 - Inherits from class in interface, used by classes in app (implemented as a static lib)
+
+My idea was to decouple the GUI from the actual application logic where the GUI is, in essence, its own plugin. This way I could create, for instance, a TCP controller "plugin" which can interact with the main application object in the same way as the GUI except over a network socket. I decided to simply create a new SUBDIR in the project and move all the GUI classes from app to gui. Here's the problem (which may be due to bad coupling/understanding on my part): The GUI depends on classes from app and interface. But the app (since it is the main project which will be built into an executable) depends on classes in gui.
+
+In lieu of actually implementing the GUI as a true "plugin" (dynamic library), I think what I am really trying to accomplish is separation of my code into various folders related to each part where each part can be built separately to reduce redundant build work.
+
+What would be a better way to go about this?
+
+Please let me know if I have not explained my goals clearly.
+
+Thank You!
+
+@SGaist
+
+Thanks for the advice, that makes sense. So does it make sense to keep those individual parts as static libraries that all bet linked together?
+
+The reason I ask is because (form the little I know) I know that many C++/make projects have every part of the application divided into folders each with their own makefiles. Then building the application is simply a process of recursively building all the various makefile projects. In this case, I don't think everything is build as a static library, rather, it is just a better way to organize the project.
+
+So, to clarify, if I have Plugin A and Plugin B which both inherit from a class in a static library, both of these compiled plugins will have copies of all the symbols from the class in the static library thus the final application will contain unnecessarily duplicated code?
+
+If this is the case, and it would be best to use shared libraries in this instance (which I had wanted to do originally), what is the best way to setup the Qt project so that when I build the main application, it also builds the shared libraries, links against them, and puts them in the correct location for the application to run (e.g. in the debug folder for the generate executable)?
+
+Currently I have all of my core application code including the GUI in a project called "app". I then have a static library project called "interface" which contains all of the interface classes used by plugins. Finally, I have a static library projects for each of the plugins. All of these libraries link to the "interface" library. In each of the .pro files, I used an INCLUDEPATH statement to include the entire folder for the project which it needs to make use of (for example, the .pro file for Plugin 1 would contain the line INCLUDEPATH += "../interface").
+
+I can see in my development how much of what I am doing is incorrect and will (has) cause problems when I try to add on even more parts to my project. For one, having each plugin link to the static library duplicates the interface code for each plugin. This is why I wanted to separate out the GUI from the core application. However, the GUI still needs to be aware of classes in the interface and the core.
+
+I would like to develop my plugins as dynamic libraries which get loaded by the core application. I would like to figure out how to have my subdirs project build the dynamic libraries when I need to build the main application then copy the libraries into the executable path so that I can actually debug the application. This works with the static libraries because everything is built into a single executable.
+
+Some other forums I looked at suggested looking through the Qt Creator source code as it separates all functionality into different subdir projects. However, I had difficulty deciphering what was being done since Qt creator is such a large and complex project.
+
+I will do some testing with correctly specifying dependencies in the subdirs project as well as outputting the built dynamic library into the correct folder.
+
+As to your question, I am not currently using any plugin system but rather just including all the "plugins" in my factory method which simply creates new instances of each plugin directly. I just did this to save time in development and fully plan to actually implement my plugins as real plugins that get loaded and inspected dynamically at runtime via my factory class.
+
+That being said, since the interface(s) that the plugins make use of is nothing more than a header file(s), does this need to be in its own static library project? I would assume I just need to find a good place to put these headers (e.g. in some public "include" folder) then all my plugin projects (as part of the main subdir project) would simply add an INCLUDEPATH to this folder.

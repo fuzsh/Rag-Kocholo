@@ -24,48 +24,50 @@ def get_main_domain(url):
 
 
 EXCLUDE_URLS = [
+    "dbpedia.org",
     "wikipedia.org",
     "wikimedia.org",
-    "quora.com",
-    "britannica.com",  # Encyclopaedia Britannica
-    "scholarpedia.org",  # Scholarpedia
-    "citizendium.org",  # Citizendium
-    "infoplease.com",  # Infoplease
-    "howstuffworks.com",  # HowStuffWorks
-    "archive.org",  # Internet Archive
-    "gutenberg.org",  # Project Gutenberg
-    "stanford.edu",  # Stanford Encyclopedia of Philosophy
-    "newworldencyclopedia.org",  # New World Encyclopedia
-    "everipedia.org",  # Everipedia
-    "encyclopedia.com",  # Encyclopedia.com
+    "wikidata.org",
+    # "quora.com",
+    # "britannica.com",  # Encyclopaedia Britannica
+    # "scholarpedia.org",  # Scholarpedia
+    # "citizendium.org",  # Citizendium
+    # "infoplease.com",  # Infoplease
+    # "howstuffworks.com",  # HowStuffWorks
+    # "archive.org",  # Internet Archive
+    # "gutenberg.org",  # Project Gutenberg
+    # "stanford.edu",  # Stanford Encyclopedia of Philosophy
+    # "newworldencyclopedia.org",  # New World Encyclopedia
+    # "everipedia.org",  # Everipedia
+    # "encyclopedia.com",  # Encyclopedia.com
     "wikibooks.org",  # Wikibooks
     "wiktionary.org",  # Wiktionary
     "wikiversity.org",  # Wikiversity
     "wikisource.org",  # Wikisource
     "wikiquote.org",  # Wikiquote
     "wikivoyage.org",  # Wikivoyage
-    "merriam-webster.com",  # Merriam-Webster
-    "khanacademy.org",  # Khan Academy
-    "ted.com",  # TED
-    "bbc.com",  # BBC
-    "cnn.com",  # CNN
-    "nationalgeographic.com",  # National Geographic
-    "sciencedaily.com",  # ScienceDaily
-    "livescience.com",  # LiveScience
-    "history.com",  # History
-    "bbc.co.uk",  # BBC History
-    "bartleby.com",  # Bartleby
-    "sparknotes.com",  # SparkNotes
-    "shmoop.com",  # Shmoop
-    "academia.edu",  # Academia.edu
-    "jstor.org",  # JSTOR
-    "researchgate.net",  # ResearchGate
-    "springer.com",  # Springer
-    "nature.com",  # Nature
-    "sciencemag.org",  # Science
-    "pbs.org",  # PBS
-    "theguardian.com",  # The Guardian
-    "nytimes.com",  # The New York Times
+    # "merriam-webster.com",  # Merriam-Webster
+    # "khanacademy.org",  # Khan Academy
+    # "ted.com",  # TED
+    # "bbc.com",  # BBC
+    # "cnn.com",  # CNN
+    # "nationalgeographic.com",  # National Geographic
+    # "sciencedaily.com",  # ScienceDaily
+    # "livescience.com",  # LiveScience
+    # "history.com",  # History
+    # "bbc.co.uk",  # BBC History
+    # "bartleby.com",  # Bartleby
+    # "sparknotes.com",  # SparkNotes
+    # "shmoop.com",  # Shmoop
+    # "academia.edu",  # Academia.edu
+    # "jstor.org",  # JSTOR
+    # "researchgate.net",  # ResearchGate
+    # "springer.com",  # Springer
+    # "nature.com",  # Nature
+    # "sciencemag.org",  # Science
+    # "pbs.org",  # PBS
+    # "theguardian.com",  # The Guardian
+    # "nytimes.com",  # The New York Times
 ]
 
 
@@ -156,17 +158,14 @@ def search_engine(knowledge_graph, top_n=10, force_recreate=False):
             if filename.endswith(".txt"):
                 os.remove(f"docs/{identifier}/{filename}")
 
-    if identifier == "wrong_mix_domainrange_subsidiary_00012":
-        return
-
     print(f"Processed {identifier} documents started.")
 
     # Read documents from the specified directory
     documents = read_documents(f'docs/{identifier}/all_docs')
 
     # Define the queries
-    queries = [re.sub(r'(?<=[a-z])([A-Z])', r' \1', " ".join(knowledge_graph[1]))]
-    queries.append(f'Did {knowledge_graph[1][0]} died in "{knowledge_graph[1][2]}"?')
+    # queries = [re.sub(r'(?<=[a-z])([A-Z])', r' \1', " ".join(knowledge_graph[1]))]
+    # queries.append(f'Did {knowledge_graph[1][0]} died in "{knowledge_graph[1][2]}"?')
 
     # with open(f"./docs/{identifier}/questions.json", "r") as f:
     #     questions = json.load(f)['questions']
@@ -195,11 +194,17 @@ def search_engine(knowledge_graph, top_n=10, force_recreate=False):
     #         new_score = 2 * a * b / (a + b) if a + b != 0 else 0
     #         selected_docs.append({'doc_idx': doc_idx, 'score': new_score, "doc": documents[doc_idx]})
 
-    re_rank_results = re_rank(
-        re.sub(r'(?<=[a-z])([A-Z])', r' \1', " ".join(knowledge_graph[1])),
-        documents,
-        return_documents=True
-    )
+    try:
+        re_rank_results = re_rank(
+            # re.sub(r'(?<=[a-z])([A-Z])', r' \1', " ".join(knowledge_graph[1])),
+            knowledge_graph[1],
+            documents,
+            return_documents=True
+        )
+    except Exception as e:
+        print(f"Error in re-ranking: {e}")
+        print(f"Processed {identifier} documents failed.")
+        return
 
     selected_docs = [{
         'doc_idx': result['id'],
@@ -207,7 +212,7 @@ def search_engine(knowledge_graph, top_n=10, force_recreate=False):
         'doc': result['question']
     } for result in re_rank_results]
 
-    selected_docs = sorted(selected_docs, key=lambda x: x['score'], reverse=True)[:10]
+    selected_docs = sorted(selected_docs, key=lambda x: x['score'], reverse=True)[:top_n]
 
     for doc in selected_docs:
         with open(f"docs/{identifier}/{doc['doc_idx']}.txt", 'w', encoding='utf-8') as file:

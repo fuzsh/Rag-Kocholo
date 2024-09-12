@@ -1,0 +1,127 @@
+This is a repost of an article originally written and published by Peter Borden, and which was published on the blog of the now-defunct social analytics company, SumAll. The original article was published here - http://blog.sumall.com/journal/optimizely-got-me-fired.html - which is now a dead link.
+
+Why am I posting this? I came across this article back when Peter wrote it in 2014, and I found it to be an essential part of the discourse in the A/B testing industry. A/B testing has steadily risen in prominence over the last decade, with more and more business users utilizing testing software and running experiments within their organization. And so I wanted to re-publish the original article, since the original link is now dead, to help preserve its educational value for anyone interested in learning about A/B testing.
+
+This particular article from Peter shines a light on an important topic in the world of testing that can often be overlooked by novice users. Which is the risk of arriving at a false positive due to a lack of understanding about the differences between a 1 vs 2 tailed test, as well as the risk of not letting your test run long enough to give you statistically backed results.
+
+Shortly after Peter posted this article, the team at Optimizely launched a “new statistical approach” to help their users avoid making the wrong decisions with the testing data. The dialogue that unfolded in the comments section of Peter’s post was also, I think, incredibly valuable discourse that is important for those who use testing software to engage in. It’s a pity that the comments section of the post hasn’t been archived.
+
+I should also mention that I am, myself, a fan of Optimizely and its software. I think they have done a great deal to advance the industry around commercial testing, as the company played an important role in making testing more accessible to more users through a focus on UX and education. Optimizely was also incredibly responsive and open to Peter’s post. I have a lot of love for Optimizely, so reposting this isn’t meant to shine a negative light on them. But I believe that anyone and everyone interested in hypothesis testing should read Peter’s post.
+
+And with that, here’s the article. Enjoy.
+
+Written By: Peter Borden
+
+It had been six months since we started concerted A/B testing efforts at SumAll, and we had come to an uncomfortable conclusion: most of our winning results were not translating into improved user acquisition. If anything, we were going sideways, and given that one of my chief responsibilities was to move the user acquisition needle, this was decidedly not good. Not good for me. Not good for my career. And not good for SumAll.
+
+Having worked for an A/B testing and website personalization company in the past (disclosure: Monetate is an Optimizely competitor), I’ve always been a believer in the merits of A/B testing, and one of the first things I did when I started working with SumAll was to get a testing program in place. Things were going well (or so it seemed) and we were simply astonished by the performance of the tests we had been running.
+
+Optimizely had been predicting huge gains, known as “lift,” from our efforts. We were seeing 60% lift here, 15% lift there and, surprisingly, almost no losers – only winners. These results made great fodder for weekly e-mails, and did a lot to get the team completely bought into the A/B testing philosophy.
+
+What threw a wrench into the works was that SumAll isn’t your typical company. We’re a group of incredibly technical people, with many data analysts and statisticians on staff. We have to be, as our company specializes in aggregating and analyzing business data. Flashy, impressive numbers aren’t enough to convince us that the lifts we were seeing were real unless we examined them under the cold, hard light of our key business metrics.
+
+Much to our chagrin, they didn’t. At least not as much as Optimizely would have had us believe.
+
+After a little digging, it seemed we were only seeing about 10%-15% of the predicted lift, so we decided to run a little experiment. And that’s when the wheels totally flew off the bus.
+
+We decided to test two identical versions of our homepage against each other. You’d think these two variants, being identical, would have nearly the same conversion rate. However, the results were surprising. As you can see in the screenshot above, we saw that the new variation, which was identical to the first, saw an 18.1% improvement. Even more troubling was that there was a “100%” probability of this result being accurate. It was a concerning result, to say the least.
+
+One-Tailed Vs. Two-Tailed Tests
+
+Most marketers aren’t statisticians. Most don’t realize that there are actually two ways – so called “one-tailed” versus “two-tailed” tests – to determine whether an experiment’s results are statistically valid.
+
+What’s even more confusing is the fact that some testing vendors use one-tailed tests (Visual Website Optimizer, Optimizely) while others use two-tailed tests (Adobe Test&Target, Monetate). Neither camp is particularly forthright about which type of test they’re using, or good at educating their audience about the benefits and disadvantages of each.
+
+So, what’s the difference between a one-tailed and two-tailed test?
+
+The short answer is that with a two-tailed test, you are testing for the possibility of an effect in two directions, both the positive and the negative. One-tailed tests, meanwhile, allow for the possibility of an effect in only one direction, while not accounting for an impact in the opposite direction.
+
+As the friendly statisticians at UCLA explain:
+
+“Because the one-tailed test provides more power to detect an effect, you may be tempted to use a one-tailed test whenever you have a hypothesis about the direction of an effect. Before doing so, consider the consequences of missing an effect in the other direction. Imagine you have developed a new drug that you believe is an improvement over an existing drug. You wish to maximize your ability to detect the improvement, so you opt for a one-tailed test. In doing so, you fail to test for the possibility that the new drug is less effective than the existing drug. The consequences in this example are extreme, but they illustrate a danger of inappropriate use of a one-tailed test.
+
+So when is a one-tailed test appropriate? If you consider the consequences of missing an effect in the untested direction and conclude that they are negligible and in no way irresponsible or unethical, then you can proceed with a one-tailed test. For example, imagine again that you have developed a new drug. It is cheaper than the existing drug and, you believe, no less effective. In testing this drug, you are only interested in testing if it less effective than the existing drug. You do not care if it is significantly more effective. You only wish to show that it is not less effective. In this scenario, a one-tailed test would be appropriate.”
+
+The kicker with one-tailed tests is that they only measure ­– to continue with the example above – whether the new drug is better than the old one. They don’t measure whether the new drug is the same as the old drug, or if the old drug is actually better than the new one. They only look for indications that the new drug is better, and the net effect of all this is that the results are twice as likely to be significant. One-tailed tests are inherently biased.
+
+For the rest of the world (software vendors included) one-tailed tests are convenient. They require less traffic than two-tailed ones. They show results quickly (even if those results aren’t as statistically rigorous), and, as a result, unsophisticated users love them. One-tailed tests make it easy to get results (and buy-in from your boss). They make it easy to catch the A/B testing bug because you keep seeing great wins. After all, who wouldn’t want to keep going to the casino if you always win?
+
+But what happens if your team actually digs into the numbers and sees a smaller positive impact from your testing efforts that you were proclaiming? Well, the results aren’t pretty. It’s as if the money you thought you’d been earning at your job turned out to be counterfeit, or only worth 10-15% of it’s promised value.
+
+Statistical Power
+
+For a quick and dirty estimate of major changes, a one-tailed test is a viable option. When your company’s bottom line depends on accurate conversion data, however, a one-tailed test can fall short.
+
+Statistical power is simply the likelihood that the difference you’ve detected during your experiment actually reflects a difference in the real world.
+
+You’ll often see statistical power conveyed as P90 or 90%. In other words, if there’s a 90% chance A is better than B, there’s a 10% chance B is better than A and you’ll actually get worse results.
+
+As Martin Goodson explains in his must-read whitepaper, Why Most A/B Test Results Are Illusory:
+
+“Imagine you are trying to find out whether there is a difference between the heights of men and women. If you only measured a single man and a single woman, you would stand a risk that you don’t detect the fact that men are taller than women. Why? Because random fluctuations mean you might choose an especially tall woman or an especially short man, just by chance.
+
+However, if you measure many people, the averages for men and women will eventually stabilize and you will detect the difference that exists between them. That’s because statistical power increases with the size of your ‘sample’ (statistician-speak for ‘the number of people that you measure’).”
+
+Because one-tailed tests only measure an effect in one direction, their statistical power is amplified, and you should be skeptical when it comes to the precision of the results.
+
+Fairy Dust, Short-Term Bias, and Regression to the Mean
+
+Most A/B testing tools recommend terminating tests as soon as they show significance, even though that significance may very well be due to short-term bias. A little green indicator will pop up, as it does in Optimizely, and the marketer will turn the test off.
+
+But most tests should run longer and in many cases it’s likely that the results would be less impressive if they did. Again, this is a great example of the default settings in these platforms being used to increase excitement and keep the users coming back for more.
+
+Over time, if you pay attention, you’ll notice that a lot of A/B testing results regress to the mean, lose significance, or deteriorate in some way. Goodson, in fact, goes as far as to insist that “at least 80% of the winning results are completely worthless.”
+
+Why?
+
+Sometimes there’s a “novelty effect” at work. Any change you make to your website will cause your existing user base to pay more attention. Changing that big call-to-action button on your site from green to orange will make returning visitors more likely to see it, if only because they had tuned it out previously. Any change helps to disrupt the banner blindness they’ve developed and should move the needle, if only temporarily.
+
+More likely is that your results were false positives in the first place. This usually happens because someone runs a one-tailed test that ends up being overpowered. The testing tool eventually flags the results as passing their minimum significance level. A big green button appears: “Ding ding! We have a winner!” And the marketer turns the test off, never realizing that the promised uplift was a mirage.
+
+The World Isn’t Identically Distributed
+
+The world isn’t necessarily a neat and tidy place, at least when it comes to people visiting your website. In fact, website visitors tend to be notoriously “clumpy.” You have different ads driving traffic, e-mail newsletters being sent out, returning and new visitors, different time zones, different states and countries, and much more. Few websites actually get enough traffic for their audiences to even out into a nice pretty bell curve. If you get less than a million visitors a month your audience won’t be identically distributed and, even then, it can be unlikely.
+
+The reason this all matters is that if you get, say, a big uptick in A over B at the beginning of a test due to a fluke because you sent an e-mail blast to your list, you might never overcome it. Likewise, the things that matter to you on your website, like order values, are not normally distributed. There are outliers and long tails in certain directions. All of this can lead to your results regressing to the mean, being temporary, or otherwise illusory.
+
+Admit It, You’re Not Testing ­– You’re Hypothesis Confirming
+
+The reason most A/B testing vendors get away with one-tailed tests that only measure results in one direction with pretty green flags telling you to turn off your experiments early is simple: their customers allow it.
+
+The sad truth is that most people aren’t being rigorous about their A/B testing and, in fact, one could argue that they’re not A/B testing at all, they’re just confirming their own hypotheses.
+
+In most organizations, if someone wants to make a change to the website, they’ll want data to support that change. Instead of going into their experiments being open to the unexpected, open to being wrong, open to being surprised, they’re actively rooting for one of the variations. Illusory results don’t matter as long as they have fodder for the next meeting with their boss. And since most organizations aren’t tracking the results of their winning A/B tests against the bottom line, no one notices.
+
+Lack of Sophistication
+
+Over the years, I’ve spoken to a lot of marketers about A/B testing and conversion optimization, and, if one thing has become clear, it’s how unconcerned with statistics most marketers are. Remarkably few marketers understand statistics, sample size, or what it takes to run a valid A/B test.
+
+Companies that provide conversion testing know this. Many of those vendors are more than happy to provide an interface with a simple mechanic that tells the user if a test has been won or lost, and some numeric value indicating by how much. These aren’t unbiased experiments; they’re a way of providing a fast report with great looking results that are ideal for a PowerPoint presentation. Most conversion testing is a marketing toy, essentially.
+
+That said, even if the market is unaware of the less than accurate nature of these services, I do believe that A/B testing vendors are doing a huge disservice to their clients. Instead of educating their blindly trusting users, they let them keep playing. They don’t turn away users with low traffic; they just create a system that lowers the bar to result in a “success.” They deliberately use one-tailed tests because they’re more exciting, even though most of the findings coming out of those tests are questionable.
+
+In my opinion – and I’m biased – a little education and the ability to perform two-tailed tests would be a welcome addition. The current state of things is a bit like going to a casino and seeing lines of the elderly patrons, oxygen tanks in tow, spending their life savings on slot machines. It’s unfortunate and a little heart-wrenching to watch people get excited about their latest testing wins, only to see those winnings fail to have any real-world impact.
+
+What You Can Do
+
+Now, before we get all doom and gloom, let’s talk about how we fix this.
+
+1. Run Targeted Tests
+
+Consider segmenting your users into different buckets and testing against that. Mobile visitors perform differently than desktop ones, new visitors are different than returning visitors, and e-mail traffic is different than organic. Start thinking “segment first.”
+
+2. Get Sophisticated
+
+Metrics and statistics are becoming increasingly important for the modern-day marketer. In fact, the most successful marketing teams I know often have data analysts on staff these days. So, don’t shy away from sophistication. Dive deep.
+
+3. Double Up On Tests
+
+It can be wise to run your A/B tests twice. Get results. Then run the same test again. You’ll find that doing so helps to eliminate illusory results. If the results of the first test aren’t robust, you’ll see noticeable decay with the second. But, if the uplift is real, you should still see uplift during the second test. This approach isn’t fail-safe but it will help.
+
+4. Run Tests Longer
+
+When it doubt, run your tests longer, past the point at which your testing platform tells you to stop. Some experts suggest running your experiments until you’ve tracked many thousands of conversion events. But, in truth, it’s not really the number of conversions that matters; it’s whether the time frame of the test is long enough to capture variations on your site. Do you get more visitors or different conversion patterns on weekends or at night? You should allow for a few cycles of variability in order to normalize your data.
+
+Another way to think of it is that statistical significance isn’t enough. Large sites like, say, Threadless get thousands of conversions per hour, and can see significance from their testing efforts quite quickly. But this doesn’t mean they should only run their tests for a few hours. Rather, they should run their tests long enough to capture a representative sample of their users over time. It’s the variability cycle that matters, not so much the number of conversions.
+
+So in the end I wasn’t out of a job, but I did come away with a new found appreciation for statisticians and data analysts.

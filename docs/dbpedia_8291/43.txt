@@ -1,0 +1,51 @@
+Hello All,
+
+Thanks for reading. I've asked a few questions on the -questions mailing list before but I think I'll post this problem here for visibility now and in the future.
+
+I found out about a project called caddy, which is written in the go language:
+
+https://caddyserver.com
+
+It's a simple to deploy (as in a single binary) webserver that can be started up with just nohup caddy &
+
+I'd like to run this on my FreeBSD 10.2-release system on digital ocean but using inetd because inetd is pretty efficient, and I don't want to make a startup script for caddy. Additionally, I don't want caddy to run as root for port 80, etc.
+
+The problem is either with caddy's code or my inetd configuration. I would appreciate some eyeballs reviewing my configurations so the developer of Caddy can then look into what the problem may be.
+
+Here's my /etc/services:
+
+Code:
+
+caddy2 2022/tcp # caddy test
+
+Here's my /etc/inetd.conf:
+
+Code:
+
+caddy2 stream tcp nowait.1000 sean /home/sean/bin/caddy2/caddy /home/sean/bin/caddy2/caddy --conf="/home/sean/bin/caddy2/Caddyfile"
+
+The way I'm reading this is that inetd will start caddy at the path /home/sean/bin/caddy2/caddy with the Caddyfile[0] at /home/sean/bin/caddy2/Caddyfile.
+
+When starting inetd in debug mode and going to my page, I see this in the stio:
+
+Code:
+
+inetd: someone wants caddy2 inetd: accept, ctrl 8 inetd: 52066 execl /home/sean/bin/caddy2/caddy inetd: handling signal flag C inetd: 52066 reaped, status 1
+
+I'm not an inetd expert but this looks like it processed the request, as requested.
+
+The problem with this is when you review the contents on the webpage, you will see:
+
+Code:
+
+2015/12/02 06:29:12 open "/home/sean/bin/caddy2/Caddyfile": no such file or directory
+
+Did inetd really process the request successfully and this is simply an application problem, or is there a glaring inetd problem I'm overlooking?
+
+I have not yet tried xinetd as I'd like to try and have inetd up and running first.
+
+Thanks,
+
+JB
+
+[0] https://caddyserver.com/docs/caddyfile

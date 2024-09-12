@@ -1,0 +1,19 @@
+Coming to set up Node.js for production, there are some articles recommending usage of various v8 flags to optimize the runtime (e.g https://blog.heroku.com/node-habits-2016#7-avoid-garbage )
+
+These usually mention the --optimize_for_size , --gc_interval=100 , and --max_old_space_size flags.
+
+If you use any of these flags in production, I want to encourage you to experiment with them and find what is optimal for your application. In my company services, we found --optimize_for_size to generally be a good thing to include, as otherwise RAM usage might sometimes go out of hand and causing long breaks for GC.
+
+But for one service, it was actually harmful. This service typically have low RAM footprint, or at least, a footprint that the default settings can manage well enough.
+
+I have removed the --optimize_for_size flag from one of our deployed servers, and here is the compared CPU usage (the server changed is 102)
+
+The CPU usage went from 35%~ at this time of load to 20%~. This is a big change.
+
+And what about memory?
+
+Ah. not so bad.
+
+We use google cloud compute engine, with the high-cpu servers, so these servers have the lowest RAM amount possible in this configuration.
+
+This is a big win for such a small change. But I feel compelled to say, the change can be also significant to the other side. It’s all depends on the specific code you are running, so experiment with it, it’s not one size fits all.

@@ -1,0 +1,43 @@
+Updated 2020.10.08 – As with all things committed to page, this topic has aged! I’ll leave the content up for context, but if you’re after this feature, take a look at the Wiki page here – https://github.com/grahampugh/jamf-upload/wiki/Jamf-AutoPkg-Processors#uploading-a-package-only
+
+Hi all, in a follow up to a previous post on using AutoPKGr with Jamf Cloud (Using AutoPKGr with a Jamf Cloud Distribution Point), I worked with a second customer on how to use the same system, but only to upload the packages. No smart groups, no policies, just the packages!
+
+But….Why?
+
+A fair question. If you wish to utilise the included Patch Management system you will need to upload packages ready to link them to software versions. As explained in the previous post, this could be a manual task.
+
+Alternatively you can use the AutoPKG recipes to package and upload your software patches, but this will also include smart groups and policies (since this pre-dates the Jamf Patch Management system).
+
+What if you could have the best of both worlds? What if you could use AutoPKG/r to package and upload software to your Jamf Cloud server , ready for you to link to your Patch Policies / Versions?
+
+Turns out, you can!
+
+How?
+
+So to do this, I took an example .jss policy (in this case the Firefox one) and started removing the various Arguments keys until I found the minimum required. Turns out, it’s only one!
+
+<key>prod_name</key> <string>%NAME%</string>
+
+That key alone will upload the package into your Jamf Cloud server without any of the Smart Groups or Policies. But, it will also upload it without a category, so if you need / want this, you’ll need the second key:
+
+<key>category</key> <string>CATEGORY GOES HERE</string>
+
+The JSSImporter processor will automatically create this category if required, upload the package and set the category.
+
+Please Note: In order to avoid confusion with already existing .jss recipes, I’d suggest using .jss-upload instead of .jss
+
+How does that look?
+
+Well altogether, the process section of the recipe looks as follows:
+
+<key>Process</key> <array> <dict> <key>Arguments</key> <dict> <key>category</key> <string>CATEGORY GOES HERE</string> <key>prod_name</key> <string>%NAME%</string> </dict> <key>Processor</key> <string>JSSImporter</string> </dict> </array>
+
+I’ve uploaded an example of the changes to a Firefox recipe here.
+
+Summary
+
+This post covers how to create an AutoPKG recipe to only upload packages to your Jamf Pro server. As always, if you have any questions, queries or comments, let me know below (or @daz_wallace on Mac Admins Slack) and I’ll try to respond to and delve into as many as I can.
+
+The usual Disclaimer:
+
+While the author has taken care to provide our readers with accurate information, please use your discretion before acting upon information based on the blog post. I will not compensate you in any way whatsoever if you ever happen to suffer a loss/inconvenience/damage because of/while making use of information in this blog.

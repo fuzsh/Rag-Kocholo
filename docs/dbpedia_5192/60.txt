@@ -1,0 +1,41 @@
+Federal Information Processing Standards (FIPS) 140-3 is a mandatory standard for the protection of sensitive or valuable data within Federal systems.
+
+FIPS 140-3 is an incremental advancement of FIPS 140-2, which standardized on the ISO 19790:2012 and ISO 24759:2017 specifications. Historically, ISO 19790 was based on FIPS 140-2, but has continued to advance since that time. FIPS 140-3 will now point back to ISO 19790 for security requirements. Keeping FIPS 140-3 as a separate standard will still allow NIST to mandate additional requirements on top of what the ISO standard contains when needed.
+
+Among the changes for FIPS 140-3 are conditional algorithm self-tests, where the algorithm self-tests are only performed if used. The pre-operational self-test is now faster, as all the algorithms are not tested until needed. This helps with startup times as the public key self-testing can be time consuming. The self tests can be run at appropriate times for your application startup. Also, there is additional testing of the DRBG entropy sources.
+
+Federal agencies purchasing cryptographic-based security systems must confirm an associated FIPS 140-3 certificate exists.
+
+This procurement “check-box” item is a deal breaker. Vendor claims of “designed for FIPS” or “FIPS ready” do not pass this hurdle. Also, be careful with claims of vendor affirmation, as it is frequently a red flag for federal buyers.
+
+No FIPS certificate = No sale
+
+Federal buyers and auditors will also confirm FIPS validation by confirming a match between your certificate's operational environment listings and your product.
+
+wolfSSL is currently the leader in embedded FIPS certificates. The wolfCrypt module holds the world’s first SP800-140Br1-compliant FIPS 140-3 Validation Certificate. We also maintain ongoing support for two historical FIPS 140-2 certificates for the wolfCrypt Cryptographic Module: #2425 and #3389 (services for product in the field is ongoing). Certificate #3389 includes algorithm support required for TLS 1.3 and can be used in conjunction with the wolfSSL embedded SSL/TLS library for full TLS 1.3 client and server support. Additionally, wolfSSL has obtained FIPS 140-3 Validated Certificate #4718. Learn more about FIPS 140-3 in our blog post.
+
+wolfSSL also supports the new ACVP (Automated Cryptographic Validation Protocol), which is the successor to the two decade old CAVP system from NIST. ACVP is intended to alleviate the manual steps of the older CAVP process, creating a more efficient and effective method for cryptographic algorithm testing and validation. Learn more about ACVP in our blog posts here and here.
+
+For additional information contact us at fips@wolfssl.com.
+
+wolfCrypt FIPS 140-3 Level 1 Certificate #4718
+
+Historical cert list:
+
+wolfCrypt v4 FIPS 140-2 Level 1 Certificate #3389
+
+wolfCrypt FIPS 140-2 Level 1 Certificate #2425
+
+For a full list of currently validated Operating Environments, please see the section below.
+
+wolfCrypt is a cryptographic software API library. Your application may rely on wolfCrypt to provide all of the cryptographic processing. Instead of performing your own FIPS validation, you may claim that you are using an embedded FIPS cryptographic module. This will make your Federal customers happy.
+
+wolfCrypt is compliant with FIPS 140-3 Implementation Guidance 9.10. We implemented a default entry point to run self-tests automatically. The FIPS OpenSSL module does not provide a default entry point.
+
+wolfCrypt FIPS Boundary Design
+
+wolfSSL has defined the wolfCrypt FIPS boundary specifically around a subset of the wolfCrypt algorithms such that it is easy and painless to update to new wolfSSL releases while maintaining an existing wolfCrypt FIPS validation. Most bugs and vulnerabilities happen in the SSL/TLS layer code - outside the cryptographic module code itself. With the FIPS boundary drawn around only the wolfCrypt cryptography algorithms, this allows users to update to newer versions of the wolfSSL SSL/TLS code and keep the same validated wolfCrypt FIPS code underneath. With a current wolfSSL support package in place, our FIPS customers receive new wolfSSL SSL/TLS release bundles packaged with their existing validated version of wolfCrypt, making it easy to stay secure and up to date!
+
+wolfSSL also provides support for a wolfCrypt FIPS Ready version of the library! wolfCrypt FIPS Ready is our FIPS enabled cryptography layer code included in the wolfSSL source tree that you can enable and build. You do not get a FIPS certificate, you are not FIPS approved, but you will be FIPS Ready. FIPS Ready means that you have included the FIPS code into your build and that you are operating according to the FIPS enforced best practices of default entry point, and power on self test.
+
+wolfCrypt FIPS Ready can be downloaded from the wolfSSL download page located here: https://www.wolfssl.com/download/. More information on getting set up with wolfCrypt FIPS Ready can be found in our FIPS Ready User Guide.

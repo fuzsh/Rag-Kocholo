@@ -1,0 +1,13 @@
+As @DanPatterson mentioned that is the coordinate system issue. If there is not a way to extract that info from the datasets you worked with, you can check your x,y (or lat,long) numbers and see if they match any known coordinate system or projections format. Northern vs southern hemisphere and east vs west might be presented differently based on the the location and system.
+
+As an example Google map can take Decimal degrees (DD) and some other formats. DD looks like this:
+
+64.42840, -45.511249 for a place in Greenland. When using this format the first number is latitude coordinate and should be between -90 and 90 and the second number is longitude coordinate (between -180 and 180) if you have numbers that match this format but being projected by mistake you can use "GCS_WGS_1984" and see if that fixes it.
+
+If the map is projected with an unknown projection, that would be harder and I would probably search for common local projection for that study area and give them a try. But remember if that is not exactly what it was projected on, your points might be shown with an offset. (Obviously not as bad as now, but still they are not in the right place) and you should be careful if you are going to do calculations based on that.
+
+Again, those formats and numbers might be different for other systems. Check this file from ESRI for supported coordinate systems.
+
+https://pro.arcgis.com/en/pro-app/latest/help/mapping/properties/pdf/projected_coordinate_systems.pd...
+
+Also, make sure when you are using "Display XY data" to bring the points, right columns (fields) in your data selected for X and Y and they are not flipped.

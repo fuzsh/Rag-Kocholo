@@ -1,115 +1,273 @@
-Monte Carlo simulations have become the dominant method for conducting financial planning analyses for clients, and most fully fledged financial planning software today includes the ability to conduct Monte Carlo analyses. Some specialized tools in areas such as Social Security planning even include capabilities for Monte Carlo simulation.
+Monte Carlo methods, originally named after the Monte Carlo Casino in Monaco, are widely used in fields such as finance, engineering, supply chain, and science to model phenomena with significant uncertainty in their inputs.
 
-Nonetheless, as an industry, we are still in the infancy of using and understanding Monte Carlo analyses for clients. While some Monte Carlo simulators have become so simple to use that they can be easy to overlook, the reality is that there are some major statistical and philosophical nuances that go into using Monte Carlo simulation, some of which continue to be underappreciated by financial advisors.
+But what is Monte Carlo simulation? How does it work? And how can I implement the simulation and analyze the results?
 
-For instance, while a recent experimental survey found that financial advisors recommend the same probability-of-success thresholds when conducting one-time and ongoing financial planning projections, the reality is that risk levels associated with the same probability-of-success threshold are very different when considered in the context of a one-time plan versus part of an ongoing financial planning service provided to clients.
+This tutorial will introduce you to the Monte Carlo simulation and the relevant statistical concepts behind the technique. We will also implement the Monte Carlo simulation in Excel, familiarizing you with relevant Excel built-in functions.
 
-Why One-Time Projections Are Different From Ongoing Plans
+Finally, the tutorial will leave you with best practices, advanced techniques, and further resources, making this tutorial your one-stop guide to learning everything about Monte Carlo simulation in Microsoft Excel.
 
-While it can be easy to gloss over, there is a major difference between Monte Carlo simulations used as part of a one-time plan versus an ongoing planning process.
+What is Monte Carlo Simulation?
 
-Monte Carlo Simulations For One-Time Plans
+Monte Carlo Simulation is a mathematical technique used to model the probability of different outcomes in a process that cannot easily be predicted due to the intervention of random variables.
 
-Let’s first consider what Monte Carlo means in the context of a one-time plan.
+It’s a powerful tool for understanding the impact of risk and uncertainty in various fields. The method relies on repeated random sampling to simulate the behavior of complex systems and processes.
 
-Example 1. Suppose John is 65 and has hired a financial advisor to run a one-time projection for him. He wants to determine how much he can afford to spend in retirement but would like to manage his investments himself and is not interested in a long-term relationship.
+The problem is first modelled by a probability distribution for each variable that has inherent uncertainty. Large numbers of random samples are then drawn from these probability distributions, and these samples are used to compute the outcomes. This process is repeated many times to create a distribution of possible outcomes, which can be analyzed statistically to provide predictions about how a system will behave.
 
-John’s advisor runs a plan based on John’s current assets and desired spending level, which results in a 90% probability of success. John is satisfied with this result and decides he will enter retirement spending at his desired level based on this one-time analysis.
+So, in simple terms. Monte Carlo simulation is a technique that predicts how complex systems will behave by simulating their outcomes many times using random values. It uses several steps:
 
-Let’s first take some time to really think about what the projection for John in the example above is saying in this case. Based on the assumptions used (i.e., John’s current assets and desired spending level), John’s projected spending would have resulted in depleting his portfolio 10% of the time. Notably, this says nothing about the magnitude of failure (and that is a major limitation of Monte Carlo simulation as commonly used currently). We haven’t specified what John’s guaranteed income levels are and, therefore, we can’t say whether spending down the rest of his assets is a financial catastrophe or perhaps just a minor inconvenience. Nonetheless, setting that concern aside, let’s continue to look at exactly what this result is saying.
+Model uncertainty: Define how each variable can vary using probability distributions.
 
-Another important assumption here is that John isn’t going to concern himself with what goes on in the markets going forward – as a one-time projection would presume. He’ll continue to charge forward blindly spending according to the initial plan. What we know from the outset is that there will be a wide range of possible long-term outcomes for John. Under some scenarios, John will experience a favorable sequence of returns and he’ll accumulate substantial sums of money – potentially far more than he might optimally be targeting. Notably, the ability to adjust is a powerful tool that John has at his disposal, but since we are considering the case of using Monte Carlo for a one-time plan, we’re going to presume that John is comfortable with the 10% chance of depleting his portfolio and doesn’t wish to revise his spending level.
+Random sampling: Randomly select values for these variables based on their distributions.
 
-Notably, while John will not be updating his Monte Carlo simulation over time, if he were to update the assumptions used in his plan, we would expect from the outset that the probability of success level would change dramatically over time (and based on actual returns experienced). A 90% probability of success only applies to John’s plan at this moment in time, but that risk level would change in either a positive or negative direction as John experiences market returns.
+Simulate outcomes: Use these values to simulate the system's behavior.
 
-One of the most important implications for the use of Monte Carlo in a one-time plan is that only doing a one-time plan comes with significant risk. With this one-and-done approach, there’s no refinement or adjustment. As a result, individuals using a one-time approach might want to be extra careful in selecting a probability of success level.
+Analyze results: Repeat the process many times to get a range of possible outcomes, then analyze these to predict the most likely scenarios.
 
-In John’s case above, is he really comfortable with a 90% probability of success? If he’s not going to adjust his spending level, would it be worth increasing the probability of success to 95%? We can’t answer these questions since the answers ultimately come down to John’s risk tolerance (which is unknown in this example) and are also likely influenced by his magnitude of failure (which is also unknown), but, the key point here is that John will want to be very careful in selecting this probability-of-success level for his one-time plan. As we’ll see in the next section, the dynamics for ongoing planning are actually very different.
+Next, we’ll build up our basic understanding of Monte Carlo simulation by delving into some relevant statistical concepts.
 
-It is worth noting that this one-time planning approach to Monte Carlo simulation is likely used by few, if any, advisors. Even project or hourly planners generally recommend that clients come back for plan updates, so this likely feels like a bit of a foreign concept when described this way.
+Understanding Random Variables and Probability Distributions
 
-Nonetheless, the probability-of-success metric so widely touted by almost all Monte Carlo software is actually a reflection of risk in precisely this context. Monte Carlo simulations, as commonly practiced today, are almost always answering the question, “Given the information we have at this moment in time, if you charged forward blindly for the next X years following the defined spending pattern, what percentage of the time are we simulating you would deplete your portfolio?”. The probability-of-success metric so widely touted actually gets substantially less intelligible when interpreted in an ongoing planning context.
+Random variables and their associated probability distributions are fundamental to Monte Carlo simulation as they provide the mathematical framework for modeling and simulating the randomness and variability inherent in complex systems.
 
-Monte Carlo Simulation For Ongoing Plans
+Random variables
 
-Although most advisors use Monte Carlo simulation in an ongoing manner, the interpretation of probability-of-success results in the context of an ongoing plan actually gets a bit more abstract and harder to understand.
+A random variable is a variable whose values are outcomes of a random phenomenon.
 
-Example 2. Suppose Sarah is 65 and has hired a financial advisor to provide ongoing financial planning services for her, including ongoing updates to her retirement projections. She wants to determine how much she can afford to spend in retirement now, and what it would require to stay on top of opportunities to adjust her spending if warranted.
+Random variables are classified into two types:
 
-Sarah’s advisor runs a plan based on Sarah’s current assets and desired spending level, which results in a 90% probability of success. Sarah is satisfied with this result and decides she will enter retirement spending at her desired level. However, Sarah is also open to adjusting her spending as warranted.
+Discrete random variables: These variables take on a countable number of distinct values. In simulations, discrete variables might model scenarios like the number of defective items in a batch, customer arrivals per hour, or other countable events.
 
-Notably, assuming that the plans for John (from Example 1, earlier) and Sarah (from Example 2, above) were otherwise identical, this first plan that was created for the two of them would be identical. However, the risk associated with a 90% probability-of-success threshold is now quite different for Sarah, who plans to revisit her plan and potentially adjust her spending if needed.
+Continuous random variables: These variables can take on any values in a continuous range. Continuous variables are used for simulations dealing with physical measurements or time durations.
 
-We’re reporting a 90% probability of success metric that assumes charging forward blindly despite knowing that Sarah has no desire to charge forward blindly. Therefore, to suggest that Sarah has a 10% chance of depleting her portfolio is overstating her risk. This was perfectly accurate for John, who did not plan to adjust his spending, but it is not accurate at all for Sarah, who plans to make adjustments as needed.
+Random variables are used in simulations because they contain the uncertainty that Monte Carlo techniques are designed to explore and quantify.
 
-That’s not to say that this risk level at a given point in time is a useless metric for Sarah, but hopefully this helps draw some attention to why a 90% probability-of-success level is very different in these 2 cases. We know from the outset that downside risk is overstated for Sarah despite it not being overstated for John.
+Probability distributions
 
-Let’s suppose John and Sarah both retire at the same time and catch a bad sequence of returns at the start of retirement. Furthermore, let’s assume that re-running their plans at this time would result in a 70% probability of success for each of them. In John’s case, he doesn’t care. Probability of success could drop to 1% and he’s still not going to change his spending. But Sarah had planned to make adjustments as needed. At some point, with the guidance of her advisor, she would cut back on spending.
+Probability distributions describe how the probabilities are distributed over the values of a random variable.
 
-Let’s suppose Sarah and her advisor decide now is the time to reduce her spending and Sarah makes adjustments to get her back to what would be a 90% probability of success. Sarah has made a significant alteration to a scenario that the Monte Carlo simulation was suggesting still had a 7-out-of-10 chance of not depleting her portfolio.
+Probability distributions are used in Monte Carlo simulation to define how different inputs or scenarios are expected to behave, which is essential for accurate modeling and decision-making.
 
-Whether that is the ‘right’ level to adjust will again depend on Sarah’s risk tolerance, magnitude of failure, etc. However, what we can say is that the original 90% result makes little sense in light of her now subsequent reduction. Likewise, even the 70% and 90% results from the updated analysis again aren’t particularly accurate reflections of her real chances of depleting her portfolio when she knows in advance that she plans to make spending adjustments.
+Normal distribution is the most commonly used distribution in statistics and simulations because many natural and human-made phenomena tend to follow this distribution due to the Central Limit Theorem.
 
-Again, while the probability-of-success metric is still useful for understanding momentary risk levels, it is really quite off in terms of expressing the likelihood that someone who plans to make spending adjustments along the way would actually deplete their portfolio.
+Normal distribution (Source)
 
-What Is Monte Carlo In An Ongoing Context?
+Normal distribution is used for modeling variables that are influenced by many small, independent effects, such as measurement errors or stock market returns.
 
-If probability of success isn’t really an accurate reflection of the risk of depleting a portfolio, then what is it, exactly? Monte Carlo remains a useful metric for understanding momentary risk levels as they relate to one another, but it really doesn’t speak to long-term risk in a meaningful way.
+Some other probability distributions are uniform distributions which are used when any outcome in a specified range is equally likely — a common assumption in simulations when no prior data is available, and binomial distributions, which are used when modeling scenarios with two possible outcomes (success/failure) across a series of experiments, such as pass/fail testing or quality control checks.
 
-Although we allowed Sarah’s probability of success to drift from 90% to 70% in Example 2 above, let’s consider a different strategy she could make to adjustments: continually updating her spending to maintain a target momentary risk level.
+Now that we have understood the concepts and theory behind Monte Carlo simulations, let’s move into the implementation side of things.
 
-Notably, this is not a very practical strategy. It’s doubtful that any client would want such volatile spending, but it is still a useful scenario to consider for illustration purposes:
+Why Use Excel for Monte Carlo Simulation?
 
-Example 3. Everything about Sarah’s scenario remains the same as above in Example 2, except now she wants to target a constant 90% probability-of-success level.
+Once you have chosen to implement a Monte Carlo simulation, you have multiple tools, such as Excel, Python, R, SAS, and MATLAB, to help you with the simulations.
 
-If Sarah is trying to target a 90% probability of success on a continual basis, then her 90% probability-of-success spending level is going to fluctuate up and down with the market.
+The most important factor to consider, especially when implementing Monte Carlo simulation for the first time, is your overall familiarity with the tool. Excel is one of the most widely used tools in the business world, which means many people are already familiar with its basic operations. This reduces training time and eliminates the need to learn new software from scratch.
 
-While this again isn’t a particularly practical approach to go about spending, it’s an approach that is useful for gaining a better understanding of what “probability of success” is really getting at in an ongoing planning context.
+Excel also provides easy-to-use tools for creating charts and graphs, which can be useful for visualizing the results of simulations. In addition, several powerful add-ins are available for Excel, enhancing its capability to perform complex Monte Carlo simulations.
 
-Consider some results from a prior analysis where we compared spending levels at a 95% constant probability of success, 70% constant probability of success, 50% constant probability of success, and 20% constant probability of success.
+However, it’s also worth noting that for more advanced simulations, especially those requiring handling large datasets or running a very high number of simulations, more specialized tools other than Excel might be more appropriate.
 
-First, to look at the 95% probability of success threshold, consider the following graphic which shows the range of inflation-adjusted spending levels over 30-year retirement periods beginning on the dates shown on the x-axis.
+Overview of Relevant Excel Functions
 
-What the chart above is saying is that, based on the plan analyzed (again, see here for more detailed assumptions) for the 30-year retirement period beginning in April of 1891, inflation-adjusted spending levels for someone following a constant 95% probability of success spending strategy would have ranged from about $4,000 per month to roughly $8,500 per month. To calculate this, we are combining historical analysis with Monte Carlo simulation. We are starting someone at a given point in history, using a Monte Carlo simulation to determine their 95% probability of success spending level, then stepping them forward one period in history based on actual returns experienced and then updating their Monte Carlo plan and solving for their new 95% probability of success spending level.
+Next, we will explore two essential Excel functions: RAND and NORM.INV, covering their syntax, parameters, and typical use cases. These functions help generate random numbers and define probability distributions, which are fundamental aspects of any simulation.
 
-Notably, inflation-adjusted spending in the constant 95% probability of success scenario during the 30-year period beginning in April of 1981 above would have started out around $6,800 per month, so there were both increases and decreases.
+The syntax and parameters for the RAND function
 
-Now, let’s repeat the same process but add in the spending ranges for someone planning to a constant 50% probability of success:
+RAND generates a random number greater than or equal to 0 and less than 1. The numbers are uniformly distributed, meaning any number within the specified range is equally likely to occur.
 
-While I’ve previously written about these same results in greater detail, what’s striking about them is how consistent the range of spending was regardless of whether the individuals here planned to a constant 95% probability of success or a constant 50% probability of success (and, in fact, the same even holds at a 20% probability of success!).
+The syntax for RAND is as follows:
 
-Why? Because momentary probability of success is not a very intelligible concept when change is planned for from the outset, even to advisors who likely understand Monte Carlo simulation significantly better than most people.
+RAND()
 
-Unlike the one-time plan where a lower probability-of-success level does meaningfully influence the risk of depleting a portfolio, lower probability-of-success levels have a trivial impact on the risk of depleting a portfolio if adjustments will be made going forward.
+The RAND function does not require any arguments. It's used simply as RAND().
 
-What we’re seeing in the chart above is essentially a reflection of the fact that, for someone who plans to use Monte Carlo on an ongoing basis, the market is going to drive spending outcomes far more than the probability-of-success threshold chosen. Granted, this does not necessarily apply to initial spending levels, as those will be significantly higher with lower probability of success scenarios, but adjusted spending levels will track each other directionally up and down over time.
+In the context of the Monte Carlo Simulation, RAND() can be used to simulate the occurrence of random events or to vary the inputs into your model.
 
-Instead, the probability-of-success level used is essentially akin to putting your thumb on the scale to slightly favor either maintaining current income (by choosing a lower probability of success) or preserving estate balance (by choosing a higher probability of success). In other words, if an advisor is going to use Monte Carlo on an ongoing basis, then the probability of success threshold targeted is more akin to a slider that adjusts the degree of preference for current income or legacy rather than a meaningful measure of the likelihood of depleting a portfolio.
+The syntax and parameters for the NORM.INV function
 
-Monte Carlo Simulation As Part Of An Ongoing Service
+While RAND generates uniform random numbers, NORM.INV is used to generate random numbers from a normal distribution, which is a common requirement in a Monte Carlo Simulation. This function returns the inverse of the normal cumulative distribution for a specified mean and standard deviation.
 
-As noted previously, few advisors are running Monte Carlo simulations intended as truly one-time projections. Even project-based planners who don’t work with clients on an ongoing basis will generally recommend getting plans updated periodically.
+The syntax for NORM.INV function is as follows:
 
-But this draws attention to an interesting disconnect between how advisors commonly think of probability-of-success thresholds. According to the common view, probability-of-success thresholds tell us something about the likelihood of depleting a portfolio at a given spending level. However, recall that this is only true for one-time projections that will not experience spending adjustments.
+NORM.INV(probability, mean, standard_deviation)
 
-If plans will be adjusted on an ongoing basis, though, then the accurate view is that a probability-of-success threshold is really just setting a preference somewhere on a spectrum from a high preference for maintaining current income (low probability of success) to a high preference for preserving legacy assets (high probability of success).
+The parameters are:
 
-Yet, it appears that this understanding of the distinction between Monte Carlo in a one-time-plan context and Monte Carlo in an ongoing planning context is not well appreciated. Recall that an experimental study found that advisors expressed no difference in probability-of-success thresholds targeted regardless of whether they were asked to provide a threshold for a one-time plan or an ongoing plan.
+probability: A probability corresponding to the normal distribution, which must be a value between 0 and 1. This is typically generated by the RAND() function.
 
-This is all particularly important since the way many of us think about probability of success (i.e., as the risk of depleting a portfolio) is actually inaccurate for the ways that we use Monte Carlo with clients.
+mean: The arithmetic mean of the normal distribution.
 
-Ultimately, this is likely good news for further demonstrating the value of financial planning as an ongoing service. Ongoing updates to a financial plan are very important. Additionally, it turns out the key metric spit out by Monte Carlo software means something very different depending on whether you are using Monte Carlo for one-time plans versus ongoing planning.
+standard_deviation: The standard deviation of the normal distribution, a measure of how spread out the numbers are around the mean.
 
-This is a level of nuance that will likely be missed by almost all DIY retirement planners. However, trying to explain to clients why probability of success is not a measure of the risk of portfolio depletion in an ongoing planning engagement requires a level of depth in understanding Monte Carlo simulation that most clients will not have, and therefore will likely not be a successful endeavor.
+The NORM.INV is used to transform uniformly distributed random numbers from the RAND function into numbers that follow a specified normal distribution. This becomes useful for modeling variables that are expected to exhibit natural variability following a normal curve.
 
-And the futileness of explaining to clients what probability of success actually means in an ongoing context is yet one more reason why perhaps probability-of-success metrics should really be pushed ‘behind the scenes’ as an important technical nuance for advisors to understand but that rarely actually gets reported to clients – similar to how doctors are going to know all sorts of technical details about how to read an EKG that never gets reported to patients.
+Now that we have all the building blocks, functions, and concepts behind a Monte Carlo simulation, let’s implement one in Microsoft Excel.
 
-Risk-based guardrails (expressed in dollar terms) including probability-of-success-driven guardrails are one such alternative presentation of Monte Carlo results that avoid these issues. Rather than talk about confusing probability-of-success thresholds, Monte Carlo results can instead be presented in terms of current spending levels, portfolio balances that would trigger a spending change, and dollar amounts of spending changes if a change was triggered.
+Implementing Monte Carlo Simulation in Microsoft Excel: An Example
 
-These are practical results that rely on language (income/spending adjustments/dollars) that clients can actually understand. Moreover, guardrails provide actionable advice that can actually help orient behavior – not to mention the peace of mind that can come from knowing what will happen ahead of time.
+Consider a scenario where you’re a data analyst working in a dynamic consumer electronics company and have been tasked with assessing the financial viability of launching a new wearable fitness tracker.
 
-If all a client knows is that their spending level reflected a 90% probability of success before a downturn started, then they’re likely going to be quite stressed as they watch a $2 million portfolio fall to $1.6 million. However, if they knew in advance that, for their particular plan, their portfolio would need to fall to $1.4 million before a spending adjustment would be triggered (and that at that point the trigger would only be a $300/month reduction in spending), then that can be incredibly powerful information for calming a client in the midst of a tumultuous market.
+The market for such devices is competitive and consumer demand can be highly variable, influenced by seasonal trends, marketing effectiveness, and competitor actions. Additionally, the costs associated with manufacturing these devices are subject to fluctuations due to changes in material costs and supply chain uncertainties.
 
-Consistent with the theme of removing the focus from probability of success, software companies may want to consider an option to remove probability of success entirely as a focal point, and instead build in something like a slider that would more accurately ask an advisor/client to define the desired preference for current income versus legacy assets.
+You have decided to use Monte Carlo simulation in Excel to address these challenges. You believe this approach will help you estimate potential profitability under different scenarios, enabling the company to make well-informed decisions about pricing strategies, production volumes, and marketing investments.
 
-Because, ultimately, that is what probability-of-success thresholds are actually getting at in an ongoing context, even if most advisors mistakenly think of probability of success as if it were being used in a one-time plan, instead.
+You have also analyzed past data from similar product launches and market studies within the consumer electronics industry. From this analysis, you have concluded certain metrics that will inform your simulation:
+
+An average demand of 10,000 units for new devices within the first year of launch, with a standard deviation of 2,000 units, reflecting the uncertainty in consumer uptake.
+
+Unit sale price typically ranges between $50 and $70, depending on competitive pricing and market saturation.
+
+The unit cost, influenced by volatile material prices and manufacturing efficiency, averages $30 per unit with a standard deviation of $5.
+
+This historical data forms the underlying assumptions of your simulation parameters, helping to create the simulation to reflect current market conditions more accurately.
+
+The steps you could follow to implement the Monte Carlo simulation for this particular example are as below:
+
+Step 1: Set up your Excel sheet
+
+First, prepare your Excel worksheet to include columns for each variable and a column for the calculated profit.
+
+Here’s how it would look initially:
+
+Setting up the Excel sheet.
+
+Step 2: Input formulas for variables
+
+In each row, you’ll input formulas to generate random values for demand, sale price, and cost based on the distributions you’ve identified:
+
+Demand: Normal distribution (mean = 10,000 units, standard deviation = 2,000 units)
+
+Sale Price: Uniform distribution ($50 to $70)
+
+Cost: Normal distribution (mean = $30, standard deviation = $5)
+
+To input these formulas one by one, select cell A2 and type the following:
+
+=NORM.INV(RAND(), 10000, 2000)
+
+The above equation creates a normal distribution with a given mean and standard deviation as below:
+
+Creating the distribution for demand.
+
+Next, select cell B2 and type in the following:
+
+=50 + (70-50) * RAND()
+
+The equation above creates a uniform distribution between $50 and $70 for the selling price as below:
+
+Creating the distribution for selling price.
+
+Select cell C2, and type the following:
+
+=NORM.INV(RAND(), 30, 5)
+
+The equation above, similar to the demand equation, creates a normal distribution with a given mean and standard deviation as below:
+
+Creating the distribution for cost.
+
+Step 3: Calculate the dependent variable
+
+Now, calculate the profit, which is the dependent variable, for each simulation using the formula in column D:
+
+=(B2 - C2) * A2
+
+Calculating the profit.
+
+Step 4: Fill down to simulate multiple scenarios
+
+What we have so far done is to create a single simulation. Let us extend it to multiple, let’s say a thousand simulations.
+
+Select cells A2 to D2 and drag the fill handle (a small square at the bottom-right of the selection) down to fill the formulas through as many rows as you want to simulate (e.g., 1000 rows for 1000 simulations).
+
+It will look something like this:
+
+Creating the simulations.
+
+Step 5: Analyze the results
+
+After running the simulations, you can analyze the results using statistical functions such as min, max, average, and standard deviations. Don’t hesitate to quickly refer to the Excel cheat sheet for a refresher on the built-in Excel functions we’ll use next.
+
+To find the average profit expected each month, type the following in a cell, say G6:
+
+=AVERAGE(D2:D1001)
+
+To find the minimum profit expected each month, type the following in a cell, say G7:
+
+=MIN(D2:D1001)
+
+To find the maximum profit expected each month, type the following in a cell, say G8:
+
+=MAX(D2:D1001)
+
+To find the standard deviation of profit, type the following in a cell, say G9:
+
+=STDEV.P(D2:D1001)
+
+Once executed, the Excel sheet should look something like this:
+
+Analyzing the simulation results.
+
+We can interpret the estimated results and the implications for the product launch as below:
+
+The average profit figure represents the expected profit from launching the new fitness tracker. It suggests that, on average, each simulation run predicts that we could expect to make around $298,278.67 in profit. This value is useful as a central estimate of profitability under the given assumptions.
+
+A minimum profit of $67,598.78 is the lowest profit observed across all our simulations. It indicates the worst-case scenario under your model’s assumptions, which is still profitable but significantly less so than the average. This could be due to particularly low demand or unfavorable cost conditions in that specific simulation.
+
+A maximum profit of $641,955.42 represents the best-case scenario, where demand and price were likely at their highest and costs at their lowest across all simulations. This shows the potential upside if conditions turn out to be highly favorable.
+
+Given the wide range between the minimum and maximum profits and the substantial standard deviation, there’s considerable financial risk associated with launching the new product.
+
+Decision-makers should consider whether the company is comfortable with this level of uncertainty and the potential for lower-than-average profits.
+
+Further, though it’s optional, we encourage you to create visualizations such as Histograms to have a visual understanding of the results of the simulations.
+
+Best Practices & Advanced Techniques to Improve the Simulations
+
+When you re-run the same simulation as above, you can observe a slight difference in the calculations, as shown below:
+
+Varying simulation results.
+
+This is because the values of the original simulation can change between iterations, influencing the resulting estimations. Though the variation is small, when the estimated value changes, a concern about the accuracy and reliability of the simulation arises in the minds of the decision-makers.
+
+Let us explore a few advanced techniques that we could use to improve the accuracy and reliability of the simulations.
+
+Increasing the number of simulations
+
+Running a larger number of simulations helps average out random fluctuations and provides a more stable and accurate estimate of the outcomes.
+
+For the example above, we can increase the number of simulation runs (e.g., from 1,000 to 10,000 or more), especially when dealing with highly variable parameters.
+
+Determining the “right” number of simulations depends on several factors.
+
+The more complex the model (i.e., the more variables and the wider the range of their interactions), the more simulations are typically needed to capture all possible outcomes and ensure that the results are not due to chance.
+
+If the inputs have high variability or are heavily skewed, more simulations will be necessary to accurately estimate the tails (extreme values) of the outcome distributions.
+
+For more detailed analyses, particularly in finance or risk management, it is not uncommon to run 10,000 to 100,000 simulations. This range is typically used to ensure robust results across various scenarios and inputs. Of course, as we mentioned previously, for such large-scale analysis, Excel is not always the best choice of tool, rather R or Python.
+
+Refining the input distributions
+
+The accuracy of the simulations largely depends on how well the input probability distributions reflect the true uncertainty and behavior of the underlying variables. In our example above, we assumed a normal distribution for demand and cost and a uniform distribution for sales price.
+
+Additionally, we could analyze more comprehensive historical data to parameterize the distributions better. We can better understand the behaviors of cost, sale, and demand on external factors based on domain expert input. We can also consider using distributions like log-normal, beta, or gamma or creating custom distributions based on empirical data.
+
+Conducting a sensitivity analysis
+
+This analysis is done to understand which input variables have the most significant impact on the output by systematically varying each input while holding others constant.
+
+In our example above, we can hold two variables constant and change one’s distribution to understand the changes in the estimates. Then, repeat the same process to the remaining two variables one by one. Eventually, this technique helps in understanding which variable to focus efforts on to improve accuracy.
+
+Employing the above techniques iteratively and analyzing the results can lead to more accurate and reliable results.
+
+Conclusion
+
+This tutorial introduced you to the Monte Carlo Simulation and the relevant statistical concepts. After introducing relevant Excel functions, the tutorial provided a step-by-step guide to implement the Monte Carlo Simulation in Excel using a real-world example.
+
+Finally, you learned about some best practices and advanced techniques to ensure your results are more accurate and reliable.
+
+If you’re particularly interested in implementing the above Monte Carlo Simulation using other tools such as Python or R, these two resources would be of use:
+
+Monte Carlo Simulations in R
+
+Monte Carlo Simulations in Python

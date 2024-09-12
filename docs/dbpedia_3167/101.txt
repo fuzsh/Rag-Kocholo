@@ -1,0 +1,51 @@
+Introduction
+
+Tweets can be associated with a location, generating a Tweet that has been âgeo-tagged.â Tweet locations can be assigned by using the Twitter user-interface or when posting a Tweet using the API. Tweet locations can be an exact âpointâ location, or a Twitter Place with a âbounding boxâ that describes a larger area ranging from a venue to an entire region.
+
+There are two âroot-levelâ JSON objects used to describe the location associated with a Tweet: coordinates and place.
+
+{ "coordinates": {}, "place": {} }
+
+The place object is always present when a Tweet is geo-tagged, while the coordinates object is only present (non-null) when the Tweet is assigned an exact location. If an exact location is provided, the coordinates object will provide a [long, lat] array with the geographical coordinates, and a Twitter Place that corresponds to that location will be assigned.
+
+Â
+
+Place object
+
+Places are specific, named locations with corresponding geo coordinates. When users decide to assign a location to their Tweet, they are presented with a list of candidate Twitter Places. When using the API to post a Tweet, a Twitter Place can be attached by specifying a place_id when posting the Tweet. Tweets associated with Places are not necessarily issued from that location but could also potentially be about that location.
+
+Â
+
+Place data dictionary
+
+Â
+
+Coordinates object data dictionary
+
+Â
+
+JSON examples for geo-referenced Tweets
+
+Tweet with Twitter Place
+
+{ "geo": null, "coordinates": null, "place": { "id": "07d9db48bc083000", "url": "https://api.twitter.com/1.1/geo/id/07d9db48bc083000.json", "place_type": "poi", "name": "McIntosh Lake", "full_name": "McIntosh Lake", "country_code": "US", "country": "United States", "bounding_box": { "type": "Polygon", "coordinates": [ [ [ -105.14544, 40.192138 ], [ -105.14544, 40.192138 ], [ -105.14544, 40.192138 ], [ -105.14544, 40.192138 ] ] ] }, "attributes": { } } }
+
+Tweet with exact location
+
+{ "geo": { "type": "Point", "coordinates": [ 40.74118764, -73.9998279 ] }, "coordinates": { "type": "Point", "coordinates": [ -73.9998279, 40.74118764 ] }, "place": { "id": "01a9a39529b27f36", "url": "https://api.twitter.com/1.1/geo/id/01a9a39529b27f36.json", "place_type": "city", "name": "Manhattan", "full_name": "Manhattan, NY", "country_code": "US", "country": "United States", "bounding_box": { "type": "Polygon", "coordinates": [ [ [ -74.026675, 40.683935 ], [ -74.026675, 40.877483 ], [ -73.910408, 40.877483 ], [ -73.910408, 40.683935 ] ] ] }, "attributes": { } } }
+
+Â
+
+Next steps
+
+Explore other Tweet JSON objects and data dictionaries:
+
+Tweet object and data dictionary
+
+User object and data dictionary
+
+Entities object and data dictionary
+
+Extended Entitites object and data dictionary
+
+Read more about Tweets and their location metadata:

@@ -1,0 +1,67 @@
+data have ;
+
+input number ;
+
+cards ;
+
+22.34
+
+3.4
+
+33
+
+323.322
+
+;
+
+I have above data set Now how to keep right side alignment with data type is character .
+
+have... want
+
+22.34 22.34
+
+3.4 3.4
+
+33 33
+
+323.322 323.322
+
+How to create want variable?
+
+Note:Want is new character variable It should be in right side.
+
+It IS right-aligned. Just take a short look at the result I posted. Note that most output destinations apart from LISTING will automatically left-align all character values, and discard any leading blanks. But that does NOT change the value stored in the variables. If you want further proof, run this:
+
+data want; set have; length char $8; char = right(put(number,best8.)); char_hex = put(char,$hex16.); run;
+
+and you will see the blanks (hex 20) in the variable.
+
+Please state exactly what you are aiming for.
+
+Hi @thanikondharish
+
+I agree with @Kurt_Bremser
+
+Don't rely on the viewer to assess the alignment (the font has not the same size for all characters : a dot is "smaller" than a digit, ..)
+
+As an alternative to the right function, you can also use the '-r' modifier in the put statement:
+
+char=put(number, best8. -r);
+
+Best,
+
+In the code example I gave you, you can see in the hex display that there are NO trailing spaces stored AT ALL.
+
+If you run different code, show us.
+
+@thanikondharish wrote:
+
+Note tralaing.
+
+There is no correct alignment as my point of view
+
+In my occasionally humble opinion the alignment of values in a data set is completely irrelevant.
+
+Since alignment really only affects people reading the data for most cases then when the data is written out in a report is when any alignment becomes important. And the reporting procedures have a number of methods to adjust alignment.
+
+Of if the data is to be written to a text file read by another program then use appropriate syntax to align things at the time the text file is created.

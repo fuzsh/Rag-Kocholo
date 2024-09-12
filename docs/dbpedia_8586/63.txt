@@ -1,0 +1,109 @@
+AutoPkg Wrapper Scripts
+
+There are myriad AutoPkg wrapper scripts/tools available out there:
+
+[Sean Kaiser’s AutoPkg Change Notifications script](http://seankaiser.com/blog/2013/12/16/autopkg-change-notifications/)
+
+[The Linde Group’s GUI-based AutoPkgr](http://www.lindegroup.com/autopkgr)
+
+[Allister Banks’ Jenkins-based script](https://www.afp548.com/2015/05/22/one-way-to-be-autopkging-the-jenkins/)
+
+[Ben Goodstein’s bash script](https://gist.github.com/fuzzylogiq/a2b922b41aa7d320dfc1)
+
+And several more…
+
+They all serve the same basic goal – run AutoPkg with a selection of recipes, and trigger some sort of notification / email / alert when an import succeeds, and when a recipe fails. This way, admins can know when something important has happened and make any appropriate changes to their deployment mechanism to incorporate new software.
+
+Everything Goes In Git
+
+Facebook is, unsurprisingly, big on software development. As such, Facebook has a strong need for source control in all things, so that code and changes can always be identified, reviewed, tested, and if necessary, reverted. Source control is an extremely powerful tool for managing differential changes among flat text files – which is essentially what AutoPkg is.
+
+Munki also benefits strongly, as all of Munki configuration is based solely on flat XML-based files. Pkginfo files, catalogs, and manifests all benefit from source control, as any changes made to the Munki repo will involve differential changes in (typically) small batches of lines relative to the overall sizes of the catalogs.
+
+Obvious note: binaries packages / files have a more awkward relationship with git and source control in general. Although it’s out of the scope of this blog post, I recommend reading up on Allister Banks’ article on git-fat on AFP548 and how to incorporate large binary files into a git repo.
+
+Git + Munki
+
+At Facebook, the entire Munki repo exists in git. When modifications are made or new packages are imported, someone on the Client Platform Engineering team makes the changes, and then puts up a differential commit for team review. Another member of the team must then review the changes, and approve. This way, nothing gets into the Munki repo that at least two people haven’t looked at. Since it’s all based on git, merging changes from separate engineers is relatively straightforward, and issuing reverts on individual packages can be done in a flash.
+
+AutoPkg + Munki
+
+AutoPkg itself already has a great relationship with git – generally all recipes are repos on GitHub, most within the AutoPkg GitHub organization, and adding a new repo generally amounts to a git clone.
+
+My initial attempts to incorporate AutoPkg repos into a separate git repo were a bit awkward. “Git repo within a git repo” is a rather nasty rabbit hole to go down, and once you get into git submodules you can see the fabric of reality tearing and the nightmares at the edge of existence beginning to leak in. Although submodules are a really neat tactic, regulating the updating of a git repo within a git repo and successfully keeping this going on several end point machines quickly became too much work for too little benefit.
+
+We really want to make sure that AutoPkg recipes we’re running are being properly source controlled. We need to be 100% certain that when we run a recipe, we know exactly what URL it’s pulling packages from and what’s happening to that package before it gets into our repo. We need to be able to track changes in recipes so that we can be alerted if a URL changes, or if more files are suddenly copied in, or any other unexpected developments occur. This step is easily done by rsyncing the various recipe repos into git, but this has the obvious downside of adding a ton of stuff to the repo that we may not ever use.
+
+The Goal
+
+The size and shape of the problem is clear:
+
+We want to put only recipes that we care about into our repo.
+
+We want to automate the updating of the recipes we care about.
+
+We want code review for changes to the Munki repo, so each package should be a separate git commit.
+
+We want to be alerted when an AutoPkg recipe successfully imports something into Munki.
+
+We want to be alerted if a recipe fails for any reason (typically due to a bad URL).
+
+We really don’t want to do any of this by hand.
+
+autopkg_runner.py
+
+Facebook’s Client Platform Engineering team has authored a Python script that performs these tasks: autopkg_runner.py.
+
+The Setup
+
+In order to make use of this script, AutoPkg needs to be configured slightly differently than usual.
+
+The RECIPE_REPO_DIR key should be the path to where all the AutoPkg git repos are stored (when added via autopkg add).
+
+The RECIPE_SEARCH_DIRS preference key should be reconfigured. Normally, it’s an array of all the git repos that are added with autopkg add (in addition to other built-in search paths). In this context, the RECIPE_SEARCH_DIRS key is going to be used to contain only two items – ‘.’ (the local directory), and a path to a directory inside your git repo that all recipes will be copied to (with rsync, specifically). As described earlier, this allows any changes in recipes to be incorporated into git differentials and put up for code review.
+
+Although not necessary for operation, I also recommend that RECIPE_OVERRIDE_DIRS be inside a git repo as well, so that overrides can also be tracked with source control.
+
+The entire Munki repo should also be within a git repo, obviously, in order to make use of source control for managing Munki imports.
+
+Notifications
+
+In the public form of this script, the create_task() function is empty. This can be populated with any kind of notification system you want – such as sending an email, generating an OS X notification to Notification Center (such as Terminal Notifier or Yo), filing a ticket with your ticketing / helpdesk system, etc.
+
+If run as is, no notifications of any kind will be generated. You’ll have to write some code to perform this task (or track me down in Slack or at a conference and badger me into doing it).
+
+What It Does
+
+The script has a list of recipes to execute inside (at line 33). These recipes are parsed for a list of parents, and all parent recipes necessary for executing these are then copied into the RECIPE_REPO_DIR from the AutoPkg preferences plist. This section is where you’ll want to put in the recipes that you want to run.
+
+Each recipe in the list is then run in sequence, and catalogs are made each time. This allows each recipe to create a full working git commit that can be added to the Munki git repo without requiring any other intervention (obviously into a testing catalog only, unless you shout “YOLO” first).
+
+Each recipe saves a report plist. This plist is parsed after each autopkg run to determine if any Munki imports were made, or if any recipes failed. The function create_task() is called to send the actual notification.
+
+If any Munki imports were made, the script will automatically change directory to the Munki repo, and create a git feature branch for that update – named after the item and the version that was imported. The changes that were made (the package, the pkginfo, and the changes to the catalogs) are put into a git commit. Finally, the current branch is switched back to the Master branch, so that each commit is standalone and not dependent on other commits to land in sequence.
+
+NOTE: the commits are NOT automatically pushed to git. Manual intervention is still necessary to push the commit to a git repo, as Facebook has a different internal workflow for doing this. An enterprising Python coder could easily add that functionality in, if so desired.
+
+Execution & Automation
+
+At this point, executing the script is simple. However, in most contexts, some automation may be desired. A straightforward launch daemon to run this script nightly could be used:
+
+Some Caveats on Automation
+
+Automation is great, and I’m a big fan of it. However, with any automated system, it’s important to fully understand the implications of each workflow.
+
+With this particular workflow, there’s a specific issue that might arise based on timing. Since each item imported into Munki via AutoPkg is a separate feature branch, that means that the catalog technically hasn’t changed when you run the .munki recipe against the Master branch. If you run this recipe twice in a row, AutoPkg will try to re-import the packages again, because the Master branch hasn’t incorporated your changes yet.
+
+In other words, you probably won’t want to run this script until your git commits are pushed into Master. This could be a potential timing issue if you are running this script on a constant time schedule and don’t get an opportunity to push the changes into master before the next iteration.
+
+I Feel Powerful Today, Give Me More
+
+If you are seeking even more automation (and feel up to doing some Python), you could add in a git push to make these changes happen right away. If you are only adding in items to a testing catalog with limited and known distribution, this may be reasonably safe way to keep track of all Munki changes in source control without requiring human intervention.
+
+Such a change would be easy to implement, since there’s already a helper function to run git commands – git_run(). Here’s some sample code that could incorporate a git push, which involves making some minor changes to the end of create_commit():
+
+Conclusions
+
+Ultimately, the goal here is to remove manual work from a repetitive process, without giving up any control or the ability to isolate changes. Incorporating Munki and AutoPkg into source control is a very strong way of adding safety, sanity, and accountability to the Mac infrastructure. Although this blog post bases it entirely around git, you could accommodate a similar workflow to Mercurial, SVN, etc.
+
+The full take-away from this is to be mindful of the state of your data at all times. With source control, it’s easier to manage multiple people working on your repo, and it’s (relatively) easy to fix a mistake before it becomes a catastrophe. Source control has the added benefit of acting as an ersatz backup of sorts, where it becomes much easier to reconstitute your repo in case of disaster because you now have a record for what the state of the repo was at any given point in its history.

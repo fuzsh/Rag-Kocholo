@@ -1,0 +1,59 @@
+When I create, for example, one.dnom glyph using the “one” glyph and scaling it to, lets say to 70% of it’s original size, the alignment inside the one.dnom works weird. First of all, it is not set to “auto” and when I do set manually to the automatic mode the right and left bearings doesn’t match the ones from “one” glyph etc
+
+Also, when I create a ligature (for example f_k), it doesn’t adopt kerning groups from f and k glyphs. Should it work this way or this is a glitch?
+
+thanks Rainer, for some reason I was sure it was a Glyphs’s feature…
+
+any thoughts on the first part of the issue?
+
+Had a look at it, and it seems what happens is that the glyph width is scaled properly, but the component is shifted horizontally when autoaligned. Easy workaround: manually set the x offset of the component to zero:
+
+I have a problem with Ldot / ldot and ldot.sc.
+
+These three glyphs was made as composed, but I need to move the dot (periodcentered) but I can’t.
+
+Another components like slash or diacritic marks can be disabled to move it.
+
+http://recordit.co/N5yaV0Jkz7
+
+Catalan people type an L and a periodcentered from their keyboards, not an Ldot.
+
+The Ldot having a Unicode was a mistake, nobody wants that Unicode to appear in Catalan texts. Make sure the two glyphs kern nicely, and if substitution in a pre-composed shape is neccesary, better name it L_periodcentered or maybe u004C00B7.
+
+Thanks Lucas,
+
+This recipe it’s only for internal design, the code replace:
+
+language CAT;
+
+sub l’ periodcentered’ l by ldot;
+
+sub L’ periodcentered’ L by Ldot;
+
+Your suggestion about nicely kern for these glyphs is valid too and I used it in all my fonts.
+
+Thanks for sharing
+
+That code will insert the Unicodes for Ldot and ldot into text, and should not be in any font. But maybe I misunderstand what you are doing…
+
+OT substitutions happen on the glyph level only, the characters of the text cannot be changed by them. Unless the implementation of the renderer is faulty. Which app does that? Do you have a reproducible example where that happens?
+
+For a short moment I thought I had misunderstood the workings of OT substitutions
+
+But then I put that code in a font and tested in an extremely common app, which is unlikely to have a faulty OT implementation.
+
+So I type L, periodcentered, L, set the language to Catalan, save as Adobe PDF.
+
+The text in that PDF then carries the unicodes of Ldot and ldot, no periodcentered anymore.
+
+You might want to start testing fonts in MS Word hekkablue. (sorry I could not resist)
+
+Why else would someone feel compelled to make a.sc and A.sc?
+
+Interesting, when using TT and the MS Word “save as PDF”, the Ldot Unicode is not inserted.
+
+So it could be that the Adobe PDF-maker for MS Word (needed to embed and test CFF from Office) causes the faulty OT implementation? That would be funny.
+
+In general Adobe and Microsoft handle OT substitutions differently and both scenarios need to be tested.
+
+So I wonder, is this the only situation where OT substitutions change Unicodes?

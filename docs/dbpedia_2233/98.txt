@@ -1,0 +1,113 @@
+Contents
+
+1 Introduction
+
+COPASI is a software application for simulation and analysis of chemical/biochemical networks and their dynamics [2].
+
+System A general CSTR dynamics can is described as:
+
+where:
+
+V - reactor volume
+
+Ci - Concentration of i specie
+
+Q - Volumetric flow rate
+
+νi - Stoichiometric coeficiente of the i specie in the stoichiometric equation r(Cin) - rate of reaction n - reaction order
+
+Case For COPASI demonstration purpose, suppose a particular simple case:
+
+Liquid System. We can consider = 0 and = V
+
+The reaction is elementary and is A → B irreversible.
+
+The system is isothermic,
+
+So, the mass balance becomes
+
+where we can identify three terms: a source Q∕V ⋅ Cio, a sink Q∕V ⋅ Ci and a reaction k ⋅ Ci
+
+Validation
+
+Analitical Solution This example is very simple and has a analytical solution for Ci(t = 0) = Co that is:
+
+Other Solutions For more complex systems, like reaction orders different of zero or one, or more than one reaction, we need numerical methods to solve them, but its always possible to achieve a stationary state solution, given by:
+
+That for first order is easy to solve in order to Ci
+
+(1)
+
+where CiS is the outlet concentration of A at stationary state.
+
+For orders (n) different from zero or one, we need to solve the equation
+
+The V∕Q, spatial time, it will be a tricky part to input to COPASI, has we will see the implementation later on.
+
+2 First order isothermal CSTR
+
+Let’s assume the following system:
+
+k = 0.15 s-1
+
+the inverse of spatial time, the spatial velocity Q∕V = 2 s-1
+
+Initial concentration in the reactor Co = 1 M
+
+Inlet concentration of reactant, constant and equal to Cio = 2
+
+and implement it in COPASI
+
+First we need to define the units Figure 1. For our case time is in s, volume in L, quantity is mol and time interval 10 (20 spacial time, a stiff thing!).
+
+Secondly, lets create a compartment, say for instance, reactor, with fixed type and volume 1 L, Figure 2.
+
+For the elementary reaction
+
+we need four species (A, B, In and Out) and the tricky part, four reactions (reaction, SourceA, OutA and OutB).
+
+Lets begin with the reactions first. The first one is the reaction itself as seen in Figure 3.
+
+The second is not really a reaction but the inlet of A (SourceA) to the reactor as seen in Figure 4.
+
+SV is a global quantity and is the spatial velocity (Q/V). We can introduce a numerical value or for commodity we can define it in Global Quantities section as seen in Figure 5
+
+If nothing more comes to the reactor its now necessary to define the sink, the outlets of A and B, like in Figures 6 and 7.
+
+We need to define the inlet concentration of A, Figure 8
+
+And finally defining the initial condition, the concentration of A inside the reactor at time=0, Figure 9.
+
+Now, we can solve the system Runing the task Time Course after the creation of a output with the Output Assistant (plots - Concentrations, Volumes and ...), Figure 10.
+
+And an automatic plot is generated, Figure 11
+
+The easiest way to validate the result is to calculate the stationary concentration of A that in Figure 11 is shown as approx. 1.86 mol/l and can be calculated as said before eq. 1,
+
+3 Second order isothermal CSTR
+
+For simplicity, let’ say that everything stays the same with the late example of first order except, obviously, the kinetic equation, which will now be
+
+The only thing to do is to change the reaction in the Reaction section to have a rate expression of second order, Figure 12
+
+Run again the Time Course Task and the automatic generated plot will appear, Figure 13.
+
+We can now validate the results by solving the system with a ODE solver like the odeint of the scipy.integrate of Python gets a CiS = 1.611 that is fully compatible with the COPASI solution (CiS = 1.61).
+
+By solving the ODE with other mean, it is necessary to emphasise that COPASI resolved the mass balance
+
+4 Conclusions
+
+The examples seem to take a lot of work for such a easy task as to solve a ODE. But the reader must make attention to the possibilities of COPASI, namely the easy implementation of other systems with very complex mechanisms and its strong ability to make Parameter Estimation.
+
+We regret the absence of the implementation of non-isothermal systems but understand that is not usually a biochemical problem.
+
+This paper is only intended to explain how to extend the huge COPASI capacity to CSTR’s and perhaps other open systems of Chemical Engineering.
+
+References
+
+This document in pdf
+
+The COPASI file example
+
+A little Python file for Example Validation

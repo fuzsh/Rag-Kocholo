@@ -1,0 +1,33 @@
+From Sphinx version 3.1 (June 2020), sphinx.ext.autosummary (finally!) has automatic recursion.
+
+So no need to hard code module names or rely on 3rd party libraries like Sphinx AutoAPI or Sphinx AutoPackageSummary for their automatic package detection any more.
+
+Example Python 3.7 package to document (see code on Github and result on ReadTheDocs):
+
+mytoolbox |-- mypackage | |-- __init__.py | |-- foo.py | |-- mysubpackage | |-- __init__.py | |-- bar.py |-- doc | |-- source | |--index.rst | |--conf.py | |-- _templates | |-- custom-module-template.rst | |-- custom-class-template.rst
+
+conf.py:
+
+import os import sys sys.path.insert(0, os.path.abspath('../..')) # Source code dir relative to this file extensions = [ 'sphinx.ext.autodoc', # Core library for html generation from docstrings 'sphinx.ext.autosummary', # Create neat summary tables ] autosummary_generate = True # Turn on sphinx.ext.autosummary # Add any paths that contain templates here, relative to this directory. templates_path = ['_templates']
+
+index.rst (note new :recursive: option):
+
+Welcome to My Toolbox ===================== Some words. .. autosummary:: :toctree: _autosummary :template: custom-module-template.rst :recursive: mypackage
+
+This is sufficient to automatically summarise every module in the package, however deeply nested. For each module, it then summarises every attribute, function, class and exception in that module.
+
+Oddly, though, the default sphinx.ext.autosummary templates don't go on to generate separate documentation pages for each attribute, function, class and exception, and link to them from the summary tables. It's possible to extend the templates to do this, as shown below, but I can't understand why this isn't the default behaviour - surely that's what most people would want..? I've raised it as a feature request.
+
+I had to copy the default templates locally, and then add to them:
+
+Copy site-packages/sphinx/ext/autosummary/templates/autosummary/module.rst to mytoolbox/doc/source/_templates/custom-module-template.rst
+
+Copy site-packages/sphinx/ext/autosummary/templates/autosummary/class.rst to mytoolbox/doc/source/_templates/custom-class-template.rst
+
+The hook into custom-module-template.rst is in index.rst above, using the :template: option. (Delete that line to see what happens using the default site-packages templates.)
+
+custom-module-template.rst (additional lines noted on the right):
+
+{{ fullname | escape | underline}} .. automodule:: {{ fullname }} {% block attributes %} {% if attributes %} .. rubric:: Module Attributes .. autosummary:: :toctree: <-- add this line {% for item in attributes %} {{ item }} {%- endfor %} {% endif %} {% endblock %} {% block functions %} {% if functions %} .. rubric:: {{ _('Functions') }} .. autosummary:: :toctree: <-- add this line {% for item in functions %} {{ item }} {%- endfor %} {% endif %} {% endblock %} {% block classes %} {% if classes %} .. rubric:: {{ _('Classes') }} .. autosummary:: :toctree: <-- add this line :template: custom-class-template.rst <-- add this line {% for item in classes %} {{ item }} {%- endfor %} {% endif %} {% endblock %} {% block exceptions %} {% if exceptions %} .. rubric:: {{ _('Exceptions') }} .. autosummary:: :toctree: <-- add this line {% for item in exceptions %} {{ item }} {%- endfor %} {% endif %} {% endblock %} {% block modules %} {% if modules %} .. rubric:: Modules .. autosummary:: :toctree: :template: custom-module-template.rst <-- add this line :recursive: {% for item in modules %} {{ item }} {%- endfor %} {% endif %} {% endblock %}
+
+custom-class-template.rst (additional lines noted on the right):

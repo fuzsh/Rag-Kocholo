@@ -1,0 +1,131 @@
+ACM SIGCOMM 2018 Full-Day Tutorial on Programming the Network Data Plane (P4)
+
+Tutorial Program
+
+Call For Participation
+
+This tutorial will provide participants with a hands-on introduction to the P4 language (www.p4.org). Attendees will learn how to express conventional and novel data-plane applications in the P4 language, and how to compile, execute, and evaluate P4 programs using Mininet, a network emulation framework
+
+Outline
+
+Through a series of simple exercises, we will show how to prototype network applications in the P4 language and compile them to programmable devices. We also aim to encourage researchers and developers to contribute to the P4 language and develop new applications.
+
+Specifically, we plan to cover the following topics:
+
+Background on P4 (2 hours)
+
+Demonstration of implementing features in P4 (1 hour)
+
+Hands-on training of P4 development environment (2.5 hours)
+
+Compiler
+
+Debugger
+
+Behavioral model and hardware targets
+
+Lab Exercises
+
+Mini-Workshop (1.5 hours)
+
+Research problems
+
+Teaching resources
+
+Getting involved
+
+Panel discussion
+
+Audience Expectations and Prerequisites
+
+Attendees will be expected to bring their own laptops. We will provide a VM image containing all the necessary packages and tools. The P4 specification is publicly available at the P4 website under an Apache license. Key development tools (front-end compiler and software switch capable of running P4 programs) are available as open-source tools (http://github.com/p4lang).
+
+Background
+
+P4 (www.p4.org) is a programming language for describing how network packets should be processed on a variety of targets ranging from general-purpose CPUs to network processors, FPGAs, and custom ASICs [1]. P4 was designed with three goals in mind: (i) protocol independence: devices should not âbake inâ specific protocols; (ii) field re-configurability: programmers should be able to modify the behavior of devices after they have been deployed; and (iii) portability: programs should not be tied to specific hardware targets. The P4 community has created â and continues to maintain and develop â specifications (for data planes, control plane APIs, standard architectures), a set of open-source tools (compilers, debuggers, code analyzers, libraries, software P4 switches, etc.), and sample P4 programs with the goal of making it easy for P4 users to quickly and correctly author new data-plane behaviors. New ideas are being developed in P4, prototyped as new forwarding behaviors, and published at some of the top conferences in networking including SIGCOMM. Existing data-plane features typically realized in a fixed-function logic are also being authored in P4.
+
+Recently, P4 has evolved to embrace the functional and architectural heterogeneity of various targets while keeping the language core simple and clean.
+
+One manifestation of this change is the development of a Portable Switch Architecture (PSA). The PSA describes common capabilities of network switch devices which process and forward packets across multiple interface. This specification improves the portability and composability of a P4 program, allowing P4 consumers and target providers to reuse their code.
+
+Second, in the past year, there have been significant new developments on the control-plane API for P4 pipelines. This tutorial will introduce P4 Runtime, the silicon-independent and protocol-independent API that can be auto-generated from an unambiguous definition of a packet processing pipeline in P4.
+
+Third, P4 continues to be a transformative technology in networking, and an increasingly popular choice for developing novel data-plane designs. Examples include P4 programs that realize in-band network telemetry [4], L4 connection load-balancing, path-condition-aware adaptive routing [5], a better NetFlow [6], and even replicated storage systems [7]. We believe there are many opportunities for academic researchers to help evolve the design of the language, discover new implementation techniques, and develop use cases.
+
+Organizers
+
+Nate Foster
+
+Cornell, USA
+
+Robert SoulÃ©Â
+
+USI, Switzerland
+
+Noa Zilberman
+
+Cambridge, UK
+
+References
+
+[1] Pat Bosshart, et al. "P4: Programming protocol-independent packet processors," ACM SIGCOMM CCR, 2014, 44(3): 87-95.
+
+[2] http://p4.org/p4/p4-and-open-vswitch/
+
+[3] https://github.com/blp/ovs-reviews/tree/p4
+
+[4] Changhoon Kim, et al. âIn-band Network Telemetry via Programmable Dataplanes,â demo at SIGCOMM 2015 and SOSR 2015.
+
+[5] Naga Katta, et al. "HULA: Scalable Load Balancing Using Programmable Data-Planes," Proceedings of the ACM SOSR, 2016.
+
+[6] Yuliang Li, et al. âFlowRadar: A Better NetFlow for Data Centers,â Proceedings of the USENIX NSDI, 2016.
+
+[7] Xin Jin, et al. âNetChain: Scale-Free Sub-RTT Coordination,â to appear in NSDI 2018.
+
+Virtual Machine
+
+We have created a virtual machine that has all of the software needed to complete the developer day exercises already installed. You can either download a virtual machine image or build it from source. Note that both of these procedures can take around 45 minutes depending on the speed of your network connection.
+
+To download the virtual machine image
+
+Install VirtualBox
+
+https://virtualbox.org
+
+Download virtual machine image
+
+P4 Tutorial 2018-06-01.ova
+
+Import virtual machine into VirtualBox
+
+Open VirtualBox, select âFile > Import Applianceâ, and navigate to the downloaded file.
+
+Boot virtual machine
+
+Select âP4 Tutorial 2018-06-01â, and click âStartâ.
+
+To build the virtual machine from source
+
+Install VirtualBox
+
+https://virtualbox.org
+
+Install Vagrant
+
+https://vagrantup.com
+
+Clone the tutorial repository
+
+$ git clone https://github.com/p4lang/tutorials
+
+Navigate to the vm directory
+
+$ cd tutorials/vm/
+
+Build the virtual machine
+
+$ vagrant up
+
+Final steps
+
+After the machine boots, you should have a graphical desktop with all required software pre-installed, logged in as username âp4â (with password âp4â).

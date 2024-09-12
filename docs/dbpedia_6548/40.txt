@@ -1,0 +1,709 @@
+Date
+
+13-DEC-2017
+
+Release Summary
+
+The WWSK v0.5.0 includes the following new features and bug fixes:
+
+WWSK Explorer - an integrated WebWorldWind client
+
+Optional Java Advanced Imaging (JAI) for Linux
+
+Control Flow module included
+
+Integration Tests
+
+Headless options for setup scripts in Linux
+
+User selectable memory configuration for Linux
+
+WWSK 0.5.0 includes an early release of the the WWSK Explorer that was debuted at the EO OpenScience 2017 conference at ESA/ESRIN. The Explorer is an integrated virtual globe web client that is connected to your WWSK installation. It provides the ability to browse your server's layers on virtual globe. It supports persistent markers and the creation of sharable bookmarks. The integrated Layer Manager supports layer sorting, opacity settings, and zooming to a layer's extents. This release of the Explorer is not mature, e.g., the integrated Layer Manager UI has room for improvement, and there are known bugs.
+
+WWSK 0.5.0 for Linux supports the inclusion of the native Java Advanced Imaging (JAI) libraries. The setup script will prompt the user if JAI should be installed. The setup script supports the removal of the JAI as well.
+
+The Control Flow module has been included in all the WWSK distributions. A default controlflow.properties file has been included (will all rules disabled) in the data_dir folder to facilitate the easy inclusion of this feature in production systems. See the Control Flow documentation or look at the comments in data_dir/controlflow.properties file for more information.
+
+JMeter integration tests have been included in this release. This includes a test runner and test data included in the repository. The integration tests run in Travis Continous Integration server and will fail the build upon error. The integration tests can be run on the local workstation as well. See the travis/run_integration_tests.sh script and the integration test profiles defined in the worldwind-geoserver/pom.xml file for more information. HTML test reports are written to the worldwind-geoserver/target/jmeter/reports folder.
+
+The setup scripts (setup-gdal.sh, setup-jai.sh and setup-java.sh) have been refactored to support headless operations via command line arguments. These scripts are now multi-purpose as they are used by both the main setup.sh script and run_integration_test.sh script.
+
+A user selectable memory configuration has been added to the main setup.sh script. The options include several predefined memory configurations and the ability to define a custom allocation.
+
+Associated GitHub Issues
+
+No. Description Type #102 Add the Control Flow module to the WWSK build new feature #139 Update Web WorldWind library enhancement #140 Updated Web WorldWind version to 0.9.0 enhancement #137 GeoTiff with JPEG compression not working with JAI bug #101 Native JAI configuration for Linux enhancement #127 Create a redistributable test data set task #125 Refactor GeoServer Functional Tests run in Travis task #130 Create integration test runner task #128 Run the GeoServer functional tests via the JMeterMavenPlugin task #120 Implement "zoom to layer" function in WWSK viewer task #115 Add viewer link to the WWSK menu category task #114 Create a WWSK Viewer prototype using the WorldWindExplorer web app task #112 Provide WorldWind viewer with URL parsing capabilities task #111 Add basic Layer Manager for the Viewer new feature #107 Implement 'WorldWind Viewer' into WWSK new feature #99 Change Windows memory allocation to 25% system memory enhancement #57 Selectable memory configuration for Linux new feature
+
+Known issues
+
+No. Description Type #138 JPEG WorldImage layers are not working with JAI bug wontfix ? WWSK Explorer occationally crashes on latest version of FireFox bug ? WWSK Explorer may lock up a the pole bug
+
+Impacts to other development teams/compatibility
+
+The worldwind-gs-explorer module and artifact id was added to the WWSK project.
+
+Some refactoring of script and resource locations.
+
+travis/run_integration_tests.sh script added. Run from the WWSK project folder.
+
+resources/gdal/setup-gdal.sh script has new command line options.
+
+resources/java/setup-java.sh script now supports reinstall.
+
+resources/jai/setup-jah.sh script added.
+
+Versions
+
+Component Version Previous GeoServer 2.11.1 GeoTools 17.1 GeoWebCache 1.11.0 ImageIO-Ext 1.1.17 JAI-Ext 1.0.13 Jetty 9.2.13.v20150730 Java JRE 8-121 JAI 1.1.3 JAI-ImageIO 1.1
+
+End User impact/User facing changes
+
+The new Explorer feature is accessed via the 'Explorer' link in the WWSK menu category.
+
+The Linux setup prompts the user to select a memory configuration.
+
+The Linux setup prompts the user to choose if JAI should be installed.
+
+Documentation
+
+See the GeoServer, GeoPackage, GDAL Image Formats, Control Flow and JAI documentation.
+
+The Explorer documentation [TODO] will be provided on the WorldWind Server Kit website.
+
+Logs
+
+The output of the integration tests can be found here:
+
+HTML reports: worldwind-geoserver/target/reports
+
+Error logs: worldwind-geoserver/target/jmeter/logs
+
+Test Tools
+
+The JMeter integration tests test the results of GetCapabilities requests, GetMap requests for core data stores, GetMap for GDAL data stores, and GetMap requests for both core and GDAL data stores with JAI installed.
+
+To run the integration tests run ./travis/run_integration_tests -c from the WWSK root project folder.
+
+The same integration tests are run by the Travis continuous integration service and they will fail the build upon error.
+
+Two other JMeter test plans are included in the WWSK project's jmeter folder hierarchy:
+
+GeoServer Functional Test.jmx : performs WMS and WPS requests for the supported data stores and image formats.
+
+GeoServer Stress Test.jmx : performs load tests with performance metrics.
+
+These test plans require data sets that not included in the repository so may require editing or customization before use.
+
+Install/Update/Removal
+
+Install
+
+WWSK is installed by simply unzipping a platform specific distribution to a folder on a target computer.
+
+Removal
+
+WWSK is removed by simply deleting the folder in which it was installed. If a wwsk.service has been created (Linux), it should be stopped, disabled and removed.
+
+Update
+
+The recommended practice for updating WWSK is to:
+
+Install a new version of WWSK alongside an older version,
+
+(Optionally) copy/move data and workspaces from the old version to the new version,
+
+Remove the old version.
+
+Updating WWSK by unzipping a distribution into an existing WWSK instance has not been tested and is not recommended.
+
+Notes
+
+Additional notes, links, and information goes here.
+
+Date
+
+22-AUG-2017
+
+Release Summary
+
+The WWSK v0.4.0 includes the following new features and bug fixes:
+
+An About WWSK page that displays the WWSK version number
+
+An Export GeoPackage page that displays a form to issue a WPS request to export a layer to a GeoPackage
+
+A fix that allows GeoPackages with hyphens in the table names.
+
+The new Export GeoPackage feature allows layers to be exported at full-fidelity, as compared to the Layer Preview, which will — in a future release — constrain the size of a GeoPackage, which may limit the number of levels of resolution. The Export GeoPackage also provides for more granular control of the GeoPackage contents. The Export GeoPackage is a secured page. You must be logged in for it to be available.
+
+Time constraints for this release precluded a fully-featured Export GeoPackage. Functionality planned for a future release includes:
+
+Using the bounds of another layer to set the bounds of the exported GeoPackage
+
+Setting the background color
+
+A style selection component
+
+Input validations
+
+An improved download link page
+
+Exporting vector layers as vector GeoPackages
+
+In previous versions of WWSK the Layer Preview | GeoPackage export imposed a constraint on the number of levels exported (4). This constraint prevented GeoPackage exports from taxing the server with lots of WMS requests needed the for higher zoom levels. With this constraint removed, higher resolution levels can be generated, but it introduces the liability of overloading the server with an enormous number of tile requests.
+
+To mitigate against this risk, consider enabling MIME type checking in the WMS Service settings and do not include the application/x-gpkg in the list of allowed MIME types.
+
+Note: The constraint on the number of levels generated in the Layer Preview / WMS export could be reimposed in a future release. The WPS export is not affected by this constraint
+
+Associated GitHub Issues
+
+No. Description Type #82 Export a layer as a GeoPackage enhancement #72 Cannot add a layer from a GeoPackage containing a hyphen in the table name bug #69 Add "About WWSK" to GeoServer new feature
+
+Known issues
+
+No. Description Type #89 Reestablish WMS constraint on GeoPackage size task
+
+Impacts to other development teams/compatibility
+
+A new module was added to the WWSK maven project:
+
+WorldWind Core UI Module (worldwind-gs-web)
+
+Versions
+
+Component Version Previous GeoServer 2.11.1 GeoTools 17.1 GeoWebCache 1.11.0 ImageIO-Ext 1.1.17 JAI-Ext 1.0.13 Jetty 9.2.13.v20150730
+
+End User impact/User facing changes
+
+A new WWSK menu category was added to the GeoServer web administration interface. Under the WWSK menu category are the About WWSK and Export GeoPackage links. The Export GeoPackage link is not visible if you are not logged in.
+
+The About WWSK shows the version number of the WorldWind Server Kit and manifests links to NASA WorldWind resources.
+
+The Export GeoPackage link manifests a new form for issuing a request to export a layer to a GeoPackage via a WPS. The form will pre-fill many of the fields upon the selection of a layer. After completing the form, click the Execute button to issue the request. When the execute request is finished, a popup window displays a link to download the prepared GeoPackage. Note, there is a timeout on the link, you must download it before it expires. The form also allows you to generate the XML for a request so that can copy and paste it into a cURL request or other client.
+
+Reminder: Exporting to a GeoPackage via the Layer Preview is a user facing feature that does not require a login. To mitigate the risk of an overburdened server, consider enabling MIME type checking in the WMS Service settings.
+
+Documentation
+
+See the README, GeoServer, GeoPackage and GDAL Image Formats documentation.
+
+Logs
+
+Location of all log files and any special documentation regarding the logging for this component.
+
+Test Tools
+
+Location of any test tools and any brief instructions on how to use them.
+
+Install/Update/Removal
+
+Install
+
+WWSK is installed by simply unzipping a platform specific distribution to a folder on a target computer.
+
+Removal
+
+WWSK is removed by simply deleting the folder in which it was installed. If a wwsk.service has been created (Linux), it should be stopped, disabled and removed.
+
+Update
+
+The recommended practice for updating WWSK is to:
+
+Install a new version of WWSK alongside an older version,
+
+(Optionally) copy/move data and workspaces from the old version to the new version,
+
+Remove the old version.
+
+Updating WWSK by unzipping a distribution into an existing WWSK instance has not been tested and is not recommended.
+
+Notes
+
+Additional notes, links, and information goes here.
+
+Date
+
+28-JUL-2017
+
+Release Summary
+
+WWSK v0.3.1 is a hot fix that addresses the loss of fidelity in imagery exported to GeoPackages from the GeoServer Layer Preview .
+
+The previous versions of WWSK the Layer Preview | GeoPackage export imposed a constraint on the number of levels exported (4). This constraint prevented GeoPackage exports from taxing the server with lots of WMS requests needed the for higher zoom levels. With this constraint removed, higher resolution levels can be generated, but it introduces the liability of overloading the server with an enormous number of tile requests.
+
+To mitigate against this risk, consider enabling MIME type checking in the WMS Service settings and do not include the application/x-gpkg in the list of allowed MIME types.
+
+Also, consider WPS as alternative to exporting to GeoPackages via the Layer Preview and WMS. WPS GeoPackage export offers greater control over the contents of the generated GeoPackage. Refer to GeoPackage As Output | GeoPackage WPS Process documentation for more information.
+
+Note: The constraint on the number of levels generated in the Layer Preview / WMS export could be reimposed in a future release. The WPS export is not affected by this constraint
+
+Associated GitHub Issues
+
+No. Description Type #75 GeoPackages exported from Layer Preview do not have same fidelity as source imagery bug
+
+Known issues
+
+No. Description Type N/A
+
+Impacts to other development teams/compatibility
+
+N/A
+
+Versions
+
+Component Version Previous GeoServer 2.11.1 GeoTools 17.1 GeoWebCache 1.11.0 ImageIO-Ext 1.1.17 JAI-Ext 1.0.13 Jetty 9.2.13.v20150730
+
+End User impact/User facing changes
+
+Exporting to a GeoPackage is a user facing feature that does not require a login. To mitigate the risk of an overburdened server, consider enabling MIME type checking in the WMS Service settings.
+
+Documentation
+
+See the README, GeoServer, GeoPackage and GDAL Image Formats documentation.
+
+Logs
+
+Location of all log files and any special documentation regarding the logging for this component.
+
+Test Tools
+
+Location of any test tools and any brief instructions on how to use them.
+
+Install/Update/Removal
+
+Install
+
+WWSK is installed by simply unzipping a platform specific distribution to a folder on a target computer.
+
+Removal
+
+WWSK is removed by simply deleting the folder in which it was installed. If a wwsk.service has been created (Linux), it should be stopped, disabled and removed.
+
+Update
+
+The recommended practice for updating WWSK is to:
+
+Install a new version of WWSK alongside an older version,
+
+(Optionally) copy/move data and workspaces from the old version to the new version,
+
+Remove the old version.
+
+Updating WWSK by unzipping a distribution into an existing WWSK instance has not been tested and is not recommended.
+
+Notes
+
+Additional notes, links, and information goes here.
+
+Date
+
+30-JUN-2017
+
+Release Summary
+
+WWSK v0.3.0 upgraded GeoServer from version 2.10.0 to 2.11.1.
+
+Also included are minor improvements to the raster GeoPackage support.
+
+This release incorporates the Travis-CI continuous integration service into the build process. The Travis-CI service publishes build artifacts from tagged commits to GitHub releases, and publishes the build artifacts from the master branch to Bintray.
+
+WWSK distributions and maven artifacts are available at https://bintray.com/nasaworldwind/maven/WorldWindServerKit/0.3.0
+
+Associated GitHub Issues
+
+No. Description Type #43 Publish WWSK maven artifacts via Travis-CI automation new feature #54 Publish WWSK maven artifacts to JCenter new feature #53 Publish WWSK artifacts to Bintray new feature #39 Change maven artifact group id to gov.nasa.worldwind.server enhancement #36 Can't browse for a file when adding a GeoPackage raster data source bug #35 Add ability to define a transparent color in GeoPackage layers enhancement #29 Branding needed to identify WWSK version enhancement #24 Migrate WWSK to GeoServer 2.11 enhancement #38 Travis continuous integration new feature #47 Maven POM refactoring #46 Deploy build artifacts to Bintray #44 Travis CI email notifications #42 Travis CI build with deploy to GitHub releases #41 Travis CI build with javadoc and sources
+
+Known issues
+
+No. Description Type
+
+Impacts to other development teams/compatibility
+
+Description outlining impacts that other development teams should be aware of and any compatibility issues or concerns:
+
+Maven group id changed from gov.nasa.worldwind to gov.nasa.worldwind.server
+
+GeoServer baseline version changed from 2.10.0 to 2.11.1
+
+Versions
+
+Component Version Previous GeoServer 2.11.1 2.10.0 GeoTools 17.1 16.0 GeoWebCache 1.11.0 1.10.0 ImageIO-Ext 1.1.17 1.1.16 JAI-Ext 1.0.13 1.0.11 Jetty 9.2.13.v20150730
+
+End User impact/User facing changes
+
+Description outlining the user facing changes associated with the release:
+
+The GeoServer web administration Server Status page has a new Modules tab that lists the version numbers of various modules. The WorldWind GeoPackage Extension modules expose the WWSK version number.
+
+Documentation
+
+See the README, GeoServer, GeoPackage and GDAL Image Formats documentation.
+
+Logs
+
+Location of all log files and any special documentation regarding the logging for this component.
+
+Test Tools
+
+Location of any test tools and any brief instructions on how to use them.
+
+Install/Update/Removal
+
+Install
+
+WWSK is installed by simply unzipping a platform specific distribution to a folder on a target computer.
+
+Removal
+
+WWSK is removed by simply deleting the folder in which it was installed. If a wwsk.service has been created (Linux), it should be stopped, disabled and removed.
+
+Update
+
+The recommended practice for updating WWSK is to:
+
+Install a new version of WWSK alongside an older version,
+
+(Optionally) copy/move data and workspaces from the old version to the new version,
+
+Remove the old version.
+
+Updating WWSK by unzipping a distribution into an existing WWSK instance has not been tested and is not recommended.
+
+Notes
+
+Should you desire to add plugins, the GeoServer version for this release is 2.11.1
+
+Date
+
+18-MAY-2017
+
+Release Summary
+
+GDAL Support
+
+The World Wind Server Kit (WWSK) v0.2.1 addresses GDAL ECW and MrSID licensing conflicts, in particular, the issue of preinstalling (distributing) the non-GPL ECW and MrSID components in the GPL-licensed GeoServer. In WWSK v0.2.1, the ECW and MrSID components are not preinstalled. Instead, the requisite platform specific distributions for these components accompany the WWSK GeoServer installation and the user must explicitly install these components, if this functionality desired. WWSK v0.2.1 handles GDAL for Windows and Linux differently.
+
+Linux
+
+To install GDAL in WWSK for Ubuntu and CentOS, the user must run the setup.sh script and then choose to install GDAL and optionally MrSID and/or ECW. If GDAL is selected, the setup.sh script installs the GDAL natives and data, and copies the GeoServer GDAL-plugin jars and ImageIO-Ext jars -- excluding the ECW and MrSID jars -- to the GeoServer's lib folder (webapps/geoserver/WEB-INF/lib). To add the ECW or MrSID support, the user must choose to install ECW and/or MrSID and agree to the respective license(s), at which point the previously excluded jars are added to the GeoServer's lib folder.
+
+Windows
+
+In WWSK for Windows, the GDAL natives and data are already installed and the GDAL-plugin jars and ImageIO-Ext jars have been copied into the GeoServer's lib folder (webapps\geoserver\WEB-INF\lib). The ECW and MrSID natives are installed explicitly by the user using the appropriate .msi installers that can be found in the installation's gdal folder. These installers install the natives (.dlls) for the selected component.
+
+Associated GitHub Issues
+
+No. Description Type #32 Restore GDAL ECW & JP2ECW support enhancement #25 Restore GDAL MrSID support enhancement #31 GeoTIFF with JPEG compression store fails after GDAL ImageIO-Ext installed bug #26 WAR file deployment to Tomcat failed bug
+
+Known Issues
+
+No. Description Type #34 Unable to open JPEG2000.jp2 image with JP2K (MrSID) Coverage Format bug #21 WCS 2.0.1 GetCoverage requests are slow bug
+
+Impacts to other development teams/compatibility
+
+In v0.2.0, the inclusion of GDAL artifacts in the worldwind-geoserver was managed by Maven via the declaration of GDAL-related dependencies in the worldwind-geoserver POM file.
+
+In v0.2.1 GDAL is not included in the worldwind-geoserver application build. The GDAL-related dependencies have been removed from the POM file. Instead, GDAL raster image support is added to worldwind-geoserver using the methods documented in the GeoServer Image Formats page. The worldwind-geoserver-dist project contains the scripts, resources and assemblies used to create distributions with the requisite resources to install GDAL support.
+
+Versions
+
+Component Version Previous GeoServer 2.10.0 GeoTools 16.0 GeoWebCache 1.10.0 ImageIO-Ext 1.1.16 1.1.13 JAI-Ext 1.0.11 Jetty 9.2.13.v20150730
+
+GDAL
+
+Linux:
+
+For the Ubuntu and CentoOS distributions, the GDAL 1.9.2 related resources are found in the installation's gdal folder. The setup.sh script performs the task of extracting and copying the artifacts to their proper folders. The inclusion of these resources in a particular distribution is controlled by the assemblies and components defined in the worldwind-geoserver-dist project.
+
+Windows:
+
+For Windows distributions, the GDAL 1.9.2 artifacts and resources have been extracted and copied to their destinations via the maven-assembly-plugin. See the worldwind-geoserver-dist POM file for details.
+
+End User impact/User facing changes
+
+Setup
+
+Linux
+
+The setup.sh script has been embellished to prompt the user whether or not to install GDAL and optionally to install ECW and/or MrSID. The script is rerunnable.
+
+The install.sh script has been renamed install-service.sh and embellished to update the service unit file (wwsk.service). The script is rerunnable.
+
+Windows
+
+The setup.bat script has been removed. Users wanting to install ECW or MrSID support should run the appropriate .msi installer found in the installation's gdal folder.
+
+Data
+
+The low-resolution world background layer has been moved from the data/nasa folder to data/nasa/base
+
+Documentation
+
+See the README, GeoServer, GeoPackage and GDAL Image Formats documentation.
+
+Logs
+
+Not applicable at this time.
+
+Test Tools
+
+Apache JMeter was used to perform functional tests targeting WWSK instances running on the Ubuntu, CentOS and Windows platforms. The "GeoServer Functional Tests.jmx" file found in the jmeter folder contains the tests. Test data must be installed on the geoserver instance being tested.
+
+Install/Update/Removal
+
+Install
+
+WWSK is installed by simply unzipping a platform specific distribution to a folder on a target computer.
+
+Linux Specific
+
+The install-service.sh script is used to install and update the wwsk.service service. It will update the paths in the service unit file.
+
+Run ./install-service.sh to install/update the wwsk.service after installing a new version of WWSK.
+
+Run ./setup.sh to configure the runtime environment. This must be performed at least once; the run.sh script will invoke setup.sh if it has not been run before. Use the reinstall parameter to recofigure, e.g., ./setup.sh reinstall
+
+Removal
+
+WWSK is removed by simply deleting the folder in which it was installed. If a wwsk.service has been created (Linux), it should be stopped, disabled and removed.
+
+Update
+
+The recommended practice for updating WWSK is to:
+
+Install a new version of WWSK alongside an older version,
+
+(Optionally) copy/move data and workspaces from the old version to the new version,
+
+Remove the old version.
+
+Updating WWSK by unzipping a distribution into an existing WWSK instance has not been tested and is not recommended.
+
+Notes
+
+Not applicable at this time.
+
+Should you desire to add plugins, the GeoServer version for this release is 2.10.0
+
+Date
+
+12-APR-2017
+
+Release Summary
+
+WorldWindServerKit (WWSK) v0.2.0 adds the capacity to export OGC GeoPackages. This release also adds support for GDAL raster layers.
+
+Raster layers can be exported to OGC GeoPackages via the Web Admin's Layer Preview or via Web Processing Service (WPS) requests
+
+The GDAL support features a fix for the ECW/JP2K library should it be added to an installation
+
+ECW and MrSID support have been excluded from this general release due to licensing conflicts, these features can be added post installation
+
+Associated GitHub Issues
+
+No. Description Type #19 Remove MrSID support from the distribution request #18 Remove ECW and JP2K (ECW) support from the distribution request #16 GeoPackage export via WPS enhancement new feature #15 GeoPackage WPS request parser does not use proper XML bindings bug #14 Change the web app context to "geoserver" enhancement #13 Adding a new JP2ECW data store causes GeoServer to crash bug #9 JPEG 2000 support is incomplete in the WWSK distribution bug #3 Web context for binary distribution should be geoserver, not worldwind-geoserver bug
+
+Known Issues
+
+No. Description Type #26 WAR file deployment to Tomcat failed bug
+
+Impacts to other development teams/compatibility
+
+Description outlining impacts that other development teams should be aware of and any compatibility issues or concerns.
+
+Versions
+
+Component Version GeoServer 2.10.0 GeoTools 16.0 GeoWebCache 1.10.0 ImageIO-Ext 1.1.13 JAI-Ext 1.0.11 Jetty 9.2.13.v20150730
+
+Java
+
+The deployed Java JRE was changed from Java 1.8.0.111 to Java 1.8.0.121
+
+GDAL
+
+Maven dependencies were established on gt-imageio-ext-gdal, excluding the ECW and MrSID related artifacts
+
+GDAL 1.9.2 natives and data were added to distributions
+
+GeoPackage
+
+GeoPackageProcessRequestPPIO was registered in the Spring applicationContext it is responsible for registering the GPKG bindings and parser for handling GeoPackage WPS requests
+
+GPKGParserDelegate was added to support the bindings of the gpkg.xsd schema
+
+GeoPackageProcess was changed to generate tiles using the OGC GeoPackage tiling scheme
+
+End User impact/User facing changes
+
+Description outlining the user facing changes associated with the release.
+
+Windows
+
+run.bat was added to launch GeoServer with proper memory and environment settings in Windows
+
+Linux
+
+install.sh creates the wwsk.service in Linux
+
+WMS
+
+Default WMS interpolation method was changed from Bilinear to Bicubic
+
+WCS
+
+Default WCS overview policy set to NEAREST
+
+WCS SRS list defined
+
+GeoWebCache
+
+WW Imagery and WW Elevations gridsets were removed from the list of default caching gridsets
+
+WW Imagery gridset was renamed to WWJ Imagery in the GeoWebCache configuration
+
+WW Elevations gridset was removed from GeoWebCache configuration
+
+Documentation
+
+See the Readme, GeoServer, GeoPackage and GDAL Image Formats documentation.
+
+Logs
+
+Location of all log files and any special documentation regarding the logging for this component.
+
+Test Tools
+
+Apache JMeter was used to perform functional tests targeting WWSK instances running on the Ubuntu, CentOS and Windows platforms.
+
+The JMeter test resources (*.jmx files) are in the /jmeter folder hierarchy
+
+Shell and Python scripts for generating WMS test input .csv can be found in the /scripts/wms_requests/ folder
+
+Install/Update/Removal
+
+Install
+
+WWSK is installed by simply unzipping a platform specific distribution to a folder on a target computer.
+
+Linux Specific Notes
+
+The wwsk.service service unit file uses a hard-coded path to /opt/maps/wwsk to locate the WWSK installation. Assuming /opt/maps/wwsk is a symbolic-link, it must be created/updated to reference the root folder of your WWSK installation. Run ./install.sh to install the wwsk.service.
+
+Removal
+
+WWSK is removed by simply deleting the folder in which it was installed. If a wwsk.service has been created (Linux), it should be stopped, disabled and removed.
+
+Update
+
+The recommended practice to update WWSK is to:
+
+Install a new version of WWSK alongside an older version,
+
+(Optionally) copy/move data and workspaces from the old version to the new version,
+
+Remove the old version.
+
+Updating WWSK by unzipping a distribution into an existing WWSK instance has not been tested and is not recommended.
+
+Notes
+
+Additional notes, links, and information goes here.
+
+Should you desire to add plugins, the GeoServer version for this release is 2.10.0
+
+Date
+
+10-FEB-2017
+
+Release Summary
+
+The World Wind Server Kit (WWSK) v0.1.0 adds important OGC GeoPackage functionality to GeoServer. This release contains the WorldWind GeoPackage Extension module that supplants the GeoServer GeoPackage community plugin and provides the capability to read and write OGC GeoPackages.
+
+WWSK is not compatible with GeoPackages created by the GeoServer GeoPackage community plugin, and visa versa.
+
+Baseline executable runs on the CentOS
+
+Baseline executable handles WMS 1.3.0 requests
+
+Baseline executable consumes AGC raster GeoPackages
+
+Baseline executable handles raster GeoPackages with mix of JPEG and PNG images
+
+Baseline executable exports raster GeoPackages conforming to the OGC GeoPackage Encoding Standard
+
+Baseline executable exports raster GeoPackage with mix of JPEG images and PNG images with transparency
+
+Resolved cropping issues with gridded images
+
+Resolved SQLite table name issues when exporting layers
+
+Associated GitHub Issues
+
+No. Description Type #10 Set default WMS interpolation mode to BILINEAR enhancement #8 Error exporting a layer to a GeoPackage if the layer name is not valid SQL bug #7 Exporting raster GeoPackage should leverage a mix of PNG and JPEG tiles enhancement #6 Improve GeoPackage support for retrieving single tiles enhancement #5 GeoServer does not export raster OSG GeoPackages bug #4 Incorrect georeferencing/cropping for some GeoPackage GetMap requests bug #2 ArrayIndexOutOfBoundsException thrown by OgcGeoPackageReader bug #1 GeoServer does not work with raster OGC GeoPackages bug
+
+Known Issues
+
+No. Description Type
+
+Impacts to other development teams/compatibility
+
+Description outlining impacts that other development teams should be aware of and any compatibility issues or concerns.
+
+Versions
+
+Component Version GeoServer 2.10.0 GeoTools 16.0 GeoWebCache 1.10.0 ImageIO-Ext 1.1.13 JAI-Ext 1.0.11 Jetty 9.2.13.v20150730
+
+End User impact/User facing changes
+
+WMS
+
+Default WMS interpolation method was set to Bilinear
+
+GeoWebCache
+
+WW Imagery_ and WW Elevations gridsets defined and added to list of default caching gridsets
+
+Documentation
+
+See the Readme, GeoServer and GeoPackage documentation.
+
+Logs
+
+Location of all log files and any special documentation regarding the logging for this component.
+
+Test Tools
+
+Location of any test tools and any brief instructions on how to use them.
+
+Install/Update/Removal
+
+Information related to the install, update and removal of WWSK
+
+Install
+
+WWSK is installed by simply unzipping a platform specific distribution to a folder on a target computer.
+
+Linux Specific
+
+Removal
+
+WWSK is removed by simply deleting the folder in which it was installed. If a wwsk.service has been created (Linux), it should be stopped, disabled and removed.
+
+Update
+
+The recommended practice to update WWSK is to:
+
+Install a new version of WWSK alongside an older version,
+
+(Optionally) copy/move data and workspaces from the old version to the new version,
+
+Remove the old version.
+
+Updating WWSK by unzipping a distribution into an existing WWSK instance has not been tested and is not recommended.
+
+Notes
+
+Additional notes, links, and information goes here.
+
+Should you desire to add plugins, the GeoServer version for this release is 2.10.0

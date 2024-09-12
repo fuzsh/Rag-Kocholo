@@ -1,0 +1,301 @@
+LinkedWiki provides a Lua Scribunto interface that implements functions to access data from RDF databases with SPARQL endpoints. If Scribunto is installed in your wiki, Lua modules and wiki templates can invoke these functions and the Linkedwiki Class.
+
+Usually, the part Lua of LinkedWiki used in infoboxes. Here, you can see an example.
+
+The objective of this module is to create an infobox that is able to save directly in a RDF database and where data are marked with a red flag when data are different of another RDF database such as Wikidata.
+
+{{#invoke:Pape|infobox | Wikidata ID = Q132845 | Bnf ID = | Titre = Adrien IV | Image = http://commons.wikimedia.org/wiki/Special:FilePath/Pope%20Hadrian%20IV.jpg | Nom de naissance = Nicolas Breakspear | Date de naissance = 1100-1-1 | Naissance précision (années) = 10 | Lieu de naissance = Abbots Langley | Date de décès = 1159-09-1 | Lieu de décès = Anagni | Election au pontificat = 1154-12-4 | Intronisation = 1154-12-5 | Fin du pontificat = 1159-9-1 }}
+
+The module uses the Extension:Capiunto.
+
+The first part saves the infobox's parameters. The second part searches the data of Wikidata. The last part builds an infobox and compare data of Wikidata with the parameters.
+
+You can test your module in the lua console with this code :
+
+You can also use Lua of LinkedWiki to print in the wiki the result of SPARQL query. Here, you can see an example.
+
+The objective of this module is to print the list authority notices about an author.
+
+{{#invoke:Authority Notice|section | Wikidata ID = Q666551 }}
+
+Definition of "Module:Authority Notice":
+
+You can test your module in the lua console with this code :
+
+Here another example with a SPARQL query with the endpoint of the w:BnF.
+
+The objective of this module is to print the list works about an author with a numeric version available online.
+
+{{#invoke:Author works|section | Bnf ID = 121308651 }}
+
+Definition of "Module:Author works":
+
+You can test your module in the lua console with this code :
+
+Again an example with a SPARQL query but with another manner to loop through key/value object of a SPARQL results.
+
+The objective of this module is to create links to the predecessor and the successor of a pope. (There may be several if the pope has to occupy his post several times)
+
+{{#invoke:Carrousel|pape | Wikidata ID = Q132845 }}
+
+Definition of "Module:Carrousel":
+
+You can test your module in the lua console with this code :
+
+linkedwiki.new(subject,config=nil,tagLang=nil,debug=nil)
+
+linkedwiki.new(subject) uses the configuration by default
+
+linkedwiki.new(subject,config) uses the configuration of config
+
+linkedwiki.new(subject,config,tagLang) uses the configuration of config but with the language of tagLang
+
+Returns a LinkedWiki object .
+
+subject : string
+
+select the subject of triples
+
+config : string : id of endpoint in the file extension.json
+
+select the configuration in order to read/write or delete the triples of this object in the database.If nil, it uses the configuration by default.
+
+tagLang : string : tag lang for example : fr or en
+
+select the default language for the function getString and addPropertyString. If nil, it uses the language in the configuration.
+
+debug : boolean
+
+Enable the debug mode.
+
+Examples :
+
+obj:getConfig()
+
+Returns configuration id (string) used by this instance.(see details about configurations)
+
+obj:setConfig(iriConfiguration)
+
+Returns nil. It changes the configuration of this instance.
+
+iriConfiguration : configuration id (see details about configurations)
+
+Example :
+
+obj:getLang()
+
+Returns lang tag (string) used by this instance.
+
+obj:setLang(tagLang)
+
+Returns nil. It changes the lang tag of this instance.
+
+tagLang : lang tag
+
+Example :
+
+obj:getSubject()
+
+Returns subject (iri/string) used by this instance.
+
+obj:setSubject(iriSubject)
+
+Returns nil. It changes the subject of this instance.
+
+Example :
+
+obj:query(query)
+
+Returns a table. For example:
+
+{ ["result"] = { ["variables"] = { "s", "o1", "o2" }, ["rows"] = { { ["s type"] = "uri", ["s"] = "http://example.org/a", ["o1 type"] = "uri", ["o1"] = "http://example.org/b", ["o2 type"] = "uri", ["o2"] = "http://example.org/b" }, { ["s type"] = "uri", ["s"] = "http://example.org/a", ["o1 type"] = "uri", ["o1"] = "http://example.org/b", ["o2 type"] = "uri", ["o2"] = "http://example.org/b" } } } }
+
+Example :
+
+obj:getValue(iriProperty)
+
+Returns the value IRI or literal without language tag of current subject with this property.
+
+iriProperty : IRI of the property
+
+Example :
+
+obj:getString(iriProperty, tagLang=nil)
+
+Returns the literal with this language tag in function of current subject with this property.
+
+iriProperty : IRI of the property
+
+tagLang : lang tag. If nil, it uses the lang tag by default.
+
+Example :
+
+obj:addPropertyWithIri(iriProperty, iriValue)
+
+Returns the response of the database. It saves one IRI in function of the storage method defined in the configuration.
+
+iriProperty : IRI of the property
+
+iriValue : IRI of the value
+
+Example :
+
+obj:addProperty(iriProperty, value, type=nil)
+
+Returns the response of the database. It saves one value without a lang tag in function of the storage method defined in the configuration.
+
+iriProperty : IRI of the property
+
+value : string or number or date or etc.
+
+type : IRI of type (see type available in XSD in SPARQL). If nil, the database will use the SPARQL standard in order to choose the type. For example, if the value is 7, the database will use xsd:integer but with the value 7.1, it will use xsd:float or xsd:double.
+
+Example without explicit type :
+
+Example with a date :
+
+Example with a double :
+
+obj:addPropertyString(iriProperty, value, tagLang=nil)
+
+Returns the response of the database. It saves one string with a lang tag in function of the storage method defined in the configuration.
+
+iriProperty : IRI of the property
+
+value : string
+
+tagLang : language tag to use with this text. If nil, the default lang tag in the configuration will be used.
+
+Example :
+
+obj:addPropertyWithLiteral(iriProperty, value, type, tagLang)
+
+Returns the response of the database. It saves one literal with a specific type and tag language tag in function of the storage method defined in the configuration.
+
+..TODO Example :
+
+obj:removeSubject()
+
+Returns the response of the database. It deletes all triples with the current subject of the instance in function of the storage method defined in the configuration.
+
+Example :
+
+obj:checkValue(property, valueInWiki)
+
+Returns wiki text. This function compares the value of this property with the parameter valueInWiki.
+
+obj:checkString(property, valueInWiki, tagLang=nil)
+
+Returns wiki text. This function compares the value of this property with the parameter valueInWiki.
+
+tagLang Lang tag of value with this property. If nil, it uses the lang tag of the current configuration.
+
+obj:checkTitle(property, labelInWiki, tagLang)
+
+Returns wiki text. This function compares the rdfs:label of object linked via property with the parameter labelInWiki.
+
+tagLang Lang tag of label. If nil, it uses the lang tag of the current configuration.
+
+obj:checkLabelOfInternLink(link, propertyOfLabel, labelInWiki, tagLang=nil)
+
+Returns wiki text. This function inserts an intern link.
+
+link Url of link
+
+propertyOfLabel Property in order to read the label
+
+labelInWiki label of link
+
+tagLang Lang tag of label. If nil, it uses the lang tag of the current configuration.
+
+obj:checkIriOfExternLink(labelOfExternLink, propertyOfExternLink, externLinkInWiki)
+
+Returns wiki text. This function inserts an external link.
+
+labelOfExternLink label of link
+
+propertyOfLabel Property in order to read the url of link in the database
+
+externLinkInWiki Url of link
+
+tagLang Lang tag of label. If nil, it uses the lang tag of the current configuration.
+
+obj:checkUser(property, valueInWiki, tagLang)
+
+Returns wiki text. This function compares the list of users in the database with the parameter valueInWiki. This function creates links to the user's pages and add a link to emails when its exist in the database with the property vcard:email.
+
+obj:checkDate(property, valueInWiki, format)
+
+Returns wiki text. This function compares the date of this property with the parameter valueInWiki.
+
+format Format in output the date with the parser #Time
+
+obj:checkImage(property, valueInWiki)
+
+Returns wiki text. This function compares the value of this property with the parameter valueInWiki.
+
+Warning: To use this functionality, you need to enable in your localsettings $wgUseInstantCommons = true;, $wgAllowExternalImages = true; and $wgExternalLinkTarget = '_blank';.
+
+How to set the size of the image and give the caption ?
+
+The function obj:checkImage returns only the wikitext of an external image to the Capiunto's infobox. You need to specify the css class when you call the Capiunto function infobox:addImage( obj:checkImage(property, valueInWiki), 'my caption', 'infobox' ). To define this class name, here "infobox", you can use the page Mediawiki:common.css of your wiki.
+
+For example, this css code limits the size of images in the div container of Capiunto with the class infobox
+
+.infobox img { max-width: 200px; max-height: 200px; }
+
+obj:checkItem(property, valueInWiki, tagLang)
+
+Returns wiki text. This function compares the list of Wikidata ID in the database with the parameter valueInWiki.
+
+linkedwiki.getCurrentTitle()
+
+Returns Title of the page
+
+linkedwiki.getCurrentIRI()
+
+Returns IRI of the page
+
+linkedwiki.isEmpty(s)
+
+Returns Boolean. Check if s is empty (nil or "").
+
+linkedwiki.explode(div, str)
+
+Returns a list.
+
+Example :
+
+linkedwiki.concatWithComma(list)
+
+Returns a string.
+
+Example :
+
+For information in Scribunto, remove the spaces before and after the text.
+
+For information in Scribunto, read the IRI of an article.
+
+In version >=3.6.0, the "check" functions add different css styles depending on the difference between the value passed in infobox parameter and the value in the DB.
+
+The module inserts the css style:
+
+mw-ext-linkedwiki-value-equal when the infobox parameter and the value in the DB are equal
+
+mw-ext-linkedwiki-new-value when the infobox parameter and the value in the DB are different
+
+mw-ext-linkedwiki-tooltip when the infobox parameter and the value in the DB are different and the the value in the DB already exists.
+
+The css styles of "red flag" is defined in the file Linkedwiki/lua/css/common.css.
+
+If you want to restore your database RDF, you can use the feature "refresh all" in the special page RDFSave (with user right data).
+
+obj:setDebug(boolDebug)
+
+obj:isDebug()
+
+You can use setDebug in order to see the errors in the SPARQL queries.
+
+obj:getLastQuery()
+
+With this function, you can see the last SPARQL query used by the precedent function.

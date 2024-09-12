@@ -1,0 +1,37 @@
+I recently bought the bq Aquaris E4.5 Ubuntu Edition. As the name suggests, it comes with the new Ubuntu Touch OS. It's a refreshing take on a phone OS, and with it's GNU/Linux base system, apt-get repository backed installation, it is in fact the phone I've always wanted. However, at this stage it is still in beta, so if you expect a polished UI and applications, you'll have to wait. At â¬169, it is not a bad deal, and I see it as part of my contribution to free open source software this year.
+
+There are a number of features still lacking or half-backed. For example, there is Bluetooth, and I could connect my Android phone, but not transfer a VCARD contact information. Also, there seems to be no way to import a VCARD file. However, as the contacts database is based on the GNOME Evolution application, I could edit its SQLite database. Below is the procedure I used to successfully transfer my phone and contacts list from an Android (Android 4.3, Cyanogenmod 10.2) phone to the Ubuntu Touch (Ubuntu 14.10 (r21)).
+
+Export
+
+On the Android phone, open the "People" app, select its settings pop-up, and click "Import / Export". In the selection window, choose "Export to storage" and acknowledge. A text file with your contacts information will be saved somewhere on your device. Find it, and transfer it over to your computer by e-mail, SFTP, etc.
+
+Convert
+
+Maybe there is a better way to import the file, but I did a raw edit of the SQL DB. It means I had to convert the VCARD file to SQL INSERT commands. The following awk script takes care of that.
+
+cat 00001.vcf | awk -F":" 'BEGIN { FS = ":"; i=0 }; { if ($0 ~ /BEGIN/) { print "INSERT INTO folder_id(uid, vcard) VALUES(\"" iÂ "\", \"BEGIN:VCARD"; i=i+1; } else if ($0 ~ /END/) { print "END:VCARD\");" } else if ($0 ~ /FN/) { print "X-EVOLUTION-FILE-AS:" $2 "\nFN:" $2 } else { print $0 } }'
+
+Besides adding the SQL statement, this adds the special field X-EVOLUTION-FILE-AS, and a unique ID counter. All fields in the DB will not be populated, however, it will still work. And, the first time you edit one of the contacts from the phone UI, it will update and populate the rest.
+
+Save the result of the command to update.sql (or any other file name you like).
+
+Import
+
+Finally, transfer the result of the awk command as a file to the Ubuntu phone, and modify the contacts DB. (Please note, I take no responsibility for loss of data or other failures this might cause).
+
+The contacts SQLite3 file is located at
+
+/home/phablet/.local/share/evolution/addressbook/system/contacts.db
+
+sqlite3 -init /tmp/update.sql contacts.db
+
+This will execute the specified sql file, and then open sqlite3 in interactive mode. You can list the contacts table to verify:
+
+SELECT * FROM folder_id;
+
+Finally, you want to stop any processes using the address book. After exiting the SQL shell (CTRL+D), use something like:
+
+kill `ps aux |grep -i address.*book | grep -v grep | tr -s ' ' | cut -d ' ' -f 2`
+
+Now open the Contacts app on the phone, and confirm that all information is there.

@@ -1,0 +1,91 @@
+Part One: Initialising and moving a sprite
+
+I find it absolutely incredible that the Commodore 64 development scene is alive and well. Thanks to companies like Psytronik there is still a healthy stream of games arriving on the C64 25 years after I first got my machine in 1990.
+
+I was fairly late to the Commodore party, having had my first 8-Bit computer experiences on my Dad’s ZX Spectrum 48k. I loved every minute I spent with the little rubber-keyed beauty, but eventually wanted to branch off into a territory of my own choosing… I wanted a computer of my own.
+
+I chose the C64 after reading about a recent price drop and an influx of new cartridge releases which promised to give the 64 a new lease of life. This didn’t turn out exactly as Commodore had planned though, and it wasn’t long after I first owned the machine that the 8-Bit computer scene gave way to the 16-Bit computers and consoles.
+
+I never once regretted my decision to follow the C64 route though.
+
+Like all 8-Bit computer owners, my first programming attempts were in the BASIC language, but I soon grew frustrated that I couldn’t make the type of games I wanted to make as BASIC just wasn’t fast enough. And so, armed with an Action Replay cartridge and the Commodore 64 Programmer’s Reference Guide, I taught myself the basics of 6502 machine language.
+
+My first creation was a Boulderdash / Repton clone called RockMaze, written mainly in BASIC but using the speed of machine language for scrolling the screen and copying levels in and out of memory. It was a fun little game to make (and play), and even had a level editor.
+
+After this, I was determined to write another game, but this time made in 100% machine language. For this, I decided it would be better to use a very simple concept, and created a clone of the Snake game (which was later made very popular by a certain mobile phone company!)
+
+My bedroom programming time soon disappeared in favour of the usual teenage pastimes (pubs and girls if I remember correctly!), and the games I made were destined to be forgotten at the back of a dusty loft.
+
+Fast forward to 2015, and after joining the Lemon64 community, I was asked if I would like to give RockMaze and Worm! an official release.
+
+Wow! Finally my games would actually get played by somebody other than myself!
+
+After some rummaging in the loft for the old tapes and converting the games to run on disk, they were uploaded to the Commodore 64 Scene Database for preservation.
+
+You can download them here:
+
+http://csdb.dk/release/?id=138977
+
+http://csdb.dk/release/?id=139870
+
+These releases and the Commodore 64 community spirit have really got me interested in creating for the C64 again, and wondering if I could finally make the kind of game I always wanted to… A platform game.
+
+One of the most fun things to do with a C64 (after playing other peoples games, of course) is tinkering with the hardware sprites.
+
+The C64 has eight hardware sprites, at a resolution of 24×21 pixels in monochrome or 12×21 in multicolour mode (where all sprites share two colours, but also have one colour of their own). It’s very easy to get a sprite displayed on the screen, and easy to get a sprite moving around using the joystick, even in BASIC.
+
+I figured this was a good place to start with my platform game, and used a sprite designer from an old Commodore Format tape called FROST (Format’s Really Original Sprite Thingy).
+
+The next step for me to plan, was an initial memory map of where I wanted to store my sprites and where my code would start. A very simplified memory map of the C64 looks like this:
+
+$0000 - $03ff Rom $0400 - $07ff Screen $0800 - $9fff Ram $a000 - $bfff BASIC rom $c000 - $cfff Ram $d000 - $dfff Input / Output and colour $e000 - $ffff Kernal
+
+The C64’s graphics chip (the VIC II) can only access one 16k quarter of the 64k of memory at a time, which means that everything that is drawn on screen by the VIC chip (such as sprites and custom character sets) has to be in the same quarter of memory as that of the screen.
+
+The default setting (as shown above) has the screen set up in the first quarter of memory, which means placing sprites somewhere before $4000 (the end of the first memory quarter). This does break up the available memory somewhat, and as it’s always nice to have a large unbroken expanse of memory available for coding, I looked for other solutions.
+
+By studying how other games have their memory maps set up, I discovered a neat trick. The VIC chip can actually access the memory underneath the Input / Output and Kernal ROMs, so is an ideal place for graphics storage. Turning off these ROMs temporarily allows you to switch your screen memory over and copy your sprites and character set underneath.
+
+This frees up the original screen memory at $0400, and if you also switch off the BASIC ROM (which is not needed if you are using machine code) you have room to store code all the way from $0400 to $cc00, which is a whopping 50k.
+
+Once I had decided where to store my sprites, the next step was to create some code (in BASIC for simplicity) to load my sprites into memory, and save whatever machine language I was about to write. Unfortunately, there is no BASIC command on the C64 for saving machine language (unlike the Spectrum’s ‘SAVE “” CODE’ command) so you have to either use one of the built in kernel routines or write some machine code to do it for you.
+
+With sprites in the C64’s memory, I could then set about getting one displayed on the screen. This is simple enough as the VIC chip does a lot of the work for you, once you give it some basic information about your sprite:
+
+Where it is in memory
+
+Colour(s)
+
+X and Y position
+
+When this is set, you can enable your sprite and admire your work!
+
+Getting the sprite to move across the screen was also a fairly easy task, with a simple machine language loop used to detect the direction of the joystick and increasing or decreasing the memory location of the sprites X position accordingly.
+
+At this point, it became apparent to me that it was going to be no easy task creating a whole game on an actual C64. It was no fun being hunched over a computer without a separate mobile keyboard, and having to keep looking up at a small flickering monitor was headache inducing. Loading and saving with an old disk drive (and even with an SD2IEC SD card reader) was taking up valuable development time. Rearranging code in memory every time I needed to insert a new instruction was painful.
+
+As much as I wanted to spend time developing my game on an actual C64, it just wasn’t practical. I have no idea how I found the time and patience to make two full games this way (especially as I didn’t have a disk drive at that time, I saved and loaded everything using cassette!) And so, it was time to search for development tools elsewhere.
+
+After discovering a thread about developing a Commodore 64 game with a PC on the Lemon64 forums, I decided to try out a utility called CBM .prg Studio by Arthur Jordison.
+
+http://www.ajordison.co.uk
+
+This marvellous utility has a great variety of tools to get a C64 dev project together. It allows you to design sprites, character sets, screens built using characters and compiles them together with your code from the assembler and injects them into the C64 emulator of your choice. You can also export all the files, put them onto an SD card and run them on a real C64.
+
+A massive amount of time is saved by developing like this, and the graphics and code can easily be rearranged in memory should the need arise. It’s also very easy to screenshot the various stages of a project when working on a PC, which allows you to look back and see how things have developed. Perfect!
+
+Having transferred all of my existing code and sprites over to CBM .prg Studio, the next task was to get the character moving at a sensible speed.
+
+Changing the X position of the sprite in a machine code loop without a delay makes the character move across the screen way too fast (this is where the advantages of switching from BASIC programming start to show!)
+
+If a delay is needed in BASIC, a simple loop is usually sufficient to slow things down. But of course, if you add a delay somewhere in a piece of code, it will delay everything that happens after it, which is not ideal if you have other events that need to happen before the delay is over.
+
+The other thing I realised by watching the sprite move left and right, is that it flickered on and off sometimes. This happens when you move a sprite in a place where the screen is being updated (the screen is updated 50 times a second with a PAL machine, and 60 times a second with NTSC). This is why anything that changes on the screen needs to be timed correctly so it happens when the screen is being updated elsewhere.
+
+The C64 has a register that keeps track of where the screen update is currently happening, so it’s a good idea to wait until this register tells you that the update has reached the bottom border of the screen. This way, you have the time it takes to finish redrawing the bottom and top border of the screen to make all of the changes you want to show.
+
+A good trick to show a visual clue of whereabouts the update is when you are moving your sprite is to change the border colour before and after your code. This is a very useful tool used by many C64 coders, and it also shows how long your code is taking to execute by the length of the stripe it creates in the border.
+
+Now I was moving the sprite once with every update (which is equal to 50 pixels per second), there was no need for a delay and the sprite moved very smoothly with no flickering occurring at all.
+
+With my character now moving left and right, it was time for the most important part of any platform game… The platforms!

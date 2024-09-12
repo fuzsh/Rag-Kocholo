@@ -1,0 +1,23 @@
+I am having difficulty setting up the NAT Policies and Firewall access rules to allow access to a website on our local server.
+
+The page loads fine if viewing directly on the server at http://localhost:85/
+
+However it cannot be viewed from any of the other terminals on the network, I have created the NAT Policy and Firewall Access Rule but it still doesn’t allow access from other terminals. Whether directly using the internal Server IP Address or the WAN IP Address with port forwarding.
+
+I also created the appropriate service rule for the TCP port 85
+
+I’ve even attempted to allow access with a loopback policy so the internal computers can enter the WAN IP to access it.
+
+Wondering if I missed a step or something else isn’t adding up. I’ve created other policies for different services but this one doesn’t seem to be working out.
+
+A few thoughts here:
+
+Take a look at this to allow a loop back:
+
+https://www.sonicwall.com/en-us/support/knowledge-base/170505780814635
+
+Ideally you shouldn’t need that because you should have internal DNS that hands out the internal server address to clients on the lan. They shouldn’t be trying to access the external IP.
+
+Also, you mentioned port forwarding. I don’t know if you are trying to allow people outside the firewall to access the server but if the server is on the trusted network this is a very unsafe practice. If a web server needs to be accessed from the Internet, it should be on the DMZ.
+
+Is the server that is hosting the website on a different VLAN then the rest of the network? You might just need a firewall rule allowing access from the other VLAN for the clients to the VLAN of the server. If there are no VLAN’s or the VLAN is not done at the Sonicwall than the issue has nothing to do with the Sonicwall.

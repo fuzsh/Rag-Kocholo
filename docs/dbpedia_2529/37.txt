@@ -1,0 +1,65 @@
+you should put those two dates between single quotes like..
+
+select Date, TotalAllowance from Calculation where EmployeeId = 1 and Date between '2011/02/25' and '2011/02/27'
+
+or can use
+
+select Date, TotalAllowance from Calculation where EmployeeId = 1 and Date >= '2011/02/25' and Date <= '2011/02/27'
+
+keep in mind that the first date is inclusive, but the second is exclusive, as it effectively is '2011/02/27 00:00:00'
+
+Since a datetime without a specified time segment will have a value of date 00:00:00.000, if you want to be sure you get all the dates in your range, you must either supply the time for your ending date or increase your ending date and use <.
+
+select Date,TotalAllowance from Calculation where EmployeeId=1 and Date between '2011/02/25' and '2011/02/27 23:59:59.999'
+
+OR
+
+select Date,TotalAllowance from Calculation where EmployeeId=1 and Date >= '2011/02/25' and Date < '2011/02/28'
+
+OR
+
+select Date,TotalAllowance from Calculation where EmployeeId=1 and Date >= '2011/02/25' and Date <= '2011/02/27 23:59:59.999'
+
+DO NOT use the following, as it could return some records from 2011/02/28 if their times are 00:00:00.000.
+
+select Date,TotalAllowance from Calculation where EmployeeId=1 and Date between '2011/02/25' and '2011/02/28'
+
+This is very old, but given a lot of experiences I have had with dates, you might want to consider this: People use different regional settings, as such, some people (and some databases/computers, depending on regional settings) may read this date 11/12/2016 as 11th Dec 2016 or Nov 12, 2016. Even more, 16/11/12 supplied to MySQL database will be internally converted to 12 Nov 2016, while Access database running on a UK regional setting computer will interpret and store it as 16th Nov 2012.
+
+Therefore, I made it my policy to be explicit whenever I am going to interact with dates and databases. So I always supply my queries and programming codes as follows:
+
+SELECT FirstName FROM Students WHERE DoB >= '11 Dec 2016';
+
+Note also that Access will accept the #, thus:
+
+SELECT FirstName FROM Students WHERE DoB >= #11 Dec 2016#;
+
+but MS SQL server will not, so I always use " ' " as above, which both databases accept.
+
+And when getting that date from a variable in code, I always convert the result to string as follows:
+
+"SELECT FirstName FROM Students WHERE DoB >= " & myDate.ToString("d MMM yyyy")
+
+I am writing this because I know sometimes some programmers may not be keen enough to detect the inherent conversion. There will be no error for dates < 13, just different results!
+
+As for the question asked, add one day to the last date and make the comparison as follows:
+
+dated >= '11 Nov 2016' AND dated < '15 Nov 2016'
+
+There are a lot of bad answers and habits in this thread, when it comes to selecting based on a date range where the records might have non-zero time values - including the second highest answer at time of writing.
+
+Never use code like this: Date between '2011/02/25' and '2011/02/27 23:59:59.999'
+
+Or this: Date >= '2011/02/25' and Date <= '2011/02/27 23:59:59.999'
+
+To see why, try it yourself:
+
+DECLARE @DatetimeValues TABLE (MyDatetime datetime); INSERT INTO @DatetimeValues VALUES ('2011-02-27T23:59:59.997') ,('2011-02-28T00:00:00'); SELECT MyDatetime FROM @DatetimeValues WHERE MyDatetime BETWEEN '2020-01-01T00:00:00' AND '2020-01-01T23:59:59.999'; SELECT MyDatetime FROM @DatetimeValues WHERE MyDatetime >= '2011-02-25T00:00:00' AND MyDatetime <= '2011-02-27T23:59:59.999';
+
+In both cases, you'll get both rows back. Assuming the date values you're looking at are in the old datetime type, a date literal with a millisecond value of 999 used in a comparison with those dates will be rounded to millisecond 000 of the next second, as datetime isn't precise to the nearest millisecond. You can have 997 or 000, but nothing in between.
+
+You could use the millisecond value of 997, and that would work - assuming you only ever need to work with datetime values, and not datetime2 values, as these can be far more precise. In that scenario, you would then miss records with a time value 23:59:59.99872, for example. The code originally suggested would also miss records with a time value of 23:59:59.9995, for example.
+
+Far better is the other solution offered in the same answer - Date >= '2011/02/25' and Date < '2011/02/28'. Here, it doesn't matter whether you're looking at datetime or datetime2 columns, this will work regardless.
+
+The other key point I'd like to raise is date and time literals. '2011/02/25' is not a good idea - depending on the settings of the system you're working in this could throw an error, as there's no 25th month. Use a literal format that works for all locality and language settings, e.g. '2011-02-25T00:00:00'.

@@ -1,0 +1,41 @@
+To convert the 51.501690392607, first take the integer portion for 51 degrees. Positive values are north; negatives are south.
+
+Then take the fractional portion: 0.501690392607
+
+Multiply by 60: 60 * 0.501690392607 = 30.10142355642
+
+Take the integer portion for 30 minutes.
+
+Then take the fractional portion: 0.10142355642
+
+Multiply by 60: 6.0854133852
+
+Round to the nearest 1 for the seconds.
+
+You come out with: 51 degrees North 30 minutes 6 seconds.
+
+For the East/West direction, repeat with east positive and west negative.
+
+To find the city, you'll have to use some database or something...
+
+I don't know why your conversion doesn't seem to match up.
+
+To convert a fractional number of degrees into degrees and minutes, in pseudocode:
+
+degrees = int(frac) minutes = int((frac - degrees) * 60)
+
+to convert "negative" numbers into "S" and "W" (vs "N" and "E") respectively, use "if".
+
+Just to make the pseudocode executable, we could use Python...:
+
+def translate(frac, islatitude): if islatitude: decorate = "NS" else: decorate = "EW" if frac < 0: dec = decorate[1] frac = abs(frac) else: dec = decorate[0] degrees = int(frac) minutes = int((frac - degrees) * 60) return "%d %d %s" % (degrees, minutes, dec)
+
+So for example:
+
+print translate(51.501690392607, True), print translate(-0.126342773437, False)
+
+would emit
+
+51 30 N 0 7 W
+
+The decoration (degrees and minutes signs) depends on the character set support of your output device -- and the 7 vs 5 minutes of arc for the W coordinate seems to be the right result for the input numbers you give.

@@ -1,0 +1,77 @@
+Xara Xtreme
+
+You can download a version of Xara Xtreme for Linux right now, which should work straight away on most Linux machines (note: this is not source code - you don't have to build it to try it, for source code look here). Development is progressing daily, so we provide two versions for download. The first is the recommended download because it will normally be the most stable. The second is the very latest, untested version, built and published automatically - the cutting edge version of Xara Xtreme, so at times it may be unstable.
+
+The easiest and recommended way to install Xara Xtreme on your system is to download and install the Autopackage archive (.package file). Click here for Autopackage installation instructions. Alternatively, download and unpack one of the tar archives (see tar archive instructions below).
+
+Xara Xtreme on Linux is now a working drawing tool. The archives below include the full Xara Xtreme help.
+
+Recommended version:
+
+ÃÂ» Download Xara Xtreme (version 0.7 Revision 1692) (Autopackage Archive - 19MB)
+
+ÃÂ» Download Xara Xtreme (version 0.7 Revision 1692) (Tar Bzip2 Archive - 19MB)
+
+Latest version (potentially unstable):
+
+What can Xara Xtreme on Linux do?
+
+Xara Xtreme on Linux is now close to having all the features of the Windows version. Click here for a long list of it's current capabilities.
+
+Tar Archive Installation Instructions on Linux on 32 bit x86 architecture (i.e. most PC linux)
+
+If you don't want to use the Autopackage provided, download one of the tar files instead and unpack it using the following tar command (the archive is bzip2 compressed):-
+
+tar xvjf xaralx0.7_rev1692.tar.bz2
+
+This will give you a xaralx directory which contains the xaralx executable and supporting files. Just run bin/xaralx. There is also an 'Examples' subfolder containing a bunch of example designs (XAR files). Use the File, Open menu option to open a XAR file.
+
+The binaries we distribute require libstdc++ version 5, which is not installed as standard on some modern distributions (for example Ubuntu 5.10). To install this library you will need to install a compatibility package using your distributions package manager (called something like libstdc++5 or compat-libstdc++-33). This is not neccessary if you install using the Autopackage archive as Autopackage takes care of this automatically.
+
+Tar Archive Installation Instructions on Linux AMD64
+
+Xara Xtreme compiles as a 64 bit native binary. However, the binaries above are 32 bit applications, but should run in compatibility mode on x86_64 architecture (e.g. AMD machines). If you want to run native 64 bit, currently you must compile the source yourself.
+
+The binaries above will run out the of the box on several 64 bit Linux distributions including Ubuntu Dapper. However, on some distributions, you may need a little tweaking to run the binary: you might want to try the following, which will help with other GTK applications (tested on Ubuntu Breezy Badger only, but it should also work on a Debian system - others you may have to work it out yourself).
+
+Follow the above instructions to dowload the 32 bit application
+
+Create a 32 bit pixbuf loaders file:
+
+sed 's:/usr/lib/:/usr/lib32/:' < /etc/gtk-2.0/gdk-pixbuf.loaders > /etc/gtk-2.0/gdk-pixbuf.loaders32
+
+Create /etc/pango32/pangorc with the following in
+
+[Pango]
+
+ModuleFiles=/etc/pango32/pango.modules
+
+[PangoX]
+
+AliasFiles=/etc/pango/pangox.aliases
+
+Create a script to launch 32 bit applications, in /usr/bin, called 32bit, containing the following
+
+#!bin/sh
+
+export GTK_PATH=/usr/lib32/gtk-2.0/
+
+export PANGO_RC_FILE=/etc/pango32/pangorc
+
+export GDK_PIXBUF_MODULE_FILE=/etc/gtk-2.0/gdk-pixbuf.loaders32
+
+$*
+
+Launch the application from the appopriate directory with
+
+32bit ./XaraLX
+
+Xara Xtreme on other Linux platforms
+
+Sorry! We don't yet have binaries available for other Linux platforms. But just as soon as we've made the rest of the source available, you should be able to build Xara LX for any Linux platform that supports wxWidgets, and gcc version 3.4.0 or later.
+
+Xara Xtreme on the Mac
+
+We have a new cross-platform code base, WXWidgets based, that is cross platform C++ and should work on the Mac, but we're short of Mac developers and testers that can help progress this. If you're a Mac developer willing to help us please contact us. Our first stage goal is simply to get a working viewer to the same level as the Linux build.
+
+ÃÂ» Bug Reporting

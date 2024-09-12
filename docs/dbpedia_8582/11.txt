@@ -1,0 +1,109 @@
+While working in enterprise level projects we create a lot of common code which reduces considerable amount of extra lines. There are multiple ways to create it i.e. common projects, utilities, libraries etc.
+
+For C# project we can create these as NuGet packages.
+
+This blog is an attempt to create step-by-step guide for creating custom NuGet packages.
+
+Overview
+
+NuGet is the package manager for the Microsoft development platform, allowing developers to easily consume and distribute reusable components.
+
+A NuGet package is a collection of code, assets, and metadata in a single file with the .nupkg extension. It is a standard way of packaging and distributing libraries, tools, and other code artifacts in the .NET ecosystem.
+
+So if we have a piece of component developed for reuse, we can create them as NuGet Package in .Net.
+
+Characteristics of NuGet package
+
+Packaging format: NuGet packages have the file extension .nupkg
+
+Metadata: It includes metadata specifying information about the package, such as its name, version, author, description, dependencies, and other relevant details in xml files named .nuspec
+
+Versioning: It should contain Semantic versioning (SemVer), where versions are expressed as MAJOR.MINOR.PATCH to help users understand the compatibility and impact of package updates
+
+Dependencies: It specify dependencies on other NuGet packages, ensuring that the necessary dependencies are installed when a package is used.
+
+Target Frameworks: It can be built to target specific .NET frameworks or versions, allowing developers to consume packages that are compatible with their project’s target framework
+
+Creating custom NuGet package
+
+Steps:
+
+Create library project
+
+Update Assembly information
+
+Package configuration in .nuspec file
+
+build the library
+
+Create NuGet Package using nuget.exe
+
+Use the package locally without publishing
+
+Publishing the library to public NuGet manager
+
+Publishing the library to custom NuGet locations
+
+Create library project: Use Visual studio to create a class library project. Update the custom details for the library in the same.
+
+Update Assembly Information
+
+Update “AssemblyInfo.cs” file under properties with title, description, company, product and copyright Information.
+
+Build the library:
+
+Build the library project in release mode. This will generate the necessary binaries (DLLs) and other artifacts.
+
+Update Package configuration in .nuspec file:
+
+Open the folder containing the library project.
+
+Install the NuGet CLI by downloading it from nuget.org. Add the nuget.exe file to a project folder
+
+Open the command prompt and enter below command to create .nuspec file
+
+nuget spec
+
+Update the .nuspec file with authors, projectUrl, Description, releaseNotes, copyright, tags details
+
+Create NuGet Package using nuget.exe
+
+Run below command to create NuGet Package.
+
+nuget pack myNugetLibrary.nuspec
+
+NuGet generates a .nupkg file in the form of identifier.version.nupkg in the current folder
+
+Use the package locally without publishing
+
+Install the package into dependent project using below command
+
+Install-Package C:\Path\To\Some\company.myNugetLibrary.1.0.0.nupkg
+
+Publishing the library to public NuGet manager
+
+Use below command to publish the package to Nuget.org. You’ll need an API key associated with your private NuGet feed. This key is used for authentication when pushing packages
+
+nuget push company.myNugetLibrary.1.0.0.nupkg -Source https://api.nuget.org/v3/index.json -ApiKey yourApiKey
+
+Consume the package in the dependent project with below command
+
+nuget install company.myNugetLibrary.1.0.0
+
+Publishing the library to custom NuGet locations
+
+Ensure that you have the NuGet CLI installed. You can download it from the official NuGet CLI download page. You’ll need an API key associated with your private NuGet feed. This key is used for authentication when pushing packages. Consult your private NuGet feed documentation on how to obtain or generate this key. Check if the private source is configured using below command
+
+nuget sources
+
+To add the private source please use below command
+
+nuget sources add -Name YourPrivateFeed -Source https://your-feed-url -UserName <YourUserName> -Password <YourApiKey>
+
+Push the package using below:
+
+nuget push company.myNugetLibrary.1.0.0.nupkg -Source YourPrivateFeed -ApiKey <YourApiKey>
+
+Consume the package in the dependent project with below command
+
+nuget install company.myNugetLibrary.1.0.0

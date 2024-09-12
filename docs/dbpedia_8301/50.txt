@@ -1,0 +1,61 @@
+To read what Mesos can be used for, download our white-paper
+
+OpenCredo Whitepaper Apache-MesosIn this post we take a look at how you would develop your own framework. A number of frameworks are available for you to install out of the box, so when would it be appropriate to write your own?One reason to write your own framework is to give you fine grained control over what gets run where and at what time. Apache Mesos can be leveraged to take care of the nitty-gritty distributed problems so that you can focus on implementing the business case. For example:
+
+In the financial industry we could make our framework prioritise tasks that are expected to have a high return
+
+In the SaaS space we could prioritise services based on traffic and put our analytics jobs on the back burner; scaling based on demand
+
+We could launch more worker applications if our queues are getting too big
+
+etc.
+
+In general: Every time we have business metrics that could be used to prioritise computations we could consider writing a framework for it.
+
+Letâs get technical
+
+Before we look at some code we should get some of our terminology straight: In short, we have one elected master that track resources on slaves and offer these resources to frameworks. Frameworks can take the offers and use this to launch a task on the slaves. These tasks are run on an executor, usually the built-in Command Executor, that manages the task for us on the machine. So the framework itself is actually a type of scheduler.
+
+For our purposes we shall write our own minimal framework and executor to show off some of the things we can do. Mesos communicates using protocol buffers, and many other language bindings are available, but we shall be doing this in Java -- all the principles translate to other languages as well though.
+
+The Demo Code
+
+The code for this blog post can be found here on githubIt's a very stripped down example framework to show off the different parts, but doesn't do anything useful. We've decided to keep this demo small on purpose, but for a more fleshed out demo framework have a look at RENDLER.
+
+Registering The Framework
+
+One of the first things that a Mesos framework should do is to register itself with the elected Mesos master so that it can start receiving resource offers. These offers then need to end up in our scheduler implementation. In Java we can use the MesosSchedulerDriver to take care off this wiring for us. We set our new MesosSchedulerDriver up by passing in a reference to our scheduler and by telling it everything it needs to know to communicate and register with the Mesos master:
+
+private staticvoidrunFramework(String mesosMaster) { Scheduler scheduler = new ExampleScheduler(getExecutorInfo()); MesosSchedulerDriver driver = new MesosSchedulerDriver(scheduler, getFrameworkInfo(), mesosMaster); int status = driver.run() == Protos.Status.DRIVER_STOPPED ? 0 : 1; driver.stop(); System.exit(status); }
+
+â
+
+Launching Tasks
+
+The ExampleScheduler itself implements the org.apache.mesos.Scheduler interface. The meat of the Scheduler is the resourceOffers method, where we can process the incoming offers from Mesos and potentially use them to launch tasks. For demo purposes we just take every offer we get.
+
+public voidresourceOffers(SchedulerDriver schedulerDriver, List offers) { for (Protos.Offer offer : offers) { Protos.TaskID taskId = buildNewTaskID(); Protos.TaskInfo task = Protos.TaskInfo.newBuilder() .setName("task " + taskId).setTaskId(taskId) .setSlaveId(offer.getSlaveId()) .addResources(buildResource("cpus", 1)) .addResources(buildResource("mem", 128)) .setData(ByteString.copyFromUtf8("" + taskIdCounter)) .setExecutor(Protos.ExecutorInfo.newBuilder(executorInfo)) .build(); launchTask(schedulerDriver, offer, task); } }
+
+To launch a Task we have to tell Mesos what offers we take and how the Task should be configured. We can take most of the Task settings from the offer, although we cheated a bit here -- in a real framework we would have a look at the resources that we're offered and adjust the configuration of our tasks accordingly. We can also pass in some data, which will be delivered to the executor. Â This is one benefit of writing your own executor instead of relying on the default one: we can send messages between the framework and the executor. One caveat is that these messages are best effort and that we shouldn't expect a framework message to be retransmitted in any reliable fashion.
+
+The Executor
+
+The framework and executor components are loosely coupled, but for demo purposes we've put them in the same project. An Executor should implement the org.apache.mesos.Executor interface, with the most important method being the launchTask one:
+
+public voidlaunchTask(ExecutorDriver executorDriver, Protos.TaskInfo taskInfo) { Integer id = Integer.parseInt(taskInfo.getData().toStringUtf8()); String reply = id.toString(); executorDriver.sendFrameworkMessage(reply.getBytes()); Protos.TaskStatus status = Protos.TaskStatus.newBuilder() .setTaskId(taskInfo.getTaskId()) .setState(Protos.TaskState.TASK_FINISHED).build(); executorDriver.sendStatusUpdate(status); }
+
+Here we have taken the data passed in from the Scheduler and are pinging it back to the framework. We also tell Mesos that the Task has finished successfully. In the real world we would be launching programs/threads, waiting for them to end and sending appropriate status messages, but we are not in the real world right now.
+
+Conclusion
+
+Writing a framework allows us to leverage all that Apache Mesos has to offer and enables us to focus on the business case. In this post we've shown that it's actually quite straight forward to do such a thing, and that it's something to seriously consider when attacking scheduling problems. At OpenCredo we're big adopters of Apache Mesos and In future posts we'll be looking at more things we can do with the platform.
+
+Related links
+
+Bart Spaans talking about Docker on Mesos at the Docker Belgium meet up
+
+Case study: WooRank needed a solution to allow developers to introduce new website features quickly
+
+White paper: Delivering Business Value with Apache Mesos
+
+This blog is written exclusively by the OpenCredo team. We do not accept external contributions.

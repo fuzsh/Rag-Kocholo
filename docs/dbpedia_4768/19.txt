@@ -1,0 +1,189 @@
+September 1999
+
+Introduction
+
+In the late 50's, both ACM and GAMM (a European association) decided that a universal, machine-independent language would be desirable -- a language for the expression of algorithms
+
+Algol 58: an interim design. Followed by lots of discussions in the Algol Bulletin and CACM.
+
+Algol 60: result of an intensive 6 day design effort by a committee in Paris. A few revisions made; Algol 60 report published in CACM in Jan 1963.
+
+The meetings were exhausting, interminable, and exhilarating. ... Progress was steady and the output, ALGOL 60, was more racehorse than camel. This language proved to be an object of stunning beauty. It was sufficiently perfect and complete so that ensuing implementations were able to append necessities, such as input-output, in the style of ALGOL 60 but their addition propagated no significant changes in the body of the original language.
+
+The ALGOL 60 report (Nauer et al., 1960) was a fitting display for the language. Nicely organized, tantalizingly incomplete, slightly ambiguous, difficult to read, consistent in format, and brief, it was a perfect canvas for a language that possessed those same properties. Like the Bible, it was meant not merely to be read, but to be interpreted.
+
+-- Alan Perlis, "The American Side of the Development of Algol," The History of Programming Languages
+
+One of the debates: should recursion be allowed?
+
+Declarations
+
+Declarations are like those in Fortran, with some improvements
+
+real, integer, boolean, label
+
+array of real, array of integer, ...
+
+No complex, no double precision ... Perlis argues against "dumbbell languages" that have constructs for various datatypes, with the different parts loosely connected (e.g. a string processing part, a matrix part, etc.)
+
+dynamic array bounds; lower and upper bounds; indefinite number of dimensions
+
+Block Structure
+
+Blocks support structured programming: if x=3 then begin y:=9; k:=10 end; In Fortran, there can be only a single statement after a logical if: IF (X .NEQ. 3) GOTO 100 Y=9 K=10 100 ... Anywhere a single statement can be used, a block can be used instead.
+
+Blocks define nested scopes:
+
+begin integer x; procedure squid; begin integer x; ... end; end; Within the procedure squid, the name x refers to a different variable than in the global scope (see Implementation of Block Structured Languages)
+
+Algol 60 (and Modula-2, Ada, etc) use lexical scoping.
+
+Early Lisps, APL, etc. use dynamic scoping.
+
+Unlike Fortran, binding of variable names to locations done at block entry time (in general, it can't be done statically)
+
+Blocks for efficient storage management
+
+begin ... begin real array x[1:1000]; ... end; ... begin real array y[1:2000]; ... end; end; The array x is allocated in the first block, then deallocated, and then the array y is allocated.
+
+Compare with Fortran equivalence statement. The Algol solution is safe, clear, and provides no opportunity for clever abuse of the type system.
+
+The bounds of array must be known at block entry time for example, in the declaration:
+
+begin integer array x[1:n]; ... end; n must be declared outside of the block in which x is declared
+
+Except for procedures as parameters, Algol can be statically type checked. The report doesn't say, but a reasonable implementation will be strongly typed.
+
+Control Structures
+
+goto
+
+if-then-else
+
+for loop
+
+switch
+
+goto -- like Fortran's, except for scope rules for labels (can only go to a label at the same lexical level, or an enclosing lexical level)
+
+if-then-else: both statement and expression forms
+
+y := if x=3 then 5 else 6; for loop: definite, indefinite iterations: baroque
+
+switch statement -- supports a kind of computed goto; now obsolete (case statement is better)
+
+parameter passing mechanisms: Algol 60 had call by name, call by value
+
+(see Parameter Passing)
+
+General Issues/Problems
+
+Syntax
+
+Goal of machine independence led to free format (in contrast to assumption of 80 column punchcards in Fortran). This is now the norm in programming languages, and most commonly used languages have an Algol-like flavor. Use of indentation to indicate program structure.
+
+3 levels of representation:
+
+reference language (used in Algol 60 report)
+
+publication language (used for publishing algorithms)
+
+hardware representations
+
+publication language could have Greek letters, subscripts, etc.
+
+hardware representations could vary from implementation to implementation
+
+(cf comma - decimal point controversy)
+
+Approaches to the problem of words such as INTEGER or WHILE:
+
+reserved word approach (now generally used, e.g. in Ada, Java, etc)
+
+keywords (strict Algol approach)
+
+keywords in context (Fortran, PL/1)
+
+A few syntactic problems:
+
+Semicolon to separate statements.
+
+Using the semicolon as a separator is much more error prone than using the semicolon as a statement terminator. (Ada takes the latter approach.) For example, the following Algol code is syntactically incorrect:
+
+if x=4 then y:=5; else y:=6; (The semicolon after the y:=5 actually puts a null statement after the assignment, so that there are two statements after the "then", resulting in an error.)
+
+overly long names for common constructs (begin, end, comment); problem with semicolon terminating comments.
+
+dangling else problem
+
+if x=3 then if y=5 then z:=8 else z:=9; Algol's solution: this statement illegal -- need to write if x=3 then begin if y=5 then z:=8 else z:=9 end; or if x=3 then begin if y=5 then z:=8 end else z:=9
+
+Information about formal parameters too spread out; odd way to indicate return value in a function (by assigning to the name of the function)
+
+integer procedure double(j); value j; integer j; double := 2*j The zero-one-infinity principle: The only reasonable numbers [in a programming language definition] are zero, one, and infinity. (From Bruce MacLennan, Principles of Programming Languages )
+
+Examples: number of characters in an identifier, number of dimensions in an array, number of arguments to a function
+
+Algol obeys this principle much better than does Fortran
+
+Lots of semantic ambiguities. (BNF used for a precise description of syntax, but semantics specified in English.) Example: are the bounds of a for loop evaluated once before executing the loop, or at the beginning of each loop execution? A literal reading of the Report implies that they are evaluated each time; but this is inefficient and unclear.
+
+As an example of the problems that can arise from such ambiguity, in the DEC System 20 implementation of SIMULA we used to have, for this loop the upper bound was evaluated once:
+
+for i:=1 until n+1 do ... but here it is in effect evaluated each time (since the code just references n directly): for i:=1 until n do See Donald Knuth, The Remaining Trouble Spots in ALGOL 60, CACM, Vol 10 No. 10, 1967.
+
+Some other problems: OWN variables, SWITCH, side effects in functions
+
+labels, procedures, and strings are not first-class citizens in Algol 60. (This allows for more efficient compilation.)
+
+no I/O statements
+
+Epilog
+
+Algol-60 didn't achieve widespread use
+
+In the USA, Burroughs supported Algol-60, but IBM supported FORTRAN
+
+Algol-60 is extremely important language in the history of programming languages
+
+Many successors: Pascal, Modula-2, Ada, Euclid, Mesa, Emerald, ...
+
+Lots of good work done on lexical analysis, parsing, compilation techniques for block-structured languages, etc, which is still used in current compilers.
+
+Some issues of enduring interest that are prominent in Algol:
+
+side effects: whether to allow them at all, and if so how to manage them. One place this problem arises in Algol-60 is in expression evaluation, since the order of evaluation isn't specified. But side effects also make life complex for people and compilers trying to reason about programs.
+
+types; static type checking
+
+abstraction mechanisms: functions and procedures. Parameter passing.
+
+scoping and name control mechanisms: block structure, its virtues, and its limitations
+
+formal specification of syntax and semantics
+
+storage allocation and reclamation
+
+Extending Algol
+
+Tony Hoare: Algol-60 was an improvement over most of its successors
+
+PL/I -- Swiss army knife language
+
+Extensible languages
+
+kinds of extension:
+
+statements (procedures!)
+
+operators
+
+control structures
+
+syntactic extensibility
+
+Smalltalk-72
+
+EL/I
+
+problems with languages with extensible syntax:

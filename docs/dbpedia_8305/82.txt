@@ -1,0 +1,77 @@
+Hierarchical Clustering Package
+
+The function FindClusters finds clusters in a dataset based on a distance or dissimilarity function. This package contains functions for generating cluster hierarchies and visualizing the mergers in the hierarchical clustering.
+
+The Agglomerate function computes a cluster hierarchy of a dataset. Agglomerate accepts data in the same forms accepted by FindClusters. The output from Agglomerate is a nested Cluster object representing the hierarchical clustering.
+
+This loads the package.
+
+Here is a small numerical dataset.
+
+This constructs a hierarchical clustering of the data.
+
+Here is some Boolean data.
+
+This clusters the Boolean data.
+
+Here is some string data.
+
+This clusters the string data.
+
+The ClusterFlatten and ClusterSplit functions are utilities for manipulating Cluster objects.
+
+This splits the clustering from the numerical data into the top 3 subclusters.
+
+This flattens the cluster.
+
+The DistanceFunction option is the same as for FindClusters. DistanceFunction defines the distance or dissimilarity between data points, while Linkage defines the dissimilarity between clusters of data points.
+
+Linkage methods determine the intercluster dissimilarity, or fusion level, given the dissimilarities between member elements. Common algorithms include single linkage, which selects the smallest distance between elements; complete linkage, which selects the largest distance between elements; and centroid linkage, which uses the dissimilarity between cluster centroids.
+
+With Linkage->f, f is a pure function that defines the linkage algorithm. Distances or dissimilarities between clusters are determined recursively using information about the distances or dissimilarities of the unmerged clusters and their counterparts to determine the distances or dissimilarities for the newly merged cluster. If i and j represent clusters to be merged, new distances or dissimilarities are recursively calculated between this merged cluster and the remaining k clusters. The function f defines the recursion and is passed arguments f[dik,djk,dij,ni,nj,nk], where d represents the distances or dissimilarities between clusters and n represents the number of data elements in a cluster. The function returns the dissimilarity between k and the cluster formed by merging clusters i and j.
+
+This clusters data using the weighted average linkage method.
+
+The following uses a pure function equivalent to the weighted average linkage.
+
+Elements can be labeled using a list of rules or a single rule. Distances or dissimilarities between elements are computed using the expression on the left‐hand sides of the rules. The output Cluster object contains the right‐hand sides of the rules.
+
+This clusters the data, showing results by label.
+
+It is also possible to build a cluster hierarchy directly using a distance or dissimilarity matrix—a matrix that provides the pairwise distances or dissimilarities between all data elements in lieu of a distance or dissimilarity function. In a distance matrix, the element in the i th row and j th column stores the distance value between the i th and j th data elements. Note that only the upper‐triangular portion of the matrix is used, that is, i<j, since distances and dissimilarities are symmetric.
+
+The DistanceMatrix function can be given a DistanceFunction option to define the distance measure.
+
+Here is an example distance matrix.
+
+This clusters the distance matrix directly, representing data elements by row number.
+
+This clusters the distance matrix, specifying the corresponding data elements.
+
+The binary tree structure of the hierarchical cluster leads naturally to a graphical representation—the dendrogram. A dendrogram plot shows a visual representation of the merger history by connecting two lines representing clusters with a bar at their fusion level.
+
+This generates a basic dendrogram plot.
+
+This generates a dendrogram using the Manhattan distance.
+
+This generates a dendrogram using Ward’s linkage method to cluster the data.
+
+The option LeafLabels is provided to support labeling of the dendrogram. For data, a value of LeafLabels->Automatic will use the data element position for the label, but the option can also take a list of expressions or a function. The function will be applied to each data element to generate the label expression. For Cluster objects, the LeafLabels option can take a function, but not a list or Automatic, as there is no unambiguous mapping between the labels and data points in a Cluster object.
+
+This generates a dendrogram with automatically generated labels.
+
+This generates a dendrogram using a list of labels.
+
+This generates a dendrogram using a label function.
+
+For large datasets, only a summary of the full dendrogram may be desired. Dendrograms may be truncated using the TruncateDendrogram option by providing an integer or a list of two integers. If given as a list of two integers, the first value specifies the fusion level above which mergers should not be shown, while the second indicates the fusion level under which the dendrogram should be truncated. For a single integer n, TruncateDendrogram->n is equivalent to TruncateDendrogram->{1,n}. A value of ∞ may be given as a second value to show the full clustering without truncation from below. When a cluster is truncated and labels are specified, a box is substituted for a label indicating the size of the cluster that has been truncated.
+
+Here is a larger dataset to cluster. It is based on Fisher's iris data.
+
+This turns off tie warnings.
+
+This generates a dendrogram truncated to show only the highest 20 mergers.
+
+This highlights the two top clusters.
+
+This generates a dendrogram truncated between levels 2 and 20.

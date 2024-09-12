@@ -1,0 +1,23 @@
+Hello,
+
+I’m very new with backup.
+
+We’re using Symantec Backup Exec 2014 to backup our servers to tape library.
+
+So I was instructed to use Used tapes for backup jobs & use the “scratch media” tool to overwrite these tapes.
+
+I’ve noticed that for the software to recognize the used tape & allow me to scratch it, takes forever, is that normal ? and on a certain slot, when I insert the tape, I can’t scratch it as it’s labeled as “Unknown Media” !!
+
+Also, after I scratched the media, then clicked on " inventory → Inventory now", does it also take time for the software to recognize the “inventory now” instruction because it still shows "Not Appendable-Media Full " rather than “Blank Media” !!
+
+I suspected that maybe something went wrong because I didn’t notice if there was a job running at the time when I replaced the tape.
+
+HELP, it’s urgent. I couldn’t find help anywhere else !
+
+While I can’t argue with the recommendation to use Veeam if you’re fully virtualized, tapes are still a valid method of backing up…
+
+Once the tapes are in the Scratch Media pool, if you set the job in BE to run as " Append to media, Overwrite if no appendable media is found" instead of “Append to media. Terminate if no appendable media is found”, it should allow you to use the scratch media pool. By design, Symantec didn’t make scratch media appendable.
+
+It sounds like you could benefit from our Virtual Tape Library. You could either do disk-to-disk or disk-to-disk-to-tape. This would greatly reduce your backup window by increasing the speed of your backups. Disk will be much faster than tape and also allow for you to off-load the backups to another device; if you are to choose the disk-to-disk-to-tape architecture.
+
+You can find out more info here, but let me know if you have any questions: Virtual Tape Library (VTL) from StarWind

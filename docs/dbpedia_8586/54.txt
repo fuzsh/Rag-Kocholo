@@ -1,0 +1,373 @@
+If you’ve used Linux for more than ten minutes, you’ve almost certainly come across the nightmare that is package management. You know what I mean – dependancy hell has become legendary and it’s no exagguration to say that one of the most offputting aspects of Linux for a new user is the lack of InstallShield type 3 click installs. This article looks at how we ended up in the quagmire of RPM and dependancy hell, and then moves on to talk about a possible solution in the form of autopackage. It takes a high level overview of how autopackage works and what it’s capable of. If you want more technical details, check out the website. Finally, this article assumes only that you’re interested, not that you have any Linux experience.
+
+First off, I’m not going to assume you’ve used Linux before, so I’ll start with a few definitions:
+
+RPM: The Redhat package manager. Despite the name, it’s
+
+used by many Linux distributions and is probably the most popular
+
+package manager statistically speaking today. Unfortunately,
+
+RPM has many faults, perhaps the most important being that it was
+
+never designed for internet based distribution of software for Linux
+
+in general. What this means is that it’s optimized for transferring
+
+large amounts of software to an OS from a CD or Redhat update
+
+site. Because of the lack of flexibility in the RPM file format,
+
+various distros have tweaked it and so forked the format – if you
+
+want to install an RPM you’d better be sure it’s designed for your
+
+distro. Only the very simplest of packages can be realistically
+
+distributed in this way by third parties. To make matters worse
+
+RedHat often gratuitously break backwards compatability.
+
+Dependancy hell: Due to the non commercial nature of
+
+Linux, packages often have lots of dependancies. These are other
+
+packages that must be installed before that package can be
+
+installed, we say one depends on the other. All operating
+
+systems have dependancies, but Linux software has far more than
+
+most. Dependancy hell arises when you want to install a package, but
+
+your system doesn’t have the required dependancies present. Raw RPM
+
+cannot fix this itself – you must manually track down and install
+
+those packages. Just pray that there are no sub-dependancies as
+
+well!
+
+APT: Advanced Packaging Tools, originally built for
+
+Debian and later ported to RPM, apt can automatically resolve
+
+dependancies. Installing software with apt is easy, even easier than
+
+on Windows – you just type in the name of the software you want, for
+
+instance with apt-get install gimp. Unfortunately, apt
+
+requires centralised repositories to be maintained for every distro
+
+(and often, every subversion), and as such often the software you
+
+want is simply not available in the repositories, or it is present,
+
+but its dependancies are not. Although Debian has many thousands of
+
+packages in its repositories, the manpower required to keep them all
+
+up to date means the latest versions of the packages are often only
+
+available in Debian some time after they have been
+
+released. emerge is a similar idea, but tied to Gentoo.
+
+RPM Hell: another type of unpleasantness that is caused
+
+by the type of package managers in use today on Linux. If the
+
+software you want to install isn’t available as a package for your
+
+distro then all is not lost, you can just compile it from the source
+
+(which unless you use a ports based distro a la Gentoo has its own
+
+set of problems). Unfortunately, you just entered the twilight zone:
+
+RPM (and also the debian system) assume that you use them to install
+
+everything on your computer. Because often packages are not
+
+available of course this doesn’t happen, but then RPM is not aware
+
+of the presence of those packages and will refuse to install other
+
+packages that depend on them without manual overrides. Hacks around
+
+this problem exist (see checkinstall) but they only partially solve
+
+the problem
+
+Having witnessed several of my friends try Linux only to give up in
+
+disgust after spending several hours attempting to do something as
+
+trivial as upgrade Mozilla, I resolved to do something about the
+
+problem. So, what issues do we face, and how to other operating
+
+systems fix these issues?
+
+The first one is that RPM doesn’t posseses enough flexibility to
+
+deal with the myriad little differences between distributions. An RPM
+
+is basically made up of a list of files and a set of pre and post
+
+install scripts. The list of files is always relative to root, so if
+
+your distro does not use the exact same filing system layout as the
+
+one it was built for, the RPM will not install correctly. Another
+
+example of distro differences would be the “install-info” script,
+
+which is responsible for integrating TeXinfo manuals into the system:
+
+Debian has its own version which is incompatible with the Free
+
+Software Foundation version used in most other forms of Linux.
+
+Another issue, perhaps one of the biggest, is that there are no
+
+standard mechanisms for naming packages. Because of that, an RPM
+
+designed for one system will know dependancies by different names to
+
+that of another. The difference between package “python-dev” and
+
+“python-devel” may be small, but it’s enough to break
+
+compatability.
+
+Finally, you have differences in the compiled binaries
+
+themselves. A KDE application compiled for Redhat 7.3 will not install
+
+on Redhat 8 as they use different versions of gcc, and the binaries
+
+produced by these compilers are not compatible. RPM has no way of
+
+dealing with this other than to force people to have 2 different
+
+packages for the 2 different versions.
+
+A bit of a mess isn’t it? If you’re a Windows or Mac user you’re
+
+probably feeling a bit smug right now, but actually there’s no reason
+
+to be. Windows and MacOS both have ways of dealing with these issues,
+
+and neither of them are particularly elegant. On Windows, we are all
+
+familiar with the name InstallShield. The standard mechanism for
+
+installing software onto Windows has for many years been to create an
+
+installer executable that the user runs and then extracts the program
+
+from itself and performs any needed setup. The installer checks
+
+dependancies (usually different versions of MS dlls) and often
+
+contains copies of them just in case they aren’t present. Finally it
+
+integrates the program with the environment (often too well!) by
+
+creating menu entries, app associations and so on.
+
+Why does this system suck? Well, from the point of view of the
+
+user, it doesn’t, the experience is simple, fast and effective. Behind
+
+the scenes however, things are rather ugly. For starters, modern
+
+installers are complex beasts – InstallShield is actually a complete
+
+scripting language and all the code necessary to interpret these
+
+scripts, create the user front ends etc are shipped with the Windows
+
+app in every single case. This is pretty wasteful, and the need to
+
+ship all the DLLs an app might require just in case they are not
+
+present on the system also adds a lot of overhead.
+
+Installer executables bring with them their own set of
+
+problems. The user interface is often inconsistent, and they are extremely
+
+hard to automate. I once spent a week at a company in which all I did
+
+was travel to every computer and put in the IE6 upgrade CD for each
+
+one. There was almost no good way of transparently deploying
+
+applications. Although products do exist that automate this on
+
+Windows, they usually work by watching what the installer does then
+
+“rebuilding” the installation from scratch which can lead to all kinds
+
+of nasty issues. The current system was never really designed as such,
+
+in the absence of any solution provided by Microsoft companies sprung
+
+up to fill the gap. Windows is now moving to an appfolders style
+
+system whereby dependancies can be sideloaded in an attempt to avoid
+
+dependancies also.
+
+Does the Mac fare any better? Unfortunately not. MacOS X has (in theory) totally eschewed installers in favour of App Folders, which are specially marked directories, the idea being that you simply drag and drop the app into the Applications directory. To uninstall, just drag it to the wastebasket. This is good UI, but bad everything else. By eliminating (un)install logic, it becomes extremely hard to check for dependancies, to provide system components, to clean up configuration changes, other application metadata and so on. Although technically apps can have dependancies via bundles, the lack of OS side install logic means that in practice it’s not possible to install these bundles into the OS if required – the user must do it for the app. As such, apps can only rely on funtionality that was known to ship with the operating system. That suits Apples goal of selling more copies of OS X, but is rather limiting for the user. By trying to hide the problems dependancies pose all together, it creates bigger problems further down the line. As such, some Mac apps ship with install apps anyway which rather defeats the point. Note that my beef with appfolders are more to do with the way they have been implemented in NeXTStep – you can use autopackage to install apps into an appfolders style arrangement (for instance i test with
+
+/apps/packagename) and one day there may well be a VFS plugin that lets you view installed packages as folders/directories. I think it is highly unlikely that you’ll ever be able to just drag app directories off a CD onto the system however.
+
+So does Linux have the right idea? Yes, it does. Operating systems
+
+are just that – systems, systems that are made up of multiple
+
+components. In the absence of centralised control and the use of
+
+parallel development, properly managing dependancies and system
+
+differences is a must. The problem is that we don’t do it very
+
+well. So how can we improve?
+
+I think the answer lies in autopackage, a project I started work on
+
+over 6 months ago in response to these issues. It uses a variety of
+
+ideas and approaches to solve the problems posed by Linux package
+
+management.
+
+Distribution neutral: unlike many package managers, autopackage
+
+was not developed by a distribution project. As such, it is
+
+completely distribution neutral both in technical design and
+
+political stance. You can build an autopackage once, and it will (in
+
+theory 🙂 install on any distro, assuming it’s not totally off this
+
+planet.
+
+Designed for flexibility: In a similar vein to
+
+InstallShield a .package file is script based rather than table
+
+based. The install scripts, backed up by a large number of provided
+
+library funtions, are easily capable of dealing with the multitude
+
+of differences between distributions.
+
+Net based: RPM was designed to manage everything a distro comes
+
+with, from the kernel to the Solitaire games. In contrast,
+
+autopackage is designed for net based distribution of software. It’s
+
+not designed to install new kernels, or to be used exclusively by a
+
+distro (maybe one day it would be capable of this too, but it’s not
+
+a design priority). As a part of the project we will be constructing
+
+the autopackage network, a network of resolution servers that
+
+work like DNS to convert root names (see below) into URLs for where
+
+the packages can be downloaded. By turning our back on the idea of
+
+apt-style massively centralised repositories, we hope to allow the
+
+network to scale. If a programmer creates a piece of software, they
+
+don’t have to wait for somebody from the network to create a package
+
+and upload it for them, they can create it themselves and then
+
+register their own node of the network from which they can plug in
+
+any packages they may create
+
+Global names: from the start, autopackage was designed to allow
+
+packages to have multiple names. All packages must have a root name,
+
+to which other names can map to. A root name looks something like
+
+this: “@gnome.org/gedit/2.2”. As you can see, rather than creating a
+
+new naming authority, it leverages off the DNS system. As most
+
+projects these days have a website, they can easily be assigned a
+
+root name. Other, more human friendly names include short names,
+
+which are rpm style (for instance “gimp”, “gnome2” or “xchat-text”),
+
+and display names, which describe in the users native language
+
+briefly what the application is, ie “Evolution Mail
+
+Client”.
+
+Database independant dependancy management: the approach
+
+autopackage takes to dependancies is similar to the configure
+
+scripts we all use, in that it checks the system directly for the
+
+presence of the dependancy, ie for libraries it will check the
+
+systems linker cache. I won’t go into the exact details of this
+
+system, you can find out more information from the website.
+
+Front end independance: right now we have only a terminal front
+
+end, and very pretty it is too. As we work towards 0.3, we’ll be
+
+developing a graphical front end based on GTK. We’ll also be adding
+
+a front end that records your choices and can then play them back,
+
+allowing seamless automation of installs. By insulating packages
+
+from the details of how they interact with the user, packages are
+
+simpler to build and we can get much better integration with the
+
+users host environment. The best is chosen automatically, so if you
+
+install the package from the command line it’ll use the terminal
+
+front end, and if you install it from Nautilus or Konqueror (visual
+
+file managers) it’ll use the graphical front end.
+
+Automatic and easy: installing a .package file is simply a
+
+matter of running it. If you’ve never used autopackage before, the
+
+needed files will be downloaded and setup for you. Packages have
+
+minimal bloat because of this, so far it runs to about 11kb.
+
+So is this just fantasy, a pipe dream? Not at all thankfully, a few
+
+days ago we released 0.2 which can build, install, verify, query and
+
+uninstall packages in a distro-neutral fashion. We’re a long way from
+
+having a complete solution to the problem, but let’s hope that in a
+
+few years the days of RPM hell will be long forgotten.

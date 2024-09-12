@@ -1,25 +1,109 @@
-What is a Caesar Cipher?
+Cipher Systems
 
-Caesar Cipher is a classic encryption method that has been used for centuries to securely transmit messages. It is considered one of the simplest and most basic forms of cryptography and is named after Julius Caesar who is believed to have used this method to communicate with his officials.
+In spite of the apparent diversity of cipher systems, all ciphers are produced by two basic methods—transposition and substitution.
 
-The method works by replacing each letter in the plaintext with a letter of the alphabet that is a fixed number of positions away. The number of steps to shift cycliacally each letter is referred to as the key and must be known by both the sender and the recipient. The key is used to encrypt the plaintext into ciphertext and also to decrypt the ciphertext back into the original plaintext.
+A transposition cipher is one in which the letters of the plaintext are retained but are moved from their normal position. An anagram, such as HSKEAPSREAE for SHAKESPEARE, is a type of transposition cipher.
 
-For example, if the key is 3, then the letter A would be replaced by the letter D, the letter B would be replaced by the letter E, and so on. This results in a completely different message that is unreadable without knowing the key.
+A substitution cipher is formed by exchanging the letters in the plaintext for other letters or symbols, while allowing their order to remain the same. The International Morse Code, in which • • • - - - • • • represents SOS (the universal signal for help), is a type of substitution cipher. A public code, it is not intended to keep messages secret, however.
 
-Another variant of the Caesar Cipher is the ROT13 (short for “rotate by 13 places”) encryption. ROT13 is a simple substitution cipher that replaces each letter in the alphabet with the letter that is half the alphabet places away from it. This means that A is replaced by N, B is replaced by O, and so on and a second run of ROT13 undos the encryption.
+To be of practical value, a cryptogram must be easily deciphered by the intended recipient, yet be unintelligible to an interceptor. When the method of enciphering is systematic, the process can be readily reversed to produce plaintext from ciphertext.
 
-ROT13 is often used for obscuring text for comedic or educational purposes, as the simple encryption method can easily be reversed. This makes it ideal for hiding jokes or spoilers on the internet, without making it impossible for the intended audience to understand the content.
+In the preparation of cryptograms, the matrices shown are the types most often used to simplify enciphering procedures. Each type forms a specific part of a given cipher system and is usually constant within that system. A key—which can be a matrix dimension or a word, phrase, or specific route of transcription—is the variable. Both the encipherer and the decipherer must be familiar with the general and the specific elements of the process used.
 
-Cracking the Caesar Cipher
+Transposition Ciphers
 
-To crack the encryption, we could iterate over all possible 26 keys and we would obtain the decrypted string in at most 25 tries, which is quite trivial.
+Unkeyed single transposition is one of the simplest methods of enciphering. For example, the message
 
-One idea to crack the encryption even faster is based on the frequency analysis of character occurrences. Since latin characters are not uniformally distributed, it is possible to align it to a known number of occurrences.
+TIME IS OF THE ESSENCE
 
-An algorithm must therefore simply find the smallest distance beween the encrypted and every decrypted string. I've written a decrypter to crack any Caesar cipher and to obtain the used key by simply guessing the right answer:
+is inscribed in a matrix with predetermined vertical and horizontal components. In this instance the plaintext is inscribed vertically in a 3 (vertical) by 6 (horizontal) matrix .
 
-function caesar(str, n) { let ret = ""; for (let i = 0; i < str.length; i++) { let c = str.charCodeAt(i); if (97 <= c && c < 123) { ret += String.fromCharCode((c + n + 7) % 26 + 97); } else if (65 <= c && c < 91) { ret += String.fromCharCode((c + n + 13) % 26 + 65); } else { ret += str.charAt(i); } } return ret; }
+Since the plaintext is inscribed vertically, the ciphertext is taken from the horizontal rows—in this case in arbitrary units of three letters each:
 
-In our cracking algorithm we run over the encrypted string and produce an array with a simple frequency statistic. Then we compare the resulting table with a table of frequencies of every single letter of our alphabet. The last step is simply finding the smallest distance between every occurrences:
+TEO HSN IIF ESC MST EEE
 
-function crack_caesar(str) { const weight = [ 6.51, 1.89, 3.06, 5.08, 17.4, 1.66, 3.01, 4.76, 7.55, 0.27, 1.21, 3.44, 2.53, 9.78, 2.51, 0.29, 0.02, 7.00, 7.27, 6.15, 4.35, 0.67, 1.89, 0.03, 0.04, 1.13]; const c = Array(26).fill(0); const s = Array(26).fill(0); for (let i = 0; i < str.length; ++i) { let x = (str.charCodeAt(i) | 32) - 97; if (0 <= x && x < 26) { ++c[x]; } } let max = 0; for (let off = 0; off < 26; ++off) { for (let i = 0; i < 26; ++i) { s[off] += 0.01 * c[i] * weight[(i + off) % 26]; if (max < s[off]) { max = s[off]; } } } return (26 - s.indexOf(max)) % 26; } const str = caesar("That's the never ending story of coding.", 16);
+To decipher this message, it is necessary to know the size of the components of the original matrix, the route of inscription, and the route of the transcription to ciphertext. The decipherer must make a matrix identical to the original and inscribe the ciphertext, which is read from the vertical columns. Since these procedures would be constant within a group of messages, this type of cipher is considered unkeyed—that is, without a variable component. Actually it is keyed by the size of the matrix, which would change for messages of different lengths.
+
+A more practical method of enciphering, called keyed single transposition, also transposes plaintext letters only once. It differs from the unkeyed type in that it makes use of a key word, phrase, or set of numbers to determine the horizontal length of the matrix. If the key word CIPHER were chosen to encipher the message used above, the horizontal component of the matrix would have six spaces.
+
+Here the plaintext is inscribed horizontally. The numerals under the key word are determined by numbering the letters of the word according to their normal position in the alphabet . If letters in a keyword were repeated, they would be numbered in sequence from left to right. For example:
+
+The illustrated matrix produces the message
+
+TOS IEC EHN IFS MTE SEE
+
+This ciphertext is composed of the contents of the vertical columns, with each three-letter unit positioned in the sequence of the numbers under the letters of the key word. Thus, the unit EHN, in the column keyed by H3, is placed third in the cryptogram.
+
+For additional security it is sometimes necessary to encipher a message that is already enciphered. This is known as double transposition. A ciphertext prepared by any of the methods discussed above may be inscribed in the same or a different matrix, using the same or a different key. The transposition process is then repeated. In the following matrix, the ciphertext from the last example is inscribed horizontally with the key word CIPHER .
+
+The double-transposed ciphertext
+
+TEM EFE IIS OHT SNE CSE
+
+is produced in the same way as the single transposition was. The only difference is that an enciphered message is being enciphered a second time. To read the message the decipherer must therefore know both keys and reverse both processes.
+
+Another type of cipher can be made in which the route transposition of the plaintext in the matrix—rather than its components or a key word—serves as the key to deciphering the secret message. Routes can be very complex and can be repeated in several sets of matrices. In this simple route through a single matrix, arrows indicate the path of inscription .
+
+Read horizontally, the matrix produces a ciphertext:
+
+TSO ESE IIF ESC MET HEN
+
+Basic Substitution Ciphers
+
+Substitution ciphers may be monoalphabetic or polyalphabetic, depending on the number of cipher alphabets used to encipher the plaintext. One of the simplest kinds is uniliteral monoalphabetic substitution, in which one letter of plaintext is exchanged for one letter of ciphertext drawn from one alphabet.
+
+A cipher of this type—sometimes known as the Caesar substitution, for Julius Caesar—is made by replacing a letter in a regular alphabet with the letter following it by a specified number of places. Here the first letter of the English alphabet is replaced by the fourth and the last letter by the third:
+
+An example of this plus-three exchange is this:
+
+Plaintext: TIME IS OF THE ESSENCE
+
+Ciphertext: WLP HLV RIW KHH VVH QFH
+
+Since the Caesar cipher is easily solved, it is seldom used by professional cryptographers.
+
+Greater secrecy is assured by polyalphabetic substitution systems, which use two or more cipher alphabets—usually interrelated—to encipher a message. By an extension of the monoalphabetic system through 26 alphabets, the simplest type of interrelated cipher alphabets can be formed. Here A in one alphabet is represented by B in a second, by C in a third, and so on. This square is called the Vigenère tableau, after Blaise de Vigenère, a 16th-century diplomat who modified older cipher principles.
+
+To encipher a message using this table, each plaintext letter is given a corresponding key letter:
+
+Plaintext: TIMEI SOFTH EESSE NCEXX
+
+Key: CIPHE RCIPH ERCIP HERCI
+
+The X’s added to the plaintext are called nulls. They round out the last group to five—a standard, though arbitrary, practice in enciphering. Here the letters of the key word CIPHER act as a running, or repeating, key for each letter of the plaintext .
+
+The table of cipher alphabets includes a row of plaintext letters and a column of key letters. The cipher symbol for any plaintext symbol is the letter at the intersection of the vertical column headed by the plaintext letter and the horizontal row begun by the key letter. Plaintext T enciphered by its key letter C gives the cipher letter V. Repeated for every letter of the plain-language message, this procedure yields:
+
+VQBLM JQNIO IVUAT UGVZF
+
+Digraphic Substitution
+
+All the types of cipher systems mentioned have been uniliteral—only one plaintext letter at a time was enciphered. It is possible to encipher two or more letters at once. One of the best-known digraphic substitution systems is the Playfair cipher, used by Great Britain in World War I. A pair of plaintext letters is enciphered in a unit, as shown below in the matrix made with CIPHER as the inscribed key word.
+
+The letters of the alphabet that do not appear in the keyword are inscribed in the matrix in normal alphabetical sequence, I and J being considered identical. X’s are added as nulls to separate identical letters and to fill in a digraph unit when necessary.
+
+Plaintext: TI ME IS OF TH EX ES SE NC EX
+
+Ciphertext: QH NH PQ UR YD PZ PU UP GE PZ
+
+Ciphertext letters are determined in three ways:
+
+1. If both letters of a pair in the plaintext are in the same vertical column in the matrix, the next letter down after each plain letter is the cipher letter. For example, the digraph TH in the illustration yielded the ciphertext YD.
+
+2. If the letters of the plaintext digraph are in the same horizontal row, the letter to the right of each plain letter is the cipher equivalent. When one of the paired plain letters is at the right end of the row, the first letter at the left end of the row becomes the cipher letter. (No digraph in the plaintext given above has both letters in the same row, so this principle was not applied here.)
+
+3. If both letters of a digraph in the plaintext are on any diagonal, then the mirror image of these letters serves as the ciphertext. All the cipher equivalents here—except YD—were found in this way. For example, the plain-language TI gives the cipher QH, its mirror image on the matrix.
+
+Devices Used in Cryptography
+
+Apparatus for enciphering messages have existed since ancient times. Sparta, the most warlike of the Greek city-states, had a well-developed system of secret military communication as early as the 5th century bc. With the scytale—the first known cryptographic device—the Spartans changed plaintext into ciphertext by a transposition method. The device consisted of a wooden staff around which a long strip of writing material—paper, parchment, or leather—was tightly wound. The plaintext was written down the staff on the paper, which was unwound before it was dispatched. All that showed on the unwound material was a group of apparently unconnected letters, randomly placed. They made sense only when wrapped around a scytale of identical thickness.
+
+Roman writings of the 4th century bc describe a device called a cipher disk. It consisted of two wheels or disks, coaxially connected so that at least one of them could be turned freely. Both wheels contained an alphabet and numbers on their edges. Cipher disks were extensively used in many forms during the Italian Renaissance.
+
+United States President Thomas Jefferson invented a wheel cipher in the 1790s. Nearly identical cipher devices are still used by the Army and Navy.
+
+The similar Bazeries cylinder was developed by Étienne Bazeries in 1891. It had a set of 20 disks, each with a differently sequenced alphabet on its edge. These disks, numbered from 1 to 20, were put on a shaft in an order determined by a numerical key. The plaintext was set on one horizontal row by revolving the disks until the row spelled out 20 letters of the message. The ciphertext could be taken from any other row at that setting. The process was repeated until the message was completed.
+
+The forerunner of modern cryptographic devices was the rotor machine invented in 1917 by Edward H. Hebern. It uses several rotating disks to produce polyalphabetic ciphers. Each side of each disk has 26 electrical contacts. The contacts on one side are wired at random to those on the other side. One side represents the plain letters and the other the cipher letters of a message. Electric current initiated by a typewriter key travels through the rotors, finally ending at one contact, which becomes the cipher letter. The disks are rotated after each letter is enciphered, repeatedly changing the cipher alphabet being used.
+
+The complex cipher devices used today consist of a keyboard, on which to type the plaintext, and a keying and enciphering mechanism. Some are equipped to transmit and receive ciphertext and to decipher the material automatically on printed tapes.

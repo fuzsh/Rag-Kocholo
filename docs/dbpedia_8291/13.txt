@@ -1,0 +1,291 @@
+{{#ifexist: :Quick HOWTO : Ch16 : Telnet, TFTP, and xinetd/zh | | {{#ifexist: Quick HOWTO : Ch16 : Telnet, TFTP, and xinetd/zh | | {{#ifeq: {{#titleparts:Quick HOWTO : Ch16 : Telnet, TFTP, and xinetd|1|-1|}} | zh | | }} }} }} {{#ifeq: {{#titleparts:Quick HOWTO : Ch16 : Telnet, TFTP, and xinetd|1|-1|}} | zh | | }}
+
+Introduction
+
+Many network enabled Linux applications don't rely on themselves to provide restricted access or bind to a particular TCP port; instead they often offload a lot of this work to a program suite made just for this purpose, xinetd.
+
+Managing xinetd Programs
+
+The xinetd RPM is installed by default in Fedora Linux and uses /etc/xinetd.conf as its main configuration file. Fortunately you usually don't have to edit this file so that day to day xinetd operation is frequently limited to only starting and stopping xinetd managed applications.
+
+Controlling xinetd
+
+The starting and stopping of the xinetd daemon is controlled by the by scripts in the /etc/init.d directory and it is behavior at boot time is controlled by chkconfig.
+
+You can start/stop/restart xinetd after booting by using the following commands:
+
+[root@bigboy tmp]# service xinetd start [root@bigboy tmp]# service xinetd stop [root@bigboy tmp]# service xinetd restart
+
+To get xinetd configured to start at boot you can use the chkconfig command.
+
+[root@bigboy tmp]# chkconfig xinetd on
+
+Controlling xinetd-Managed Applications
+
+Xinetd-managed applications all store their configuration files in the /etc/xinetd.d directory. Each configuration file has a disable statement that you can set to yes or no. This governs whether xinetd is allowed to start them or not.
+
+You don't have to edit these files to activate or deactivate the application. The chkconfig command does that for you automatically will also stops or starts the application accordingly too! Here is an example of the activation and deactivation of the Samba SWAT web GUI management application.
+
+[root@bigboy tmp]# chkconfig swat on [root@bigboy tmp]# chkconfig swat off
+
+Telnet
+
+Telnet is a program that allows users to log into your server and get a command prompt just as if they were logged into the VGA console. The Telnet server RPM is installed and disabled by default on Fedora Linux.
+
+One of the disadvantages of Telnet is that the data is sent as clear text. This means that it is possible for someone to use a network analyzer to peek into your data packets and see your username and password. A more secure method for remote logins would be via Secure Shell (SSH) which uses varying degrees of encryption.
+
+In spite of this, the older Telnet application remains popular. Many network devices don't have SSH clients, making telnet the only means of accessing other devices and servers from them. I'll show you how to limit your exposure to Telnet's insecurities are mentioned later in this chapter.
+
+Using The Telnet Client
+
+The command to do remote logins via telnet from the command line is simple. You enter the word telnet and then the IP address or server name to which you want to connect.
+
+Here is an example of someone logging into a remote server named smallfry from server bigboy. The user looks at the routing table and then logs out.
+
+[root@bigboy tmp]# telnet 192.168.1.105 Trying 192.168.1.105... Connected to 192.168.1.105. Escape character is '^]'. Linux 2.4.18-14 (smallfry.my-site.com) (10:35 on Sunday, 05 January 2003) Login: peter Password: Last login: Fri Nov 22 23:29:44 on ttyS0 You have new mail. [peter@smallfry peter]$ [peter@smallfry peter]$ netstat -nr Kernel IP routing table Destination Gateway Genmask Flags MSS Window irtt Iface 255.255.255.255 0.0.0.0 255.255.255.255 UH 40 0 0 wlan0 192.168.1.0 0.0.0.0 255.255.255.0 U 40 0 0 wlan0 127.0.0.0 0.0.0.0 255.0.0.0 U 40 0 0 lo 0.0.0.0 192.168.1.1 0.0.0.0 UG 40 0 0 wlan0 [peter@smallfry peter]$ exit logout Connection closed by foreign host. [root@bigboy tmp]#
+
+Installing The Telnet Server Software
+
+Older versions of RedHat had the Telnet server installed by default. Fedora Linux doesn't do this and you will have to install it yourself.
+
+Most Linux software products are available in a precompiled package format. Downloading and installing packages isn't hard. If you need a refresher, Chapter 6, "Installing Linux Software", covers how to do this in detail.
+
+When searching for the file, remember that the Telnet server RPM's filename usually starts with the word "telnet-server" followed by a version number as in telnet-server-0.17-28.i386.rpm.
+
+With Debian / Ubuntu, the Telnet server package would have a "telnetd" prefix like this: telnetd_0.17-32_i386.deb.
+
+Setting Up A Telnet Server
+
+Setting up the telnet server is easy to do, but the procedure differs between Linux distributions.
+
+Redhat / Fedora
+
+To set up a Telnet server use the chkconfig command to activate Telnet.
+
+[root@bigboy tmp]# chkconfig telnet on
+
+You can also use the chkconfig --list command to verify that telnet will be started on the next reboot.
+
+[root@bigboy tmp]# chkconfig --list | grep telnet telnet: on [root@bigboy tmp]#
+
+Use the chkconfig command to deactivate telnet, even after the next reboot.
+
+[root@bigboy tmp]# chkconfig telnet off
+
+Debian / Ubuntu
+
+In Debian / Ubuntu, the Telnet server runs using the inetd, not the xinetd daemon, and uses a single /etc/inetd.conf configuration to manage the activation of the daemons it controls.
+
+To stop Telnet you need only to edit the configuration file, comment out the Telnet server line, and restart inetd as seen in this example:
+
+root@u-bigboy:~# vi /etc/inetd.conf ... ... ... # # File: /etc/inetd.conf # #telnet stream tcp nowait telnetd.telnetd /usr/sbin/tcpd /usr/sbin/in.telnetd ... ... ... root@u-bigboy:~# /etc/init.d/inetd restart * Restarting internet superserver... ...done. root@u-bigboy:~# netstat -a | grep telnet root@u-bigboy:~#
+
+Note: The xinetd package provides much more flexibility than its inetd equivalent. xinetd allows you to restrict connections to specific source IP addresses and allows you to specify the TCP port and server IP address on which to listen. You may want to convert your system to use the xinetd package for Telnet by installing xinetd and creating your own custom /etc/xinetd.d/telnet configuration file. The rest of the examples in this chapter assume that the more versatile xinetd is being used.
+
+Note: You can test whether the Telnet process is running with the following command which is used to check the TCP/UDP ports on which your server is listening, if it isn't running then there will be no response.
+
+[root@bigboy tmp]# netstat -a | grep telnet tcp 0 0 *:telnet *:* LISTEN [root@bigboy tmp]#
+
+Basic Telnet Security
+
+There are a number of things you can do to improve the security of telnet. For example, you should also try to ensure that telnet sessions run over secure internal networks or across VPNs to reduce the risk of exposing sensitive data to unauthorized eyes. Check out some other options.
+
+Let Telnet Listen On Another TCP Port
+
+Letting telnet run on an alternate TCP port doesn't encrypt the traffic, but it makes it less likely to be detected as telnet traffic. Remember that this isn't a foolproof strategy; good port scanning programs can detect telnet and other applications running on alternative ports.
+
+1) Edit your /etc/services file and add an entry for a new service. Call it stelnet.
+
+# Local services stelnet 7777/tcp # "secure" telnet
+
+2) Copy the telnet configuration file called /etc/xinetd.d/telnet and call it /etc/xinetd.d/stelnet:
+
+[root@bigboy tmp]# cp /etc/xinetd.d/telnet /etc/xinetd.d/stelnet
+
+3) Edit the new /etc/xinetd.d/stelnet file. Make the new service stelnet and add a port statement for TCP port 7777.
+
+# default: on # description: The telnet server serves telnet sessions # unencrypted username/password pairs for authentication. service stelnet { flags = REUSE socket_type = stream wait = no user = root server = /usr/sbin/in.telnetd log_on_failure += USERID disable = no port = 7777 }
+
+4) Use chkconfig to activate stelnet.
+
+[root@bigboy tmp]# chkconfig stelnet on
+
+5) Check to make sure your server is now listening on port 7777 with the netstat command.
+
+[root@bigboy tmp]# netstat -an | grep 777 tcp 0 0 0.0.0.0:7777 0.0.0.0:* LISTEN [root@bigboy tmp]#
+
+You should now be able to log in to the new stelnet server on port 7777. This is done using the telnet command with the TCP port as the second argument.
+
+[root@smallfry tmp]# telnet 192.168.1.100 7777 Trying 192.168.1.100... Connected to 192.168.1.100. Escape character is '^]'. Fedora Core release 2 (Tettnang) Kernel 2.6.8-1.521 on an i686 login:
+
+Let Telnet Allow Connections From Trusted Addresses
+
+You can restrict telnet logins access to individual remote servers by using the only_from keyword in the telnet configuration file. Here's how.
+
+1) Add a list of trusted servers to the /etc/xinetd.d/telnet file separated by spaces:
+
+# default: on # description: The telnet server serves telnet sessions # unencrypted username/password pairs for authentication. service telnet { flags = REUSE socket_type = stream wait = no user = root server = /usr/sbin/in.telnetd log_on_failure += USERID disable = no only_from = 192.168.1.100 127.0.0.1 192.168.1.200 }
+
+2) Restart telnet.
+
+[root@bigboy tmp]# chkconfig telnet off [root@bigboy tmp]# chkconfig telnet on
+
+3) Test the telnet session. Servers that are not on the trusted list get the message Connection closed by foreign host.
+
+[root@smallfry tmp]# telnet 192.168.1.100 Trying 192.168.1.100... Connected to 192.168.1.100. Escape character is '^]'. Connection closed by foreign host. [root@smallfry tmp]#
+
+TFTP
+
+Many networking equipment manufacturers allow you to backup live configurations of their devices to centralized servers via the TFTP protocol. TFTP can be used with great versatility as a network management tool and not just for saving files. TFTP servers can be used to upload new configurations to replacement devices after serious hardware failures. They also can be used for uploading new versions of software to be run as network devices. Finally, they can be used to upload even partial configurations such as files containing updated access control lists (ACLs) that restrict access to networks and even the regular application of new passwords.
+
+TFTP may not be an application used regularly in a home, but it will become increasingly important in an expanding small office/home office (SOHO) environment which is why the topic is covered here. The provided TFTP examples use equipment from Cisco Systems, a leading networking hardware manufacturer.
+
+Installing The TFTP Server Software
+
+Most Linux software products are available in a precompiled package format. Downloading and installing packages isn't hard. If you need a refresher, Chapter 6, "Installing Linux Software", covers how to do this in detail.
+
+When searching for the Fedora / Redhat file, remember that the TFTP server RPM's filename usually starts with the word "tftp-server" followed by a version number like this: tftp-server-0.33-3.i386.rpm.
+
+With Debian / Ubuntu, the commonly use HPA TFTP server package would have a "tftp-hpa" prefix like this: tftpd-hpa_0.40-4.1ubuntu1_i386.deb.
+
+Configuring The TFTP Server
+
+The procedure to set up a TFTP Server is straightforward, but it is different between the Redhat and Debian distributions as we will soon see.
+
+Redhat / Fedora
+
+By default, the TFTP application expects files to be located in the /tftpboot directory. You can change this setting in the /etc/xinetd.d/tftp file via the server_args option. It is usually best to place the TFTP files in a partition other than the root partition. TFTP files of increasing size could eventually fill the partition affecting your ability to install new software or even the overall performance of your system. Creating a symbolic link for /tftpboot to another directory will not work with all versions of Fedora.
+
+This example creates a new tftpboot directory in the /var partition, and then configures TFTP to be enabled while using the new directory.
+
+[root@bigboy tmp]# mv /tftpboot /var [root@bigboy tmp]# vi /etc/xinetd.d/tftp # # File /etc/xinetd.d/tftp # service tftp { ... ... server_args = -s /var/tftpboot disable = no }
+
+You must then restart xinetd for the new configuration to take effect.
+
+[root@bigboy tmp]# chkconfig tftp on
+
+Debian / Ubuntu
+
+With the Debian / Ubuntu distributions, the TFTP server configuration file is /etc/default/tftpd-hpa and by default it instructs the TFTP daemon to use the /var/lib/tftpboot directory to store its files. Also by default, the daemon is disabled.
+
+Another thing to remember is that the tftpd-hpa server daemon runs independently of xinetd and has its own startup script in the /etc/init.d directory. By default, the daemon is started at boot time, but the configuration file's default configuration setting disables it by forcing the daemon to exit prematurely.
+
+This example enables the daemon in the configuration file and then starts the TFTP server:
+
+root@u-bigboy:/tmp# vi /etc/default/tftpd-hpa ... ... ... # # File: /etc/default/tftpd-hpa # #Defaults for tftpd-hpa RUN_DAEMON="yes" OPTIONS="-l -s /var/lib/tftpboot" ... ... ... root@u-bigboy:/tmp# /etc/init.d/tftpd-hpa start Starting HPA's tftpd: in.tftpd. root@u-bigboy:/tmp#
+
+Note: With both Redhat and Debian distributions, you can test whether the TFTP process is running with the netstat command which is used to check the TCP/UDP ports on which your server is listening. If it isn't running then there will be no response.
+
+[root@bigboy tmp]# netstat -a | grep tftp udp 0 0 *:tftp *:* [root@bigboy tmp]#
+
+Preparing TFTP Server Files
+
+The TFTP server will not create files in its transfer directory if they don't already exist. Each device must have a pre-existing configuration file in the tftpboot directory. The files also need to have their permissions adjusted to allow them to be updated by the TFTP daemon.
+
+[root@bigboy tmp]# touch /tftpboot/pixfw-config [root@bigboy tmp]# chmod 666 /tftpboot/pixfw-config [root@bigboy tmp]# ll /tftpboot/ total 1631 -rw-rw-rw- 1 root root 3011 Oct 29 14:09 pixfw-config [root@bigboy tmp]#
+
+Saving Cisco Configurations To The TFTP Server
+
+You'll now have to configure your Cisco router/firewall to use the TFTP server. The following examples assume that the TFTP server's IP address is 192.168.1.100.
+
+Cisco PIX firewall
+
+Follow theses steps on a PIX firewall:
+
+1) Log onto the device, get into enable mode and then enter the TFTP commands to initially configure TFTP.
+
+pixfw> enable Password: ******** pixfw# configure terminal pixfw(config)# tftp-server inside 192.168.1.100 /pixfw-config pixfw(config)# exit
+
+2) Save the configuration to non volatile memory
+
+pixfw# write memory Building configuration... Cryptochecksum: 3af43873 d35d6f06 51f8c999 180c2342 [OK] pixfw#
+
+3) Save the configuration to the TFTP server
+
+pixfw# write network Building configuration... TFTP write '/pixfw-config' at 192.168.1.100 on interface 1 [OK] pixfw#
+
+Your firewall configuration has now been successfully saved for later use in the event of unrecoverable human error or hardware failure.
+
+Cisco Switch Running CATOS
+
+To save the configuration of a Catalyst-series switch running CATOS, you need to log onto the device, get into Enable mode and then enter the write net TFTP command as show below.
+
+ciscoswitch> (enable) wr net This command shows non-default configurations only. Use 'write network all' to show both default and non-default configurations. IP address or name of remote host? [192.168.1.100] Name of configuration file?[ciscoswitch-config] Upload configuration to ciscoswitch-config on 192.168.1.100 (y/n) [n]? y ......... Finished network upload. (30907 bytes) ciscoswitch> (enable)
+
+Cisco Router
+
+To save the configuration of a router, log onto the device, get into enable mode, then configure mode and then enter the TFTP commands as seen below:
+
+ciscorouter> enable ciscorouter# write net Remote host [192.168.1.100]? 192.168.1.100 Name of configuration file to write [ciscorouter-config]? ciscorouter-config Write file ciscorouter-config on host 192.168.1.100? [confirm] y ciscorouter# exit
+
+Cisco CSS 11000 "Arrowpoints"
+
+To save the configuration of a Cisco CSS-series load balancer, log onto the device, and then enter the TFTP commands as seen below:
+
+Log onto the device and then enter the TFTP commands as seen below:
+
+ciscocss# copy running-config tftp 192.168.1.100 ciscocss-config Working..(\) 100% Connecting (/) Completed successfully. ciscocss# exit
+
+Cisco Local Director
+
+To save the configuration of a Cisco Local Director load balancer, log onto the device, get into enable mode, then configure mode and then enter the TFTP commands
+
+ciscold> ena Password: ciscold# write net 192.168.1.100 ciscold-config Building configuration... writing configuration to //ciscold-config on 192.168.1.100:69 ... [OK] ciscold# exit
+
+Uploading Cisco Configurations From The TFTP Server
+
+From time to time you may have to upload configurations from your TFTP server to your network equipment. In this example, a small file containing a new encrypted password and access control list is uploaded from the TFTP server and inserted into a router configuration.
+
+Sample Upload Configuration File
+
+For this example, the configuration file is named config.file and looks like this.
+
+! ! Set the console password ! line con 0 password 7 $1$qDwqJEjunK$tuff0HE/g31/b7G/IZ ! ! Delete and recreate access list #10 ! no access-list 10 access-list 10 permit 192.168.1.0 0.0.0.255 access-list 10 permit 192.168.10.0 0.0.0.255 end
+
+Procedure To Upload A Configuration File
+
+Uploading the file can be done using either the copy tftp: running-config or the older configure network commands. In both cases you are prompted for the IP address of the TFTP server and the name of the file with the configuration commands. The filename provided is always relative to the tftpboot directory. So if the file was located in the tftpboot directory it would be referred to as config.file, but if it were in the tftpboot/configs directory, it would be referred to as configs/config.file.
+
+Consider this sample configure network command
+
+ciscorouter>ena Password: ciscorouter#configure network Host or network configuration file [host]? This command has been replaced by the command: 'copy <url> system:/running-config' Address or name of remote host []? 192.168.1.100 Source filename []? config.file Configure using tftp://192.168.1.100/config.file? [confirm] Loading config.file from 192.168.1.100 (via FastEthernet0/0): !!!!!! [OK - 26521/52224 bytes] ciscorouter#
+
+Here's a sample copy tftp: running-config command.
+
+ciscorouter#copy tftp: running-config Address or name of remote host []? 192.168.1.100 Source filename []? config.file Destination filename [running-config]? Accessing tftp://192.168.1.100/config.file... Loading config.file from 192.168.1.100 (via FastEthernet0/0): !!!!!! [OK - 26521/52224 bytes] 26521 bytes copied in 1.912 secs (26521 bytes/sec) ciscorouter#
+
+Always remember to permanently save your configurations to nonvolatile RAM (NVRAM) afterwards with the write memory or copy running-config startup-config.
+
+Using TFTP To Restore Your Router Configuration
+
+In disastrous cases, where you have to replace a router completely, you can use TFTP to completely restore the configuration to the replacement device. If the replacement unit is identical, then you need to do very little editing of the saved configuration file, but expect to edit it if the interface names and software versions are different.
+
+The procedure for restoring your configuration is simple:
+
+Connect your router to the local network of the TFTP server
+
+Give your router the bare minimum configuration that allows it to ping your TFTP server. (No access controls or routing protocols)
+
+Use the copy command to copy the backup configuration from the TFTP server to your startup configuration in NVRAM.
+
+Disconnect the router from the network
+
+Reload the router without saving the live running configuration to overwrite the startup configuration. On rebooting, the router will copy the startup configuration stored in NVRAM into a clean running configuration environment
+
+Log into the router via the console and verify the configuration is OK
+
+Verify that all the required interfaces are enabled and save the configuration. You can eliminate this step by editing the saved configuration file and adding the appropriate commands prior to the TFTP upload.
+
+Reconnect the router to the networks on which it was originally connected
+
+The commands you need are:
+
+ciscorouter> enable Password: ******** ciscorouter# write erase ... ... ! Enter the commands to provide a bare minimum of connectivity to ! your TFTP server here. This includes IP addresses, a default route ! and the TFTP setup commands. ... ... ciscorouter# copy tftp:file-name startup-config ciscorouter# reload
+
+Please be aware that the write erase command erases your NVRAM startup configuration and should always be used with great care.
+
+Conclusion
+
+Both Telnet and TFTP are important applications in an overall systems administration strategy. They both have the shortcoming of not encrypting their data and therefore need to be used on secured networks for improved security. TFTP sessions don't even need a username and password, and the TFTP server process overwrites any existing file beneath its root directory in keeping with the instructions of the network engineer. Making mistakes with TFTP can be fairly easy to do, and you may want to consider automating the process by using a helper application, such as expect.
+
+Telnet is a greater security risk as the connections are longer, and valuable usernames and passwords are exchanged, making eavesdropping easier and more lucrative for the hacker. I'd suggest that you use an encrypted telnet replacement whenever possible. One such product, SSH is covered in Chapter 17, "Secure Remote Logins and File Copying".

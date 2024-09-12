@@ -1,0 +1,91 @@
+Introduction à Ruby Mardi 7 févrierNicolas LedezArchitecte systèmeOrange Business Services It&L@bs
+
+Nicolas Ledez
+
+Nicolas Ledez
+
+Nicolas Ledez
+
+Nicolas Ledez
+
+Nicolas Ledez IT & L@bs
+
+Nicolas Ledez
+
+Nicolas Ledez
+
+Simon Courtois
+
+Simon Courtois CTO chez Selectra
+
+Et maintenant Ruby
+
+Ruby : l’histoire • Crée en 1995 • Inspiré de Smalltalk, Lisp, Eiffel, Ada, etc • Japonais Yukihiro Matsumoto « matz » • Index TIOBE • 12 2012 • 10 2011
+
+Japon / Lean • Toyota Production System • Gestion sans gaspillage
+
+Japon / Haïku Oh! Une luciole je voulais crier : « Regarde! » mais j'étais seul Taïg
+
+Ruby 1/3 • Interprété • Objet • Multiparadigme • Multiplateforme • Libre, gratuit, etc
+
+Ruby 2/3 • Ramasse-miettes • Gestion d'exceptions • Modification du code en « live » • Expressions rationnelles (Regexp) • Blocs
+
+Ruby 3/3 • Héritage simple • Mixin -> « héritage multiple » • Extensions en C • Les threads indépendants de l’OS • Réflexion
+
+Virtual Machine 1/2 • Matz's Ruby Interpreter– Cruby • JRuby • IronRuby • Rubinius • MacRuby
+
+Virtual Machine 2/2 • YARV (Yetanother Ruby VM) • XRuby- rb -> Java bytecode • RubyJS - rb -> Javascript • HotRuby
+
+On commence ?
+
+Les variables • var -> variable locale • @var -> variable d'instance • @@var -> variable de classe • $var -> variable globale • Var -> constante • etc.
+
+Le langage / Procédural 1 defune_fonction puts"Salut tout le monde !" end une_fonction Salut tout le monde !
+
+Le langage / Procédural 2 defune_fonction(message) puts message end une_fonction"It's alive !" It's alive !
+
+Le langage / Objet mess1 =UneClasse.new"Salut tout le monde !" mess1.afficher_message mess1.message ="Au revoir" puts mess1.message class UneClasse attr_accessor:message definitialize(message) @message = message end defafficher_message puts @message end end Salut tout le monde ! Au revoir
+
+Le langage / Tableau - bases Array.new(5, "A") a[0]['cat'] ='feline' a[1, 2] a[1..3] a[-3, 3]
+
+Le langage / Tableau - cool [ 1, 2, 3 ] + [ 4, 5 ] #=> [ 1, 2, 3, 4, 5 ] [ 1, 1, 3, 5 ] & [ 1, 2, 3 ] #=> [ 1, 3 ] [ 1, 2, 3 ] *3 #=> [ 1, 2, 3, 1, 2, 3, 1, 2, 3 ] [ 1, 1, 2, 2, 3, 3, 4, 5 ] - [ 1, 2, 4 ] #=> [ 3, 3, 5 ]
+
+Le langage / Dictionnaires h = Hash.new("Go Fish") h["a"]=100 h["b"]=200 h["a"]#=> 100 h["c"]#=> "Go Fish"
+
+Et on pourrait y passer des heures
+
+Classe / héritage class MyArray< Array defclean! self.eachdo |e| self.delete(e) if e % 2 end end end list = MyArray.new([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]) puts list.join" " puts list.clean!.join" " puts list.join" " 1 2 3 4 5 6 7 8 9 10 2 4 6 8 10 2 4 6 8 10
+
+Classe / Monkey 1 Class Array defclean! self.eachdo |e| self.delete(e) if e % 2 end end end list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] puts list.join" " puts list.clean!.join" " puts list.join" " 1 2 3 4 5 6 7 8 9 10 2 4 6 8 10 2 4 6 8 10
+
+Classe / Monkey 2 - map Class Array defdouble self.map { |e| e * 2 } end end list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] puts list.double.join" " puts list.join" " 2 4 6 8 10 12 14 16 18 20 1 2 3 4 5 6 7 8 9 10
+
+Classe / Monkey 3 - reduce Class Array defclean self.reduce([]) do |a, e| a << e unless ((e % 2) == 1) a end end end list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] puts list. clean.join" " puts list.join" " 2 4 6 8 10 1 2 3 4 5 6 7 8 9 10
+
+Autour du langage
+
+Autour de Ruby / Dev • Rspec, Cucumber, Minitest, ... • Spork, Guard, ... • Bundler, RVM, Rbenv, Pik, ... • http://www.bonjourgem.com/ • +33,500 RubyGems.org
+
+Autour de Ruby / Prod • Rails, Sinatra, ... • Spork, Guard, ... • HAML, SASS, Compass, ... • Capistrano, Pupetts, Cheff, ... • 15% Ruby Github (2eme place)
+
+ORM
+
+ORM / DataMapper class LineItem include DataMapper::Resource property:order_id,Integer,:key=> true property:item_number,Integer, :key=> true end
+
+Framework Web
+
+Rails Uglifier Rack ERB json ActiveRecord i18n
+
+Demo Rails Par Simon Courtois
+
+Sinatra require 'sinatra' get'/hi' do "Hello World!" end
+
+Templates ERB
+
+Templates / ERB <pid="notice"><%= notice %></p> <p> <b>Name:</b> <%= @region.name %> </p> <%= link_to'Edit', edit_region_path(@region) %> | <%= link_to'Back', regions_path %>
+
+Templates / HAML %p#notice= notice %p %b Name: = @region.name = link_to'Edit', edit_region_path(@region) | \#{link_to'Back', regions_path}
+
+J’ai Windows, je fais comment
+
+Rails Installer

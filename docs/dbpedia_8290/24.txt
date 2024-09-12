@@ -1,0 +1,123 @@
+Replacing inetd, xinetd provides access control, improved logging and resource management. It has become the standard Internet super dæmon for Red Hat 7 and Mandrake 7.2. This article is designed to get you started with using some of its features—hopefully some of its more interesting ones—and is based on features available in xinetd 2.1.8.8pre3.
+
+The original author of xinetd, Panagoitis Tsirigotis (panos@cs.colorado.edu), seems to have dropped the project. Rob Braun (bbraun@synack.net) has picked up the project and is now responsible for maintaining the package. One problem I noticed with the package in its current state was that I had to add a couple of header files to get select( ) to work on my old libc5 system. Should you need them, they are as follows:
+
+xinetd/internals.c.orig Fri Jun 16 19:00:15 2000 +++ xinetd/internals.c Fri Jun 16 19:00:53 2000 @@ -12,6 +12,8 @@ #include <time.h> #include <fcntl.h> #include <syslog.h> #include <unistd.h> #include <sys/time.h> #include "sio.h"
+
+About xinetd
+
+xinetd replaces the common inetd lines with bracketed, expanded syntax. In addition, new possibilities are given for logging and access control. While inetd allows control for TCP connections using Venema's tcp_wrappers software (tcpd), you cannot control UDP connections. Also, it doesn't do well with RPC (portmapper) type services. Additionally, while you can control the rate of connections using inetd (by appending a number to the wait or no wait argument, for example, nowait.1 for one instance per second), you cannot control the maximum number of instances. This could lead to process table attacks, for example, an effective denial of service. By using xinetd, we can thwart this.
+
+I usually start xinetd with the following command, placed in my startup scripts where Internet services are started:
+
+/usr/sbin/xinetd -filelog /var/adm/xinetd.log -f /etc/xinetd.conf
+
+This tells xinetd to log everything to the file /var/adm/xinetd.log and use the configuration file /etc/xinetd.conf. The bulk of this article will deal with this configuration file.
+
+Compile-Time Options
+
+The three compile-time options you should pay attention to that provide added access control are libwrap, loadavg (a threshold monitor for load averaging) and IPv6 support. As with most libwrap-aware dæmons (like portmapper and sendmail), the option “with-libwrap” in the configure script tells xinetd to be built linking in support for the tcp_wrappers file /etc/hosts.allow and /etc/hosts.deny. These options for xinetd work exactly as they do for inetd and support all of the xinetd-controlled dæmons. Note that if you're starting from scratch with xinetd, using tcpd is no longer needed as access control is done within xinetd. However, this support for libwrap is useful if you're migrating from inetd/tcpd and don't want to change your access files too.
+
+The second interesting configuration option is support load average monitoring, accomplished using the with-loadavg option in the ./configure script. sendmail supports dropping connections at high load, presuming that it has spun out of control and is taking down the machine. The max_load option can be enabled using this configuration option to limit connections to any or all services based on the load average of the machine.
+
+Lastly, the configuration option to add IPv6 support is accomplished by using the with-inet6 capability in ./configure. This adds xinetd support for IPv6 addresses and connections. Note that your kernel (and network) must support IPv6 for this to be effective. IPv4 support is maintained, of course.
+
+The Configuration File
+
+The xinetd configuration file, usually /etc/xinetd.conf, can be built by hand or automatically from an inetd.conf file. The former is more time consuming and prone to errors; the latter is readily accomplished using the itox utility or xconv.pl script. Although the itox utility is being dropped in favor of the xconv.pl script, it is still useful. However, note that running it repeatedly will overwrite the existing file. Both itox and xconv work in the same way, but we'll show it for itox:
+
+$ itox < /etc/inetd.conf > xinetd.conf
+
+The newer utility, xconv, understands comments and the use of tcpd better than itox does. For itox you have to specify the directory where dæmons live, such as /usr/sbin. The first section you may want to include is the defaults section. This gives, as the name implies, defaults for the xinetd service:
+
+defaults { instances = 25 log_type = FILE /var/adm/servicelog log_on_success = PID HOST EXIT flags = NORETRY log_on_failure = HOST RECORD ATTEMPT only_from = 129.22.0.0 no_access = 129.22.210.61 disabled = nntp uucp tftp bootps who shell login exec disabled += finger }
+
+Immediately, we can see the syntax of a xinetd configuration parameter: <directive> <operator> <value>. The directives that xinetd understands are listed in Table 1. Directives we'll ignore here are flags, type, env and passenv. We'll talk more below about only_from and no_access, plus logging options.
+
+Table 1. Directives for xinetd
+
+Operators are quite simple, either = or +=. Using =, the values on the right are given to the directive on the left. += is also quite intuitive and is used to append values to an already defined directive. Without it, earlier directives are overwritten. This can also be used to spread access lists or, for example, over multiple lines.
+
+Service descriptions are given by the format:
+
+servicename { directive = value directive += value }
+
+Servicename must be listed in the /etc/services to occur on the proper socket and with the proper protocol.
+
+A Word about Access Control
+
+Actually, a few words about how xinetd does access control. First of all, xinetd controls connections, not packets. It's a userland dæmon, just as inetd is. As such, while it would break a SYN or connect() attempt from a host that is prohibited from connecting to a service, it will not break “stealth” scans such as a FIN scan [a port scan utilizing TCP packets with the FIN flag set, often performed with a tool such as NMAP]. Don't rely on xinetd to be a firewall to break portscanning. A resourceful intruder will be able to use this information to gather access-control lists for your various services. Luckily, this can be logged by xinetd, and your paranoia sensors should go off when you review your logs.
+
+Secondly, xinetd, as of 2.1.8.8pre3, performs name lookups when a system attempts to connect. Previously, it used to do lookups at startup, but this has been changed.
+
+Using access control is really quite simple. The first directive is only_from, which lists the networks or hosts from which the we will accept connections from. This directive sets up rules that can be overridden by no_access. You can use network numbers, such as 10.0.0.0 or 10, or network names, including *.my.com or .my.com with this directive. Host names and IP addresses of hosts also can be used here. Use the directive 0.0.0.0 to match all hosts and to listen to all addresses. Denials are parsed once the criteria are met by using the no_access directive. Again, networks or hosts can be specified.
+
+Service Configurations
+
+Let's have a look at some basic applications of this information. The first service we'll look at is the echo service, which is internal to both inetd and xinetd.
+
+service echo { socket_type = stream protocol = tcp wait = no user = root type = INTERNAL id = echo-stream }
+
+Echo runs as root, is a tcp stream and is handled internally. The id directive of echo-stream would show up in the logs. In the absence of only_from or no_access directives, access to this service as configured is unlimited.
+
+Now, let's look at a regular service, in this case the daytime service:
+
+service daytime { socket_type = stream protocol = tcp wait = no user = nobody server = /usr/sbin/in.date instances = 1 nice = 10 only_from = 0.0.0.0 }
+
+Again, anyone can connect to it, but we specify an executable to run (as nobody) to return the information. This one doesn't extend the previous example by much. We now look at another service for secure shell version 1. This was done to prevent resource exhaustion by sshd.
+
+service ssh1 { socket_type = stream protocol = tcp instances = 10 nice = 10 wait = no user = root server = /usr/local/sbin/sshd1 server_args = -i log_on_failure += USERID only_from = 192.168.0.0 no_access = 192.168.54.0 no_access += 192.168.33.0 }
+
+Here, we build on what we were doing before. Recall that sshd needs to be started with the -i flag when it is started from a super server like inetd or xinetd, so we place that in the server_args directive. Note: adding the flags to the server directive will cause it to fail. Only ten people can use this service at any one time, which is not a problem on the server this example was taken from. We log, in addition to the default information, the user ID of the connecting party as described in RFC 1413 if they are unable to connect. Lastly, we have two networks listed which cannot access this service.
+
+Logging and xinetd
+
+The logging directive understands several values that can be used to get information about your server (see Table 2).
+
+Table 2. Various Logging Directive Values
+
+As such, typical lines to add specifics about logging may look like those listed below. For a service that successfully connects, we usually want to log the process ID of the service spawned, the host that connected and when it exited:
+
+log_on_success = PID HOST EXIT
+
+This will give us useful information for debugging and minding normal server operations. For failures, we log what we would expect:
+
+log_on_failure = HOST RECORD ATTEMPT
+
+Here we log the host that connected, the reason the connection was denied and additional information about the connecting host (sometimes the user ID that attempted to connect). These are recommended baselines to give you a good view of your server.
+
+Recall that above, in our defaults section, we were logging to /var/adm/servicelog. We have directed all the information, both failures and successes, to be logged by xinetd. Most of our information will look like this:
+
+00/9/13@16:05:07: START: pop3 pid=25679 from=192.168.152.133 00/9/13@16:05:09: EXIT: pop3 status=0 pid=25679 00/10/3@19:28:18: USERID: telnet OTHER :www
+
+Using this information, it is easy to debug xinetd and normal operations. It is also easy to spot security issues such as connection attempts that you want to try to block. Simply grep for “FAIL” in the logs, and these entries will stand right out:
+
+00/10/4@17:04:58: FAIL: telnet address from=216.237.57.154 00/10/8@22:25:09: FAIL: pop2 address from=202.112.14.184
+
+Acting on security issues requires another article, but, suffice it to say, don't take the address reported as solid information, since it can be forged.
+
+The xinetd.log file, by contrast, contains information from xinetd. This can be useful in debugging connections that give errors.
+
+00/10/25@21:10:48 xinetd[50]: ERROR: service echo-stream, accept: Connection reset by peer
+
+Reconfiguring xinetd
+
+You can edit the xinetd.conf file while xinetd is running. To get it to reconfigure, send the signal SIGUSR1 to the xinetd process:
+
+# ps -ax | grep xinetd 50 ? S 5:47 /usr/sbin/xinetd -filelog /var/adm/xinetd.log -f /etc/xinetd.conf # kill -SIGUSR1 50
+
+Tail the -filelog you are using to make sure that it restarted and adjusted the changes you made. Definitely do this before you log out and make sure you can log back in if this is a remote connection.
+
+Note that using -HUP, as one does for inetd to reconfigure it, will actually cause xinetd to cease operation. This is, by design, to thwart hackers who reconfigure your xinetd and attempt to reload it without understanding the documentation.
+
+When to Use xinetd
+
+Personally, I use xinetd for almost all of my services; the only one that sees a significant performance hit is my web dæmon Apache. Too many processes have to start too fast for it to be time efficient. DNS services should also not be loaded into xinetd; the performance hit is too large.
+
+I do, however, run sendmail out of xinetd, allowing fine-grained control over who can connect. My configuration for sendmail looks like this:
+
+service smtp { socket_type = stream protocol = tcp wait = no user = root server = /usr/sbin/sendmail server_args = -bs instances = 20 nice = 10 only_from += 0.0.0.0 no_access += 129.22.122.84 204.0.224.254 }
+
+Even on a high-traffic mail server the performance hit is negligible. I have also loaded sshd into xinetd to prevent a process table attack on it.
+
+I hope this article has been helpful to you in getting xinetd configured and tweaked for your needs. As you can see, the features it offers are tremendously more than inetd, even with tcp_wrappers in place. Solar Designer (http://www.openwall.com/) has a patch available for a slightly older version of xinetd, version 2.2.1, that allows for instance control on a per IP basis, which helps stop simple process table attacks. Note, however, that simple forgery can get around this. I do not know if this patch has been applied to later versions of xinetd or if it can be.

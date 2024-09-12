@@ -1,0 +1,81 @@
+There are a multitude of applications to manage your todo list. One of these apps is Taskwarrior, it allows you to manage your task in the terminal without a GUI. This article will show you how to get started using it.
+
+What is Taskwarrior?
+
+Taskwarrior is CLI task manager and organizer. It is flexible, fast, and unobtrusive. It does its job then gets out of your way.
+
+Taskwarrior uses $HOME/.taskrc and $HOME/.task to store your settings and tasks respectively.
+
+Getting started with Taskwarrior
+
+It’s easy to use the Taskwarrior to add your daily missions. These are some simple commands. To add tasks:
+
+$ task add buy milk Created task 1. $ task add buy eggs Created task 2. $ task add bake cake Created task 3.
+
+To list your tasks, you can use the task command on its own for the simplest listing:
+
+$ task ID Age Description Urg 1 17s buy milk 0 2 14s buy eggs 0 3 11s bake cake 0 3 tasks.
+
+To mark a task as complete, use the done keyword:
+
+$ task 1 done Completed task 1 'buy milk'. Completed 1 task. $ task 2 done Completed task 2 'buy eggs'. Completed 1 task. $ task [task next] ID Age Description Urg 1 57s bake cake 0 1 task
+
+Diving deeper into Taskwarrior
+
+Priority management
+
+Taskwarrior (task) is designed to help prioritize your tasks. To do this, task has multiple implicit and explicit variables it can use to determine an “Urgency” value.
+
+Consider the following list.
+
+$ task [task next] ID Age Description Urg 1 2min buy eggs 0 2 2min buy flour 0 3 2min bake cake 0 4 2min pay rent 0 5 3s install fedora 0 5 tasks
+
+One could argue that paying your rent and installing Fedora have a higher priority than baking a cake. You can tell task about this by using the pri modifier.
+
+$ task 4 mod pri:H Modifying task 4 'pay rent'. Modified 1 task. $ task 5 mod pri:M Modifying task 5 'install fedora'. Modified 1 task. $ task [task next] ID Age P Description Urg 4 4min H pay rent 6 5 2min M install fedora 3.9 1 4min buy eggs 0 2 4min buy flour 0 3 4min bake cake 0 5 tasks
+
+Rent is very important, it has a due date that we need to pay it by, such as within 3 days from the 1st of the month. You can tell task this by using the due modifier.
+
+$ task 4 mod due:3rd Modifying task 4 'pay rent'. Modified 1 task. $ task [task next] ID Age P Due Description Urg 4 12min H 2d pay rent 13.7 5 10min M install fedora 3.9 1 12min buy eggs 0 2 12min buy flour 0 3 12min bake cake 0 5 tasks $ date Sat Feb 29 11:59:29 STD 2020
+
+Because the 3rd of next month is nearby, the urgency value of rent has skyrocketed, and will continue to do so once we have reached and passed the due date.
+
+However, not all tasks need to be done right away. Say for example you don’t want to worry about paying your rent until it is posted on the first of the month. You can tell taskwarrior about this using the wait modifier. (Hint: in the following example, som is short for “start of month,” one of the shortcuts taskwarrior understands.)
+
+$ task 4 mod wait:som Modifying task 4 'pay rent'. Modified 1 task. $ task [task next] ID Age P Description Urg 5 14min M install fedora 3.9 1 16min buy eggs 0 2 16min buy flour 0 3 16min bake cake 0 4 tasks
+
+You will no longer be able to see the pay rent task until the start of the month. You can view waiting tasks by using task waiting:
+
+$ task waiting ID Age P Wait Remaining Due Description 4 18min H 2020-03-01 11h 2020-03-03 pay rent 1 task
+
+There are a few other modifiers you can define. Schedule and until will place a “start” date and remove a task after a date respectfully.
+
+You may have tasks that require other tasks to be completed. To add a dependency for other tasks, use the dep modifier:
+
+$ task [task next] ID Age P Description Urg 5 30min M install fedora 3.9 1 33min buy eggs 0 2 33min buy flour 0 3 33min bake cake 0 4 tasks $ task 3 mod dep:1,2 Modifying task 3 'bake cake'. Modified 1 task. $ task [task next] ID Age Deps P Description Urg 1 33min buy eggs 8 2 33min buy flour 8 5 31min M install fedora 3.9 3 33min 1 2 bake cake -5 4 tasks
+
+This will modify the priorities of any tasks that is blocking a task. Now buying eggs and flour is more urgent because it is preventing you from performing a task.
+
+Annotations
+
+You can add notes to a task using task <number> annotate:
+
+$ task 3 anno No blueberries Annotating task 3 'bake cake'. Annotated 1 task. $ task [task next] ID Age Deps P Description Urg 1 1h buy eggs 8 2 1h buy flour 8 5 1h M install fedora 3.9 3 1h 1 2 bake cake -4.2 2020-02-29 No blueberries 4 tasks
+
+Organizing tasks
+
+Tasks can be assigned to projects and tagged by using the project modifier and adding a tag using the + sign followed by the tag name, such as +problem.
+
+Putting it all together
+
+You can combine everything you learned to create a task in one line with all the required options.
+
+$ task add Write Taskwarrior post \ pri:M due:1m wait:som until:due+2w sche:15th \ project:magazine +taskwarrior +community +linux Created task 6. The project 'magazine' has changed. Project 'magazine' is 0% complete (1 task remaining). $ task 6 No command specified - assuming 'information'. Name Value ID 6 Description Write Taskwarrior post Status Waiting Project magazine Entered 2020-02-29 13:50:27 (6s) Waiting until 2020-03-01 00:00:00 Scheduled 2020-03-15 00:00:00 Due 2020-03-30 14:50:27 Until 2020-04-13 14:50:27 Last modified 2020-02-29 13:50:27 (6s) Tags taskwarrior community linux Virtual tags SCHEDULED TAGGED UDA UNBLOCKED UNTIL WAITING YEAR LATEST PROJECT PRIORITY UUID 27768737-f6a2-4515-af9d-4f58773c76a5 Urgency 5.3 Priority M
+
+Installing Taskwarrior on Fedora
+
+Tips and tricks
+
+Taskwarrior has a hook system, meaning that there are many tools you can plug in, such as bugwarrior!
+
+Taskwarrior can connect to a taskserver for server/client setups. (This is left as an exercise for the reader for now.)

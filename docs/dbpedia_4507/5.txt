@@ -1,0 +1,57 @@
+Couldn’t find an answer for this. It may be a simple question. Or maybe not.
+
+I’d like to define a style such that images are shown:
+
+full width if they are landscape, i.e. width > height
+
+half width if they are portrait, i.e. width < height
+
+unchanged if they are square, i.e. width = height
+
+I’ve been doing this manually. Can it be coded into the style sheet?
+
+Can it be coded into the stylesheet?
+
+Maybe in part. If you want landscape pics to be full width of their container, or portrait pics to be half of their container. The detecting dimensions part in order to get orientation would need JavaScript.
+
+I imagine the logic would go like this;
+
+– get all images into an array
+
+– loop through the array and compare naturalWidth/naturalHeight to determine orientation
+
+– set a class relating to orientation (pic-l, pic-p, pic-sq)
+
+Then in your CSS you could give .pic-p { width:50%; } and .pic-l { width:100%; }
+
+If however you want landscape pics to be full width of their natural size, or portrait pics to be half of their natural size, you can scrub the CSS and instead set width and height styles to resize them with JavaScript.
+
+Here is more info about the naturalWidth and naturalHeight properties in JavaScript (good for modern browsers and IE9+, but there are alternative ways for older IE in the linked article) https://www.sitepoint.com/html5-responsive-design-image-dimensions/
+
+And this article will also start you off with a few snippets on detecting orientation with JavaScript, otherwise there are loads of other pre-made functions floating around StackOverflow https://www.html5andbeyond.com/javascript-image-orientation-detection/
+
+Good luck
+
+Thanks for the prompt reply, Beverleyh. Apologies for my belated response.
+
+I’m trying to do this as custom CSS for WordPress. I’ve customised the alignright and alignleft classes to set the image to half the width of the container, and defined a fullwidth class. What I’m doing manually is tagging each landscape image as fullwidth. I now realised I don’t need the half-width, as that’s already working. What I do need is, if I set an image as aligncenter, that it be fullwidth if it’s landscape, i.e. if width > height, or leave it as it is otherwise.
+
+Sense?
+
+I think so – sounds like my first post would be better suited to your needs…
+
+Your JavaScript would take on this kind of logic;
+
+– get all images into an array if they have a class of “aligncenter”
+
+– loop through the array and compare naturalWidth/naturalHeight to determine orientation
+
+– if landscape detected, apply “fullwidth” class to image
+
+Then your CSS that you’ve already defined for the “fullwidth” class would take affect.
+
+As previously suggested…
+
+And this article will also start you off with a few snippets on detecting orientation with JavaScript, otherwise there are loads of other pre-made functions floating around StackOverflow https://www.html5andbeyond.com/javascript-image-orientation-detection/
+
+Good luck

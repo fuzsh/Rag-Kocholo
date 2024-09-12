@@ -1,0 +1,135 @@
+Attention
+
+You can now run different PHP versions per project: Release v3.0.0-beta-0.1
+
+Setup ContaoÂ¶
+
+Important
+
+You can find a more up-to-date version in the official Contao Documentation: Official Contao Devilbox Documentation
+
+This example will use composer to install Contao CMS from within the Devilbox PHP container.
+
+Important
+
+Using composer requires the underlying file system to support symlinks. If you use Docker Toolbox you need to explicitly allow/enable this. See below for instructions:
+
+Docker Toolbox and Symlinks
+
+After completing the below listed steps, you will have a working Contao CMS setup ready to be served via http and https.
+
+Table of Contents
+
+Walk throughÂ¶
+
+It will be ready in eight simple steps:
+
+Enter the PHP container
+
+Create a new VirtualHost directory
+
+Install Contao via composer
+
+Symlink webroot directory
+
+Add MySQL database
+
+Setup DNS record
+
+Visit http://my-contao.loc in your browser
+
+1. Enter the PHP containerÂ¶
+
+All work will be done inside the PHP container as it provides you with all required command line tools.
+
+Navigate to the Devilbox git directory and execute shell.sh (or shell.bat on Windows) to enter the running PHP container.
+
+host> ./shell.sh
+
+2. Create new vhost directoryÂ¶
+
+The vhost directory defines the name under which your project will be available.
+
+( <vhost dir>.TLD_SUFFIX will be the final URL ).
+
+devilbox@php-7.2.15 in /shared/httpd $ mkdir my-contao
+
+See also
+
+TLD_SUFFIX
+
+3. Install ContaoÂ¶
+
+Navigate into your newly created vhost directory and install Contao with composer.
+
+devilbox@php-7.2.15 in /shared/httpd $ cd my-contao devilbox@php-7.2.15 in /shared/httpd/my-contao $ composer create-project contao/managed-edition contao
+
+How does the directory structure look after installation:
+
+devilbox@php-7.2.15 in /shared/httpd/my-contao $ tree -L 1 . âââ contao 1 directory, 0 files
+
+4. Symlink webÂ¶
+
+Symlinking the actual webroot directory to htdocs is important. The web server expects every projectâs document root to be in <vhost dir>/htdocs/. This is the path where it will serve the files. This is also the path where your frameworks entrypoint (usually index.php) should be found.
+
+Some frameworks however provide its actual content in nested directories of unknown levels. This would be impossible to figure out by the web server, so you manually have to symlink it back to its expected path.
+
+devilbox@php-7.2.15 in /shared/httpd/my-contao $ ln -s contao/web/ htdocs
+
+How does the directory structure look after symlinking:
+
+devilbox@php-7.2.15 in /shared/httpd/my-contao $ tree -L 1 . âââ contao âââ htdocs -> contao/web 2 directories, 0 files
+
+As you can see from the above directory structure, htdocs is available in its expected path and points to the frameworks entrypoint.
+
+Important
+
+When using Docker Toolbox, you need to explicitly allow the usage of symlinks. See below for instructions:
+
+Docker Toolbox and Symlinks
+
+5. Add MySQL DatabaseÂ¶
+
+devilbox@php-7.2.15 in /shared/httpd/my-contao $ mysql -u root -h mysql -p -e 'CREATE DATABASE my_contao;'
+
+6. DNS recordÂ¶
+
+If you have Auto DNS configured already, you can skip this section, because DNS entries will be available automatically by the bundled DNS server.
+
+If you donât have Auto DNS configured, you will need to add the following line to your host operating systems /etc/hosts file (or C:\Windows\System32\drivers\etc on Windows):
+
+127.0.0.1 my-contao.loc
+
+7. Open your browserÂ¶
+
+Open your browser at http://my-contao.loc or https://my-contao.loc and follow the installation steps.
+
+7.2 Accept licenseÂ¶
+
+Accept the license by clicking on Accept license
+
+7.3 Set install tool passwordÂ¶
+
+Set a password for the install tool itself
+
+7.4 Database setupÂ¶
+
+Database host: mysql
+
+Database port: 3306
+
+Database user: root
+
+Database pass: empty (if not otherwise set during Devilbox configuration)
+
+7.6 Set admin userÂ¶
+
+The admin user is required to setup Contao itself and to gain access to the backend.
+
+7.7 FinishedÂ¶
+
+Installation is done, click on the Contao back end to continue to setup the CMS itself.
+
+7.8 LoginÂ¶
+
+Use the admin user credentials created earlier to login in.

@@ -1,0 +1,51 @@
+Anthony Reimer
+
+unread,
+
+to autopkg...@googlegroups.com
+
+I am working on some new recipes that feed AutoPkg packages into my DeployStudio repo using the PkgCopier processor. The only problem with my recipes is that it will always copy the package to my DS repo, even if no updated package is generated. The PkgCreator process helpfully outputs a variable (new_pkg_request) that could be used to avoid superfluous copying. For reference, I have a couple of those recipes in my GitHub repo:
+
+https://github.com/jazzace/AutoPkg-recipes
+
+My guess is that the best way to solve this would be to write a new processor that has that feature, but I don't know Python. So, Pythonistas out there: how hard would this processor be to write? I'm willing to make this my first Python project if it is a good project to learn the language.
+
+Anthony Reimer
+
+University of Calgary
+
+Timothy Sutton
+
+unread,
+
+to autopkg...@googlegroups.com
+
+The PkgCopier was written mainly for the purpose of copying a package out of an installer or bundle (think Flash Player), rather than copying a result to a final destination, so there wasn't a consideration for it to look for existing packages first.
+
+It's good you picked up on the 'new_package_request' output variable. Take a look at the StopProcessingIf processor:
+
+https://github.com/autopkg/autopkg/blob/f37212bd9780896c4d4d80af1a13bca1fb1aae6c/Code/autopkglib/StopProcessingIf.py#L29-L35
+
+This processor stops processing the recipe any further if the NSPredicate evaluates to true. This is the same underlying mechanism for Munki's conditional_items in manifests.
+
+StopProcessingIf is the only core AutoPkg processor that implements any conditional logic, which we're pretty wary about encouraging. However, it's still there and works for situations like this.
+
+So, by adding StopProcessingIf before your PkgCopier processor, we can stop this recipe from going any further, and we didn't need to write a custom processor:
+
+https://gist.github.com/timsutton/d834f81feaa4d1190573#file-firefox-ds-plist-L37-L45
+
+Below that recipe file in the gist is the output of me running autopkg a second time to a temporary repo location.
+
+For what it's worth, you could probably also just use the Copier processor here instead, but the result is the same if you're just copying package files.
+
+Tim
+
+
+
+> --
+
+> You received this message because you are subscribed to the Google Groups "autopkg-discuss" group.
+
+> To unsubscribe from this group and stop receiving emails from it, send an email to autopkg-discu...@googlegroups.com.
+
+> For more options, visit https://groups.google.com/d/optout.

@@ -1,0 +1,55 @@
+It depends on what you’re building, but I’ve found embedded coordinate-percent views (distinct components that I want to move as a unit) inside of column containers work well for supporting a variety of mobile screen sizes.
+
+Again, that screen is just one example.
+
+You can download ignition’s demo project and see some examples of what they have configured, as well.
+
+The Perspective containers all serve various purposes, and so are best used to suit different requirements.
+
+Column - use this if you want your View layout to change position based on screen size (and potentially change the size of components as well), but you want absolutely 100% of the same components available at small, medium and large sizes.
+
+Breakpoint - Use this column if you want the mobile appearance of a Page to look one way, but you want the Desktop appearance to be completely different, and perhaps some components are not even present in one of the layouts (maybe you want a large table for desktop users, but you don’t want the table visible to mobile users).
+
+Coordinate - Use this container if you need to absolutely position components, or you need to overlay components on top of each other in any way (perhaps if you want a button on top of a map, or stacked images)
+
+Flex - (This is the container I usually recommend for mobile) Use this container if you want components to flow or expand to fill available space. It allows for column and row (and reverse of either) orientation of components, so you have loads of options as to how to actually space out your components. Most user-friendly mobile experiences use Flex behaviors in one way or another.
+
+Tab - This container is useful for switching from one View to another, but it’s only really ever used to hold a different container. Might be good for compartmentalized mobile applications, but - as I said - you’d still be designing the contents of the Tab container in some other container type.
+
+When you create the View, you select the container type. Once this container type is selected for the root, there is NO changing it. If you want a different root container, you would need to delete the View and start over (and copy/paste the components).
+
+If you have to expect that users will “flip” their device between portrait and landscape, you should probably use the Flex, Column, or Breakpoint containers, as they will change the layout of the View/Page based on the current width of the viewport.
+
+As for the dimensions of the root container, those don’t matter too much unless the View will be used in an embedded format (as in, you have embedded ViewA into another View, ViewB). If a View is used as the primary View of a Page, then the View will automatically expand to fill the available space. This is why I usually recommend Flex, because the components will also expand to fill the available space. A coordinate View will expand, but components in a “fixed” mode coordinate container will not move nor will they resize, and components in a “percent” mode coordinate container will grow and move proportionally, which will look really weird; if you design for desktop, than mobile components become too small. If you design for mobile, desktop components become too big.
+
+Is there a way to make the docked view (we have a menu docked for desktop clients) not accessable for other views? I’ve adjusted the parameter to automatically make it hidden if the screen wideth is less than 600, which works, but there still is that arrow that lets me open up the docked view.
+
+The problem boils down to this: I’ve developed some views that are catered for mobile and ones that are developed with attention to desktop applications. What is the best way to separate the two?
+
+Also, how does the Ignition app fit in with all of this, specficially for mobile use.
+
+Thanks.
+
+There's no way to dynamically modify the "structure" of a configured Docked View, so if you specify the handle should be visible (or on-demand), then it will be that way whether you're on Desktop or mobile.
+
+This is an inadvisable design practice, unless you have a branching page structure. This "branching page structure" would essentially require you to have two Pages configured for every page in your project (one with a url of "/some/path" and one with a url of "/mobile/some/path") and any time you navigate to a page you'd need to check if the user is on a mobile device and then prepend the "/mobile" to the target url. This will be a nightmare to maintain.
+
+Alternatively, you could have a single Page configuration where the root container of the View is a Breakpoint Container. This would allow for one url to serve both mobile and desktop users while allowing for different layouts of components based on some width value. This solution does NOT take into account Docked View presence or Popup dimensions.
+
+An alternative to the Docked View issue is to make the Docked View a piece of the Desktop breakpoint.
+
+For example:
+
+ViewNode L_root (BreakpointContainer) L_FlexContainer (Large Breakpoint)(direction="column") L_Component L_Component L_Component L_FlexContainer (direction="row", justify="Center") L_Button L_EmbeddedView (path=<path_to_docked_view>) L_Container (small breakpoint)
+
+Using this setup, you could place the following code into the Button component, and it would toggle the visibility of the Embedded View (although you would lose the fancy slide animations).
+
+self.parent.getSibling('EmbeddedView').position.display = not self.parent.getSibling('EmbeddedView').position.display
+
+The Ignition App allows for several features not available through normal browser use, or some features which are better than you would experience through a browser.
+
+You can easily save projects for access at any time (akin to bookmarking projects in a browser, except you can clearly see information about the project, like the Gateway address and a descrption of the project)
+
+Use of the Native Application allows for use of various device capabilities, like cameras and accelerometers, geolocation, and device vibration. Mobile browsers do not allow for "scripted" access to the camera for security reasons, whereas applications are free to request the necessary access. If you want to scan barcodes or use accelerometer features, or even vibrate the device for tactile feedback then you need to use the Native Application.
+
+Other than that, the experience should be very similar between a user using a mobile device browser and one using the Native Application.

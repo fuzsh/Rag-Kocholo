@@ -1,0 +1,373 @@
+CloneZilla
+
+A solution to “System H/W Failure”
+
+Prepared By : Manoj Sinha ( manoj@manojsinha.com )
+
+What is Clonezilla ?
+
+We’re probably familiar with the popular proprietary commercial package Norton Ghost®, and its OpenSource counterpart, Partition Image. The problem with these software packages is that it takes a lot of time to massively clone systems to many computers. We’ve probably also heard of Symantec’s solution to this problem, Symantec Ghost Corporate Edition® with multicasting. Well, now there is an OpenSource clone system (OCS) solution called Clonezilla with unicasting and multicasting!
+
+Clonezilla, based on DRBL, Partition Image, ntfsclone, partclone, and udpcast, allows us to do bare metal backup and recovery. Two types of Clonezilla are available, Clonezilla live and Clonezilla SE (server edition).
+
+Clonezilla live is suitable for single machine backup and restore. While Clonezilla SE is for massive deployment. It can clone many (40 plus!) computers simultaneously. Clonezilla saves and restores only used blocks in the harddisk. This increases the clone efficiency. It usually takes only about 10 minutes to clone a 5.6 GBytes system image via multicasting!
+
+Features of Clonezilla
+
+Free (GPL) Software.
+
+Filesystem supported: ext2, ext3, ext4, reiserfs, xfs, jfs of GNU/Linux, FAT, NTFS of MS Windows, and HFS+ of Mac OS. Therefore we can clone GNU/Linux, MS windows and Intel-based Mac OS, no matter it’s 32-bit (x86) or 64-bit (x86-64) OS. For these file systems, only used blocks in partition are saved and restored. For unsupported file system, sector-to-sector copy is done by dd in Clonezilla.
+
+LVM2 (LVM version 1 is not) under GNU/Linux is supported.
+
+Multicast is supported in Clonezilla SE, which is suitable for massively clone. We can also remotely use it to save or restore a bunch of computers if PXE and Wake-on-LAN are supported in our clients.
+
+Based on Partimage, ntfsclone, partclone, and dd to clone partition. However, clonezilla, containing some other programs, can save and restore not only partitions, but also a whole disk.
+
+By using another free software drbl-winroll, which is also developed by them, the hostname, group, and SID of cloned MS windows machine can be automatically changed.
+
+Which Clonezilla Shall I Use ?
+
+Clonezilla Live: Clonezilla live allows us to use CD/DVD or USB flash drive to boot and run clonezilla (Unicast only)
+
+Clonezilla SE: Clonezilla SE is included in DRBL, therefore a DRBL server must first be set up in order to use Clonezilla to do massively clone (unicast, broadcast and multicast are supported)
+
+For our requirements, We have Clonezilla SE.
+
+So for moving further towards the installation of Clonezilla, we need to have a DRBL server installed and running. So let’s start with DRBL first.
+
+DRBL (Diskless Remote Boot in Linux)
+
+DRBL (Diskless Remote Boot in Linux) is a free software, open source solution to managing the deployment of the GNU/Linux operating system across many clients.
+
+Imagine the time required to install GNU/Linux on 40, 30, or even 10 client machines individually! DRBL allows for the configuration all of your client computers by installing just one server machine.
+
+DRBL provides a diskless or systemless environment for client machines. It works on Debian, Ubuntu, Mandriva, Red Hat, Fedora, CentOS and SuSE. DRBL uses distributed hardware resources and makes it possible for clients to fully access local hardware. It also includes Clonezilla, a partitioning and disk cloning utility similar to Symantec Ghost®.
+
+The features of DRBL:
+
+Peacefully coexists with other OS
+
+Simply install DRBL on a single server and all your clients are taken care of
+
+Save on hardware, budget, and maintenance fees
+
+Peacefully coexists with other OS
+
+DRBL uses PXE/etherboot, NFS, and NIS to provide services to client machines so that it is not necessary to install GNU/Linux on the client hard drives individually. Once the server is ready to be a DRBL server, the client machines can boot via PXE/etherboot (diskless). “DRBL” does NOT touch the client hard drives, therefore, other operating systems (e.g. MS Windows) installed on the client machines will be unaffected. This could be useful in, for example, during a phased deployment of GNU/Linux where users still want to have the option of booting to Windows and running some applications only available on MS windows. DRBL allows great flexibility in the deployment of GNU/Linux.
+
+Simply install DRBL on a single server and all your clients are taken care of
+
+Using a standard PC, you can transform a group of client PCs into a working GNU/Linux network in some steps:
+
+Download the DRBL package
+
+Run the scripts
+
+In about 30 minutes, all the client machines will be ready to run GNU/Linux and all associated packages. No more deploying client machines one by one. Just use DRBL!
+
+Save on hardware, budget, and maintenance fees
+
+Hard drives are optional for a DRBL client. Actually, the hard drive is just another moving part that creates more noise and is susceptible to failure. If a hard drive is present, the client can be configured to use it as swap space while GNU/Linux is installed and configured on the centralized boot server.
+
+A lot of time can be saved by configuring the client settings at the boot server when using the DRBL centralized boot environment. This gives the system administrator more control over what software configurations are running on each client.
+
+So, now Start with the configuration of
+
+Diskless Remote Boot in Linux (DRBL)
+
+Preamble
+
+This document describes the steps to setup the “DRBL” environment in:
+
+Debian Woody(3.0), Sarge(3.1), Etch(4.0), Lenny (5.0),
+
+Ubuntu Breezy(5.10), Dapper(6.06), Edgy(6.10), Feisty(7.04), Gutsy (7.10), Hardy(8.04), Intrepid(8.10), Jaunty(9.04).
+
+B2D,
+
+RedHat Linux 8.0, 9,
+
+Fedora Core 1, 2, 3, 4, 5, 6, Fedora 7, 8, 9. 10, 11
+
+Mandrake 9.2, 10.0, 10.1, Mandriva LE2005 (10.2), 2006, 2007.0, 2007.1, 2008.0, 2009.0.
+
+CentOS 4, CentOS 5,
+
+Scientific Linux 4.x/5.x, RHEL 4.x/5.x (Use drblsrv-offline)
+
+SuSE 9.3, SuSE 10.0, OpenSuSE 10.0, 10.1, 10.2. 10.3, 11.0, 11.1
+
+Sorry but it will NOT work in other distributions or versions.
+
+Basic hardware requirements
+
+This depends on what kind of application and GNU/Linux distribution you want to run.
+
+For the education environment, we recommend the following, but faster and newer equipment will always be better, especially if you want to run “moden” GNU/Linux distribution, such as Fedora 7 or Ubuntu 7.04 with OpenOffice 2.x or Firefox 2.x…:
+
+Server:
+
+x86 CPU at least 450 MHz
+
+Memory at least 256 MB
+
+Two or more fast ethernet network interface cards (NICs)
+
+At least 10 GB HD space
+
+Client:
+
+x86 CPU at least 200 MHz
+
+Memory at least 128 MB
+
+One fast ethernet network interface cards
+
+Fast ethernet switch
+
+An ethernet hub is NOT acceptable. It’s too slow for network booting and NFS. A fast ethernet switch will reduce the collision domain and give you much smoother deployment. The fast ethernet switch should have enough ports for your clients and your server. You can find low cost 12 and 16-port fast ethernet switches just about anywhere. The 40+ port switches are nice but they typically cost more.
+
+Since DRBL will work with any Pentium class hardware, you can start your PC cluster with just about any machine you have laying around. You can expand your cluster as your budget allows.
+
+Setup the Diskless Remote boot in Linux (DRBL) Environment
+
+I. Setup the Linux Server
+
+· Install the GNU/Linux distribution and configure all network cards. In the following, we use “eth0” to connect the Internet, while eth1 for DRBL environment(set the network card’s IP addresses to be private IPs (i.e. 192.168.5.254).
+
+Please remember this principle, private IP (e.g. 192.168.5.254) will be used for DRBL environment. If on our GNU/Linux, the NetworkManager service is getting started automatically, it is recommended to turn off it or remove it. For Example, I had done:
+
+chkconfig –level 35 NetworkManager off, And turn on network service by “chkconfig network on”. For Debian or Ubuntu, it is recommended to remove it completely by: apt-get remove network-manager. Our firewall rules will be overwritten when setting up the DRBL server. After completing the DRBL setup and successfully testing it, you can config your firewall using your own rules. Remember, in the DRBL environment, NFS, NIS, tftp, and dhcp services are required, so dot NOT block them in your firwall rules.
+
+If we want to get better performance, we can do some tuning as following. This is just an option, not a must:
+
+If we are using Gnome as the desktop environment, for example, Fedora Core 6, we can delete some language files in /etc/gconf/gconf.xml.defaults/ if we are sure they are useless to us (For Ubuntu 6.10, those files are in directory /var/lib/gconf/defaults/). This will save a lot of disk space in the server (For example, if we just keep %gconf-tree.xml and %gconf-tree-zh_TW.xml, then 40 MB space will be released. Say, ifwe have 40 clients, then we will save 1.6 GB disk space in this server), and the loading of NFS server will be lower. In Debian or Ubuntu,we can also install localepurge, then run “localepurge” to remove those unnecessary locale files.
+
+If reiserfs filesystem is available in our GNU/Linux distribution, it is recommended for its better performance compared with ext2/ext3.We can refer to this benchmark.
+
+If we want to get better performance, we can do some tuning as following. This is just an option, not a must:
+
+If we are using Gnome as the desktop environment, for example, Fedora Core 6, we can delete some language files in /etc/gconf/gconf.xml.defaults/ if we are sure they are useless to us (For Ubuntu 6.10, those files are in directory /var/lib/gconf/defaults/). This will save a lot of disk space in the server (For example, if we just keep %gconf-tree.xml and %gconf-tree-zh_TW.xml, then 40 MB space will be released. Say, ifwe have 40 clients, then we will save 1.6 GB disk space in this server), and the loading of NFS server will be lower. In Debian or Ubuntu,we can also install localepurge, then run “localepurge” to remove those unnecessary locale files.
+
+If reiserfs filesystem is available in our GNU/Linux distribution, it is recommended for its better performance compared with ext2/ext3.We can refer to this benchmark.
+
+· After Linux is installed on the server, make sure the hard disk drive DMA mode is on. It will accelerate the access speed of the server’s hard disk drive.
+
+For doing this, We can Use “hdparm /dev/hdx” to check to see if the DMA mode is on or off.
+
+If it is off, run “hdparm -d1 -c3 -k1 /dev/hdx” to turn it on. Replace the /dev/hdx to the /dev/hda if our IDE HD for this Linux system is in “Primary IDE.”
+
+· Note:Regarding Selinux in Fedora Core 3 or later version – Unless we are an administrator who thoroughly understands SELinux, we recommend to turn the SELinux off, otherwise we will probably encounter some unusual problems such as “Permission denied.” To disable SELinux, set SELINUX=disabled in /etc/sysconfig/selinux or /etc/selinux/config and then reboot our machine.
+
+· If we have only one NIC, we may set two IP addresses, i.e. one in eth0 and another alias IP address in eth0:1. eth0 will be used for the DRBL server to connect to the public Internet while eth0:1 will be used for the DRBL environment. Here’s how to setup eth0:1 in RedHat-like Linux. NOTE! This alias IP address will cause some problems if we do not provide static IP address to DRBL client via its MAC address. In this example, the DRBL server will lease IP address to any machine connected to eth0 if no MAC address is set in the DHCP service. Hence we’d better not to use alias IP if you do not know exactly what you are doing! Two or more NICs are recommended!
+
+II. Setup the clients
+
+Note: This process is done in the server but its purpose is for use by the clients. NOTE! we have to finish the step 1 before doing the step 2 here.
+
+Before downloading or installing, read the “Change log” for different branches: stable, testing, unstable. Also refer to “Known issues” for different branches. This is especially important when our client machine has an annoying SIS network interface card:stable, testing, unstable. Besides, please also refer to “Release Notes” for different branches:stable, testing, unstable.
+
+· <Step 2a> According different distribution, we have different method to get and install program “drbl”
+
+RedHat/Fedora Core/Mandriva (Mandrake)/CentOS
+
+Install the DRBL key to our rpm system. There are two ways to do this.
+
+First one: “rm -f GPG-KEY-DRBL; wget http://drbl.sourceforge.net/GPG-KEY-DRBL; rpm –import GPG-KEY-DRBL” or “rm -f GPG-KEY-DRBL; wget http://drbl.nchc.org.tw/GPG-KEY-DRBL; rpm –import GPG-KEY-DRBL”.
+
+Second one: Download the key from key server. The KeyID for DRBL is D7E8DF3A, we can do it by “gpg –keyserver subkeys.pgp.net –recv-key D7E8DF3A”, then run “gpg -a –export D7E8DF3A > GPG-KEY-DRBL; rpm –import GPG-KEY-DRBL” to add it to our rpm system.
+
+Download DRBL RPM file:
+
+Stable branch: sourceforge site or NCHC site
+
+Testing branch: NCHC site
+
+Unstable branch: NCHC site
+
+If we do not login as a system administrator (root), execute the command “su – root”, then enter root password to sign in at the root
+
+Execute “rpm -Uvh drbl-XXX.i386.rpm” or “yum install drbl-XXX.i386.rpm” (If your GNU/Linux supports yum) to install package DRBL, the “drbl-XXX.i386.rpm” is the program name you just downloaded. If you just download the drbl rpm in the stable branch, then execute “rpm -Uvh drbl-current.i386.rpm” or “yum install drbl-current.i386.rpm”.
+
+Note: A perl module is necessary for drbl rpm. Most of the distribution will install package “perl-Digest-SHA1” by default, if rpm complains perl-Digest-SHA1 is necessary, install it manually. As an example, in Fedora 8, you can install it by “rpm -Uvh http://opensource.nchc.org.tw/fedora/linux/releases/8/Fedora/i386/os/Packages/perl-Digest-SHA1-2.11-4.fc8.i386.rpm&#8221; or by “yum install perl-Digest-SHA1” if you have already configured your yum config.
+
+My configuration Steps:
+
+1. Installed 1 additional LAN Card in the system
+
+2. Installed CentOS 5.3 (Kernel version: 2.6.18-128.7.1.el5)
+
+3. After the installation, run some commands and do desired configurations
+
+[root@clonezilla ~]# mii-tool
+
+eth0: negotiated 100baseTx-FD, link ok
+
+eth1: negotiated 100baseTx-FD, link ok
+
+[root@clonezilla ~]# cd /etc/sysconfig/network-scripts/
+
+[root@clonezilla network-scripts]# vim ifcfg-eth1
+
+# Realtek Semiconductor Co., Ltd. RTL-8139/8139C/8139C+
+
+DEVICE=eth1
+
+BOOTPROTO=static
+
+ONBOOT=yes
+
+IPADDR=192.168.5.254
+
+NETWORK=255.255.255.0
+
+BROADCAST=192.168.5.255
+
+HWADDR=00:80:48:51:53:26
+
+[root@clonezilla network-scripts]# cd /opt/
+
+[root@clonezilla opt]# wget http://downloads.sourceforge.net/project/drbl/drbl_stable/1.9.4-47/drbl-1.9.4-47.i386.rpm?use_mirror=nchc
+
+[root@clonezilla opt]# yum install perl-Digest-SHA1
+
+[root@clonezilla opt]# rpm -ivh drbl-1.9.4-47.i386.rpm
+
+[root@clonezilla opt]# fdisk –l
+
+Disk /dev/hda: 80.0 GB, 80026361856 bytes
+
+255 heads, 63 sectors/track, 9729 cylinders
+
+Units = cylinders of 16065 * 512 = 8225280 bytes
+
+Device Boot Start End Blocks Id System
+
+/dev/hda1 * 1 9468 76051678+ 83 Linux
+
+/dev/hda2 9469 9729 2096482+ 82 Linux swap / Solaris
+
+[root@clonezilla opt]# hdparm /dev/hda
+
+/dev/hda:
+
+multcount = 16 (on)
+
+IO_support = 0 (default 16-bit)
+
+unmaskirq = 0 (off)
+
+using_dma = 0 (off)
+
+keepsettings = 0 (off)
+
+readonly = 0 (off)
+
+readahead = 256 (on)
+
+geometry = 16383/255/63, sectors = 156301488, start = 0
+
+[root@clonezilla opt]# hdparm -d1 -c3 -k1 /dev/had
+
+[root@clonezilla opt]# cat /etc/selinux/config
+
+# This file controls the state of SELinux on the system.
+
+# SELINUX= can take one of these three values:
+
+# enforcing – SELinux security policy is enforced.
+
+# permissive – SELinux prints warnings instead of enforcing.
+
+# disabled – SELinux is fully disabled.
+
+SELINUX=disabled
+
+# SELINUXTYPE= type of policy in use. Possible values are:
+
+# targeted – Only targeted network daemons are protected.
+
+# strict – Full SELinux protection.
+
+SELINUXTYPE=targeted
+
+[root@clonezilla opt]# chkconfig –level 35 mcstrans off
+
+[root@clonezilla opt]# rm -f GPG-KEY-DRBL; wget http://drbl.nchc.org.tw/GPG-KEY-DRBL; rpm –import GPG-KEY-DRBL
+
+[root@clonezilla opt]# cd /opt/drbl
+
+[root@clonezilla drbl]# script drbl_installaion.log
+
+[root@clonezilla drbl]# /opt/drbl/sbin/drblsrv –i
+
+NOTE:
+
+1. When it will ask for: install the network installation boot images Press “y”
+
+2. When it will ask for: to upgrade the operating system Press “y”
+
+After a successful installation of DRBL, We need to configure it so that it can start providing the pxe image for booting the client nodes.
+
+In my case, I have done this as bellow
+
+[root@clonezilla drbl]# /opt/drbl/sbin/drblpush –i
+
+NOTE:
+
+1. When it asks for: Please enter DNS domain: I provided limelabs.in
+
+2. When it asks for: enter NIS/YP domain name: I provided limelabs
+
+3. When it asks for: Please enter the client hostname prefix: I provided clonezilla
+
+4. Now go with all the default values.
+
+Now Your Clonezilla Server will be ready for DRBL (PXE Booting for Client Nodes)
+
+For starting the service on the server, you need to run :
+
+/opt/drbl/sbin/dcs
+
+When you will run this command, it will come up with the following screen
+
+Be careful for what you are selecting.
+
+After the first screen, you will get a screen, where you need to select from many of them.
+
+This screen will let you decide, whether you want to use your server as DRBL or as Clonezilla.
+
+In the above screen, I have shown if you want to use DRBL, just select the 1st or any of the first 5 options and you will be ready.
+
+But if you want to make the clone of any running system or even have to restore any clone image onto a system, then you have to select the bellow highlighted option.
+
+If you need to make a clone image of a running system, just go through with the default selections in the next screens.
+
+Now Just reboot the system for which you want to make the clone image with the pxe booting, and you will get a grub boot prompt. Go with the default selections, and in approx 10 mins time (depending on the Disk Size) you will have your system’s image cloned.
+
+Now moving to the next level, if you need to restore a clone disk, then you have to go through with the following processes.
+
+Run the command /opt/drbl/sbin/dcs and reach to the screen till “Switch the mode”
+
+Select the “clonezilla start” option and move further to the next screen.
+
+Now select the bellow ption for the cloned mage restoration
+
+Chose the image name which you have to restore on a blank system
+
+Now follow the default options.
+
+Now select the option as bellow:
+
+Please provide the input, for how many systems you want to restore at one go.
+
+That’s all. Just go with it and your blank system will be restarted next time with the complete OS.
+
+Please update the Howto, if you find anything as correction.
+
+Thanks,
+
+Manoj Sinha
+
+System Admin

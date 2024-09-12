@@ -1,0 +1,17 @@
+Note: the version of these functions I posted originally were not safe for paths with spaces in them. I have updated them and now the should be.
+
+I have added these functions to my .bash_profile and thought they might be useful for others as well.
+
+alias reveal="open -R" function recipe-open() { open "$(autopkg info $@ | grep 'Recipe file path' | cut -c 22-)"; } function recipe-edit() { bbedit "$(autopkg info $@ | grep 'Recipe file path' | cut -c 22-)"; } function recipe-reveal() { reveal "$(autopkg info $@ | grep 'Recipe file path' | cut -c 22-)"; }
+
+Use them like this
+
+recipe-open RecipeName.munki recipe-open com.github.recipe.id
+
+recipe-open will grab the path to the recipe file and use open to open it with its default application. I have PlistEdit Pro assigned to open .recipe file extensions.
+
+recipe-edit will open the recipe file in BBEdit, which doesn’t suck.
+
+recipe-reveal will open the recipe in the Finder. The bash alias reveal for open -R is quite useful independent of autopkg.
+
+Adapt for your own choice of editors.

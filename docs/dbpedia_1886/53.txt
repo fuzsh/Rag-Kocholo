@@ -1,0 +1,77 @@
+A settlement is either a single standalone Housing building or, more commonly, multiple Housing buildings built immediately adjacent to each other. This is where the Population lives and where the residents do almost everything: sleep, eat, maintain their hygiene, and enjoy Household Goods and so on. The only except is work in buildings or vehicles.
+
+Services
+
+Each settlement requests services to be provided to increase the comfort of the Population. Only Food supply and Waste collection are essential services. If these services are lacking, critical population decline will occur.
+
+Other services are not essential, and there is no penalty for lacking services. But fulfilling these requests provides a set amount of Unity and/or promotes Health per request. They are helpful in a steady source of Unity, used for Research Lab (and its variants) and outposts such as the Sawmill or Oil Rig. They are also helpful to combat the bad influence of Air Pollution and Water Pollution.
+
+The Population Overview UI pane as seen to the right is accessed by clicking the Population icon at the top-left corner of the game screen and displays the total amount of Unity received from meeting demands.
+
+List of services
+
+All services are shown in the following table.
+
+The demand for each service is directly proportional to the population. And the demand for some services and the Unity bonus also depends on the tier of Housing. The effect of the tier of Housing is shown in the table after the one for services.
+
+List of Services (Version 0.5.2) Service Demand / 60
+
+per 1000 pops Can get when fulfilled Unity Bonus
+
+by Housing Tier Note Unity Health Food (Base) Special 1.00 - yes See "#Demand for food" and "#Unity and Health bonus by food" Food Variety 0.15-3.00 0-12 no Waste 29.3-47.5 - - - See "#Amount of discharged waste" Water 65.5 1.00 10 yes Can get a Unity and Health bonus if Water is provided, and Waste Water is removed Waste Water 54.8 Electricity 1.44 MW 1.20 - yes Hospitals ( Medical Supplies) 5.5 0.60-1.20 15-25 yes See Clinic Household Goods 10.7 1.40 - yes Household Appliances 7.8 1.40 - yes Consumer Electronics 3.9 1.80 - yes Settlements quality - 1.00 - no See Square. Does not rely on population amount, only placement of the Square(s) Other decorations ( Fuel Gas) - 0.50 - no Build the Tomb of Captains and provide Fuel Gas. Only available in the Supporter Edition. Also doesn't change based on population
+
+Effect of Housing Tier Housing Increased Demand Additional Unity Bonus Housing None None Housing II Electricity +10%
+
+Water and Waste Water +5% +50% if Electricity and Water are provided, and Waste Water is removed Housing III Electricity +20%
+
+Water and Waste Water +10% +100% if Electricity, Water, and Household Goods are provided and Waste Water is removed. This bonus replaces the previous one
+
+Demand for food
+
+The demand for food depends on the type of food, and it is a bit complex to calculate the amount. As a simple example, when only single food is provided to settlements, the demand for food will be the following value.
+
+Demand for Food (Version 0.5.2) Food Category Food Demand / 60
+
+per 100 pops Carbs Potato 4.7 Corn 3.3 Bread 2.2 Protein Meat 3.0 Eggs 3.3 Tofu 2.0 Sausage 3.7 Vitamins Vegetables 4.7 Fruit 3.5 Treats Snack 5.8 Cake 2.8
+
+When several types of food are provided to settlements, the demand for each food will decrease, and the total for all food will be similar to the case of the single food provided. The exact value at version 0.4.9 can be calculated in the following formula.
+
+Demand / 60 per 100 pops = A / (Nc × N)
+
+A: Demand when only this food is provided (Value in above table)
+
+Nc: Number of provided food category
+
+N: Number of type of provided food in same category
+
+Unity and Health bonus by food
+
+Fulfilling food demand, that is, pops do not starve, provides 1.00 of Unity, which is boosted by Housing Tier. In addition, more Unity will be provided when settlements receive variable food, which is NOT boosted by Housing Tier.
+
+Unity and Health Bonus (Version 0.5.3) Food Category Food Unity Carbs Potato 0.15 Corn 0.15 Bread 0.30 Protein Meat 0.40 Eggs 0.30 Tofu 0.30 Sausage 0.10 Vitamins Vegetables 0.20 Fruit 0.30 Treats Snack 0.25 Cake 0.55
+
+For example, Potato, Corn, Bread, and Vegetables are provided:
+
+Unity = 1.00 + 0.15 + 0.15 + 0.30 + 0.20 = 1.80
+
+In addition, pops live in Housing III:
+
+Unity = 1.00 × 200% + 0.15 + 0.15 + 0.30 + 0.20 = 2.80
+
+The Health bonus depend on the number of food categories provided to the settlement:
+
+Health = 4 × (Number of food categories − 1)
+
+For example, Potato, Corn, Bread, and Vegetables are provided:
+
+Number of food category = 2 (Carbs and Vitamins)
+
+Health = 4 × (2 − 1) = 4
+
+Amount of discharged waste
+
+The pops in the settlement discharge Waste depend on received services. They also discharge Biomass or Recyclables when Biomass Collection or Recyclables Collection is connected to the settlement. The discharged Waste, Biomass, and Recyclables are shown in the following table if all of the three collection buildings are connected to the settlement. Note that the amount of the discharged Waste will also change if the amount of consumed service items changes by Edicts or disease.
+
+Amount of discharged waste (Version 0.5.3) Received service Discharged per 1000 Pops / 60 Comment Waste Biomass Recyclables Base 29.3 - - Discharged in any case, even if the settlement receives no services. Food - +1.3-6.4 - Depending on the type of food. +4.1 if the settlement receives all types of food. Water - - - - Electricity - - - - Medical Supplies - - +2.7 - Medical Supplies II - - +2.7 - Medical Supplies III - - +3.4 - Household Goods - +4.3 +6.8 - Household Appliances - - +9.4 - Consumer Electronics - - +6.1 - All Service 29.3 8.3 25.7 The total amount of the above (excludes overlap)
+
+The settlement will discharge the additional Waste instead of Biomass or Recyclables if Biomass Collection or Recyclables Collection is not connected. The ratio of them are:
